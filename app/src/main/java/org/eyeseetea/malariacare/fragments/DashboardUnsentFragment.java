@@ -290,7 +290,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void manageSurveysAlarm(List<Survey> newListSurveys){
         Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         //Fixme think other way to cancel the setPushAlarm in Malariaapp
-        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
+
     }
 
     /**
@@ -311,12 +311,14 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public void reloadCompletedSurveys(){
         List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        if(surveysCompletedFromService!=null) {
-            if (surveysCompletedFromService.size() > 0) {
-                manageSurveysAlarm(surveysCompletedFromService);
-            } else
-                AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
+
+        //No surveys -> cancel alarm for pushing
+        if(surveysCompletedFromService==null || surveysCompletedFromService.size()==0){
+            AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
         }
+
+        //New completed surveys -> set alarm
+        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){

@@ -25,6 +25,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -40,6 +41,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
@@ -50,6 +52,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,10 +84,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     List<Survey> surveys;
 
     /**
-     * List of events that are going to be pushed
+     * Map app surveys with sdk events (N to 1)
      */
-    List<Event> events;
+    Map<Long,Event> events;
 
+    /**
+     * Each survey is new|known modification|unknow modification.
+     * If something goes wrong while pushing you need a mechanism to reset this to its original state.
+     */
+    Map<Long,String> originalSurveysUIDs;
 
     /**
      * The last survey that it is being translated
@@ -104,7 +112,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     /**
      * Used to control if the actual survey/event is new or update
      */
-    boolean updateEvent;
+    boolean isAModification;
 
 
     ConvertToSDKVisitor(Context context){
@@ -118,15 +126,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
         createdByCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
-        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
-        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
+        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_on_code));
+        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
-        events = new ArrayList<>();
+        events = new HashMap<>();
+        originalSurveysUIDs = new HashMap<>();
     }
 
     @Override
     public void visit(Survey survey) throws Exception{
-        updateEvent =false;
 
         uploadedDate =new Date();
 
@@ -153,17 +161,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Turn question values into dataValues
         Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
-
-
         for(Value value:survey.getValues()) {
-            if(updateEvent) {
-                if (value.getUploadDate().after(currentSurvey.getUploadDate())) {
-                    value.accept(this);
-                    Log.d(TAG, "Value saved: " + value);
-                }
+            //in a modification an old value is skipped
+            if(isAModification && value.getUploadDate().before(currentSurvey.getUploadDate())){
+                continue;
             }
-            else
-                    value.accept(this);
+            //value -> datavalue
+            value.accept(this);
         }
 
         //Update all the dates after checks the new values
@@ -174,6 +178,90 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Annotate both objects to update its state once the process is over
         annotateSurveyAndEvent();
+    }
+
+    /**
+     * Inits current survey stuff
+     * @param survey
+     * @return
+     */
+    private Survey buildCurrentSurvey(Survey survey){
+        Log.d(TAG,String.format("Init survey stuff for survey id: %d",survey.getId_survey()));
+        this.uploadedDate =new Date();
+        this.isAModification = survey.isAModification();
+        this.originalSurveysUIDs.put(survey.getId_survey(),survey.getEventUid());
+        return survey;
+    }
+
+    /**
+     * Inits current event stuff.
+     * This implies doing the right choosing the right action (modification or brand new)
+     * @return
+     * @throws Exception
+     */
+    private Event buildCurrentEvent()throws Exception{
+        Log.d(TAG,String.format("Init event stuff for survey id: %d",this.currentSurvey.getId_survey()));
+
+        //Brand new event
+        if(!this.isAModification){
+            return buildNewEvent();
+        }
+
+        //A modification, look for a local built event
+        List<Event> eventsToBePushed= TrackerController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid());
+
+        //No local events, try to build from server
+        if(eventsToBePushed.isEmpty()){
+            return buildFromServer();
+        }
+
+        //Adding values to an already built event that needs to be pushed
+        return eventsToBePushed.get(0);
+    }
+
+    /**
+     * Builds an event from a survey
+     * @return
+     */
+    private Event buildNewEvent() throws Exception{
+        Event newEvent=new Event();
+        newEvent = setBasicEventProperties(newEvent);
+        Log.d(TAG, "Saving event " + newEvent.toString());
+        newEvent.save();
+        return newEvent;
+    }
+
+    /**
+     * Look for an event to modify from the server.
+     * @return
+     */
+    private Event buildFromServer()throws Exception{
+        PullClient pullClient = new PullClient(DashboardActivity.dashboardActivity);
+        Event eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getTabGroup());
+        //No event to modify -> create a new one
+        if(eventFromServer==null){
+            return buildNewEvent();
+        }
+
+        //Found in server
+        eventFromServer=setBasicEventProperties(eventFromServer);
+        eventFromServer.save();
+        return eventFromServer;
+    }
+
+    private Event setBasicEventProperties(Event eventToUpdate) throws Exception{
+        eventToUpdate.setStatus(Event.STATUS_COMPLETED);
+        eventToUpdate.setFromServer(false);
+        eventToUpdate.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
+        eventToUpdate.setProgramId(currentSurvey.getProgram().getUid());
+        eventToUpdate.setProgramStageId(currentSurvey.getTabGroup().getUid());
+        Location lastLocation=getEventLocation();
+        //location -> set lat/lng
+        if(lastLocation!=null) {
+            eventToUpdate.setLatitude(lastLocation.getLatitude());
+            eventToUpdate.setLongitude(lastLocation.getLongitude());
+        }
+        return eventToUpdate;
     }
 
     @Override
@@ -190,12 +278,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     @Override
     public void visit(Value value) {
-        if(updateEvent){
-            if(value.getQuestion()==null) {
-                //The controlDataelements values don't have question. It should be ignored  in a upload event.
-                return;
-            }
-        }
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(value.getQuestion().getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
@@ -234,74 +316,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_DATE_FORMAT);
+        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
         currentEvent.setEventDate(date);
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         currentEvent.save();
-        }
-
-    /**
-     * Builds several datavalues from the mainScore of the survey
-     * @param survey
-     */
-    private void buildControlDataElements(Survey survey) {
-
-        //It Checks if the dataelement exists, before build and save the datavalue
-        //Created date
-        if(createdOnCode!=null && !createdByCode.equals(""))
-            buildAndSaveDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
-
-        //Updated date
-        if(updatedDateCode!=null && !updatedDateCode.equals(""))
-            buildAndSaveDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.AMERICAN_DATE_FORMAT));
-
-        //Updated by user
-        if(updatedUserCode!=null && !updatedUserCode.equals(""))
-            buildAndSaveDataValue(updatedUserCode, Session.getUser().getUid());
-
-        //Updated by user
-        if(createdByCode!=null && !createdByCode.equals(""))
-            buildAndSaveDataValue(createdByCode, Session.getUser().getUid());
-
-        //MainScoreUID
-        if(mainScoreCode!=null)
-            buildAndSaveDataValue(mainScoreCode, survey.getType());
-
-        if(mainScoreACode!=null)
-            buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
-
-        if(mainScoreBCode!=null)
-            buildAndSaveDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
-
-        if(mainScoreCCode!=null)
-            buildAndSaveDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
-
-        if(forwardOrderCode!=null)
-            buildAndSaveDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
-    }
-
-    private void buildAndSaveDataValue(String UID, String value){
-        DataValue dataValue=new DataValue();
-        dataValue.setDataElement(UID);
-        dataValue.setLocalEventId(currentEvent.getLocalId());
-        dataValue.setEvent(currentEvent.getEvent());
-        dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(value);
-        dataValue.save();
-    }
-
-    /**
-     * Several properties must be updated when a survey is about to be sent.
-     * This changes will be saved just when process finish successfully.
-     * @param compositeScores
-     */
-    private void updateSurvey(List<CompositeScore> compositeScores){
-        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
-        currentSurvey.setStatus(Constants.SURVEY_SENT);
-        currentSurvey.setEventUid(currentEvent.getUid());
     }
 
     /**
@@ -326,12 +346,124 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     }
 
     /**
+     * Builds several datavalues from the mainScore of the survey
+     * @param survey
+     */
+    private void buildControlDataElements(Survey survey) {
+
+        //It Checks if the dataelement exists, before build and save the datavalue
+        //Created date
+        if(controlDataElementExistsInServer(createdOnCode)){
+            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
+        }
+
+        //Created by
+        if(controlDataElementExistsInServer(createdByCode)) {
+            addDataValue(createdByCode, Session.getUser().getUid());
+        }
+
+        //Updated date
+        if(controlDataElementExistsInServer(updatedDateCode)){
+            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.AMERICAN_DATE_FORMAT));
+        }
+
+        //Updated by user
+        if(controlDataElementExistsInServer(updatedUserCode)){
+            addOrUpdateDataValue(updatedUserCode, Session.getUser().getUid());
+        }
+
+        //MainScoreUID
+        if(mainScoreCode!=null)
+            addOrUpdateDataValue(mainScoreCode, survey.getType());
+
+        if(mainScoreACode!=null)
+            addOrUpdateDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
+
+        if(mainScoreBCode!=null)
+            addOrUpdateDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
+
+        if(mainScoreCCode!=null)
+            addOrUpdateDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
+
+        if(forwardOrderCode!=null)
+            addOrUpdateDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
+    }
+
+    private boolean controlDataElementExistsInServer(String controlDataElementUID){
+        return controlDataElementUID!=null && !controlDataElementUID.equals("");
+    }
+
+    /**
+     * Adds a new datavalue for the current event only if it does NOT already exist. To avoid duplication.
+     * @param dataElementUID
+     * @param value
+     */
+    private void addDataValue(String dataElementUID,String value){
+        DataValue dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        //Already added
+        if(dataValue!=null){
+            return;
+        }
+
+        //Build a new value
+        buildAndSaveDataValue(dataElementUID, value);
+    }
+
+    private void addOrUpdateDataValue(String dataElementUID,String value){
+        DataValue dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        //Already added, update its value
+        if(dataValue!=null){
+            dataValue.setValue(value);
+            dataValue.save();
+            return;
+        }
+
+        buildAndSaveDataValue(dataElementUID,value);
+    }
+
+    private void buildAndSaveDataValue(String uid, String value){
+        DataValue dataValue=new DataValue();
+        dataValue.setDataElement(uid);
+        dataValue.setLocalEventId(currentEvent.getLocalId());
+        dataValue.setEvent(currentEvent.getEvent());
+        dataValue.setProvidedElsewhere(false);
+        dataValue.setStoredBy(getSafeUsername());
+        dataValue.setValue(value);
+        dataValue.save();
+    }
+
+    /**
+     * Several properties must be updated when a survey is about to be sent.
+     * This changes will be saved just when process finish successfully.
+     * @param compositeScores
+     */
+    private void updateSurvey(List<CompositeScore> compositeScores){
+        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
+        currentSurvey.setStatus(Constants.SURVEY_SENT);
+        currentSurvey.setEventUid(currentEvent.getUid());
+    }
+
+    /**
+     * Updates the location of the current event that it is being processed
+     * @throws Exception
+     */
+    private Location getEventLocation() throws Exception{
+        Location lastLocation = LocationMemory.get(currentSurvey.getId_survey());
+        //If location is required but there is no location -> exception
+        if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
+            throw new Exception(context.getString(R.string.dialog_error_push_no_location_and_required));
+        }
+
+        return lastLocation;
+    }
+
+    /**
      * Annotates the survey and event that has been processed
      */
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
-        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_DATE_FORMAT));
-        events.add(currentEvent);
+        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_GMT_DATE_FORMAT));
+        events.put(currentSurvey.getId_survey(),currentEvent);
         Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
     }
 
@@ -341,51 +473,55 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     public void saveSurveyStatus(Map<Long,ImportSummary> importSummaryMap){
         for(int i=0;i<surveys.size();i++){
             Survey iSurvey=surveys.get(i);
-            Event iEvent=events.get(i);
+            Event iEvent=events.get(iSurvey.getId_survey());
             ImportSummary importSummary=importSummaryMap.get(iEvent.getLocalId());
             FailedItem failedItem= EventExtended.hasConflict(iEvent.getLocalId());
-            if(hasImportSummaryErrors(importSummary) || failedItem!=null){
-                Log.d(TAG, importSummary.toString());
-                //Some error happened -> move back to completed
-                if(failedItem!=null) {
-                    iSurvey.setStatus(Constants.SURVEY_COMPLETED);
-                    iSurvey.setEventUid(null);
-                    ImportSummary importSummary1=failedItem.getImportSummary();
-                    List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
-                    for(String uid:failedUids) {
-                        Log.d(TAG, "PUSH process...Conflict in "+uid+" dataelement pushing survey: "+iSurvey.getId_survey());
-                        iSurvey.saveConflict(uid);
-                        iSurvey.setStatus(Constants.SURVEY_CONFLICT);
-                    }
+
+            //No errors -> Save and next
+            if(!hasImportSummaryErrors(importSummary) && failedItem==null){
+                saveSurveyFromImportSummary(iSurvey);
+                continue;
+            }
+
+            if(importSummary==null){
+                rollbackSurvey(iSurvey);
+            }
+
+            //Errors
+            Log.d(TAG, importSummary.toString());
+            //Some error happened -> move back to completed
+            if(failedItem!=null) {
+                rollbackSurvey(iSurvey);
+                List<String> failedUids=getFailedUidQuestion(failedItem.getErrorMessage());
+                for(String uid:failedUids) {
+                    Log.d(TAG, "PUSH process...Conflict in "+uid+" dataelement pushing survey: "+iSurvey.getId_survey());
+                    iSurvey.saveConflict(uid);
+                    iSurvey.setStatus(Constants.SURVEY_CONFLICT);
                 }
                 iSurvey.save();
+            }
 
-                //Generated event must be remove too (or saved in a modify import summary)
-                if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && importSummary.getStatus().equals("SUCCESS")) {
-                    saveSurveyFromImportSummary(iSurvey, iEvent);
-                    Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
-                }
-                else{
-                    Log.d(TAG, "PUSH process...Fail pushing survey: " + iSurvey.getId_survey());
-                    iEvent.delete();
-                }
-            }else{
-                saveSurveyFromImportSummary(iSurvey, iEvent);
+            //XXX Whats this?
+            if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && ImportSummary.SUCCESS.equals(importSummary.getStatus())) {
+                saveSurveyFromImportSummary(iSurvey);
+                Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
             }
         }
     }
 
-    private void saveSurveyFromImportSummary(Survey iSurvey, Event iEvent) {
+    private void rollbackSurvey(Survey survey){
+        survey.setStatus(Constants.SURVEY_COMPLETED);
+        survey.setEventUid(originalSurveysUIDs.get(survey.getId_survey()));
+        survey.save();
+    }
+
+    private void saveSurveyFromImportSummary(Survey iSurvey) {
         iSurvey.setStatus(Constants.SURVEY_SENT);
         iSurvey.setUploadDate(uploadedDate);
         iSurvey.saveMainScore();
         iSurvey.save();
 
-        //To avoid several pushes
-        iEvent.setFromServer(true);
-        iEvent.save();
-
-        Log.d(TAG, "PUSH process...OK. Survey and Event saved");
+        Log.d(TAG, "PUSH process...OK. Survey saved");
     }
 
     /**

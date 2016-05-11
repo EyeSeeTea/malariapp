@@ -66,9 +66,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class AUtils {
+public class AUtils {
 
-    static final int numberOfDecimals = 0; // Number of decimals outputs will have
+    private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
@@ -78,7 +78,7 @@ public abstract class AUtils {
     }
 
     public static String round(float base){
-        return round(base, AUtils.numberOfDecimals);
+        return round(base, AUtils.ZERO_DECIMALS);
     }
 
     public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
@@ -195,13 +195,13 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    public void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
         String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
+        showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
@@ -209,9 +209,9 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource
      */
-    public void showAlertWithMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
-        new Utils().showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
+        showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
     }
 
     /**
@@ -219,19 +219,19 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    public void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
         String stringMessage = getMessageWithCommit(rawId, context);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
+        showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
      * Merge the lastcommit into the raw file
      * @param rawId Id of the raw text resource in HTML format
      */
-    public String getMessageWithCommit(int rawId, Context context) {
+    public static String getMessageWithCommit(int rawId, Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
         String stringCommit;
         //Check if lastcommit.txt file exist, and if not exist show as unavailable.
@@ -254,16 +254,7 @@ public abstract class AUtils {
         return stringMessage;
     }
 
-    public void showAlert(int titleId, CharSequence text, Context context){
-        final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    public void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
+    public static void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);
@@ -292,100 +283,6 @@ public abstract class AUtils {
         });
         //now that the dialog is set up, it's time to show it
         dialog.show();
-    }
-
-    public abstract void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup);
-    
-
-    protected class LoadLastEvent extends AsyncTask<ComboOrgUnitTabGroup, Void, Void> {
-        ComboOrgUnitTabGroup comboOrgUnitTabGroup;
-        PullClient.EventInfo eventInfo;
-
-        @Override
-        protected Void doInBackground(ComboOrgUnitTabGroup... params) {
-            comboOrgUnitTabGroup=params[0];
-            PullClient pullClient = new PullClient((DashboardActivity) DashboardActivity.dashboardActivity);
-            eventInfo = pullClient.getLastEventUid(comboOrgUnitTabGroup.getOrgUnit(), comboOrgUnitTabGroup.getTabGroup());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-            askCreateOrModify(comboOrgUnitTabGroup, eventInfo);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-        }
-        ProgressDialog progressDialog;
-        @Override
-        protected void onPreExecute() {
-
-            progressDialog = new ProgressDialog(DashboardActivity.dashboardActivity);
-            progressDialog.setMessage(PreferencesState.getInstance().getContext().getResources().getString(R.string.loading_last_surveys));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-    }
-
-    private void askCreateOrModify(final ComboOrgUnitTabGroup comboOrgUnitTabGroup, final PullClient.EventInfo eventInfo){
-        String dialogMessage="";
-        if(eventInfo==null || eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
-            dialogMessage=PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_info);
-        }
-        else{
-            dialogMessage=String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.create_or_modify), EventExtended.format(eventInfo.getEventDate(), EventExtended.DHIS2_DATE_FORMAT ));
-        }
-        new AlertDialog.Builder(DashboardActivity.dashboardActivity)
-                .setTitle("")
-                .setMessage(dialogMessage)
-                .setPositiveButton((R.string.create), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                        activity.createNewSurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup());
-                    }
-                })
-                .setNeutralButton((R.string.modify), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        DashboardActivity activity= (DashboardActivity)DashboardActivity.dashboardActivity;
-                        activity.modifySurvey(comboOrgUnitTabGroup.getOrgUnit(),comboOrgUnitTabGroup.getTabGroup(), eventInfo);
-                    }
-                })
-                .setNegativeButton((R.string.cancel), null)
-                .setCancelable(true)
-                .create().show();
-    }
-
-    public class ComboOrgUnitTabGroup{
-        OrgUnit orgUnit;
-        TabGroup tabGroup;
-
-        public ComboOrgUnitTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
-            this.orgUnit = orgUnit;
-            this.tabGroup = tabGroup;
-        }
-
-        public OrgUnit getOrgUnit() {
-            return orgUnit;
-        }
-
-        public void setOrgUnit(OrgUnit orgUnit) {
-            this.orgUnit = orgUnit;
-        }
-
-        public TabGroup getTabGroup() {
-            return tabGroup;
-        }
-
-        public void setTabGroup(TabGroup tabGroup) {
-            this.tabGroup = tabGroup;
-        }
     }
 
 }

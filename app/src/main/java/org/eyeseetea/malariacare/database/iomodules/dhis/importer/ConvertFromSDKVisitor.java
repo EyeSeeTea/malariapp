@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
@@ -80,9 +81,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
-    private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
-    private final String SDKDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
@@ -309,73 +307,56 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
         survey.setTabGroup(tabGroup);
-        survey.save();
 
         //Annotate object in map
-        appMapObjects.put(event.getUid(), survey);
+        EventToSurveyBuilder eventToSurveyBuilder=new EventToSurveyBuilder(survey);
+        appMapObjects.put(event.getUid(), eventToSurveyBuilder);
 
         //Visit its values
         for(DataValue dataValue:event.getDataValues()){
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
             dataValueExtended.accept(this);
         }
+        //Once all the values are processed save common data across created surveys
+        eventToSurveyBuilder.saveCommonData();
     }
 
     @Override
     public void visit(DataValueExtended sdkDataValueExtended) {
 
         DataValue dataValue=sdkDataValueExtended.getDataValue();
+        EventToSurveyBuilder eventToSurveyBuilder =(EventToSurveyBuilder) appMapObjects.get(dataValue.getEvent());
         Survey survey=(Survey)appMapObjects.get(dataValue.getEvent());
-        //Data value is a value from compositeScore
+
+        //General common data (mainscore, createdby, createdon, uploadedon..)
+
+        //-> mainScore
         if(appMapObjects.get(dataValue.getDataElement()) instanceof CompositeScore){
-            //CHeck if it is a root score -> score
             CompositeScore compositeScore = (CompositeScore)appMapObjects.get(dataValue.getDataElement());
-            if(CompositeScoreBuilder.ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
-                Score score = new Score();
-                score.setScore(Float.parseFloat(dataValue.getValue()));
-                score.setUid(dataValue.getDataElement());
-                score.setSurvey(survey);
-                score.save();
-            }
+            //Only mainScores are annotated
+            eventToSurveyBuilder.setMainScore(compositeScore,dataValue);
+            Log.i(TAG,String.format("Event %s with mainScore %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
+        //-> createdOn
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_on_code))){
-            try{
-                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setCreationDate(date);
-                survey.save();
-                //Annotate object in map
-                appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(ParseException e){
-                Log.d(TAG,"Error converting creation date from datavalue in survey: "+survey.getId_survey());
-            }
+            eventToSurveyBuilder.setCreatedOn(dataValue);
+            Log.i(TAG,String.format("Event %s created on %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_date_code))){
-            try{
-                Date date = EventExtended.parseDate(dataValue.getValue(),EventExtended.AMERICAN_DATE_FORMAT);
-                survey.setUploadDate(date);
-                survey.save();
-                //Annotate object in map
-                appMapObjects.put(dataValue.getEvent(), survey);
-            }catch(ParseException e){
-                Log.d(TAG,"Error converting upload date from datavalue in survey:"+survey.getId_survey());
-            }
+        //-> uploadedOn
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_on_code))){
+            eventToSurveyBuilder.setUploadedOn(dataValue);
+            Log.i(TAG,String.format("Event %s uploaded on %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
+        //-> createdBy (updatedBy is ignored)
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_by_code))){
-            User user=User.getUser(dataValue.getValue());
-            if(user==null) {
-                user = new User(dataValue.getValue(), dataValue.getValue());
-                user.save();
-            }
-            survey.setUser(user);
-            survey.save();
-            //Annotate object in map
-            appMapObjects.put(dataValue.getEvent(), survey);
+            eventToSurveyBuilder.setCreatedBy(dataValue);
+            Log.i(TAG,String.format("Event %s created by %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
         }
 
@@ -396,7 +377,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if(option==null){
             value.setValue(dataValue.getValue());
         }else{
-        //Option -> extract value from code
+            //Option -> extract value from code
             value.setValue(option.getName());
         }
         value.setUploadDate(new Date());
@@ -432,7 +413,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
             appQuestion.setAnswer(buildAnswerLabel());
         }
-
 
         ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());

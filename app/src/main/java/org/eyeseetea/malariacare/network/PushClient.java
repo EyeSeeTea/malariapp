@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -44,47 +45,45 @@ import java.util.List;
 public class PushClient {
 
     private static final String TAG=".PushClient";
+    /**
+     * For pushing just 1 survey
+     */
     Survey survey;
+
+    /**
+     * For pushing N surveys
+     */
+    List<Survey> surveys;
+
     Context applicationContext;
     NetworkUtils networkUtils;
 
-    public PushClient(Survey survey, Context applicationContext, String user, String password) {
-        this.survey = survey;
+    private PushClient(Context applicationContext, String user, String password) {
         this.applicationContext = applicationContext;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         networkUtils=new NetworkUtils(applicationContext);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        networkUtils.setDhisServer(sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url), ""));
-        networkUtils.setOrgUnitName(survey.getOrgUnit().getName());
-        networkUtils.setOrgUnitUid(survey.getOrgUnit().getUid());
-        networkUtils.setUidProgram(survey.getTabGroup().getProgram().getUid());
-        networkUtils.setUser(user);
-        networkUtils.setPassword(password);
-    }
-
-    public PushClient(Context applicationContext, String user, String password) {
-        this.applicationContext = applicationContext;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         networkUtils.setDhisServer(sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url),""));
         networkUtils.setUser(user);
         networkUtils.setPassword(password);
     }
-    private boolean launchPush(Survey survey) {
-        //fixme the survey is saved in session. But in other places too.
-        Session.setSurvey(survey);
-        //Pushing selected survey via sdk
-        List<Survey> surveys = new ArrayList<>();
-        surveys.add(survey);
-        return PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
+
+    public PushClient(List<Survey> surveys, Context applicationContext, String user, String password) {
+        this(applicationContext,user,password);
+        this.surveys = surveys;
     }
 
-    public PushClient(Context applicationContext) {
-        this.applicationContext = applicationContext;
+    public PushClient(Survey survey, Context applicationContext, String user, String password) {
+        this(applicationContext,user,password);
+        this.survey = survey;
     }
 
     public void pushSDK() {
-        if (AUtils.isNetworkAvailable()) {
-            malariaSdkPush();
+        //No network -> Done
+        if (!AUtils.isNetworkAvailable()) {
+            AlarmPushReceiver.isDone();
         }
+        //Push via sdk
+        PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
     }
 
     public PushResult pushAPI() {
@@ -92,28 +91,6 @@ public class PushClient {
                return malariaApiPush();
         }
         return new PushResult();
-    }
-
-    public void malariaSdkPush() {
-        try{
-
-            if(launchPush(survey)){
-                //TODO: This should be removed once DHIS bug is solved
-                //pushControlDataElements(controlData);
-                survey.setSentSurveyState();
-                AlarmPushReceiver.setFail(false);
-            }
-            else{
-                AlarmPushReceiver.setFail(true);
-            }
-        }catch(Exception ex){
-            AlarmPushReceiver.setFail(true);
-            Log.e(TAG, ex.getMessage());
-        }
-        finally {
-            //Success or not the dashboard must be reloaded
-            updateDashboard();
-        }
     }
 
     public PushResult malariaApiPush() {
@@ -143,18 +120,9 @@ public class PushClient {
         }
         finally {
             //Success or not the dashboard must be reloaded
-            updateDashboard();
+            DashboardActivity.reloadDashboard();
         }
         return  pushResult;
-    }
-
-
-
-    public void updateDashboard(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(applicationContext, SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        applicationContext.startService(surveysIntent);
     }
 
 }

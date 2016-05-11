@@ -12,7 +12,6 @@
     <string name="fair">Moyen</string>
     <string name="poor">Pauvre</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
-    <string name="send">Envoyer</string>
 
     <!-- settings -->
     <string name="settings_menu_about">A propos de cette app</string>
@@ -22,31 +21,17 @@
     <string name="settings_menu_eula">EULA</string>
     <string name="settings_menu_configuration">Paramètres</string>
     <string name="settings_menu_licence">License</string>
-    <string name="settings_menu_update">Mise à jour des questions (DHIS)</string>
     <string name="settings_menu_logout">Se deconnecter</string>
-
-    <!-- login -->
-    <string name="login_info_username">Utilisateur</string>
-    <string name="login_info_password">Mot de passe</string>
-    <string name="login_info_sign_in">Se connecter</string>
-    <string name="login_error_bad_credentials">Votre mode / mot de passe sont incorrects</string>
-
 
     <!-- # dialogs -->
     <string name="go_to_feedback">Aller aux commentaires</string>
     <string name="dialog_title_delete_survey">Supprimer Survey.</string>
-    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l'enquête: %s?"</string>
-    <string name="dialog_title_error">Erreur</string>
-    <string name="dialog_error_denominator">Erreur, denominateur = 0</string>
+    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l\'enquête %s?"</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
     <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d\'enquête, s\'il vous plait</string>
     <string name="dialog_title_existing_survey">Enquête existante</string>
     <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
-    <string name="dialog_title_send_preview">Envoyer ou afficher</string>
-    <string name="dialog_content_send_preview">Voulez-vous envoyer l\'enquêtte ?</string>
-    <string name="dialog_title_push_data">Envoie des donnés</string>
-    <string name="dialog_content_push_data">Êtes-vous sûr de voulour envoyer ?</string>
     <string name="dialog_button_preview_feedback">Voir évaluations</string>
     <string name="dialog_question_complete_survey">Toutes les questions obligatoires ont été remplies. Aimeriez-vous marquer cette sondage comme complet?</string>
     <string name="dialog_continue_later_option">Continuer plus tard</string>
@@ -60,33 +45,20 @@
 
     <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
-    <string name="dashboard_info_active_assessments">Evaluations actives</string>
-    <string name="dashboard_info_new_assessment">Nouvelle évaluation</string>
-    <string name="dashboard_info_future_assessments">Future Assessments</string>
-    <string name="dashboard_info_performance">Performance Against Target</string>
-    <string name="dashboard_info_analytics">Analytics</string>
-    <string name="dashboard_button_new_survey">Nouvelle enquête</string>
-    <string name="dashboard_button_see_all">Voir toutes</string>
     <string name="dashboard_info_ready_to_upload">Prête pour envoyer</string>
     <string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
-    <string name="dashboard_title_table_facilities">"La qualité des soins (6 derniers mois)"</string>
 
     <!-- create -->
     <string name="create_info_ok">Commencer</string>
     <string name="create_info_organization_unit">Unité d\'organisation</string>
     <string name="create_info_survey">Enquête</string>
-    <string name="create_info_zone">Zone</string>
 
     <!-- assessment -->
     <string name="assessment_title_facility_date">Centre de santé / Date</string>
     <string name="assessment_title_state">État</string>
-    <string name="assessment_info_delete">Effacer</string>
     <string name="assessment_title_header">Evaluation(s) active(s)</string>
 
     <!-- feedback -->
-    <!-- XXX Should it be replaced by 'assessment_title_facility_date'?-->
-    <string name="feedback_title_organization_unit_date">Org Unit / Date</string>
-    <string name="feedback_title_header">Retour</string>
     <string name="feedback_show_only_failed">"Afficher seulement échoué aux questions"</string>
     <string name="feedback_return">Retour à toutes les évaluations</string>
     <string name="quality_of_care">Qualité des soins (QoC) Score:</string>
@@ -95,31 +67,9 @@
     <string name="feedback_info_not_answered">"Pas répondu"</string>
     <string name="feedback_info_no_feedback">Aucun commentaire</string>
 
-    <!-- future -->
-    <string name="future_title_facility">Centre</string>
-    <string name="future_title_previous_date">Date prealable evaluation</string>
-    <string name="future_title_due_date">Date limite</string>
-    <string name="future_title_action">Action</string>
-    <string name="future_title_header">Evaluations Futurs</string>
-
-    <!-- performance -->
-    <string name="performance_title_period">Periode</string>
-    <string name="performance_title_target">But</string>
-    <string name="performance_title_completed">Fait</string>
-    <string name="performance_title_achievement">Obtention</string>
-    <string name="performance_title_header">Performance Sur But</string>
-
-    <!-- analytics -->
-    <string name="analytics_title_period">Periode</string>
-    <string name="analytics_title_target">But</string>
-    <string name="analytics_title_completed">Fait</string>
-    <string name="analytics_title_achievement">Obtention</string>
-    <string name="analytics_title_header">Statistiques</string>
-
     <!-- survey -->
     <string name="survey_title_exit">"Vraiment quitter?"</string>
     <string name="survey_info_exit">"Êtes-vous sûr de vouloir quitter?"</string>
-    <string name="survey_info_select_tab">Choisissez onglet: </string>
 
     <!-- widget -->
     <string name="widget_info_empty_statement">Question statement</string>
@@ -133,7 +83,6 @@
     <string name="adherence_title_explanation">Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
     <string name="adherence_title_explanation_content">Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nStep 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column.</string>
     <string name="adherence_title2_explanation_content">In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nLocate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N.</string>
-    <string name="adherence_info_pharmacy_register">Pharmacy Register</string>
     <string name="adherence_title_gender">Genre</string>
     <string name="adherence_title_age">Âge</string>
     <string name="adherence_title_test_results">Results du test</string>
@@ -149,14 +98,12 @@
     <string name="iqatab_info_parasites">Parasites/uL</string>
     <string name="iqatab_info_species">Species</string>
     <string name="iqatab_info_labstaff">Lab Staff</string>
-    <string name="iqatab_info_results">Results below are auto-calculated</string>
 
     <!-- reporting -->
     <string name="reporting_info_reporting">Notification</string>
     <string name="reporting_info_results">Resultats</string>
     <string name="reporting_info_register">Enregistrement</string>
     <string name="reporting_info_monthly">Notification \nMensuel</string>
-    <string name="iqatab_info_supervisor_matches">Supervisor matches lab staff?</string>
 
     <!-- score -->
     <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
@@ -170,7 +117,6 @@
     <string name="score_info_case1">Cas 1</string>
     <string name="score_info_case2">Cas 2</string>
     <string name="score_info_case3">Cas 3</string>
-    <string name="score_info_case4">Cas 4</string>
 
     <!-- composite score -->
     <string name="compscore_title_score_percentage">Score (%)</string>
@@ -208,14 +154,11 @@
     <string name="dialog_info_on_complete">"L'enquête %s a été marquée comme terminée. Vous trouverez maintenant dans l'onglet Améliorer"</string>
     <string name="dashboard_info_sent">Envoyé</string>
     <string name="dialog_title_push_response">Réponse de charge</string>
-    <string name="dialog_info_push_ok">Les données du sondage a été poussé avec succès au serveur DHIS</string>
     <string name="dialog_info_push_bad_credentials">Identification incorrectes pour la poussée</string>
-    <string name="assessment_sent_title_state">État</string>
     <string name="assessment_sent_title_header">Evaluation(s) antérieur(s)</string>
     <string name="assessment_sent_date">Date de remplissement</string>
     <string name="assessment_sent_score">But</string>
     <string name="dialog_error_push_uids">UID incorrects trouvés en push</string>
-    <string name="dialog_error_push_no_location">Aucun emplacement disponible</string>
     <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
     <string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionner une unité d'organisation finale"</string>
@@ -240,7 +183,6 @@
     <string name="progress_pull_questions">Chargement des questions (cela peut prendre quelques minutes) ...</string>
     <string name="progress_pull_surveys">Enquêtes de chargement ...</string>
     <string name="progress_pull_done">Terminé</string>
-    <string name="dialog_push_error">Erreur en essayant de pousser les données à dhis serveur</string>
     <string name="progress_push_posting_survey">"Pousser les données d'enquête au serveur ..."</string>
     <string name="progress_push_preparing_survey">"Préparation de l'enquête pour pousser ..."</string>
     <string name="progress_push_updating_survey">"Mise à jour poussé données de l'enquête ..."</string>
@@ -260,8 +202,6 @@
     <string name="option_edit">Modifier</string>
     <string name="option_mark_completed">Marquer comme terminée</string>
     <string name="option_delete">Effacer</string>
-    <string name="dialog_info_push_confirm">Êtes-vous sûr ? Vous ne pourrez pas annuler cette action</string>
-
 
     <string name="hide_planning_tab_title" >"Masquer l'onglet Planification"</string>
     <string name="hide_planning_tab_summary" >Cochez cette case pour masquer onglet de planification</string>
@@ -299,7 +239,7 @@
     <!-- Create or patch -->
     <string name="create">"Créer"</string>
     <string name="modify">Modifier</string>
-    <string name="create_or_modify">"Voulez-vous créer ou modifier l'enquête avec les dates %s ?"</string>
+    <string name="create_or_modify">"Voulez-vous créer une nouvelle évaluation ou de modifier la dernière évaluation, les dates[%s]?"</string>
     <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
 
     <!-- Last survey -->
