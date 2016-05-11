@@ -40,6 +40,11 @@ public class DatabaseSettings {
      */
     String uri;
 
+    /**
+     * Indicates if the sdk should retrieve the full hierarchy of orgUnits or only its leaves
+     */
+    boolean fullHierarchy;
+
     DatabaseSettings(){
 
     }
@@ -60,11 +65,20 @@ public class DatabaseSettings {
         this.uri = uri;
     }
 
+    public boolean isFullHierarchy(){
+        return fullHierarchy;
+    }
+
+    public void setFullHierarchy(boolean hierarchy){
+        this.fullHierarchy =hierarchy;
+    }
+
     @Override
     public String toString() {
         return "DatabaseSettings{" +
                 "originType=" + originType +
                 ", uri='" + uri + '\'' +
+                ", fullHierarchy=" + fullHierarchy +
                 '}';
     }
 }

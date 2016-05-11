@@ -70,6 +70,10 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDashboardSettings().getOrientation();
     }
 
+    public static boolean isFullHierarchy(){
+        return getInstance().getSettings().getDatabaseSettings().isFullHierarchy();
+    }
+
     public void init(Context context){
         settings = parse(R.raw.settings,context);
         dashboardController = build(settings);
