@@ -66,18 +66,14 @@
     <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
     <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
 
-    <string name="main_score_code" translatable="false">_Overall Class</string>
-    <string name="main_score_a_code" translatable="false">_Overall Class A</string>
-    <string name="main_score_b_code" translatable="false">_Overall Class B</string>
-
-    <string name="main_score_c_code" translatable="false">_Overall Class C</string>
     <string name="forward_order_code" translatable="false">_FWR-sort</string>
     <string name="forward_order_value" translatable="false">9999</string>
 
     <string name="created_on_code" translatable="false">_CreatedOn</string>
-    <string name="created_by_code" translatable="false">_CreatedBy</string>
     <string name="upload_on_code" translatable="false">_UploadedOn</string>
     <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
+    <string name="push_device_code" translatable="false">_PushDevice</string>
+    <string name="overall_score_code" translatable="false">_Overall Score</string>
     <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
 
 </resources>

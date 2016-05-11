@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.util.HashMap;
@@ -73,6 +74,12 @@ public class Session {
      * Cache containing the list of ordered items that compounds each tab
      */
     private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
+
+    /**
+     * The current phone metadata
+     */
+    private static PhoneMetaData phoneMetaData;
+
 
     public static Survey getSurvey() {
         return survey;
@@ -167,6 +174,12 @@ public class Session {
 
     public static void setLocation(Location location) {
         Session.location = location;
+    }
+
+    public static PhoneMetaData getPhoneMetaData(){return phoneMetaData;}
+
+    public static void setPhoneMetaData(PhoneMetaData phoneMetaData) {
+        Session.phoneMetaData = phoneMetaData;
     }
 
 }
