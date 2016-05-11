@@ -28,8 +28,10 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
@@ -134,8 +136,16 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     @Override
     public void visit(Survey survey) throws Exception{
 
-        this.currentSurvey=buildCurrentSurvey(survey);
-        this.currentEvent=buildCurrentEvent();
+        uploadedDate =new Date();
+
+        //Turn survey into an event
+        this.currentSurvey=survey;
+
+        Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
+        Log.d(TAG,String.format("Creating event for survey (%s) ...", survey.toString()));
+
+
+        this.currentEvent=buildEvent();
         Log.d(TAG,currentEvent.toString());
 
         //Calculates scores and update survey
@@ -198,7 +208,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //A modification, look for a local built event
-        List<Event> eventsToBePushed=TrackerController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid());
+        List<Event> eventsToBePushed= TrackerController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid());
 
         //No local events, try to build from server
         if(eventsToBePushed.isEmpty()){
@@ -283,21 +293,56 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     }
 
     /**
+     * Builds an event from a survey
+     * @return
+     */
+    private Event buildEvent() throws Exception{
+        currentEvent=new Event();
+
+        currentEvent.setStatus(Event.STATUS_COMPLETED);
+        currentEvent.setFromServer(false);
+        currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
+        currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
+        currentEvent.setProgramStageId(currentSurvey.getTabGroup().getUid());
+        updateEventLocation();
+        Log.d(TAG, "Saving event " + currentEvent.toString());
+        currentEvent.save();
+        return currentEvent;
+    }
+
+    /**
      * Fulfills the dates of the event
      */
     private void updateEventDates() {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
-        if(!isAModification && (currentEvent.getEventDate()==null || currentEvent.getEventDate().isEmpty())) {
-            currentEvent.setEventDate(date);
-        }
-        //If new will be null | if modification needs null since POST will update just new values
-        currentEvent.setCreated(null);
+        currentEvent.setEventDate(date);
         currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         //Not used
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         currentEvent.save();
+    }
+
+    /**
+     * Updates the location of the current event that it is being processed
+     * @throws Exception
+     */
+    private void updateEventLocation() throws Exception{
+        Location lastLocation = LocationMemory.get(currentSurvey.getId_survey());
+        //If location is required but there is no location -> exception
+        if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
+            throw new Exception(context.getString(R.string.dialog_error_push_no_location_and_required));
+        }
+
+        //No location + not required -> done
+        if(lastLocation==null){
+            return;
+        }
+
+        //location -> set lat/lng
+        currentEvent.setLatitude(lastLocation.getLatitude());
+        currentEvent.setLongitude(lastLocation.getLongitude());
     }
 
     /**
@@ -461,7 +506,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 saveSurveyFromImportSummary(iSurvey);
                 Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
             }
-
         }
     }
 

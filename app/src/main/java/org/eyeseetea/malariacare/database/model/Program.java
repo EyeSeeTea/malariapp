@@ -101,6 +101,19 @@ public class Program extends BaseModel{
         return this.tabGroups;
     }
 
+    /**
+     * Returns the first tabgroup (most of cases thats ok)
+     * @return
+     */
+    public TabGroup getTabGroup(){
+        List<TabGroup> tg=getTabGroups();
+        if(tg==null || tg.size()==0){
+            return null;
+        }
+
+        return tg.get(0);
+    }
+
     public static List<Program> getAllPrograms(){
         return new Select().all().from(Program.class).queryList();
     }
