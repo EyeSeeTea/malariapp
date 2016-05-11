@@ -80,7 +80,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String nextAssessmentCode;
 
     String createdOnCode;
-    String createdByCode;
     String uploadedOnCode;
     String uploadedByCode;
     /**
