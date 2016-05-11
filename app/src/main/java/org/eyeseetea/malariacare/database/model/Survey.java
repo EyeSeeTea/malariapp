@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
@@ -840,18 +841,20 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
 
-    public static Survey getLastSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
-        List<Survey> surveys = getAllSentCompletedOrConflictSurveys();
-        Survey lastSurvey = null;
-        for(Survey survey:surveys){
-            if(survey.getOrgUnit().getId_org_unit()==orgUnit.getId_org_unit() &&  survey.getTabGroup()!=null && survey.getTabGroup().getProgram().getId_program()==tabGroup.getProgram().getId_program()) {
-                if (lastSurvey == null)
-                    lastSurvey = survey;
-                else if(lastSurvey.getCompletionDate()!=null && lastSurvey.getCompletionDate().before(survey.getCompletionDate()))
-                        lastSurvey = survey;
-            }
+    public static Survey findSurveyWith(OrgUnit orgUnit, TabGroup tabGroup,Event lastEventInServer) {
+
+        if(lastEventInServer==null){
+            return null;
         }
-        return lastSurvey;
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_IN_PROGRESS))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
+                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .and(Condition.column(Survey$Table.EVENTUID).eq(lastEventInServer.getEvent()))
+                .orderBy(false,Survey$Table.COMPLETION_DATE)
+                .querySingle();
     }
 
     public static Survey getLastSurvey(Long id_org_unit, Long id_tab_group) {
@@ -874,6 +877,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
     }
 
+    /**
+     * A survey in progress with a uid is a modification (patch) of a previously pushed survey
+     * @return
+     */
+    public boolean isAModification(){
+        return this.eventuid!=null && this.eventuid.length()>0;
+    }
 
     /**
      * Get event from a survey if exists.
@@ -909,6 +919,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
     return tabGroup;
     }
 
+    public String getFullName(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getOrgUnit().getName());
+        stringBuilder.append(", ");
+        stringBuilder.append(this.getProgram().getName());
+        stringBuilder.append(", ");
+        stringBuilder.append(this.getTabGroup().getName());
+        return stringBuilder.toString();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -26,7 +26,7 @@
     <!-- # dialogs -->
     <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
-    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s ?</string>
+    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s?</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
     <string name="dialog_content_missing_selection">Por favor seleccione Unid. Org. e Inquérito</string>
     <string name="dialog_title_existing_survey">Inquérito existente</string>
@@ -244,7 +244,7 @@
     <!-- Create or patch -->
     <string name="create">Crio</string>
     <string name="modify">Modificar</string>
-    <string name="create_or_modify">Você quer criar ou modificar o levantamento com datas %s ?</string>
+    <string name="create_or_modify">Você quer criar uma nova avaliação ou modificar a última avaliação, datas[%s]?</string>
     <string name="loading_last_surveys">Carregar a última pesquisa...</string>
 
     <!-- Last survey -->

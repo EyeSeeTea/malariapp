@@ -59,6 +59,11 @@ public class PreferencesState {
     private boolean showNumDen;
 
     /**
+     * Flag that determines if confirming to create/modify (true) or just try to modify(false)
+     */
+    private Boolean askModifyOrCreate;
+
+    /**
      * Flag that determines if data must be pulled from server
      */
     private Boolean pullFromServer;
@@ -102,6 +107,7 @@ public class PreferencesState {
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
+        askModifyOrCreate = initAskModifyOrCreate();
         maxEvents=initMaxEvents();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
     }
@@ -137,6 +143,14 @@ public class PreferencesState {
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
     }
 
+    /**
+     * Inits flag according to preferences
+     * @return
+     */
+    private boolean initAskModifyOrCreate(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.ask_modify_or_create), false);
+    }
     /**
      * Inits hidePlanningTab flag according to preferences
      * @return
@@ -231,6 +245,8 @@ public class PreferencesState {
     public boolean isHidePlanningTab(){
         return this.hidePlanningTab;
     }
+
+    public boolean isAskModifyOrCreate(){ return this.askModifyOrCreate;}
 
     public int getMaxEvents(){
         return this.maxEvents;

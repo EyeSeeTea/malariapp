@@ -23,7 +23,7 @@
 
     <string name="go_to_feedback">Go to feedback</string>
     <string name="dialog_title_delete_survey">Delete Survey</string>
-    <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey: %s?</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey %s?</string>
     <string name="dialog_title_missing_selection">Missing selection</string>
     <string name="dialog_content_missing_selection">Please select Org Unit and Survey details</string>
     <string name="dialog_title_existing_survey">Existing Survey</string>
@@ -127,7 +127,6 @@
     <string name="score_title_avg">AVG</string>
     <string name="score_title_environment">Environment</string>
     <string name="score_title_profile">Profile</string>
-
     <string name="score_info_tab_score">Score for tab:</string>
     <string name="score_info_overall">Overall</string>
     <string name="score_info_accumulated">Tab num/dem</string>
@@ -169,7 +168,6 @@
         <item>@string/font_size_level3</item>
         <item>@string/font_size_level4</item>
     </string-array>
-
 
     <string name="dialog_title_push_response">Push response</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
@@ -244,14 +242,12 @@
     <!-- Create or patch -->
     <string name="create">Create</string>
     <string name="modify">Modify</string>
-    <string name="create_or_modify">Do you want create or modify the survey with date %s ?</string>
+    <string name="create_or_modify">Do you want to create a new assessment or modify the latest assessment, dated [%s]?</string>
     <string name="loading_last_surveys">Loading last survey...</string>
-
-    <!-- Control Data Elements -->
-
-
 
     <!-- Last survey -->
     <string name="no_previous_event_info">No previous event available</string>
+    <string name="settings_checkbox_ask_modify_or_create">Ask to modify or create new survey?</string>
+    <string name="settings_checkbox_description_ask_modify_or_create">When activated, the user will choose between modifying last survey or creating a new one</string>
 
 </resources>
