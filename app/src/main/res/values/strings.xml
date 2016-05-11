@@ -247,7 +247,5 @@
 
     <!-- Last survey -->
     <string name="no_previous_event_info">No previous event available</string>
-    <string name="settings_checkbox_ask_modify_or_create">Ask to modify or create new survey?</string>
-    <string name="settings_checkbox_description_ask_modify_or_create">When activated, the user will choose between modifying last survey or creating a new one</string>
 
 </resources>
