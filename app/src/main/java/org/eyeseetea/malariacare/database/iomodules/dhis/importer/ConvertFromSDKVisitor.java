@@ -304,6 +304,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
         survey.setTabGroup(tabGroup);
+        survey.save();
 
         //Annotate object in map
         EventToSurveyBuilder eventToSurveyBuilder=new EventToSurveyBuilder(survey);
@@ -323,7 +324,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         DataValue dataValue=sdkDataValueExtended.getDataValue();
         EventToSurveyBuilder eventToSurveyBuilder =(EventToSurveyBuilder) appMapObjects.get(dataValue.getEvent());
-        Survey survey=(Survey)appMapObjects.get(dataValue.getEvent());
 
         //General common data (mainscore, createdby, createdon, uploadedon..)
 
@@ -369,7 +369,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             Log.d(TAG,"Ignoring controlDataelement in DataValue converting");
         }
 
-        value.setSurvey(survey);
+        value.setSurvey(eventToSurveyBuilder.getDefaultSurvey());
         //No option -> text question (straight value)
         if(option==null){
             value.setValue(dataValue.getValue());

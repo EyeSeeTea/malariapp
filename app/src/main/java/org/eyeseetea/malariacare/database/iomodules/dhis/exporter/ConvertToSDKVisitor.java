@@ -374,7 +374,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Forward order
         if(controlDataElementExistsInServer(pushDeviceCode)) {
-            addOrUpdateDataValue(forwardOrderCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(context));
+            addOrUpdateDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(context));
         }
     }
 
