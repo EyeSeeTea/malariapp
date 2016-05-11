@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mainColor">#E0F8E0</color>
     <color name="green">#84b467</color>
     <color name="amber">#F1C232</color>
     <color name="red">#ff060D</color>
@@ -20,8 +19,6 @@
     <color name="custom_background_grey">#3e3e3f</color>
     <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
-    <color name="scoreRoot">#0b5394</color>
-    <color name="scoreChild">#3d85c6</color>
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="lightGreen">#adda19</color>
     <color name="darkRed">#d1213c</color>
@@ -36,9 +33,6 @@
     <color name="tab_blue_improve">#00b3e3</color>
     <color name="appNameColor">#000000</color>
     <color name="gaudyYellow">#bcd200</color>
-    <color name="gaudyGreen">#4c5722</color>
-    <color name="gaudyRed">#7c0407</color>
-    <color name="gaudyBlue">#0b5394</color>
     <color name="light_red">#f8cdc6</color>
     <color name="planLightGreen">#dbf67c</color>
     <color name="planLighYellow">#f4f8ac</color>

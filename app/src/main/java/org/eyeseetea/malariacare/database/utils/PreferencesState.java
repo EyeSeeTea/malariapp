@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
+import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -261,10 +262,7 @@ public class PreferencesState {
      * @return
      */
     public Boolean getPullFromServer() {
-        if(pullFromServer==null){
-            pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
-        }
-        return pullFromServer;
+        return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
     }
 
     /**

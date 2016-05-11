@@ -139,18 +139,6 @@ public class FeedbackFragment extends Fragment {
         super.onPause();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.overall_score:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
     /**
      * Gets a reference to the progress view in order to stop it later
      */

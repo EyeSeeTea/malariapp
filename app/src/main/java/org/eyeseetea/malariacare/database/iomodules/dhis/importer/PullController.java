@@ -330,18 +330,22 @@ public class PullController {
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
             List<ProgramStage> programStages = program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
-                    if (programStageDataElement.getDataElement().getUid() != null) {
+                    DataElement dataElement =programStageDataElement.getDataElement();
+                    if (dataElement!=null && dataElement.getUid() != null) {
                         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-                        dataElements.add(programStageDataElement.getDataElement());
+                        dataElements.add(dataElement);
                     }
                 }
             }
+            Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
