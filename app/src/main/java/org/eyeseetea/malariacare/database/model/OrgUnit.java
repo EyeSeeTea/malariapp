@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -71,17 +72,23 @@ public class OrgUnit extends BaseModel {
      */
     List<OrgUnit> children;
 
+    /**
+     * List of program authorized for this orgunit
+     */
+    List<Program> programs;
+
     public OrgUnit() {
     }
 
     public OrgUnit(String name) {
+        this();
         this.name = name;
     }
 
 
     public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
+        this(name);
         this.uid = uid;
-        this.name = name;
         this.setOrgUnit(orgUnit);
         this.setOrgUnitLevel(orgUnitLevel);
     }
@@ -166,6 +173,69 @@ public class OrgUnit extends BaseModel {
                     .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
         }
         return surveys;
+    }
+
+    public List<Program> getPrograms(){
+        if(programs==null){
+            List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
+                    .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
+                    .queryList();
+            this.programs= new ArrayList<>();
+            for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
+                programs.add(programRelation.getProgram());
+            }
+        }
+        return programs;
+    }
+
+    public OrgUnitProgramRelation getRelation(Program program){
+        return new Select().from(OrgUnitProgramRelation.class)
+                .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
+                .and(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(program.getId_program())).querySingle();
+    }
+
+    public Integer getProductivity(Program program){
+        if (getRelation(program) == null) return OrgUnitProgramRelation.DEFAULT_PRODUCTIVITY;
+        return getRelation(program).getProductivity();
+    }
+
+    public void setProductivity(Program program, Integer productivity){
+        getRelation(program).setProductivity(productivity);
+    }
+
+    public static List<OrgUnit> getAllOrgUnit() {
+        return new Select().all().from(OrgUnit.class).queryList();
+    }
+
+    public OrgUnitProgramRelation addProgram(Program program){
+        //Null -> nothing
+        if(program==null){
+            return null;
+        }
+
+        //Save a new relationship
+        OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation(this,program);
+        orgUnitProgramRelation.save();
+
+        //Clear cache to enable reloading
+        programs=null;
+        return orgUnitProgramRelation;
+    }
+
+    /**
+     * Returns all orgunits
+     * @return
+     */
+    public static List<OrgUnit> list(){
+        return new Select().from(OrgUnit.class).queryList();
+    }
+
+    public static OrgUnit getOrgUnit(String uid) {
+            OrgUnit orgUnit = new Select()
+                    .from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.UID)
+                            .is(uid)).querySingle();
+        return orgUnit;
     }
 
     @Override

@@ -36,9 +36,12 @@ public class Constants {
     public static final String COMPOSITE_SCORE_TAB_NAME="Composite Scores";
 
     // ############# SURVEY STATUS ###############
-    public static final int SURVEY_IN_PROGRESS = 0,
+    public static final int SURVEY_PLANNED = -1,
+            SURVEY_IN_PROGRESS = 0,
             SURVEY_COMPLETED = 1,
-            SURVEY_SENT = 2;
+            SURVEY_SENT = 2,
+            SURVEY_HIDE = 3,
+            SURVEY_CONFLICT = 4;
 
     //############# OPERATION TYPE ##############
     public static final int OPERATION_TYPE_MATCH = 0,
@@ -53,4 +56,6 @@ public class Constants {
 
     public static final String CHECKBOX_YES_OPTION="Yes";
 
+    public static final float MAX_AMBER = 80f;
+    public static final float MAX_RED = 50f;
 }

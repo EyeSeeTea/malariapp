@@ -1,0 +1,16 @@
+Aviso de copyright
+
+El Sistema de Mejora de la Calidad Red de Salud (HNQIS) es un sistema diseñado para apoyar la mejora de la calidad de los servicios prestados por las redes de salud PSI diferentes, incluyendo franquicias sociales, farmacias y vendedores de drogas. El sistema se centró en la evaluación, la mejora de las prácticas, la planificación y el monitoreo del desempeño de los proveedores de red. Copyright © 2016 Population Services International (PSI).
+
+Esta aplicación es software libre: usted puede redistribuirlo y / o modificarlo bajo los términos de la Licencia Pública General de GNU según es publicada por la Free Software Foundation, bien de la versión 3 de la Licencia, o (a su elección) cualquier versión posterior.
+
+Esta aplicación se distribuye con la esperanza de que sea útil, pero SIN NINGUNA GARANTÍA; ni siquiera la garantía implícita de comerciabilidad o aptitud para un propósito en particular. Vea la Licencia Pública General de GNU para más detalles.
+
+Debería haber recibido una copia de la Licencia Pública General de GNU junto con esta solicitud. Si no es así, consulte http://www.gnu.org/licenses/gpl-3.0.html.
+
+Para obtener más información acerca de esta aplicación, puede escribir a mis@psi.org oa:
+
+    Population Services International
+    A la atención de: Sistemas de Negocios Globales (APG) departamento
+    1120 19th Street, NW, Suite 600
+    Washington, DC 20036

@@ -20,26 +20,30 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 
-import com.squareup.otto.Subscribe;
-
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
@@ -54,6 +58,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Extra param to annotate the activity to return after settings
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
+
+    private SurveyLocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +107,21 @@ public abstract class BaseActivity extends ActionBarActivity {
                 debugMessage("User asked for settings");
                 goSettings();
                 break;
-            case R.id.action_license:
-                debugMessage("User asked for license");
-                showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl);
-                break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessage(R.string.settings_menu_about, R.raw.about);
+                new Utils().showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
+                break;
+            case R.id.action_copyright:
+                debugMessage("User asked for copyright");
+                new Utils().showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright, BaseActivity.this);
+                break;
+            case R.id.action_licenses:
+                debugMessage("User asked for software licenses");
+                new Utils().showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses, BaseActivity.this);
+                break;
+            case R.id.action_eula:
+                debugMessage("User asked for EULA");
+                new Utils().showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -149,8 +163,26 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     public void onStop(){
-        Dhis2Application.bus.unregister(this);
+        try {
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        try {
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRestart(){
+        try {
+            Dhis2Application.bus.register(this);
+        }catch(Exception e){}
+        super.onRestart();
     }
 
     @Override
@@ -175,10 +207,40 @@ public abstract class BaseActivity extends ActionBarActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Start logout
                         debugMessage("Logging out from sdk...");
+                        PreferencesState.getInstance().clearOrgUnitPreference();
                         DhisService.logOutUser(BaseActivity.this);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
+    }
+
+    public void wipeData(){
+        PopulateDB.wipeDatabase();
+        PopulateDB.wipeSDKData();
+    };
+
+
+    /**
+     * Asks for location (required while starting to edit a survey)
+     * @param survey
+     */
+    public void prepareLocationListener(Survey survey){
+
+        locationListener=new SurveyLocationListener(survey.getId_survey());
+        LocationManager locationManager=(LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            debugMessage("requestLocationUpdates via GPS");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+        }
+
+        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            debugMessage("requestLocationUpdates via NETWORK");
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
+        }else{
+            Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            debugMessage("location not available via GPS|NETWORK, last know: " + lastLocation);
+            locationListener.saveLocation(lastLocation);
+        }
     }
 
     public void onLogoutFinished(UiEvent uiEvent){
@@ -187,19 +249,9 @@ public abstract class BaseActivity extends ActionBarActivity {
             return;
         }
         debugMessage("Logging out from sdk...OK");
+        wipeData();
         Session.logout();
         finishAndGo(LoginActivity.class);
-    }
-
-
-    /**
-     * Called when the user clicks the New Survey button
-     */
-    public void newSurvey(View view) {
-        Intent targetActivityIntent = new Intent(this,CreateSurveyActivity.class);
-        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(targetActivityIntent);
-        finish();
     }
 
     /**
@@ -223,41 +275,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 
 
-    /**
-     * Shows an alert dialog with a big message inside based on a raw resource
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource
-     */
-    private void showAlertWithMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        showAlert(titleId, Utils.convertFromInputStreamToString(message).toString());
-    }
 
-    /**
-     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource in HTML format
-     */
-    private void showAlertWithHtmlMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        showAlert(titleId, linkedMessage);
-    }
-
-    /**
-     * Shows an alert dialog with a given string
-     * @param titleId Id of the title resource
-     * @param text String of the message
-     */
-    private void showAlert(int titleId, CharSequence text){
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(getApplicationContext().getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
 
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:

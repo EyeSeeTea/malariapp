@@ -22,48 +22,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 
+var green;
+var yellow;
+var red;
+
+function setGreen(color){
+    green=color["color"];
+    console.log(green);
+}
+
+function setYellow(color){
+    yellow=color["color"];
+    console.log(yellow);
+}
+
+function setRed(color){
+    red=color["color"];
+    console.log(red);
+}
 function pieXTabGroupChart(data){
 
     var canvasDOMId="tabgroupCanvas"+data.idTabGroup;
     var legendDOMId="tabgroupLegend"+data.idTabGroup;
     var titleDOMId="tabgroupTitle"+data.idTabGroup;
     var titleTableDOMId="tabgroupTip"+data.idTabGroup;
-
+    console.log(green);
+    console.log(yellow);
+    console.log(red);
     //Chart
-    var ctx = document.getElementById(canvasDOMId).getContext("2d");
-    var myChart = new Chart(ctx).Doughnut(
-        [{
-            value: data.valueA,
-            color: "#84b467",
-            label: "A (>80)"
-        }, {
-            value: data.valueB,
-            color: "#f1c232",
-            label: "B (50-80)"
-        }, {
-            value: data.valueC,
-            color: "#ff060d",
-            label: "C (<50)"
-        }],
-        {
-            segmentShowStroke: false,
-            animateRotate: false,
-            animateScale: false,
-            percentageInnerCutout: 50,
-            tooltipTemplate: "<%= value %>",
-            onAnimationComplete: function(){
-                this.showTooltip(this.segments, true);
-            },
-            tooltipEvents: [],
-            showTooltips: true            
-        }
-    );
 
+    var ctx = document.getElementById(canvasDOMId).getContext("2d");
+    var  myChart  = new Chart(ctx).Doughnut(
+                               [{
+                                   value: data.valueA,
+                                   color: green,
+                                   label: "A (>80)"
+                               }, {
+                                   value: data.valueB,
+                                   color: yellow,
+                                   label: "B (50-80)"
+                               }, {
+                                   value: data.valueC,
+                                   color: red,
+                                   label: "C (<50)"
+                               }],
+                               {
+                                   segmentShowStroke: false,
+                                   animateRotate: false,
+                                   animateScale: false,
+                                   percentageInnerCutout: 50,
+                                   tooltipTemplate: "<%= value %>",
+                                   onAnimationComplete: function(){
+                                       this.showTooltip(this.segments, true);
+                                   },
+                                   tooltipEvents: [],
+                                   showTooltips: true
+                               }
+                           );
     //Legend
     document.getElementById(legendDOMId).insertAdjacentHTML("beforeend",myChart.generateLegend());
 
     //Update title && tip
-    updateChartTitle(titleDOMId,data.title);
     updateChartTitle(titleTableDOMId,data.tip);
 
 }
@@ -91,24 +110,64 @@ function pieXTabGroupChart(data){
         }        
         ]);    
 */
-
-function buildPieCharts(dataPies){
-    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
-
-    //For each pie
-
-    for(var i=0;i<dataPies.length;i++){
-        var dataPie = dataPies[i];
-        //Create template with right ids
-        var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
-        //Add DOM element
-        document.getElementById("hrSent").insertAdjacentHTML("afterend",customTemplate);
-        //Draw chart on it
-        pieXTabGroupChart(dataPie);
-    }
-
+var selectedOrgUnit;
+var inputOrgUnit;
+//Show orgUnit, it is called from changedProgram.
+function showPie(){
+	changedOrgunit();
+}
+//Save the facility data in inputOrgUnit
+function setFacilityData(data){
+    inputOrgUnit=data;
+}
+//Create the select options for select diferentes org unit
+function createSelectOrgUnit(){
+	rebuildTableFacilities();
 }
 
+//event on click select/or to change the selected orgunit and reload.
+function changedOrgunit(){
+	selectedOrgUnit=="";
+	for(var i=0;i<Object.keys(inputOrgUnit).length;i++){
+		if(inputOrgUnit[i].uidprogram==selectedProgram){
+			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
+		}
+	}  
+if(selectedProgram==="AllAssessment")
+	rebuildTableFacilities();
+else
+  renderPieCharts();
+}
+//Save the data of the pies
+function buildPieCharts(dataPies){
+    //For each pie
+	setFacilityData(dataPies);
+	}
 
+//Render the pie and create the select options
+function renderPieCharts(){
+    for(var i=0;i<inputOrgUnit.length;i++){
+		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
+		{
+			showDataPie(inputOrgUnit[i]);
+			createSelectOrgUnit();
+		}
+	}
+    createSelectProgram();
+}
+
+//Insert the pie in the html
+function showDataPie(dataPie){
+	
+    var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
+	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
+			//Create template with right ids
+			var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
+			//Add DOM element
+			document.getElementById("pieChartContent").innerHTML=customTemplate;
+			//Draw chart on it
+			pieXTabGroupChart(dataPie);
+
+}
 
 

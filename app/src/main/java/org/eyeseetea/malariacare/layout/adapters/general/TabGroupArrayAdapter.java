@@ -39,6 +39,7 @@ public class TabGroupArrayAdapter extends AddlArrayAdapter<TabGroup> {
     @Override public void drawText(CustomTextView customTextView, TabGroup tabGroup) {
         if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
             customTextView.setTextSize(16);
+        customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
         customTextView.setText(tabGroup.getName());
     }
 

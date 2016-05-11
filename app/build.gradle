@@ -14,24 +14,22 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
-
 }
-
-//apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     signingConfigs {
-        config {
-        }
+        config {}
     }
-    compileSdkVersion 21
-    buildToolsVersion "21.0.1"
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
-        minSdkVersion 15
-        targetSdkVersion 21
-        versionCode 17
-        versionName "13.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         multiDexEnabled true
         /*dexOptions {
             jumboMode = true
@@ -68,13 +66,13 @@ android {
     productFlavors {
         eds {
             applicationId "org.eyeseetea.malariacare.eds"
-            versionName "13.0-eds"
+            versionName "EDS 2.0.0"
             minSdkVersion 15
             targetSdkVersion 21
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqispull"
-            versionName "13.0-hnqis"
+            versionName "HNQIS 1.0.0"
             minSdkVersion 15
             targetSdkVersion 21
         }
@@ -88,32 +86,47 @@ android {
 dependencies {
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':sdk:app')
+
     apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
+
+    //Sdk & Custom DBFlow
+    compile project(':sdk:app')
     apt project(':DBFlowORM:DBFlow-Compiler')
     compile project(':DBFlowORM:DBFlow-Core')
     compile project(':DBFlowORM:DBFlow')
-    compile 'com.android.support:support-v4:21.2.1'
-    compile 'com.android.support:appcompat-v7:21.2.1'
-    compile 'com.android.support:support-annotations:21.2.1'
-    compile 'com.opencsv:opencsv:3.3'
+
+    //Android support
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.android.gms:play-services:8.1.0'
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
-//    apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
-//    compile 'com.raizlabs.android:DBFlow-Core:2.2.1'
-//    compile 'com.raizlabs.android:DBFlow:2.2.1'
-//    compile project(':libs')
+
+    //3rd party dependencies
+    compile "com.opencsv:opencsv:$rootProject.opencsvVersion"    
+    compile "com.google.android.gms:play-services:$rootProject.gmsPlayVersion"
+    compile "com.google.guava:guava:$rootProject.guavaVersion"
+    compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
+
     // Unit testing dependencies
-    testCompile 'junit:junit:4.12'
+    testCompile "junit:junit:$rootProject.junitVersion"
+
     // Instrumented tests dependencies
-    androidTestCompile 'com.android.support.test:runner:0.2'
-    androidTestCompile 'com.android.support.test:rules:0.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+    // Android Testing Support Library's runner and rules
+    
+    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.ext.runnerVersion"
+
+    // Espresso UI Testing dependencies.
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    // Espresso-idling-resource for synchronization with background jobs
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+    // Espresso-web for WebView support
+    androidTestCompile "com.android.support.test.espresso:espresso-web:$rootProject.ext.espressoVersion"
+
+    //Tracking crashes
+    compile("com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlyticsVersion") {
         transitive = true;
     }
 }

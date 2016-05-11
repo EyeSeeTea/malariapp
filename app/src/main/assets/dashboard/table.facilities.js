@@ -30,39 +30,51 @@
 		);
 
 */
-
+var inputDataFacilities=[];
+//Save the table data
 function buildTableFacilities(tabGroupId,dataFacilities){
-	var facilitiesHeadId="facilitiesHead"+tabGroupId;
-	var facilitiesBodyId="facilitiesBody"+tabGroupId;
-	var titleFacilitiesId="titleFacilities"+tabGroupId;
-	//Clear table
-	document.getElementById(facilitiesHeadId).innerHTML='';
-	document.getElementById(facilitiesBodyId).innerHTML='';
+	inputDataFacilities.push(dataFacilities);
+}
+//Build the correct table
+function rebuildTableFacilities(){
+	for(var i=0;i<inputDataFacilities.length;i++){
+		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
+		var id=inputDataFacilities[i].id;
+			var facilitiesHeadId="facilitiesHead";
+			var facilitiesBodyId="facilitiesBody";
+			var titleFacilitiesId="titleFacilities";
+			//Clear table
+			document.getElementById(facilitiesHeadId).innerHTML='';
+			document.getElementById(facilitiesBodyId).innerHTML='';
 
-	//Title to table
-	updateChartTitle(titleFacilitiesId,dataFacilities.title);
+			//Title to table
+			updateChartTitle(titleFacilitiesId,"Quality of care: Last "+inputDataFacilities[i].months.length+" months");
 
-	//Add header
-	buildTableHeader(tabGroupId,dataFacilities.months);
+			//Add header
+			buildTableHeader(id,inputDataFacilities[i].months);
 
-	//Add body
-	buildTableBody(tabGroupId,dataFacilities.facilities);
+			//Add body
+			buildTableBody(id,inputDataFacilities[i].facilities);
+
+		}
+	//}
+	}
 }
 
+
 function buildTableHeader(tabGroupId,months){
-	var facilitiesHeadId="facilitiesHead"+tabGroupId;
-	var rowsHeader="<tr><th></th>";
+	var facilitiesHeadId="facilitiesHead";
+	var rowsHeader="<tr>";
 	for(var i=0;i<months.length;i++){
 		rowsHeader=rowsHeader+"<th>"+months[i]+"</th>";
 	}
 	rowsHeader=rowsHeader+"</tr>";
-
 	//Add tr to thead
 	document.getElementById(facilitiesHeadId).insertAdjacentHTML("beforeend",rowsHeader);
 }
 
 function buildTableBody(tabGroupId,facilities){
-	var facilitiesBodyId="facilitiesBody"+tabGroupId;
+	var facilitiesBodyId="facilitiesBody";
 	for(var i=0;i<facilities.length;i++){
 		var rowFacility=buildRowFacility(facilities[i]);
 		document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
@@ -73,11 +85,12 @@ function buildRowFacility(facility){
 	//start row
 	var row="<tr>";
 	//name
-	row=row+"<td>"+facility.name+"</td>";
+	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var iValue=facility.values[i];
-		row=row+"<td "+buildColorXScore(iValue)+">"+buildCellXScore(iValue)+"</td>";
+        row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
+	
 	}
 	//end row
 	row=row+"</tr>";
@@ -86,18 +99,18 @@ function buildRowFacility(facility){
 
 function buildColorXScore(value){
 	if(value==null){
-		return "";
+		return "<td class='novisible'  ><div class='circlerow' ><span class='centerspan'>";
 	}
 
 	if(value<50){
-		return "class='red'";
+		return "<td class='redcircle'  ><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 	}
 
 	if(value<80){
-		return "class='amber'";
+		return "<td class='ambercircle' ><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 	}
 
-	return "class='green'";
+	return "<td class='greencircle'  ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
 }
 
 function buildCellXScore(value){

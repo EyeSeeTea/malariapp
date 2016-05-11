@@ -21,9 +21,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
@@ -33,6 +30,7 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -40,9 +38,12 @@ import java.util.Date;
 public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG=".EventExtended";
-    private final static String COMPLETION_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String DHIS2_DATE_FORMAT ="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String AMERICAN_DATE_FORMAT ="yyyy-MM-dd";
 
     Event event;
+
+    public EventExtended(){}
 
     public EventExtended(Event event){
         this.event =event;
@@ -58,7 +59,25 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     /**
-     * Returns the survey.completionDate associated with this event (@see PushClient)
+     * Returns the survey.creationDate associated with this event (created field)
+     * @return
+     */
+    public Date getCreationDate(){
+        if(event==null){
+            return null;
+        }
+
+        try {
+            return parseDate(event.getCreated(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
+    }
+
+    /**
+     * Returns the survey.completionDate associated with this event (lastUpdated field)
      * @return
      */
     public Date getCompletionDate(){
@@ -66,11 +85,17 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getEventDate());
+        try {
+            return parseDate(event.getLastUpdated(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
     }
 
     /**
-     * Returns the survey.eventDate associated with this event (lastUpdated)
+     * Returns the survey.eventDate associated with this event (eventDate field)
      * @return
      */
     public Date getEventDate(){
@@ -78,17 +103,40 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return parseDate(event.getLastUpdated());
-    }
-
-    private Date parseDate(String dateAsString){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
         try {
-            return simpleDateFormat.parse(dateAsString);
-        }catch (ParseException e){
+            return parseDate(event.getEventDate(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
             Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
             return null;
         }
+    }
+
+    /**
+     * Returns the survey.eventDate associated with this event (dueDate field)
+     * @return
+     */
+    public Date getScheduledDate(){
+        if(event==null){
+            return null;
+        }
+
+        try {
+            return parseDate(event.getDueDate(), DHIS2_DATE_FORMAT);
+        }
+        catch (ParseException e){
+            Log.e(TAG,String.format("Event (%s) cannot parse date %s",event.getUid(),e.getLocalizedMessage()));
+            return null;
+        }
+    }
+
+    public static  Date parseDate(String dateAsString,String format) throws  ParseException{
+        if(dateAsString==null){
+            return null;
+        }
+
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
+        return simpleDateFormat.parse(dateAsString);
     }
 
     /**
@@ -96,9 +144,22 @@ public class EventExtended implements VisitableFromSDK {
      * @param date
      * @return
      */
-    public static String format(Date date){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(COMPLETION_DATE_FORMAT);
+    public static String format(Date date, String format){
+        if(date==null){
+            return null;
+        }
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
         return simpleDateFormat.format(date);
+    }
+
+    public static long count(){
+        return new Select().count()
+                .from(Event.class)
+                .count();
+    }
+
+    public static List<Event> getAllEvents() {
+        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
     }
 
 }

@@ -1,32 +1,22 @@
 <p><b>The Electronic Data System</b></p>
 
-<p>This application is made possible by the generous support of the American people through the United States Agency for International Development (USAID). It was developed by MalariaCare, a five-year partnership led by <a href="http://www.path.org/">PATH</a> and funded by the <a href="http://www.usaid.gov/">US Agency for International Development (USAID)</a> under the <a href="http://www.pmi.gov/">US President’s Malaria Initiative (PMI)</a>. MalariaCare aims to scale up high-quality diagnosis and treatment services for malaria and other febrile illnesses. The contents are the responsibility of MalariaCare and do not necessarily reflect the views of USAID or the United States Government.</p>
+<p><b>Build %s</b></p>
 
-<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section under the “settings” menu.</p>
+<p>This Software Application (“App”) was developed by Population Services International (PSI) in collaboration with Program for Appropriate Technology in Health (PATH) to improve use of the on-site training and supportive supervision (OTSS) approach, in which MalariaCare supports government supervisors at the national, regional, and local levels to visit health facilities and observe malaria diagnosis and treatment practices, identify any gaps, and guide improvement.</p>
 
-<p>For more information, please contact us at mis@psi.org</p>
+<p>This App is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government.</p>
+
+<p>For more information about this application, please write to mis@psi.org</p>
 
 <p><b><u>Contributing organizations</u></b></p>
 
-<p><b>MalariaCare partners:</b></p>
-
 <p><b><i>Population Services International</i></b></p>
 
-<p><i>Content development, conceptual development and implementation</i></p>
+<p><i>Lead conceptual development and implementation</i></p>
 
-<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p>PSI is a nonprofit global health organization that makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
 
 <p><a href="http://www.psi.org">www.psi.org</a></p>
-
-<p><b><i>PATH</i></b></p>
-
-<p><i>Content development, conceptual development and implementation</i></p>
-
-<p>PATH accelerates innovation across five platforms—vaccines, drugs, diagnostics, devices, and system and service innovations—that harness our entrepreneurial insight, scientific and public health expertise, and passion for health equity. By mobilizing partners around the world, we take innovation to scale, working alongside countries primarily in Africa and Asia to tackle their greatest health needs.</p>
-
-<p><a href="http://www.path.org">www.path.org</a></p>
-
-<p><b>Software development partners:</b></p>
 
 <p><b><i>EyeSeeTea LTD</i></b></p>
 
@@ -39,6 +29,26 @@
 
 <p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p><b><i>MalariaCare Consortium</i></b></p>
 
-<p><i>Conceptual and technical development</i></p>
+<p><i>Lead content development</i></p>
+
+<p>MalariaCare is a five-year partnership funded by the US Agency for International Development (USAID) under the US President’s Malaria Initiative (PMI), with the goal of scaling up high-quality diagnosis and case management services for malaria and other febrile (fever-causing) illnesses.</p>
+
+<p><a href="https://malariacare.org">https://malariacare.org/</a></p>
+
+<p><b><i>PATH</i></b></p>
+
+<p><i>Co-lead, content & conceptual development and implementation</i></p>
+
+<p>An international nonprofit organization, we save lives and improve health, especially among women and children. </p>
+
+<p><a href="http://www.path.org">www.path.org</a></p>
+
+<p><b><i>KnowTechTure (KTT)</i></b></p>
+
+<p><i>Development contribution</i></p>
+
+<p>KTT specializes in DHIS architecture, custom development and deployment.</p>
+
+<p><a href="http://www.knowtechture.com">www.knowtechture.com</a></p>

@@ -2,21 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/header"
-    android:paddingTop="15dip">
+    android:id="@+id/header">
 
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="@string/empty_string"
         android:id="@+id/headerName"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:typeface="sans"
         android:textStyle="bold"
-        android:textSize="18sp"
-        android:background="@drawable/background_header"
+        android:textSize="@dimen/extra_xsmall_text_size"
+        android:background="@color/assess_yellow"
         android:paddingLeft="10dip"
         app:tDimension="@string/font_size_level2"
         app:tFontName="@string/condensed_font_name" />

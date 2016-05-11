@@ -1,23 +1,37 @@
 package org.eyeseetea.malariacare.database.utils;
 
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import com.opencsv.CSVReader;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.ControlDataElement;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
+import org.eyeseetea.malariacare.database.model.Score;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.SurveySchedule;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.model.Value;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
+import org.hisp.dhis.android.sdk.persistence.preferences.DateTimeManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PopulateDB {
+
+    public static final String TAG=".PopulateDB";
 
     public static final String PROGRAMS_CSV = "Programs.csv";
     public static final String TAB_GROUPS_CSV = "TabGroups.csv";
@@ -41,21 +57,30 @@ public class PopulateDB {
     public static final String QUESTION_OPTIONS_CSV = "QuestionOptions.csv";
     public static final String ORG_UNIT_LEVELS_CSV = "OrgUnitLevels.csv";
     public static final String ORG_UNITS_CSV = "OrgUnits.csv";
-    static Map<Integer, Program> programs = new LinkedHashMap<Integer, Program>();
-    static Map<Integer, TabGroup> tabGroups = new LinkedHashMap<Integer, TabGroup>();
-    static Map<Integer, Tab> tabs = new LinkedHashMap<Integer, Tab>();
-    static Map<Integer, Header> headers = new LinkedHashMap<Integer, Header>();
-    static Map<Integer, Question> questions = new LinkedHashMap<Integer, Question>();
-    static Map<Integer, Option> options = new LinkedHashMap<Integer, Option>();
-    static Map<Integer, Answer> answers = new LinkedHashMap<Integer, Answer>();
-    static Map<Integer, CompositeScore> compositeScores = new LinkedHashMap<Integer, CompositeScore>();
-    static Map<Integer, QuestionRelation> questionRelations = new LinkedHashMap<Integer, QuestionRelation>();
-    static Map<Integer, Match> matches = new LinkedHashMap<Integer, Match>();
-    static Map<Integer, QuestionOption> questionOptions = new LinkedHashMap<Integer, QuestionOption>();
-    static Map<Integer, OrgUnitLevel> orgUnitLevels = new LinkedHashMap<>();
-    static Map<Integer, OrgUnit> orgUnits = new LinkedHashMap<>();
+
+    static Map<Integer, Program> programs;
+    static Map<Integer, TabGroup> tabGroups;
+    static Map<Integer, Tab> tabs;
+    static Map<Integer, Header> headers;
+    static Map<Integer, Question> questions;
+    static Map<Integer, Option> options;
+    static Map<Integer, Answer> answers;
+    static Map<Integer, CompositeScore> compositeScores;
+    static Map<Integer, QuestionRelation> questionRelations;
+    static Map<Integer, Match> matches;
+    static Map<Integer, QuestionOption> questionOptions;
+    static Map<Integer, OrgUnitLevel> orgUnitLevels;
+    static Map<Integer, OrgUnit> orgUnits;
 
     public static void populateDB(AssetManager assetManager) throws IOException {
+
+        Log.d(TAG,"Populating metaData from local csv files");
+
+        //Clear maps from previous populations (this might be called after logout)
+        initMaps();
+
+        //Clear database
+        wipeDatabase();
 
         List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV);
 
@@ -70,13 +95,13 @@ public class PopulateDB {
                         Program program = new Program();
                         program.setUid(line[1]);
                         program.setName(line[2]);
-                        programs.put(Integer.valueOf(line[0]), program);
+                        saveItem(programs, program, Integer.valueOf(line[0]));
                         break;
                     case TAB_GROUPS_CSV:
                         TabGroup tabGroup = new TabGroup();
                         tabGroup.setName(line[1]);
                         tabGroup.setProgram(programs.get(Integer.valueOf(line[2])));
-                        tabGroups.put(Integer.valueOf(line[0]), tabGroup);
+                        saveItem(tabGroups, tabGroup, Integer.valueOf(line[0]));
                         break;
                     case TABS_CSV:
                         Tab tab = new Tab();
@@ -84,7 +109,7 @@ public class PopulateDB {
                         tab.setOrder_pos(Integer.valueOf(line[2]));
                         tab.setTabGroup(tabGroups.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
-                        tabs.put(Integer.valueOf(line[0]), tab);
+                        saveItem(tabs, tab, Integer.valueOf(line[0]));
                         break;
                     case HEADERS_CSV:
                         Header header = new Header();
@@ -92,13 +117,13 @@ public class PopulateDB {
                         header.setName(line[2]);
                         header.setOrder_pos(Integer.valueOf(line[3]));
                         header.setTab(tabs.get(Integer.valueOf(line[4])));
-                        headers.put(Integer.valueOf(line[0]), header);
+                        saveItem(headers, header, Integer.valueOf(line[0]));
                         break;
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
-                        answer.setOutput(Integer.valueOf(line[2]));
-                        answers.put(Integer.valueOf(line[0]), answer);
+//                        answer.setOutput(Integer.valueOf(line[2]));
+                        saveItem(answers, answer, Integer.valueOf(line[0]));
                         break;
                     case OPTIONS_CSV:
                         Option option = new Option();
@@ -106,7 +131,7 @@ public class PopulateDB {
                         option.setName(line[2]);
                         option.setFactor(Float.valueOf(line[3]));
                         option.setAnswer(answers.get(Integer.valueOf(line[4])));
-                        options.put(Integer.valueOf(line[0]), option);
+                        saveItem(options, option, Integer.valueOf(line[0]));
                         break;
                     case COMPOSITE_SCORES_CSV:
                         CompositeScore compositeScore = new CompositeScore();
@@ -116,7 +141,7 @@ public class PopulateDB {
                         compositeScore.setUid(line[4]);
                         if (!line[5].equals(""))
                             compositeScore.setOrder_pos(Integer.valueOf(line[5]));
-                        compositeScores.put(Integer.valueOf(line[0]), compositeScore);
+                        saveItem(compositeScores, compositeScore, Integer.valueOf(line[0]));
                         break;
                     case QUESTIONS_CSV:
                         Question question = new Question();
@@ -136,30 +161,30 @@ public class PopulateDB {
                         if (!line[12].equals(""))
                             question.setQuestion(questions.get(Integer.valueOf(line[12])));
                         if (line.length == 14 && !line[13].equals("")) question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
-                        questions.put(Integer.valueOf(line[0]), question);
+                        saveItem(questions, question, Integer.valueOf(line[0]));
                         break;
                     case QUESTION_RELATIONS_CSV:
                         QuestionRelation questionRelation = new QuestionRelation();
                         questionRelation.setOperation(Integer.valueOf(line[1]));
                         questionRelation.setQuestion(questions.get(Integer.valueOf(line[2])));
-                        questionRelations.put(Integer.valueOf(line[0]), questionRelation);
+                        saveItem(questionRelations, questionRelation, Integer.valueOf(line[0]));
                         break;
                     case MATCHES_CSV:
                         Match match = new Match();
                         match.setQuestionRelation(questionRelations.get(Integer.valueOf(line[1])));
-                        matches.put(Integer.valueOf(line[0]), match);
+                        saveItem(matches, match, Integer.valueOf(line[0]));
                         break;
                     case QUESTION_OPTIONS_CSV:
                         QuestionOption questionOption = new QuestionOption();
                         questionOption.setOption(options.get(Integer.valueOf(line[1])));
                         questionOption.setQuestion(questions.get(Integer.valueOf(line[2])));
                         questionOption.setMatch(matches.get(Integer.valueOf(line[3])));
-                        questionOptions.put(Integer.valueOf(line[0]), questionOption);
+                        saveItem(questionOptions, questionOption, Integer.valueOf(line[0]));
                         break;
                     case ORG_UNIT_LEVELS_CSV:
                         OrgUnitLevel orgUnitLevel = new OrgUnitLevel();
                         orgUnitLevel.setName(line[1]);
-                        orgUnitLevels.put(Integer.valueOf(line[0]), orgUnitLevel);
+                        saveItem(orgUnitLevels, orgUnitLevel, Integer.valueOf(line[0]));
                         break;
                     case ORG_UNITS_CSV:
                         OrgUnit orgUnit = new OrgUnit();
@@ -169,26 +194,73 @@ public class PopulateDB {
                             orgUnit.setOrgUnit(orgUnits.get(Integer.valueOf(line[3])));
                         if (!line[4].equals(""))
                             orgUnit.setOrgUnitLevel(orgUnitLevels.get(Integer.valueOf(line[4])));
-                        orgUnits.put(Integer.valueOf(line[0]), orgUnit);
+                        saveItem(orgUnits, orgUnit, Integer.valueOf(line[0]));
                         break;
                 }
             }
             reader.close();
         }
 
-        TransactionManager.getInstance().saveOnSaveQueue(programs.values());
-        TransactionManager.getInstance().saveOnSaveQueue(tabGroups.values());
-        TransactionManager.getInstance().saveOnSaveQueue(tabs.values());
-        TransactionManager.getInstance().saveOnSaveQueue(headers.values());
-        TransactionManager.getInstance().saveOnSaveQueue(answers.values());
-        TransactionManager.getInstance().saveOnSaveQueue(options.values());
-        TransactionManager.getInstance().saveOnSaveQueue(compositeScores.values());
-        TransactionManager.getInstance().saveOnSaveQueue(questions.values());
-        TransactionManager.getInstance().saveOnSaveQueue(questionRelations.values());
-        TransactionManager.getInstance().saveOnSaveQueue(matches.values());
-        TransactionManager.getInstance().saveOnSaveQueue(questionOptions.values());
-        TransactionManager.getInstance().saveOnSaveQueue(orgUnitLevels.values());
-        TransactionManager.getInstance().saveOnSaveQueue(orgUnits.values());
+    }
 
+    /**
+     * Deletes all data from the app database
+     */
+    public static void wipeDatabase() {
+        Delete.tables(
+                Value.class,
+                Score.class,
+                Survey.class,
+                SurveySchedule.class,
+                OrgUnit.class,
+                OrgUnitLevel.class,
+                OrgUnitProgramRelation.class,
+                User.class,
+                QuestionOption.class,
+                Match.class,
+                QuestionRelation.class,
+                Question.class,
+                CompositeScore.class,
+                Option.class,
+                Answer.class,
+                Header.class,
+                Tab.class,
+                TabGroup.class,
+                Program.class,
+                ControlDataElement.class
+        );
+    }
+
+    /**
+     * Deletes all data from the sdk database
+     */
+    public static void wipeSDKData() {
+        Delete.tables(
+                Event.class,
+                DataValue.class,
+                FailedItem.class
+        );
+        DateTimeManager.getInstance().delete();
+        Log.d(TAG,"Delete sdk db");
+    }
+    protected static void saveItem(Map items, BaseModel model, Integer pk){
+        items.put(pk,model);
+        model.save();
+    }
+
+    protected static void initMaps(){
+        programs = new LinkedHashMap<>();
+        tabGroups = new LinkedHashMap<>();
+        tabs = new LinkedHashMap<>();
+        headers = new LinkedHashMap<>();
+        questions = new LinkedHashMap<>();
+        options = new LinkedHashMap<>();
+        answers = new LinkedHashMap<>();
+        compositeScores = new LinkedHashMap<>();
+        questionRelations = new LinkedHashMap<>();
+        matches = new LinkedHashMap<>();
+        questionOptions = new LinkedHashMap<>();
+        orgUnitLevels = new LinkedHashMap<>();
+        orgUnits = new LinkedHashMap<>();
     }
 }

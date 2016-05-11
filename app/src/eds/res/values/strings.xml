@@ -19,18 +19,7 @@
   -->
 
 <resources>
-
-    <!-- # general -->
-    <string name="app_name" translatable="false">EDS</string>
-
-    <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://eds.psi-mis.org</string>
-
-    <!-- Control Data Elements (This data should be changed once these uid are uploaded to the server)-->
-    <string name="forward_order" translatable="false">FEkGksxhOpH</string>
-    <string name="reverse_order" translatable="false">deeu8rjsqvH</string>
-    <string name="last_survey" translatable="false">iW2zVNwfDK6</string>
-    <string name="overall_score" translatable="false">Y8Nmpp7RhXw</string>
-    <string name="overall_class" translatable="false">ggrkfoq6nxA</string>
-
+    <string name="create_info_ok">Start Assessment</string>
+    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
 </resources>

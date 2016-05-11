@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 
 import java.util.HashMap;
@@ -52,6 +54,8 @@ public class PreferencesState {
      */
     private boolean showNumDen;
 
+    private Boolean pullFromServer;
+
     /**
      * Map that holds the relationship between a scale and a set of dimensions
      */
@@ -61,6 +65,11 @@ public class PreferencesState {
      * Flag that determines if the location is required for push
      */
     private boolean locationRequired;
+
+    /**
+     * Sets the max number of events to download from dhis server
+     */
+    private int maxEvents;
 
     static Context context;
 
@@ -80,7 +89,8 @@ public class PreferencesState {
         scale= initScale();
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
-        Log.d(TAG,"reloadPreferences: scale:"+scale+" | showNumDen:"+showNumDen+" | locationRequired:"+locationRequired);
+        maxEvents=initMaxEvents();
+        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
     }
 
     /**
@@ -112,6 +122,16 @@ public class PreferencesState {
     private boolean initLocationRequired(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
+    }
+
+    /**
+     * Inits maxEvents settings
+     * @return
+     */
+    private int initMaxEvents(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        String maxValue=sharedPreferences.getString(instance.getContext().getString(R.string.dhis_max_items), instance.getContext().getString(R.string.dhis_default_max_items));
+        return Integer.valueOf(maxValue);
     }
 
     /**
@@ -194,7 +214,42 @@ public class PreferencesState {
         this.locationRequired=value;
     }
 
+    public int getMaxEvents(){
+        return this.maxEvents;
+    }
+
+    public void setMaxEvents(int maxEvents){
+        this.maxEvents=maxEvents;
+    }
+
     public Float getFontSize(String scale,String dimension){
+        if (scaleDimensionsMap.get(scale)==null) return context.getResources().getDimension(R.dimen.small_large_text_size);
         return scaleDimensionsMap.get(scale).get(dimension);
+    }
+
+
+    /**
+     * Tells if metaData is pulled from server or locally populated
+     * @return
+     */
+    public Boolean getPullFromServer() {
+        return true;
+    }
+
+    public Class getMainActivity(){
+        if(getPullFromServer()){
+            return ProgressActivity.class;
+        }
+
+        return DashboardActivity.class;
+    }
+
+
+    public void clearOrgUnitPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor =sharedPreferences.edit();
+        editor.putString(context.getResources().getString(R.string.default_orgUnits), "");
+        editor.putString(context.getResources().getString(R.string.default_orgUnit), "");
+        editor.commit();
     }
 }

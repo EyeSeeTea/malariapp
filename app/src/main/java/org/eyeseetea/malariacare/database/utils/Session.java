@@ -27,9 +27,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.network.Credentials;
 
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +88,7 @@ public class Session {
     }
 
     public static void setUser(User user) {
+        Log.d(TAG,"setUser: "+user);
         Session.user = user;
     }
 
@@ -112,19 +112,29 @@ public class Session {
         return tabsCache;
     }
 
+
+    /**
+     * The current phone metadata
+     */
+    private static PhoneMetaData phoneMetaData;
+
     /**
      * Closes the current session when the user logs out
      */
     public static void logout(){
-        List<Survey> surveys = Survey.getAllUnsentSurveys();
+        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
         for (Survey survey : surveys) {
             survey.delete();
         }
-        Session.getUser().delete();
-        Session.setUser(null);
-        Session.setSurvey(null);
-        Session.setAdapterUnsent(null);
-        Session.serviceValues.clear();
+        if(user!=null){
+            user.delete();
+            user=null;
+        }
+        survey=null;
+        adapterUnsent=null;
+        if(serviceValues!=null){
+            serviceValues.clear();
+        }
     }
 
     /**
@@ -162,6 +172,12 @@ public class Session {
 
     public static void setLocation(Location location) {
         Session.location = location;
+    }
+
+    public static PhoneMetaData getPhoneMetaData(){return phoneMetaData;}
+
+    public static void setPhoneMetaData(PhoneMetaData phoneMetaData) {
+        Session.phoneMetaData = phoneMetaData;
     }
 
 }

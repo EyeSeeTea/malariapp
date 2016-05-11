@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
@@ -43,6 +45,8 @@ public class DataValueExtended implements VisitableFromSDK {
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
 
     DataValue dataValue;
+
+    public DataValueExtended(){}
 
     public DataValueExtended(DataValue dataValue){
         this.dataValue =dataValue;
@@ -77,7 +81,9 @@ public class DataValueExtended implements VisitableFromSDK {
             String optionCleaned=extractValue(option.getCode());
             String valueCleaned=extractValue(dataValue.getValue());
             //Yes[1]==Yes || Yes==Yes || Yes==Yes[1]
-            if(option.getCode().equals(dataValue.getValue()) || optionCleaned.equals(dataValue.getValue()) || option.getCode().equals(valueCleaned)){
+//            if(option.getCode().equals(dataValue.getValue()) || optionCleaned.equals(dataValue.getValue()) || option.getCode().equals(valueCleaned)){
+            //Option code no longer will be 'Yes[1]' but a real code for the option
+            if(option.getCode().equals(dataValue.getValue())){
                 return option;
             }
         }
@@ -141,5 +147,11 @@ public class DataValueExtended implements VisitableFromSDK {
         String factorStr=matcher.group(1);
 
         return Float.parseFloat(factorStr);
+    }
+
+    public static long count(){
+        return new Select().count()
+                .from(DataValue.class)
+                .count();
     }
 }

@@ -42,6 +42,9 @@ public class OrgUnitLevel extends BaseModel {
     @Column
     String name;
 
+    @Column
+    String uid;
+
 
     List<OrgUnit> orgUnits;
 
@@ -73,6 +76,13 @@ public class OrgUnitLevel extends BaseModel {
         this.name = name;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
     public List<OrgUnit> getOrgUnits(){
@@ -89,7 +99,8 @@ public class OrgUnitLevel extends BaseModel {
         OrgUnitLevel that = (OrgUnitLevel) o;
 
         if (id_org_unit_level != that.id_org_unit_level) return false;
-        return !(name != null ? !name.equals(that.name) : that.name != null);
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return !(uid != null ? !uid.equals(that.uid) : that.uid != null);
 
     }
 
@@ -97,14 +108,16 @@ public class OrgUnitLevel extends BaseModel {
     public int hashCode() {
         int result = (int) (id_org_unit_level ^ (id_org_unit_level >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "OrgUnit{" +
-                "id=" + id_org_unit_level +
+        return "OrgUnitLevel{" +
+                "id_org_unit_level=" + id_org_unit_level +
                 ", name='" + name + '\'' +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 }

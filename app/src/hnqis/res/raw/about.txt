@@ -1,34 +1,42 @@
-<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
+<p><b>PSI's health Network Quality Improvement System (HNQIS)</b></p>
 
-<p>This app was developed by PSI for the African Health markets for Equity project (AHME). AHME is implemented by Marie Stopes International, with support from the Bill & Melinda Gates Foundation.</p>
+<p><b>Build %s</b></p>
 
-<p>This Application is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government. PSI acknowledges UNITAID for the support provided during the conceptual development of this Application by funding the first online prototype of the Application within the UNITAID Private Sector RDT Project.</p>
+<p>This Software Application (“App”) was developed by Population Services International (PSI) for sustaining quality improvement of private health care sector networks. This App was developed with support from:<br/>
+The Department for International Development (DFID) (Great Britain); and<br/>
+The Minister for Foreign Trade and Development Cooperation (The Netherlands)</p>
 
-<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section in the application’s settings menu.</p>
+<p>This App also is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government.</p>
 
-<p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
+<p>In addition, this App contains certain modifications to a software application prepared in collaboration with Program for Appropriate Technology in Health (PATH), and thus the views expressed herein do not necessarily reflect the views of PATH.</p>
 
-<p><b><u>Contributing Organizations</u></b></p>
+<p>For more information about this application, please write to mis@psi.org</p>
+
+<p><b><u>Contributing organizations</u></b></p>
 
 <p><b><i>Population Services International</i></b></p>
 
-<p><i>Conceptual development and implementation</i></p>
+<p><i>Lead conceptual development and implementation</i></p>
 
-<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p>PSI is a nonprofit global health organization that makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
 
 <p><a href="http://www.psi.org">www.psi.org</a></p>
 
 <p><b><i>EyeSeeTea LTD</i></b></p>
 
-<p><i>Liderazgo del desarrollo técnico.</i></p>
+<p><i>Android development</i></p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- El desarrollo de software para ONG<br/>
-- El desarrollo y despliegue de infraestructuras TIC<br/>
-- El análisis de datos y su representación<br/></p>
+<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
+- NGO software development<br/>
+- ICT development & deployment<br/>
+- Data analysis and representation<br/></p>
 
 <p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p><b><i>KnowTechTure (KTT)</i></b></p>
 
-<p><i>Desarrollo conceptual y técnico</i></p>
+<p><i>Development coordination</i></p>
+
+<p>KTT specializes in DHIS architecture, custom development and deployment.</p>
+
+<p><a href="http://www.knowtechture.com">www.knowtechture.com</a></p>

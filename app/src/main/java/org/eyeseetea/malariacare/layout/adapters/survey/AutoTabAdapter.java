@@ -52,9 +52,7 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-/**
- * Created by Jose on 21/04/2015.
- */
+
 public class AutoTabAdapter extends ATabAdapter {
 
     private final static String TAG=".AutoTabAdapter";
@@ -113,7 +111,6 @@ public class AutoTabAdapter extends ATabAdapter {
         initializeScoreViews();
         setSubScoreVisibility();
         initializeDenum();
-        AutoTabLayoutUtils.updateScore(scoreHolder, totalNum, totalDenum, getContext());
     }
 
     /**
@@ -132,8 +129,8 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     private void setSubScoreVisibility(){
         ViewGroup subscoreBar = (ViewGroup) ((Activity)getContext()).findViewById(R.id.subscore_bar);
-        int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
-        subscoreBar.setVisibility(visibility);
+        //int visibility = (PreferencesState.getInstance().isShowNumDen()) ? View.VISIBLE : View.GONE;
+        subscoreBar.setVisibility(View.GONE);
     }
 
 
@@ -145,7 +142,7 @@ public class AutoTabAdapter extends ATabAdapter {
             for (int i = 0; i < number_items; i++) {
                 if (getItems().get(i) instanceof Question && !elementInvisibility.get(getItems().get(i))) {
                     Question question = (Question) getItems().get(i);
-                    if (question.getAnswer().getOutput() == Constants.DROPDOWN_LIST)
+                    if (question.getOutput() == Constants.DROPDOWN_LIST)
                         result = result + ScoreRegister.calcDenum((Question) getItems().get(i));
                 }
 
@@ -182,7 +179,7 @@ public class AutoTabAdapter extends ATabAdapter {
             question = (Question) item;
 
             //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
-            switch (question.getAnswer().getOutput()) {
+            switch (question.getOutput()) {
 
                 case Constants.LONG_TEXT:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext, parent, question, viewHolder, position, getInflater());
@@ -219,26 +216,26 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.DROPDOWN_LIST:
                     rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                     // Initialise Listener
-                    ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder));
+                    ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(false, question, viewHolder, this));
                     break;
                 case Constants.DROPDOWN_LIST_DISABLED:
                     rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                     // Initialise value depending on match question
-                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility);
+                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                     //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
+                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
                     break;
 
                 default:
@@ -249,7 +246,7 @@ public class AutoTabAdapter extends ATabAdapter {
             setValues(viewHolder, question);
 
             //Disables component if survey has already been sent (except match spinner that are always disabled)
-            if(question.getAnswer().getOutput()==Constants.DROPDOWN_LIST_DISABLED){
+            if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
                 AutoTabLayoutUtils.updateReadOnly(viewHolder.component, true);
             }else{
                 AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
@@ -267,7 +264,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
     public void setValues(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
 
-        switch (question.getAnswer().getOutput()) {
+        switch (question.getOutput()) {
             case Constants.DATE:
             case Constants.SHORT_TEXT:
             case Constants.INT:
@@ -351,17 +348,19 @@ public class AutoTabAdapter extends ATabAdapter {
         private boolean viewCreated;
         private AutoTabLayoutUtils.ViewHolder viewHolder;
         private Question question;
+        private AutoTabAdapter adapter;
 
-        public SpinnerListener(boolean viewCreated, Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public SpinnerListener(boolean viewCreated, Question question, AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabAdapter adapter) {
             this.viewCreated = viewCreated;
             this.question = question;
             this.viewHolder = viewHolder;
+            this.adapter = adapter;
         }
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
-                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility))
+                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility, adapter))
                     notifyDataSetChanged();
             } else {
                 viewCreated = true;
@@ -377,10 +376,12 @@ public class AutoTabAdapter extends ATabAdapter {
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
         private AutoTabLayoutUtils.ViewHolder viewHolder;
         private Question question;
+        private AutoTabAdapter adapter;
 
-        public RadioGroupListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder) {
+        public RadioGroupListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabAdapter adapter) {
             this.question = question;
             this.viewHolder = viewHolder;
+            this.adapter = adapter;
         }
 
 
@@ -395,8 +396,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 option = (Option) customRadioButton.getTag();
             }
-            if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility))
-                notifyDataSetChanged();
+            AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility, adapter);
         }
     }
 

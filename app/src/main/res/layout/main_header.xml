@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/survey_heading_padding_all"
-    android:paddingBottom="@dimen/survey_heading_padding_all"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/form_header"
+    android:background="@color/assess_grey"
     android:gravity="center_horizontal">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/previous_tab"
+        android:background="@color/transparent"
+        android:alpha="0"
+        android:src="@drawable/arrow_to_left"
+        android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tabSpinner"
         android:spinnerMode="dialog"
         android:layoutMode="clipBounds"
-        android:backgroundTintMode="add"
         android:gravity="right"
+        android:paddingTop="0dip"
+        android:paddingBottom="0dip"
+        android:paddingStart="2dip"
         android:paddingLeft="2dip"
-        android:paddingTop="2dip"
-        android:paddingBottom="2dip"
-        android:paddingRight="20dip"
-        android:backgroundTint="@color/headerColor"
-        android:paddingStart="2dip" />
+        android:paddingRight="2dip"
+        android:layout_toRightOf="@+id/previous_tab"
+        android:layout_toLeftOf="@+id/next_tab"
+        android:layout_toStartOf="@+id/next_tab" />
 
-</LinearLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/next_tab"
+        android:src="@drawable/arrow_to_right"
+        android:background="@color/transparent"
+        android:layout_alignParentRight="true"
+        android:alpha="0"
+        android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        />
+</RelativeLayout>

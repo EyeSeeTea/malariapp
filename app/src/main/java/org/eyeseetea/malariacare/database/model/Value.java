@@ -25,6 +25,8 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -46,6 +48,7 @@ public class Value extends BaseModel implements VisitableToSDK {
     /**
      * Reference to the question for this value (loaded lazily)
      */
+
     Question question;
 
     @Column
@@ -61,6 +64,21 @@ public class Value extends BaseModel implements VisitableToSDK {
      * Reference to the option of this value (loaded lazily)
      */
     Option option;
+    /**
+     * is conflict
+     */
+    @Column
+    Boolean conflict;
+
+    public Boolean getConflict() {
+        if(conflict==null)
+            return false;
+        return conflict;
+    }
+
+    public void setConflict(Boolean conflict) {
+        this.conflict = conflict;
+    }
 
     public Value() {
     }
@@ -192,6 +210,24 @@ public class Value extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).count();
     }
 
+    public static int countCompulsoryBySurvey(Survey survey){
+        if(survey==null || survey.getId_survey()==null){
+            return 0;
+        }
+        return (int) new Select().count()
+                .from(Value.class).as("v")
+                .join(Question.class, Join.JoinType.LEFT).as("q")
+                .on(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION)).eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
+                .where(Condition.column(Question$Table.COMPULSORY).eq(true))
+                .and((Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey()))).count();
+    }
+
+    public static long count(){
+        return new Select().count()
+                .from(Value.class)
+                .count();
+    }
+
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
         IConvertToSDKVisitor.visit(this);
@@ -210,6 +246,8 @@ public class Value extends BaseModel implements VisitableToSDK {
             return false;
         if (id_survey != null ? !id_survey.equals(value1.id_survey) : value1.id_survey != null)
             return false;
+        if (conflict != null ? !conflict.equals(value1.conflict) : value1.conflict != null)
+            return false;
         return !(id_option != null ? !id_option.equals(value1.id_option) : value1.id_option != null);
 
     }
@@ -221,6 +259,7 @@ public class Value extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
         result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
         result = 31 * result + (id_option != null ? id_option.hashCode() : 0);
+        result = 31 * result + (conflict != null ? conflict.hashCode() : 0);
         return result;
     }
 
@@ -232,6 +271,7 @@ public class Value extends BaseModel implements VisitableToSDK {
                 ", id_question=" + id_question +
                 ", id_survey=" + id_survey +
                 ", id_option=" + id_option +
+                ", conflict=" + conflict +
                 '}';
     }
 }
