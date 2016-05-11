@@ -52,7 +52,6 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
-import org.eyeseetea.malariacare.network.EventInfo;
 import org.eyeseetea.malariacare.network.PullClient;
 
 import java.io.BufferedReader;
@@ -67,9 +66,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class AUtils {
+public class AUtils {
 
-    static final int numberOfDecimals = 0; // Number of decimals outputs will have
+    private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
@@ -79,7 +78,7 @@ public abstract class AUtils {
     }
 
     public static String round(float base){
-        return round(base, AUtils.numberOfDecimals);
+        return round(base, AUtils.ZERO_DECIMALS);
     }
 
     public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
@@ -196,13 +195,13 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    public void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
         String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
+        showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
@@ -210,9 +209,9 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource
      */
-    public void showAlertWithMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
-        new Utils().showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
+        showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
     }
 
     /**
@@ -220,19 +219,19 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    public void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
         String stringMessage = getMessageWithCommit(rawId, context);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
+        showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
      * Merge the lastcommit into the raw file
      * @param rawId Id of the raw text resource in HTML format
      */
-    public String getMessageWithCommit(int rawId, Context context) {
+    public static String getMessageWithCommit(int rawId, Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
         String stringCommit;
         //Check if lastcommit.txt file exist, and if not exist show as unavailable.
@@ -255,16 +254,7 @@ public abstract class AUtils {
         return stringMessage;
     }
 
-    public void showAlert(int titleId, CharSequence text, Context context){
-        final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    public void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
+    public static void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);
@@ -294,7 +284,5 @@ public abstract class AUtils {
         //now that the dialog is set up, it's time to show it
         dialog.show();
     }
-
-    public abstract void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup);
 
 }
