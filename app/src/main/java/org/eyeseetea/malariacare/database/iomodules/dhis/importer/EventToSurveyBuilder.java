@@ -44,7 +44,7 @@ public class EventToSurveyBuilder {
     Score mainScore;
     Date createdOn;
     Date uploadedOn;
-    User createdBy;
+    User uploadedBy;
     Date defaultUploadedOn;
 
     public EventToSurveyBuilder(Survey survey){
@@ -93,11 +93,11 @@ public class EventToSurveyBuilder {
         this.uploadedOn= EventExtended.parseShortDate(dataValue.getValue());
     }
 
-    public void setCreatedBy(DataValue dataValue){
-        createdBy=User.getUser(dataValue.getValue());
-        if(createdBy==null) {
-            createdBy = new User(dataValue.getValue(), dataValue.getValue());
-            createdBy.save();
+    public void setUploadedBy(DataValue dataValue){
+        uploadedBy =User.getUser(dataValue.getValue());
+        if(uploadedBy ==null) {
+            uploadedBy = new User(dataValue.getValue(), dataValue.getValue());
+            uploadedBy.save();
         }
     }
 
@@ -111,8 +111,8 @@ public class EventToSurveyBuilder {
             if(createdOn!=null) {
                 survey.setCreationDate(createdOn);
             }
-            if(createdBy!=null){
-                survey.setUser(createdBy);
+            if(uploadedBy !=null){
+                survey.setUser(uploadedBy);
             }
             if(uploadedOn!=null){
                 survey.setUploadDate(uploadedOn);
