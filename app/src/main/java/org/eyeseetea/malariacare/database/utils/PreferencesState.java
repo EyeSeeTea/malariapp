@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
+import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +57,11 @@ public class PreferencesState {
      * Flag that determines if numerator/denominator are shown in scores.
      */
     private boolean showNumDen;
+
+    /**
+     * Flag that determines if confirming to create/modify (true) or just try to modify(false)
+     */
+    private Boolean askModifyOrCreate;
 
     /**
      * Flag that determines if data must be pulled from server
@@ -101,6 +107,7 @@ public class PreferencesState {
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
+        askModifyOrCreate = initAskModifyOrCreate();
         maxEvents=initMaxEvents();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
     }
@@ -136,6 +143,14 @@ public class PreferencesState {
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
     }
 
+    /**
+     * Inits flag according to preferences
+     * @return
+     */
+    private boolean initAskModifyOrCreate(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.ask_modify_or_create), false);
+    }
     /**
      * Inits hidePlanningTab flag according to preferences
      * @return
@@ -231,6 +246,8 @@ public class PreferencesState {
         return this.hidePlanningTab;
     }
 
+    public boolean isAskModifyOrCreate(){ return this.askModifyOrCreate;}
+
     public int getMaxEvents(){
         return this.maxEvents;
     }
@@ -245,10 +262,7 @@ public class PreferencesState {
      * @return
      */
     public Boolean getPullFromServer() {
-        if(pullFromServer==null){
-            pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
-        }
-        return pullFromServer;
+        return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
     }
 
     /**

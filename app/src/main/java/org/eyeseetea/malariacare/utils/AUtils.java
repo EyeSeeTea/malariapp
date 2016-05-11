@@ -19,10 +19,14 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -36,14 +40,19 @@ import android.widget.TextView;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.BuildConfig;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
+import org.eyeseetea.malariacare.network.PullClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,7 +66,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class AUtils {
+public class AUtils {
 
     private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
 

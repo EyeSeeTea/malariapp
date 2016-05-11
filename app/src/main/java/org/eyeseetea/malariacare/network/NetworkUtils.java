@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
@@ -50,12 +52,6 @@ public class NetworkUtils {
 
     private static String DHIS_SERVER ="https://www.psi-mis.org";
 
-    public static String DHIS_UID_PROGRAM="";
-
-    public static String DHIS_ORG_NAME ="";
-
-    private static String DHIS_ORG_UID ="";
-
     String user;
     String password;
 
@@ -67,15 +63,6 @@ public class NetworkUtils {
 
     public void setDhisServer(String dhisServer){
         DHIS_SERVER=dhisServer;
-    }
-    public void setUidProgram(String uidProgram){
-        DHIS_UID_PROGRAM=uidProgram;
-    }
-    public void setOrgUnitName(String OrgUnitName){
-        DHIS_ORG_NAME=OrgUnitName;
-    }
-    public void setOrgUnitUid(String orgUnitUid){
-        DHIS_ORG_UID=orgUnitUid;
     }
     public void setUser(String user){
         this.user=user;
@@ -141,6 +128,16 @@ public class NetworkUtils {
             throw new IOException(response.message());
         }
         return  parseResponse(response.body().string());
+    }
+
+    public JsonNode toJsonNode(JSONObject jsonObject){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = jsonObject.toString();
+        try {
+            return objectMapper.readValue(jsonString, JsonNode.class);
+        }catch(Exception ex){
+            return null;
+        }
     }
 
     /**

@@ -22,5 +22,4 @@
     <string name="create_info_ok">Empezar Evaluación</string>
     <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
     <string name="dialog_info_push_empty_survey">Una evaluación vacia no pueden ser enviadas</string>
-    <string name="dialog_info_push_not_imported">El servidor no pudo importar los datos. Por favor, notifique al administrador.</string>
 </resources>
