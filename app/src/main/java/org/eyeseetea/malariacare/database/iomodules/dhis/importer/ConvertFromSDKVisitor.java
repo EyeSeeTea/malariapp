@@ -368,7 +368,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_by_code))){
+        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploaded_by_code))){
             User user=User.getUser(dataValue.getValue());
             if(user==null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());
