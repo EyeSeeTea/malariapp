@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,6 +52,10 @@ public class EventToSurveyBuilder {
         this.mapTabGroupSurvey =new HashMap<>();
         this.defaultSurvey=survey;
         this.defaultUploadedOn = new Date();
+    }
+
+    public Survey getDefaultSurvey(){
+        return this.defaultSurvey;
     }
 
     public String getEventUid(){
@@ -106,22 +111,34 @@ public class EventToSurveyBuilder {
      */
     public void saveCommonData(){
         Collection<Survey> surveys=mapTabGroupSurvey.values();
+        //No tabgroups, just update defaultsurvey;
+        if(surveys.size()==0){
+            surveys=new ArrayList<>();
+            surveys.add(defaultSurvey);
+        }
         //Spread the common data across the N surveys whenever possible
-        for(Survey survey:mapTabGroupSurvey.values()){
-            if(createdOn!=null) {
-                survey.setCreationDate(createdOn);
-            }
-            if(createdBy!=null){
-                survey.setUser(createdBy);
-            }
-            if(uploadedOn!=null){
-                survey.setUploadDate(uploadedOn);
-            }
-            survey.save();
-
+        for(Survey survey:surveys){
+            updateDataFromControlDataElements(survey);
             //FIXME The best approach so far but its wrong anyway (same main score no matter what tabgroup)
             saveCommonScore(survey);
         }
+    }
+
+    private void updateDataFromControlDataElements(Survey survey){
+        if(survey==null){
+            return ;
+        }
+
+        if(createdOn!=null) {
+            survey.setCreationDate(createdOn);
+        }
+        if(createdBy!=null){
+            survey.setUser(createdBy);
+        }
+        if(uploadedOn!=null){
+            survey.setUploadDate(uploadedOn);
+        }
+        survey.save();
     }
 
     /**
