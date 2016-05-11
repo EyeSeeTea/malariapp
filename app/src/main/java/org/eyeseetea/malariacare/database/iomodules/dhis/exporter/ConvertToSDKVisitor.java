@@ -242,7 +242,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Updated by user
         if(!uploadedByCode.equals(""))
-            buildAndSaveDataValue(uploadedByCode, Session.getUser().getUid());
+            buildAndSaveDataValue(uploadedByCode, Session.getUser().getName());
 
 
         //Overall score
