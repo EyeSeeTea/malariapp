@@ -46,6 +46,7 @@ import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
+import org.hisp.dhis.android.sdk.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,16 +69,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Context context;
 
-    String mainScoreCode;
-    String mainScoreACode;
-    String mainScoreBCode;
-    String mainScoreCCode;
     String forwardOrderCode;
 
     String createdOnCode;
-    String createdByCode;
     String updatedDateCode;
     String updatedUserCode;
+    String overallScoreCode;
+    String pushDeviceCode;
     /**
      * List of surveys that are going to be pushed
      */
@@ -118,16 +116,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     ConvertToSDKVisitor(Context context){
         this.context=context;
         // FIXME: We should create a visitor to translate the ServerMetadata class
-        mainScoreCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_code));
-        mainScoreACode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_a_code));
-        mainScoreBCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_b_code));
-        mainScoreCCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_c_code));
-        forwardOrderCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.forward_order_code));
 
+        overallScoreCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.overall_score_code));
+        forwardOrderCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.forward_order_code));
         createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
-        createdByCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_by_code));
         updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_on_code));
         updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
+        pushDeviceCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.push_device_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
         originalSurveysUIDs = new HashMap<>();
@@ -351,15 +346,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void buildControlDataElements(Survey survey) {
 
+        //Overall score
+        if(controlDataElementExistsInServer(overallScoreCode)){
+            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+        }
+
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(controlDataElementExistsInServer(createdOnCode)){
             addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
-        }
-
-        //Created by
-        if(controlDataElementExistsInServer(createdByCode)) {
-            addDataValue(createdByCode, Session.getUser().getUid());
         }
 
         //Updated date
@@ -372,21 +367,15 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             addOrUpdateDataValue(updatedUserCode, Session.getUser().getUid());
         }
 
-        //MainScoreUID
-        if(mainScoreCode!=null)
-            addOrUpdateDataValue(mainScoreCode, survey.getType());
-
-        if(mainScoreACode!=null)
-            addOrUpdateDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
-
-        if(mainScoreBCode!=null)
-            addOrUpdateDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
-
-        if(mainScoreCCode!=null)
-            addOrUpdateDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
-
-        if(forwardOrderCode!=null)
+        //Forward order
+        if(controlDataElementExistsInServer(forwardOrderCode)) {
             addOrUpdateDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
+        }
+
+        //Forward order
+        if(controlDataElementExistsInServer(pushDeviceCode)) {
+            addOrUpdateDataValue(forwardOrderCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(context));
+        }
     }
 
     private boolean controlDataElementExistsInServer(String controlDataElementUID){

@@ -227,12 +227,7 @@ public class AUtils {
         showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
-    /**
-     * Merge the lastcommit into the raw file
-     * @param rawId Id of the raw text resource in HTML format
-     */
-    public static String getMessageWithCommit(int rawId, Context context) {
-        InputStream message = context.getResources().openRawResource(rawId);
+    public static String getCommitHash(Context context){
         String stringCommit;
         //Check if lastcommit.txt file exist, and if not exist show as unavailable.
         int layoutId = context.getResources().getIdentifier("lastcommit", "raw", context.getPackageName());
@@ -242,6 +237,16 @@ public class AUtils {
             InputStream commit = context.getResources().openRawResource( layoutId);
             stringCommit= AUtils.convertFromInputStreamToString(commit).toString();
         }
+        return stringCommit;
+    }
+
+    /**
+     * Merge the lastcommit into the raw file
+     * @param rawId Id of the raw text resource in HTML format
+     */
+    public static String getMessageWithCommit(int rawId, Context context) {
+        InputStream message = context.getResources().openRawResource(rawId);
+        String stringCommit = getCommitHash(context);
         String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
         if(stringCommit.contains(context.getString(R.string.unavailable))){
             stringCommit=String.format(context.getString(R.string.lastcommit),stringCommit);
