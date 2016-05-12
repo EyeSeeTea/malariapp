@@ -259,6 +259,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         User appUser = new User();
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
+        appUser.setUsername(userAccount.getUsername());
         appUser.save();
     }
 
