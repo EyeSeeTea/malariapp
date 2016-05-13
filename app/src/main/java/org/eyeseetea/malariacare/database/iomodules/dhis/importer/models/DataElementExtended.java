@@ -34,6 +34,8 @@ import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue;
+import org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
@@ -314,12 +316,17 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     public AttributeValue findAttributeValuefromDataElementCode(String code,DataElement dataElement){
-        //select * from Attribute join AttributeValue on Attribute.id = attributeValue.attributeId join DataElementAttributeValue on attributeValue.id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue.dataElementId="vWgsPN1RPLl" and code="Order"
-        for (AttributeValue attributeValue: dataElement.getAttributeValues()){
-            if (attributeValue.getAttribute().getCode().equals(code))
-                return attributeValue;
+        if(code==null || dataElement==null){
+            return null;
         }
-        return null;
+
+        return new Select().from(DataElementAttributeValue.class).as("av")
+                .join(Attribute.class, Join.JoinType.LEFT).as("a")
+                .on(Condition.column(ColumnAlias.columnWithTable("av", DataElementAttributeValue$Table.ATTRIBUTEID))
+                        .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
+                .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE)).eq(code))
+                .and(Condition.column(ColumnAlias.columnWithTable("av", DataElementAttributeValue$Table.DATAELEMENT)).eq(dataElement.getUid()))
+                .querySingle();
     }
 
     /**

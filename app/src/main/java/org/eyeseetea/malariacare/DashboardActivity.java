@@ -87,11 +87,13 @@ public class DashboardActivity extends BaseActivity {
 
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
-
-        for(Media media: Media.getAllMedia()) {
-            Log.d(TAG, "pinning file: " + media.getResourceUrl());
-            DriveUtils.getInstance(this, media.getResourceUrl());
-        }
+//
+//        for(Media media: Media.getAllMedia()) {
+//            Log.d(TAG, "pinning file: " + media.getResourceUrl());
+//            DriveUtils.getInstance(this, media.getResourceUrl());
+//        }
+        //0B8KIRhh6kcl6QTFHTW5oODE5ZVU
+        DriveUtils.getInstance(this, "0B8KIRhh6kcl6QTFHTW5oODE5ZVU");
     }
 
     @Override
