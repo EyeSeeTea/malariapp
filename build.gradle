@@ -44,8 +44,8 @@ ext {
     minSdkVersion = 15
     targetSdkVersion = 21
     compileSdkVersion = 21
-    buildToolsVersion = '21.0.1'
-    supportLibraryVersion = '21.2.1'
+    buildToolsVersion = '21.1.2'
+    supportLibraryVersion = '21.1.2'
     gmsPlayVersion = '8.1.0'
 
     // App dependencies versions    

@@ -1,0 +1,103 @@
+<!--
+  ~ Copyright (c) 2016.
+  ~
+  ~ This file is part of QIS Surveillance App.
+  ~
+  ~  QIS Surveillance App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  QIS Surveillance App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with QIS Surveillance App. If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<style>
+    @font-face {
+    font-family: 'Roboto-Condensed';
+    src: url('../fonts/Roboto-Condensed.ttf');
+    font-weight: 300;
+    }
+
+    body {
+    background-color: #e5e5e5;
+    font-family: 'Roboto-Condensed';
+    }
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    table,
+    td,
+    th {
+    border: 1px solid black;
+    text-align: center;
+    }
+
+    .stats {
+    margin-top: 25px;
+    }
+
+    .line-title {}
+
+    .rowMetric {
+    background-color: #FEF2CB;
+    font-weight: 700;
+    text-align: left;
+    width: 40%;
+    }
+
+    .rowTimeUnit {
+    font-weight: 700;
+    }
+
+    .rowSummary {
+    background-color: #C5E0B3;
+    }
+
+    .timeUnitPicker {
+    text-align: right;
+    }
+</style>
+
+<body>
+<div class="timeUnitPicker">
+    <label for="timeUnit" id="LBL_TIMEUNIT">
+        Select last 6
+    </label>
+    <select id="timeUnit" name="timeUnit" onchange="monitor.updateTimeUnit(this)">
+        <option value="months" id="OPT_MONTHS"> months</option>
+        <option value="weeks" id="OPT_WEEKS"> weeks</option>
+        <option value="days" id="OPT_DAYS"> days</option>
+    </select>
+</div>
+<div id="statsContainer">
+</div>
+<!-- Table template -->
+<script type="text/html" id="tableTemplate">
+    <div id="stats###" class="stats">
+        <span class="line-title" id="title###"></span>
+        <div>
+            <table>
+                <tbody id="tbody###">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+<!-- JS to fill table with data -->
+<script type="text/javascript" src="./monitor.js"></script>
+</body>
+
+</html>

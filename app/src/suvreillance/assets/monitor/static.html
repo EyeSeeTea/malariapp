@@ -1,0 +1,244 @@
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of QIS Surveillance App.
+  ~
+  ~  QIS Surveillance App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  QIS Surveillance App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with QIS Surveillance App.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<style>
+    @font-face {
+    font-family: 'Roboto-Condensed';
+    src: url(Roboto-Condensed.ttf);
+    font-weight: 300;
+    }
+
+    body {
+    background-color: #e5e5e5;
+    font-family: 'Roboto-Condensed';
+    }
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    table,
+    td,
+    th {
+    border: 1px solid black;
+    text-align: center;
+    }
+
+    .stats {
+    margin-top: 25px;
+    }
+
+    .line-title {}
+
+    .rowMetric {
+    background-color: #FEF2CB;
+    font-weight: 700;
+    text-align: left;
+    }
+
+    .rowTimeUnit {
+    font-weight: 700;
+    }
+
+    .rowSummary {
+    background-color: #C5E0B3;
+    }
+
+    .timeUnitPicker {
+    text-align: right;
+    }
+</style>
+
+<body>
+<div class="timeUnitPicker">
+    <label for="timeUnit">
+        Select last 6
+    </label>
+    <select id="timeUnit" name="timeUnit">
+        <option value="months"> months</option>
+        <option value="weeks"> weeks</option>
+        <option value="days"> days</option>
+    </select>
+</div>
+<div id="statsContainer">
+    <div id="stats1" class="stats">
+        <span class="line-title" id="title1">Suspected and Positive cases</span>
+        <div>
+            <table>
+                <tbody id="tbody1">
+                <tr>
+                    <td class="rowMetric">
+                        Period
+                    </td>
+                    <td class="rowTimeUnit">
+                        Jan
+                    </td class="rowTimeUnit">
+                    <td class="rowTimeUnit">
+                        Feb
+                    </td>
+                    <td class="rowTimeUnit">
+                        Mar
+                    </td>
+                    <td class="rowTimeUnit">
+                        Apr
+                    </td>
+                    <td class="rowTimeUnit">
+                        May
+                    </td>
+                    <td class="rowTimeUnit">
+                        Jun
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rowMetric">
+                        Suspected cases
+                    </td>
+                    <td class="rowValue">
+                        7
+                    </td>
+                    <td class="rowValue">
+                        3
+                    </td>
+                    <td class="rowValue">
+                        7
+                    </td>
+                    <td class="rowValue">
+                        8
+                    </td>
+                    <td class="rowValue">
+                        10
+                    </td>
+                    <td class="rowValue">
+                        10
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rowMetric">
+                        &nbsp;&nbsp;Pf/Pv
+                    </td>
+                    <td class="rowValue">
+                        7
+                    </td>
+                    <td class="rowValue">
+                        3
+                    </td>
+                    <td class="rowValue">
+                        7
+                    </td>
+                    <td class="rowValue">
+                        8
+                    </td>
+                    <td class="rowValue">
+                        10
+                    </td>
+                    <td class="rowValue">
+                        10
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rowMetric rowSummary">
+                        Positivity rate
+                    </td>
+                    <td class="rowValue rowSummary">
+                        57%
+                    </td>
+                    <td class="rowValue rowSummary">
+                        67%
+                    </td>
+                    <td class="rowValue rowSummary">
+                        86%
+                    </td>
+                    <td class="rowValue rowSummary">
+                        63%
+                    </td>
+                    <td class="rowValue rowSummary">
+                        70%
+                    </td>
+                    <td class="rowValue rowSummary">
+                        30%
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="stats2" class="stats">
+        <span class="line-title" id="title2">Stock consumption</span>
+        <div>
+            <table>
+                <tbody id="tbody2">
+                <tr>
+                    <td class="rowMetric">
+                        Period
+                    </td>
+                    <td class="rowTimeUnit">
+                        Jan
+                    </td class="rowTimeUnit">
+                    <td class="rowTimeUnit">
+                        Feb
+                    </td>
+                    <td class="rowTimeUnit">
+                        Mar
+                    </td>
+                    <td class="rowTimeUnit">
+                        Apr
+                    </td>
+                    <td class="rowTimeUnit">
+                        May
+                    </td>
+                    <td class="rowTimeUnit">
+                        Jun
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rowMetric">
+                        AS/MQ
+                    </td>
+                    <td class="rowValue">
+                        0
+                    </td>
+                    <td class="rowValue">
+                        3
+                    </td>
+                    <td class="rowValue">
+                        4
+                    </td>
+                    <td class="rowValue">
+                        3
+                    </td>
+                    <td class="rowValue">
+                        2
+                    </td>
+                    <td class="rowValue">
+                        0
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
