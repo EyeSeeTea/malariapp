@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.dashboard.config;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.layout.dashboard.deserializers.DashboardAdapterDeserializer;
 import org.eyeseetea.malariacare.layout.dashboard.deserializers.DashboardOrientationDeserializer;
 
 import java.lang.reflect.Field;
@@ -35,9 +36,14 @@ public class DashboardSettings {
     /**
      * Vertical | Horizontal orientation
      */
+    @JsonDeserialize(using = DashboardAdapterDeserializer.class)
+    DashboardAdapter adapter;
+
+    /**
+     * dynamic | automatic adapter
+     */
     @JsonDeserialize(using = DashboardOrientationDeserializer.class)
     DashboardOrientation orientation;
-
     /**
      * Key that points to the layout id for the general dashboard layout (Ex: R.layout.vertical_main -> 'vertical_main')
      */
@@ -51,6 +57,14 @@ public class DashboardSettings {
 
     public DashboardSettings(){
 
+    }
+
+    public void setAdapter(DashboardAdapter adapter) {
+        this.adapter = adapter;
+    }
+
+    public DashboardAdapter getAdapter() {
+        return adapter;
     }
 
     public DashboardOrientation getOrientation() {
