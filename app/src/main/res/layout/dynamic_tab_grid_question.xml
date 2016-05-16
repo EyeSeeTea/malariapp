@@ -45,7 +45,7 @@
             android:paddingTop="15dip">
 
             <!--Question-->
-            <org.eyeseetea.malariacare.views.TextCard
+            <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/empty_string"
