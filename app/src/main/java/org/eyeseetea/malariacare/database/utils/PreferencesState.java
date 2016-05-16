@@ -279,14 +279,14 @@ public class PreferencesState {
      * @return
      */
     public Boolean isAutomaticAdapter() {
-        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardOrientation());
+        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
     }
     /**
      * Tells if the application use the Dynamic adapter
      * @return
      */
     public Boolean isDynamicAdapter() {
-        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardOrientation());
+        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
     }
     public Class getMainActivity(){
         if(getPullFromServer()){
