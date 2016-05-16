@@ -35,7 +35,8 @@ public class Constants {
             TAB_SCORE_SUMMARY = 4, //we need to delete this
             TAB_ADHERENCE = 6,
             TAB_IQATAB=7,
-            TAB_REPORTING=8;
+            TAB_REPORTING=8,
+            TAB_DYNAMIC_AUTOMATIC_TAB=9;
 
     // ############# ANSWER TYPE ###############
     public static final String TO_BE_REMOVED="OuiNon (to be removed)",
