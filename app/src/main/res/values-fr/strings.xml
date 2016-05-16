@@ -245,4 +245,12 @@
     <!-- Last survey -->
     <string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
 
+
+    <string name="dynamic_error_phone_format">"Le numéro de téléphone donné a un format incorrect ( 0NN NNN NNN{N} )"</string>
+    <string name="dynamic_error_age">âge invalide</string>
+    <string name="survey_title_completed">Enquête terminée</string>
+    <string name="survey_info_completed">Le sondage a été effectué avec succès</string>
+    <string name="review">Réviser</string>
+    <string name="send">Envoyer</string>
+
 </resources>
