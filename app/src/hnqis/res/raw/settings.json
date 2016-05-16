@@ -6,6 +6,7 @@
   },
   "dashboard": {
     "orientation": "horizontal",
+    "adapter":"automatic",
     "layout":"tab_dashboard",
     "modules": [{
       "title": "plan",
