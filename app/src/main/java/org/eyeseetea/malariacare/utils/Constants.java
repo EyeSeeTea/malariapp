@@ -13,7 +13,15 @@ public class Constants {
             RADIO_GROUP_HORIZONTAL = 8,
             RADIO_GROUP_VERTICAL = 9,
             DROPDOWN_LIST_DISABLED = 10,
-            SWITCH_BUTTON=12;
+            SWITCH_BUTTON=12,
+
+            //TODO now review this constants
+            IMAGES_2 = 10,
+            IMAGES_4 = 11,
+            IMAGES_6 = 12,
+            PHONE = 13,
+            IMAGES_3 = 14;
+
 
 
     public static final String DEFAULT_SELECT_OPTION = "";
