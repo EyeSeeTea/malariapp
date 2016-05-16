@@ -42,6 +42,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -51,7 +52,9 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -335,6 +338,9 @@ public class SurveyFragment extends  Fragment {
                     tabAdapter.initializeSubscore();
                 }
                 ListView listView = (ListView) llLayout.findViewById(R.id.listView);
+                if (tabAdapter instanceof DynamicTabAdapter) {
+                    ((DynamicTabAdapter) tabAdapter).addOnSwipeListener(listView);
+                }
                 listView.setAdapter((BaseAdapter) tabAdapter);
                 listView.setOnScrollListener(new UnfocusScrollListener());
                 stopProgress();
@@ -660,8 +666,11 @@ public class SurveyFragment extends  Fragment {
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity()));
-            this.compositeScores=compositeScores;
+            if (PreferencesState.getInstance().isDynamicAdapter())
+                this.adapters.put(firstTab, DynamicTabAdapter.build(firstTab, getActivity()));
+            if (PreferencesState.getInstance().isAutomaticAdapter())
+                this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity()));
+            this.compositeScores = compositeScores;
         }
 
         /**
@@ -693,8 +702,17 @@ public class SurveyFragment extends  Fragment {
          * @param tab
          * @return
          */
-        private ITabAdapter buildAdapter(Tab tab){
-            return AutoTabAdapter.build(tab, getActivity());
+        private ITabAdapter buildAdapter(Tab tab) {
+            if (PreferencesState.getInstance().isDynamicAdapter()) {
+                if (tab.isDynamicTab())
+                    return new DynamicTabAdapter(tab, getActivity());
+
+                return null;
+            }
+            if (PreferencesState.getInstance().isAutomaticAdapter()) {
+                return AutoTabAdapter.build(tab, getActivity());
+            }
+            return null;
         }
     }
 }
