@@ -375,7 +375,6 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param totalPages
      */
     private String getLocaleProgressStatus(int currentPage, int totalPages){
-
         String current = context.getResources().getString(context.getResources().getIdentifier("number_"+currentPage, "string", context.getPackageName()));
         String total = context.getResources().getString(context.getResources().getIdentifier("number_"+totalPages, "string", context.getPackageName()));
         return current.concat("/").concat(total);
