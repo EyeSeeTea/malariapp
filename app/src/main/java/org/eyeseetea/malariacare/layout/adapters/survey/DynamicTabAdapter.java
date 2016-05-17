@@ -773,8 +773,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * @return
      */
     public static DynamicTabAdapter build(Tab tab, Context context) {
-        int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
-        return new DynamicTabAdapter(tab, context);
+       return new DynamicTabAdapter(tab, context);
     }
 
     public class OnSwipeTouchListener implements View.OnTouchListener {

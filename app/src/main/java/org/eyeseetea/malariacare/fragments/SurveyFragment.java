@@ -217,29 +217,32 @@ public class SurveyFragment extends  Fragment {
     private void createMenu() {
 
         Log.d(TAG, "createMenu");
-        this.tabAdapter=new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
+        this.tabAdapter = new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
         spinner = (Spinner) llLayout.findViewById(R.id.tabSpinner);
-        //Invisible until info ready
-        spinner.setVisibility(View.GONE);
-        spinner.setAdapter(this.tabAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected..");
-                final Tab selectedTab = (Tab) spinner.getSelectedItem();
-                llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
-                llLayout.findViewById(R.id.next_tab).setAlpha(0f);
-                new AsyncChangeTab(selectedTab).execute((Void) null);
-                Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
-            }
+        //If the spinner is null, is a survey without header tabs)
+        if (spinner != null) {
+            //Invisible until info ready
+            spinner.setVisibility(View.GONE);
+            spinner.setAdapter(this.tabAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "onItemSelected..");
+                    final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                    llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
+                    llLayout.findViewById(R.id.next_tab).setAlpha(0f);
+                    new AsyncChangeTab(selectedTab).execute((Void) null);
+                    Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-            tabPagination();
+                }
+            });
+            if (!PreferencesState.getInstance().isVerticalDashboard())
+                tabPagination();
+        }
     }
 
     private void tabPagination() {
@@ -496,8 +499,9 @@ public class SurveyFragment extends  Fragment {
      * Stops progress view and shows real form
      */
     private void stopProgress(){
-        this.progressBar.setVisibility(View.GONE);
-        this.spinner.setVisibility(View.VISIBLE);
+        this.progressBar.setVisibility(View.INVISIBLE);
+        if(this.spinner!=null)
+            this.spinner.setVisibility(View.VISIBLE);
         this.content.setVisibility(View.VISIBLE);
 
     }
@@ -551,7 +555,11 @@ public class SurveyFragment extends  Fragment {
 
         this.tabsList.clear();
         this.tabsList.addAll(tabs);
-        this.tabAdapter.notifyDataSetChanged();
+        if(PreferencesState.getInstance().isAutomaticAdapter())
+            this.tabAdapter.notifyDataSetChanged();
+        else if(PreferencesState.getInstance().isDynamicAdapter()){
+            new AsyncChangeTab(tabs.get(0)).execute((Void) null);
+        }
 
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
@@ -598,10 +606,11 @@ public class SurveyFragment extends  Fragment {
             tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
-
-            allTabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
-            // After loading first tab we start the individual services that preload the items for the rest of tabs
-            preLoadItems();
+            if(PreferencesState.getInstance().isAutomaticAdapter()) {
+                allTabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+                // After loading first tab we start the individual services that preload the items for the rest of tabs
+                preLoadItems();
+            }
         }
     }
 
@@ -706,7 +715,6 @@ public class SurveyFragment extends  Fragment {
             if (PreferencesState.getInstance().isDynamicAdapter()) {
                 if (tab.isDynamicTab())
                     return new DynamicTabAdapter(tab, getActivity());
-
                 return null;
             }
             if (PreferencesState.getInstance().isAutomaticAdapter()) {
