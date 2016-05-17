@@ -218,8 +218,8 @@ public class PopulateDB {
                         break;
                     case ORG_UNIT_PROGRAM_RELATIONS:
                         OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation();
-                        orgUnitProgramRelation.setOrgUnit(Long.parseLong((line[0])));
-                        orgUnitProgramRelation.setProgram(Long.parseLong(line[1]));
+                        orgUnitProgramRelation.setOrgUnit(orgUnits.get(Integer.valueOf(line[0])));
+                        orgUnitProgramRelation.setProgram(programs.get(Integer.valueOf(line[1])));
                         orgUnitProgramRelation.setProductivity(Integer.valueOf(line[2]));
                         saveItem(orgUnitProgramRelations, orgUnitProgramRelation, Integer.valueOf(line[0]));
                         break;
