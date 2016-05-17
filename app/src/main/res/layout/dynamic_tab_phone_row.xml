@@ -13,7 +13,7 @@
         android:paddingRight="30dp"
         android:gravity="center_vertical"
         >
-        <org.eyeseetea.malariacare.views.EditCard
+        <org.eyeseetea.malariacare.views.CustomEditText
             android:id="@+id/dynamic_phone_edit"
             android:layout_width="0dp"
             android:layout_weight="0.6"
