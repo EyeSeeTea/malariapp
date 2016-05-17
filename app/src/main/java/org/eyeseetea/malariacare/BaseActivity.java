@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.media.DriveApiController;
 import org.eyeseetea.malariacare.media.DriveUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
@@ -55,27 +56,11 @@ import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import java.io.InputStream;
 
 
-public abstract class BaseActivity extends ActionBarActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public abstract class BaseActivity extends ActionBarActivity{
     /**
      * Extra param to annotate the activity to return after settings
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
-
-    /**
-     * Request code for auto Google Play Services error resolution.
-     */
-    protected static final int REQUEST_CODE_RESOLUTION = 1;
-
-    /**
-     * Next available request code.
-     */
-    protected static final int NEXT_AVAILABLE_REQUEST_CODE = 2;
-
-    /**
-     * Next available request code.
-     */
-    protected static final int REQUEST_CODE_OPENER = NEXT_AVAILABLE_REQUEST_CODE;
 
     private SurveyLocationListener locationListener;
 
@@ -87,20 +72,6 @@ public abstract class BaseActivity extends ActionBarActivity implements
         Dhis2Application.bus.register(this);
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
-
-        //Drive API stuff
-        DriveUtils driveUtils = DriveUtils.getInstance(this);
-        GoogleApiClient mGoogleApiClient;
-        if (driveUtils.getGoogleApiClient() == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Drive.API)
-                    .addScope(Drive.SCOPE_FILE)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-            driveUtils.setGoogleApiClient(mGoogleApiClient);
-        }
-        driveUtils.getGoogleApiClient().connect();
     }
 
     /**
@@ -316,67 +287,5 @@ public abstract class BaseActivity extends ActionBarActivity implements
      */
     private void debugMessage(String message){
         Log.d("." + this.getClass().getSimpleName(), message);
-    }
-
-    /**
-     * Called when {@code mGoogleApiClient} is connected.
-     */
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        Log.i(".onConnected", "GoogleApiClient connected");
-    }
-
-    /**
-     * Called when {@code mGoogleApiClient} is disconnected.
-     */
-    @Override
-    public void onConnectionSuspended(int cause) {
-        Log.i(".onConnectionSuspended", "GoogleApiClient connection suspended");
-    }
-
-    /**
-     * Called when {@code mGoogleApiClient} is trying to connect but failed.
-     * Handle {@code result.getResolution()} if there is a resolution is
-     * available.
-     */
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        Log.i(".onConnectionFailed", "GoogleApiClient connection failed: " + result.toString());
-        if (!result.hasResolution()) {
-            // show the localized error dialog.
-            GoogleApiAvailability.getInstance().getErrorDialog(this, result.getErrorCode(), 0).show();
-            return;
-        }
-        try {
-            result.startResolutionForResult(this, REQUEST_CODE_RESOLUTION);
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(".onConnectionFailed", "Exception while starting resolution activity", e);
-        }
-    }
-
-    /**
-     * Handles resolution callbacks.
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        DriveUtils driveUtils = DriveUtils.getInstance(this);
-        if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == RESULT_OK) {
-            driveUtils.getGoogleApiClient().connect();
-        }
-    }
-
-    /**
-     * Called when activity gets invisible. Connection to Drive service needs to
-     * be disconnected as soon as an activity is invisible.
-     */
-    @Override
-    protected void onPause() {
-        DriveUtils driveUtils = DriveUtils.getInstance(this);
-        if (driveUtils.getGoogleApiClient() != null) {
-            driveUtils.getGoogleApiClient().disconnect();
-        }
-        super.onPause();
     }
 }

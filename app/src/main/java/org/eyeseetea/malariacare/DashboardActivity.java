@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -46,7 +47,9 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
+import org.eyeseetea.malariacare.media.DriveApiController;
 import org.eyeseetea.malariacare.media.DriveUtils;
+import org.eyeseetea.malariacare.media.MediaController;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -87,19 +90,39 @@ public class DashboardActivity extends BaseActivity {
 
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
-//
-//        for(Media media: Media.getAllMedia()) {
-//            Log.d(TAG, "pinning file: " + media.getResourceUrl());
-//            DriveUtils.getInstance(this, media.getResourceUrl());
-//        }
-        //0B8KIRhh6kcl6QTFHTW5oODE5ZVU
-        DriveUtils.getInstance(this, "0B8KIRhh6kcl6QTFHTW5oODE5ZVU");
+
+        //Media: connect and sync
+        DriveApiController.getInstance().connect(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
+    }
+
+    /**
+     * Called when activity gets invisible. Connection to Drive service needs to
+     * be disconnected as soon as an activity is invisible.
+     */
+    @Override
+    public void onPause(){
+        Log.d(TAG, "onPause");
+        DriveApiController.getInstance().disconnect();
+        super.onPause();
+    }
+
+    /**
+     * Handles resolution callbacks.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(DriveApiController.isConnectResolutionOK(requestCode,resultCode)){
+            DriveApiController.getInstance().connect(DashboardActivity.dashboardActivity);
+        }
     }
 
     @Override
@@ -191,10 +214,12 @@ public class DashboardActivity extends BaseActivity {
         getSurveysFromService();
     }
 
-    @Override
-    public void onPause(){
-        Log.d(TAG, "onPause");
-        super.onPause();
+    /**
+     * Drive Api connected
+     */
+    public void onConnected(){
+        Log.i(TAG,"onConnected -> Starting with sync process...");
+        MediaController.getInstance().syncAll();
     }
 
     public void setReloadOnResume(boolean doReload){
@@ -336,6 +361,14 @@ public class DashboardActivity extends BaseActivity {
         Session.setSurvey(survey);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
+    }
+
+    /**
+     * Shows a quick toast message on screen
+     * @param message
+     */
+    public static void toast(String message){
+        Toast.makeText(DashboardActivity.dashboardActivity, message, Toast.LENGTH_LONG).show();
     }
 
     //Show dialog exception from class without activity.
