@@ -602,6 +602,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * Attach an option with its button in view, adding the listener
      * @param button
      * @param option
+     * @param buttonPosition Is the button position used for expresso testing.
      */
     private void initOptionButton(ImageView button, Option option, Value value, ViewGroup parent, int buttonPosition){
 
