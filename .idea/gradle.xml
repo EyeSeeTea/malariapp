@@ -19,18 +19,6 @@
             <option value="$PROJECT_DIR$/sdk/app" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/DBFlowORM" />
-            <option value="$PROJECT_DIR$/DBFlowORM/DBFlow" />
-            <option value="$PROJECT_DIR$/DBFlowORM/DBFlow-Compiler" />
-            <option value="$PROJECT_DIR$/DBFlowORM/DBFlow-Core" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/sdk" />
-            <option value="$PROJECT_DIR$/sdk/app" />
-          </set>
-        </option>
       </GradleProjectSettings>
     </option>
   </component>
