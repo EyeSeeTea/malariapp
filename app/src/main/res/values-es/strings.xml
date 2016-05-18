@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- # general -->
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="cancel">Cancelar</string>
@@ -13,7 +12,6 @@
     <string name="poor">Mal</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
-    <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
     <string name="settings_menu_legal">Legal</string>
     <string name="settings_menu_copyright">Copyright</string>
@@ -23,7 +21,6 @@
     <string name="settings_menu_licence">Licencia</string>
     <string name="settings_menu_logout">Desconectar</string>
 
-    <!-- # dialogs -->
     <string name="go_to_feedback">Ir a feedback</string>
     <string name="dialog_title_delete_survey">Borrar evaluación</string>
     <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación %s?</string>
@@ -40,26 +37,22 @@
     <string name="dialog_incompleted_compulsory_survey">Esta encuesta no puede ser enviado todavía. Por favor responda al menos todas las preguntas obligatorias</string>
     <string name="dialog_incompleted_compulsory_pulling">La actualización de los metadatos requiere eliminar o completar sus datos enviados. Por favor responda al menos todas las preguntas obligatorias</string>
     <string name="dialog_sent_survey_on_refresh_metadata">La actualización de metadatos borrará los datos enviados. Usted tiene %s encuestas no enviada/s. ¿Desea usted enviarlas antes de actualizar los metadatos?</string>
-    <!-- Toast -->
+
     <string name="cancellingPull">El proceso se cancelara en unos segundos</string>
 
-    <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
     <string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
 
-    <!-- create -->
     <string name="create_info_ok">Empezar</string>
     <string name="create_info_organization_unit">Unidad de organización</string>
     <string name="create_info_survey">Formulario</string>
     <string name="create_info_tabs_group">Grupo de Pestañas</string>
 
-    <!-- assessment -->
     <string name="assessment_title_facility_date">Centro de salud/ Fecha</string>
     <string name="assessment_title_state">Estado</string>
     <string name="assessment_title_header">Evaluación(es) Activa(s)</string>
 
-    <!-- feedback -->
     <string name="feedback_show_only_failed">Mostrar solo preguntas falladas</string>
     <string name="feedback_return">Regresar a todas las evaluaciones</string>
     <string name="quality_of_care">Calidad de la Asistencia (QoC) Puntuación:</string>
@@ -68,18 +61,14 @@
     <string name="feedback_info_not_answered">Sin respuesta</string>
     <string name="feedback_info_no_feedback">No feedback</string>
 
-    <!-- survey -->
     <string name="survey_title_exit">"¿Realmente salir?"</string>
     <string name="survey_info_exit">"¿Esta seguro que quiere salir?"</string>
 
-    <!-- widget -->
     <string name="widget_info_empty_statement">Enunciado de cuestión</string>
 
-    <!-- custom -->
     <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
     <string name="custom_info_tallies">TALLIES for the Month of</string>
 
-    <!-- adherence -->
     <string name="adherence_info_switchquestion">¿Hay registros de ACTs dispensados?</string>
     <string name="adherence_title_explanation">Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
     <string name="adherence_title_explanation_content">Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nStep 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column.</string>
@@ -94,19 +83,16 @@
     <string name="adherence_info_microscopy_positive">Microscopía Positiva</string>
     <string name="adherence_info_microscopy_negative">Microscopía Negativa</string>
 
-    <!-- iqa eqa -->
     <string name="iqatab_info_supervisor">Supervisor</string>
     <string name="iqatab_info_parasites">Parásitos/uL</string>
     <string name="iqatab_info_species">Especímenes</string>
     <string name="iqatab_info_labstaff">Personal de laboratorio</string>
 
-    <!-- reporting -->
     <string name="reporting_info_reporting">Informes</string>
     <string name="reporting_info_results">Resultados</string>
     <string name="reporting_info_register">Registro</string>
     <string name="reporting_info_monthly">Informe\nMensual</string>
 
-    <!-- score -->
     <string name="score_title_clinical_fever">Evaluación\nde fiebre\nclínica</string>
     <string name="score_title_rdt">RDT</string>
     <string name="score_title_avg">Media</string>
@@ -119,10 +105,8 @@
     <string name="score_info_case2">Caso 2</string>
     <string name="score_info_case3">Caso 3</string>
 
-    <!-- composite score -->
     <string name="compscore_title_score_percentage">Puntuación (%)</string>
 
-    <!-- settings -->
     <string name="title_activity_settings">Configuración</string>
     <string name="settings_checkbox_show_num_dems">Mostrar num/dems</string>
     <string name="settings_checkbox_description_show_num_dems">Si está activo, las preguntas del formulario muestran sus numeradores y denominadores, usados para calcular la puntuación total de la encuesta</string>
@@ -210,8 +194,6 @@
     <string name="improve">Mejora</string>
     <string name="monitor">Monitorización</string>
 
-
-    <!-- filters text -->
     <string name="filter_all_org_units">todas las unidades organizativas</string>
     <string name="filter_all_org_assessments">todas las evaluaciones</string>
     <string name="dialog_content_dhis_preference_login">Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?</string>
@@ -219,7 +201,6 @@
     <string name="feedback_info_conflict">Conflicto</string>
     <string name="dialog_deleting_children">Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?</string>
 
-    <!-- last commit info -->
     <string name="lastcommit">Versión %s</string>
     <string name="unavailable">No disponible</string>
     <string name="lastcommit_unavailable"><![CDATA[
@@ -236,14 +217,11 @@
         <p>3. Ejecute "git checkout".</p> ]]>
     </string>
 
-
-    <!-- Create or patch -->
     <string name="create">Crear</string>
     <string name="modify">Modificar</string>
     <string name="create_or_modify">¿Desea crear una encuesta o modificar la última con fecha [%s]?</string>
     <string name="loading_last_surveys">Cargando última encuesta...</string>
 
-    <!-- Last survey -->
     <string name="no_previous_event_info">Sin eventos anteriores disponibles</string>
     <string name="settings_checkbox_ask_modify_or_create">Pregunta para modificar o crear nueva encuesta?</string>
     <string name="settings_checkbox_description_ask_modify_or_create">Cuando se activa, el usuario deberá elegir entre modificar la última encuesta o crear una nueva</string>
