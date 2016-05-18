@@ -57,11 +57,6 @@
         <item>@string/font_size_level3</item>
         <item>@string/font_size_level4</item>
     </string-array>
-    <string name="font_size_level0">xsmall</string>
-    <string name="font_size_level1">small</string>
-    <string name="font_size_level2">medium</string>
-    <string name="font_size_level3">large</string>
-    <string name="font_size_level4">xlarge</string>
 
     <string name="dialog_title_push">ទិន្នន័យដែលបាន ជំរុញឱ្យមាន</string>
     <string name="dialog_title_push_response">ជា​ការ​ឆ្លើយ​តប​រុញ </string>

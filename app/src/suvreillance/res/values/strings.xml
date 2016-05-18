@@ -35,4 +35,6 @@
     <string name="number_8">8</string>
     <string name="number_9">9</string>
 
+    <string name="option" translatable="false">option</string>
+
 </resources>

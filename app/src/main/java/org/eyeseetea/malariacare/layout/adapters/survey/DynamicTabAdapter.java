@@ -333,7 +333,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                     ImageView imageButton = (ImageView) tableRow.getChildAt(mod);
                     imageButton.setBackgroundColor(Color.parseColor("#" + currentOption.getBackground_colour()));
 
-                    initOptionButton(imageButton, currentOption, value, parent);
+                    initOptionButton(imageButton, currentOption, value, parent, i);
                 }
                 break;
             case Constants.IMAGES_3:
@@ -349,7 +349,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                     Option currentOption = opts.get(i);
                     imageButton.setBackgroundColor(Color.parseColor("#" + currentOption.getBackground_colour()));
 
-                    initOptionButton(imageButton, currentOption, value, parent);
+                    initOptionButton(imageButton, currentOption, value, parent,i);
                 }
                 break;
             case Constants.PHONE:
@@ -603,7 +603,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param button
      * @param option
      */
-    private void initOptionButton(ImageView button, Option option, Value value, ViewGroup parent){
+    private void initOptionButton(ImageView button, Option option, Value value, ViewGroup parent, int buttonPosition){
 
         // value = null --> first time calling initOptionButton
         //Highlight button
@@ -624,6 +624,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         //Associate option
         button.setTag(option);
 
+        button.setId(R.string.option + buttonPosition); // uses for Espresso testing
         //Readonly (not clickable, enabled)
         if(readOnly){
             button.setEnabled(false);

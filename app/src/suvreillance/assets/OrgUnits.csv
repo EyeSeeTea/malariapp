@@ -1,6 +1,2 @@
-1;;'Test Zone';;1
-2;;'Test Region';1;2
-3;;'Test District';2;3
-4;;'Test Ward';3;4
-5;'QS7sK8XzdQc';'KE - HNQIS SF pilot test facility 1';4;5
-6;'xNLfNAtUXfA';'KE - HNQIS SF pilot test facility 2';4;5
+5;'QS7sK8XzdQc';'KE - HNQIS SF pilot test facility 1';;5
+6;'xNLfNAtUXfA';'KE - HNQIS SF pilot test facility 2';;5
