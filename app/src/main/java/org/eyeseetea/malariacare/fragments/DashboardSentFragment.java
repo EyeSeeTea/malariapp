@@ -158,7 +158,8 @@ public class DashboardSentFragment extends ListFragment {
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
         Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
-        filterProgramList.add(0, allAssessemntsProgram);
+        if(!filterProgramList.contains(allAssessemntsProgram))
+            filterProgramList.add(0, allAssessemntsProgram);
         if(programFilter==null)
             programFilter=allAssessemntsProgram.getUid();
         filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
