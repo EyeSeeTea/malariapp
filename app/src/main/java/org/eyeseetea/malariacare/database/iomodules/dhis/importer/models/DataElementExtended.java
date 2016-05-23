@@ -415,16 +415,16 @@ public class DataElementExtended implements VisitableFromSDK {
 
     public Float findNumerator() {
         String value = getValue(ATTRIBUTE_NUMERATOR);
-        if (value != null) {
+        if (value != null && !value.equals("")) {
             float numinator = Float.valueOf(value);
             return numinator;
         } else
-            return 0.0f;
+            return findDenominator();
     }
 
     public Float findDenominator() {
         String value = getValue(ATTRIBUTE_DENUMERATOR);
-        if (value != null) {
+        if (value != null && !value.equals("")) {
             float denominator = Float.valueOf(value);
             return denominator;
         }
