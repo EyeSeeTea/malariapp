@@ -28,6 +28,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -51,6 +52,9 @@ public class Media extends BaseModel{
     @Column
     Long id_question;
 
+    @Column
+    String filename;
+
     /**
      * Reference to the question
      */
@@ -61,6 +65,7 @@ public class Media extends BaseModel{
     public Media(int media_type, String resource_url, Question question){
         this.media_type = media_type;
         this.resource_url = resource_url;
+        this.filename = null;
         this.setQuestion(question);
     }
 
@@ -91,8 +96,35 @@ public class Media extends BaseModel{
         this.resource_url = resource_url;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename){
+        this.filename=filename;
+    }
+
     public static List<Media> getAllMedia() {
         return new Select().all().from(Media.class).queryList();
+    }
+
+    public static List<Media> getAllNotInLocal(){
+        return new Select().all().
+                from(Media.class).
+                where(Condition.column(Media$Table.FILENAME).isNull()).
+                queryList();
+    }
+
+    public static List<Media> findByQuestion(Question question){
+        if(question==null){
+            return new ArrayList<>();
+        }
+
+        return new Select().all().
+                from(Media.class).
+                where(Condition.column(Media$Table.FILENAME).isNotNull()).
+                and(Condition.column(Media$Table.ID_QUESTION).eq(question.id_question)).
+                queryList();
     }
 
     public void setQuestion(Question question){
@@ -113,19 +145,21 @@ public class Media extends BaseModel{
         Media media = (Media) o;
 
         if (id_media != media.id_media) return false;
-        if (getMediaType() != media.getMediaType()) return false;
-        if (getResourceUrl() != null ? !getResourceUrl().equals(media.getResourceUrl()) : media.getResourceUrl() != null)
+        if (media_type != media.media_type) return false;
+        if (filename != media.filename) return false;
+        if (resource_url != null ? !resource_url.equals(media.resource_url) : media.resource_url != null)
             return false;
-        return id_question.equals(media.id_question);
+        return id_question != null ? id_question.equals(media.id_question) : media.id_question == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_media ^ (id_media >>> 32));
-        result = 31 * result + getMediaType();
-        result = 31 * result + (getResourceUrl() != null ? getResourceUrl().hashCode() : 0);
-        result = 31 * result + id_question.hashCode();
+        result = 31 * result + media_type;
+        result = 31 * result + (resource_url != null ? resource_url.hashCode() : 0);
+        result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
+        result = 31 * result + (filename != null ? filename.hashCode() : 0);
         return result;
     }
 
@@ -136,6 +170,7 @@ public class Media extends BaseModel{
                 ", media_type=" + media_type +
                 ", resource_url='" + resource_url + '\'' +
                 ", id_question=" + id_question +
+                ", filename=" + filename +
                 '}';
     }
 }

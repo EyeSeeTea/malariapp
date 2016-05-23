@@ -21,9 +21,9 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,10 +33,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
@@ -48,7 +51,6 @@ import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.media.DriveApiController;
-import org.eyeseetea.malariacare.media.DriveUtils;
 import org.eyeseetea.malariacare.media.MediaController;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -61,13 +63,17 @@ import java.util.Date;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity {
+public class DashboardActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
+
+    private GoogleApiClient mGoogleApiClient;
+    private int REQUEST_CODE_RESOLUTION=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +97,8 @@ public class DashboardActivity extends BaseActivity {
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
 
-        //Media: connect and sync
-        DriveApiController.getInstance().connect(this);
+        //FIXME Media: connect and sync
+//        DriveApiController.getInstance().connect(this);
     }
 
     @Override
@@ -108,7 +114,12 @@ public class DashboardActivity extends BaseActivity {
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
-        DriveApiController.getInstance().disconnect();
+
+        //FIXME
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
+//        DriveApiController.getInstance().disconnect();
         super.onPause();
     }
 
@@ -118,9 +129,10 @@ public class DashboardActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
+        Log.d(TAG,String.format("onActivityResult(%d, %d)",requestCode,resultCode));
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(DriveApiController.isConnectResolutionOK(requestCode,resultCode)){
+        if(!DriveApiController.isConnectResolutionOK(requestCode,resultCode)){
             DriveApiController.getInstance().connect(DashboardActivity.dashboardActivity);
         }
     }
@@ -212,6 +224,22 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
+
+        //FIXME
+        if (mGoogleApiClient == null) {
+            // Create the API client and bind it to an instance variable.
+            // We use this instance as the callback for connection and connection
+            // failures.
+            // Since no account name is passed, the user is prompted to choose.
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }
+        // Connect the client. Once connected, the camera is launched.
+        mGoogleApiClient.connect();
     }
 
     /**
@@ -219,6 +247,7 @@ public class DashboardActivity extends BaseActivity {
      */
     public void onConnected(){
         Log.i(TAG,"onConnected -> Starting with sync process...");
+        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
         MediaController.getInstance().syncAll();
     }
 
@@ -395,5 +424,35 @@ public class DashboardActivity extends BaseActivity {
                 });
             }
         }, 1000);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i(TAG, "API client connected.");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "GoogleApiClient connection suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Called whenever the API client fails to connect.
+        Log.i(TAG, "GoogleApiClient connection failed: " + result.toString());
+        if (!result.hasResolution()) {
+            // show the localized error dialog.
+            GoogleApiAvailability.getInstance().getErrorDialog(this, result.getErrorCode(), 0).show();
+            return;
+        }
+        // The failure has a resolution. Resolve it.
+        // Called typically when the app is not yet authorized, and an
+        // authorization
+        // dialog is displayed to the user.
+        try {
+            result.startResolutionForResult(this, REQUEST_CODE_RESOLUTION);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(TAG, "Exception while starting resolution activity", e);
+        }
     }
 }

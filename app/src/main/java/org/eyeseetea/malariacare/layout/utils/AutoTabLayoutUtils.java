@@ -35,7 +35,9 @@ import android.widget.Spinner;
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;

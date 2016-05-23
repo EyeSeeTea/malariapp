@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -78,6 +79,7 @@ public class DriveApiController  implements GoogleApiClient.ConnectionCallbacks,
                     .addOnConnectionFailedListener(this)
                     .build();
         }
+        Log.i(TAG, "connect");
         googleApiClient.connect();
     }
 
@@ -88,7 +90,7 @@ public class DriveApiController  implements GoogleApiClient.ConnectionCallbacks,
         if(googleApiClient==null){
             return;
         }
-
+        Log.i(TAG, "disconnect");
         googleApiClient.disconnect();
     }
 
@@ -101,7 +103,9 @@ public class DriveApiController  implements GoogleApiClient.ConnectionCallbacks,
      * @return
      */
     public static boolean isConnectResolutionOK(int requestCode, int resultCode){
-        return requestCode==REQUEST_CODE_RESOLUTION && resultCode== Activity.RESULT_OK;
+        boolean connectResolutionOK=requestCode==REQUEST_CODE_RESOLUTION && resultCode== Activity.RESULT_OK;
+        Log.i(TAG, String.format("isConnectResolutionOK (%d,%d)->%b",requestCode,resultCode,connectResolutionOK));
+        return connectResolutionOK;
     }
 
     @Override
@@ -120,6 +124,8 @@ public class DriveApiController  implements GoogleApiClient.ConnectionCallbacks,
         if(connectionResult==null){
             return;
         }
+
+        Toast.makeText(dashboardActivity, "onConnectionFailed", Toast.LENGTH_LONG).show();
 
         Log.i(TAG, "onConnectionFailed ->"+connectionResult.toString());
         //No potential resolution -> show error
@@ -165,6 +171,7 @@ public class DriveApiController  implements GoogleApiClient.ConnectionCallbacks,
 
 
     private void initConnectResolution(ConnectionResult connectionResult) {
+        Log.i(TAG, "initConnectResolution");
         try {
             connectionResult.startResolutionForResult(dashboardActivity, REQUEST_CODE_RESOLUTION);
         } catch (IntentSender.SendIntentException e) {

@@ -21,9 +21,6 @@ package org.eyeseetea.malariacare.media;
 
 import android.util.Log;
 
-import com.google.android.gms.drive.Drive;
-
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.database.model.Media;
 
 import java.util.HashMap;
@@ -55,7 +52,7 @@ public class MediaController {
      * Starts syncing all media resources
      */
     public void syncAll(){
-        for(Media media: Media.getAllMedia()) {
+        for(Media media: Media.getAllNotInLocal()) {
             sync(media);
         }
     }
@@ -65,10 +62,11 @@ public class MediaController {
      * @param media
      */
     public void sync(Media media){
-        if(media==null){
+        if(media==null || media.getResourceUrl()==null || media.getResourceUrl().isEmpty()){
             return;
         }
         Log.d(TAG, "Syncing file %s" + media.getResourceUrl());
+//        new DownloadMediaTask(media).execute();
         MediaFileController mediaFileController = new MediaFileController(media);
         mediaSyncing.put(media.getResourceUrl(),mediaFileController);
         mediaFileController.sync();
