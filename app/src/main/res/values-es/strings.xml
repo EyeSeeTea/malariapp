@@ -114,27 +114,12 @@
     <string name="settings_checkbox_description_location_required">Si esta activo, la localizacion es obligatoria para enviar los datos al servidor dhis</string>
     <string name="settings_checkbox_customize_fonts">¿Personalizar fuentes?</string>
     <string name="settings_list_font_sizes">Tamaño de fuentes</string>
-    <string-array name="settings_array_titles_font_sizes">
-        <item>Extra pequeño</item>
-        <item>Pequeño</item>
-        <item>Medio</item>
-        <item>Grande</item>
-        <item>Extra grande</item>
-    </string-array>
+
     <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL de servidor DHIS</string>
     <string name="settings_text_dhis_password">Contraseña DHIS</string>
     <string name="pref_header_general">General</string>
 
-    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
-
-    <string-array name="settings_array_values_font_sizes">
-        <item>@string/font_size_level0</item>
-        <item>@string/font_size_level1</item>
-        <item>@string/font_size_level2</item>
-        <item>@string/font_size_level3</item>
-        <item>@string/font_size_level4</item>
-    </string-array>
 
     <string name="dialog_info_on_complete">La encuesta %s se ha marcado como completada. Ahora la encontrará en la pestaña Mejora</string>
     <string name="dashboard_info_sent">Enviado</string>

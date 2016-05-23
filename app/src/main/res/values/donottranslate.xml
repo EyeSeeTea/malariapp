@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--
+<!--
   ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
@@ -71,4 +71,5 @@
         <string name="upload_date_code" translatable="false">_UploadedOn</string>
         <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
         <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
+    <string name="settings_array_values_font_sizes_def"  translatable="false">@string/font_size_level2</string>
     </resources>
