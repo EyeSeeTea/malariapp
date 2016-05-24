@@ -132,7 +132,13 @@
     <string name="settings_checkbox_description_location_required">When activated, location is a required field for pushing data to dhis server</string>
     <string name="settings_checkbox_customize_fonts">Customize fonts?</string>
     <string name="settings_list_font_sizes">Fonts size</string>
-
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Extra small</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>Extra large</item>
+    </string-array>
     <string name="server_url">DHIS2 server</string>
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="settings_text_dhis_user">DHIS user</string>

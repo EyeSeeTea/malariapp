@@ -113,7 +113,13 @@
     <string name="settings_checkbox_description_location_required">"Si elle est activée, l'emplacement est obligatoire de présenter les données sur les dhis serveur"</string>
     <string name="settings_checkbox_customize_fonts">Personaliser les fonts?</string>
     <string name="settings_list_font_sizes">Taille des fonts</string>
-
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Extra petit</item>
+        <item>Petit</item>
+        <item>Moyen</item>
+        <item>Grand</item>
+        <item>Extra grand</item>
+    </string-array>
     <string name="server_url">Serveur DHIS2</string>
     <string name="settings_text_dhis_server_url">URL du serveur DHIS</string>
     <string name="pref_header_general">General</string>

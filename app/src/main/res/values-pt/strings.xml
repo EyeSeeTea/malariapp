@@ -124,7 +124,13 @@
     <string name="settings_checkbox_description_location_required">Quando ativada, a localização é um campo obrigatório para empurrar os dados para dhis servidor</string>
     <string name="settings_checkbox_customize_fonts">Personalizar tipos de letra?</string>
     <string name="settings_list_font_sizes">Tamanho dos tipos de letra</string>
-
+    <string-array name="settings_array_titles_font_sizes">
+        <item>Muito pequeno</item>
+        <item>Pequeno</item>
+        <item>Médio</item>
+        <item>Grande</item>
+        <item>Muito Grande</item>
+    </string-array>
     <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL do servidor SISD</string>
     <string name="pref_header_general">Geral</string>
