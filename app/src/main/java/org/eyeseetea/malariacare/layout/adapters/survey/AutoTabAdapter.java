@@ -81,10 +81,10 @@ public class AutoTabAdapter extends ATabAdapter {
             if (item instanceof Header)
                 elementInvisibility.put(item, true);
             if (item instanceof Question) {
-                boolean hidden = AutoTabLayoutUtils.isHidden((Question) item);
+                boolean hidden = AutoTabLayoutUtils.isHidden((Question) item, idSurvey);
                 elementInvisibility.put(item, hidden);
                 if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum, idSurvey);
-                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item),idSurvey);
+                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey),idSurvey);
                 Header header = ((Question) item).getHeader();
                 boolean headerVisibility = elementInvisibility.get(header);
                 elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
@@ -144,7 +144,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 if (getItems().get(i) instanceof Question && !elementInvisibility.get(getItems().get(i))) {
                     Question question = (Question) getItems().get(i);
                     if (question.getOutput() == Constants.DROPDOWN_LIST)
-                        result = result + ScoreRegister.calcDenum((Question) getItems().get(i));
+                        result = result + ScoreRegister.calcDenum((Question) getItems().get(i),idSurvey);
                 }
 
             }
@@ -284,7 +284,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
                 } else {
                     viewHolder.num.setText(getContext().getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question,idSurvey)));
                     ((Spinner) viewHolder.component).setSelection(0);
                 }
 
@@ -304,7 +304,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.num.setText(getContext().getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question,idSurvey)));
                 }
                 break;
             default:

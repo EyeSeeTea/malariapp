@@ -147,7 +147,7 @@ public class FeedbackFragment extends Fragment {
         progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(getActivity(),Session.getSurvey().getId_survey());
+        feedbackAdapter=new FeedbackAdapter(getActivity(),Session.getSurveyFeedback().getId_survey());
         feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
@@ -172,7 +172,7 @@ public class FeedbackFragment extends Fragment {
         );
         
         //Set mainscore and color.
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyFeedback();
         float average = survey.getMainScore();
         CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
         item.setText(String.format("%.1f%%", average));

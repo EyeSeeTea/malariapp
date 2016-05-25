@@ -155,8 +155,8 @@ public class AutoTabLayoutUtils {
      * @param question
      * @return
      */
-    public static boolean isHidden(Question question) {
-        return question.isHiddenBySurvey(Session.getSurvey());
+    public static boolean isHidden(Question question, float idSurvey) {
+        return question.isHiddenBySurvey(idSurvey);
     }
 
     /**
@@ -296,7 +296,7 @@ public class AutoTabLayoutUtils {
 
     public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
-        int option=question.isTriggered(Session.getSurvey())?0:1;
+        int option=question.isTriggered(idSurvey)?0:1;
 
         //Select option according to trigger
         return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter, idSurvey);
@@ -390,7 +390,7 @@ public class AutoTabLayoutUtils {
 
         for (Question child : children) {
             Header childHeader = child.getHeader();
-            visible=!child.isHiddenBySurvey(survey);
+            visible=!child.isHiddenBySurvey(idSurvey);
             elementInvisibility.put(child, !visible);
             if (!visible) {
                 List<Float> numdenum = ScoreRegister.getNumDenum(child);

@@ -319,7 +319,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        setActionBarTitleForSurvey(Session.getSurvey());
+        setActionBarTitleForSurvey(Session.getSurveyFeedback());
     }
 
     public void initCreateSurvey(){
@@ -337,7 +337,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initSurveyFeedbackFromAssess(Survey survey){
-        Session.setSurvey(survey);
+        Session.setSurveyFeedback(survey);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
         sentFragment.unregisterSurveysReceiver();
         initFeedback();
@@ -638,7 +638,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void closeSurveyFragment(){
-        ScoreRegister.clear();
+        ScoreRegister.clear(Session.getSurvey().getId_survey());
         surveyFragment.unregisterReceiver();
         initAssess();
         unsentFragment.reloadData();
@@ -647,7 +647,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void closeFeedbackFragment() {
         isMoveToFeedback=false;
-        ScoreRegister.clear();
+        ScoreRegister.clear(Session.getSurveyFeedback().getId_survey());
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
         initImprove();
@@ -743,7 +743,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onFeedbackSelected(Survey survey) {
-        Session.setSurvey(survey);
+        Session.setSurveyFeedback(survey);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
         sentFragment.getView().setVisibility(View.GONE);
         initFeedback();
