@@ -22,11 +22,13 @@ package org.eyeseetea.malariacare.database.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +55,11 @@ public class PreferencesState {
      * Flag that determines if numerator/denominator are shown in scores.
      */
     private boolean showNumDen;
+
+    /**
+     * Flag that determines if large text is show in preferences
+     */
+    private Boolean showLargeText;
 
     private Boolean pullFromServer;
 
@@ -90,7 +97,8 @@ public class PreferencesState {
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
         maxEvents=initMaxEvents();
-        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
+        showNumDen=initShowNumDen();
+        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
     }
 
     /**
@@ -252,4 +260,21 @@ public class PreferencesState {
         editor.putString(context.getResources().getString(R.string.default_orgUnit), "");
         editor.commit();
     }
+
+    /**
+     * it determines if large text is shown in preferences
+     * The screen size should be more bigger than the width and height constants to show the large text option.
+     */
+    public boolean isShowedLargeText(){
+        if(showLargeText==null) {
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            Log.d(TAG,metrics.widthPixels +" x "+ metrics.heightPixels);
+            if (metrics.widthPixels > Constants.MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT && metrics.heightPixels >= Constants.MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT) {
+                showLargeText= true;
+            }
+            showLargeText= false;
+        }
+        return  showLargeText;
+    }
+
 }
