@@ -45,11 +45,6 @@ public class ScoreRegister {
     private static final String TAG=".ScoreRegister";
 
     /**
-     * Map of scores for each compositescore
-     */
-    //public static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<>();
-
-    /**
      * Map of scores for each compositescore by survey
      */
     public static final Map<Float, Map<CompositeScore, CompositeNumDenRecord>> compositeScoreMapBySurvey = new HashMap<>();
@@ -69,9 +64,7 @@ public class ScoreRegister {
 
     public static void addRecord(Question question, Float num, Float den, float surveyId){
         if (question.getCompositeScore() != null) {
-            Log.d(TAG,"Active CS"+surveyId+"");
-            Map<CompositeScore, CompositeNumDenRecord> map= compositeScoreMapBySurvey.get(surveyId);
-                    map.get(question.getCompositeScore()).addRecord(question, num, den);
+            compositeScoreMapBySurvey.get(surveyId).get(question.getCompositeScore()).addRecord(question, num, den);
         }
         tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
     }
