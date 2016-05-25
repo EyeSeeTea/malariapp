@@ -190,7 +190,7 @@ public class AutoTabLayoutUtils {
 
     public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
-        int optionPosition=question.isTriggered(Session.getSurvey())?0:1;
+        int optionPosition=question.isTriggered(idSurvey)?0:1;
 
         //Build selected item
         Option option=question.getAnswer().getOptions().get(optionPosition);
@@ -274,8 +274,8 @@ public class AutoTabLayoutUtils {
      * @param question question that change its values
      */
     private static void recalculateScores(AutoTabViewHolder viewHolder, Question question, float idSurvey) {
-        Float num = ScoreRegister.calcNum(question);
-        Float denum = ScoreRegister.calcDenum(question);
+        Float num = ScoreRegister.calcNum(question, idSurvey);
+        Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
         viewHolder.setNumText(num.toString());
         viewHolder.setDenumText(denum.toString());
@@ -289,8 +289,8 @@ public class AutoTabLayoutUtils {
                 || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
                 || question.getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
-            Float num = ScoreRegister.calcNum(question);
-            Float denum = ScoreRegister.calcDenum(question);
+            Float num = ScoreRegister.calcNum(question, idSurvey);
+            Float denum = ScoreRegister.calcDenum(question, idSurvey);
             ScoreRegister.addRecord(question, num, denum, idSurvey);
         }
     }

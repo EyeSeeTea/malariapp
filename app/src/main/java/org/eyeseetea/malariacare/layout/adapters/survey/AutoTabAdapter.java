@@ -100,23 +100,23 @@ public class AutoTabAdapter extends ATabAdapter {
 
             //Question might be visible or not (according to parent values)
             if (item instanceof Question) {
-                boolean visible = inVisibilityState.initVisibility((Question) item);
+                boolean visible = inVisibilityState.initVisibility((Question) item, idSurvey);
                 if (visible){
                     AutoTabLayoutUtils.initScoreQuestion((Question) item, idSurvey);
                 }else{
                     //fixme gets the survey from session can make a wrong CS
-                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item), Session.getSurvey().getId_survey());
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey), idSurvey);
                 }
                 inVisibilityState.updateHeaderVisibility((Question) item);
             }
 
             //QuestionRow visibility equals first Question
             if (item instanceof QuestionRow){
-                boolean visible = inVisibilityState.initVisibility((QuestionRow)item);
+                boolean visible = inVisibilityState.initVisibility((QuestionRow)item, idSurvey);
                 if (visible){
                     AutoTabLayoutUtils.initScoreQuestion((QuestionRow) item, idSurvey);
                 }else{
-                    ScoreRegister.addQuestionRowRecords((QuestionRow) item, Session.getSurvey().getId_survey());
+                    ScoreRegister.addQuestionRowRecords((QuestionRow) item, idSurvey);
                 }
                 inVisibilityState.updateHeaderVisibility((QuestionRow) item);
             }
@@ -175,7 +175,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 if ( item instanceof Question && inVisibilityState.isVisible(item)) {
                     Question question = (Question) item;
                     if (question.getOutput() == Constants.DROPDOWN_LIST) {
-                        result = result + ScoreRegister.calcDenum(question);
+                        result = result + ScoreRegister.calcDenum(question, idSurvey);
                     }
                 }
             }
@@ -495,7 +495,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.setDenumText(Float.toString(numdenum.get(1)));
                 } else {
                     viewHolder.setNumText(getContext().getString(R.string.number_zero));
-                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question, idSurvey)));
                     viewHolder.setSpinnerSelection(0);
                 }
 
@@ -514,7 +514,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.setDenumText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.setNumText(getContext().getString(R.string.number_zero));
-                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question)));
+                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question, idSurvey)));
                 }
                 break;
             case Constants.SWITCH_BUTTON:

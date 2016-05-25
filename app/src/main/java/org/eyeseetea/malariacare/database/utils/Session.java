@@ -49,6 +49,11 @@ public class Session {
      */
     private static Survey survey;
     /**
+     *  The current selected surveyFeedback
+    */
+    private static Survey surveyFeedback;
+    /**
+    /**
      * The current user
      */
     private static User user;
@@ -89,6 +94,13 @@ public class Session {
         Session.survey = survey;
     }
 
+    public static Survey getSurveyFeedback() {
+        return surveyFeedback;
+    }
+
+    public static void setSurveyFeedback(Survey surveyFeedback) {
+        Session.surveyFeedback = surveyFeedback;
+    }
     public static User getUser() {
         if(user==null)
             user=User.getLoggedUser();

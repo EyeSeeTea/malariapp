@@ -124,7 +124,7 @@ public class AssessModuleController extends ModuleController {
             surveyFragment = SurveyFragment.newInstance(1);
         }
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
     public void onMarkAsCompleted(Survey survey){

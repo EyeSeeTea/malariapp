@@ -89,7 +89,7 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onFeedbackSelected(Survey survey){
-        Session.setSurvey(survey);
+        Session.setSurveyFeedback(survey);
         try {
             LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
             filters.setVisibility(View.GONE);
@@ -100,7 +100,7 @@ public class ImproveModuleController extends ModuleController {
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
     private void closeFeedbackFragment() {
