@@ -194,6 +194,7 @@ public class QuestionBuilder {
         for (Integer mediaType: mediaTypeCode.keySet()) {
             String attributeMediaValue = dataElementExtended.getValue(mediaTypeCode.get(mediaType));
             if (attributeMediaValue != null) {
+                Log.i(TAG,String.format("Adding media %s to question %s",attributeMediaValue, question.getForm_name()));
                 media = new Media();
                 media.setMediaType(mediaType);
                 media.setResourceUrl(attributeMediaValue);

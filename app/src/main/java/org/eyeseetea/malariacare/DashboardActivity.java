@@ -63,8 +63,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class DashboardActivity extends BaseActivity{
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
@@ -98,7 +97,7 @@ public class DashboardActivity extends BaseActivity implements GoogleApiClient.C
         AlarmPushReceiver.getInstance().setPushAlarm(this);
 
         //FIXME Media: connect and sync
-//        DriveApiController.getInstance().connect(this);
+        DriveApiController.getInstance().connect(this);
     }
 
     @Override
@@ -114,12 +113,7 @@ public class DashboardActivity extends BaseActivity implements GoogleApiClient.C
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
-
-        //FIXME
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-        }
-//        DriveApiController.getInstance().disconnect();
+        DriveApiController.getInstance().disconnect();
         super.onPause();
     }
 
@@ -224,22 +218,6 @@ public class DashboardActivity extends BaseActivity implements GoogleApiClient.C
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-
-        //FIXME
-        if (mGoogleApiClient == null) {
-            // Create the API client and bind it to an instance variable.
-            // We use this instance as the callback for connection and connection
-            // failures.
-            // Since no account name is passed, the user is prompted to choose.
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Drive.API)
-                    .addScope(Drive.SCOPE_FILE)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-        }
-        // Connect the client. Once connected, the camera is launched.
-        mGoogleApiClient.connect();
     }
 
     /**
@@ -283,8 +261,7 @@ public class DashboardActivity extends BaseActivity implements GoogleApiClient.C
      * PUll data from DHIS server and turn into our model
      */
     private void initDataIfRequired(){
-//            PullController.getInstance().pull(this);
-            initUserSessionIfRequired();
+        initUserSessionIfRequired();
     }
 
     /**
@@ -424,35 +401,5 @@ public class DashboardActivity extends BaseActivity implements GoogleApiClient.C
                 });
             }
         }, 1000);
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.i(TAG, "API client connected.");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(TAG, "GoogleApiClient connection suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        // Called whenever the API client fails to connect.
-        Log.i(TAG, "GoogleApiClient connection failed: " + result.toString());
-        if (!result.hasResolution()) {
-            // show the localized error dialog.
-            GoogleApiAvailability.getInstance().getErrorDialog(this, result.getErrorCode(), 0).show();
-            return;
-        }
-        // The failure has a resolution. Resolve it.
-        // Called typically when the app is not yet authorized, and an
-        // authorization
-        // dialog is displayed to the user.
-        try {
-            result.startResolutionForResult(this, REQUEST_CODE_RESOLUTION);
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(TAG, "Exception while starting resolution activity", e);
-        }
     }
 }
