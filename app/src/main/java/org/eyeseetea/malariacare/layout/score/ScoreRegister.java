@@ -56,8 +56,8 @@ public class ScoreRegister {
 
     public static void initScoresForQuestions(List<Question> questions, Survey survey){
         for(Question question : questions){
-            if(!question.isHiddenBySurvey(survey)) {
-                question.initScore(survey);
+            if(!question.isHiddenBySurvey(survey.getId_survey())) {
+                question.initScore(survey.getId_survey());
             }
         }
     }
@@ -69,25 +69,25 @@ public class ScoreRegister {
         tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
     }
 
-    public static void deleteRecord(Question question, float surveyId){
+    public static void deleteRecord(Question question, float idSurvey){
         if (question.getCompositeScore() != null)
-            compositeScoreMapBySurvey.get(surveyId).get(question.getCompositeScore()).deleteRecord(question);
+            compositeScoreMapBySurvey.get(idSurvey).get(question.getCompositeScore()).deleteRecord(question);
         tabScoreMap.get(question.getHeader().getTab()).deleteRecord(question);
     }
 
-    private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result, float surveyId) {
+    private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result, float idSurvey) {
 
         //Protect from wrong server data
-        if (compositeScoreMapBySurvey.get(surveyId).get(cScore)==null) {
+        if (compositeScoreMapBySurvey.get(idSurvey).get(cScore)==null) {
             return Arrays.asList(0f,0f);
         }
 
         //Sum its own records
-        result=compositeScoreMapBySurvey.get(surveyId).get(cScore).calculateNumDenTotal(result);
+        result=compositeScoreMapBySurvey.get(idSurvey).get(cScore).calculateNumDenTotal(result);
 
         //Sum records from children scores
         for (CompositeScore cScoreChildren : cScore.getCompositeScoreChildren()) {
-            result = getRecursiveScore(cScoreChildren, result, surveyId);
+            result = getRecursiveScore(cScoreChildren, result, idSurvey);
         }
         return result;
     }
@@ -96,9 +96,9 @@ public class ScoreRegister {
         return tabScoreMap.get(question.getHeader().getTab()).getNumDenRecord().get(question);
     }
 
-    public static Float getCompositeScore(CompositeScore cScore, float surveyId) {
+    public static Float getCompositeScore(CompositeScore cScore, float idSurvey) {
 
-        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)), surveyId);
+        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)), idSurvey);
 
         Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
         return ScoreUtils.calculateScoreFromNumDen(result);
@@ -113,19 +113,19 @@ public class ScoreRegister {
      * Resets compositescores and initializes a new set of them
      * @param compositeScores
      */
-    public static void registerCompositeScores(List<CompositeScore> compositeScores, float surveyId){
-        clearClassCompositeScore(surveyId);
+    public static void registerCompositeScores(List<CompositeScore> compositeScores, float idSurvey){
+        clearClassCompositeScore(idSurvey);
         for(CompositeScore compositeScore:compositeScores){
             Log.i(TAG, "Register composite score: " + compositeScore.getHierarchical_code());
-            if(!compositeScoreMapBySurvey.containsKey(surveyId))
-                compositeScoreMapBySurvey.put(surveyId, new HashMap<CompositeScore, CompositeNumDenRecord>());
-            compositeScoreMapBySurvey.get(surveyId).put(compositeScore, new CompositeNumDenRecord());
+            if(!compositeScoreMapBySurvey.containsKey(idSurvey))
+                compositeScoreMapBySurvey.put(idSurvey, new HashMap<CompositeScore, CompositeNumDenRecord>());
+            compositeScoreMapBySurvey.get(idSurvey).put(compositeScore, new CompositeNumDenRecord());
         }
     }
 
-    public static void clearClassCompositeScore(float surveyId){
-        if(compositeScoreMapBySurvey.containsKey(surveyId))
-        compositeScoreMapBySurvey.get(surveyId).clear();
+    public static void clearClassCompositeScore(float idSurvey){
+        if(compositeScoreMapBySurvey.containsKey(idSurvey))
+            compositeScoreMapBySurvey.put(idSurvey, new HashMap<CompositeScore, CompositeNumDenRecord>());
     }
 
     /**
@@ -143,32 +143,23 @@ public class ScoreRegister {
     /**
      * Clears every score in session
      */
-    public static void clear(float surveyId){
-        clearClassCompositeScore(surveyId);
+    public static void clear(float idSurvey){
+        clearClassCompositeScore(idSurvey);
         tabScoreMap.clear();
-    }
-
-    /**
-     * Calculates the numerator of the given question in the current survey
-     * @param question
-     * @return
-     */
-    public static float calcNum(Question question) {
-        return calcNum(question,Session.getSurvey());
     }
 
     /**
      * Calculates the numerator of the given question & survey
      * @param question
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public static float calcNum(Question question, Survey survey){
-        if(survey==null || question==null){
+    public static float calcNum(Question question, float idSurvey){
+        if(question==null){
             return 0;
         }
 
-        Option option=question.getOptionBySurvey(survey);
+        Option option=question.getOptionBySurvey(idSurvey);
         if(option==null){
             return 0;
         }
@@ -176,28 +167,19 @@ public class ScoreRegister {
     }
 
     /**
-     * Calculates the numerator of the given question in the current survey
-     * @param question
-     * @return
-     */
-    public static float calcDenum(Question question) {
-        return calcDenum(question,Session.getSurvey());
-    }
-
-    /**
      * Calculates the denominator of the given question & survey
      * @param question
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public static float calcDenum(Question question,Survey survey) {
+    public static float calcDenum(Question question,float idSurvey) {
         float result = 0;
 
         if(!question.isScored()){
             return 0;
         }
 
-        Option option = question.getOptionBySurvey(survey);
+        Option option = question.getOptionBySurvey(idSurvey);
         if(option==null){
             return calcDenum(0,question);
         }
@@ -239,13 +221,13 @@ public class ScoreRegister {
         return compositeScoreList;
     }
 
-    public static float calculateMainScore(List<CompositeScore> scores, float surveyId){
+    public static float calculateMainScore(List<CompositeScore> scores, float idSurvey){
         float sumScores=0;
         float numParentScores=0;
         for(CompositeScore score:scores){
             //only parent scores are interesting
             if(score.getComposite_score()==null){
-                sumScores+=getCompositeScore(score, surveyId);
+                sumScores+=getCompositeScore(score, idSurvey);
                 numParentScores++;
             }
         }

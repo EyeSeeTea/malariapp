@@ -402,7 +402,7 @@ public class AutoTabLayoutUtils {
                 if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
             } else {
-                Float denum = ScoreRegister.calcDenum(child);
+                Float denum = ScoreRegister.calcDenum(child, idSurvey);
                 ScoreRegister.addRecord(child, 0F, denum, idSurvey);
                 elementInvisibility.put(childHeader, false);
             }
