@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabInVisibilityState;
@@ -71,6 +72,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
     float totalDenum;
 
+
     /**
      * Reference to the visibility state of items
      */
@@ -81,11 +83,10 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     private final AutoTabSelectedItem autoTabSelectedItemFactory;
 
-    public AutoTabAdapter(Tab tab, Context context, int id_layout) {
-        super(tab, context, id_layout);
-
+    public AutoTabAdapter(Tab tab, Context context, int id_layout, float idSurvey) {
+        super(tab, context, id_layout, idSurvey);
         this.inVisibilityState = new AutoTabInVisibilityState();
-        this.autoTabSelectedItemFactory = new AutoTabSelectedItem(this,this.inVisibilityState);
+        this.autoTabSelectedItemFactory = new AutoTabSelectedItem(this,this.inVisibilityState, idSurvey);
 
         // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
         // whether or not they must be visible
@@ -101,9 +102,10 @@ public class AutoTabAdapter extends ATabAdapter {
             if (item instanceof Question) {
                 boolean visible = inVisibilityState.initVisibility((Question) item);
                 if (visible){
-                    AutoTabLayoutUtils.initScoreQuestion((Question) item);
+                    AutoTabLayoutUtils.initScoreQuestion((Question) item, idSurvey);
                 }else{
-                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item));
+                    //fixme gets the survey from session can make a wrong CS
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item), Session.getSurvey().getId_survey());
                 }
                 inVisibilityState.updateHeaderVisibility((Question) item);
             }
@@ -112,9 +114,9 @@ public class AutoTabAdapter extends ATabAdapter {
             if (item instanceof QuestionRow){
                 boolean visible = inVisibilityState.initVisibility((QuestionRow)item);
                 if (visible){
-                    AutoTabLayoutUtils.initScoreQuestion((QuestionRow) item);
+                    AutoTabLayoutUtils.initScoreQuestion((QuestionRow) item, idSurvey);
                 }else{
-                    ScoreRegister.addQuestionRowRecords((QuestionRow) item);
+                    ScoreRegister.addQuestionRowRecords((QuestionRow) item, Session.getSurvey().getId_survey());
                 }
                 inVisibilityState.updateHeaderVisibility((QuestionRow) item);
             }
@@ -128,9 +130,9 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static AutoTabAdapter build(Tab tab, Context context) {
+    public static AutoTabAdapter build(Tab tab, Context context, float idSurvey) {
         int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
-        return new AutoTabAdapter(tab, context, idLayout);
+        return new AutoTabAdapter(tab, context, idLayout, idSurvey);
     }
 
     /**
@@ -287,7 +289,7 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.DROPDOWN_LIST_DISABLED:
                 rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                 // Initialise value depending on match question
-                AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this);
+                AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
                 rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
@@ -364,7 +366,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.DROPDOWN_LIST_DISABLED:
                     spinner = addSpinnerViewToRow(row,question,columnWeight);
                     spinner.setOnItemSelectedListener(new SpinnerListener(question, new AutoTabViewHolder(spinner)));
-                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabViewHolder(spinner), question, getContext(), inVisibilityState, this);
+                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabViewHolder(spinner), question, getContext(), inVisibilityState, this, idSurvey);
                     viewHolder.addColumnComponent(spinner);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
@@ -610,7 +612,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
             Option selectedOption=(Option) ((Spinner) viewHolder.component).getItemAtPosition(pos);
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder);
-            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem);
+            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey);
         }
 
         @Override
@@ -640,7 +642,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 selectedOption = (Option) customRadioButton.getTag();
             }
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder);
-            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem);
+            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey);
         }
     }
 
@@ -667,7 +669,7 @@ public class AutoTabAdapter extends ATabAdapter {
             }
             ((Switch)viewHolder.component).setText(selectedOption.getName());
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder);
-            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem);
+            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey);
         }
     }
 

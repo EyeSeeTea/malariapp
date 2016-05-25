@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
@@ -55,13 +56,16 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private boolean [] hiddenPositions;
 
-    public FeedbackAdapter(Context context){
-        this(new ArrayList<Feedback>(), context);
+    float idSurvey;
+
+    public FeedbackAdapter(Context context, float idSurvey){
+        this(new ArrayList<Feedback>(), context, idSurvey);
     }
 
-    public FeedbackAdapter(List<Feedback> items, Context context){
+    public FeedbackAdapter(List<Feedback> items, Context context, float idSurvey){
         this.items=items;
         this.context=context;
+        this.idSurvey=idSurvey;
         this.onlyFailed=true;
         this.hiddenPositions= new boolean[this.items.size()];
     }
@@ -135,14 +139,14 @@ public class FeedbackAdapter extends BaseAdapter {
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()) {
-            if (feedback.getScore() < Constants.MAX_AMBER)
+            if (feedback.getScore(idSurvey) < Constants.MAX_AMBER)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else if (feedback.getScore() < Constants.MAX_RED)
+            else if (feedback.getScore(idSurvey) < Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
             else
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         }
-        textView.setText(feedback.getPercentageAsString());
+        textView.setText(feedback.getPercentageAsString(idSurvey));
 
         return rowLayout;
     }

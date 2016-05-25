@@ -554,7 +554,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
 
         //Calculate main score to push later
-        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey));
         this.saveMainScore();
     }
 

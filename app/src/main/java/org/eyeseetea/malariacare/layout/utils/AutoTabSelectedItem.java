@@ -37,16 +37,18 @@ public class AutoTabSelectedItem {
     private Question question;
     private Option option;
     private AutoTabViewHolder viewHolder;
+    private float idSurvey;
 
     /**
      * Public constructor that gets the info that remains the same between different 'click' events
      * @param autoTabAdapter
      * @param inVisibilityState
      */
-    public AutoTabSelectedItem(AutoTabAdapter autoTabAdapter,AutoTabInVisibilityState inVisibilityState){
+    public AutoTabSelectedItem(AutoTabAdapter autoTabAdapter,AutoTabInVisibilityState inVisibilityState, float idSurvey){
         this.autoTabAdapter=autoTabAdapter;
         this.context = autoTabAdapter.getContext();
         this.inVisibilityState = inVisibilityState;
+        this.idSurvey=idSurvey;
     }
 
     /**
@@ -57,7 +59,7 @@ public class AutoTabSelectedItem {
      * @return
      */
     public AutoTabSelectedItem buildSelectedItem(Question question, Option option, AutoTabViewHolder viewHolder){
-        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(autoTabAdapter,inVisibilityState);
+        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(autoTabAdapter,inVisibilityState,idSurvey);
         autoTabSelectedItem.question = question;
         autoTabSelectedItem.option = option;
         autoTabSelectedItem.viewHolder = viewHolder;
@@ -81,7 +83,7 @@ public class AutoTabSelectedItem {
     }
 
     public void toggleChildrenVisibility(){
-        this.inVisibilityState.toggleChildrenVisibility(this);
+        this.inVisibilityState.toggleChildrenVisibility(this,idSurvey);
     }
 
     public void notifyDataSetChanged(){

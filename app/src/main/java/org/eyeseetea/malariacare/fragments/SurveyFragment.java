@@ -189,7 +189,7 @@ public class SurveyFragment extends  Fragment {
     }
 
     public void exit(){
-        ScoreRegister.clear();
+        //ScoreRegister.clear(Session.getSurvey().getId_survey());
         unregisterReceiver();
     }
     @Override
@@ -660,7 +660,8 @@ public class SurveyFragment extends  Fragment {
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity()));
+            //fixme gets the survey from session can make a wrong CS
+            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurvey().getId_survey()));
             this.compositeScores=compositeScores;
         }
 
@@ -694,7 +695,7 @@ public class SurveyFragment extends  Fragment {
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab){
-            return AutoTabAdapter.build(tab, getActivity());
+            return AutoTabAdapter.build(tab, getActivity(), Session.getSurvey().getId_survey());
         }
     }
 }

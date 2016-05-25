@@ -54,10 +54,10 @@ public class FeedbackBuilder {
     public static List<Feedback> build(Survey survey, boolean parents){
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(Session.getSurvey());
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey);
 
         //Calculate main score
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey()));
 
         if (!parents) {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)

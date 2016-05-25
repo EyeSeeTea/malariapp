@@ -188,23 +188,23 @@ public class AutoTabLayoutUtils {
         ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
-    public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter) {
+    public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int optionPosition=question.isTriggered(Session.getSurvey())?0:1;
 
         //Build selected item
         Option option=question.getAnswer().getOptions().get(optionPosition);
-        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(adapter,inVisibilityState).buildSelectedItem(question,option,viewHolder);
+        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(adapter,inVisibilityState, idSurvey).buildSelectedItem(question,option,viewHolder);
 
         //Select that item to force related switch
-        itemSelected(autoTabSelectedItem);
+        itemSelected(autoTabSelectedItem, idSurvey);
     }
 
     /**
      * Do the logic after a DDL option change
      * @param autoTabSelectedItem
      */
-    public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem) {
+    public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey) {
 
         Question question = autoTabSelectedItem.getQuestion();
         Option option = autoTabSelectedItem.getOption();
@@ -215,7 +215,7 @@ public class AutoTabLayoutUtils {
         if (!question.hasChildren()) {
             // Write option to DB
             ReadWriteDB.saveValuesDDL(question, option);
-            recalculateScores(viewHolder, question);
+            recalculateScores(viewHolder, question,idSurvey);
             return;
         }
 
@@ -223,7 +223,7 @@ public class AutoTabLayoutUtils {
 
         //No children answers will be deleted -> Save, Expand|Collapse
         if (!isRemovingValuesFromChildren(question)) {
-            saveAndExpandChildren(autoTabSelectedItem);
+            saveAndExpandChildren(autoTabSelectedItem, idSurvey);
             return;
         }
 
@@ -233,7 +233,7 @@ public class AutoTabLayoutUtils {
                 .setMessage(context.getString(R.string.dialog_deleting_children))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        saveAndExpandChildren(autoTabSelectedItem);
+                        saveAndExpandChildren(autoTabSelectedItem, idSurvey);
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -257,11 +257,11 @@ public class AutoTabLayoutUtils {
         return false;
     }
 
-    public static void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem){
+    public static void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem, float idSurvey){
         //Save value
         ReadWriteDB.saveValuesDDL(autoTabSelectedItem.getQuestion(), autoTabSelectedItem.getOption());
         //Recalculate score
-        recalculateScores(autoTabSelectedItem.getViewHolder(), autoTabSelectedItem.getQuestion());
+        recalculateScores(autoTabSelectedItem.getViewHolder(), autoTabSelectedItem.getQuestion(), idSurvey);
         //Toggle children
         autoTabSelectedItem.toggleChildrenVisibility();
         //Notify adapter
@@ -273,17 +273,17 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabViewHolder viewHolder, Question question) {
+    private static void recalculateScores(AutoTabViewHolder viewHolder, Question question, float idSurvey) {
         Float num = ScoreRegister.calcNum(question);
         Float denum = ScoreRegister.calcDenum(question);
 
         viewHolder.setNumText(num.toString());
         viewHolder.setDenumText(denum.toString());
 
-        ScoreRegister.addRecord(question, num, denum);
+        ScoreRegister.addRecord(question, num, denum, idSurvey);
     }
 
-    public static void initScoreQuestion(Question question) {
+    public static void initScoreQuestion(Question question, float idSurvey) {
 
         if (question.getOutput() == Constants.DROPDOWN_LIST
                 || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
@@ -291,13 +291,13 @@ public class AutoTabLayoutUtils {
 
             Float num = ScoreRegister.calcNum(question);
             Float denum = ScoreRegister.calcDenum(question);
-            ScoreRegister.addRecord(question, num, denum);
+            ScoreRegister.addRecord(question, num, denum, idSurvey);
         }
     }
 
-    public static void initScoreQuestion(QuestionRow questionRow){
+    public static void initScoreQuestion(QuestionRow questionRow, float idSurvey){
         for(Question question: questionRow.getQuestions()){
-            initScoreQuestion(question);
+            initScoreQuestion(question, idSurvey);
         }
     }
 }

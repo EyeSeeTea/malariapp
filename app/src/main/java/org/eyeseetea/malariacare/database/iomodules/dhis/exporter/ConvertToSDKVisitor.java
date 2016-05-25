@@ -146,7 +146,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Calculates scores and update survey
         Log.d(TAG,"Registering scores...");
         List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey);
-        updateSurvey(compositeScores);
+        updateSurvey(compositeScores, currentSurvey.getId_survey());
 
         //Turn score values into dataValues
         Log.d(TAG, "Creating datavalues from scores...");
@@ -156,7 +156,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Turn question values into dataValues
         Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
-        for(Value value:survey.getValues()) {
+        for(Value value:currentSurvey.getValues()) {
             //in a modification an old value is skipped
             if(isAModification && value.getUploadDate().before(currentSurvey.getUploadDate())){
                 continue;
@@ -267,7 +267,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey())));
         dataValue.save();
     }
 
@@ -426,8 +426,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * This changes will be saved just when process finish successfully.
      * @param compositeScores
      */
-    private void updateSurvey(List<CompositeScore> compositeScores){
-        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
+    private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey){
+        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores, idSurvey));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setEventUid(currentEvent.getUid());
     }

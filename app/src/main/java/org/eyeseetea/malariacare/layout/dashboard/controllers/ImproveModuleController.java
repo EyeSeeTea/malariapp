@@ -106,7 +106,8 @@ public class ImproveModuleController extends ModuleController {
     private void closeFeedbackFragment() {
 
         //Clear feedback fragment
-        ScoreRegister.clear();
+        //ScoreRegister.clear(Session.getSurvey().getId_survey());
+
         FeedbackFragment feedbackFragment = (FeedbackFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);

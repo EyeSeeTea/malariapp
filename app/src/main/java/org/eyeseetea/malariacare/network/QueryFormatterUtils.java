@@ -189,11 +189,11 @@ public class QueryFormatterUtils {
         List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey);
 
         //Calculate main score to push later
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey()));
 
         //1 CompositeScore -> 1 dataValue
         for (CompositeScore compositeScore : compositeScoreList) {
-            values.put(prepareValue(compositeScore));
+            values.put(prepareValue(compositeScore,survey.getId_survey()));
         }
         return values;
     }
@@ -237,10 +237,10 @@ public class QueryFormatterUtils {
      * @return
      * @throws Exception
      */
-    private JSONObject prepareValue(CompositeScore compositeScore) throws Exception {
+    private JSONObject prepareValue(CompositeScore compositeScore, float idSurvey) throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore,idSurvey)));
         return elementObject;
     }
 
