@@ -34,7 +34,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Utility class for storing and dealing with survey scores.
@@ -45,11 +44,6 @@ public class ScoreRegister {
      * Tag for logging
      */
     private static final String TAG=".ScoreRegister";
-
-    /**
-     * Map of scores for each compositescore
-     */
-    //public static final Map<CompositeScore, CompositeNumDenRecord> compositeScoreMap = new HashMap<>();
 
     /**
      * Map of scores for each compositescore by survey
@@ -70,12 +64,8 @@ public class ScoreRegister {
     }
 
     public static void addRecord(Question question, Float num, Float den, float surveyId){
-        // TODO: apparently, this map (compositeScoreMap) may return a null sometimes. We may check it in case of bug
-
-        if (question.getCompositeScore() != null) {
-            Log.d(TAG,"Active CS"+surveyId+"");
-            Map<CompositeScore, CompositeNumDenRecord> map= compositeScoreMapBySurvey.get(surveyId);
-                    map.get(question.getCompositeScore()).addRecord(question, num, den);
+         if (question.getCompositeScore() != null) {
+            compositeScoreMapBySurvey.get(surveyId).get(question.getCompositeScore()).addRecord(question, num, den);
         }
         tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
     }
