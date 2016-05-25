@@ -294,12 +294,12 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int option=question.isTriggered(Session.getSurvey())?0:1;
 
         //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter);
+        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter, idSurvey);
     }
 
     /**
@@ -308,13 +308,13 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter,final float idSurvey) {
         boolean refreshTab = false;
 
         if (!question.hasChildren()) {
             // Write option to DB
             ReadWriteDB.saveValuesDDL(question, option);
-            recalculateScores(viewHolder, question);
+            recalculateScores(viewHolder, question, idSurvey);
         }
 
         // If parent relation found, toggle Children Spinner Visibility
@@ -335,7 +335,7 @@ public class AutoTabLayoutUtils {
                             .setMessage(context.getString(R.string.dialog_deleting_children))
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface arg0, int arg1) {
-                                    expandChildren(viewHolder);
+                                    expandChildren(viewHolder, idSurvey);
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -344,7 +344,7 @@ public class AutoTabLayoutUtils {
                                 }
                             }).create().show();
                 } else{
-                    expandChildren(viewHolder);
+                    expandChildren(viewHolder, idSurvey);
                 }
             }
             refreshTab = true;
@@ -353,11 +353,11 @@ public class AutoTabLayoutUtils {
         return refreshTab;
     }
 
-    public static void expandChildren(ViewHolder viewHolder){
+    public static void expandChildren(ViewHolder viewHolder, float idSurvey){
         // Write option to DB
         ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-        recalculateScores(viewHolder, QuestionVisibility.question);
-        toggleChildrenVisibility();
+        recalculateScores(viewHolder, QuestionVisibility.question, idSurvey);
+        toggleChildrenVisibility(idSurvey);
         QuestionVisibility.adapter.notifyDataSetChanged();
     }
 
@@ -366,21 +366,21 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
-        Float num = ScoreRegister.calcNum(question);
-        Float denum = ScoreRegister.calcDenum(question);
+    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float idSurvey) {
+        Float num = ScoreRegister.calcNum(question, idSurvey);
+        Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
 
-        ScoreRegister.addRecord(question, num, denum);
+        ScoreRegister.addRecord(question, num, denum, idSurvey);
     }
 
     /**
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
      */
-    private static void toggleChildrenVisibility() {
+    private static void toggleChildrenVisibility(float idSurvey) {
         Question question = QuestionVisibility.question;
         LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
@@ -395,7 +395,7 @@ public class AutoTabLayoutUtils {
             if (!visible) {
                 List<Float> numdenum = ScoreRegister.getNumDenum(child);
                 if (numdenum != null) {
-                    ScoreRegister.deleteRecord(child);
+                    ScoreRegister.deleteRecord(child, idSurvey);
                 }
                 ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
@@ -403,26 +403,26 @@ public class AutoTabLayoutUtils {
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
             } else {
                 Float denum = ScoreRegister.calcDenum(child);
-                ScoreRegister.addRecord(child, 0F, denum);
+                ScoreRegister.addRecord(child, 0F, denum, idSurvey);
                 elementInvisibility.put(childHeader, false);
             }
             cachedQuestion = question;
         }
     }
 
-    public static void initScoreQuestion(Question question, float totalNum, float totalDenum) {
+    public static void initScoreQuestion(Question question, float totalNum, float totalDenum, float idSurvey) {
 
         if (question.getOutput() == Constants.DROPDOWN_LIST
                 || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
                 || question.getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
-            Float num = ScoreRegister.calcNum(question);
-            Float denum = ScoreRegister.calcDenum(question);
+            Float num = ScoreRegister.calcNum(question, idSurvey);
+            Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
             totalNum = totalNum + num;
             totalDenum = totalDenum + denum;
 
-            ScoreRegister.addRecord(question, num, denum);
+            ScoreRegister.addRecord(question, num, denum, idSurvey);
         }
 
     }

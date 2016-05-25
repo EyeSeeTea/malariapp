@@ -551,7 +551,7 @@ public class Question extends BaseModel {
 
         Float num = ScoreRegister.calcNum(this, survey);
         Float denum = ScoreRegister.calcDenum(this, survey);
-        ScoreRegister.addRecord(this, num, denum);
+        ScoreRegister.addRecord(this, num, denum, survey.getId_survey());
         return Arrays.asList(num, denum);
     }
 

@@ -147,7 +147,7 @@ public class FeedbackFragment extends Fragment {
         progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(getActivity());
+        feedbackAdapter=new FeedbackAdapter(getActivity(),Session.getSurvey().getId_survey());
         feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 

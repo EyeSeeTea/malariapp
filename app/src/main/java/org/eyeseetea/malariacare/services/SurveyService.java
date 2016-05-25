@@ -409,7 +409,8 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
         List<CompositeScore> compositeScores = CompositeScore.list();
-        ScoreRegister.registerCompositeScores(compositeScores);
+        //fixme gets the survey from session can make a wrong CS
+        ScoreRegister.registerCompositeScores(compositeScores,Session.getSurvey().getId_survey());
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession();
