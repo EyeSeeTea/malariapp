@@ -265,7 +265,7 @@ public class AssessModuleController extends ModuleController {
         //Clear survey fragment
         SurveyFragment surveyFragment =  getSurveyFragment();
         surveyFragment.unregisterReceiver();
-
+        surveyFragment.clearScore();
         //Reload Assess fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();

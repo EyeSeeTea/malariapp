@@ -43,8 +43,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -152,7 +151,7 @@ public class FeedbackFragment extends Fragment {
         progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(getActivity(),Session.getSurveyFeedback().getId_survey(), module);
+        feedbackAdapter=new FeedbackAdapter(getActivity(), Session.getSurveyFeedback().getId_survey(), module);
         feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
@@ -244,6 +243,10 @@ public class FeedbackFragment extends Fragment {
 
     public void setModuleName(String simpleName) {
         this.moduleName=simpleName;
+    }
+
+    public void clearScore() {
+        ScoreRegister.clear(Session.getSurveyFeedback().getId_survey(), moduleName);
     }
 
     /**
