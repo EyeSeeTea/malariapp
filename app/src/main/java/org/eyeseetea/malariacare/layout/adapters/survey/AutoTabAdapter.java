@@ -67,12 +67,12 @@ public class AutoTabAdapter extends ATabAdapter {
     // on this position is hidden (true) or visible (false)
     private final LinkedHashMap<BaseModel, Boolean> elementInvisibility = new LinkedHashMap<>();
 
-    public AutoTabAdapter(Tab tab, Context context, float idSurvey) {
-        this(tab, context, R.layout.form_with_score, idSurvey);
+    public AutoTabAdapter(Tab tab, Context context, float idSurvey, String module) {
+        this(tab, context, R.layout.form_with_score, idSurvey, module);
     }
 
-    public AutoTabAdapter(Tab tab, Context context, int id_layout, float idSurvey) {
-        super(tab, context, id_layout, idSurvey);
+    public AutoTabAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module) {
+        super(tab, context, id_layout, idSurvey, module);
 
         // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
         // whether or not they must be visible
@@ -83,8 +83,8 @@ public class AutoTabAdapter extends ATabAdapter {
             if (item instanceof Question) {
                 boolean hidden = AutoTabLayoutUtils.isHidden((Question) item, idSurvey);
                 elementInvisibility.put(item, hidden);
-                if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum, idSurvey);
-                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey),idSurvey);
+                if (!(hidden)) AutoTabLayoutUtils.initScoreQuestion((Question) item, totalNum, totalDenum, idSurvey, module);
+                else ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey),idSurvey, module);
                 Header header = ((Question) item).getHeader();
                 boolean headerVisibility = elementInvisibility.get(header);
                 elementInvisibility.put(header, headerVisibility && elementInvisibility.get(item));
@@ -99,9 +99,9 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static AutoTabAdapter build(Tab tab, Context context, float idSurvey) {
+    public static AutoTabAdapter build(Tab tab, Context context, float idSurvey, String module) {
         int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
-        return new AutoTabAdapter(tab, context, idLayout, idSurvey);
+        return new AutoTabAdapter(tab, context, idLayout, idSurvey, module);
     }
 
     /**
@@ -222,7 +222,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.DROPDOWN_LIST_DISABLED:
                     rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                     // Initialise value depending on match question
-                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this, idSurvey);
+                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this, idSurvey, module);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
@@ -361,7 +361,7 @@ public class AutoTabAdapter extends ATabAdapter {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             if (viewCreated) {
-                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility, adapter, idSurvey))
+                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility, adapter, idSurvey, module))
                     notifyDataSetChanged();
             } else {
                 viewCreated = true;
@@ -397,7 +397,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 option = (Option) customRadioButton.getTag();
             }
-            AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility, adapter, idSurvey);
+            AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility, adapter, idSurvey, module);
         }
     }
 

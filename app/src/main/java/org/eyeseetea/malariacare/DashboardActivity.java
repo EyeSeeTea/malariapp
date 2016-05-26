@@ -48,13 +48,8 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -70,7 +65,6 @@ import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 
 import java.io.IOException;
@@ -318,6 +312,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         feedbackFragment = FeedbackFragment.newInstance(mStackLevel);
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
+
+        feedbackFragment.setModuleName(Constants.FRAGMENT_SURVEY_KEY);
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         setActionBarTitleForSurvey(Session.getSurveyFeedback());
     }
@@ -348,6 +344,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         mStackLevel++;
         if(surveyFragment==null)
             surveyFragment = SurveyFragment.newInstance(mStackLevel);
+        surveyFragment.setModuleName(Constants.FRAGMENT_FEEDBACK_KEY);
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         setActionBarTitleForSurvey(Session.getSurvey());
     }
@@ -630,7 +627,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey=Session.getSurvey();
-                        survey.setCompleteSurveyState();
+                        survey.setCompleteSurveyState(Constants.FRAGMENT_FEEDBACK_KEY);
                         alertOnComplete(survey);
                         closeSurveyFragment();
                     }
@@ -638,7 +635,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void closeSurveyFragment(){
-        ScoreRegister.clear(Session.getSurvey().getId_survey());
+        ScoreRegister.clear(Session.getSurvey().getId_survey(), Constants.FRAGMENT_FEEDBACK_KEY);
         surveyFragment.unregisterReceiver();
         initAssess();
         unsentFragment.reloadData();
@@ -647,7 +644,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void closeFeedbackFragment() {
         isMoveToFeedback=false;
-        ScoreRegister.clear(Session.getSurveyFeedback().getId_survey());
+        ScoreRegister.clear(Session.getSurveyFeedback().getId_survey(),Constants.FRAGMENT_SURVEY_KEY);
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
         initImprove();

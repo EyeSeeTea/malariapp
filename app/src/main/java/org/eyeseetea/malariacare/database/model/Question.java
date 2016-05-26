@@ -538,14 +538,14 @@ public class Question extends BaseModel {
      *
      * @return List</Float> {num, den}
      */
-    public List<Float> initScore(float idSurvey) {
+    public List<Float> initScore(float idSurvey, String module) {
         if (!this.isScored()) {
             return null;
         }
 
         Float num = ScoreRegister.calcNum(this, idSurvey);
         Float denum = ScoreRegister.calcDenum(this, idSurvey);
-        ScoreRegister.addRecord(this, num, denum, idSurvey);
+        ScoreRegister.addRecord(this, num, denum, idSurvey, module);
         return Arrays.asList(num, denum);
     }
 

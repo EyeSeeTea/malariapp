@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -172,7 +173,7 @@ public class SurveyService extends IntentService {
         //Take action to be done
         switch (intent.getStringExtra(SERVICE_METHOD)){
             case PREPARE_SURVEY_ACTION:
-                prepareSurveyInfo();
+                prepareSurveyInfo(intent.getStringExtra(Constants.FRAGMENT_FEEDBACK_KEY));
                 break;
             case ALL_IN_PROGRESS_SURVEYS_ACTION:
                 getAllInProgressSurveys();
@@ -194,7 +195,7 @@ public class SurveyService extends IntentService {
                 preLoadTabItems(intent.getLongExtra("tab", 0));
                 break;
             case PREPARE_FEEDBACK_ACTION:
-                getFeedbackItems();
+                getFeedbackItems(intent.getStringExtra(Constants.FRAGMENT_SURVEY_KEY));
                 break;
             case ALL_MONITOR_DATA_ACTION:
                 getAllMonitorData();
@@ -352,9 +353,9 @@ public class SurveyService extends IntentService {
     /**
      * Action that calculates the 'feedback' items corresponding to the current survey in session
      */
-    private void getFeedbackItems(){
+    private void getFeedbackItems(String module){
         //Mock some items
-        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyFeedback());
+        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyFeedback(), module);
 
         //Return result to anyone listening
         Log.d(TAG, String.format("getFeedbackItems: %d", feedbackList.size()));
@@ -404,12 +405,11 @@ public class SurveyService extends IntentService {
     /**
      * Prepares required data to show a survey completely (tabs and composite scores).
      */
-    private void prepareSurveyInfo(){
+    private void prepareSurveyInfo(String module){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
         List<CompositeScore> compositeScores = CompositeScore.list();
-        //fixme gets the survey from session can make a wrong CS
-        ScoreRegister.registerCompositeScores(compositeScores,Session.getSurvey().getId_survey());
+        ScoreRegister.registerCompositeScores(compositeScores,Session.getSurvey().getId_survey(),module);
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession();

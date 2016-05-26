@@ -43,13 +43,17 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
 
     public float idSurvey;
 
-    public ATabAdapter(Tab tab, Context context, int id_layout, float idSurvey){
+    public String module;
+
+
+    public ATabAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module){
         this.context = context;
         this.tab = tab;
         this.lInflater = LayoutInflater.from(context);
         this.items = AUtils.preloadTabItems(tab);
         this.id_layout = id_layout;
         this.idSurvey=idSurvey;
+        this.module=module;
     }
 
     /**

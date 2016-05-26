@@ -138,8 +138,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Calculates scores and update survey
         Log.d(TAG,"Registering scores...");
-        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey);
-        updateSurvey(compositeScores, currentSurvey.getId_survey());
+        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey, Constants.PUSH_MODULE_KEY);
+        updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
 
         //Turn score values into dataValues
         Log.d(TAG, "Creating datavalues from scores...");
@@ -168,7 +168,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey())));
+        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY)));
         dataValue.save();
     }
 
@@ -297,8 +297,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * This changes will be saved just when process finish successfully.
      * @param compositeScores
      */
-    private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey){
-        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores, idSurvey));
+    private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey, String module){
+        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setUploadedDate(uploadedDate);
         currentSurvey.setEventUid(currentEvent.getUid());
