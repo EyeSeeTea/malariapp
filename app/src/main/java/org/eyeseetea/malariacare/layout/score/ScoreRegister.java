@@ -129,7 +129,7 @@ public class ScoreRegister {
     public static void clearClassCompositeScore(float idSurvey, String module){
         if(compositeScoreMapBySurvey.containsKey(module))
             if(compositeScoreMapBySurvey.get(module).containsKey(idSurvey)) {
-                compositeScoreMapBySurvey.get(module).put(idSurvey, new HashMap<CompositeScore, CompositeNumDenRecord>());
+                compositeScoreMapBySurvey.get(module).remove(idSurvey);
             }
     }
 

@@ -190,7 +190,7 @@ public class SurveyFragment extends  Fragment {
     }
 
     public void exit(){
-        //ScoreRegister.clear(Session.getSurvey().getId_survey());
+        clearScore();
         unregisterReceiver();
     }
     @Override
@@ -542,6 +542,9 @@ public class SurveyFragment extends  Fragment {
         getActivity().getApplicationContext().startService(surveysIntent);
     }
 
+    public void clearScore() {
+        ScoreRegister.clear(Session.getSurvey().getId_survey(), moduleName);
+    }
     /**
      * Reloads tabs info and notifies its adapter
      * @param tabs
