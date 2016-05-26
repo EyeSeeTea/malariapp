@@ -145,6 +145,8 @@ public class SurveyFragment extends  Fragment {
      */
     RelativeLayout llLayout;
 
+    String moduleName;
+
     public static SurveyFragment newInstance(int index) {
         SurveyFragment f = new SurveyFragment();
 
@@ -170,7 +172,7 @@ public class SurveyFragment extends  Fragment {
         }
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
-        createMenu();
+        createMenu(moduleName);
         createProgress();
         prepareSurveyInfo();
         return llLayout;
@@ -208,10 +210,16 @@ public class SurveyFragment extends  Fragment {
         unregisterReceiver();
         super.onStop();
     }
+
+    public void setModuleName(String simpleName) {
+        this.moduleName=simpleName;
+
+    }
+
     /**
      * Adds the spinner and imagebutons for tabs
      */
-    private void createMenu() {
+    private void createMenu(final String moduleName) {
 
         Log.d(TAG, "createMenu");
         this.tabAdapter=new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
@@ -292,6 +300,8 @@ public class SurveyFragment extends  Fragment {
 
         private Tab tab;
 
+        String module;
+
         public AsyncChangeTab(Tab tab) {
             this.tab = tab;
         }
@@ -305,14 +315,13 @@ public class SurveyFragment extends  Fragment {
 
         @Override
         protected View doInBackground(Void... params) {
-
             Log.d(TAG, "doInBackground("+Thread.currentThread().getId()+")..");
             View view=null;
             try {
                 if (tab.isGeneralScore()) {
                     showGeneralScores();
                 } else {
-                    view=prepareTab(tab);
+                    view=prepareTab(tab, moduleName);
                 }
             }catch (Exception e){
             }
@@ -369,13 +378,13 @@ public class SurveyFragment extends  Fragment {
      * @param selectedTab
      * @return
      */
-    private View prepareTab(Tab selectedTab) {
+    private View prepareTab(Tab selectedTab, String module) {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         if(selectedTab.isCompositeScore()){
             //Initialize scores x question not loaded yet
             List<Tab> notLoadedTabs=tabAdaptersCache.getNotLoadedTabs();
-            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs), Session.getSurvey());
+            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs), Session.getSurvey(), module);
         }
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
@@ -532,6 +541,7 @@ public class SurveyFragment extends  Fragment {
     public void prepareSurveyInfo(){
         Log.d(TAG, "prepareSurveyInfo");
         Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(Constants.MODULE_KEY,moduleName);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.PREPARE_SURVEY_ACTION);
         getActivity().getApplicationContext().startService(surveysIntent);
     }
@@ -660,8 +670,7 @@ public class SurveyFragment extends  Fragment {
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            //fixme gets the survey from session can make a wrong CS
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurvey().getId_survey()));
+            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurvey().getId_survey(), moduleName));
             this.compositeScores=compositeScores;
         }
 
@@ -695,7 +704,7 @@ public class SurveyFragment extends  Fragment {
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab){
-            return AutoTabAdapter.build(tab, getActivity(), Session.getSurvey().getId_survey());
+            return AutoTabAdapter.build(tab, getActivity(), Session.getSurvey().getId_survey(), moduleName);
         }
     }
 }

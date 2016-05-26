@@ -58,14 +58,17 @@ public class FeedbackAdapter extends BaseAdapter {
 
     float idSurvey;
 
-    public FeedbackAdapter(Context context, float idSurvey){
-        this(new ArrayList<Feedback>(), context, idSurvey);
+    String module;
+
+    public FeedbackAdapter(Context context, float idSurvey, String module){
+        this(new ArrayList<Feedback>(), context, idSurvey, module);
     }
 
-    public FeedbackAdapter(List<Feedback> items, Context context, float idSurvey){
+    public FeedbackAdapter(List<Feedback> items, Context context, float idSurvey, String module){
         this.items=items;
         this.context=context;
         this.idSurvey=idSurvey;
+        this.module=module;
         this.onlyFailed=true;
         this.hiddenPositions= new boolean[this.items.size()];
     }
@@ -139,14 +142,14 @@ public class FeedbackAdapter extends BaseAdapter {
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()) {
-            if (feedback.getScore(idSurvey) < Constants.MAX_AMBER)
+            if (feedback.getScore(idSurvey, module) < Constants.MAX_AMBER)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else if (feedback.getScore(idSurvey) < Constants.MAX_RED)
+            else if (feedback.getScore(idSurvey, module) < Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
             else
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         }
-        textView.setText(feedback.getPercentageAsString(idSurvey));
+        textView.setText(feedback.getPercentageAsString(idSurvey, module));
 
         return rowLayout;
     }

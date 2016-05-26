@@ -150,7 +150,7 @@ public class AutoTabInVisibilityState {
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
      */
-    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey) {
+    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         Question question = autoTabSelectedItem.getQuestion();
 
         List<Question> children = question.getChildren();
@@ -164,7 +164,7 @@ public class AutoTabInVisibilityState {
             //Show child -> Show header, Update scores
             if(visible){
                 Float denum = ScoreRegister.calcDenum(childQuestion, idSurvey);
-                ScoreRegister.addRecord(childQuestion, 0F, denum, idSurvey);
+                ScoreRegister.addRecord(childQuestion, 0F, denum, idSurvey, module);
                 this.setInvisible(childHeader,false);
                 continue;
             }
@@ -175,7 +175,7 @@ public class AutoTabInVisibilityState {
 
             //-> Remove score
             if (ScoreRegister.getNumDenum(childQuestion) != null) {
-                ScoreRegister.deleteRecord(childQuestion, idSurvey);
+                ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
             }
             //-> Check header visibility (no header,done)
             if(childHeader==null){

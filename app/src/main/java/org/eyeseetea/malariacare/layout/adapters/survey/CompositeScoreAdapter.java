@@ -39,8 +39,8 @@ import org.eyeseetea.malariacare.views.CustomTextView;
  */
 public class CompositeScoreAdapter extends ATabAdapter {
 
-    public CompositeScoreAdapter(Tab tab, Context context, int id_layout, float idSurvey) {
-        super(tab, context, id_layout, idSurvey);
+    public CompositeScoreAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module) {
+        super(tab, context, id_layout, idSurvey, module);
     }
 
     /**
@@ -50,8 +50,8 @@ public class CompositeScoreAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static CompositeScoreAdapter build(Tab tab, Context context, float idSurvey) {
-        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab, idSurvey);
+    public static CompositeScoreAdapter build(Tab tab, Context context, float idSurvey, String module) {
+        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab, idSurvey, module);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
 
-        Float compositeScoreValue = ScoreRegister.getCompositeScore(item, idSurvey);
+        Float compositeScoreValue = ScoreRegister.getCompositeScore(item, idSurvey, module);
 
         if (compositeScoreValue == null)
             ((CustomTextView)rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.number_zero));

@@ -99,6 +99,7 @@ public class ImproveModuleController extends ModuleController {
         feedbackFragment = FeedbackFragment.newInstance(1);
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
+        feedbackFragment.setModuleName(ImproveModuleController.getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }

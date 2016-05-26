@@ -38,17 +38,19 @@ public class AutoTabSelectedItem {
     private Option option;
     private AutoTabViewHolder viewHolder;
     private float idSurvey;
+    private String module;
 
     /**
      * Public constructor that gets the info that remains the same between different 'click' events
      * @param autoTabAdapter
      * @param inVisibilityState
      */
-    public AutoTabSelectedItem(AutoTabAdapter autoTabAdapter,AutoTabInVisibilityState inVisibilityState, float idSurvey){
+    public AutoTabSelectedItem(AutoTabAdapter autoTabAdapter,AutoTabInVisibilityState inVisibilityState, float idSurvey, String module){
         this.autoTabAdapter=autoTabAdapter;
         this.context = autoTabAdapter.getContext();
         this.inVisibilityState = inVisibilityState;
         this.idSurvey=idSurvey;
+        this.module=module;
     }
 
     /**
@@ -58,11 +60,13 @@ public class AutoTabSelectedItem {
      * @param viewHolder
      * @return
      */
-    public AutoTabSelectedItem buildSelectedItem(Question question, Option option, AutoTabViewHolder viewHolder){
-        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(autoTabAdapter,inVisibilityState,idSurvey);
+    public AutoTabSelectedItem buildSelectedItem(Question question, Option option, AutoTabViewHolder viewHolder, float idSurvey, String module){
+        AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(autoTabAdapter,inVisibilityState,idSurvey, module);
         autoTabSelectedItem.question = question;
         autoTabSelectedItem.option = option;
         autoTabSelectedItem.viewHolder = viewHolder;
+        this.idSurvey=idSurvey;
+        this.module=module;
         return autoTabSelectedItem;
     }
 
@@ -82,8 +86,8 @@ public class AutoTabSelectedItem {
         return viewHolder;
     }
 
-    public void toggleChildrenVisibility(){
-        this.inVisibilityState.toggleChildrenVisibility(this,idSurvey);
+    public void toggleChildrenVisibility(float idSurvey, String module){
+        this.inVisibilityState.toggleChildrenVisibility(this,idSurvey, module);
     }
 
     public void notifyDataSetChanged(){

@@ -123,6 +123,7 @@ public class AssessModuleController extends ModuleController {
         if(surveyFragment==null) {
             surveyFragment = SurveyFragment.newInstance(1);
         }
+        surveyFragment.setModuleName(AssessModuleController.getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
@@ -136,7 +137,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //Change state
-        survey.setCompleteSurveyState();
+        survey.setCompleteSurveyState(AssessModuleController.getSimpleName());
         //Remove from list
         ((DashboardUnsentFragment)fragment).removeSurveyFromAdapter(survey);
         //Reload sent surveys
@@ -248,7 +249,7 @@ public class AssessModuleController extends ModuleController {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey = Session.getSurvey();
-                        survey.setCompleteSurveyState();
+                        survey.setCompleteSurveyState(AssessModuleController.getSimpleName());
                         alertOnComplete(survey);
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();

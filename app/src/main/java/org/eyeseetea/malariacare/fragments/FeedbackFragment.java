@@ -43,8 +43,11 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -88,6 +91,8 @@ public class FeedbackFragment extends Fragment {
     private Menu menu;
 
 
+    private String moduleName;
+
     /**
      * Parent layout
      */
@@ -98,7 +103,7 @@ public class FeedbackFragment extends Fragment {
         FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
-        prepareUI();
+        prepareUI(moduleName);
 
         return llLayout; // We must return the loaded Layout
     }
@@ -142,12 +147,12 @@ public class FeedbackFragment extends Fragment {
     /**
      * Gets a reference to the progress view in order to stop it later
      */
-    private void prepareUI(){
+    private void prepareUI(String module){
         //Get progress
         progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(getActivity(),Session.getSurveyFeedback().getId_survey());
+        feedbackAdapter=new FeedbackAdapter(getActivity(),Session.getSurveyFeedback().getId_survey(), module);
         feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
@@ -232,8 +237,13 @@ public class FeedbackFragment extends Fragment {
     public void prepareFeedbackInfo(){
         Log.d(TAG, "prepareFeedbackInfo");
         Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(Constants.MODULE_KEY,moduleName);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
         getActivity().getApplicationContext().startService(surveysIntent);
+    }
+
+    public void setModuleName(String simpleName) {
+        this.moduleName=simpleName;
     }
 
     /**

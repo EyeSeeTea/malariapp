@@ -83,10 +83,10 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     private final AutoTabSelectedItem autoTabSelectedItemFactory;
 
-    public AutoTabAdapter(Tab tab, Context context, int id_layout, float idSurvey) {
-        super(tab, context, id_layout, idSurvey);
+    public AutoTabAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module) {
+        super(tab, context, id_layout, idSurvey, module);
         this.inVisibilityState = new AutoTabInVisibilityState();
-        this.autoTabSelectedItemFactory = new AutoTabSelectedItem(this,this.inVisibilityState, idSurvey);
+        this.autoTabSelectedItemFactory = new AutoTabSelectedItem(this,this.inVisibilityState, idSurvey, module);
 
         // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
         // whether or not they must be visible
@@ -102,10 +102,9 @@ public class AutoTabAdapter extends ATabAdapter {
             if (item instanceof Question) {
                 boolean visible = inVisibilityState.initVisibility((Question) item, idSurvey);
                 if (visible){
-                    AutoTabLayoutUtils.initScoreQuestion((Question) item, idSurvey);
+                    AutoTabLayoutUtils.initScoreQuestion((Question) item, idSurvey, module);
                 }else{
-                    //fixme gets the survey from session can make a wrong CS
-                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey), idSurvey);
+                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey), idSurvey, module);
                 }
                 inVisibilityState.updateHeaderVisibility((Question) item);
             }
@@ -114,9 +113,9 @@ public class AutoTabAdapter extends ATabAdapter {
             if (item instanceof QuestionRow){
                 boolean visible = inVisibilityState.initVisibility((QuestionRow)item, idSurvey);
                 if (visible){
-                    AutoTabLayoutUtils.initScoreQuestion((QuestionRow) item, idSurvey);
+                    AutoTabLayoutUtils.initScoreQuestion((QuestionRow) item, idSurvey, module);
                 }else{
-                    ScoreRegister.addQuestionRowRecords((QuestionRow) item, idSurvey);
+                    ScoreRegister.addQuestionRowRecords((QuestionRow) item, idSurvey, module);
                 }
                 inVisibilityState.updateHeaderVisibility((QuestionRow) item);
             }
@@ -130,9 +129,9 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static AutoTabAdapter build(Tab tab, Context context, float idSurvey) {
+    public static AutoTabAdapter build(Tab tab, Context context, float idSurvey, String module) {
         int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
-        return new AutoTabAdapter(tab, context, idLayout, idSurvey);
+        return new AutoTabAdapter(tab, context, idLayout, idSurvey, module);
     }
 
     /**
@@ -289,7 +288,7 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.DROPDOWN_LIST_DISABLED:
                 rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                 // Initialise value depending on match question
-                AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey);
+                AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey, module);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
                 rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
@@ -366,7 +365,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.DROPDOWN_LIST_DISABLED:
                     spinner = addSpinnerViewToRow(row,question,columnWeight);
                     spinner.setOnItemSelectedListener(new SpinnerListener(question, new AutoTabViewHolder(spinner)));
-                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabViewHolder(spinner), question, getContext(), inVisibilityState, this, idSurvey);
+                    AutoTabLayoutUtils.autoFillAnswer(new AutoTabViewHolder(spinner), question, getContext(), inVisibilityState, this, idSurvey, module);
                     viewHolder.addColumnComponent(spinner);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
@@ -611,8 +610,8 @@ public class AutoTabAdapter extends ATabAdapter {
             }
 
             Option selectedOption=(Option) ((Spinner) viewHolder.component).getItemAtPosition(pos);
-            AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder);
-            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey);
+            AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
+            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
         }
 
         @Override
@@ -641,8 +640,8 @@ public class AutoTabAdapter extends ATabAdapter {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 selectedOption = (Option) customRadioButton.getTag();
             }
-            AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder);
-            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey);
+            AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
+            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
         }
     }
 
@@ -668,8 +667,8 @@ public class AutoTabAdapter extends ATabAdapter {
                 return;
             }
             ((Switch)viewHolder.component).setText(selectedOption.getName());
-            AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder);
-            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey);
+            AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
+            AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
         }
     }
 
