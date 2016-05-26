@@ -440,8 +440,8 @@ public class Question extends BaseModel {
      *
      * @return
      */
-    public Value getValueBySession() {
-        return this.getValueBySurvey(Session.getSurvey().getId_survey());
+    public Value getValueBySession(String module) {
+        return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**
@@ -468,8 +468,8 @@ public class Question extends BaseModel {
      *
      * @return
      */
-    public Option getOptionBySession() {
-        return this.getOptionBySurvey(Session.getSurvey().getId_survey());
+    public Option getOptionBySession(String module) {
+        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**

@@ -111,7 +111,7 @@ public class AutoTabAdapter extends ATabAdapter {
     public void initializeSubscore() {
         initializeScoreViews();
         setSubScoreVisibility();
-        initializeDenum();
+        initializeDenum(idSurvey);
     }
 
     /**
@@ -135,7 +135,7 @@ public class AutoTabAdapter extends ATabAdapter {
     }
 
 
-    private void initializeDenum() {
+    private void initializeDenum(float idSurvey) {
         float result = 0;
         int number_items = getItems().size();
 
@@ -250,7 +250,7 @@ public class AutoTabAdapter extends ATabAdapter {
             if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
                 AutoTabLayoutUtils.updateReadOnly(viewHolder.component, true);
             }else{
-                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly());
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, getReadOnly(module));
             }
 
         } else {
@@ -271,14 +271,14 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question));
+                ((CustomEditText) viewHolder.component).setText(ReadWriteDB.readValueQuestion(question, module));
                 break;
             case Constants.DROPDOWN_LIST:
             case Constants.DROPDOWN_LIST_DISABLED:
 
-                ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question));
+                ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question, module));
 
-                List<Float> numdenum = ScoreRegister.getNumDenum(question);
+                List<Float> numdenum = ScoreRegister.getNumDenum(question, idSurvey, module);
                 if (numdenum != null) {
                     viewHolder.num.setText(Float.toString(numdenum.get(0)));
                     viewHolder.denum.setText(Float.toString(numdenum.get(1)));
@@ -292,8 +292,8 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.RADIO_GROUP_HORIZONTAL:
             case Constants.RADIO_GROUP_VERTICAL:
                 //FIXME: it is almost the same as the previous case
-                Value value = question.getValueBySession();
-                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
+                Value value = question.getValueBySession(module);
+                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question, idSurvey, module);
                 if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
                     break;
                 }
@@ -337,7 +337,7 @@ public class AutoTabAdapter extends ATabAdapter {
         @Override
         public void afterTextChanged(Editable s) {
             if (viewCreated) {
-                ReadWriteDB.saveValuesText(question, s.toString());
+                ReadWriteDB.saveValuesText(question, s.toString(), module);
             } else {
                 viewCreated = true;
             }

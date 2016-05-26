@@ -58,6 +58,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -375,7 +376,7 @@ public class CreateSurveyFragment extends Fragment {
 
         // Put new survey in session
         Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
 
         //Look for coordinates
         prepareLocationListener(survey);

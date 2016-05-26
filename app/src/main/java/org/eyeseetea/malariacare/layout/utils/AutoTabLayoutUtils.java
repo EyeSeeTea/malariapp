@@ -313,7 +313,7 @@ public class AutoTabLayoutUtils {
 
         if (!question.hasChildren()) {
             // Write option to DB
-            ReadWriteDB.saveValuesDDL(question, option);
+            ReadWriteDB.saveValuesDDL(question, option, module);
             recalculateScores(viewHolder, question, idSurvey, module);
         }
 
@@ -327,7 +327,7 @@ public class AutoTabLayoutUtils {
                 QuestionVisibility.option = option;
                 boolean notEmpty = false;
                 for (Question childQuestion: question.getChildren()){
-                    if (childQuestion.getValueBySession()!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
+                    if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
                 }
                 if (notEmpty) {
                     new AlertDialog.Builder(context)
@@ -355,7 +355,7 @@ public class AutoTabLayoutUtils {
 
     public static void expandChildren(ViewHolder viewHolder, float idSurvey, String module){
         // Write option to DB
-        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
+        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option, module);
         recalculateScores(viewHolder, QuestionVisibility.question, idSurvey, module);
         toggleChildrenVisibility(idSurvey, module);
         QuestionVisibility.adapter.notifyDataSetChanged();
@@ -385,7 +385,7 @@ public class AutoTabLayoutUtils {
         LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
-        Survey survey=Session.getSurvey();
+        Survey survey=Session.getSurveyByModule(module);
         boolean visible;
 
         for (Question child : children) {
@@ -393,11 +393,11 @@ public class AutoTabLayoutUtils {
             visible=!child.isHiddenBySurvey(idSurvey);
             elementInvisibility.put(child, !visible);
             if (!visible) {
-                List<Float> numdenum = ScoreRegister.getNumDenum(child);
+                List<Float> numdenum = ScoreRegister.getNumDenum(child, idSurvey, module);
                 if (numdenum != null) {
                     ScoreRegister.deleteRecord(child, idSurvey, module);
                 }
-                ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
+                ReadWriteDB.deleteValue(child, module); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
                 if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));

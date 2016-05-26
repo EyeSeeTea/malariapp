@@ -149,7 +149,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                     if(isCreateSurveyFragmentActive() ||isDashboardUnsentFragmentActive())
                         setActionBarDashboard();
                     if(isSurveyFragmentActive())
-                        setActionBarTitleForSurvey(Session.getSurvey());
+                        setActionBarTitleForSurvey(Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY));
                         unsentFragment.reloadData();
                 } else if (tabId.equalsIgnoreCase(getResources().getString(R.string.tab_tag_improve))) {
                     currentTabName=getString(R.string.improve);
@@ -315,7 +315,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
         feedbackFragment.setModuleName(Constants.FRAGMENT_SURVEY_KEY);
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        setActionBarTitleForSurvey(Session.getSurveyFeedback());
+        setActionBarTitleForSurvey(Session.getSurveyByModule(Constants.FRAGMENT_FEEDBACK_KEY));
     }
 
     public void initCreateSurvey(){
@@ -333,7 +333,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initSurveyFeedbackFromAssess(Survey survey){
-        Session.setSurveyFeedback(survey);
+        Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
         sentFragment.unregisterSurveysReceiver();
         initFeedback();
@@ -346,7 +346,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
             surveyFragment = SurveyFragment.newInstance(mStackLevel);
         surveyFragment.setModuleName(Constants.FRAGMENT_FEEDBACK_KEY);
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        setActionBarTitleForSurvey(Session.getSurvey());
+        setActionBarTitleForSurvey(Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY));
     }
 
     public void initMonitor(){
@@ -540,7 +540,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      * It is called when the user change the tab
      */
     private void onExitFromSurvey(){
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY);
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
@@ -555,7 +555,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
      * It is called when the user press back in a surveyFragment
      */
     private void onSurveyBackPressed() {
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY);
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
@@ -587,7 +587,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey = Session.getSurvey();
+                Survey survey = Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY);
                 survey.updateSurveyStatus();
                 closeSurveyFragment();
             }
@@ -626,7 +626,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey=Session.getSurvey();
+                        Survey survey=Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY);
                         survey.setCompleteSurveyState(Constants.FRAGMENT_FEEDBACK_KEY);
                         alertOnComplete(survey);
                         closeSurveyFragment();
@@ -635,7 +635,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void closeSurveyFragment(){
-        ScoreRegister.clear(Session.getSurvey().getId_survey(), Constants.FRAGMENT_FEEDBACK_KEY);
+        ScoreRegister.clear(Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY).getId_survey(), Constants.FRAGMENT_FEEDBACK_KEY);
         surveyFragment.unregisterReceiver();
         initAssess();
         unsentFragment.reloadData();
@@ -644,7 +644,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void closeFeedbackFragment() {
         isMoveToFeedback=false;
-        ScoreRegister.clear(Session.getSurveyFeedback().getId_survey(),Constants.FRAGMENT_SURVEY_KEY);
+        ScoreRegister.clear(Session.getSurveyByModule(Constants.FRAGMENT_FEEDBACK_KEY).getId_survey(),Constants.FRAGMENT_SURVEY_KEY);
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
         initImprove();
@@ -740,7 +740,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     @Override
     public void onFeedbackSelected(Survey survey) {
-        Session.setSurveyFeedback(survey);
+        Session.getSurveyByModule(Constants.FRAGMENT_FEEDBACK_KEY);
         tabHost.setCurrentTabByTag(getResources().getString(R.string.tab_tag_improve));
         sentFragment.getView().setVisibility(View.GONE);
         initFeedback();
@@ -749,7 +749,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     @Override
     public void onSurveySelected(Survey survey) {
         //Put selected survey in session
-        Session.setSurvey(survey);
+        Session.getSurveyByModule(Constants.FRAGMENT_SURVEY_KEY);
         initSurvey();
     }
 

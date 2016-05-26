@@ -94,7 +94,7 @@ public class PushClient {
     }
 
     private boolean launchPush(Survey survey) {
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,Constants.PUSH_MODULE_KEY);
         //Pushing selected survey via sdk
         List<Survey> surveys = new ArrayList<>();
         surveys.add(survey);

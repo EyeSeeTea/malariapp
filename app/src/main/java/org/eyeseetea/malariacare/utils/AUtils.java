@@ -88,11 +88,11 @@ public abstract class AUtils {
         return result;
     }
 
-    public static List<? extends BaseModel> preloadTabItems(Tab tab){
+    public static List<? extends BaseModel> preloadTabItems(Tab tab, String module){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            items = CompositeScore.listByTabGroup(Session.getSurveyByModule(module).getTabGroup());
 
         else{
 
