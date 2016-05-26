@@ -214,7 +214,7 @@ public class AutoTabLayoutUtils {
         //No children -> Save, check scores, done.
         if (!question.hasChildren()) {
             // Write option to DB
-            ReadWriteDB.saveValuesDDL(question, option);
+            ReadWriteDB.saveValuesDDL(question, option, module);
             recalculateScores(viewHolder, question, idSurvey,module);
             return;
         }
@@ -222,7 +222,7 @@ public class AutoTabLayoutUtils {
         //Children -> Save, Expand|Collapse, Notify, ..
 
         //No children answers will be deleted -> Save, Expand|Collapse
-        if (!isRemovingValuesFromChildren(question)) {
+        if (!isRemovingValuesFromChildren(question, module)) {
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
@@ -248,9 +248,9 @@ public class AutoTabLayoutUtils {
      * @param question
      * @return
      */
-    private static boolean isRemovingValuesFromChildren(Question question){
+    private static boolean isRemovingValuesFromChildren(Question question, String module){
         for (Question childQuestion: question.getChildren()){
-            if (childQuestion.getValueBySession()!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+            if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
                 return true;
             }
         }
@@ -259,7 +259,7 @@ public class AutoTabLayoutUtils {
 
     public static void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module){
         //Save value
-        ReadWriteDB.saveValuesDDL(autoTabSelectedItem.getQuestion(), autoTabSelectedItem.getOption());
+        ReadWriteDB.saveValuesDDL(autoTabSelectedItem.getQuestion(), autoTabSelectedItem.getOption(), module);
         //Recalculate score
         recalculateScores(autoTabSelectedItem.getViewHolder(), autoTabSelectedItem.getQuestion(), idSurvey, module);
         //Toggle children

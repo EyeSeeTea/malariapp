@@ -26,7 +26,6 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 
 import java.util.ArrayList;
@@ -46,14 +45,15 @@ public class ScoreRegister {
     private static final String TAG=".ScoreRegister";
 
     /**
-     * Map of scores for each compositescore by survey
+     * Map of scores for each compositescore by survey and module
      */
     public static final Map<String, Map<Float, Map<CompositeScore, CompositeNumDenRecord>>> compositeScoreMapBySurvey = new HashMap<>();
 
     /**
-     * Map of scores for each tab
+     * Map of scores for each tab by survey and module
      */
-    private static final Map<Tab, TabNumDenRecord> tabScoreMap = new HashMap<>();
+    public static final Map<String, Map<Float, Map<Tab, TabNumDenRecord>>> tabScoreMap = new HashMap<>();
+
 
     public static void initScoresForQuestions(List<Question> questions, Survey survey, String module){
         for(Question question : questions){
@@ -63,11 +63,11 @@ public class ScoreRegister {
         }
     }
 
-    public static void addRecord(Question question, Float num, Float den, float surveyId, String module){
+    public static void addRecord(Question question, Float num, Float den, float idSurvey, String module){
          if (question.getCompositeScore() != null) {
-             compositeScoreMapBySurvey.get(module).get(surveyId).get(question.getCompositeScore()).addRecord(question, num, den);
+             compositeScoreMapBySurvey.get(module).get(idSurvey).get(question.getCompositeScore()).addRecord(question, num, den);
         }
-        tabScoreMap.get(question.getHeader().getTab()).addRecord(question, num, den);
+        tabScoreMap.get(module).get(idSurvey).get(question.getHeader().getTab()).addRecord(question, num, den);
     }
 
     public static void addQuestionRowRecords(QuestionRow questionRow, float idSurvey, String module){
@@ -80,7 +80,7 @@ public class ScoreRegister {
     public static void deleteRecord(Question question, float idSurvey, String module){
         if (question.getCompositeScore() != null)
             compositeScoreMapBySurvey.get(module).get(idSurvey).get(question.getCompositeScore()).deleteRecord(question);
-        tabScoreMap.get(question.getHeader().getTab()).deleteRecord(question);
+        tabScoreMap.get(module).get(idSurvey).get(question.getHeader().getTab()).deleteRecord(question);
     }
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result, float idSurvey, String module) {
@@ -100,8 +100,14 @@ public class ScoreRegister {
         return result;
     }
 
-    public static List<Float> getNumDenum(Question question) {
-        return tabScoreMap.get(question.getHeader().getTab()).getNumDenRecord().get(question);
+    public static List<Float> getNumDenum(Question question, float idSurvey, String module) {
+        if(!tabScoreMap.containsKey(module))
+            return null;
+        if(!tabScoreMap.get(module).containsKey(idSurvey))
+            return null;
+        if(!tabScoreMap.get(module).get(idSurvey).containsKey(question.getHeader().getTab()))
+            return null;
+        return tabScoreMap.get(module).get(idSurvey).get(question.getHeader().getTab()).getNumDenRecord().get(question);
     }
 
     public static Float getCompositeScore(CompositeScore cScore, float idSurvey, String module) {
@@ -113,8 +119,8 @@ public class ScoreRegister {
     }
 
 
-    public static List<Float> calculateGeneralScore(Tab tab) {
-        return tabScoreMap.get(tab).calculateTotal();
+    public static List<Float> calculateGeneralScore(Tab tab, float idSurvey, String module) {
+        return tabScoreMap.get(module).get(idSurvey).get(tab).calculateTotal();
     }
 
     /**
@@ -122,7 +128,7 @@ public class ScoreRegister {
      * @param compositeScores
      */
     public static void registerCompositeScores(List<CompositeScore> compositeScores, float idSurvey, String module){
-        clearClassCompositeScore(idSurvey,module);
+        clearCompositeScoreByModuleAndSurvey(idSurvey,module);
         for(CompositeScore compositeScore:compositeScores){
             Log.i(TAG, "Register composite score: " + compositeScore.getHierarchical_code());
             if(!compositeScoreMapBySurvey.containsKey(module)) {
@@ -134,21 +140,43 @@ public class ScoreRegister {
         }
     }
 
-    public static void clearClassCompositeScore(float idSurvey, String module){
+
+    /**
+     * Remove the CompositeScores by survey and module
+     * @param idSurvey
+     * @param module
+     */
+    public static void clearCompositeScoreByModuleAndSurvey(float idSurvey, String module){
         if(compositeScoreMapBySurvey.containsKey(module))
             if(compositeScoreMapBySurvey.get(module).containsKey(idSurvey)) {
                 compositeScoreMapBySurvey.get(module).remove(idSurvey);
+            }
+    }
+
+    /**
+     * Remove the CompositeScores by survey and module
+     * @param idSurvey
+     * @param module
+     */
+    public static void clearTabMapsByModuleAndSurvey(float idSurvey, String module){
+        if(tabScoreMap.containsKey(module))
+            if(tabScoreMap.get(module).containsKey(idSurvey)) {
+                tabScoreMap.get(module).remove(idSurvey);
             }
     }
     /**
      * Resets generalScores and initializes a new set ot them
      * @param tabs
      */
-    public static void registerTabScores(List<Tab> tabs){
-        tabScoreMap.clear();
+    public static void registerTabScores(List<Tab> tabs, float idSurvey, String module){
+        clearTabMapsByModuleAndSurvey(idSurvey, module);
         for(Tab tab:tabs){
             Log.i(TAG, "Register tab score: " + tab.getName());
-            tabScoreMap.put(tab, new TabNumDenRecord());
+            if(!tabScoreMap.containsKey(module))
+                tabScoreMap.put(module, new HashMap<Float, Map<Tab, TabNumDenRecord>>());
+            if(!tabScoreMap.get(module).containsKey(idSurvey))
+                tabScoreMap.get(module).put(idSurvey,  new HashMap<Tab, TabNumDenRecord>());
+            tabScoreMap.get(module).get(idSurvey).put(tab, new TabNumDenRecord());
         }
     }
 
@@ -156,8 +184,8 @@ public class ScoreRegister {
      * Clears every score in session
      */
     public static void clear(float idSurvey, String module){
-        clearClassCompositeScore(idSurvey, module);
-        tabScoreMap.clear();
+        clearCompositeScoreByModuleAndSurvey(idSurvey, module);
+        clearTabMapsByModuleAndSurvey(idSurvey,module);
     }
 
     /**
@@ -222,7 +250,7 @@ public class ScoreRegister {
 
         //Register scores for tabs
         List<Tab> tabs=survey.getTabGroup().getTabs();
-        ScoreRegister.registerTabScores(tabs);
+        ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 
         //Register scores for composites
         List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());

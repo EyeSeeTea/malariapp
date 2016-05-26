@@ -171,10 +171,10 @@ public class AutoTabInVisibilityState {
 
             //Hide child ...
             //-> Remove value
-            ReadWriteDB.deleteValue(childQuestion);
+            ReadWriteDB.deleteValue(childQuestion, module);
 
             //-> Remove score
-            if (ScoreRegister.getNumDenum(childQuestion) != null) {
+            if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
                 ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
             }
             //-> Check header visibility (no header,done)

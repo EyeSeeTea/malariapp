@@ -196,7 +196,7 @@ public class SurveyFragment extends  Fragment {
     }
     @Override
     public void onPause(){
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(moduleName);
         if(survey!=null){
             survey.updateSurveyStatus();
         }
@@ -290,6 +290,7 @@ public class SurveyFragment extends  Fragment {
     private void preLoadItems(){
         for(Tab tab: allTabs) {
             Intent preLoadService = new Intent(getActivity().getApplicationContext(), SurveyService.class);
+            preLoadService.putExtra(Constants.MODULE_KEY, moduleName);
             preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
             preLoadService.putExtra("tab", tab.getId_tab());
             getActivity().getApplicationContext().startService(preLoadService);
@@ -384,7 +385,7 @@ public class SurveyFragment extends  Fragment {
         if(selectedTab.isCompositeScore()){
             //Initialize scores x question not loaded yet
             List<Tab> notLoadedTabs=tabAdaptersCache.getNotLoadedTabs();
-            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs), Session.getSurvey(), module);
+            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs), Session.getSurveyByModule(module), module);
         }
         ITabAdapter tabAdapter=tabAdaptersCache.findAdapter(selectedTab);
 
@@ -547,7 +548,7 @@ public class SurveyFragment extends  Fragment {
     }
 
     public void clearScore() {
-        ScoreRegister.clear(Session.getSurvey().getId_survey(), moduleName);
+        ScoreRegister.clear(Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
     }
     /**
      * Reloads tabs info and notifies its adapter
@@ -673,7 +674,7 @@ public class SurveyFragment extends  Fragment {
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurvey().getId_survey(), moduleName));
+            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
             this.compositeScores=compositeScores;
         }
 
@@ -707,7 +708,7 @@ public class SurveyFragment extends  Fragment {
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab){
-            return AutoTabAdapter.build(tab, getActivity(), Session.getSurvey().getId_survey(), moduleName);
+            return AutoTabAdapter.build(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
         }
     }
 }

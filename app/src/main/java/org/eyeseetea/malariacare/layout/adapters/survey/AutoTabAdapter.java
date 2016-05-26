@@ -141,7 +141,7 @@ public class AutoTabAdapter extends ATabAdapter {
     public void initializeSubscore() {
         initializeScoreViews();
         setSubScoreVisibility();
-        initializeDenum();
+        initializeDenum(idSurvey);
     }
 
     /**
@@ -164,7 +164,7 @@ public class AutoTabAdapter extends ATabAdapter {
     }
 
 
-    private void initializeDenum() {
+    private void initializeDenum(float idSurvey) {
         float result = 0;
         int number_items = getItems().size();
 
@@ -209,13 +209,13 @@ public class AutoTabAdapter extends ATabAdapter {
 
         if (item instanceof Question) {
             question = (Question) item;
-            rowView = getView(position, parent, rowView, question, viewHolder);
+            rowView = getView(position, parent, rowView, question, viewHolder, idSurvey);
 
             //Put current value in the component
-            setValues(viewHolder, question);
+            setValues(viewHolder, question, idSurvey, module);
 
             //Disables component if survey has already been sent (except match spinner that are always disabled)
-            AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly());
+            AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly(module));
 
         } else if(item instanceof Header){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
@@ -223,28 +223,28 @@ public class AutoTabAdapter extends ATabAdapter {
             viewHolder.statement.setText(((Header) item).getName());
         }else{
             QuestionRow questionRow = (QuestionRow)item;
-            rowView = getRowView(position,parent,questionRow,viewHolder);
+            rowView = getRowView(position,parent,questionRow,viewHolder, idSurvey);
             //Put current values in components
-            setValues(viewHolder,questionRow);
+            setValues(viewHolder,questionRow, idSurvey, module);
             //Disable components whenever required
-            AutoTabLayoutUtils.updateReadOnly(viewHolder,questionRow,getReadOnly());
+            AutoTabLayoutUtils.updateReadOnly(viewHolder,questionRow,getReadOnly(module));
         }
 
         return rowView;
     }
 
-    private View getRowView(int position,ViewGroup parent,QuestionRow questionRow, AutoTabViewHolder viewHolder){
+    private View getRowView(int position,ViewGroup parent,QuestionRow questionRow, AutoTabViewHolder viewHolder, float idSurvey){
         View rowView = getInflater().inflate(R.layout.question_row,parent,false);
         if(questionRow.isCustomTabTableHeader()){
             getViewTableHeader((LinearLayout) rowView, questionRow);
         }else{
-            getViewTableContent((LinearLayout)rowView,questionRow, viewHolder);
+            getViewTableContent((LinearLayout)rowView,questionRow, viewHolder, idSurvey);
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
         }
         return  rowView;
     }
 
-    private View getView(int position, ViewGroup parent, View rowView, Question question, AutoTabViewHolder viewHolder) {
+    private View getView(int position, ViewGroup parent, View rowView, Question question, AutoTabViewHolder viewHolder, float idSurvey) {
         //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
         switch (question.getOutput()) {
 
@@ -326,7 +326,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return row;
     }
 
-    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabViewHolder viewHolder){
+    private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabViewHolder viewHolder, float idSurvey){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
         for(Question question:questionRow.getQuestions()){
@@ -457,22 +457,22 @@ public class AutoTabAdapter extends ATabAdapter {
         return switchButton;
     }
 
-    public void setValues(AutoTabViewHolder viewHolder, QuestionRow questionRow) {
+    public void setValues(AutoTabViewHolder viewHolder, QuestionRow questionRow, float idSurvey, String module) {
         for(int i=0;i<questionRow.sizeColumns();i++){
             View component = viewHolder.getColumnComponent(i);
             Question question = questionRow.getQuestions().get(i);
-            setValues(component,question);
+            setValues(component,question, idSurvey, module);
         }
     }
 
-    public void setValues(View component, Question question){
+    public void setValues(View component, Question question, float idSurvey, String module){
         if(component==null || question==null){
             return;
         }
-        setValues(new AutoTabViewHolder(component),question);
+        setValues(new AutoTabViewHolder(component),question, idSurvey, module);
     }
 
-    public void setValues(AutoTabViewHolder viewHolder, Question question) {
+    public void setValues(AutoTabViewHolder viewHolder, Question question, float idSurvey, String module) {
         if(viewHolder==null || question==null){
             return;
         }
@@ -483,12 +483,12 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
-                viewHolder.setText(ReadWriteDB.readValueQuestion(question));
+                viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
                 break;
             case Constants.DROPDOWN_LIST:
             case Constants.DROPDOWN_LIST_DISABLED:
-                viewHolder.setSpinnerSelection(ReadWriteDB.readPositionOption(question));
-                List<Float> numdenum = ScoreRegister.getNumDenum(question);
+                viewHolder.setSpinnerSelection(ReadWriteDB.readPositionOption(question, module));
+                List<Float> numdenum = ScoreRegister.getNumDenum(question, idSurvey, module);
                 if (numdenum != null) {
                     viewHolder.setNumText(Float.toString(numdenum.get(0)));
                     viewHolder.setDenumText(Float.toString(numdenum.get(1)));
@@ -502,8 +502,8 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.RADIO_GROUP_HORIZONTAL:
             case Constants.RADIO_GROUP_VERTICAL:
                 //FIXME: it is almost the same as the previous case
-                Value value = question.getValueBySession();
-                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question);
+                Value value = question.getValueBySession(module);
+                List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question, idSurvey, module);
                 if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
                     break;
                 }
@@ -517,7 +517,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 }
                 break;
             case Constants.SWITCH_BUTTON:
-                Option option = findOptionBySession(question);
+                Option option = findOptionBySession(question, module);
                 viewHolder.setSwitchOption(option);
                 break;
             default:
@@ -546,8 +546,8 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param question
      * @return
      */
-    private Option findOptionBySession(Question question){
-        Value value = question.getValueBySession();
+    private Option findOptionBySession(Question question, String module){
+        Value value = question.getValueBySession(module);
 
         //real value -> real option
         if(value!=null){
@@ -586,7 +586,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 viewCreated=true;
                 return;
             }
-            ReadWriteDB.saveValuesText(question, s.toString());
+            ReadWriteDB.saveValuesText(question, s.toString(), module);
         }
     }
 

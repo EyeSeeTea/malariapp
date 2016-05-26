@@ -45,9 +45,9 @@ public class Session {
     private final static String TAG=".Session";
 
     /**
-     * The current selected survey
+     * The current selected survey by module
      */
-    private static Survey survey;
+    private static Map<String, Survey> surveyMappedByModule = new HashMap<>();
     /**
      *  The current selected surveyFeedback
     */
@@ -86,21 +86,14 @@ public class Session {
     private static PhoneMetaData phoneMetaData;
 
 
-    public static Survey getSurvey() {
-        return survey;
+    public static Survey getSurveyByModule(String module) {
+        return surveyMappedByModule.get(module);
     }
 
-    public static void setSurvey(Survey survey) {
-        Session.survey = survey;
+    public static void setSurveyByModule(Survey survey, String module) {
+            surveyMappedByModule.put(module,survey);
     }
 
-    public static Survey getSurveyFeedback() {
-        return surveyFeedback;
-    }
-
-    public static void setSurveyFeedback(Survey surveyFeedback) {
-        Session.surveyFeedback = surveyFeedback;
-    }
     public static User getUser() {
         if(user==null)
             user=User.getLoggedUser();
@@ -144,7 +137,7 @@ public class Session {
             user.delete();
             user=null;
         }
-        survey=null;
+        surveyMappedByModule=new HashMap<>();
         adapterUnsent=null;
         if(serviceValues!=null){
             serviceValues.clear();
