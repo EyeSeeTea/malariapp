@@ -20,6 +20,6 @@
 
 <resources>
     <string name="create_info_ok">Empezar Evaluación</string>
-    <string name="assessment_sent_title_header">Evaluación(es) Enviada(s)</string>
+    <string name="assessment_sent_title_header">Evaluación(es) Completa(s)</string>
     <string name="dialog_info_push_empty_survey">Una evaluación vacia no pueden ser enviadas</string>
 </resources>
