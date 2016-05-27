@@ -20,7 +20,7 @@
 
 <resources>
   <string name="create_info_ok">Criar avaliação</string>
-  <string name="assessment_sent_title_header">Avaliação enviado</string>
+  <string name="assessment_sent_title_header">Avaliação completo(s)</string>
   <string name="dialog_info_push_bad_credentials">Bad credenciais</string>
   <string name="dialog_info_push_empty_survey">Inquéritos vazias não podem ser empurrados</string>
 </resources>
