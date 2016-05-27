@@ -122,6 +122,7 @@ public class CreateSurveyFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("index", index);
         f.setArguments(args);
+
         return f;
     }
 
@@ -536,13 +537,13 @@ public class CreateSurveyFragment extends Fragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if(loadHierarchy)
-            if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-                orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
-                allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
+                if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
+                    HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
+                    orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+                    orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
+                    allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
                     create();
-            }
+                }
         }
     }
 
