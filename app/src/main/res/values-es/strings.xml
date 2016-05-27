@@ -30,7 +30,7 @@
     <string name="dialog_title_missing_selection">Selección obligatoria</string>
     <string name="dialog_content_missing_selection">Por favor, seleccione un centro y un tipo de encuesta</string>
     <string name="dialog_title_existing_survey">Encuesta existente</string>
-    <string name="dialog_content_existing_survey">Ya existe una encuesta previa no enviada para esa centro/tipo de encuesta</string>
+    <string name="dialog_content_existing_survey">Ya existe un formulario no enviado en el sistema para que el Módulo Centro de Salud.</string>
     <string name="dialog_content_logout_confirmation">Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
     <string name="dialog_question_complete_survey">Todas las preguntas obligatorias han sido rellenadas. ¿Quiere marcar esta encuesta como completa?</string>
