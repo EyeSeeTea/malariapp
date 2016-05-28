@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Option$Table;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -98,19 +99,10 @@ public class OptionExtended implements VisitableFromSDK {
             }
 
             //Turn string value into float
-            return parseFactorValue(optionAttributeValue.getValue());
+            return AUtils.safeParseFloat(optionAttributeValue.getValue());
         }
 
         //Should not happen
         return 0f;
-    }
-
-    private Float parseFactorValue(String value){
-        try {
-            return Float.valueOf(value);
-        }catch(NumberFormatException ex){
-            Log.e(TAG, String.format("parseFactorValue: option: %s | value: %s", option.getCode(), value));
-            return 0f;
-        }
     }
 }

@@ -193,7 +193,7 @@ public class QuestionBuilder {
         // Loop on every media type to attach any possible media type for the DE
         for (Integer mediaType: mediaTypeCode.keySet()) {
             String attributeMediaValue = dataElementExtended.getValue(mediaTypeCode.get(mediaType));
-            if (attributeMediaValue != null) {
+            if (attributeMediaValue != null && !attributeMediaValue.isEmpty()) {
                 Log.i(TAG,String.format("Adding media %s to question %s",attributeMediaValue, question.getForm_name()));
                 media = new Media();
                 media.setMediaType(mediaType);

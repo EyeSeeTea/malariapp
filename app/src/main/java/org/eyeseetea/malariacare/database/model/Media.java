@@ -39,6 +39,13 @@ public class Media extends BaseModel{
 
     public static final int MEDIA_TYPE_VIDEO = 1;
 
+    public static final int NO_MEDIA_ID=-1;
+
+    /**
+     * Null media value to express that a question has NO media without using querys
+     */
+    private static Media noMedia = new Media(NO_MEDIA_ID,null,null);
+
     @Column
     @PrimaryKey(autoincrement = true)
     long id_media;
@@ -55,6 +62,8 @@ public class Media extends BaseModel{
     @Column
     String filename;
 
+
+
     /**
      * Reference to the question
      */
@@ -67,6 +76,14 @@ public class Media extends BaseModel{
         this.resource_url = resource_url;
         this.filename = null;
         this.setQuestion(question);
+    }
+
+    public static Media noMedia(){
+        return noMedia;
+    }
+
+    public boolean isEmpty(){
+        return this.id_media==NO_MEDIA_ID;
     }
 
     public Question getQuestion(){
@@ -112,6 +129,7 @@ public class Media extends BaseModel{
         return new Select().all().
                 from(Media.class).
                 where(Condition.column(Media$Table.FILENAME).isNull()).
+                and(Condition.column(Media$Table.RESOURCE_URL).isNotNull()).
                 queryList();
     }
 

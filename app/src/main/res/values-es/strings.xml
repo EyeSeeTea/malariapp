@@ -247,5 +247,8 @@
     <string name="no_previous_event_info">Sin eventos anteriores disponibles</string>
     <string name="settings_checkbox_ask_modify_or_create">Pregunta para modificar o crear nueva encuesta?</string>
     <string name="settings_checkbox_description_ask_modify_or_create">Cuando se activa, el usuario deberá elegir entre modificar la última encuesta o crear una nueva</string>
+    <string name="ask_account_permission">Esta app requiere acceso a tu cuenta Google (via Contactos)</string>
+    <string name="google_play_required">Esta aplicación requiere los servicios de Play. Por favor, instale servicios de Google Play en el dispositivo reinicie esta aplicación.</string>
+    <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 
 </resources>

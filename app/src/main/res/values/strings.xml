@@ -248,4 +248,9 @@
     <!-- Last survey -->
     <string name="no_previous_event_info">No previous event available</string>
 
+    <!-- Ask for drive permissions -->
+    <string name="ask_account_permission">This app needs to access your Google account (via Contacts).</string>
+    <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
+    <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
+
 </resources>

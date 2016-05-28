@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 
@@ -74,7 +75,7 @@ public class EventToSurveyBuilder {
 
         //Create a prototype of the score since it cannot be saved yet (will need 1 per final survey)
         mainScore= new Score();
-        mainScore.setScore(Float.parseFloat(dataValue.getValue()));
+        mainScore.setScore(AUtils.safeParseFloat(dataValue.getValue()));
         mainScore.setUid(dataValue.getDataElement());
     }
 

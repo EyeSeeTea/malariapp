@@ -23,20 +23,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -48,10 +43,9 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.media.DriveApiController;
-import org.eyeseetea.malariacare.media.MediaController;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -62,17 +56,16 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import java.util.Date;
 import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class DashboardActivity extends BaseActivity{
+
+public class DashboardActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
-
-    private GoogleApiClient mGoogleApiClient;
-    private int REQUEST_CODE_RESOLUTION=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +89,8 @@ public class DashboardActivity extends BaseActivity{
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
 
-        //FIXME Media: connect and sync
-        DriveApiController.getInstance().connect(this);
+        //Media: init drive credentials
+        DriveRestController.getInstance().init(this);
     }
 
     @Override
@@ -113,7 +106,6 @@ public class DashboardActivity extends BaseActivity{
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
-        DriveApiController.getInstance().disconnect();
         super.onPause();
     }
 
@@ -126,9 +118,8 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG,String.format("onActivityResult(%d, %d)",requestCode,resultCode));
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(!DriveApiController.isConnectResolutionOK(requestCode,resultCode)){
-            DriveApiController.getInstance().connect(DashboardActivity.dashboardActivity);
-        }
+        //Delegate activity result to media controller
+        DriveRestController.getInstance().onActivityResult(requestCode,resultCode,data);
     }
 
     @Override
@@ -188,6 +179,50 @@ public class DashboardActivity extends BaseActivity{
         return true;
     }
 
+    /**
+     * Respond to requests for permissions at runtime for API 23 and above.
+     *
+     * @param requestCode  The request code passed in
+     *                     requestPermissions(android.app.Activity, String, int, String[])
+     * @param permissions  The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *                     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(
+                requestCode, permissions, grantResults, this);
+    }
+
+    /**
+     * Callback for when a permission is granted using the EasyPermissions
+     * library.
+     *
+     * @param requestCode The request code associated with the requested
+     *                    permission
+     * @param list        The requested permission list. Never null.
+     */
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> list) {
+        Log.i(TAG,"Contacts permission granted");
+    }
+
+    /**
+     * Callback for when a permission is denied using the EasyPermissions
+     * library.
+     *
+     * @param requestCode The request code associated with the requested
+     *                    permission
+     * @param list        The requested permission list. Never null.
+     */
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> list) {
+        Log.i(TAG,"Contacts permission denied");
+        toast(getString(R.string.account_permission_denied));
+    }
+
     private void pushUnsentBeforePull() {
 
         //Launch Progress Push before pull
@@ -218,15 +253,7 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-    }
-
-    /**
-     * Drive Api connected
-     */
-    public void onConnected(){
-        Log.i(TAG,"onConnected -> Starting with sync process...");
-        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
-        MediaController.getInstance().syncAll();
+        DriveRestController.getInstance().syncMedia();
     }
 
     public void setReloadOnResume(boolean doReload){

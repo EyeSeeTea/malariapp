@@ -244,5 +244,8 @@
 
     <!-- Last survey -->
     <string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
+    <string name="ask_account_permission">Cette application a besoin d\'accéder à votre compte Google (via les contacts).</string>
+    <string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
+    <string name="account_permission_denied"> Contacts permission refusée. Médias ne sera pas synchronisé</string>
 
 </resources>

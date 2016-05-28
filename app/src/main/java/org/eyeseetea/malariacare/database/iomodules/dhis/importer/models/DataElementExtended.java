@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScore
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
@@ -433,7 +434,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public Float findNumerator() {
         String value = getValue(ATTRIBUTE_NUMERATOR);
         if (value != null) {
-            float numinator = Float.valueOf(value);
+            float numinator = AUtils.safeParseFloat(value);
             return numinator;
         } else
             return 0.0f;
@@ -442,7 +443,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public Float findDenominator() {
         String value = getValue(ATTRIBUTE_DENUMERATOR);
         if (value != null) {
-            float denominator = Float.valueOf(value);
+            float denominator = AUtils.safeParseFloat(value);
             return denominator;
         }
         return 0.0f;
