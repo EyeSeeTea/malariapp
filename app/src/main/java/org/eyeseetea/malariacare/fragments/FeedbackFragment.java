@@ -245,10 +245,6 @@ public class FeedbackFragment extends Fragment {
         this.moduleName=simpleName;
     }
 
-    public void clearScore() {
-        ScoreRegister.clear(Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
-    }
-
     /**
      * Inner private class that receives the result from the service
      */

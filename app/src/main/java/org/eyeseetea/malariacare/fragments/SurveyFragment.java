@@ -191,7 +191,6 @@ public class SurveyFragment extends  Fragment {
     }
 
     public void exit(){
-        clearScore();
         unregisterReceiver();
     }
     @Override
@@ -545,10 +544,6 @@ public class SurveyFragment extends  Fragment {
         surveysIntent.putExtra(Constants.MODULE_KEY,moduleName);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,SurveyService.PREPARE_SURVEY_ACTION);
         getActivity().getApplicationContext().startService(surveysIntent);
-    }
-
-    public void clearScore() {
-        ScoreRegister.clear(Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
     }
     /**
      * Reloads tabs info and notifies its adapter

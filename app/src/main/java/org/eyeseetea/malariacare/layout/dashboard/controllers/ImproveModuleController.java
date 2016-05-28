@@ -110,7 +110,6 @@ public class ImproveModuleController extends ModuleController {
         //ScoreRegister.clear(Session.getSurveyByModule().getId_survey());
 
         FeedbackFragment feedbackFragment = (FeedbackFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
-        feedbackFragment.clearScore();
         feedbackFragment.unregisterReceiver();
         feedbackFragment.getView().setVisibility(View.GONE);
 
