@@ -2,12 +2,13 @@
   "database": {
     "originType": "csv",
     "uri": "https://eds-dev.psi-mis.org",
-    "fullHierarchy":true
+    "fullHierarchy": true
   },
   "dashboard": {
     "orientation": "vertical",
-    "adapter":"dynamic",
-    "layout":"vertical_main",
+    "adapter": "dynamic",
+    "layout": "vertical_main",
+    "listFilter": "lastForOu",
     "modules": [{
       "title": "assess",
       "icon": "tab_assess",
