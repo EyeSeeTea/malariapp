@@ -23,7 +23,7 @@
 
     <string name="go_to_feedback">Go to feedback</string>
     <string name="dialog_title_delete_survey">Delete Survey</string>
-    <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey %s?</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to delete this assessment from your tablet? %s \nnote: data will remain saved in DHIS</string>
     <string name="dialog_title_missing_selection">Missing selection</string>
     <string name="dialog_content_missing_selection">Please select Org Unit and Survey details</string>
     <string name="dialog_title_existing_survey">Existing Survey</string>
