@@ -47,7 +47,9 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -153,6 +155,16 @@ public class MonitorFragment extends Fragment {
         HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
 
         surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
+        //Remove the bad surveys.
+        Iterator<Survey> iter = surveysForGraphic.iterator();
+        while(iter.hasNext()){
+            Survey survey = iter.next();
+            if(!survey.hasMainScore())
+            {
+                iter.remove();
+            }
+        }
+
         programs = data.get(SurveyService.PREPARE_PROGRAMS);
         reloadSurveys(surveysForGraphic,programs);
     }

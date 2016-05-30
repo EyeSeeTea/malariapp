@@ -713,6 +713,31 @@ public class Question extends BaseModel {
 
     }
 
+    public static List<Question> listAllByTabsWithoutCs(List<Tab> tabs) {
+
+        if (tabs == null || tabs.size() == 0) {
+            return new ArrayList();
+        }
+
+        Iterator<Tab> iterator = tabs.iterator();
+        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)).in(Long.toString(iterator.next().getId_tab()));
+        while (iterator.hasNext()) {
+            in.and(Long.toString(iterator.next().getId_tab()));
+        }
+
+        return new Select().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .where(in)
+                .and(Condition.column(Question$Table.ID_COMPOSITE_SCORE).isNull())
+                .orderBy(Tab$Table.ORDER_POS)
+                .orderBy(Question$Table.ORDER_POS).queryList();
+    }
+
     public static List<Question> listAllByTabs(List<Tab> tabs) {
 
         if (tabs == null || tabs.size() == 0) {

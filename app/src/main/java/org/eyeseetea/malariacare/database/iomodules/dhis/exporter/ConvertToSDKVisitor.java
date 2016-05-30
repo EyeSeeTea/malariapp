@@ -245,23 +245,23 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
 
         //Overall score
-        if(!overallScoreCode.equals(""))
+        if(!overallScoreCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //MainScoreUID
-        if(!mainScoreClassCode.equals(""))
+        if(!mainScoreClassCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreClassCode, survey.getType());
 
         //MainScore A
-        if(!mainScoreACode.equals(""))
+        if(!mainScoreACode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
 
         //MainScore B
-        if(!mainScoreBCode.equals(""))
+        if(!mainScoreBCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
 
         //MainScoreC
-        if(!mainScoreCCode.equals(""))
+        if(!mainScoreCCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
 
         //Forward Order
