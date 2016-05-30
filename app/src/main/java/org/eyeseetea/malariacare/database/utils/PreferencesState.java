@@ -28,8 +28,8 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
@@ -272,6 +272,22 @@ public class PreferencesState {
      */
     public Boolean isVerticalDashboard() {
         return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
+    }
+
+    /**
+     * Tells if the application is filter for last org unit
+     * @return
+     */
+    public Boolean isLastForOrgUnit() {
+        return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application is none filter
+     * @return
+     */
+    public Boolean isNoneFilter() {
+        return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
     }
 
     /**
