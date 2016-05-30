@@ -56,6 +56,9 @@ public class FeedbackBuilder {
         //Prepare scores
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(Session.getSurvey());
 
+
+        //Load all the questions by tab without CS
+        List<Question> questionsByTabsWithoutCS=Question.listAllByTabsWithoutCs(Session.getSurvey().getTabGroup().getTabs());
         //Calculate main score
         survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
 
@@ -80,6 +83,10 @@ public class FeedbackBuilder {
                     feedbackList.add(new QuestionFeedback(question, valueInSurvey));
                 }
             }
+        }
+        for(Question question:questionsByTabsWithoutCS){
+            Value valueInSurvey = question.getValueBySurvey(survey);
+            feedbackList.add(new QuestionFeedback(question, valueInSurvey));
         }
         return feedbackList;
     }
