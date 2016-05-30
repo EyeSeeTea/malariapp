@@ -113,6 +113,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
     Float mainScore;
 
     /**
+     * hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
+     */
+    private Boolean hasMainScore=null;
+
+    /**
      * Expected productivity for this survey according to its orgunit + program.
      * Just a cached value from orgunitprogramproductivity
      */
@@ -313,8 +318,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
         return mainScore;
     }
-    //hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
-    private Boolean hasMainScore=null;
+
     public Boolean hasMainScore() {
         if(hasMainScore==null) {
             Score score = getScore();

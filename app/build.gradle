@@ -65,14 +65,20 @@ android {
     }
     productFlavors {
         eds {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "EDS 2.0.0"
+            applicationId "org.eyeseetea.malariacare.eds_bb"
+            versionName "2.0.0"
             minSdkVersion 15
             targetSdkVersion 21
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqispull"
-            versionName "HNQIS 1.0.0"
+            applicationId "org.eyeseetea.malariacare.hnqis_bb"
+            versionName "1.0.0"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        surveillance {
+            applicationId "org.eyeseetea.malariacare.surveillance_bb"
+            versionName "5.0.0"
             minSdkVersion 15
             targetSdkVersion 21
         }
@@ -101,7 +107,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.1'
-
+    compile 'com.googlecode.libphonenumber:libphonenumber:7.0.9'
     //3rd party dependencies
     compile "com.opencsv:opencsv:$rootProject.opencsvVersion"    
     compile "com.google.android.gms:play-services:$rootProject.gmsPlayVersion"
