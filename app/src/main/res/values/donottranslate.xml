@@ -76,4 +76,5 @@
     <string name="overall_score_code" translatable="false">_Overall Score</string>
     <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
 
+    <string name="option" translatable="false">option</string>
 </resources>

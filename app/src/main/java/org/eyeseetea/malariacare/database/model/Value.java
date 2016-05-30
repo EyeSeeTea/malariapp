@@ -208,6 +208,14 @@ public class Value extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * The value is 'Positive' from a dropdown
+     * @return true|false
+     */
+    public boolean isAPositive() {
+        return getOption() != null && getOption().getName().equals("Positive");
+    }
+
+    /**
      * The value is 'Yes' from a dropdown
      * @return true|false
      */
