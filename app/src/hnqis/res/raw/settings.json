@@ -8,7 +8,7 @@
     "orientation": "horizontal",
     "adapter": "automatic",
     "layout": "tab_dashboard",
-    "listFilter": "lastForOu",
+    "listFilter": "lastForOU",
     "modules": [{
       "title": "plan",
       "icon": "tab_plan",

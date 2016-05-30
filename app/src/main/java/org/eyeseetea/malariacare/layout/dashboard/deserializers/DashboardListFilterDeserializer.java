@@ -40,6 +40,6 @@ public class DashboardListFilterDeserializer extends JsonDeserializer {
         if (dashboardListFilter != null) {
             return dashboardListFilter;
         }
-        throw new JsonMappingException("'listFilter' must be 'lastForOu' or 'none'");
+        throw new JsonMappingException("'listFilter' must be 'lastForOU' or 'none'");
     }
 }
