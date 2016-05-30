@@ -386,6 +386,7 @@ public class PullController {
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
+                dataElementExtended.setProgramUid(programUid);
                 dataElementExtended.accept(converter);
             }
         }
@@ -399,6 +400,7 @@ public class PullController {
             for (DataElement dataElement : sortDataElements) {
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                dataElementExtended.setProgramUid(programUid);
                 converter.buildRelations(dataElementExtended);
             }
         }

@@ -1,0 +1,81 @@
+<p> <b> Licenças de Software </b> </p>
+<p> <b> 1. MIT License </b> </p>
+<p> <b> a) chart.js </b> </p>
+<p> de Copyright © 2013-16 Nick Downie </p>
+<p> A permissão é concedida, gratuitamente, a qualquer pessoa que obtenha uma cópia deste software e dos arquivos de documentação associados (o "Software"), para lidar com o Software sem restrições, incluindo, sem limitação, os direitos de usar, copiar, modificar, mesclar, publicar, distribuir, sub-licenciar e / ou vender cópias do Software, e para permitir que as pessoas a quem o Software é fornecido a fazê-lo, sujeito às seguintes condições: </p>
+<p> O aviso de copyright acima e este aviso de permissão devem ser incluídos em todas as cópias ou partes substanciais do Software. </ P>
+<p> O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, expressa ou implícita, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM NENHUM CASO OS AUTORES ou direitos de autor DETENTORES DE SER RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTES DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRA APLICAÇÃO DO SOFTWARE. </p>
+<br/>
+<p> <a href='https://github.com/nnnick/Chart.js/blob/master/LICENSE.md'> Chart.js </a> texto da licença </p>
+<br/>
+
+<p> <b> b) DBFlow ORM </b> </p>
+<p> de Copyright © 2014 Raizlabs </p>
+<p> A permissão é concedida, gratuitamente, a qualquer pessoa que obtenha uma cópia deste software e dos arquivos de documentação associados (o "Software"), para lidar com o Software sem restrições, incluindo, sem limitação, os direitos de usar, copiar, modificar, mesclar, publicar, distribuir, sub-licenciar e / ou vender cópias do Software, e para permitir que as pessoas a quem o Software é fornecido a fazê-lo, sujeito às seguintes condições: </p>
+<p> O aviso de copyright acima e este aviso de permissão devem ser incluídos em todas as cópias ou partes substanciais do Software. </ P>
+<br/>
+<p> O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, expressa ou implícita, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM NENHUM CASO OS AUTORES ou direitos de autor DETENTORES DE SER RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTES DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRA APLICAÇÃO DO SOFTWARE. </p>
+<br/>
+<p> <a DBFlow href='https://github.com/Raizlabs/DBFlow/blob/master/LICENSE'> licença texto </a> </p>
+<br/>
+
+<p> <b> 2. Apache License, Versão 2.0 </b> </p>
+<p> Os seguintes programas de software têm sido usados ​​para desenvolver esta aplicação sob a Licença Apache, Versão 2.0 (<a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>):</p>
+<br/>
+<p> a) as bibliotecas Android:
+support-v4 <br/>
+appcompat-7 <br/>
+support-anotações: <a href='https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation'>src pasta aqui </a> <br/>
+multidex - arquivo <a href='https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE'> Aviso encontrada aqui </a> <br/>>
+corredor <br/>
+regras <br/>
+b) OpenCSV: <um href='https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg'>src pasta aqui </a> <br/>
+c) goiaba: pasta <a href='https://github.com/google/guava'> src aqui </a> <br/>
+d) okhttp: <um href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA'>src pasta aqui </a> <br/>
+e) play-serviços <br/>
+f) libphonenumber: nenhum arquivo de aviso prévio, mas eles usam outra biblioteca que tem um arquivo de notificação, de modo que, para além da sua licença (<a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see aqui </a>), eles também incluem o <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw'>chromium </a> texto da licença. <br/>
+</ P>
+
+<p> de Copyright © 2016 Population Services International (PSI). </ P>
+<p> Licenciado sob a Licença Apache, Versão 2.0 (a "Licença"); você não pode usar os arquivos listados acima, exceto em conformidade com a Licença. Você pode obter uma cópia da Licença em http://www.apache.org/licenses/LICENSE-2.0. </ P>
+<p> A menos que exigido pela lei aplicável ou acordado por escrito, o software distribuído sob a Licença é distribuído "COMO ESTÁ", SEM GARANTIAS OU CONDIÇÕES DE QUALQUER TIPO, expressa ou implícita. Consulte a Licença para o idioma específico que rege as permissões e limitações sob a Licença. </ P>
+<br/>
+
+<p> <b> 3. SQlite </b> </p>
+<p> Todo o código e documentação em SQLite foi dedicada ao domínio público pelos autores. Todos os autores de código e representantes das empresas em que trabalham, assinaram declarações declarando suas contribuições para o domínio público e originais desses declarações assinadas são armazenados em um Firesafe nos principais escritórios de Hwaci. Qualquer um é livre para copiar, modificar, publicar, usar, compilar, vender, ou distribuir o código SQLite original, quer na forma de código-fonte ou como um binário compilado, para qualquer fim, comercial ou não-comercial, e por qualquer meio. < / p>
+<br/>
+<p> A fim de manter SQLite totalmente gratuito e livre de direitos de autor, todos os novos contribuintes para o código base SQLite são convidados a dedicar suas contribuições para o domínio público. Se você quiser enviar um patch ou realce para possível inclusão na árvore fonte do SQLite, por favor acompanhar o patch com a seguinte declaração: </p>
+<br/>
+<p> O autor ou autores deste código dedicar todo e qualquer direito autoral neste código para o domínio público. Fazemos esta dedicação em benefício do público em geral e em detrimento dos nossos herdeiros e sucessores. Pretendemos desta dedicação para ser um ato evidente de renúncia na perpetuidade de todos os direitos presentes e futuras a este código sob lei de direitos autorais. </ P>
+<br/>
+<p> PSI não modificou SQlite para esta aplicação. </ P>
+<br/>
+
+<p> <b> 4. Licença BSD (por UiO SDK) </b> </p>
+<p> de Copyright © 2016 Universidade de Oslo </p>
+<br/>
+<p> Todos os direitos reservados. A redistribuição eo uso nas formas de origem e binária, com ou sem modificação, são permitidos desde que estejam reunidas as seguintes condições: </p>
+<br/>
+<p> As redistribuições do código fonte devem manter o aviso de copyright acima, esta lista de condições ea seguinte renúncia. </ P>
+<br/>
+<p> As redistribuições em formato binário devem reproduzir o aviso de copyright acima, esta lista de condições ea seguinte exclusão de responsabilidade na documentação e / ou outros materiais fornecidos com a distribuição. Nem o nome do projeto HISP nem os nomes de seus colaboradores podem ser utilizados para apoiar ou promover produtos derivados deste software sem permissão prévia por escrito. </ P>
+<br/>
+<p> ESTE SOFTWARE É FORNECIDO PELOS DETENTORES DE DIREITOS AUTORAIS E SEUS COLABORADORES "COMO ESTÁ" E QUALQUER GARANTIA EXPRESSA OU IMPLÍCITA, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO E ADEQUAÇÃO A UM DETERMINADO PROPÓSITO. EM NENHUM CASO O DETENTOR DOS DIREITOS AUTORAIS OU SEUS COLABORADORES SER RESPONSÁVEL POR QUAISQUER DANOS DIRETOS,, ACIDENTAL, OU DANOS EXEMPLARES ESPECIAIS INDIRECTOS EMERGENTES (INCLUINDO, SEM LIMITAÇÕES, A AQUISIÇÃO DE BENS OU SERVIÇOS, PERDA DE USO, DADOS OU LUCROS; OU INTERRUPÇÃO DE NEGÓCIOS) CAUSADOS E EM QUALQUER TEORIA DE RESPONSABILIDADE, SEJA EM CONTRATO, RESPONSABILIDADE OBJETIVA OU ATO ILÍCITO (INCLUINDO NEGLIGÊNCIA OU NÃO) LEVANTADA DE QUALQUER FORMA DE USO DESTE SOFTWARE, MESMO QUE AVISADO SOBRE A POSSIBILIDADE DE TAIS DANOS. </p>
+<br/>
+
+<p> <b> 5. Creative Commons Attribution 2.5 License </b> (para Espresso (espresso-core, de café intenções, espresso-marcha lenta de recursos, expresso-web)) - <a href='https://creativecommons.org/licenses/by/2.5/legalcode'>https://creativecommons.org/licenses/by/2.5/legalcode</a></p>
+<p> PSI não tenha feito quaisquer modificações ou alterações no software Expresso acima referenciada para fins desta aplicação. </ P>
+<br/>
+<p> <b> Você é livre para: </b> <br/>
+<b> Share </b> - copiar e redistribuir o material em qualquer meio ou formato <br/>
+<b> Adaptar </b> - Remix, transformar e construir sobre o material <br/>
+para qualquer finalidade, mesmo comercialmente. <br/>
+O licenciante não pode revogar essas liberdades, desde que você siga os termos da licença. </ P>
+<br/>
+<p> <b> De acordo com os seguintes termos: </b> <br/>
+<b> Atribuição </b> - Você deve dar crédito adequado, fornecer um link para a licença, e indicar se as alterações foram feitas. Você pode fazê-lo de qualquer forma razoável, mas não de qualquer forma que sugira que o licenciante concorda com você ou seu uso. <br/>
+Não há restrições adicionais -. Você pode não se aplicar termos legais ou medidas tecnológicas que legalmente restringem os outros de fazer qualquer coisa a licença permite <p />
+<br/>
+<p> <b> Avisos: </b> <br/>
+Você não tem de cumprir a licença para elementos do material de domínio público ou onde o seu uso é permitido por uma excepção ou limitação aplicável. <br/>
+Nenhuma garantia é dada. A licença não pode dar-lhe todas as permissões necessárias para o seu uso pretendido. Por exemplo, outros direitos, tais como a publicidade, privacidade ou direitos morais podem limitar como você usa o material. </ P>
