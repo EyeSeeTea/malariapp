@@ -48,6 +48,8 @@ public class DataValueExtended implements VisitableFromSDK {
 
     DataValue dataValue;
 
+    String programUid;
+
     public DataValueExtended(){}
 
     public DataValueExtended(DataValue dataValue){
@@ -163,5 +165,13 @@ public class DataValueExtended implements VisitableFromSDK {
                 .where(Condition.column(DataValue$Table.EVENT).eq(eventUid))
                 .and(Condition.column(DataValue$Table.DATAELEMENT).eq(dataElementUID))
                 .querySingle();
+    }
+
+    public String getProgramUid() {
+        return programUid;
+    }
+
+    public void setProgramUid(String programUid) {
+        this.programUid = programUid;
     }
 }
