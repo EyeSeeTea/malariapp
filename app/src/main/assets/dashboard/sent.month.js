@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var input = [];
 	var inputall = [];
+	var programs = [];
 	var allAssessment="AllAssessment";
     var selectedProgram=allAssessment;
 	var chart=null;
@@ -24,8 +25,23 @@ function updateChartTitle(id,text){
 function setData(data){
 	var temp=data.slice();
 	setAllAssassement(temp)
+	countPrograms(data[3]);
 	input.push(data);
 }
+
+ function countPrograms(data){
+ 	console.log(data);
+ 	var exist=false;
+ 	for(var i=0;i<programs.length;i++){
+ 		if(programs[i]==data){
+ 			exist=true;
+ 		}
+ 	}
+ 	if(!exist)
+ 	{
+ 		programs.push(data);
+ 	}
+ }
 //Save and merge a All assassement object with the stats of all the programs merged
 function setAllAssassement(data){
 	var exist=false;
@@ -43,7 +59,8 @@ function setAllAssassement(data){
 //show the data in the table.
 function showData(){
 	for(var i=0;i<inputall.length;i++){
-        if(inputall[i].indexOf(selectedProgram) > -1){
+	//Show the table filter by the select program(all assessment) or without filter if only have one program
+        if(inputall[i].indexOf(selectedProgram) > -1 || programs.length==1){
 			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
 		}
 	}
