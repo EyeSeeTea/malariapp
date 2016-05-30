@@ -335,7 +335,7 @@ public class PlannedAdapter extends BaseAdapter {
             activity.prepareLocationListener(survey);
             //FIXME
 
-            activity.initSurveyFromPlanning();
+            activity.initSurveyFromPlanning(survey);
         }
     }
 
