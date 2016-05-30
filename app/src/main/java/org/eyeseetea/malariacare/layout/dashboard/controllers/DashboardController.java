@@ -296,6 +296,13 @@ public class DashboardController {
             hideImproveVerticalTitle();
             hideAssess();
         }
+        if(DashboardOrientation.HORIZONTAL.equals(getOrientation())) {
+            currentTab = getModuleByName(ImproveModuleController.getSimpleName()).getName();
+            if(!currentTab.equals(getModuleByName(ImproveModuleController.getSimpleName()))){
+                tabHost.setCurrentTabByTag(ImproveModuleController.getSimpleName());
+            }
+
+        }
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
         improveModuleController.onFeedbackSelected(survey);
