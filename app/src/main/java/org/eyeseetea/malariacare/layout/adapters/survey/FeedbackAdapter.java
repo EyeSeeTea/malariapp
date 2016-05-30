@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Html;
@@ -37,6 +38,7 @@ import android.widget.VideoView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.VideoActivity;
 import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -224,29 +226,35 @@ public class FeedbackAdapter extends BaseAdapter {
     private void addMedia(LinearLayout rowLayout, QuestionFeedback feedback) {
         Media media=feedback.getMedia();
 
-        File file=new File(media.getFilename());
-        Uri uri = Uri.fromFile(file);
-        //add video
-        if(media.getMediaType()==Media.MEDIA_TYPE_VIDEO){
-            MediaController mediaController=new MediaController(DashboardActivity.dashboardActivity);
-            VideoView videoView=((VideoView)rowLayout.findViewById(R.id.feedback_media));
-            videoView.setMediaController(mediaController);
-            videoView.setVideoURI(uri);
+        if(media==null || media.getFilename()==null || media.getFilename().isEmpty()){
             return;
         }
 
+        File file=new File(media.getFilename());
         //add image
-        ((ImageView)rowLayout.findViewById(R.id.feedback_media)).setImageURI(uri);
+        if(media.getMediaType()==Media.MEDIA_TYPE_IMAGE) {
+            Uri uri = Uri.fromFile(file);
+            ((ImageView) rowLayout.findViewById(R.id.feedback_media)).setImageURI(uri);
+            return;
+        }
+
+        //add video link
+        View viewMediaLink = rowLayout.findViewById(R.id.feedback_media_link);
+        viewMediaLink.setTag(media.getFilename());
+        viewMediaLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mediaLink = (String)v.getTag();
+                Intent videoIntent = new Intent(DashboardActivity.dashboardActivity,VideoActivity.class);
+                videoIntent.putExtra(VideoActivity.VIDEO_PATH_PARAM,mediaLink);
+                DashboardActivity.dashboardActivity.startActivity(videoIntent);
+            }
+        });
     }
 
     private int findLayoutByMedia(QuestionFeedback feedback) {
 
         Media media = feedback.getMedia();
-
-        //NO media
-        if (media.isEmpty()) {
-            return R.layout.feedback_question_row;
-        }
 
         //image
         if (media.getMediaType() == Media.MEDIA_TYPE_IMAGE) {
@@ -254,7 +262,12 @@ public class FeedbackAdapter extends BaseAdapter {
         }
 
         //video
-        return R.layout.feedback_video_question_row;
+        if (media.getMediaType() == Media.MEDIA_TYPE_VIDEO) {
+            return R.layout.feedback_video_question_row;
+        }
+
+        return R.layout.feedback_question_row;
+
     }
 
     private void toggleFeedback(LinearLayout rowLayout, boolean visible) {

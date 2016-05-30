@@ -252,5 +252,7 @@
     <string name="ask_account_permission">This app needs to access your Google account (via Contacts).</string>
     <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
     <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
+    <string name="feedback_media_link" >View video</string>
+    <string name="feedback_media">View video feedback</string>
 
 </resources>

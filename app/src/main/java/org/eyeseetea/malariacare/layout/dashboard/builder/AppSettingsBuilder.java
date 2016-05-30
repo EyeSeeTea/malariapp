@@ -74,6 +74,10 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDatabaseSettings().isFullHierarchy();
     }
 
+    public static String getDriveAccount(){
+        return getInstance().getSettings().getDatabaseSettings().getDriveAccount();
+    }
+
     public void init(Context context){
         settings = parse(R.raw.settings,context);
         dashboardController = build(settings);

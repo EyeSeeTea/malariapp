@@ -96,7 +96,9 @@
         <ImageView
             android:id="@+id/feedback_media"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/min_image_width"
+            android:minHeight="@dimen/min_image_width"
             android:background="@color/white"/>
     </LinearLayout>
 

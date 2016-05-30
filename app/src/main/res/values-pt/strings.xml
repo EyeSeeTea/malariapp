@@ -252,6 +252,8 @@
     <string name="ask_account_permission">Este aplicativo precisa acessar sua conta do Google (via Contactos).</string>
     <string name="google_play_required">Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo.</string>
     <string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
+    <string name="feedback_media_link" >"Exibição de vídeo"</string>
+    <string name="feedback_media">Ver feedback de vídeo</string>
 
 
 </resources>

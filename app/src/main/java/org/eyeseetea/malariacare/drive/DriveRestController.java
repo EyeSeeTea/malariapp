@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -20,6 +22,7 @@ import com.google.api.services.drive.DriveScopes;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.Arrays;
 
@@ -76,6 +79,12 @@ public class DriveRestController {
      * appropriate.
      */
     public void syncMedia() {
+
+        if (!isDeviceOnline()) {
+            Log.w(TAG, "No wifi connection available. Media will not be synced");
+            return;
+        }
+
         if (!isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
             return;
@@ -83,11 +92,6 @@ public class DriveRestController {
 
         if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
-            return;
-        }
-
-        if (!isDeviceOnline()) {
-            Log.w(TAG, "No network connection available. Media will not be synced");
             return;
         }
 
@@ -107,32 +111,34 @@ public class DriveRestController {
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
 
+        //Ask for permissions if required
         //NO permissions
-        if (!EasyPermissions.hasPermissions(dashboardActivity, Manifest.permission.GET_ACCOUNTS)) {
-            // Request the GET_ACCOUNTS permission via a user dialog
-            EasyPermissions.requestPermissions(
-                    dashboardActivity,
-                    dashboardActivity.getString(R.string.ask_account_permission),
-                    REQUEST_PERMISSION_GET_ACCOUNTS,
-                    Manifest.permission.GET_ACCOUNTS);
-            return;
-        }
-
-        //Has permissions check accountName
-        String accountName = dashboardActivity.getPreferences(Context.MODE_PRIVATE)
-                .getString(PREF_ACCOUNT_NAME, null);
-
-        //No accountName selected
-        if (accountName == null) {
-            // Start a dialog from which the user can choose an account
-            dashboardActivity.startActivityForResult(
-                    mCredential.newChooseAccountIntent(),
-                    REQUEST_ACCOUNT_PICKER);
-            return;
-        }
+//        if (!EasyPermissions.hasPermissions(dashboardActivity, Manifest.permission.GET_ACCOUNTS)) {
+//            // Request the GET_ACCOUNTS permission via a user dialog
+//            EasyPermissions.requestPermissions(
+//                    dashboardActivity,
+//                    dashboardActivity.getString(R.string.ask_account_permission),
+//                    REQUEST_PERMISSION_GET_ACCOUNTS,
+//                    Manifest.permission.GET_ACCOUNTS);
+//            return;
+//        }
+//
+//        //Has permissions check accountName
+//        String accountName = dashboardActivity.getPreferences(Context.MODE_PRIVATE)
+//                .getString(PREF_ACCOUNT_NAME, null);
+//
+//        //No accountName selected
+//        if (accountName == null) {
+//            // Start a dialog from which the user can choose an account
+//            dashboardActivity.startActivityForResult(
+//                    mCredential.newChooseAccountIntent(),
+//                    REQUEST_ACCOUNT_PICKER);
+//            return;
+//        }
 
         //Permission granted, account selected -> lets sync media
-        mCredential.setSelectedAccountName(accountName);
+        Log.i(TAG,"Using account "+AppSettingsBuilder.getDriveAccount());
+        mCredential.setSelectedAccountName(AppSettingsBuilder.getDriveAccount());
         syncMedia();
 
     }
@@ -188,8 +194,9 @@ public class DriveRestController {
     private boolean isDeviceOnline() {
         ConnectivityManager connMgr =
                 (ConnectivityManager) DashboardActivity.dashboardActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
+        //Just wifi
+        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return networkInfo.isConnected();
     }
 
     /**

@@ -45,6 +45,11 @@ public class DatabaseSettings {
      */
     boolean fullHierarchy;
 
+    /**
+     * Points to a valid google account Ex: johndoe@google.com with credentials to download media
+     */
+    String driveAccount;
+
     DatabaseSettings(){
 
     }
@@ -73,12 +78,21 @@ public class DatabaseSettings {
         this.fullHierarchy =hierarchy;
     }
 
+    public String getDriveAccount(){
+        return this.driveAccount;
+    }
+
+    public void setDriveAccount(String driveAccount){
+        this.driveAccount=driveAccount;
+    }
+
     @Override
     public String toString() {
         return "DatabaseSettings{" +
                 "originType=" + originType +
                 ", uri='" + uri + '\'' +
                 ", fullHierarchy=" + fullHierarchy +
+                ", driveAccount='" + driveAccount + '\'' +
                 '}';
     }
 }

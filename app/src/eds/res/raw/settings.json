@@ -2,7 +2,8 @@
   "database": {
     "originType": "dhis",
     "uri": "https://eds-dev.psi-mis.org",
-    "fullHierarchy":true
+    "fullHierarchy":true,
+    "driveAccount":"ivan.arrizabalaga@gmail.com"
   },
   "dashboard": {
     "orientation": "vertical",

@@ -83,7 +83,7 @@ public class Media extends BaseModel{
     }
 
     public boolean isEmpty(){
-        return this.id_media==NO_MEDIA_ID;
+        return this.media_type==NO_MEDIA_ID;
     }
 
     public Question getQuestion(){
