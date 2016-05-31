@@ -6,6 +6,7 @@
   },
   "dashboard": {
     "orientation": "vertical",
+    "adapter":"automatic",
     "layout":"vertical_main",
     "modules": [{
       "title": "assess",
