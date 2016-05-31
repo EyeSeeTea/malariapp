@@ -79,6 +79,10 @@ public class CreateSurveyFragment extends Fragment {
     private String TOKEN = ";";
     private String orgUnitStorage = "";
 
+    public void init() {
+        loadHierarchy=true;
+    }
+
     static class ViewHolder {
         public View component;
     }
@@ -107,6 +111,9 @@ public class CreateSurveyFragment extends Fragment {
     LinearLayout llLayout;
 
     DashboardActivity dashboardActivity;
+
+    //Flag used to control the layout inflating is only in the creation of the fragment.
+    private boolean loadHierarchy=true;
 
     public CreateSurveyFragment() {
     }
@@ -150,6 +157,7 @@ public class CreateSurveyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+        init();
         if (container == null) {
             return null;
         }
@@ -242,7 +250,7 @@ public class CreateSurveyFragment extends Fragment {
         if(!orgUnitStorage.equals("")){
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(orgUnitStorage).getName()));
         }
-
+        loadHierarchy=false;
     }
 
 
@@ -554,13 +562,14 @@ public class CreateSurveyFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-                orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
-                allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
-                create();
-            }
+            if(loadHierarchy)
+                if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
+                    HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
+                    orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+                    orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
+                    allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
+                    create();
+                }
         }
     }
 

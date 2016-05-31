@@ -58,6 +58,15 @@ public class Option extends BaseModel {
      */
     Answer answer;
 
+
+    @Column
+    long id_option_attribute;
+
+    /**
+     * Reference to extended option attributes (loaded lazily)
+     */
+    OptionAttribute optionAttribute;
+
     /**
      * List of values that has choosen this option
      */
@@ -133,6 +142,19 @@ public class Option extends BaseModel {
         this.answer = null;
     }
 
+    public OptionAttribute getOptionAttribute() {
+        if(optionAttribute==null){
+            optionAttribute = new Select().from(OptionAttribute.class)
+                    .where(Condition.column(OptionAttribute$Table.ID_OPTION_ATTRIBUTE).eq(id_option_attribute)).querySingle();
+        }
+        return optionAttribute;
+    }
+
+    public void setOptionAttribute(OptionAttribute optionAttribute) {
+        this.optionAttribute = optionAttribute;
+        this.id_option_attribute = (optionAttribute!=null)?optionAttribute.getId_option_attribute():null;
+    }
+
     /**
      * Checks if this option actives the children questions
      * @return true: Children questions should be shown, false: otherwise.
@@ -158,6 +180,34 @@ public class Option extends BaseModel {
         return values;
     }
 
+
+    /**
+     * Getter for extended option attribute 'path'
+     * @return
+     */
+    public String getPath() {
+        OptionAttribute optionAttribute = this.getOptionAttribute();
+        if(optionAttribute==null){
+            return null;
+        }
+
+        return optionAttribute.getPath();
+    }
+
+    /**
+     * Getter for extended option attribute 'backgroundColor'
+     * @return
+     */
+    public String getBackground_colour() {
+        OptionAttribute optionAttribute = this.getOptionAttribute();
+        if(optionAttribute==null){
+            return null;
+        }
+
+        return optionAttribute.getBackground_colour();
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -166,6 +216,7 @@ public class Option extends BaseModel {
         Option option = (Option) o;
 
         if (id_option != option.id_option) return false;
+        if (id_option_attribute != option.id_option_attribute) return false;
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
@@ -180,6 +231,7 @@ public class Option extends BaseModel {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
         result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (int) (id_option_attribute ^ (id_option_attribute >>> 32));
         return result;
     }
 
@@ -191,6 +243,7 @@ public class Option extends BaseModel {
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
                 ", id_answer=" + id_answer +
+                ", id_option_attribute=" + id_option_attribute +
                 '}';
     }
 }

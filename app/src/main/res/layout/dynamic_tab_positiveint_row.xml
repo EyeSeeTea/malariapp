@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_weight="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:gravity="center_vertical"
+        >
+
+        <org.eyeseetea.malariacare.views.CustomEditText
+            android:id="@+id/dynamic_positiveInt_edit"
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_bottom_border"
+            android:inputType="number"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textSize="@dimen/input_number_edit_text"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/condensed_font_name"
+            />
+
+        <Button
+            android:id="@+id/dynamic_positiveInt_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:text="@string/ok"
+            android:layout_margin="10dp"
+            />
+
+    </LinearLayout>
+
+</TableRow>
