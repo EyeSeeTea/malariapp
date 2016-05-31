@@ -58,4 +58,7 @@ public class Constants {
 
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;
+
+    public static final int MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT = 500;
+    public static final int MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT = 1000;
 }
