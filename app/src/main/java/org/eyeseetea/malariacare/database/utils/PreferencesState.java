@@ -265,14 +265,15 @@ public class PreferencesState {
      * it determines if large text is shown in preferences
      * The screen size should be more bigger than the width and height constants to show the large text option.
      */
-    public boolean isShowedLargeText(){
+    public boolean isLargeTextShown(){
         if(showLargeText==null) {
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
             Log.d(TAG,metrics.widthPixels +" x "+ metrics.heightPixels);
             if (metrics.widthPixels > Constants.MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT && metrics.heightPixels >= Constants.MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT) {
                 showLargeText= true;
+            } else {
+                showLargeText = false;
             }
-            showLargeText= false;
         }
         return  showLargeText;
     }

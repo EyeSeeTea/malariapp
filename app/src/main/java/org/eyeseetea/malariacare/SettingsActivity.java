@@ -165,7 +165,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     //Remove the last text size option if the screen size is small.
     private static void filterTextSizeOptions(Preference preference) {
-        if(!PreferencesState.getInstance().isShowedLargeText()) {
+        if(!PreferencesState.getInstance().isLargeTextShown()) {
             ListPreference listPreference = (ListPreference) preference;
             CharSequence[] entries = removeLastItem(listPreference.getEntries());
             CharSequence[] values = removeLastItem(listPreference.getEntryValues());
