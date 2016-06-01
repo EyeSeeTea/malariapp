@@ -173,7 +173,7 @@ public class FeedbackFragment extends Fragment {
         
         //Set mainscore and color.
         Survey survey = Session.getSurvey();
-        float average = survey.getMainScore();
+        float average = (!survey.hasMainScore())?0f:survey.getMainScore();
         CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
         item.setText(String.format("%.1f%%", average));
         int colorId= LayoutUtils.trafficColor(average);

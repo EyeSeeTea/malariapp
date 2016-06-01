@@ -23,7 +23,7 @@
 
     <string name="go_to_feedback">Ir a feedback</string>
     <string name="dialog_title_delete_survey">Borrar evaluación</string>
-    <string name="dialog_info_delete_survey">¿Seguro que desea borrar la evaluación %s?</string>
+    <string name="dialog_info_delete_survey">¿Está seguro de que quiere eliminar esta evaluación de su tableta? %s \nnota: los datos permanecerá guardado en DHIS</string>
     <string name="dialog_title_missing_selection">Selección obligatoria</string>
     <string name="dialog_content_missing_selection">Por favor, seleccione un centro y un tipo de encuesta</string>
     <string name="dialog_title_existing_survey">Encuesta existente</string>
