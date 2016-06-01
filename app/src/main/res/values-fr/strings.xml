@@ -26,7 +26,7 @@
 
     <string name="go_to_feedback">Aller aux commentaires</string>
     <string name="dialog_title_delete_survey">Supprimer Survey.</string>
-    <string name="dialog_info_delete_survey">"Etes-vous sûr de vouloir supprimer complètement l\'enquête %s?"</string>
+    <string name="dialog_info_delete_survey">"Êtes-vous sûr de vouloir supprimer cette évaluation de votre tablette? %s? \nnote: les données restent enregistrées dans DHIS"</string>
     <string name="dialog_title_missing_selection">selection manquant</string>
     <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d\'enquête, s\'il vous plait</string>
     <string name="dialog_title_existing_survey">Enquête existante</string>

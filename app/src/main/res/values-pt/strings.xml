@@ -23,7 +23,7 @@
 
     <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
-    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s?</string>
+    <string name="dialog_info_delete_survey">Tem certeza de que deseja excluir esta avaliação do seu tablet? %s \nnota: dados permanecerão salvos em DHIS</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
     <string name="dialog_content_missing_selection">Por favor seleccione Unid. Org. e Inquérito</string>
     <string name="dialog_title_existing_survey">Inquérito existente</string>
