@@ -56,6 +56,9 @@ public class FeedbackBuilder {
         //Prepare scores
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey, module);
 
+
+        //Load all the questions by tab without CS
+        List<Question> questionsByTabsWithoutCS=Question.listAllByTabsWithoutCs(Session.getSurveyByModule(module).getTabGroup().getTabs());
         //Calculate main score
         survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
 
@@ -63,7 +66,10 @@ public class FeedbackBuilder {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
             for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
                 CompositeScore compositeScore = iterator.next();
-                if (!compositeScore.hasParent()) iterator.remove();
+                //Show only if a parent have questions.
+                if(compositeScore.getQuestions().size()<1) {
+                    if (!compositeScore.hasParent()) iterator.remove();
+                }
             }
         }
 
@@ -80,6 +86,10 @@ public class FeedbackBuilder {
                     feedbackList.add(new QuestionFeedback(question, valueInSurvey));
                 }
             }
+        }
+        for(Question question:questionsByTabsWithoutCS){
+            Value valueInSurvey = question.getValueBySurvey(survey.getId_survey());
+            feedbackList.add(new QuestionFeedback(question, valueInSurvey));
         }
         return feedbackList;
     }

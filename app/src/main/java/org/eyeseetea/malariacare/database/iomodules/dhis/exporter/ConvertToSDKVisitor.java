@@ -349,7 +349,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void buildControlDataElements(Survey survey) {
 
         //Overall score
-        if(controlDataElementExistsInServer(overallScoreCode)){
+        if(controlDataElementExistsInServer(overallScoreCode)  && survey.hasMainScore()){
             buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
         }
 

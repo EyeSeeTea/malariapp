@@ -388,6 +388,7 @@ public class AutoTabAdapter extends ATabAdapter {
         CustomTextView textView = new CustomTextView(getContext());
         textView.setText(question.getForm_name());
         textView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        textView.setPadding(20,0,10,0);
         rowLayout.addView(textView);
         // Style customization
         if (background != null) rowLayout.setBackgroundResource(background);

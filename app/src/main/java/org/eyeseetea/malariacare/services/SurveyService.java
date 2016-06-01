@@ -323,14 +323,13 @@ public class SurveyService extends IntentService {
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
-        List<Survey> sentCompletedOrConflictSurveys=Survey.getAllSentCompletedOrConflictSurveys();
         for(Survey survey:unsentSurveys){
                 survey.getAnsweredQuestionRatio();
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         HashMap<String,List> monitorMap=new HashMap<>();
-        monitorMap.put(PREPARE_SURVEYS, sentCompletedOrConflictSurveys);
+        monitorMap.put(PREPARE_SURVEYS, Survey.getAllSentCompletedOrConflictSurveys());
         monitorMap.put(PREPARE_PROGRAMS, Program.getAllPrograms());
 
         HashMap<String,List> orgCreateSurveyData=new HashMap<>();
@@ -342,8 +341,8 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION,monitorMap);
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
+        Session.putServiceValue(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION, Survey.getAllSentCompletedOrConflictSurveys());
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
-        Session.putServiceValue(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION, sentCompletedOrConflictSurveys);
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());
 
@@ -353,8 +352,8 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_CREATE_SURVEY_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_MONITOR_DATA_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
     }
 
