@@ -79,6 +79,10 @@ public class CreateSurveyFragment extends Fragment {
     private String TOKEN = ";";
     private String orgUnitStorage = "";
 
+    public void init() {
+        loadHierarchy=true;
+    }
+
     static class ViewHolder {
         public View component;
     }
@@ -94,6 +98,9 @@ public class CreateSurveyFragment extends Fragment {
     List<OrgUnit> orgUnitList;
     List<OrgUnitLevel> orgUnitLevelList;
 
+    //Last selected program
+    Program lastSelectedProgram;
+
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
     private TabGroup tabGroupDefaultOption;
@@ -104,6 +111,9 @@ public class CreateSurveyFragment extends Fragment {
     LinearLayout llLayout;
 
     DashboardActivity dashboardActivity;
+
+    //Flag used to control the layout inflating is only in the creation of the fragment.
+    private boolean loadHierarchy=true;
 
     public CreateSurveyFragment() {
     }
@@ -147,6 +157,7 @@ public class CreateSurveyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+        init();
         if (container == null) {
             return null;
         }
@@ -239,6 +250,7 @@ public class CreateSurveyFragment extends Fragment {
         if(!orgUnitStorage.equals("")){
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(orgUnitStorage).getName()));
         }
+        loadHierarchy=false;
     }
 
 
@@ -336,6 +348,9 @@ public class CreateSurveyFragment extends Fragment {
 
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();
+
+        //save the program in the preferents
+        setLastSelectedProgram(program.getUid());
 
         dashboardActivity.onCreateSurvey(orgUnit,program.getTabGroup());
     }
@@ -470,6 +485,10 @@ public class CreateSurveyFragment extends Fragment {
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
+        Program lastSelectedProgram= getLastSelectedProgram();
+        if(lastSelectedProgram!=null){
+            programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+        }
         return initProgram;
     }
 
@@ -493,6 +512,22 @@ public class CreateSurveyFragment extends Fragment {
         SharedPreferences sharedPreferences = getSharedPreferences();
         return sharedPreferences.edit();
     }
+
+    //Gets the default program/
+    private Program getLastSelectedProgram() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        Program lastSelectedProgram = Program.getProgram(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_program), ""));
+        return lastSelectedProgram;
+    }
+
+
+    //Sets the default program
+    private void setLastSelectedProgram(String uid) {
+            SharedPreferences.Editor editor = getEditor();
+            editor.putString(getString(R.string.default_program), uid);
+            editor.commit();
+    }
+
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
@@ -527,13 +562,14 @@ public class CreateSurveyFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-                orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
-                allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
-                create();
-            }
+            if(loadHierarchy)
+                if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
+                    HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
+                    orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+                    orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
+                    allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
+                    create();
+                }
         }
     }
 
