@@ -120,9 +120,8 @@ public class AssessModuleController extends ModuleController {
         dashboardActivity.prepareLocationListener(survey);
 
         //Prepare survey fragment
-        if(surveyFragment==null) {
-            surveyFragment = SurveyFragment.newInstance(1);
-        }
+        surveyFragment = SurveyFragment.newInstance(1);
+
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
     }
