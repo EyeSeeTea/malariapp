@@ -98,6 +98,9 @@ public class CreateSurveyFragment extends Fragment {
     List<OrgUnit> orgUnitList;
     List<OrgUnitLevel> orgUnitLevelList;
 
+    //Last selected program
+    Program lastSelectedProgram;
+
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
     private TabGroup tabGroupDefaultOption;
@@ -346,6 +349,9 @@ public class CreateSurveyFragment extends Fragment {
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();
 
+        //save the program in the preferents
+        setLastSelectedProgram(program.getUid());
+
         dashboardActivity.onCreateSurvey(orgUnit,program.getTabGroup());
     }
 
@@ -479,6 +485,10 @@ public class CreateSurveyFragment extends Fragment {
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
+        Program lastSelectedProgram= getLastSelectedProgram();
+        if(lastSelectedProgram!=null){
+            programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+        }
         return initProgram;
     }
 
@@ -502,6 +512,22 @@ public class CreateSurveyFragment extends Fragment {
         SharedPreferences sharedPreferences = getSharedPreferences();
         return sharedPreferences.edit();
     }
+
+    //Gets the default program/
+    private Program getLastSelectedProgram() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        Program lastSelectedProgram = Program.getProgram(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_program), ""));
+        return lastSelectedProgram;
+    }
+
+
+    //Sets the default program
+    private void setLastSelectedProgram(String uid) {
+            SharedPreferences.Editor editor = getEditor();
+            editor.putString(getString(R.string.default_program), uid);
+            editor.commit();
+    }
+
     /**
      * Register a survey receiver to load surveys into the listadapter
      */

@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -287,7 +286,7 @@ public class DashboardActivity extends BaseActivity{
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer){
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer, String module){
         //Looking for that survey in local
         Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, lastEventInServer);
         //Survey in server BUT not local
@@ -307,7 +306,7 @@ public class DashboardActivity extends BaseActivity{
         //Upgrade the uploaded date
         survey.setUploadDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,module);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }
@@ -324,7 +323,6 @@ public class DashboardActivity extends BaseActivity{
      */
     public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
         Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        Session.setSurvey(survey);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }

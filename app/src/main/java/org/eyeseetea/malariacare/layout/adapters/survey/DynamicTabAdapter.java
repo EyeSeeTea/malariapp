@@ -125,6 +125,8 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
 
     private final Context context;
 
+    private String module;
+
     int id_layout;
 
     /**
@@ -132,7 +134,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     private boolean readOnly;
 
-    public DynamicTabAdapter(Tab tab, Context context) {
+    public DynamicTabAdapter(Tab tab, Context context, float idSurvey, String module) {
         this.lInflater = LayoutInflater.from(context);
         this.context = context;
         this.id_layout = R.layout.form_without_score;
@@ -140,8 +142,9 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         this.items=initItems(tab);
         List<Question> questions= initHeaderAndQuestions();
         this.progressTabStatus=initProgress(questions);
-        this.readOnly = Session.getSurvey() != null && !Session.getSurvey().isInProgress();
+        this.readOnly = Session.getSurveyByModule(module) != null && !Session.getSurveyByModule(module).isInProgress();
         this.isSwipeAdded=false;
+        this.module = module;
     }
 
     /**
@@ -190,7 +193,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
 
                 Option selectedOption=(Option)view.getTag();
                 Question question=progressTabStatus.getCurrentQuestion();
-                ReadWriteDB.saveValuesDDL(question, selectedOption);
+                ReadWriteDB.saveValuesDDL(question, selectedOption, module);
 
                 ViewGroup vgTable = (ViewGroup) view.getParent().getParent();
                 for (int rowPos = 0; rowPos < vgTable.getChildCount(); rowPos++) {
@@ -295,7 +298,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         rowView.requestLayout();
 
         Question question=this.progressTabStatus.getCurrentQuestion();
-        Value value=question.getValueBySession();
+        Value value=question.getValueBySession(module);
 
         //Question
         CustomTextView headerView=(CustomTextView) rowView.findViewById(R.id.question);
@@ -429,7 +432,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                     }
 
                     Question question = progressTabStatus.getCurrentQuestion();
-                    ReadWriteDB.saveValuesText(question, positiveIntValue);
+                    ReadWriteDB.saveValuesText(question, positiveIntValue, module);
                     hideKeyboard(context,v);
                     finishOrNext();
                 }
@@ -498,7 +501,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
 
                     Question question = progressTabStatus.getCurrentQuestion();
 
-                    ReadWriteDB.saveValuesText(question, phoneValue);
+                    ReadWriteDB.saveValuesText(question, phoneValue, module);
                     finishOrNext();
                 }
             });
@@ -684,7 +687,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
             @Override
             public void run() {
                 Question question = progressTabStatus.getCurrentQuestion();
-                Value value = question.getValueBySession();
+                Value value = question.getValueBySession(module);
                 if (isDone(value)) {
                     showDone();
                     return;
@@ -774,8 +777,8 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      * @param context
      * @return
      */
-    public static DynamicTabAdapter build(Tab tab, Context context) {
-       return new DynamicTabAdapter(tab, context);
+    public static DynamicTabAdapter build(Tab tab, Context context, float idSurvey, String module) {
+       return new DynamicTabAdapter(tab, context, idSurvey, module);
     }
 
     public class OnSwipeTouchListener implements View.OnTouchListener {

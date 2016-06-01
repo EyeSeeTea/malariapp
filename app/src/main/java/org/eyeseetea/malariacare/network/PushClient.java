@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class PushClient {
             JSONObject data = QueryFormatterUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
             //data = PushUtilsElements(data, controlData.get(""));
-            data = QueryFormatterUtils.getInstance().PushUtilsElements(data, survey);
+            data = QueryFormatterUtils.getInstance().PushUtilsElements(data, survey, Constants.PUSH_MODULE_KEY);
             pushResult = new PushResult(networkUtils.pushData(data));
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved

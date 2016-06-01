@@ -23,11 +23,11 @@
 
     <string name="go_to_feedback">Go to feedback</string>
     <string name="dialog_title_delete_survey">Delete Survey</string>
-    <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey %s?</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to delete this assessment from your tablet? %s \nnote: data will remain saved in DHIS</string>
     <string name="dialog_title_missing_selection">Missing selection</string>
     <string name="dialog_content_missing_selection">Please select Org Unit and Survey details</string>
     <string name="dialog_title_existing_survey">Existing Survey</string>
-    <string name="dialog_content_existing_survey">There is already a not sent form in the system for that Org Unit/Survey</string>
+    <string name="dialog_content_existing_survey">There is already an unsent form in the system for that Health Facility Module.</string>
     <string name="dialog_title_incorrect_org_unit">Incorrect Org Unit</string>
     <string name="dialog_content_incorrect_org_unit">Please select a final org unit</string>
     <string name="dialog_content_logout_confirmation">If you exit the system, all the not sent data will be deleted. Do you still want to exit?</string>

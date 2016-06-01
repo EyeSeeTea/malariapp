@@ -23,11 +23,11 @@
 
     <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
-    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s?</string>
+    <string name="dialog_info_delete_survey">Tem certeza de que deseja excluir esta avaliação do seu tablet? %s \nnota: dados permanecerão salvos em DHIS</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
     <string name="dialog_content_missing_selection">Por favor seleccione Unid. Org. e Inquérito</string>
     <string name="dialog_title_existing_survey">Inquérito existente</string>
-    <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
+    <string name="dialog_content_existing_survey">Já existe uma forma não enviada no sistema para que o Módulo de Saúde.</string>
     <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
     <string name="dialog_question_complete_survey">Todas as questões obrigatórias foram concluídos. Você quer fazer o levantamento mais abrangente?</string>

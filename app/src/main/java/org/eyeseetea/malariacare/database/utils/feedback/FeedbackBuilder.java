@@ -41,8 +41,8 @@ public class FeedbackBuilder {
      * @param survey
      * @return
      */
-    public static List<Feedback> build(Survey survey){
-        return build(survey, false);
+    public static List<Feedback> build(Survey survey, String module){
+        return build(survey, false, module);
     }
 
     /**
@@ -51,19 +51,25 @@ public class FeedbackBuilder {
      * @param parents true for representing every composite, including parents, otherwise parents are removed
      * @return
      */
-    public static List<Feedback> build(Survey survey, boolean parents){
+    public static List<Feedback> build(Survey survey, boolean parents, String module){
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(Session.getSurvey());
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey, module);
 
+
+        //Load all the questions by tab without CS
+        List<Question> questionsByTabsWithoutCS=Question.listAllByTabsWithoutCs(Session.getSurveyByModule(module).getTabGroup().getTabs());
         //Calculate main score
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
 
         if (!parents) {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
             for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
                 CompositeScore compositeScore = iterator.next();
-                if (!compositeScore.hasParent()) iterator.remove();
+                //Show only if a parent have questions.
+                if(compositeScore.getQuestions().size()<1) {
+                    if (!compositeScore.hasParent()) iterator.remove();
+                }
             }
         }
 
@@ -75,11 +81,15 @@ public class FeedbackBuilder {
             //add its questions
             List<Question> questions=compositeScore.getQuestions();
             for(Question question:questions){
-                if(!question.isHiddenBySurvey(survey)) {
-                    Value valueInSurvey = question.getValueBySurvey(survey);
+                if(!question.isHiddenBySurvey(survey.getId_survey())) {
+                    Value valueInSurvey = question.getValueBySurvey(survey.getId_survey());
                     feedbackList.add(new QuestionFeedback(question, valueInSurvey));
                 }
             }
+        }
+        for(Question question:questionsByTabsWithoutCS){
+            Value valueInSurvey = question.getValueBySurvey(survey.getId_survey());
+            feedbackList.add(new QuestionFeedback(question, valueInSurvey));
         }
         return feedbackList;
     }

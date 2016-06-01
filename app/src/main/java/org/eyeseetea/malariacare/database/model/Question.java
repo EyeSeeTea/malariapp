@@ -459,24 +459,21 @@ public class Question extends BaseModel {
      *
      * @return
      */
-    public Value getValueBySession() {
-        return this.getValueBySurvey(Session.getSurvey());
+    public Value getValueBySession(String module) {
+        return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**
      * Gets the value of this question in the given Survey
      *
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public Value getValueBySurvey(Survey survey) {
-        if (survey == null) {
-            return null;
-        }
+    public Value getValueBySurvey(float idSurvey) {
         List<Value> returnValues = new Select().from(Value.class)
                 .indexedBy("Value_id_survey")
                 .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
-                .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
+                .and(Condition.column(Value$Table.ID_SURVEY).eq(idSurvey)).queryList();
 
         if (returnValues.size() == 0) {
             return null;
@@ -490,22 +487,19 @@ public class Question extends BaseModel {
      *
      * @return
      */
-    public Option getOptionBySession() {
-        return this.getOptionBySurvey(Session.getSurvey());
+    public Option getOptionBySession(String module) {
+        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**
      * Gets the option of this question in the given survey
      *
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public Option getOptionBySurvey(Survey survey) {
-        if (survey == null) {
-            return null;
-        }
+    public Option getOptionBySurvey(float idSurvey) {
 
-        Value value = this.getValueBySurvey(survey);
+        Value value = this.getValueBySurvey(idSurvey);
         if (value == null) {
             return null;
         }
@@ -540,10 +534,10 @@ public class Question extends BaseModel {
     /**
      * Checks if this question is shown according to the values of the given survey
      *
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public boolean isHiddenBySurvey(Survey survey) {
+    public boolean isHiddenBySurvey(float idSurvey) {
         //No question relations
         if (!hasParent()) {
             return false;
@@ -566,7 +560,7 @@ public class Question extends BaseModel {
                         //Parent child relationship
                 .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
                         //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(survey.getId_survey()))
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
                         //The child question in the relationship is 'this'
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
                 .count();
@@ -580,14 +574,14 @@ public class Question extends BaseModel {
      *
      * @return List</Float> {num, den}
      */
-    public List<Float> initScore(Survey survey) {
+    public List<Float> initScore(float idSurvey, String module) {
         if (!this.isScored()) {
             return null;
         }
 
-        Float num = ScoreRegister.calcNum(this, survey);
-        Float denum = ScoreRegister.calcDenum(this, survey);
-        ScoreRegister.addRecord(this, num, denum);
+        Float num = ScoreRegister.calcNum(this, idSurvey);
+        Float denum = ScoreRegister.calcDenum(this, idSurvey);
+        ScoreRegister.addRecord(this, num, denum, idSurvey, module);
         return Arrays.asList(num, denum);
     }
 
@@ -682,15 +676,10 @@ public class Question extends BaseModel {
      * Checks if this question is triggered according to the current values of the given survey.
      * Only applies to question with answers DROPDOWN_DISABLED
      *
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public boolean isTriggered(Survey survey){
-
-        //No survey no party
-        if(survey==null || survey.getId_survey()==null){
-            return false;
-        }
+    public boolean isTriggered(float idSurvey){
 
         //Only disabled dropdowns
         if(this.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
@@ -711,7 +700,7 @@ public class Question extends BaseModel {
                                 .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
                         Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
                                 .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
-                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(survey.getId_survey()))
+                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_MATCH))
                 .queryList();
@@ -758,6 +747,31 @@ public class Question extends BaseModel {
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
 
+    }
+
+    public static List<Question> listAllByTabsWithoutCs(List<Tab> tabs) {
+
+        if (tabs == null || tabs.size() == 0) {
+            return new ArrayList();
+        }
+
+        Iterator<Tab> iterator = tabs.iterator();
+        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)).in(Long.toString(iterator.next().getId_tab()));
+        while (iterator.hasNext()) {
+            in.and(Long.toString(iterator.next().getId_tab()));
+        }
+
+        return new Select().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .where(in)
+                .and(Condition.column(Question$Table.ID_COMPOSITE_SCORE).isNull())
+                .orderBy(Tab$Table.ORDER_POS)
+                .orderBy(Question$Table.ORDER_POS).queryList();
     }
 
     public static List<Question> listAllByTabs(List<Tab> tabs) {

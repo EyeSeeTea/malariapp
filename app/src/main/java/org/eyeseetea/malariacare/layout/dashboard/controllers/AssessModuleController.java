@@ -76,7 +76,7 @@ public class AssessModuleController extends ModuleController {
             return;
         }
 
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
@@ -108,23 +108,26 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onSurveySelected(Survey survey){
+
+        Session.setSurveyByModule(survey,getSimpleName());
+
         //Planned surveys needs to be started
         if(survey.getStatus()== Constants.SURVEY_PLANNED){
             survey= SurveyPlanner.getInstance().startSurvey(survey);
         }
 
         //Set the survey into the session
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,getSimpleName());
 
         //Start looking for geo
         dashboardActivity.prepareLocationListener(survey);
 
         //Prepare survey fragment
-        if(surveyFragment==null) {
-            surveyFragment = SurveyFragment.newInstance(1);
-        }
+        surveyFragment = SurveyFragment.newInstance(1);
+
+        surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
     public void onMarkAsCompleted(Survey survey){
@@ -136,7 +139,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //Change state
-        survey.setCompleteSurveyState();
+        survey.setCompleteSurveyState(getSimpleName());
         //Remove from list
         ((DashboardUnsentFragment)fragment).removeSurveyFromAdapter(survey);
         //Reload sent surveys
@@ -160,7 +163,7 @@ public class AssessModuleController extends ModuleController {
      * It is called when the user press back in a surveyFragment
      */
     private void onSurveyBackPressed() {
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -179,7 +182,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //In survey -> custom action bar
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         String appNameColorString = getAppNameColorString();
         String title=getActionBarTitleBySurvey(survey);
         String subtitle=getActionBarSubTitleBySurvey(survey);
@@ -224,7 +227,7 @@ public class AssessModuleController extends ModuleController {
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey = Session.getSurvey();
+                Survey survey = Session.getSurveyByModule(getSimpleName());
                 survey.updateSurveyStatus();
                 dashboardController.setNavigatingBackwards(true);
                 closeSurveyFragment();
@@ -247,8 +250,8 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurvey();
-                        survey.setCompleteSurveyState();
+                        Survey survey = Session.getSurveyByModule(getSimpleName());
+                        survey.setCompleteSurveyState(getSimpleName());
                         alertOnComplete(survey);
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
@@ -264,7 +267,6 @@ public class AssessModuleController extends ModuleController {
         //Clear survey fragment
         SurveyFragment surveyFragment =  getSurveyFragment();
         surveyFragment.unregisterReceiver();
-
         //Reload Assess fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
