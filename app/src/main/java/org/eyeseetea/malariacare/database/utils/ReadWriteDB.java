@@ -33,10 +33,10 @@ import java.util.List;
  */
 public class ReadWriteDB {
 
-    public static String readValueQuestion(Question question) {
+    public static String readValueQuestion(Question question, String module) {
         String result = null;
 
-        Value value = question.getValueBySession();
+        Value value = question.getValueBySession(module);
 
         if (value != null)
             result = value.getValue();
@@ -44,10 +44,10 @@ public class ReadWriteDB {
         return result;
     }
 
-    public static int readPositionOption(Question question) {
+    public static int readPositionOption(Question question, String module) {
         int result = 0;
 
-        Value value = question.getValueBySession();
+        Value value = question.getValueBySession(module);
         if (value != null) {
 
             List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
@@ -58,10 +58,10 @@ public class ReadWriteDB {
         return result;
     }
 
-    public static Option readOptionAnswered(Question question) {
+    public static Option readOptionAnswered(Question question, String module) {
         Option option = null;
 
-        Value value = question.getValueBySession();
+        Value value = question.getValueBySession(module);
 
         if (value != null)
             option = value.getOption();
@@ -69,13 +69,13 @@ public class ReadWriteDB {
         return option;
     }
 
-    public static void saveValuesDDL(Question question, Option option) {
+    public static void saveValuesDDL(Question question, Option option, String module) {
 
-        Value value = question.getValueBySession();
+        Value value = question.getValueBySession(module);
 
         if (!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
             if (value == null) {
-                value = new Value(option, question, Session.getSurvey());
+                value = new Value(option, question, Session.getSurveyByModule(module));
                 value.save();
             } else {
                 value.setOption(option);
@@ -88,13 +88,13 @@ public class ReadWriteDB {
         }
     }
 
-    public static void saveValuesText(Question question, String answer) {
+    public static void saveValuesText(Question question, String answer, String module) {
 
-        Value value = question.getValueBySession();
+        Value value = question.getValueBySession(module);
 
         // If the value is not found we create one
         if (value == null) {
-            value = new Value(answer, question, Session.getSurvey());
+            value = new Value(answer, question, Session.getSurveyByModule(module));
             value.save();
         } else {
             value.setOption((Long)null);
@@ -104,9 +104,9 @@ public class ReadWriteDB {
         }
     }
 
-    public static void deleteValue(Question question) {
+    public static void deleteValue(Question question, String module) {
 
-        Value value = question.getValueBySession();
+        Value value = question.getValueBySession(module);
 
         if (value != null)
             value.delete();

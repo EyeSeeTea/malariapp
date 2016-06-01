@@ -568,11 +568,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.save();
     }
 
-    private void saveScore() {        //Prepare scores info
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
+    private void saveScore(String module) {        //Prepare scores info
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
-        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
         this.saveMainScore();
     }
 
@@ -758,11 +758,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
         saveMainScore();
     }
 
-    public void setCompleteSurveyState(){
+    public void setCompleteSurveyState(String module){
         setStatus(Constants.SURVEY_COMPLETED);
         //CompletionDate
         this.setCompletionDate(new Date());
-        saveScore();
+        saveScore(module);
         save();
         saveMainScore();
         //Plan a new survey for the future

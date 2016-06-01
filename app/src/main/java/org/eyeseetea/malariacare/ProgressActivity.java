@@ -441,7 +441,8 @@ public class ProgressActivity extends Activity {
         }
 
         List<Survey> surveys=new ArrayList<>();
-        surveys.add(Session.getSurvey());
+        //Fixme it is not used anymore?.
+        //surveys.add(Session.getSurveyByModule(module));
         return surveys;
     }
 

@@ -39,19 +39,20 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
     //List of Headers and Questions. Each position contains an object to be showed in the listview
     private List items;
 
+    public float idSurvey;
 
-    public ATabAdapter(Tab tab, Context context, int id_layout){
+    public String module;
+
+
+    public ATabAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module){
         this.context = context;
         this.tab = tab;
         this.lInflater = LayoutInflater.from(context);
-        this.items = AUtils.preloadTabItems(tab);
+        this.items = AUtils.preloadTabItems(tab, module);
         this.id_layout = id_layout;
+        this.idSurvey=idSurvey;
+        this.module=module;
     }
-
-    /**
-     * Flag that indicates if the current survey in session is already sent or not (it affects readonly settings)
-     */
-    private boolean readOnly = Session.getSurvey().isSent();
 
     @Override
     public BaseAdapter getAdapter() {
@@ -100,8 +101,11 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
         return this.lInflater;
     }
 
-    public boolean getReadOnly(){
-        return readOnly;
+    /**
+     * Flag that indicates if the current survey in current module session is already sent or not (it affects readonly settings)
+     */
+    public boolean getReadOnly(String module){
+        return Session.getSurveyByModule(module).isSent();
     }
 
     public Tab getTab() {
