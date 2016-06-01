@@ -30,7 +30,7 @@
     <string name="dialog_title_missing_selection">selection manquant</string>
     <string name="dialog_content_missing_selection">Selectionez un cabinet medical et tipe d\'enquête, s\'il vous plait</string>
     <string name="dialog_title_existing_survey">Enquête existante</string>
-    <string name="dialog_content_existing_survey">Il y a déjà une enquête pas encore envoyée dans le système pour le cabinet et tipe d\'enquête choisís</string>
+    <string name="dialog_content_existing_survey">Il existe déjà une forme unsent dans le système pour que le module d\'établissement de santé.</string>
     <string name="dialog_content_logout_confirmation">Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer encore ?</string>
     <string name="dialog_button_preview_feedback">Voir évaluations</string>
     <string name="dialog_question_complete_survey">Toutes les questions obligatoires ont été remplies. Aimeriez-vous marquer cette sondage comme complet?</string>
