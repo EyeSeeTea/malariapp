@@ -65,4 +65,6 @@ public class Constants {
     public static final String FRAGMENT_SURVEY_KEY ="FRAGMENT_SURVEY_KEY";
     public static final String FRAGMENT_FEEDBACK_KEY ="FRAGMENT_FEEDBACK_KEY";
 
+    public static final int MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT = 500;
+    public static final int MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT = 1000;
 }

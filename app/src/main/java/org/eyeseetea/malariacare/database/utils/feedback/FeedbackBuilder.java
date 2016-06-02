@@ -66,7 +66,10 @@ public class FeedbackBuilder {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
             for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
                 CompositeScore compositeScore = iterator.next();
-                if (!compositeScore.hasParent()) iterator.remove();
+                //Show only if a parent have questions.
+                if(compositeScore.getQuestions().size()<1) {
+                    if (!compositeScore.hasParent()) iterator.remove();
+                }
             }
         }
 
