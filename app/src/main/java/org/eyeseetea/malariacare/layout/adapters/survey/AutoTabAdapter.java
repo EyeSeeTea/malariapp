@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -31,7 +32,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -54,13 +57,17 @@ import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
 import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -271,7 +278,7 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.DATE:
                 rowView = AutoTabLayoutUtils.initialiseView(R.layout.date, parent, question, viewHolder, position, getInflater());
                 //Add main component and listener
-                ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
+                ((CustomButton) viewHolder.component).setOnClickListener(new DatePickerListener(question, viewHolder));
                 break;
 
             case Constants.SHORT_TEXT:
@@ -332,6 +339,7 @@ public class AutoTabAdapter extends ATabAdapter {
         for(Question question:questionRow.getQuestions()){
             CustomEditText customEditText;
             Spinner spinner;
+            CustomButton customButton;
             //Create view for columm
             switch (question.getOutput()){
                 case Constants.NO_ANSWER:
@@ -339,6 +347,9 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.addColumnComponent(null);
                     break;
                 case Constants.DATE:
+                    customButton = addDateButtonToRow(row,question,columnWeight);
+                    customButton.setOnClickListener(new DatePickerListener(question, new AutoTabViewHolder(customButton)));
+                    viewHolder.addColumnComponent(customButton);
                 case Constants.LONG_TEXT:
                 case Constants.SHORT_TEXT:
                     customEditText= addEditViewToRow(row,question,columnWeight);
@@ -399,6 +410,14 @@ public class AutoTabAdapter extends ATabAdapter {
             textView.setTextSize(getContext().getResources().getDimension(R.dimen.small_medium_text_size));
         else
             textView.setTextSize(PreferencesState.getInstance().getFontSize(PreferencesState.getInstance().getScale(), textView.getmDimension()));
+    }
+
+    private CustomButton addDateButtonToRow(LinearLayout rowLayout, Question question, float columnWeight){
+        rowLayout.setWeightSum(columnWeight);
+        CustomButton dateButton = new CustomButton(getContext());
+        dateButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        rowLayout.addView(dateButton);
+        return dateButton;
     }
 
     private void addTextViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
@@ -590,6 +609,38 @@ public class AutoTabAdapter extends ATabAdapter {
             ReadWriteDB.saveValuesText(question, s.toString(), module);
         }
     }
+
+    private class DatePickerListener implements Button.OnClickListener{
+
+        private AutoTabViewHolder viewHolder;
+        private Question question;
+        private Calendar calendar = Calendar.getInstance();
+
+        public DatePickerListener(Question question, AutoTabViewHolder viewHolder){
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+
+        @Override
+        public void onClick(final View v) {
+            if (!v.isShown()){
+                return;
+            }
+            new DatePickerDialog(AutoTabAdapter.this.getContext(), new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    Calendar newCalendar = Calendar.getInstance();
+                    newCalendar.set(year, monthOfYear, dayOfMonth);
+                    Date newScheduledDate = newCalendar.getTime();
+                    ((CustomButton)v).setText(AUtils.formatDate(newScheduledDate));
+                    ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
+                }
+
+            },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
+    }
+
+
 
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
