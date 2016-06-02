@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -99,11 +100,14 @@ public class AutoTabViewHolder {
 
 
     public void setText(String text) {
-        if (component == null || !(component instanceof CustomEditText)) {
+        if (component == null) {
             return;
         }
 
-        ((CustomEditText) component).setText(text);
+        if (component instanceof CustomEditText)
+            ((CustomEditText) component).setText(text);
+        if (component instanceof CustomButton)
+            ((CustomButton) component).setText(text);
     }
 
     public void setNumText(String text) {
