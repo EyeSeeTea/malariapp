@@ -24,6 +24,6 @@
     <string name="app_name" translatable="false">EDS</string>
 
     <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://eds.psi-mis.org</string>
+    <string name="login_info_dhis_default_server_url" translatable="false">https://</string>
     
 </resources>
