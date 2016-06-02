@@ -43,6 +43,7 @@
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Lista para enviar</string>
     <string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
+    <string name="dialog_info_ask_for_completion">"¿Está seguro de querer marcar como completada %s? Esta acción no puede deshacerse"</string>
 
     <string name="create_info_ok">Empezar</string>
     <string name="create_info_organization_unit">Unidad de organización</string>
