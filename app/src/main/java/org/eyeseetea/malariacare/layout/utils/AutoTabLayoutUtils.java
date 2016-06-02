@@ -155,8 +155,8 @@ public class AutoTabLayoutUtils {
      * @param question
      * @return
      */
-    public static boolean isHidden(Question question) {
-        return question.isHiddenBySurvey(Session.getSurvey());
+    public static boolean isHidden(Question question, float idSurvey) {
+        return question.isHiddenBySurvey(idSurvey);
     }
 
     /**
@@ -294,12 +294,12 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey, String module) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
-        int option=question.isTriggered(Session.getSurvey())?0:1;
+        int option=question.isTriggered(idSurvey)?0:1;
 
         //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter);
+        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter, idSurvey, module);
     }
 
     /**
@@ -308,13 +308,13 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter) {
+    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, final float idSurvey, final String module) {
         boolean refreshTab = false;
 
         if (!question.hasChildren()) {
             // Write option to DB
-            ReadWriteDB.saveValuesDDL(question, option);
-            recalculateScores(viewHolder, question);
+            ReadWriteDB.saveValuesDDL(question, option, module);
+            recalculateScores(viewHolder, question, idSurvey, module);
         }
 
         // If parent relation found, toggle Children Spinner Visibility
@@ -327,7 +327,7 @@ public class AutoTabLayoutUtils {
                 QuestionVisibility.option = option;
                 boolean notEmpty = false;
                 for (Question childQuestion: question.getChildren()){
-                    if (childQuestion.getValueBySession()!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
+                    if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
                 }
                 if (notEmpty) {
                     new AlertDialog.Builder(context)
@@ -335,7 +335,7 @@ public class AutoTabLayoutUtils {
                             .setMessage(context.getString(R.string.dialog_deleting_children))
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface arg0, int arg1) {
-                                    expandChildren(viewHolder);
+                                    expandChildren(viewHolder, idSurvey, module);
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -344,7 +344,7 @@ public class AutoTabLayoutUtils {
                                 }
                             }).create().show();
                 } else{
-                    expandChildren(viewHolder);
+                    expandChildren(viewHolder, idSurvey, module);
                 }
             }
             refreshTab = true;
@@ -353,11 +353,11 @@ public class AutoTabLayoutUtils {
         return refreshTab;
     }
 
-    public static void expandChildren(ViewHolder viewHolder){
+    public static void expandChildren(ViewHolder viewHolder, float idSurvey, String module){
         // Write option to DB
-        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option);
-        recalculateScores(viewHolder, QuestionVisibility.question);
-        toggleChildrenVisibility();
+        ReadWriteDB.saveValuesDDL(QuestionVisibility.question, QuestionVisibility.option, module);
+        recalculateScores(viewHolder, QuestionVisibility.question, idSurvey, module);
+        toggleChildrenVisibility(idSurvey, module);
         QuestionVisibility.adapter.notifyDataSetChanged();
     }
 
@@ -366,64 +366,63 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question) {
-        Float num = ScoreRegister.calcNum(question);
-        Float denum = ScoreRegister.calcDenum(question);
+    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float idSurvey, String module) {
+        Float num = ScoreRegister.calcNum(question, idSurvey);
+        Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
         viewHolder.num.setText(num.toString());
         viewHolder.denum.setText(denum.toString());
 
-        ScoreRegister.addRecord(question, num, denum);
+        ScoreRegister.addRecord(question, num, denum, idSurvey, module);
     }
 
     /**
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
      */
-    private static void toggleChildrenVisibility() {
+    private static void toggleChildrenVisibility(float idSurvey, String module) {
         Question question = QuestionVisibility.question;
         LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
-        Survey survey=Session.getSurvey();
+        Survey survey=Session.getSurveyByModule(module);
         boolean visible;
 
         for (Question child : children) {
             Header childHeader = child.getHeader();
-            visible=!child.isHiddenBySurvey(survey);
+            visible=!child.isHiddenBySurvey(idSurvey);
             elementInvisibility.put(child, !visible);
             if (!visible) {
-                List<Float> numdenum = ScoreRegister.getNumDenum(child);
+                List<Float> numdenum = ScoreRegister.getNumDenum(child, idSurvey, module);
                 if (numdenum != null) {
-                    ScoreRegister.deleteRecord(child);
+                    ScoreRegister.deleteRecord(child, idSurvey, module);
                 }
-                ReadWriteDB.deleteValue(child); // when we hide a question, we remove its value
+                ReadWriteDB.deleteValue(child, module); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
                 if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
             } else {
-                Float denum = ScoreRegister.calcDenum(child);
-                ScoreRegister.addRecord(child, 0F, denum);
+                Float denum = ScoreRegister.calcDenum(child, idSurvey);
+                ScoreRegister.addRecord(child, 0F, denum, idSurvey, module);
                 elementInvisibility.put(childHeader, false);
             }
             cachedQuestion = question;
         }
     }
 
-    public static void initScoreQuestion(Question question, float totalNum, float totalDenum) {
+    public static void initScoreQuestion(Question question, float totalNum, float totalDenum, float idSurvey, String module) {
 
         if (question.getOutput() == Constants.DROPDOWN_LIST
                 || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
                 || question.getOutput() == Constants.RADIO_GROUP_VERTICAL) {
 
-            Float num = ScoreRegister.calcNum(question);
-            Float denum = ScoreRegister.calcDenum(question);
+            Float num = ScoreRegister.calcNum(question, idSurvey);
+            Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
             totalNum = totalNum + num;
             totalDenum = totalDenum + denum;
 
-            ScoreRegister.addRecord(question, num, denum);
+            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
-
     }
 }

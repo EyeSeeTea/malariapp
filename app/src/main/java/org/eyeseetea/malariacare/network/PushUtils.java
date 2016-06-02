@@ -128,7 +128,7 @@ public class PushUtils {
      * @param data JSON object to update
      * @throws Exception
      */
-    public JSONObject PushUtilsElements(JSONObject data, Survey survey) throws Exception {
+    public JSONObject PushUtilsElements(JSONObject data, Survey survey, String module) throws Exception {
         Log.d(TAG, "PushUtilsElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
@@ -138,7 +138,7 @@ public class PushUtils {
 
         values = prepareControlDataElementsValues(values, null);
         //Add dataElement per compositeScores
-        values = prepareCompositeScores(values, survey);
+        values = prepareCompositeScores(values, survey, module);
 
         data.put(TAG_DATAVALUES, values);
         Log.d(TAG, "PushUtilsElements result: " + data.toString());
@@ -166,18 +166,18 @@ public class PushUtils {
         return values;
     }
 
-    private JSONArray prepareCompositeScores(JSONArray values, Survey survey) throws Exception {
+    private JSONArray prepareCompositeScores(JSONArray values, Survey survey, String module) throws Exception {
 
-            //Prepare scores info
-            List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey);
+        //Prepare scores info
+        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey, module);
 
-            //Calculate main score to push later
-            survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        //Calculate main score to push later
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
 
-            //1 CompositeScore -> 1 dataValue
-            for (CompositeScore compositeScore : compositeScoreList) {
-                values.put(prepareValue(compositeScore));
-            }
+        //1 CompositeScore -> 1 dataValue
+        for (CompositeScore compositeScore : compositeScoreList) {
+            values.put(prepareValue(compositeScore,survey.getId_survey(), module));
+        }
         return values;
     }
 
@@ -220,10 +220,10 @@ public class PushUtils {
      * @return
      * @throws Exception
      */
-    private JSONObject prepareValue(CompositeScore compositeScore) throws Exception {
+    private JSONObject prepareValue(CompositeScore compositeScore, float idSurvey, String module) throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore,idSurvey, module)));
         return elementObject;
     }
 

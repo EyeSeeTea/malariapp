@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -172,7 +173,8 @@ public class SurveyService extends IntentService {
         //Take action to be done
         switch (intent.getStringExtra(SERVICE_METHOD)){
             case PREPARE_SURVEY_ACTION:
-                prepareSurveyInfo();
+                Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
+                prepareSurveyInfo(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
             case ALL_IN_PROGRESS_SURVEYS_ACTION:
                 getAllInProgressSurveys();
@@ -190,11 +192,13 @@ public class SurveyService extends IntentService {
                 reloadDashboard();
                 break;
             case PRELOAD_TAB_ITEMS:
-                Log.e(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
-                preLoadTabItems(intent.getLongExtra("tab", 0));
+                Log.i(".SurveyService", "Pre-loading tab: " + intent.getLongExtra("tab", 0));
+                Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
+                preLoadTabItems(intent.getLongExtra("tab", 0),intent.getStringExtra(Constants.MODULE_KEY));
                 break;
             case PREPARE_FEEDBACK_ACTION:
-                getFeedbackItems();
+                Log.i(".SurveyService", "Active module: " + intent.getStringExtra(Constants.MODULE_KEY));
+                getFeedbackItems(intent.getStringExtra(Constants.MODULE_KEY));
                 break;
             case ALL_MONITOR_DATA_ACTION:
                 getAllMonitorData();
@@ -301,10 +305,10 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
     }
 
-    private void preLoadTabItems(Long tabID){
+    private void preLoadTabItems(Long tabID, String module){
         Tab tab = Tab.findById(tabID);
         if (tab !=null) {
-            Utils.preloadTabItems(tab);
+            Utils.preloadTabItems(tab, module);
         }
     }
 
@@ -352,9 +356,9 @@ public class SurveyService extends IntentService {
     /**
      * Action that calculates the 'feedback' items corresponding to the current survey in session
      */
-    private void getFeedbackItems(){
+    private void getFeedbackItems(String module){
         //Mock some items
-        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurvey());
+        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyByModule(module), module);
 
         //Return result to anyone listening
         Log.d(TAG, String.format("getFeedbackItems: %d", feedbackList.size()));
@@ -404,17 +408,19 @@ public class SurveyService extends IntentService {
     /**
      * Prepares required data to show a survey completely (tabs and composite scores).
      */
-    private void prepareSurveyInfo(){
+    private void prepareSurveyInfo(String module){
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
+        //register composite scores for current survey and module
         List<CompositeScore> compositeScores = CompositeScore.list();
-        ScoreRegister.registerCompositeScores(compositeScores);
+        ScoreRegister.registerCompositeScores(compositeScores,Session.getSurveyByModule(module).getId_survey(),module);
 
         //Get tabs for current program & register them (scores)
-        List<Tab> tabs = Tab.getTabsBySession();
+        List<Tab> tabs = Tab.getTabsBySession(module);
         List<Tab> allTabs = new Select().all().from(Tab.class).queryList();
 
-        ScoreRegister.registerTabScores(tabs);
+        //register tabs scores for current survey and module
+        ScoreRegister.registerTabScores(tabs, Session.getSurveyByModule(module).getId_survey(), module);
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);

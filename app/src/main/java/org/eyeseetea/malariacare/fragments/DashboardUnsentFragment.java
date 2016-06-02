@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapt
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +189,7 @@ public class DashboardUnsentFragment extends ListFragment {
                 SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
                 if(surveyAnsweredRatio.getTotalCompulsory()>0) {
                     if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
-                        survey.setCompleteSurveyState();
+                        survey.setCompleteSurveyState(Constants.FRAGMENT_SURVEY_KEY);
                         mCallback.alertOnComplete(survey);
                         removeSurveyFromAdapter(survey);
                         reloadToSend();
@@ -198,7 +199,7 @@ public class DashboardUnsentFragment extends ListFragment {
                     }
                 }
                 else {
-                    survey.setCompleteSurveyState();
+                    survey.setCompleteSurveyState(Constants.FRAGMENT_SURVEY_KEY);
                     mCallback.alertOnComplete(survey);
                     removeSurveyFromAdapter(survey);
                     reloadToSend();
