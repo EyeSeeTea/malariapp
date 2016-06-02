@@ -467,22 +467,28 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
-
-        for (Survey survey : surveys) {
-            if (survey.getOrgUnit() != null && survey.getTabGroup()!=null && survey.getTabGroup()!=null) {
-                if (!orgUnits.containsKey(survey.getTabGroup().getName()+survey.getOrgUnit().getUid())) {
-                    filterSurvey(orgUnits, survey);
-                } else {
-                    Survey surveyMapped = orgUnits.get(survey.getTabGroup().getName()+survey.getOrgUnit().getUid());
-                    Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
-                    if((surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                        orgUnits=filterSurvey(orgUnits, survey);
+        if(PreferencesState.getInstance().isLastForOrgUnit()) {
+            for (Survey survey : surveys) {
+                if (survey.getOrgUnit() != null && survey.getTabGroup() != null && survey.getTabGroup() != null) {
+                    if (!orgUnits.containsKey(survey.getTabGroup().getName() + survey.getOrgUnit().getUid())) {
+                        filterSurvey(orgUnits, survey);
+                    } else {
+                        Survey surveyMapped = orgUnits.get(survey.getTabGroup().getName() + survey.getOrgUnit().getUid());
+                        Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
+                        if ((surveyMapped.getCompletionDate() != null && survey.getCompletionDate() != null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
+                            orgUnits = filterSurvey(orgUnits, survey);
+                        }
                     }
                 }
             }
+            for (Survey survey : orgUnits.values()) {
+                oneSurveyForOrgUnit.add(survey);
+            }
         }
-        for (Survey survey : orgUnits.values()) {
-            oneSurveyForOrgUnit.add(survey);
+        else if(PreferencesState.getInstance().isNoneFilter()){
+            for (Survey survey : surveys) {
+                oneSurveyForOrgUnit.add(survey);
+            }
         }
         //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
         if (orderBy != WITHOUT_ORDER) {

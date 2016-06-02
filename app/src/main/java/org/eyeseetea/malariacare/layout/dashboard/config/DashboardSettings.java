@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.deserializers.DashboardAdapterDeserializer;
+import org.eyeseetea.malariacare.layout.dashboard.deserializers.DashboardListFilterDeserializer;
 import org.eyeseetea.malariacare.layout.dashboard.deserializers.DashboardOrientationDeserializer;
 
 import java.lang.reflect.Field;
@@ -44,6 +45,13 @@ public class DashboardSettings {
      */
     @JsonDeserialize(using = DashboardOrientationDeserializer.class)
     DashboardOrientation orientation;
+
+    /**
+     * lastForORG | none filter
+     */
+    @JsonDeserialize(using = DashboardListFilterDeserializer.class)
+    DashboardListFilter listFilter;
+
     /**
      * Key that points to the layout id for the general dashboard layout (Ex: R.layout.vertical_main -> 'vertical_main')
      */
@@ -73,6 +81,14 @@ public class DashboardSettings {
 
     public void setOrientation(DashboardOrientation orientation) {
         this.orientation = orientation;
+    }
+
+    public DashboardListFilter getListFilter() {
+        return listFilter;
+    }
+
+    public void setListFilter(DashboardListFilter listFilter) {
+        this.listFilter = listFilter;
     }
 
     public String getLayout() {
@@ -117,6 +133,8 @@ public class DashboardSettings {
                 "orientation=" + orientation +
                 ", layout='" + layout + '\'' +
                 ", modules=" + modules +
+                ", adapter=" + adapter +
+                ", list filter=" + listFilter +
                 '}';
     }
 }

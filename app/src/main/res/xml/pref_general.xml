@@ -91,12 +91,6 @@
         android:defaultValue="false" />
 
     <CheckBoxPreference
-        android:key="@string/ask_modify_or_create"
-        android:title="@string/settings_checkbox_ask_modify_or_create"
-        android:summary="@string/settings_checkbox_description_ask_modify_or_create"
-        android:defaultValue="false" />
-
-    <CheckBoxPreference
         android:key="@string/show_num_dems"
         android:title="@string/settings_checkbox_show_num_dems"
         android:summary="@string/settings_checkbox_description_show_num_dems"
