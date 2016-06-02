@@ -163,6 +163,7 @@
     <string name="dialog_info_push_ignored">Ignored</string>
     <string name="dialog_info_push_stats">Survey data pushed to server. Results:</string>
     <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
+    <string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
     <string name="dialog_deleting_children">You\'re about to delete the answer for questions that depend on this one. Do you really want to continue?</string>
 
     <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>

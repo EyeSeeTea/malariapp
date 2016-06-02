@@ -138,12 +138,7 @@ public class AssessModuleController extends ModuleController {
             alertCompulsoryQuestionIncompleted();
         }
 
-        //Change state
-        survey.setCompleteSurveyState(getSimpleName());
-        //Remove from list
-        ((DashboardUnsentFragment)fragment).removeSurveyFromAdapter(survey);
-        //Reload sent surveys
-        ((DashboardUnsentFragment)fragment).reloadToSend();
+        alertAreYouSureYouWantToComplete(survey);
     }
 
     public void onNewSurvey(){
@@ -288,11 +283,48 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
+    private void alertAreYouSureYouWantToComplete(final Survey survey){
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle(null)
+                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
+                .setPositiveButton((R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Change state
+                        survey.setCompleteSurveyState(getSimpleName());
+                        if(!survey.isInProgress()){
+                            alertOnCompleteGoToFeedback(survey);
+                        }
+                        //Remove from list
+                        ((DashboardUnsentFragment)fragment).removeSurveyFromAdapter(survey);
+                        //Reload sent surveys
+                        ((DashboardUnsentFragment)fragment).reloadToSend();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(true)
+                .create().show();
+    }
+
     private void alertOnComplete(Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, null)
+                .setCancelable(true)
+                .create().show();
+    }
+
+    public void alertOnCompleteGoToFeedback(final Survey survey) {
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle(null)
+                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete), survey.getProgram().getName()))
+                .setNeutralButton(android.R.string.ok, null)
+                .setPositiveButton((R.string.go_to_feedback), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Move to feedbackfragment
+                        dashboardActivity.onFeedbackSelected(survey);
+                    }
+                })
                 .setCancelable(true)
                 .create().show();
     }

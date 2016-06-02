@@ -173,9 +173,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 return true;
             case R.id.option_mark_completed:
                 dashboardActivity.onMarkAsCompleted(survey);
-                if(!survey.isInProgress()){
-                    alertOnComplete(survey);
-                }
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
@@ -201,21 +198,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void removeSurveyFromAdapter(Survey survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
-    }
-
-    public void alertOnComplete(final Survey survey) {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(null)
-                .setMessage(String.format(getActivity().getResources().getString(R.string.dialog_info_on_complete), survey.getProgram().getName()))
-                .setNeutralButton(android.R.string.ok, null)
-                .setPositiveButton((R.string.go_to_feedback), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        //Move to feedbackfragment
-                        dashboardActivity.onFeedbackSelected(survey);
-                    }
-                })
-                .setCancelable(true)
-                .create().show();
     }
 
     @Override

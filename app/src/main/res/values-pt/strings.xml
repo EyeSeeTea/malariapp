@@ -44,6 +44,7 @@
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
     <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
+    <string name="dialog_info_ask_for_completion">"Tem certeza de que deseja concluir %s? Você não pode desfazer esta ação"</string>
 
     <string name="create_info_ok">Criar</string>
     <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>

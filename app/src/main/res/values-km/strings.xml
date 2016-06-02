@@ -31,6 +31,7 @@
     <string name="dialog_incompleted_compulsory_survey">This survey cannot be sent yet. Please answer at least all the compulsory questions</string>
     <string name="dialog_incompleted_compulsory_pulling">Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions</string>
     <string name="dialog_sent_survey_on_refresh_metadata">Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?</string>
+    <string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Ready to upload</string>
