@@ -350,6 +350,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     customButton = addDateButtonToRow(row,question,columnWeight);
                     customButton.setOnClickListener(new DatePickerListener(question, new AutoTabViewHolder(customButton)));
                     viewHolder.addColumnComponent(customButton);
+                    break;
                 case Constants.LONG_TEXT:
                 case Constants.SHORT_TEXT:
                     customEditText= addEditViewToRow(row,question,columnWeight);
