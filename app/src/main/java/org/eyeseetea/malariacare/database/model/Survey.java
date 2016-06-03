@@ -544,8 +544,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public void updateSurveyStatus(){
 
-        //Sent surveys are not updated
-        if(this.isSent()){
+        //Exit if the survey was sent or completed
+        if(this.isSent() || isCompleted()){
             return;
         }
 
@@ -1007,5 +1007,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", status=" + status +
                 ", eventuid="+eventuid+
                 '}';
+    }
+
+    public boolean isReadOnly() {
+        return !(!isCompleted() && !isSent());
     }
 }
