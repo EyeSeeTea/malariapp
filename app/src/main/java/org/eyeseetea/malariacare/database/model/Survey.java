@@ -545,7 +545,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void updateSurveyStatus(){
 
         //Exit if the survey was sent or completed
-        if(this.isSent() || isCompleted()){
+        if(isReadOnly()){
             return;
         }
 
@@ -1010,6 +1010,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public boolean isReadOnly() {
-        return !(!isCompleted() && !isSent());
+        return (isCompleted() || isSent());
     }
 }
