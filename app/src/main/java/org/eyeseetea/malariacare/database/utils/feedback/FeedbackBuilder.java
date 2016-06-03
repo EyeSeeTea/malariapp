@@ -87,10 +87,10 @@ public class FeedbackBuilder {
                 }
             }
         }
-        for(Question question:questionsByTabsWithoutCS){
-            Value valueInSurvey = question.getValueBySurvey(survey.getId_survey());
-            feedbackList.add(new QuestionFeedback(question, valueInSurvey));
-        }
+        //for(Question question:questionsByTabsWithoutCS){
+        //    Value valueInSurvey = question.getValueBySurvey(survey.getId_survey());
+        //    feedbackList.add(new QuestionFeedback(question, valueInSurvey));
+        //}
         return feedbackList;
     }
 
