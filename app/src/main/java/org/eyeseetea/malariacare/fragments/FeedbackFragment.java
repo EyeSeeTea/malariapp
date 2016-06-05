@@ -177,11 +177,20 @@ public class FeedbackFragment extends Fragment {
         
         //Set mainscore and color.
         Survey survey = Session.getSurveyByModule(module);
-        float average = survey.getMainScore();
-        CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
-        item.setText(String.format("%.1f%%", average));
-        int colorId= LayoutUtils.trafficColor(average);
-        item.setTextColor(getResources().getColor(colorId));
+        if(survey.hasMainScore()) {
+            float average = survey.getMainScore();
+            CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("%.1f%%", average));
+            int colorId= LayoutUtils.trafficColor(average);
+            item.setTextColor(getResources().getColor(colorId));
+        }
+        else {
+            CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("NaN"));
+            float average=0;
+            int colorId= LayoutUtils.trafficColor(average);
+            item.setTextColor(getResources().getColor(colorId));
+        }
     }
 
     private void loadItems(List<Feedback> items){
