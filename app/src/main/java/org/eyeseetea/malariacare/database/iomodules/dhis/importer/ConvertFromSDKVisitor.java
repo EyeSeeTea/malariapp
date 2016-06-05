@@ -63,6 +63,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,14 +79,24 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
+    List<Question> questions;
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
+        questions = new ArrayList<>();
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
     /**
@@ -417,7 +428,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
         appQuestion.setHeader(questionBuilder.findOrSaveHeader(dataElementExtended,appMapObjects));
         questionBuilder.registerParentChildRelations(dataElementExtended);
-        appQuestion.save();
+        //appQuestion.save();
+        questions.add(appQuestion);
         questionBuilder.add(appQuestion, dataElementExtended.getProgramUid());
         return appQuestion;
     }

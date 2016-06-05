@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -379,10 +381,13 @@ public class PullController {
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
+        int i=0;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
+                if (++i%50==0)
+                    postProgress(context.getString(R.string.progress_pull_question) + String.format(" %s", i));
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
@@ -390,9 +395,11 @@ public class PullController {
                 dataElementExtended.accept(converter);
             }
         }
+        new SaveModelTransaction<>(ProcessModelInfo.withModels(converter.getQuestions())).onExecute();
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
+        postProgress(context.getString(R.string.progress_pull_relationships));
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
