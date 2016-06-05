@@ -260,6 +260,7 @@
     <string name="progress_pull_surveys">កំពុងទាញការស្ទង់មតិ...</string>
     <string name="progress_pull_connecting">កំពុងភ្ជាប់ទៅម៉ាស៊ីនបម្រើ DHIS...</string>
     <string name="progress_pull_question">ការកសាងសំណួរ ...</string>
+    <string name="progress_pull_relationships">កសាងទំនាក់ទំនងសំណួរ ...</string>
     <string name="progress_pull_done">រួចរាល់</string>
     <string name="progress_push_no_survey">មិនមានការស្ទង់មតិត្រូវបានរកឃើញ ដើម្បីធ្វើការបញ្ជូន</string>
     <string name="progress_push_posting_survey">កំពុងបញ្ជូនទិន្នន័យការស្ទង់មតិទៅកាន់ម៉ាស៊ីនបម្រើ...</string>

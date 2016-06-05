@@ -399,6 +399,7 @@ public class PullController {
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
+        postProgress(context.getString(R.string.progress_pull_relationships));
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
