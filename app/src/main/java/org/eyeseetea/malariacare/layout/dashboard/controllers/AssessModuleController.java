@@ -119,9 +119,10 @@ public class AssessModuleController extends ModuleController {
         //Set the survey into the session
         Session.setSurveyByModule(survey,getSimpleName());
 
-        //Start looking for geo
-        dashboardActivity.prepareLocationListener(survey);
-
+        if(!survey.isReadOnly()) {
+            //Start looking for geo if the survey is not sent/completed
+            dashboardActivity.prepareLocationListener(survey);
+        }
         //Prepare survey fragment
         surveyFragment = SurveyFragment.newInstance(1);
 

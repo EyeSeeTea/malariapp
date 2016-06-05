@@ -139,6 +139,22 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 //            setListShown(false);
         initAdapter();
         initListView();
+        initLongListClick();
+    }
+
+    private void initLongListClick() {
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
+                //Discard clicks on header|footer (which is attended on onNewSurvey via super)
+                if(isPositionASurvey(position)){
+                    // call onSurveySelected function(and it call surveyfragment.
+                    // to looks only as read mode the survey should be iscompleted or issent)-
+                    dashboardActivity.onSurveySelected(surveys.get(position - 1));
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
