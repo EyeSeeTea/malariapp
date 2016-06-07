@@ -134,7 +134,7 @@ public class AutoTabViewHolder {
     }
 
     public void setRadioChecked(Option option) {
-        if (component == null || !(component instanceof RadioGroup)) {
+        if (component == null || !(component instanceof RadioGroup) || component.findViewWithTag(option)==null) {
             return;
         }
         ((CustomRadioButton) component.findViewWithTag(option)).setChecked(true);
