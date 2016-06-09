@@ -137,8 +137,7 @@ public class DriveRestController {
         }
 
         //Permission granted, account selected -> lets sync media
-        Log.i(TAG,"Using account "+AppSettingsBuilder.getDriveAccount());
-        mCredential.setSelectedAccountName(AppSettingsBuilder.getDriveAccount());
+        mCredential.setSelectedAccountName(accountName);
         syncMedia();
 
     }
