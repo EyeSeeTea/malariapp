@@ -115,7 +115,7 @@ dependencies {
 
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:$rootProject.gmsPlayVersion"
-
+    compile "pub.devrel:easypermissions:$rootProject.easypermissionsVersion"
     compile("com.google.api-client:google-api-client-android:$rootProject.googleApiClientAndroidVersion") {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.code.findbugs'

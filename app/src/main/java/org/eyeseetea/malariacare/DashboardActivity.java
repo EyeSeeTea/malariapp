@@ -56,7 +56,10 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import java.util.Date;
 import java.util.List;
 
-public class DashboardActivity extends BaseActivity{
+import pub.devrel.easypermissions.EasyPermissions;
+
+
+public class DashboardActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
@@ -174,6 +177,50 @@ public class DashboardActivity extends BaseActivity{
                 .setCancelable(true)
                 .create().show();
         return true;
+    }
+
+    /**
+     * Respond to requests for permissions at runtime for API 23 and above.
+     *
+     * @param requestCode  The request code passed in
+     *                     requestPermissions(android.app.Activity, String, int, String[])
+     * @param permissions  The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *                     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(
+                requestCode, permissions, grantResults, this);
+    }
+
+    /**
+     * Callback for when a permission is granted using the EasyPermissions
+     * library.
+     *
+     * @param requestCode The request code associated with the requested
+     *                    permission
+     * @param list        The requested permission list. Never null.
+     */
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> list) {
+        Log.i(TAG,"Contacts permission granted");
+    }
+
+    /**
+     * Callback for when a permission is denied using the EasyPermissions
+     * library.
+     *
+     * @param requestCode The request code associated with the requested
+     *                    permission
+     * @param list        The requested permission list. Never null.
+     */
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> list) {
+        Log.i(TAG,"Contacts permission denied");
+        toast(getString(R.string.account_permission_denied));
     }
 
     private void pushUnsentBeforePull() {

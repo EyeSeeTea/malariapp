@@ -1,11 +1,17 @@
 package org.eyeseetea.malariacare.drive;
 
+import android.Manifest;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -20,6 +26,9 @@ import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.Arrays;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
 /**
  * Created by arrizabalaga on 28/05/16.
  */
@@ -30,10 +39,14 @@ public class DriveRestController {
     private static DriveRestController instance;
 
     private GoogleAccountCredential mCredential;
+    private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {DriveScopes.DRIVE};
 
+
+    static final int REQUEST_ACCOUNT_PICKER = 100;
     static final int REQUEST_AUTHORIZATION = 101;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 102;
+    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 103;
 
     private DashboardActivity dashboardActivity;
 
@@ -95,7 +108,34 @@ public class DriveRestController {
      * function will be rerun automatically whenever the GET_ACCOUNTS permission
      * is granted.
      */
+    @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
+
+        //Ask for permissions if required
+        //NO permissions
+//        if (!EasyPermissions.hasPermissions(dashboardActivity, Manifest.permission.GET_ACCOUNTS)) {
+//            // Request the GET_ACCOUNTS permission via a user dialog
+//            EasyPermissions.requestPermissions(
+//                    dashboardActivity,
+//                    dashboardActivity.getString(R.string.ask_account_permission),
+//                    REQUEST_PERMISSION_GET_ACCOUNTS,
+//                    Manifest.permission.GET_ACCOUNTS);
+//            return;
+//        }
+//
+//        //Has permissions check accountName
+//        String accountName = dashboardActivity.getPreferences(Context.MODE_PRIVATE)
+//                .getString(PREF_ACCOUNT_NAME, null);
+//
+//        //No accountName selected
+//        if (accountName == null) {
+//            // Start a dialog from which the user can choose an account
+//            dashboardActivity.startActivityForResult(
+//                    mCredential.newChooseAccountIntent(),
+//                    REQUEST_ACCOUNT_PICKER);
+//            return;
+//        }
+
         //Permission granted, account selected -> lets sync media
         Log.i(TAG,"Using account "+AppSettingsBuilder.getDriveAccount());
         mCredential.setSelectedAccountName(AppSettingsBuilder.getDriveAccount());
@@ -121,6 +161,21 @@ public class DriveRestController {
                     DashboardActivity.toast(dashboardActivity.getString(R.string.google_play_required));
                 } else {
                     syncMedia();
+                }
+                break;
+            case REQUEST_ACCOUNT_PICKER:
+                if (resultCode == Activity.RESULT_OK && data != null &&
+                        data.getExtras() != null) {
+                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    if (accountName != null) {
+                        SharedPreferences settings =
+                                DashboardActivity.dashboardActivity.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString(PREF_ACCOUNT_NAME, accountName);
+                        editor.apply();
+                        mCredential.setSelectedAccountName(accountName);
+                        syncMedia();
+                    }
                 }
                 break;
             case REQUEST_AUTHORIZATION:
