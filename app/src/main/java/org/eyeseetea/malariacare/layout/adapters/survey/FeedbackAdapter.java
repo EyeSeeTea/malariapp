@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -250,6 +251,28 @@ public class FeedbackAdapter extends BaseAdapter {
                 DashboardActivity.dashboardActivity.startActivity(videoIntent);
             }
         });
+
+        //add preview frame
+        addPreview((ImageView)rowLayout.findViewById(R.id.feedback_media_preview),media);
+
+    }
+
+    private void addPreview(ImageView viewMediaLink, Media media) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        File mediaFile=new File(media.getFilename());
+        try {
+            retriever.setDataSource(mediaFile.getAbsolutePath());
+            viewMediaLink.setImageBitmap(retriever.getFrameAtTime(10000000,MediaMetadataRetriever.OPTION_CLOSEST));
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                retriever.release();
+            } catch (RuntimeException ex) {
+            }
+        }
     }
 
     private int findLayoutByMedia(QuestionFeedback feedback) {
