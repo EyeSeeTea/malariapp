@@ -433,6 +433,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Returns the list of answered values from this survey
+     * @return
+     */
+    public List<Value> getValuesFromDB(){
+        values = new Select()
+                .from(Value.class)
+                .where(Condition.column(Value$Table.ID_SURVEY)
+                        .eq(this.getId_survey())).queryList();
+        return values;
+    }
+
+    /**
      * Returns the list of previous schedules for this survey
      * @return
      */
@@ -1011,5 +1023,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public boolean isReadOnly() {
         return (isCompleted() || isSent());
+    }
+
+
+    public Question findLastSavedQuestion() {
+        List<Value> values=getValuesFromDB();
+        for(Value value:values){
+            if(value.getQuestion()!=null && !value.getQuestion().hasChildren())
+                return value.getQuestion();
+        }
+        return null;
     }
 }

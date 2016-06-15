@@ -106,6 +106,9 @@ public class Question extends BaseModel {
     Long id_composite_score;
 
     @Column
+    Integer total_questions;
+
+    @Column
     Integer row;
 
     @Column
@@ -331,6 +334,13 @@ public class Question extends BaseModel {
         return output;
     }
 
+    public Integer getTotalQuestions() {
+        return total_questions;
+    }
+
+    public void setTotalQuestions(Integer total_questions) {
+        this.total_questions = total_questions;
+    }
     public Answer getAnswer() {
         if(answer==null){
             if(id_answer==null) return  null;
