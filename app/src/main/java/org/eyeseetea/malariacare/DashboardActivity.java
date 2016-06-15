@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -61,8 +62,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class DashboardActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
 
-    private final static String TAG=".DDetailsActivity";
-    private boolean reloadOnResume=true;
+    private final static String TAG = ".DDetailsActivity";
+    private boolean reloadOnResume = true;
     DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
@@ -72,7 +73,7 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
-        dashboardActivity=this;
+        dashboardActivity = this;
 
         //XXX to remove?
         initDataIfRequired();
@@ -84,7 +85,7 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
         setContentView(dashboardController.getLayout());
 
         //delegate modules initialization
-        dashboardController.onCreate(this,savedInstanceState);
+        dashboardController.onCreate(this, savedInstanceState);
 
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
@@ -104,7 +105,7 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
      * be disconnected as soon as an activity is invisible.
      */
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.d(TAG, "onPause");
         super.onPause();
     }
@@ -115,21 +116,21 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-        Log.d(TAG,String.format("onActivityResult(%d, %d)",requestCode,resultCode));
+        Log.d(TAG, String.format("onActivityResult(%d, %d)", requestCode, resultCode));
         super.onActivityResult(requestCode, resultCode, data);
 
         //Delegate activity result to media controller
-        DriveRestController.getInstance().onActivityResult(requestCode,resultCode,data);
+        DriveRestController.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             getFragmentManager().popBackStack();
         }
         //Any common option
-        if(item.getItemId()!=R.id.action_pull){
+        if (item.getItemId() != R.id.action_pull) {
             return super.onOptionsItemSelected(item);
         }
 
@@ -137,16 +138,16 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
         final List<Survey> unsentSurveys = Survey.getAllUnsentUnplannedSurveys();
 
         //No unsent data -> pull (no confirmation)
-        if(unsentSurveys==null || unsentSurveys.size()==0){
+        if (unsentSurveys == null || unsentSurveys.size() == 0) {
             pullMetadata();
             return true;
         }
 
         final Activity activity = this;
         //check if exist a compulsory question without awnser before push and pull.
-        for(Survey survey:unsentSurveys){
+        for (Survey survey : unsentSurveys) {
             SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
-            if (surveyAnsweredRatio.getTotalCompulsory()>0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory() ) {
+            if (surveyAnsweredRatio.getTotalCompulsory() > 0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory()) {
                 new AlertDialog.Builder(this)
                         .setTitle("Unsent surveys")
                         .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_pulling))
@@ -206,7 +207,7 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
      */
     @Override
     public void onPermissionsGranted(int requestCode, List<String> list) {
-        Log.i(TAG,"Contacts permission granted");
+        Log.i(TAG, "Contacts permission granted");
     }
 
     /**
@@ -219,7 +220,7 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
      */
     @Override
     public void onPermissionsDenied(int requestCode, List<String> list) {
-        Log.i(TAG,"Contacts permission denied");
+        Log.i(TAG, "Contacts permission denied");
         toast(getString(R.string.account_permission_denied));
     }
 
@@ -232,7 +233,7 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
         startActivity(progressActivityIntent);
     }
 
-    private void pullMetadata(){
+    private void pullMetadata() {
         PreferencesState.getInstance().clearOrgUnitPreference();
         finishAndGo(ProgressActivity.class);
     }
@@ -249,29 +250,29 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
     }
 
-    public void setReloadOnResume(boolean doReload){
-        this.reloadOnResume=false;
+    public void setReloadOnResume(boolean doReload) {
+        this.reloadOnResume = false;
     }
 
-    public void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService ("+reloadOnResume+")");
-        if(!reloadOnResume){
+    public void getSurveysFromService() {
+        Log.d(TAG, "getSurveysFromService (" + reloadOnResume + ")");
+        if (!reloadOnResume) {
             //Flag is readjusted
-            reloadOnResume=true;
+            reloadOnResume = true;
             return;
         }
         reloadDashboard();
     }
 
-    public static void reloadDashboard(){
-        Intent surveysIntent=new Intent(dashboardActivity, SurveyService.class);
+    public static void reloadDashboard() {
+        Intent surveysIntent = new Intent(dashboardActivity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         dashboardActivity.startService(surveysIntent);
     }
@@ -287,16 +288,16 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
     /**
      * PUll data from DHIS server and turn into our model
      */
-    private void initDataIfRequired(){
+    private void initDataIfRequired() {
         initUserSessionIfRequired();
     }
 
     /**
      * In case Session doesn't have the user set, here we set it to the first entry of User table
      */
-    private void initUserSessionIfRequired(){
+    private void initUserSessionIfRequired() {
         // already a user in session -> done
-        if(Session.getUser()!=null){
+        if (Session.getUser() != null) {
             return;
         }
 
@@ -309,34 +310,38 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
     /**
      * Logging out from sdk is an async method.
      * Thus it is required a callback to finish logout gracefully.
-     *
+     * <p/>
      * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
+     *
      * @param uiEvent
      */
     @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
+    public void onLogoutFinished(UiEvent uiEvent) {
         super.onLogoutFinished(uiEvent);
     }
 
     /**
      * Handler that starts or edits a given survey
+     *
      * @param survey
      */
-    public void onSurveySelected(Survey survey){
+    public void onSurveySelected(Survey survey) {
         dashboardController.onSurveySelected(survey);
     }
 
     /**
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
+     *
      * @param survey
      */
-    public void onMarkAsCompleted(Survey survey){
+    public void onMarkAsCompleted(Survey survey) {
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
+     *
      * @param survey
      */
     public void onFeedbackSelected(Survey survey) {
@@ -345,28 +350,30 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
 
     /**
      * Moving into createSurvey fragment
+     *
      * @param view
      */
-    public void onNewSurvey(View view){
+    public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
     }
+
     /**
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer){
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer) {
         //Looking for that survey in local
         Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, lastEventInServer);
         //Survey in server BUT not local
-        if(survey==null){
-            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+        if (survey == null) {
+            survey = SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup);
         }
-        if(lastEventInServer!=null){
+        if (lastEventInServer != null) {
             survey.setEventUid(lastEventInServer.getEvent());
             EventExtended lastEventExtended = new EventExtended(lastEventInServer);
             survey.setCreationDate(lastEventExtended.getCreationDate());
             survey.setCompletionDate(lastEventExtended.getEventDate());
-        }else{
+        } else {
             //Mark the survey as a modify attempt for pushing accordingly
             survey.setEventUid(PullClient.NO_EVENT_FOUND);
         }
@@ -382,15 +389,15 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        createNewSurvey(orgUnit,tabGroup);
+    public void onCreateSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
+        createNewSurvey(orgUnit, tabGroup);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
-        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup);
         Session.setSurvey(survey);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
@@ -400,8 +407,23 @@ public class DashboardActivity extends BaseActivity implements EasyPermissions.P
      * Shows a quick toast message on screen
      * @param message
      */
-    public static void toast(String message){
+
+    public static void toast(String message) {
         Toast.makeText(DashboardActivity.dashboardActivity, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastFromTask(final String message) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast(message);
+                    }
+                });
+            }
+        },1000);
     }
 
     //Show dialog exception from class without activity.

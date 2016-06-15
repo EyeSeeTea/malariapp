@@ -17,6 +17,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.database.model.Media;
 
 import java.io.FileOutputStream;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ import java.util.List;
  * Created by arrizabalaga on 28/05/16.
  */
 class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
+    public static final String QUICKTIME_NON_SUPPORTED_FORMAT = "mov";
     private final String TAG = "DownloadMediaTask";
     private com.google.api.services.drive.Drive mService = null;
     private Exception mLastError = null;
@@ -75,9 +77,18 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
             media.save();
             Log.d(TAG,"\tsaved in "+absolutePath);
             return null;
+        }catch(IllegalStateException ex){
+            Log.e(TAG, "downloadFile error (file extension not supported)" + ex.getMessage());
+            //Delete non supported formats
+            media.delete();
+            DashboardActivity.toastFromTask(ex.getMessage());
+            return ex;
         }catch (Exception ex) {
-            mLastError = ex;
             Log.e(TAG, "downloadFile error: " + ex.getMessage());
+
+            //A regular exception must be annotated for processing later onCancelled
+            mLastError = ex;
+            //Cancels current async task (ask for permissions first time might be)
             cancel(true);
             return ex;
         }
@@ -94,6 +105,10 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         Drive.Files.Get getFile = mService.files().get(resourceId);
         File fileDrive = getFile.execute();
         Log.d(TAG, "\tfilename: " + fileDrive.getName());
+
+        if(fileDrive.getName().endsWith(QUICKTIME_NON_SUPPORTED_FORMAT)){
+            throw new IllegalStateException(String.format("%s format not supported in Android",fileDrive.getName()));
+        }
 
         java.io.File localFile = new java.io.File(DashboardActivity.dashboardActivity.getFilesDir(), fileDrive.getName());
         FileOutputStream fileOutputStream = new FileOutputStream(localFile);
