@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -37,11 +39,15 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Question extends BaseModel {
+
+    private static final String TAG = "Question";
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -130,6 +136,23 @@ public class Question extends BaseModel {
      */
     List<Match> matches;
 
+    /**
+     * List of question Options of this question
+     */
+    private List<QuestionOption> questionOptions;
+
+    /**
+     * Cached reference to next question for this one.
+     * No parent: Next question in order
+     * Has parent: Next child question in order for its parent
+     */
+    private Question sibling;
+
+    /**
+     * Required to create a null Question value to enable caching when you're the last question.
+     */
+    private final static Long NULL_SIBLING_ID=-1l;
+
     Boolean parent;
 
     public Question() {
@@ -155,6 +178,24 @@ public class Question extends BaseModel {
         this.setAnswer(answer);
         this.setCompositeScore(compositeScore);
         this.setQuestion(question);
+    }
+
+    /**
+     * Creates a false question that lets cache siblings better
+     * @return
+     */
+    private Question buildNullQuestion(){
+        Question noSiblingQuestion=new Question();
+        noSiblingQuestion.setId_question(NULL_SIBLING_ID);
+        return noSiblingQuestion;
+    }
+
+    /**
+     * Tells if this is a mocked null question
+     * @return
+     */
+    private boolean isNullQuestion(){
+        return NULL_SIBLING_ID.equals(this.getId_question());
     }
 
     public Long getId_question() {
@@ -355,7 +396,7 @@ public class Question extends BaseModel {
     public boolean hasParent() {
         if (parent == null) {
             long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
-                    .indexedBy("QuestionRelation_operation")
+                    .indexedBy(Constants.QUESTION_RELATION_QUESTION_IDX)
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION).eq(this.getId_question()))
                     .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
                     .count();
@@ -365,28 +406,38 @@ public class Question extends BaseModel {
     }
 
     public List<QuestionRelation> getQuestionRelations() {
-        if(questionRelations ==null){
+        if (questionRelations == null) {
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
-                    .indexedBy("QuestionRelation_id_question")
+                    .indexedBy(Constants.QUESTION_RELATION_QUESTION_IDX)
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION)
                             .eq(this.getId_question()))
                     .queryList();
         }
         return this.questionRelations;
     }
-
     public boolean hasQuestionRelations() {
         return !this.getQuestionRelations().isEmpty();
     }
 
+    /**
+     * Tells if this question has options or is an open value
+     *
+     * @return
+     */
+    public boolean hasOutputWithOptions() {
+        return Constants.QUESTION_TYPES_WITH_OPTIONS.contains(this.output);
+
+    }
     public List<QuestionOption> getQuestionOption() {
-        //if (this.children == null){
-        return new Select().from(QuestionOption.class)
-                .indexedBy("QuestionOption_id_question")
-                .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
-                .queryList();
-        //}
+
+        if (this.questionOptions == null) {
+            this.questionOptions = new Select().from(QuestionOption.class)
+                    .indexedBy(Constants.QUESTION_OPTION_QUESTION_IDX)
+                    .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
+                    .queryList();
+        }
+        return this.questionOptions;
     }
 
     public boolean hasQuestionOption() {
@@ -471,7 +522,7 @@ public class Question extends BaseModel {
      */
     public Value getValueBySurvey(float idSurvey) {
         List<Value> returnValues = new Select().from(Value.class)
-                .indexedBy("Value_id_survey")
+                .indexedBy(Constants.VALUE_IDX)
                 .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
                 .and(Condition.column(Value$Table.ID_SURVEY).eq(idSurvey)).queryList();
 
@@ -811,7 +862,237 @@ public class Question extends BaseModel {
                 output == Constants.RADIO_GROUP_HORIZONTAL ||
                 output == Constants.RADIO_GROUP_VERTICAL;
     }
+    /**
+     * Find the first root question in the given tab
+     *
+     *  This cannot be done due to a dbflow join bug
+     *  select q.*
+     *  from question q
+     *      left join header h on q.id_header=h.id_header
+     *      left join questionrelation qr on q.id_question=qr.id_question
+     *  where h.id_tab=1 and qr.id_question is null
+     *  order by q.order_pos
+     *
+     * @param tab
+     * @return
+     */
+    public static Question findRootQuestion(Tab tab) {
 
+        //Take every child question
+        List<QuestionRelation> questionRelations = QuestionRelation.listAll();
+        //Build a not in condition
+        Iterator<QuestionRelation> questionRelationsIterator = questionRelations.iterator();
+        In in = Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)).notIn(Long.toString(questionRelationsIterator.next().getQuestion().getId_question()));
+        while (questionRelationsIterator.hasNext()) {
+            in.and(Long.toString(questionRelationsIterator.next().getQuestion().getId_question()));
+        }
+
+        //Look for question not in child and take first one
+
+        return new Select().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .where(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(tab.getId_tab()))
+                .and(in)
+                .orderBy(true, Question$Table.ORDER_POS).querySingle();
+    }
+
+    /**
+     * Find the first children question for this question taking into the account the given option
+     * @param option
+     * @return
+     */
+    public Question findFirstChildrenByOption(Option option){
+        List<Question> childrenQuestions=findChildrenByOption(option);
+        if(childrenQuestions==null || childrenQuestions.size()==0){
+            return null;
+        }
+
+        return childrenQuestions.get(0);
+    }
+
+    /**
+     * Find the children questions for this question taking into the account the given option
+     * @param option
+     * @return
+     */
+    public List<Question> findChildrenByOption(Option option){
+        List<Question> childrenQuestions=new ArrayList<>();
+        //No option -> no children
+        if(option==null){
+            return childrenQuestions;
+        }
+
+        List<QuestionOption> questionOptions=this.getQuestionOption();
+        //No trigger (questionOption) -> no children
+        if(questionOptions==null || questionOptions.size()==0){
+            return childrenQuestions;
+        }
+
+        //Navigate to questionRelation to get child questions
+        long optionId=option.getId_option().longValue();
+        for(QuestionOption questionOption:questionOptions){
+            //Other options must be discarded
+            long currentOptionId=questionOption.getOption().getId_option().longValue();
+            if(optionId!=currentOptionId){continue;}
+            Match match =questionOption.getMatch();
+            if(match==null){continue;}
+
+            QuestionRelation questionRelation=match.getQuestionRelation();
+            //only parent child are interesting for this
+            if(questionRelation==null || questionRelation.getOperation()!=QuestionRelation.PARENT_CHILD){continue;}
+
+            Question childQuestion=questionRelation.getQuestion();
+            if(childQuestion==null){continue;}
+            childrenQuestions.add(childQuestion);
+        }
+
+        //Sort asc by order pos
+        Collections.sort(childrenQuestions, new QuestionOrderComparator());
+
+        return childrenQuestions;
+    }
+
+    /**
+     * Returns a list of questionOptions that activates this question (might be several though it tends to be just one)
+     * @return
+     */
+    public List<QuestionOption> findParents(){
+        List<QuestionOption> parents=new ArrayList<>();
+        //No potential parents
+        if(!this.hasParent()){
+            return parents;
+        }
+
+        //Add parents via (questionrelation->match->questionoption->question
+        List<QuestionRelation> questionRelations = this.getQuestionRelations();
+        for(QuestionRelation questionRelation:questionRelations){
+            //Only parentchild relationships
+            if(questionRelation.getOperation()!=QuestionRelation.PARENT_CHILD){continue;}
+            for(Match match:questionRelation.getMatches()){
+                parents.addAll(match.getQuestionOptions());
+            }
+        }
+
+        return parents;
+    }
+
+    /**
+     * Returns the first parent candidate.
+     * XXX: This is a shortcut considering that there wont be more than parent but this is not guaranteed
+     * @return
+     */
+    public QuestionOption findParent(){
+
+        List<QuestionOption> parents=findParents();
+        if(parents==null || parents.size()==0){
+            return null;
+        }
+        return parents.get(0);
+    }
+
+    /**
+     * Finds the next question to this one according to the order pos and considering children questions too
+     * @return
+     */
+    public Question getSibling(){
+
+        //Already calculated
+        if(this.sibling!=null){
+            Log.d(TAG,String.format("'%s'.getSibling() --cached--> '%s'",this.getCode(),this.sibling.getCode()));
+            return this.sibling;
+        }
+
+        //No parent -> just look for first question with upper order
+        if(!this.hasParent()){
+            getSiblingNoParent();
+        }else{
+            getSiblingWithParent();
+        }
+
+        //Child question -> find next children question for same parent
+        Log.d(TAG,String.format("'%s'.getSibling() --calculated--> '%s'",this.getCode(),this.sibling.getCode()));
+        return this.sibling.isNullQuestion()?null:this.sibling;
+
+
+    }
+
+    private Question getSiblingWithParent() {
+        //Find parent question
+        QuestionOption parentQuestionOption=findParent();
+        if(parentQuestionOption==null){
+            this.sibling= buildNullQuestion();
+            return this.sibling;
+        }
+        //Find children from parent
+        List<Question> siblings=parentQuestionOption.getQuestion().findChildrenByOption(parentQuestionOption.getOption());
+
+        //Find current position of this
+        int currentPosition=-1;
+        for(int i=0;i<siblings.size();i++){
+            Question iQuestion=siblings.get(i);
+            if(iQuestion.getId_question().equals(this.getId_question())){
+                currentPosition=i;
+                break;
+            }
+        }
+
+        //Last children question
+        if(currentPosition==siblings.size()-1){
+            this.sibling= buildNullQuestion();
+            return this.sibling;
+        }
+        //Return next position
+        this.sibling=siblings.get(currentPosition+1);
+        return this.sibling;
+    }
+
+    /**
+     * Returns next question from same header considering the order.
+     * This should not be a child question.
+     * @return
+     */
+    private Question getSiblingNoParent() {
+
+        //Take every child question
+        List<QuestionRelation> questionRelations = QuestionRelation.listAll();
+        //Build a not in condition
+        Iterator<QuestionRelation> questionRelationsIterator = questionRelations.iterator();
+        In in = Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)).notIn(Long.toString(questionRelationsIterator.next().getQuestion().getId_question()));
+        while (questionRelationsIterator.hasNext()) {
+            in.and(Long.toString(questionRelationsIterator.next().getQuestion().getId_question()));
+        }
+
+        this.sibling=new Select().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .where(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER))
+                        .eq(this.getHeader().getId_header()))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ORDER_POS))
+                        .greaterThan(this.getOrder_pos()))
+                .and(in)
+                .orderBy(true, Question$Table.ORDER_POS).querySingle();
+        //no question behind this one -> build a null question to use cached value
+        if(this.sibling==null){
+            this.sibling=buildNullQuestion();
+        }
+        return this.sibling;
+    }
+
+    private static class QuestionOrderComparator implements Comparator {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+
+            Question question1 = (Question) o1;
+            Question question2 = (Question) o2;
+
+            return new Integer(question1.getOrder_pos().compareTo(new Integer(question2.getOrder_pos())));
+        }
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

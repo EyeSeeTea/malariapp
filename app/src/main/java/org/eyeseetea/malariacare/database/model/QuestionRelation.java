@@ -145,6 +145,10 @@ public class QuestionRelation extends BaseModel {
         return this.matches;
     }
 
+    public static List<QuestionRelation> listAll() {
+        return new Select().all().from(QuestionRelation.class).queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

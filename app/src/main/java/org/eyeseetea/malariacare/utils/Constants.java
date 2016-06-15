@@ -1,5 +1,8 @@
 package org.eyeseetea.malariacare.utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Constants {
 
     // ############# QUESTION TYPE ###############
@@ -20,8 +23,19 @@ public class Constants {
             IMAGES_4 = 11,
             IMAGES_6 = 12,
             PHONE = 13,
-            IMAGES_3 = 14;
+            IMAGES_3 = 14,
+            IMAGES_5 = 15;
 
+    public static final List<Integer> QUESTION_TYPES_WITH_OPTIONS = Arrays.asList(
+            DROPDOWN_LIST,
+            RADIO_GROUP_HORIZONTAL,
+            RADIO_GROUP_VERTICAL,
+            DROPDOWN_LIST_DISABLED,
+            IMAGES_2,
+            IMAGES_3,
+            IMAGES_4,
+            IMAGES_5,
+            IMAGES_6);
 
 
     public static final String DEFAULT_SELECT_OPTION = "";
@@ -65,6 +79,13 @@ public class Constants {
             AUTHORIZE_PULL = 1;
 
     public static final String CHECKBOX_YES_OPTION="Yes";
+
+    public static final String QUESTION_OPTION_QUESTION_IDX = "QuestionOption_id_question",
+            QUESTION_OPTION_MATCH_IDX = "QuestionOption_id_match",
+            QUESTION_RELATION_OPERATION_IDX = "QuestionRelation_operation",
+            QUESTION_RELATION_QUESTION_IDX = "QuestionRelation_id_question",
+            MATCH_QUESTION_RELATION_IDX = "Match_id_question_relation",
+            VALUE_IDX = "Value_id_survey";
 
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;

@@ -72,6 +72,8 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.adapters.survey.navigation.NavigationBuilder;
+import org.eyeseetea.malariacare.layout.adapters.survey.navigation.NavigationController;
 import org.eyeseetea.malariacare.layout.adapters.survey.progress.ProgressTabStatus;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -102,6 +104,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
      */
     public static final String PLAIN_PHONENUMBER_MASK = "0\\d{8,9}";
 
+    public NavigationController navigationController;
     /**
      * Hold the progress of completion
      */
@@ -142,10 +145,28 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         this.items=initItems(tab);
         List<Question> questions= initHeaderAndQuestions();
         this.progressTabStatus=initProgress(questions);
+        this.module = module;
+        this.navigationController = initNavigationController(tab, module);
         this.readOnly = Session.getSurveyByModule(module) != null && !Session.getSurveyByModule(module).isInProgress();
         this.isSwipeAdded=false;
-        this.module = module;
+        int totalPages=navigationController.getCurrentQuestion().getTotalQuestions();
+        if(readOnly){
+            if(Session.getSurveyByModule(module)!=null){
+                Question lastQuestion=Session.getSurveyByModule(module).findLastSavedQuestion();
+                if(lastQuestion!=null){
+                    totalPages=lastQuestion.getTotalQuestions();
+                }
+            }
+        }
+        navigationController.setTotalPages(totalPages);
     }
+
+    private NavigationController initNavigationController(Tab tab, String module) {
+        NavigationController navigationController = NavigationBuilder.getInstance().buildController(tab, module);
+        navigationController.next(null);
+        return navigationController;
+    }
+
 
     /**
      * Turns a tab into an ordered list of headers+questions
