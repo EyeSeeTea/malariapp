@@ -193,7 +193,6 @@ public class DriveRestController {
     private boolean isDeviceOnline() {
         ConnectivityManager connMgr =
                 (ConnectivityManager) DashboardActivity.dashboardActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        //Just wifi
         NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return networkInfo.isConnected();
     }

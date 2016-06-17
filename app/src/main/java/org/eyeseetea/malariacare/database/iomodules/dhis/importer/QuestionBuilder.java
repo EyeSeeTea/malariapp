@@ -49,6 +49,16 @@ public class QuestionBuilder {
     private static final String TAG = ".QuestionBuilder";
 
     /**
+     * Maps relationship between type of media and DEAttribute code
+     */
+    private static final Map<Integer, String> MAP_MEDIATYPE_DEATTRIBUTE;
+    static {
+        MAP_MEDIATYPE_DEATTRIBUTE = new HashMap<>();
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Media.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Media.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
+    }
+
+    /**
      * It is the factor needed in a option to create the questionRelation
      * */
     private final float MATCHFACTOR=1f;
@@ -182,27 +192,24 @@ public class QuestionBuilder {
      * @param question
      * @return
      */
-    public Media attachMedia(DataElementExtended dataElementExtended, Question question){
-        Media media = null;
-
-        // Map to identify the different media types with their attribute codes
-        Map<Integer, String> mediaTypeCode = new HashMap();
-        mediaTypeCode.put(Media.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
-        mediaTypeCode.put(Media.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
-
+    public void attachMedia(DataElementExtended dataElementExtended, Question question){
         // Loop on every media type to attach any possible media type for the DE
-        for (Integer mediaType: mediaTypeCode.keySet()) {
-            String attributeMediaValue = dataElementExtended.getValue(mediaTypeCode.get(mediaType));
-            if (attributeMediaValue != null && !attributeMediaValue.isEmpty()) {
-                Log.i(TAG,String.format("Adding media %s to question %s",attributeMediaValue, question.getForm_name()));
-                media = new Media();
+        for (Integer mediaType: MAP_MEDIATYPE_DEATTRIBUTE.keySet()) {
+            String attributeMediaValue = dataElementExtended.getValue(MAP_MEDIATYPE_DEATTRIBUTE.get(mediaType));
+            if (attributeMediaValue == null || attributeMediaValue.isEmpty()) {
+                continue;
+            }
+
+            String[] mediaReferences=attributeMediaValue.split(Media.MEDIA_SEPARATOR);
+            for(String mediaReference:mediaReferences){
+                Log.i(TAG,String.format("Adding media %s to question %s",mediaReference, question.getForm_name()));
+                Media media = new Media();
                 media.setMediaType(mediaType);
-                media.setResourceUrl(attributeMediaValue);
+                media.setResourceUrl(mediaReference);
                 media.setQuestion(question);
                 media.save();
             }
         }
-        return media;
     }
 
     /**

@@ -46,7 +46,7 @@ public class QuestionFeedback implements Feedback {
     /**
      * Cached media to enhance listview performance
      */
-    private Media media;
+    private List<Media> media;
 
     /**
      * Flag that indicates if this element has its feedback open or not
@@ -57,6 +57,7 @@ public class QuestionFeedback implements Feedback {
         this.question = question;
         this.value = value;
         this.feedbackShown = false;
+        this.media = null;
     }
 
     @Override
@@ -80,17 +81,12 @@ public class QuestionFeedback implements Feedback {
         return this.question;
     }
 
-    public Media getMedia() {
+    public List<Media> getMedia() {
 
         //First time getting media
         if (media == null) {
             //no media attached
-            List<Media> mediaList = Media.findByQuestion(question);
-            if (mediaList == null || mediaList.size() == 0) {
-                media = Media.noMedia();
-            } else {
-                media = mediaList.get(0);
-            }
+            media = Media.findByQuestion(question);
         }
 
         //No media (checked before) | real image/video media

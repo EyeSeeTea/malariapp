@@ -39,6 +39,8 @@ public class Media extends BaseModel{
 
     public static final int MEDIA_TYPE_VIDEO = 1;
 
+    public static final String MEDIA_SEPARATOR="#";
+
     public static final int NO_MEDIA_ID=-1;
 
     /**
@@ -78,14 +80,6 @@ public class Media extends BaseModel{
         this.setQuestion(question);
     }
 
-    public static Media noMedia(){
-        return noMedia;
-    }
-
-    public boolean isEmpty(){
-        return this.media_type==NO_MEDIA_ID;
-    }
-
     public Question getQuestion(){
         if(question==null){
             if(id_question==null) return null;
@@ -121,15 +115,12 @@ public class Media extends BaseModel{
         this.filename=filename;
     }
 
-    public static List<Media> getAllMedia() {
-        return new Select().all().from(Media.class).queryList();
-    }
-
     public static List<Media> getAllNotInLocal(){
         return new Select().all().
                 from(Media.class).
                 where(Condition.column(Media$Table.FILENAME).isNull()).
                 and(Condition.column(Media$Table.RESOURCE_URL).isNotNull()).
+                orderBy(true,Media$Table.ID_MEDIA).
                 queryList();
     }
 
@@ -142,6 +133,7 @@ public class Media extends BaseModel{
                 from(Media.class).
                 where(Condition.column(Media$Table.FILENAME).isNotNull()).
                 and(Condition.column(Media$Table.ID_QUESTION).eq(question.id_question)).
+                orderBy(true,Media$Table.ID_MEDIA).
                 queryList();
     }
 
@@ -153,6 +145,18 @@ public class Media extends BaseModel{
     public void setQuestion(Long id_question){
         this.id_question = id_question;
         this.question = null;
+    }
+
+    /**
+     * Returns a media that holds a reference to the same resource with an already downloaded copy of the file.
+     * @return
+     */
+    public Media findLocalCopy(){
+        return new Select().from(Media.class)
+                .where(Condition.column(Media$Table.FILENAME).isNotNull())
+                .and(Condition.column(Media$Table.ID_MEDIA).isNot(this.id_media))
+                .and(Condition.column(Media$Table.RESOURCE_URL).is(this.resource_url))
+                .querySingle();
     }
 
     @Override

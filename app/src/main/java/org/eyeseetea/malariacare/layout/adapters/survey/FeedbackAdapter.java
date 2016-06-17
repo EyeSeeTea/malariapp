@@ -33,15 +33,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.VideoActivity;
 import org.eyeseetea.malariacare.database.model.Media;
-import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
@@ -163,9 +161,8 @@ public class FeedbackAdapter extends BaseAdapter {
             return null;
         }
 
-        int layoutId = findLayoutByMedia(feedback);
         LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout) inflater.inflate(layoutId, parent, false);
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.feedback_question_row, parent, false);
 
         rowLayout.setTag(feedback);
 
@@ -217,32 +214,71 @@ public class FeedbackAdapter extends BaseAdapter {
         });
 
         //media stuff
-        if(layoutId!=R.layout.feedback_question_row){
-            addMedia(rowLayout,feedback);
-        }
+        addAllMedia(rowLayout,feedback);
+
 
         return rowLayout;
     }
 
-    private void addMedia(LinearLayout rowLayout, QuestionFeedback feedback) {
-        Media media=feedback.getMedia();
+    /**
+     * Adds N media items to the 1 feedback
+     * @param rowLayout
+     * @param feedback
+     */
+    private void addAllMedia(LinearLayout rowLayout, QuestionFeedback feedback) {
+        LinearLayout feedbackContainer = (LinearLayout)rowLayout.findViewById(R.id.feedback_container);
+        List<Media> mediaList = feedback.getMedia();
+        for(Media media:mediaList){
+            if(media.getMediaType()==Media.MEDIA_TYPE_IMAGE){
+                addImage(feedbackContainer,media);
+            }else{
+                addVideo(feedbackContainer,media);
+            }
+        }
+    }
+
+
+    /**
+     * Adds a image media to the feedback
+     * @param rowLayout
+     * @param media
+     */
+    private void addImage(LinearLayout rowLayout, Media media) {
+        if(media==null || media.getFilename()==null || media.getFilename().isEmpty()){
+            return;
+        }
+
+        //Get image uri
+        File file=new File(media.getFilename());
+        Uri uri = Uri.fromFile(file);
+
+        //Inflate media row
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_image_row, rowLayout, false);
+        ((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview)).setImageURI(uri);
+
+        //Add media row to feedback layout
+        rowLayout.addView(mediaLayout);
+    }
+
+    /**
+     * Adds a video media to the feedback
+     * @param rowLayout
+     * @param media
+     */
+    private void addVideo(LinearLayout rowLayout, Media media){
 
         if(media==null || media.getFilename()==null || media.getFilename().isEmpty()){
             return;
         }
 
-        File file=new File(media.getFilename());
-        //add image
-        if(media.getMediaType()==Media.MEDIA_TYPE_IMAGE) {
-            Uri uri = Uri.fromFile(file);
-            ((ImageView) rowLayout.findViewById(R.id.feedback_media)).setImageURI(uri);
-            return;
-        }
+        //Inflate media row
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_video_row, rowLayout, false);
 
         //add video link
-        View viewMediaLink = rowLayout.findViewById(R.id.feedback_media_link);
-        viewMediaLink.setTag(media.getFilename());
-        viewMediaLink.setOnClickListener(new View.OnClickListener() {
+        mediaLayout.setTag(media.getFilename());
+        mediaLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String mediaLink = (String)v.getTag();
@@ -253,8 +289,10 @@ public class FeedbackAdapter extends BaseAdapter {
         });
 
         //add preview frame
-        addPreview((ImageView)rowLayout.findViewById(R.id.feedback_media_preview),media);
+        addPreview((ImageView)mediaLayout.findViewById(R.id.feedback_media_preview),media);
 
+        //Add media row to feedback layout
+        rowLayout.addView(mediaLayout);
     }
 
     private void addPreview(ImageView viewMediaLink, Media media) {
@@ -273,24 +311,6 @@ public class FeedbackAdapter extends BaseAdapter {
             } catch (RuntimeException ex) {
             }
         }
-    }
-
-    private int findLayoutByMedia(QuestionFeedback feedback) {
-
-        Media media = feedback.getMedia();
-
-        //image
-        if (media.getMediaType() == Media.MEDIA_TYPE_IMAGE) {
-            return R.layout.feedback_image_question_row;
-        }
-
-        //video
-        if (media.getMediaType() == Media.MEDIA_TYPE_VIDEO) {
-            return R.layout.feedback_video_question_row;
-        }
-
-        return R.layout.feedback_question_row;
-
     }
 
     private void toggleFeedback(LinearLayout rowLayout, boolean visible) {

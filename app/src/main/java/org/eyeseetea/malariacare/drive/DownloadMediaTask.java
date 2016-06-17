@@ -68,7 +68,43 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         return numSyncedFiles;
     }
 
+    @Override
+    protected void onPostExecute(Integer numSyncedFiles) {
+        DashboardActivity.toast(String.format("%d files synced", numSyncedFiles));
+    }
+
+    @Override
+    protected void onCancelled() {
+
+        //Need to complete credentials (ack from user first time)
+        if (mLastError instanceof UserRecoverableAuthIOException) {
+            DashboardActivity.dashboardActivity.startActivityForResult(
+                    ((UserRecoverableAuthIOException) mLastError).getIntent(),
+                    DriveRestController.REQUEST_AUTHORIZATION);
+            return;
+        }
+
+        //Real connection google error
+        if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
+            DriveRestController.getInstance().showGooglePlayServicesAvailabilityErrorDialog(
+                    ((GooglePlayServicesAvailabilityIOException) mLastError)
+                            .getConnectionStatusCode());
+            return;
+        }
+
+        //Other error
+        Log.e(TAG, "onCancelled: " + mLastError == null ? "" : mLastError.getMessage());
+    }
+
     private Exception sync(Media media) {
+
+        //Try to reuse a local copy if another media references same url
+        Media localCopy=media.findLocalCopy();
+        if(localCopy!=null){
+            return syncFromLocal(media,localCopy);
+        }
+
+        //Download from google drive
         try {
             //download file
             String absolutePath=downloadFile(media.getResourceUrl());
@@ -94,10 +130,18 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         }
     }
 
-    @Override
-    protected void onPostExecute(Integer numSyncedFiles) {
-        DashboardActivity.toast(String.format("%d files synced", numSyncedFiles));
+    /**
+     * Updates media with the same path of another media referencing same resource in Drive
+     * @param media
+     * @param localCopy
+     * @return
+     */
+    private Exception syncFromLocal(Media media, Media localCopy) {
+        media.setFilename(localCopy.getFilename());
+        media.save();
+        return null;
     }
+
 
     private String downloadFile(String resourceId) throws Exception {
         Log.d(TAG, String.format("Downloading resource: %s ...", resourceId));
@@ -115,28 +159,5 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         getFile.executeMediaAndDownloadTo(fileOutputStream);
         fileOutputStream.close();
         return localFile.getAbsolutePath();
-    }
-
-    @Override
-    protected void onCancelled() {
-
-        //Need to complete credentials (ack from user first time)
-        if (mLastError instanceof UserRecoverableAuthIOException) {
-            DashboardActivity.dashboardActivity.startActivityForResult(
-                    ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                    DriveRestController.REQUEST_AUTHORIZATION);
-            return;
-        }
-
-        //Real connection google error
-        if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-            DriveRestController.getInstance().showGooglePlayServicesAvailabilityErrorDialog(
-                    ((GooglePlayServicesAvailabilityIOException) mLastError)
-                            .getConnectionStatusCode());
-            return;
-        }
-
-        //Other error
-        Log.e(TAG, "onCancelled: " + mLastError == null ? "" : mLastError.getMessage());
     }
 }
