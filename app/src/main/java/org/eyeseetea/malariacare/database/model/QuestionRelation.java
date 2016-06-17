@@ -34,6 +34,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -138,7 +139,7 @@ public class QuestionRelation extends BaseModel {
     public List<Match> getMatches() {
         if(matches==null) {
             this.matches = new Select().from(Match.class)
-                    .indexedBy("Match_id_question_relation")
+                    .indexedBy(Constants.MATCH_QUESTION_RELATION_IDX)
                     .where(Condition.column(Match$Table.ID_QUESTION_RELATION).eq(this.getId_question_relation()))
                     .queryList();
         }

@@ -85,7 +85,14 @@ public class Constants {
             QUESTION_RELATION_OPERATION_IDX = "QuestionRelation_operation",
             QUESTION_RELATION_QUESTION_IDX = "QuestionRelation_id_question",
             MATCH_QUESTION_RELATION_IDX = "Match_id_question_relation",
-            VALUE_IDX = "Value_id_survey";
+            VALUE_IDX = "Value_id_survey",
+            PROGRAM_STAGE_DATAELEMENT_DATAELEMENT_IDX="ProgramStageDataElement_DataElement",
+            PROGRAM_STAGE_DATAELEMENT_PROGRAMSTAGE_IDX="ProgramStageDataElement_ProgramStage",
+            PROGRAM_STAGE_DATAELEMENT_PROGRAMSTAGESECTION_IDX="ProgramStageDataElement_ProgramStageSection",
+            PROGRAM_STAGE_PROGRAM_IDX="ProgramStage_Program",
+            PROGRAMSTAGE_IDX="ProgramStage_Id";
+
+    ;
 
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;

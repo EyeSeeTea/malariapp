@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataEle
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
@@ -217,7 +218,7 @@ public class CompositeScoreBuilder {
     private static String findProgramStageByDataElementUID(String dataElementUID, String progamUid){
         //Find the right 'tabgroup' to group scores by program
         List<ProgramStageDataElement> programStageDataElements = new Select().from(ProgramStageDataElement.class)
-                .indexedBy("ProgramStageDataElement_DataElement")
+                .indexedBy(Constants.PROGRAM_STAGE_DATAELEMENT_DATAELEMENT_IDX)
                 .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT).is(dataElementUID)).
                 orderBy(true, ProgramStageDataElement$Table.SORTORDER).queryList();
         for(ProgramStageDataElement programStageDataElement:programStageDataElements){
