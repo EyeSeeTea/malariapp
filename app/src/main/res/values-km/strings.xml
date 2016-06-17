@@ -254,6 +254,9 @@
     <string name="number_7">៧</string>
     <string name="number_8">៨</string>
     <string name="number_9">៩</string>
+    <string name="number_10">១០</string>
+    <string name="number_11">១១</string>
+    <string name="number_12">12</string>
     <string name="assessment_title_rdt">អ.ឌី.ធី</string>
     <string name="progress_pull_downloading" >ពន្លឿនទិន្នន័យមេតា (Metadata) (ប្រហែលជាចំណាយពេលពីរបីនាទី)</string>
     <string name="progress_pull_preparing_orgs">កំពុងទាញយកអង្គភាព...</string>
