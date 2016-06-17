@@ -553,6 +553,26 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     /**
      * Updates ratios, status and completion date depending on the question and answer (text)
+     * and set as completed
+     */
+    public void updateSurveyStatusAndMarkAsCompleted(){
+        //Sent surveys are not updated
+        if(this.isSent()){
+            return;
+        }
+
+        SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
+
+        //Update status & completionDate
+        if(answeredRatio.isCompleted()) {
+            this.setStatus(Constants.SURVEY_COMPLETED);
+            this.setCompletionDate(new Date());
+            //Saves new status & completionDate
+            this.save();
+        }
+    }
+    /**
+     * Updates ratios, status and completion date depending on the question and answer (text)
      */
     public void updateSurveyStatus(){
 

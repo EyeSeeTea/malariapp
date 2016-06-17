@@ -76,9 +76,12 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.adapters.survey.navigation.NavigationBuilder;
 import org.eyeseetea.malariacare.layout.adapters.survey.navigation.NavigationController;
 import org.eyeseetea.malariacare.layout.adapters.survey.progress.ProgressTabStatus;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -796,12 +799,16 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
     }
 
     private void closeSurvey() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        DashboardActivity.dashboardActivity.startActivity(intent);
+        saveSurvey();
+        AssessModuleController assessModuleController= (AssessModuleController) DashboardActivity.dashboardController.getModuleByName(module);
+        assessModuleController.closeSurveyFragment();
     }
 
+    public void saveSurvey(){
+        Survey survey=Session.getSurveyByModule(module);
+        survey.getValuesFromDB();
+        survey.updateSurveyStatusAndMarkAsCompleted();
+    }
     /**
      * Checks if there are more questions to answer according to the given value + current status.
      * @param value

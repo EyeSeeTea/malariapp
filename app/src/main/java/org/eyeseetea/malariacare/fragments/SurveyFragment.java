@@ -200,7 +200,11 @@ public class SurveyFragment extends  Fragment {
     public void onPause(){
         Survey survey = Session.getSurveyByModule(moduleName);
         if(survey!=null){
-            survey.updateSurveyStatus();
+            if(PreferencesState.getInstance().isDynamicAdapter()){
+                survey.updateSurveyStatusAndMarkAsCompleted();
+            }
+            else
+                survey.updateSurveyStatus();
         }
         unregisterReceiver();
         super.onPause();
