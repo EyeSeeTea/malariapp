@@ -117,8 +117,9 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         new Index<ProgramStage>(Constants.PROGRAM_STAGE_PROGRAM_IDX).on(ProgramStage.class, ProgramStage$Table.PROGRAM).enable();
         new Index<ProgramStage>(Constants.PROGRAMSTAGE_IDX).on(ProgramStage.class, ProgramStage$Table.ID).enable();
         new Index<QuestionOption>(Constants.QUESTION_OPTION_QUESTION_IDX).on(QuestionOption.class, QuestionOption$Table.ID_QUESTION).enable();
+        new Index<QuestionOption>(Constants.QUESTION_OPTION_MATCH_IDX).on(QuestionOption.class, QuestionOption$Table.ID_MATCH).enable();
         new Index<QuestionRelation>(Constants.QUESTION_RELATION_OPERATION_IDX).on(QuestionRelation.class, QuestionRelation$Table.OPERATION).enable();
-        new Index<QuestionRelation>(Constants.QUESTION_RELATION_OPERATION_IDX).on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
+        new Index<QuestionRelation>(Constants.QUESTION_RELATION_QUESTION_IDX).on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
         new Index<Match>(Constants.MATCH_QUESTION_RELATION_IDX).on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
         new Index<Value>(Constants.VALUE_IDX).on(Value.class, Value$Table.ID_SURVEY).enable();
     }
