@@ -46,7 +46,7 @@ public class AppSettingsTest {
     /**
      * {"originType":"%s","uri":"%s"}
      */
-    public static final String JSON_DATABASE_TEMPLATE = "{\"originType\":\"%s\",\"uri\":\"%s\",\"fullHierarchy\":%s,\"driveAccount\":\"%s\"}";
+    public static final String JSON_DATABASE_TEMPLATE = "{\"originType\":\"%s\",\"uri\":\"%s\",\"fullHierarchy\":%s}";
     /**
      * {"orientation":"%s","modules":%s}
      */
@@ -61,9 +61,8 @@ public class AppSettingsTest {
         //GIVEN
         ObjectMapper mapper = new ObjectMapper();
         String expectedDatabaseUri="file://lalala";
-        String expectedDriveAccount="ivan.arrizabalaga@gmail.com";
         boolean expectedFullHierarchy=true;
-        String jsonDatabase = String.format(JSON_DATABASE_TEMPLATE,"dhis",expectedDatabaseUri,"true",expectedDriveAccount);
+        String jsonDatabase = String.format(JSON_DATABASE_TEMPLATE,"dhis",expectedDatabaseUri,"true");
         String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
         String jsonModules =jsonModule1+","+jsonModule1;
         String jsonDashboard = String.format(JSON_DASHBOARD_TEMPLATE,"vertical","vertical_main",jsonModules);
@@ -86,7 +85,6 @@ public class AppSettingsTest {
         assertEquals(DatabaseOriginType.DHIS, parsedDatabaseSettings.getOriginType());
         assertEquals(expectedDatabaseUri, parsedDatabaseSettings.getUri());
         assertEquals(expectedFullHierarchy,parsedDatabaseSettings.isFullHierarchy());
-        assertEquals(expectedDriveAccount,parsedDatabaseSettings.getDriveAccount());
 
         //THEN dashboardSettings is ok
         DashboardSettings dashboardSettings = appSettings.getDashboardSettings();

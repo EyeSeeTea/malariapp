@@ -2,8 +2,7 @@
   "database": {
     "originType": "dhis",
     "uri": "https://hnqis-dev-ci.psi-mis.org",
-    "fullHierarchy":false,
-    "driveAccount":"ivan.arrizabalaga@gmail.com"
+    "fullHierarchy":false
   },
   "dashboard": {
     "orientation": "horizontal",

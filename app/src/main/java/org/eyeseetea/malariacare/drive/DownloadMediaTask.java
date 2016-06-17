@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -30,13 +31,16 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
     private com.google.api.services.drive.Drive mService = null;
     private Exception mLastError = null;
 
-
-    public DownloadMediaTask(GoogleAccountCredential credential) {
+    /**
+     * Builds a task that requires service credentials
+     * @param credential
+     */
+    public DownloadMediaTask(GoogleCredential credential) {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         this.mService = new com.google.api.services.drive.Drive.Builder(
-                transport, jsonFactory, credential)
-                .setApplicationName("Drive API Android Quickstart")
+                transport, jsonFactory, null)
+                .setHttpRequestInitializer(credential)
                 .build();
     }
 
