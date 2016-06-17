@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -780,7 +781,8 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                 .setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         hideKeyboard(PreferencesState.getInstance().getContext());
-                        //DashboardActivity.dashboardActivity.closeSurveyFragment(module);
+                        closeSurvey();
+
                     }
                 });
         msgConfirmation.setNegativeButton(R.string.review, new DialogInterface.OnClickListener() {
@@ -791,6 +793,13 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         });
 
         msgConfirmation.create().show();
+    }
+
+    private void closeSurvey() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        DashboardActivity.dashboardActivity.startActivity(intent);
     }
 
     /**
