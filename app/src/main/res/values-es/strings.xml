@@ -64,6 +64,7 @@
 
     <string name="survey_title_exit">"¿Realmente salir?"</string>
     <string name="survey_info_exit">"¿Esta seguro que quiere salir?"</string>
+    <string name="survey_info_exit_delete">La evaluación en marcha será eliminada</string>
 
     <string name="widget_info_empty_statement">Enunciado de cuestión</string>
 

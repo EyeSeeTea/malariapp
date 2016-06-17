@@ -67,6 +67,7 @@
 
     <string name="survey_title_exit">"Really Exit?"</string>
     <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
+    <string name="survey_info_exit_delete">A pesquisa em andamento serão excluídos</string>
 
     <string name="widget_info_empty_statement">Problema</string>
 

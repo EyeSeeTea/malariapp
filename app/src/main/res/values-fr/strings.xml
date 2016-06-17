@@ -65,6 +65,7 @@
 
     <string name="survey_title_exit">"Vraiment quitter?"</string>
     <string name="survey_info_exit">"Êtes-vous sûr de vouloir quitter?"</string>
+    <string name="survey_info_exit_delete">"L'enquête en cours sera supprimé"</string>
 
     <string name="widget_info_empty_statement">Question statement</string>
 
