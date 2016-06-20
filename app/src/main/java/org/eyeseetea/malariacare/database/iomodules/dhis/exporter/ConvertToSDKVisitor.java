@@ -135,7 +135,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
         this.currentEvent=buildEvent();
-
         //Calculates scores and update survey
         Log.d(TAG,"Registering scores...");
         List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey, Constants.PUSH_MODULE_KEY);
@@ -366,7 +365,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 iSurvey.setStatus(Constants.SURVEY_SENT);
                 iSurvey.saveMainScore();
                 iSurvey.save();
-
+                if(iEvent.getEventDate()==null || iEvent.getEventDate().equals("")) {
+                    //the event is invalid. The event will be pushed but we need inform to the user.
+                    DashboardActivity.showException(context.getString(R.string.error_message), String.format(context.getString(R.string.error_message_push), iEvent.getEvent()));
+                }
                 //To avoid several pushes
                 iEvent.setFromServer(true);
                 iEvent.save();
