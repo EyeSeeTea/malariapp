@@ -242,4 +242,6 @@
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
+    <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
+
 </resources>
