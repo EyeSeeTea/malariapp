@@ -494,6 +494,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
             //XXX Whats this?
             if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && ImportSummary.SUCCESS.equals(importSummary.getStatus())) {
+                if(iEvent.getEventDate()==null || iEvent.getEventDate().equals("")) {
+                    //the event is invalid. The event will be pushed but we need inform to the user.
+                    DashboardActivity.showException(context.getString(R.string.error_message), String.format(context.getString(R.string.error_message_push), iEvent.getEvent()));
+                }
                 saveSurveyFromImportSummary(iSurvey);
                 Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
             }
