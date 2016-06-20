@@ -703,6 +703,7 @@ public class AutoTabAdapter extends ATabAdapter {
         private AutoTabViewHolder viewHolder;
         private Question question;
         private Calendar calendar = Calendar.getInstance();
+        boolean isCleared=false;
 
         public DatePickerListener(Question question, AutoTabViewHolder viewHolder) {
             this.question = question;
@@ -715,17 +716,16 @@ public class AutoTabAdapter extends ATabAdapter {
             if (!v.isShown()) {
                 return;
             }
-            final boolean[] cleared = {false};
             DatePickerDialog.OnDateSetListener datepickerlistener = new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Calendar newCalendar = Calendar.getInstance();
                     newCalendar.set(year, monthOfYear, dayOfMonth);
                     Date newScheduledDate = newCalendar.getTime();
-                    if(!cleared[0]) {
+                    if(!isCleared) {
                         ((CustomButton) v).setText( AUtils.formatDate(newCalendar.getTime()));
                         ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
                     }
-                    cleared[0] =false;
+                    isCleared =false;
                 }
             };
             Calendar newCalendar = Calendar.getInstance();
@@ -734,7 +734,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ReadWriteDB.deleteValue(question, module);
-                    cleared[0] =true;
+                    isCleared =true;
                     ((CustomButton) v).setText("");
                 }
             });
