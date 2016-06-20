@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -628,7 +629,8 @@ public class AutoTabAdapter extends ATabAdapter {
             if (!v.isShown()){
                 return;
             }
-            new DatePickerDialog(AutoTabAdapter.this.getContext(), new DatePickerDialog.OnDateSetListener() {
+            new DatePickerDialog(
+                    AutoTabAdapter.this.getContext(), new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Calendar newCalendar = Calendar.getInstance();
                     newCalendar.set(year, monthOfYear, dayOfMonth);
@@ -637,7 +639,14 @@ public class AutoTabAdapter extends ATabAdapter {
                     ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
                 }
 
-            },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+            },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                    .setButton(DialogInterface.BUTTON_NEUTRAL, "Name", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ((CustomButton)v).setText((null));
+                ReadWriteDB.deleteValue(question, module);
+            }
+        });
         }
     }
 
