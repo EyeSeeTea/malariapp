@@ -120,4 +120,8 @@ public class OrgUnitLevel extends BaseModel {
                 ", uid='" + uid + '\'' +
                 '}';
     }
+
+    public static List<OrgUnitLevel> list() {
+        return new Select().all().from(OrgUnitLevel.class).queryList();
+    }
 }

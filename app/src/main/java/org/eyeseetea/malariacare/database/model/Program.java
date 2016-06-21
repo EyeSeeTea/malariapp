@@ -159,7 +159,7 @@ public class Program extends BaseModel{
      * @return
      */
     public static List<Program> list() {
-        return new Select().all().from(Program.class).queryList();
+        return new Select().all().from(Program.class).orderBy(true, Program$Table.NAME).queryList();
     }
 
     @Override
