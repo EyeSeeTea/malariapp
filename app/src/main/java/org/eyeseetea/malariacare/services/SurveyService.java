@@ -229,14 +229,10 @@ public class SurveyService extends IntentService {
 
     private void getAllCreateSurveyData() {
         Log.d(TAG, "getAllCreateSurveyData (Thread:" + Thread.currentThread().getId() + ")");
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).orderBy(true, "id_org_unit_level").queryList();
-        List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
-        List<Program> programList = Program.list();
-
         HashMap<String,List> orgCreateSurveyData=new HashMap<>();
-        orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitList);
-        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, orgUnitLevelList);
-        orgCreateSurveyData.put(PREPARE_PROGRAMS, programList);
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT, OrgUnit.list());
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, OrgUnitLevel.list());
+        orgCreateSurveyData.put(PREPARE_PROGRAMS, Program.list());
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
