@@ -248,6 +248,8 @@
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
+    <string name="error_message_push">L\'événement avec UID: %s. a été transféré sans la date. S\'il vous plaît contacter l\'administrateur.</string>
+
 
 
     <string name="clear">Effacement</string>
