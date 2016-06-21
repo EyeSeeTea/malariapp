@@ -246,4 +246,6 @@
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
+
+    <string name="clear">Clear</string>
 </resources>
