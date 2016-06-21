@@ -37,7 +37,7 @@ allprojects {
 
 ext {
     //App Version
-    versionCode = 17
+    versionCode = 18
     versionName = "14.0"
     
     // Sdk and tools
