@@ -209,5 +209,6 @@
         <p>3. Exécuter "git checkout".</p>" ]]>
     </string>
     <string name="no_previous_event_info">Aucun événement précédent disponible</string>
+    <string name="error_message_push">L\'événement avec UID: %s. a été transféré sans la date. S\'il vous plaît contacter l\'administrateur.</string>
 
 </resources>

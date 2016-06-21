@@ -209,4 +209,5 @@
         <p>3. Ejecute "git checkout".</p> ]]>
     </string>
     <string name="no_previous_event_info">Ningún evento previo disponible</string>
+    <string name="error_message_push">El evento con UID: %s. fue subido sin fecha. Por favor, póngase en contacto con el administrador. </string>
 </resources>

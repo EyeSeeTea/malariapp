@@ -213,5 +213,5 @@
         <p>3. Execute "git checkout".</p> ]]>
     </string>
     <string name="no_previous_event_info">No evento anterior disponíveis</string>
-
+    <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 </resources>
