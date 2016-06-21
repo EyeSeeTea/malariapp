@@ -125,12 +125,14 @@ public class ProgressActivity extends Activity {
     boolean pullAfterPushInProgress;
     static Handler handler;
     static Activity progressActivity;
+    boolean isOnPause=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         PULL_IS_ACTIVE = true;
+        isOnPause=false;
         prepareUI();
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -157,24 +159,26 @@ public class ProgressActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-        Dhis2Application.bus.register(this);
-        }catch(Exception e){
-            e.printStackTrace();
-            Dhis2Application.bus.unregister(this);
-            Dhis2Application.bus.register(this);
+        if(!isOnPause) {
+            try {
+                Dhis2Application.bus.register(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Dhis2Application.bus.unregister(this);
+                Dhis2Application.bus.register(this);
+            }
+            launchAction();
         }
-        launchAction();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
         if(PULL_CANCEL==true)
             finishAndGo(LoginActivity.class);
-        else
+        else if(!hasAPullAfterPush())
             finishAndGo(DashboardActivity.class);
+        isOnPause=true;
     }
 
     private void prepareUI(){
