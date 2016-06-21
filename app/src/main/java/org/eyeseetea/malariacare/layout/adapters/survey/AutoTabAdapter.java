@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -611,35 +612,7 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
-    private class DatePickerListener implements Button.OnClickListener{
 
-        private AutoTabViewHolder viewHolder;
-        private Question question;
-        private Calendar calendar = Calendar.getInstance();
-
-        public DatePickerListener(Question question, AutoTabViewHolder viewHolder){
-            this.question = question;
-            this.viewHolder = viewHolder;
-        }
-
-
-        @Override
-        public void onClick(final View v) {
-            if (!v.isShown()){
-                return;
-            }
-            new DatePickerDialog(AutoTabAdapter.this.getContext(), new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    Calendar newCalendar = Calendar.getInstance();
-                    newCalendar.set(year, monthOfYear, dayOfMonth);
-                    Date newScheduledDate = newCalendar.getTime();
-                    ((CustomButton)v).setText(AUtils.formatDate(newScheduledDate));
-                    ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
-                }
-
-            },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-        }
-    }
 
 
 
@@ -725,4 +698,47 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
+    public class DatePickerListener implements Button.OnClickListener {
+
+        private AutoTabViewHolder viewHolder;
+        private Question question;
+        private Calendar calendar = Calendar.getInstance();
+        boolean isCleared=false;
+
+        public DatePickerListener(Question question, AutoTabViewHolder viewHolder) {
+            this.question = question;
+            this.viewHolder = viewHolder;
+        }
+
+
+        @Override
+        public void onClick(final View v) {
+            if (!v.isShown()) {
+                return;
+            }
+            DatePickerDialog.OnDateSetListener datepickerlistener = new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    Calendar newCalendar = Calendar.getInstance();
+                    newCalendar.set(year, monthOfYear, dayOfMonth);
+                    Date newScheduledDate = newCalendar.getTime();
+                    if(!isCleared) {
+                        ((CustomButton) v).setText( AUtils.formatDate(newCalendar.getTime()));
+                        ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
+                    }
+                    isCleared =false;
+                }
+            };
+            Calendar newCalendar = Calendar.getInstance();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(AutoTabAdapter.this.getContext(), datepickerlistener, newCalendar.get(Calendar.YEAR),newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, PreferencesState.getInstance().getContext().getResources().getString(R.string.clear), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ReadWriteDB.deleteValue(question, module);
+                    isCleared =true;
+                    ((CustomButton) v).setText("");
+                }
+            });
+            datePickerDialog.show();
+        }
+    }
 }

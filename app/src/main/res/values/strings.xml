@@ -248,4 +248,5 @@
     <string name="number_9">9</string>
     <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 
+    <string name="clear">Clear</string>
 </resources>
