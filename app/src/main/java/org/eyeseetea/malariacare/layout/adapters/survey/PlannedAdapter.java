@@ -330,7 +330,7 @@ public class PlannedAdapter extends BaseAdapter {
 //                survey=SurveyPlanner.getInstance().startSurvey(survey);
 //            }
 //
-//            Session.setSurvey(survey);
+//            Session.setSurveyByModule(survey);
 //            activity.prepareLocationListener(survey);
 //            //FIXME
 //

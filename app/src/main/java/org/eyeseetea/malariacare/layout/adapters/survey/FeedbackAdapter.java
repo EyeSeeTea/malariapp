@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.VideoActivity;
 import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -62,44 +63,50 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private boolean onlyFailed;
 
-    private boolean[] hiddenPositions;
+    private boolean [] hiddenPositions;
 
-    public FeedbackAdapter(Context context) {
-        this(new ArrayList<Feedback>(), context);
+    float idSurvey;
+
+    String module;
+
+    public FeedbackAdapter(Context context, float idSurvey, String module){
+        this(new ArrayList<Feedback>(), context, idSurvey, module);
     }
 
-    public FeedbackAdapter(List<Feedback> items, Context context) {
-        this.items = items;
-        this.context = context;
-        this.onlyFailed = true;
-        this.hiddenPositions = new boolean[this.items.size()];
+    public FeedbackAdapter(List<Feedback> items, Context context, float idSurvey, String module){
+        this.items=items;
+        this.context=context;
+        this.idSurvey=idSurvey;
+        this.module=module;
+        this.onlyFailed=true;
+        this.hiddenPositions= new boolean[this.items.size()];
     }
 
     @Override
     public int getCount() {
-        int hiddenItems = this.onlyFailed ? countHiddenUpTo(this.items.size()) : 0;
-        return this.items.size() - hiddenItems;
+        int hiddenItems=this.onlyFailed?countHiddenUpTo(this.items.size()):0;
+        return this.items.size()-hiddenItems;
     }
 
     @Override
     public Object getItem(int position) {
         //Show all -> direct
-        if (!onlyFailed) {
+        if(!onlyFailed){
             return this.items.get(position);
         }
 
         //Find the visible item number 'position'
-        int visibleItems = 0;
+        int visibleItems=0;
         int i;
-        for (i = 0; i < this.hiddenPositions.length; i++) {
+        for(i=0;i<this.hiddenPositions.length;i++){
             //Hidden, move on
-            if (this.hiddenPositions[i]) {
+            if(this.hiddenPositions[i]){
                 continue;
             }
 
             //Visible, count it and check
             visibleItems++;
-            if (visibleItems == position + 1) {
+            if(visibleItems==position+1){
                 break;
             }
         }
@@ -114,17 +121,17 @@ public class FeedbackAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Feedback feedback = (Feedback) getItem(position);
-        if (feedback instanceof CompositeScoreFeedback) {
-            return getViewByCompositeScoreFeedback((CompositeScoreFeedback) feedback, convertView, parent);
-        } else {
+        Feedback feedback=(Feedback)getItem(position);
+        if (feedback instanceof CompositeScoreFeedback){
+            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent);
+        }else{
             return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
         }
     }
 
-    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
+    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent){
+        LayoutInflater inflater=LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
         //CompositeScore title
@@ -142,60 +149,59 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
-        textView = (TextView) rowLayout.findViewById(R.id.feedback_score_label);
-        if (!PreferencesState.getInstance().isVerticalDashboard()) {
-            if (feedback.getScore() < Constants.MAX_AMBER)
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+        if(!PreferencesState.getInstance().isVerticalDashboard()) {
+            if (feedback.getScore(idSurvey, module) < Constants.MAX_AMBER)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else if (feedback.getScore() < Constants.MAX_RED)
+            else if (feedback.getScore(idSurvey, module) < Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
             else
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         }
-        textView.setText(feedback.getPercentageAsString());
+        textView.setText(feedback.getPercentageAsString(idSurvey, module));
 
         return rowLayout;
     }
 
-    private View getViewByQuestionFeedback(QuestionFeedback feedback, View convertView, ViewGroup parent) {
-        if (onlyFailed && feedback.isPassed()) {
+    private View getViewByQuestionFeedback(QuestionFeedback feedback, View convertView, ViewGroup parent){
+        if(onlyFailed && feedback.isPassed()){
             return null;
         }
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.feedback_question_row, parent, false);
-
+        LayoutInflater inflater=LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
 
         //Question label
-        TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_question_label);
-        if (!PreferencesState.getInstance().isVerticalDashboard()) {
+        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
+        if(!PreferencesState.getInstance().isVerticalDashboard()){
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         }
-        if (feedback.isLabel()) {
+        if(feedback.isLabel()){
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         textView.setText(feedback.getLabel());
 
         //Option label
-        textView = (TextView) rowLayout.findViewById(R.id.feedback_option_label);
-        if (!PreferencesState.getInstance().isVerticalDashboard())
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
+        if(!PreferencesState.getInstance().isVerticalDashboard())
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getOption());
 
         //Score label
-        textView = (TextView) rowLayout.findViewById(R.id.feedback_score_label);
-        if (feedback.hasGrade()) {
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+        if(feedback.hasGrade()) {
             textView.setText(context.getString(feedback.getGrade()));
             textView.setTextColor(context.getResources().getColor(feedback.getColor()));
         }
 
         //Feedback
-        textView = (TextView) rowLayout.findViewById(R.id.feedback_feedback_html);
-        String feedbackText = feedback.getFeedback();
-        if (feedbackText == null) {
-            feedbackText = context.getString(R.string.feedback_info_no_feedback);
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
+        String feedbackText=feedback.getFeedback();
+        if(feedbackText==null){
+            feedbackText=context.getString(R.string.feedback_info_no_feedback);
         }
-        textView.setText(Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
+        textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Hide/Show feedback according to its inner state
@@ -205,11 +211,11 @@ public class FeedbackAdapter extends BaseAdapter {
         rowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QuestionFeedback questionFeedback = (QuestionFeedback) v.getTag();
-                if (questionFeedback == null || questionFeedback.isLabel() || questionFeedback.getFeedback() == null) {
+                QuestionFeedback questionFeedback=(QuestionFeedback)v.getTag();
+                if(questionFeedback==null || questionFeedback.isLabel() || questionFeedback.getFeedback()==null){
                     return;
                 }
-                toggleFeedback((LinearLayout) v, questionFeedback.toggleFeedbackShown());
+                toggleFeedback((LinearLayout)v, questionFeedback.toggleFeedbackShown());
             }
         });
 
@@ -320,10 +326,9 @@ public class FeedbackAdapter extends BaseAdapter {
 
     /**
      * Reloads items into the adapter
-     *
      * @param newItems
      */
-    public void setItems(List<Feedback> newItems) {
+    public void setItems(List<Feedback> newItems){
         this.items.clear();
         this.items.addAll(newItems);
 
@@ -335,8 +340,8 @@ public class FeedbackAdapter extends BaseAdapter {
     /**
      * Toggles the state of the flag that determines if only 'failed' questions are shown
      */
-    public void toggleOnlyFailed() {
-        this.onlyFailed = !this.onlyFailed;
+    public void toggleOnlyFailed(){
+        this.onlyFailed=!this.onlyFailed;
         notifyDataSetChanged();
     }
 
@@ -347,27 +352,26 @@ public class FeedbackAdapter extends BaseAdapter {
     /**
      * Recalculates the array of hidden positions
      */
-    private void reloadHiddenPositions() {
+    private void reloadHiddenPositions(){
         //a brand new array
-        this.hiddenPositions = new boolean[this.items.size()];
+        this.hiddenPositions= new boolean[this.items.size()];
 
-        for (int i = 0; i < this.hiddenPositions.length; i++) {
+        for(int i=0;i<this.hiddenPositions.length;i++){
             //Passed items might get hidden
-            this.hiddenPositions[i] = this.items.get(i).isPassed();
+            this.hiddenPositions[i]=this.items.get(i).isPassed();
         }
     }
 
     /**
      * Counts the number of hidden items up to the given position or the whole array if the given position is greater.
-     *
      * @param position Upper index to check (included)
      * @return
      */
-    private int countHiddenUpTo(int position) {
-        int iMax = (position < hiddenPositions.length - 1) ? position : (this.hiddenPositions.length - 1);
-        int numHidden = 0;
-        for (int i = 0; i <= iMax; i++) {
-            numHidden += hiddenPositions[i] ? 1 : 0;
+    private int countHiddenUpTo(int position){
+        int iMax=(position<hiddenPositions.length-1)?position:(this.hiddenPositions.length-1);
+        int numHidden=0;
+        for(int i=0;i<=iMax;i++){
+            numHidden+=hiddenPositions[i]?1:0;
         }
         return numHidden;
     }

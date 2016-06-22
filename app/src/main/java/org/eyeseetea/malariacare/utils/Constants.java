@@ -13,7 +13,15 @@ public class Constants {
             RADIO_GROUP_HORIZONTAL = 8,
             RADIO_GROUP_VERTICAL = 9,
             DROPDOWN_LIST_DISABLED = 10,
-            SWITCH_BUTTON=12;
+            SWITCH_BUTTON=12,
+
+            //TODO now review this constants
+            IMAGES_2 = 10,
+            IMAGES_4 = 11,
+            IMAGES_6 = 12,
+            PHONE = 13,
+            IMAGES_3 = 14;
+
 
 
     public static final String DEFAULT_SELECT_OPTION = "";
@@ -27,7 +35,8 @@ public class Constants {
             TAB_SCORE_SUMMARY = 4, //we need to delete this
             TAB_ADHERENCE = 6,
             TAB_IQATAB=7,
-            TAB_REPORTING=8;
+            TAB_REPORTING=8,
+            TAB_DYNAMIC_AUTOMATIC_TAB=9;
 
     // ############# ANSWER TYPE ###############
     public static final String TO_BE_REMOVED="OuiNon (to be removed)",
@@ -59,4 +68,9 @@ public class Constants {
 
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;
+
+    public static final String PUSH_MODULE_KEY="PUSH_MODULE_KEY";
+    public static final String PROGRESSACTIVITY_MODULE_KEY="PROGRESSACTIVITY_MODULE_KEY";
+    public static final String MODULE_KEY="MODULE_KEY";
+
 }

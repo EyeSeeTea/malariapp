@@ -20,9 +20,6 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -30,8 +27,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -138,9 +133,9 @@ public class Tab extends BaseModel {
     /*
      * Return tabs filter by program and order by orderpos field
      */
-    public static List<Tab> getTabsBySession(){
+    public static List<Tab> getTabsBySession(String module){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(Session.getSurvey().getTabGroup().getId_tab_group()))
+                .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(Session.getSurveyByModule(module).getTabGroup().getId_tab_group()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
@@ -167,6 +162,14 @@ public class Tab extends BaseModel {
      */
     public boolean isCompositeScore(){
         return getType().equals(Constants.TAB_COMPOSITE_SCORE);
+    }
+
+    /**
+     * Checks if this tab is a dynamic tab (sort of a wizard)
+     * @return
+     */
+    public boolean isDynamicTab(){
+        return getType() == Constants.TAB_DYNAMIC_AUTOMATIC_TAB;
     }
 
     /**

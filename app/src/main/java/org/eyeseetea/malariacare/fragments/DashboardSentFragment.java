@@ -139,6 +139,22 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 //            setListShown(false);
         initAdapter();
         initListView();
+        initLongListClick();
+    }
+
+    private void initLongListClick() {
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
+                //Discard clicks on header|footer (which is attended on onNewSurvey via super)
+                if(isPositionASurvey(position)){
+                    // call onSurveySelected function(and it call surveyfragment.
+                    // to looks only as read mode the survey should be iscompleted or issent)-
+                    dashboardActivity.onSurveySelected(surveys.get(position - 1));
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -467,22 +483,28 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         HashMap<String, Survey> orgUnits;
         orgUnits = new HashMap<>();
         oneSurveyForOrgUnit = new ArrayList<>();
-
-        for (Survey survey : surveys) {
-            if (survey.getOrgUnit() != null && survey.getTabGroup()!=null && survey.getTabGroup()!=null) {
-                if (!orgUnits.containsKey(survey.getTabGroup().getName()+survey.getOrgUnit().getUid())) {
-                    filterSurvey(orgUnits, survey);
-                } else {
-                    Survey surveyMapped = orgUnits.get(survey.getTabGroup().getName()+survey.getOrgUnit().getUid());
-                    Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
-                    if((surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                        orgUnits=filterSurvey(orgUnits, survey);
+        if(PreferencesState.getInstance().isLastForOrgUnit()) {
+            for (Survey survey : surveys) {
+                if (survey.getOrgUnit() != null && survey.getTabGroup() != null && survey.getTabGroup() != null) {
+                    if (!orgUnits.containsKey(survey.getTabGroup().getName() + survey.getOrgUnit().getUid())) {
+                        filterSurvey(orgUnits, survey);
+                    } else {
+                        Survey surveyMapped = orgUnits.get(survey.getTabGroup().getName() + survey.getOrgUnit().getUid());
+                        Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
+                        if ((surveyMapped.getCompletionDate() != null && survey.getCompletionDate() != null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
+                            orgUnits = filterSurvey(orgUnits, survey);
+                        }
                     }
                 }
             }
+            for (Survey survey : orgUnits.values()) {
+                oneSurveyForOrgUnit.add(survey);
+            }
         }
-        for (Survey survey : orgUnits.values()) {
-            oneSurveyForOrgUnit.add(survey);
+        else if(PreferencesState.getInstance().isNoneFilter()){
+            for (Survey survey : surveys) {
+                oneSurveyForOrgUnit.add(survey);
+            }
         }
         //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
         if (orderBy != WITHOUT_ORDER) {

@@ -88,7 +88,7 @@ public class PlannedSurvey implements PlannedItem {
      * @return
      */
     public String getQualityOfCare(){
-        if(survey==null){
+        if(survey==null || !survey.hasMainScore()){
             return NO_QUALITY_OF_CARE;
         }
         return AUtils.round(survey.getMainScore());

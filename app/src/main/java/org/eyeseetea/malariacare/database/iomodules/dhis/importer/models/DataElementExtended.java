@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScore
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
@@ -47,6 +48,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
+
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -162,6 +165,8 @@ public class DataElementExtended implements VisitableFromSDK {
     public static final String CHILD = "CHILD";
 
     DataElement dataElement;
+
+    String programUid;
 
     /**
      * Reloads the codes for the options Question, Control, Score
@@ -384,20 +389,49 @@ public class DataElementExtended implements VisitableFromSDK {
 
 
     /**
-     * Find the associated ProgramStageDataElement (tab) given a dataelement UID
+     * Find the associated programStageSection (tab)UID given a dataelement UID
      *
-     * @param dataElementUID
      * @return
      */
-    public static ProgramStageDataElement findProgramStageDataElementByDataElementUID(String dataElementUID) {
-        //Find the right 'uid' of the dataelement program
-        ProgramStageDataElement programDE = new Select().from(ProgramStageDataElement.class).as("psde")
-                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
-                .querySingle();
-        if (programDE == null) {
+    public String findProgramStageSection() {
+
+        List<ProgramStageSection> programStageSections = new Select().from(ProgramStageSection.class).as("pss")
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psde")
+                .on(Condition.column(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.PROGRAMSTAGESECTION)))
+                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(getDataElement().getUid()))
+                .queryList();
+        if (programStageSections == null) {
             return null;
         }
-        return programDE;
+        for(ProgramStageSection programStageSection:programStageSections){
+            if(MetaDataController.getProgramStage(programStageSection.getProgramStage()).getProgram().getUid().equals(programUid))
+                return programStageSection.getUid();
+        }
+        return null;
+    }
+
+    /**
+     * Find the associated ProgramStageDataElement (tab) given a DataElementExtended
+     *
+     * @param dataElementExtended
+     * @return
+     */
+    public static ProgramStageDataElement findProgramStageDataElementByDataElementExtended(DataElementExtended dataElementExtended) {
+        String dataElementUID=dataElementExtended.getDataElement().getUid();
+        String programUID=dataElementExtended.getProgramUid();
+        //Find the right 'uid' of the dataelement program
+        List <ProgramStageDataElement> programDES = new Select().from(ProgramStageDataElement.class).as("psde")
+                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .queryList();
+        if (programDES == null) {
+            return null;
+        }
+        for(ProgramStageDataElement programStageDataElement:programDES){
+            if(MetaDataController.getProgramStage(programStageDataElement.getProgramStage()).getProgram().getUid().equals(programUID))
+                return programStageDataElement;
+        }
+        return null;
     }
     /**
      * Find the order from dataelement in programStage
@@ -433,16 +467,16 @@ public class DataElementExtended implements VisitableFromSDK {
 
     public Float findNumerator() {
         String value = getValue(ATTRIBUTE_NUMERATOR);
-        if (value != null) {
+        if (value != null && !value.equals("")) {
             float numinator = AUtils.safeParseFloat(value);
             return numinator;
         } else
-            return 0.0f;
+            return findDenominator();
     }
 
     public Float findDenominator() {
         String value = getValue(ATTRIBUTE_DENUMERATOR);
-        if (value != null) {
+        if (value != null && !value.equals("")) {
             float denominator = AUtils.safeParseFloat(value);
             return denominator;
         }
@@ -473,11 +507,19 @@ public class DataElementExtended implements VisitableFromSDK {
         String value = findCompositeScoreId();
         if (value != null) {
             try {
-                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(getDataElement(), value);
+                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(getDataElement(), getProgramUid(), value);
             } catch (Exception e) {
                 return compositeScore;
             }
         }
         return compositeScore;
+    }
+
+    public String getProgramUid() {
+        return programUid;
+    }
+
+    public void setProgramUid(String programUid) {
+        this.programUid = programUid;
     }
 }

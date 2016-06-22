@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -127,8 +128,8 @@ public class QuestionBuilder {
      *
      * @param question
      */
-    public void add(Question question) {
-        mapQuestions.put(question.getUid(), question);
+    public void add(Question question, String programUid) {
+        mapQuestions.put(question.getUid()+programUid, question);
     }
 
     /**
@@ -146,7 +147,7 @@ public class QuestionBuilder {
         }
 
         //Find tabUID
-        String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
+        String tabUid = dataElementExtended.findProgramStageSection();
         //No tab no header
         if(tabUid==null){
             return null;
@@ -220,6 +221,7 @@ public class QuestionBuilder {
      */
     public void registerParentChildRelations(DataElementExtended dataElementExtended) {
         DataElement dataElement = dataElementExtended.getDataElement();
+        String pogramUid = dataElementExtended.getProgramUid();
         String questionRelationType = null;
         String questionRelationGroup = null;
         String matchRelationType = null;
@@ -229,30 +231,28 @@ public class QuestionBuilder {
         matchRelationType = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_MATCH_TYPE);
         matchRelationGroup = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_MATCH_GROUP);
         if (questionRelationType != null) {
-            String parentProgramUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
             if (questionRelationType.equals(DataElementExtended.PARENT)) {
-                mapParent.put(parentProgramUid + questionRelationGroup, dataElement.getUid());
+                mapParent.put(pogramUid + questionRelationGroup, dataElement.getUid());
             } else {
-                mapType.put(parentProgramUid + dataElement.getUid(), questionRelationType);
-                mapLevel.put(parentProgramUid + dataElement.getUid(), questionRelationGroup);
+                mapType.put(pogramUid + dataElement.getUid(), questionRelationType);
+                mapLevel.put(pogramUid + dataElement.getUid(), questionRelationGroup);
             }
         }
         if (matchRelationType != null) {
-            String parentProgramUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
             if (matchRelationType.equals(DataElementExtended.PARENT)) {
-                mapMatchParent.put(parentProgramUid + matchRelationGroup, dataElement.getUid());
+                mapMatchParent.put(pogramUid + matchRelationGroup, dataElement.getUid());
             } else if (matchRelationType.equals(DataElementExtended.CHILD)) {
                 List<String> childsUids;
-                if (mapMatchChilds.containsKey(parentProgramUid + matchRelationGroup)) {
-                    childsUids = mapMatchChilds.get(parentProgramUid + matchRelationGroup);
+                if (mapMatchChilds.containsKey(pogramUid + matchRelationGroup)) {
+                    childsUids = mapMatchChilds.get(pogramUid + matchRelationGroup);
                 } else {
                     childsUids = new ArrayList<>();
                 }
                 childsUids.add(dataElement.getUid());
-                mapMatchChilds.put(parentProgramUid + matchRelationGroup, childsUids);
+                mapMatchChilds.put(pogramUid + matchRelationGroup, childsUids);
             }
-            mapMatchType.put(parentProgramUid + dataElement.getUid(), matchRelationType);
-            mapMatchLevel.put(parentProgramUid + dataElement.getUid(), matchRelationGroup);
+            mapMatchType.put(pogramUid + dataElement.getUid(), matchRelationType);
+            mapMatchLevel.put(pogramUid + dataElement.getUid(), matchRelationGroup);
 
         }
 
@@ -264,9 +264,9 @@ public class QuestionBuilder {
      * @param dataElementExtended
      */
     public void addRelations(DataElementExtended dataElementExtended) {
-        if (mapQuestions.containsKey(dataElementExtended.getDataElement().getUid())) {
-            addParent(dataElementExtended.getDataElement());
-            addQuestionRelations(dataElementExtended.getDataElement());
+        if (mapQuestions.containsKey(dataElementExtended.getDataElement().getUid()+dataElementExtended.getProgramUid())) {
+            addParent(dataElementExtended);
+            addQuestionRelations(dataElementExtended);
             addCompositeScores(dataElementExtended);
         }
     }
@@ -274,11 +274,11 @@ public class QuestionBuilder {
     private void addCompositeScores(DataElementExtended dataElementExtended) {
         CompositeScore compositeScore = dataElementExtended.findCompositeScore();
         if (compositeScore != null) {
-            Question appQuestion = mapQuestions.get(dataElementExtended.getDataElement().getUid());
+            Question appQuestion = mapQuestions.get(dataElementExtended.getDataElement().getUid()+dataElementExtended.getProgramUid());
             if (appQuestion != null) {
                 appQuestion.setCompositeScore(compositeScore);
                 appQuestion.save();
-                add(appQuestion);
+                add(appQuestion, dataElementExtended.getProgramUid());
             }
         }
     }
@@ -286,14 +286,15 @@ public class QuestionBuilder {
     /**
      * Save Question id_parent in Question
      *
-     * @param dataElement
+     * @param dataElementExtended
      */
-    private void addParent(DataElement dataElement) {
-        String programUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
+    private void addParent(DataElementExtended dataElementExtended) {
+        String programUid = dataElementExtended.getProgramUid();
+        DataElement dataElement= dataElementExtended.getDataElement();
         String questionRelationType = mapType.get(programUid + dataElement.getUid());
         String questionRelationGroup = mapLevel.get(programUid + dataElement.getUid());
 
-        Question appQuestion = mapQuestions.get(dataElement.getUid());
+        Question appQuestion = mapQuestions.get(dataElement.getUid()+programUid);
 
         if (questionRelationType != null && questionRelationType.equals(DataElementExtended.CHILD)) {
             try {
@@ -304,7 +305,7 @@ public class QuestionBuilder {
                         questionRelation.setOperation(1);
                         questionRelation.setQuestion(appQuestion);
                         boolean isSaved=false;
-                        Question parentQuestion = mapQuestions.get(parentuid);
+                        Question parentQuestion = mapQuestions.get(parentuid+programUid);
                         List<Option> options = parentQuestion.getAnswer().getOptions();
                         for (Option option : options)
                         {
@@ -334,22 +335,23 @@ public class QuestionBuilder {
      * Later get the two childs and create the relation
      * it needs check what Options factors do match, and check it with method getMatchOption() .
      *
-     * @param dataElement
+     * @param dataElementExtended
      */
-    private void addQuestionRelations(DataElement dataElement) {
+    private void addQuestionRelations(DataElementExtended dataElementExtended) {
 
-        String programUid = DataElementExtended.findProgramUIDByDataElementUID(dataElement.getUid());
+        DataElement dataElement=dataElementExtended.getDataElement();
+        String programUid = dataElementExtended.getProgramUid();
         String matchRelationType = mapMatchType.get(programUid + dataElement.getUid());
         String matchRelationGroup = mapMatchLevel.get(programUid + dataElement.getUid());
-        Question appQuestion = mapQuestions.get(dataElement.getUid());
+        Question appQuestion = mapQuestions.get(dataElement.getUid()+programUid);
 
         if (matchRelationType != null && matchRelationType.equals(DataElementExtended.PARENT)) {
             List<String> mapChilds = mapMatchChilds.get(programUid + matchRelationGroup);
             List<Question> children = new ArrayList<>();
-            children.add(mapQuestions.get(mapChilds.get(0)));
-            children.add(mapQuestions.get(mapChilds.get(1)));
+            children.add(mapQuestions.get(mapChilds.get(0)+programUid));
+            children.add(mapQuestions.get(mapChilds.get(1)+programUid));
 
-            if (mapQuestions.get(mapChilds.get(0)) != null && mapQuestions.get(mapChilds.get(1)) != null) {
+            if (mapQuestions.get(mapChilds.get(0)+programUid) != null && mapQuestions.get(mapChilds.get(1)+programUid) != null) {
                 QuestionRelation questionRelation = new QuestionRelation();
                 questionRelation.setOperation(0);
                 questionRelation.setQuestion(appQuestion);

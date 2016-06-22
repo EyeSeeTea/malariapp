@@ -21,7 +21,7 @@
 <resources>
 
     <string name="create_info_ok">Start Assessment</string>
-    <string name="assessment_sent_title_header">Sent Assessment(s)</string>
+    <string name="assessment_sent_title_header">Complete Assessment(s)</string>
     <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
 
 </resources>

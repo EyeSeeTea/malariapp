@@ -54,14 +54,14 @@ public class AutoTabInVisibilityState {
         return !invisible;
     }
 
-    public boolean initVisibility(Question question){
-        boolean hidden = isHidden(question);
+    public boolean initVisibility(Question question, float idSurvey){
+        boolean hidden = isHidden(question, idSurvey);
         elementInvisibility.put(question, hidden);
         return !hidden;
     }
 
-    public boolean initVisibility(QuestionRow questionRow){
-        boolean hidden = isHidden(questionRow);
+    public boolean initVisibility(QuestionRow questionRow, float idSurvey){
+        boolean hidden = isHidden(questionRow, idSurvey);
         elementInvisibility.put(questionRow,hidden);
         for(Question question:questionRow.getQuestions()){
             rowsMap.put(question.getId_question(),questionRow);
@@ -74,8 +74,8 @@ public class AutoTabInVisibilityState {
      * @param question
      * @return
      */
-    public boolean isHidden(Question question) {
-        return question.isHiddenBySurvey(Session.getSurvey());
+    public boolean isHidden(Question question, float idSurvey) {
+        return question.isHiddenBySurvey(idSurvey);
     }
 
     /**
@@ -83,14 +83,14 @@ public class AutoTabInVisibilityState {
      * @param questionRow
      * @return
      */
-    public boolean isHidden(QuestionRow questionRow){
+    public boolean isHidden(QuestionRow questionRow, float idSurvey){
         if(questionRow==null || questionRow.sizeColumns()==0){
             return true;
         }
 
         Question question = questionRow.getFirstQuestion();
 
-        return isHidden(question);
+        return isHidden(question,idSurvey);
     }
 
     public void setInvisible(Object key, Boolean invisible){
@@ -150,33 +150,32 @@ public class AutoTabInVisibilityState {
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
      */
-    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem) {
+    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         Question question = autoTabSelectedItem.getQuestion();
 
         List<Question> children = question.getChildren();
-        Survey survey= Session.getSurvey();
         boolean visible;
 
         for (Question childQuestion : children) {
             Header childHeader = childQuestion.getHeader();
-            visible=!childQuestion.isHiddenBySurvey(survey);
+            visible=!childQuestion.isHiddenBySurvey(idSurvey);
             this.updateVisibility(childQuestion,visible);
 
             //Show child -> Show header, Update scores
             if(visible){
-                Float denum = ScoreRegister.calcDenum(childQuestion);
-                ScoreRegister.addRecord(childQuestion, 0F, denum);
+                Float denum = ScoreRegister.calcDenum(childQuestion, idSurvey);
+                ScoreRegister.addRecord(childQuestion, 0F, denum, idSurvey, module);
                 this.setInvisible(childHeader,false);
                 continue;
             }
 
             //Hide child ...
             //-> Remove value
-            ReadWriteDB.deleteValue(childQuestion);
+            ReadWriteDB.deleteValue(childQuestion, module);
 
             //-> Remove score
-            if (ScoreRegister.getNumDenum(childQuestion) != null) {
-                ScoreRegister.deleteRecord(childQuestion);
+            if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
+                ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
             }
             //-> Check header visibility (no header,done)
             if(childHeader==null){

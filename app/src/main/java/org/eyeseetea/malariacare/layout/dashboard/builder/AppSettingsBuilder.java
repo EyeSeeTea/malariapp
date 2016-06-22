@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
@@ -66,8 +68,16 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDatabaseSettings().getOriginType();
     }
 
+    public static DashboardAdapter getDashboardAdapter(){
+        return getInstance().getSettings().getDashboardSettings().getAdapter();
+    }
+
     public static DashboardOrientation getDashboardOrientation(){
         return getInstance().getSettings().getDashboardSettings().getOrientation();
+    }
+
+    public static DashboardListFilter getDashboardListFilter(){
+        return getInstance().getSettings().getDashboardSettings().getListFilter();
     }
 
     public static boolean isFullHierarchy(){

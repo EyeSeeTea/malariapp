@@ -19,14 +19,10 @@
 
 package org.eyeseetea.malariacare.utils;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -40,19 +36,14 @@ import android.widget.TextView;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.BuildConfig;
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
-import org.eyeseetea.malariacare.network.PullClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -103,11 +94,11 @@ public class AUtils {
         return result;
     }
 
-    public static List preloadTabItems(Tab tab){
+    public static List preloadTabItems(Tab tab, String module){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            items = CompositeScore.listByTabGroup(Session.getSurveyByModule(module).getTabGroup());
 
         else{
 
@@ -275,7 +266,7 @@ public class AUtils {
 
         //set up text title
         TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setText(BuildConfig.FLAVOR.toUpperCase() + "(bb) " + BuildConfig.VERSION_NAME);
         textTile.setGravity(Gravity.RIGHT);
 
         //set up image view
@@ -296,6 +287,18 @@ public class AUtils {
         });
         //now that the dialog is set up, it's time to show it
         dialog.show();
+    }
+
+    public static List<Object> convertTabToArray(Tab tab) {
+        List<Object> result = new ArrayList<Object>();
+
+        for (Header header : tab.getHeaders()) {
+            result.add(header);
+            for (Question question : header.getQuestions())
+                result.add(question);
+
+        }
+        return result;
     }
 
 }

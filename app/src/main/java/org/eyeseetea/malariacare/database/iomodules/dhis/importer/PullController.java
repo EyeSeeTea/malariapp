@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -379,19 +381,25 @@ public class PullController {
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
+        int i=0;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
+                if (++i%50==0)
+                    postProgress(context.getString(R.string.progress_pull_question) + String.format(" %s", i));
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
+                dataElementExtended.setProgramUid(programUid);
                 dataElementExtended.accept(converter);
             }
         }
+        new SaveModelTransaction<>(ProcessModelInfo.withModels(converter.getQuestions())).onExecute();
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
+        postProgress(context.getString(R.string.progress_pull_relationships));
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
@@ -399,6 +407,7 @@ public class PullController {
             for (DataElement dataElement : sortDataElements) {
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                dataElementExtended.setProgramUid(programUid);
                 converter.buildRelations(dataElementExtended);
             }
         }
@@ -454,6 +463,8 @@ public class PullController {
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                    if(event.getEventDate()==null || event.getEventDate().equals(""))
+                        break;
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }

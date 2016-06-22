@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,10 +58,11 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import java.util.Date;
 import java.util.List;
 
+
 public class DashboardActivity extends BaseActivity{
 
-    private final static String TAG = ".DDetailsActivity";
-    private boolean reloadOnResume = true;
+    private final static String TAG=".DDetailsActivity";
+    private boolean reloadOnResume=true;
     DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
@@ -70,7 +72,7 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
-        dashboardActivity = this;
+        dashboardActivity=this;
 
         //XXX to remove?
         initDataIfRequired();
@@ -82,7 +84,7 @@ public class DashboardActivity extends BaseActivity{
         setContentView(dashboardController.getLayout());
 
         //delegate modules initialization
-        dashboardController.onCreate(this, savedInstanceState);
+        dashboardController.onCreate(this,savedInstanceState);
 
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
@@ -123,11 +125,11 @@ public class DashboardActivity extends BaseActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == android.R.id.home) {
+        if(item.getItemId()==android.R.id.home){
             getFragmentManager().popBackStack();
         }
         //Any common option
-        if (item.getItemId() != R.id.action_pull) {
+        if(item.getItemId()!=R.id.action_pull){
             return super.onOptionsItemSelected(item);
         }
 
@@ -135,16 +137,16 @@ public class DashboardActivity extends BaseActivity{
         final List<Survey> unsentSurveys = Survey.getAllUnsentUnplannedSurveys();
 
         //No unsent data -> pull (no confirmation)
-        if (unsentSurveys == null || unsentSurveys.size() == 0) {
+        if(unsentSurveys==null || unsentSurveys.size()==0){
             pullMetadata();
             return true;
         }
 
         final Activity activity = this;
         //check if exist a compulsory question without awnser before push and pull.
-        for (Survey survey : unsentSurveys) {
+        for(Survey survey:unsentSurveys){
             SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
-            if (surveyAnsweredRatio.getTotalCompulsory() > 0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory()) {
+            if (surveyAnsweredRatio.getTotalCompulsory()>0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory() ) {
                 new AlertDialog.Builder(this)
                         .setTitle("Unsent surveys")
                         .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_pulling))
@@ -186,7 +188,7 @@ public class DashboardActivity extends BaseActivity{
         startActivity(progressActivityIntent);
     }
 
-    private void pullMetadata() {
+    private void pullMetadata(){
         PreferencesState.getInstance().clearOrgUnitPreference();
         finishAndGo(ProgressActivity.class);
     }
@@ -203,7 +205,7 @@ public class DashboardActivity extends BaseActivity{
     }
 
     @Override
-    public void onResume() {
+    public void onResume(){
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
@@ -224,8 +226,8 @@ public class DashboardActivity extends BaseActivity{
         reloadDashboard();
     }
 
-    public static void reloadDashboard() {
-        Intent surveysIntent = new Intent(dashboardActivity, SurveyService.class);
+    public static void reloadDashboard(){
+        Intent surveysIntent=new Intent(dashboardActivity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         dashboardActivity.startService(surveysIntent);
     }
@@ -248,9 +250,9 @@ public class DashboardActivity extends BaseActivity{
     /**
      * In case Session doesn't have the user set, here we set it to the first entry of User table
      */
-    private void initUserSessionIfRequired() {
+    private void initUserSessionIfRequired(){
         // already a user in session -> done
-        if (Session.getUser() != null) {
+        if(Session.getUser()!=null){
             return;
         }
 
@@ -263,38 +265,34 @@ public class DashboardActivity extends BaseActivity{
     /**
      * Logging out from sdk is an async method.
      * Thus it is required a callback to finish logout gracefully.
-     * <p/>
-     * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
      *
+     * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
      * @param uiEvent
      */
     @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent) {
+    public void onLogoutFinished(UiEvent uiEvent){
         super.onLogoutFinished(uiEvent);
     }
 
     /**
      * Handler that starts or edits a given survey
-     *
      * @param survey
      */
-    public void onSurveySelected(Survey survey) {
+    public void onSurveySelected(Survey survey){
         dashboardController.onSurveySelected(survey);
     }
 
     /**
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
-     *
      * @param survey
      */
-    public void onMarkAsCompleted(Survey survey) {
+    public void onMarkAsCompleted(Survey survey){
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
-     *
      * @param survey
      */
     public void onFeedbackSelected(Survey survey) {
@@ -303,30 +301,28 @@ public class DashboardActivity extends BaseActivity{
 
     /**
      * Moving into createSurvey fragment
-     *
      * @param view
      */
-    public void onNewSurvey(View view) {
+    public void onNewSurvey(View view){
         dashboardController.onNewSurvey();
     }
-
     /**
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer) {
+    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer, String module){
         //Looking for that survey in local
         Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, lastEventInServer);
         //Survey in server BUT not local
-        if (survey == null) {
-            survey = SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup);
+        if(survey==null){
+            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
         }
-        if (lastEventInServer != null) {
+        if(lastEventInServer!=null){
             survey.setEventUid(lastEventInServer.getEvent());
             EventExtended lastEventExtended = new EventExtended(lastEventInServer);
             survey.setCreationDate(lastEventExtended.getCreationDate());
             survey.setCompletionDate(lastEventExtended.getEventDate());
-        } else {
+        }else{
             //Mark the survey as a modify attempt for pushing accordingly
             survey.setEventUid(PullClient.NO_EVENT_FOUND);
         }
@@ -342,8 +338,8 @@ public class DashboardActivity extends BaseActivity{
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit, final TabGroup tabGroup) {
-        createNewSurvey(orgUnit, tabGroup);
+    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
+        createNewSurvey(orgUnit,tabGroup);
     }
 
     /**

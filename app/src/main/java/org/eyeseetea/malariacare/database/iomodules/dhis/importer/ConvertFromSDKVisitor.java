@@ -63,6 +63,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,14 +79,24 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
+    List<Question> questions;
 
     public ConvertFromSDKVisitor(){
         appMapObjects = new HashMap();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
+        questions = new ArrayList<>();
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
     /**
@@ -263,20 +274,21 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         Object questionOrCompositeScore;
-        if(appMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
-            return;
         if(sdkDataElementExtended.isCompositeScore()){
             questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
         }else if(sdkDataElementExtended.isQuestion()){
             questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
             //Question type is annotated in 'answer' from an attribute of the question
         }else if (sdkDataElementExtended.isControlDataElement()) {
+            //The controlDataelements should be unique and only needs be saved one time
+            if(appMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()+sdkDataElementExtended.getProgramUid()))
+                return;
             questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
         } else {
             Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().toString());
             return;
         }
-        appMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
+        appMapObjects.put(sdkDataElementExtended.getDataElement().getUid()+sdkDataElementExtended.getProgramUid(), questionOrCompositeScore);
         //Both questions and scores are annotated
     }
 
@@ -313,6 +325,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Visit its values
         for(DataValue dataValue:event.getDataValues()){
             DataValueExtended dataValueExtended=new DataValueExtended(dataValue);
+            dataValueExtended.setProgramUid(event.getProgramId());
             dataValueExtended.accept(this);
         }
         //Once all the values are processed save common data across created surveys
@@ -328,8 +341,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //General common data (mainscore, createdby, createdon, uploadedon..)
 
         //-> mainScore
-        if(appMapObjects.get(dataValue.getDataElement()) instanceof CompositeScore){
-            CompositeScore compositeScore = (CompositeScore)appMapObjects.get(dataValue.getDataElement());
+        if(appMapObjects.get(dataValue.getDataElement()+sdkDataValueExtended.getProgramUid()) instanceof CompositeScore){
+            CompositeScore compositeScore = (CompositeScore)appMapObjects.get(dataValue.getDataElement()+sdkDataValueExtended.getProgramUid());
             //Only mainScores are annotated
             eventToSurveyBuilder.setMainScore(compositeScore,dataValue);
             Log.i(TAG,String.format("Event %s with mainScore %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
@@ -361,7 +374,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Datavalue is a value from a question
         org.eyeseetea.malariacare.database.model.Option option = null;
         try{
-            Question question=(Question)appMapObjects.get(dataValue.getDataElement());
+            Question question=(Question)appMapObjects.get(dataValue.getDataElement()+sdkDataValueExtended.getProgramUid());
             value.setQuestion(question);
             option=sdkDataValueExtended.findOptionByQuestion(question);
             value.setOption(option);
@@ -411,13 +424,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
-        ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
+        ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementExtended(dataElementExtended);
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
         appQuestion.setHeader(questionBuilder.findOrSaveHeader(dataElementExtended,appMapObjects));
         questionBuilder.registerParentChildRelations(dataElementExtended);
-        appQuestion.save();
         questionBuilder.attachMedia(dataElementExtended, appQuestion);
-        questionBuilder.add(appQuestion);
+        questions.add(appQuestion);
+        questionBuilder.add(appQuestion, dataElementExtended.getProgramUid());
         return appQuestion;
     }
 
@@ -465,7 +478,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Parent score and Order can only be set once every score in saved
         compositeScore.save();
 
-        compositeScoreBuilder.add(compositeScore);
+        compositeScoreBuilder.add(compositeScore, sdkDataElementExtended.getProgramUid());
 
         return compositeScore;
     }

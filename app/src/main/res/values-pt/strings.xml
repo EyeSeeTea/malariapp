@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- # general -->
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="cancel">Cancelar</string>
@@ -13,7 +12,6 @@
     <string name="poor">Insuficiente</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
-    <!-- settings -->
     <string name="settings_menu_about">Acerca de</string>
     <string name="settings_menu_legal">Legal</string>
     <string name="settings_menu_copyright">Copyright</string>
@@ -23,14 +21,13 @@
     <string name="settings_menu_licence">Licença</string>
     <string name="settings_menu_logout">Logout</string>
 
-    <!-- # dialogs -->
     <string name="go_to_feedback">Ir para comentários</string>
     <string name="dialog_title_delete_survey">Apagar inquérito</string>
-    <string name="dialog_info_delete_survey">Tem a certeza que quer apagar completamente la pesquisa %s?</string>
+    <string name="dialog_info_delete_survey">Tem certeza de que deseja excluir esta avaliação do seu tablet? %s \nnota: dados permanecerão salvos em DHIS</string>
     <string name="dialog_title_missing_selection">Selecção em falta</string>
     <string name="dialog_content_missing_selection">Por favor seleccione Unid. Org. e Inquérito</string>
     <string name="dialog_title_existing_survey">Inquérito existente</string>
-    <string name="dialog_content_existing_survey">Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito</string>
+    <string name="dialog_content_existing_survey">Já existe uma forma não enviada no sistema para que o Módulo de Saúde.</string>
     <string name="dialog_content_logout_confirmation">Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?</string>
     <string name="dialog_button_preview_feedback">Ver feedback</string>
     <string name="dialog_question_complete_survey">Todas as questões obrigatórias foram concluídos. Você quer fazer o levantamento mais abrangente?</string>
@@ -40,22 +37,19 @@
     <string name="dialog_incompleted_compulsory_survey">Este inquérito não podem ser enviados ainda. Por favor, responda pelo menos todas as questões obrigatórias</string>
     <string name="dialog_incompleted_compulsory_pulling">Metadados de atualização exigem excluir ou completar os seus dados não enviados. Por favor, responda pelo menos todas as questões obrigatórias</string>
     <string name="dialog_sent_survey_on_refresh_metadata">Metadados de atualização irá apagar seus dados não enviados. Você tem %s pesquisas não enviadas. Você empurrá-los antes de atualização?</string>  
-    <!-- Toast -->
+
     <string name="cancellingPull">O processo é interrompido em poucos segundos</string>
 
-
-    <!-- dashboard -->
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Pronto para carregar</string>
     <string name="dashboard_info_sent">Enviei</string>
     <string name="dashboard_title_total_assessments">"Número total de avaliações realizadas"</string>
+    <string name="dialog_info_ask_for_completion">"Tem certeza de que deseja concluir %s? Você não pode desfazer esta ação"</string>
 
-    <!-- create -->
     <string name="create_info_ok">Criar</string>
     <string name="create_info_organization_unit">Unidade da Organização – Unid. Org.</string>
     <string name="create_info_survey">Inquérito</string>
 
-    <!-- assessment -->
     <string name="assessment_title_facility_date">Unidade de Saúde/Inquérito</string>
     <string name="assessment_title_state">% completo</string>
     <string name="assessment_sent_date">Data de conclusao</string>
@@ -63,7 +57,6 @@
     <string name="assessment_title_header">Avaliação activa</string>
     <string name="assessment_sent_title_header">Avaliação anterior(es)</string>
 
-    <!-- feedback -->
     <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
     <string name="feedback_return">Voltar para todas as avaliações</string>
     <string name="quality_of_care">Qualidade da Assistência (QoC) Pontuação:</string>
@@ -72,18 +65,14 @@
     <string name="feedback_info_not_answered">"Não respondeu"</string>
     <string name="feedback_info_no_feedback">Sem feedback</string>
 
-    <!-- survey -->
     <string name="survey_title_exit">"Really Exit?"</string>
     <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
 
-    <!--widget-->
     <string name="widget_info_empty_statement">Problema</string>
 
-    <!-- custom -->
     <string name="custom_title_tallies">Folhas de controlo: Somar e dar entrada dos totais dos seguintes indicadores dos registos na coluna A. Na coluna B indique os números totais da folha de relatório mensal</string>
     <string name="custom_info_tallies">Folhas de Controlo do mês de</string>
 
-    <!-- adherence -->
     <string name="adherence_info_switchquestion">Existem registos farmacêuticos para TCA dispensada?</string>
     <string name="adherence_title_explanation">Avaliação do Provedor de adesão aos Resultados de teste de diagnóstico da malária</string>
     <string name="adherence_title_explanation_content">Passo 1: Anote os Nºs. de ID de 20 pacientes receitados com ACT, encontrados no Registo de Farmácia ou Registos Clínicos\nPasso 2: Localize a Identidade do paciente de 1) nos Registos Clínicos ou de Laboratório, e anote os resultados dos seus testes na coluna apropriada</string>
@@ -103,20 +92,17 @@
     <string name="adherence_info_microscopy_positive">Microscopia positiva</string>
     <string name="adherence_info_microscopy_negative">Microscopia negativa</string>
 
-    <!-- iqa eqa -->
     <string name="iqatab_info_supervisor">Supervisor</string>
     <string name="iqatab_info_parasites">Parasitas/mL</string>
     <string name="iqatab_info_species">Espécies</string>
     <string name="iqatab_info_labstaff">Pessoal de Laboratório</string>
 
-    <!-- reporting -->
     <string name="reporting_info_reporting">Relatórios</string>
     <string name="reporting_info_results">Resultados</string>
     <string name="reporting_info_register">Registo</string>
     <string name="reporting_info_monthly">Relatório/mensal</string>
     <string name="iqatab_info_note">Nota : Revisão de Lâminas deve ser realizada na unidade de saúde durante OTSS na presença do pessoal do laboratório facilidade. As lâminas não deve ser removido a partir da instalação para este propósito.</string>
 
-    <!-- score -->
     <string name="score_title_clinical_fever">Avaliação clínica/febre</string>
     <string name="score_title_rdt">TDR</string>
     <string name="score_title_avg">AVG Grupos de Doentes de Ambulatório (GDA)</string>
@@ -129,10 +115,8 @@
     <string name="score_info_case2">Caso 2</string>
     <string name="score_info_case3">Caso 3</string>
 
-    <!-- composite score -->
     <string name="compscore_title_score_percentage">Ponto (%)</string>
 
-    <!-- settings -->
     <string name="title_activity_settings">Definições</string>
     <string name="settings_checkbox_show_num_dems">Mostrar numerador/denominador</string>
     <string name="settings_checkbox_description_show_num_dems">Quando activadas, as questões do inquérito mostram os seus numeradores e denominadores, usados para calcular resultados do inquérito</string>
@@ -188,6 +172,8 @@
     <string name="progress_pull_preparing_orgs">Carregando organizações ...</string>
     <string name="progress_pull_questions">Carregando perguntas (isso pode levar alguns minutos) ...</string>
     <string name="progress_pull_surveys">Carregando inquéritos ...</string>
+    <string name="progress_pull_question">Construindo pergunta ...</string>
+    <string name="progress_pull_relationships">Construindo causa relações ...</string>
     <string name="progress_pull_done">Feito</string>
     <string name="progress_push_posting_survey">Empurrando dados do inquérito ao servidor ...</string>
     <string name="progress_push_preparing_survey">Preparando pesquisa para empurrar ...</string>
@@ -216,7 +202,6 @@
     <string name="improve">Melhorar</string>
     <string name="monitor">Monitor</string>
 
-    <!-- filters text -->
     <string name="filter_all_org_units">todas as unidades de organização</string>
     <string name="filter_all_org_assessments">todas as avaliações</string>
     <string name="dialog_content_dhis_preference_login">Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?</string>
@@ -224,7 +209,6 @@
     <string name="feedback_info_conflict">Conflito</string>
     <string name="dialog_deleting_children">Você está prestes a excluir a resposta para as perguntas que depende este. Você realmente deseja continuar?</string>
 
-    <!-- last commit info -->
     <string name="lastcommit">Versão: %s</string>
     <string name="unavailable">indisponível</string>
     <string name="lastcommit_unavailable"><![CDATA[
@@ -241,13 +225,11 @@
         <p>3. Execute "git checkout".</p> ]]>
     </string>
 
-    <!-- Create or patch -->
     <string name="create">Crio</string>
     <string name="modify">Modificar</string>
     <string name="create_or_modify">Você quer criar uma nova avaliação ou modificar a última avaliação, datas[%s]?</string>
     <string name="loading_last_surveys">Carregar a última pesquisa...</string>
 
-    <!-- Last survey -->
     <string name="no_previous_event_info">No evento anterior disponíveis</string>
     <string name="ask_account_permission">Este aplicativo precisa acessar sua conta do Google (via Contactos).</string>
     <string name="google_play_required">Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo.</string>
@@ -255,5 +237,17 @@
     <string name="feedback_media_link" >"Exibição de vídeo"</string>
     <string name="feedback_media">Ver feedback de vídeo</string>
 
+    <string name="number_0">0</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="number_6">6</string>
+    <string name="number_7">7</string>
+    <string name="number_8">8</string>
+    <string name="number_9">9</string>
+    <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 
+    <string name="clear">Limpar</string>
 </resources>
