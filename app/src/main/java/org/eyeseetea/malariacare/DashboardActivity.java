@@ -330,7 +330,7 @@ public class DashboardActivity extends BaseActivity{
         //Upgrade the uploaded date
         survey.setUploadDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey, module);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }
@@ -347,7 +347,6 @@ public class DashboardActivity extends BaseActivity{
      */
     public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
         Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit, tabGroup);
-        Session.setSurvey(survey);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }
