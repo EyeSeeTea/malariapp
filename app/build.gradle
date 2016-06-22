@@ -112,6 +112,7 @@ dependencies {
     compile "com.google.android.gms:play-services:$rootProject.gmsPlayVersion"
     compile "com.google.guava:guava:$rootProject.guavaVersion"
     compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
+    compile "com.googlecode.libphonenumber:libphonenumber:$rootProject.libphonenumberVersion"
 
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:$rootProject.gmsPlayVersion"

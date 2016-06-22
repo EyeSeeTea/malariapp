@@ -66,45 +66,50 @@ public class QuestionBuilder {
     /**
      * Mapping all the questions
      */
-    static Map<String, Question> mapQuestions;
+    Map<String, Question> mapQuestions;
 
     /**
      * Mapping all the question parents
      */
-    static Map<String, String> mapParent;
+    Map<String, String> mapParent;
     /**
      * Mapping all the question type(child/parent)
      */
-    static Map<String, String> mapType;
+    Map<String, String> mapType;
     /**
      * Mapping all the question level(it is needed for know who are the parent)
      */
-    static Map<String, String> mapLevel;
+    Map<String, String> mapLevel;
     /**
      * Mapping all the Match question parents
      */
-    static Map<String, String> mapMatchType;
+    Map<String, String> mapMatchType;
     /**
      * Mapping all the Match question type(child/parent)
      */
-    static Map<String, String> mapMatchLevel;
+    Map<String, String> mapMatchLevel;
     /**
      * Mapping all the Match question level(it is needed for know who are the parent)
      */
-    static Map<String, String> mapMatchParent;
+    Map<String, String> mapMatchParent;
     /**
      * Mapping all the Match question level(it is needed for know who are the parent)
      */
-    static Map<String, List<String>> mapMatchChilds;
+    Map<String, List<String>> mapMatchChilds;
     /**
      * Mapping headers(it is needed for not duplicate data)
      */
-    static Map<String, Header> mapHeader;
+    Map<String, Header> mapHeader;
 
     /**
      * Mapping headers(it is needed for not duplicate data)
      */
-    static Map<String, TabGroup> mapTabGroup;
+    Map<String, TabGroup> mapTabGroup;
+
+    /**
+     * Contains all media (required for batch save)
+     */
+    List<Media> listMedia;
     /**
      * It is needed in the header order.
      */
@@ -121,6 +126,11 @@ public class QuestionBuilder {
         mapMatchParent = new HashMap<>();
         mapMatchChilds = new HashMap<>();
         mapMatchType = new HashMap<>();
+        listMedia = new ArrayList<>();
+    }
+
+    public List<Media> getListMedia(){
+        return this.listMedia;
     }
 
     /**
@@ -208,7 +218,8 @@ public class QuestionBuilder {
                 media.setMediaType(mediaType);
                 media.setResourceUrl(mediaReference);
                 media.setQuestion(question);
-                media.save();
+                //media is saved in batch once questions are saved
+                listMedia.add(media);
             }
         }
     }

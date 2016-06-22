@@ -148,6 +148,19 @@ public class Media extends BaseModel{
     }
 
     /**
+     * Since questions are saved in batch the referenced question has no id_question when the setter is called.
+     * This method allows the media to refresh de id_question according to the question referenced once it is persisted.
+     */
+    public void updateQuestion(){
+        //No question nothing to update
+        if(this.question==null){
+            return;
+        }
+
+        this.id_question = question.getId_question();
+    }
+
+    /**
      * Returns a media that holds a reference to the same resource with an already downloaded copy of the file.
      * @return
      */

@@ -395,7 +395,9 @@ public class PullController {
                 dataElementExtended.accept(converter);
             }
         }
-        new SaveModelTransaction<>(ProcessModelInfo.withModels(converter.getQuestions())).onExecute();
+
+        //Saves questions and media in batch mode
+        converter.saveBatch();
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
