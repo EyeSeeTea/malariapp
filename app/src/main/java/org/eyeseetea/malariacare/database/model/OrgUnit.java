@@ -169,6 +169,14 @@ public class OrgUnit extends BaseModel {
         return children;
     }
 
+    public List<OrgUnit> getChildrenOrderedByName(){
+        if(this.children==null){
+            this.children = new Select().from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.ID_PARENT).eq(this.getId_org_unit())).orderBy(OrgUnit$Table.NAME).queryList();
+        }
+        return children;
+    }
+
     public List<Survey> getSurveys(){
         if(this.surveys==null){
             this.surveys = new Select().from(Survey.class)
