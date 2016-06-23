@@ -233,7 +233,7 @@ public class OrgUnit extends BaseModel {
      * @return
      */
     public static List<OrgUnit> list(){
-        return new Select().all().from(OrgUnit.class).orderBy(true, OrgUnit$Table.ID_ORG_UNIT_LEVEL).queryList();
+        return new Select().all().from(OrgUnit.class).orderBy(true, OrgUnit$Table.ID_ORG_UNIT_LEVEL, OrgUnit$Table.NAME).queryList();
     }
 
     public static OrgUnit getOrgUnit(String uid) {
