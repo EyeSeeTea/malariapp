@@ -739,6 +739,16 @@ public class AutoTabAdapter extends ATabAdapter {
                 }
             });
             datePickerDialog.show();
+            //Hide the week numbers on the datepickerdialog
+            try {
+                if(datePickerDialog.getDatePicker().getCalendarView()!=null)
+                    datePickerDialog.getDatePicker().getCalendarView().setShowWeekNumber(false);
+                //In API23+ the showweeknumber is deprecated and week numbers is not shown in the phone but the application crash
+                //https://developer.android.com/reference/android/widget/CalendarView.html#setShowWeekNumber(boolean)
+            }catch (UnsupportedOperationException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
