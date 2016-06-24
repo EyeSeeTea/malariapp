@@ -22,7 +22,6 @@
     <string name="app_name" translatable="false">QA App</string>
     <string name="developers" translatable="false">EyeSeeTea LTD</string>
     <string name="empty_string" translatable="false"/>
-    <string name="ok" translatable="false">Ok</string>
     <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
 
     <string name="number_zero" translatable="false">0</string>

@@ -252,4 +252,45 @@
     <string name="error_message_push">El evento con UID: %s. fue subido sin fecha. Por favor, póngase en contacto con el administrador. </string>
 
     <string name="clear">Limpiar</string>
+    <string name="dhis_url_error">Error en URL DHIS</string>
+    <string name="dhis_url_error_bad_credentials">Este programa no está permitido para el servidor dado</string>
+    <string name="dhis_url_error_bad_version">Servidor DHIS inválido (sólo 2.20, 2.21 y 2.22)</string>
+    <string name="dialog_error_push_no_location">Ubicación no disponible</string>
+    <string name="dialog_error_push_no_uid">UID no encontrado en el servidor</string>
+    <string name="dialog_info_push_ok">La encuesta ha sido enviada al servidor</string>
+    <string name="dialog_title_delete_surveys">¿Está seguro de querer suprimir la encuesta?</string>
+    <string name="dialog_title_error">Hubo errores</string>
+    <string name="dialog_title_push">Los datos muestran un</string>
+    <string name="exception_org_unit_banned">Los servicios han sido cerrados. Contacte con Phil SI No. 123456789</string>
+    <string name="exception_org_unit_not_valid">Código de servicio incorrecto. Contacte con Phil SI No. 123456789</string>
+    <string name="monitor_label">Por favor, seleccione una:</string>
+    <string name="monitor_label_option_days">Hace 6 días</string>
+    <string name="monitor_label_option_months">6 meses</string>
+    <string name="monitor_label_option_weeks">Hace 6 semanas</string>
+    <string name="monitor_row_title_asmq">Farmacéutica sueca Meng Florida</string>
+    <string name="monitor_row_title_dhapip1">Fármaco para niños (7KG-23KG)</string>
+    <string name="monitor_row_title_dhapip2">Fármaco para adultos (24KG-35KG)</string>
+    <string name="monitor_row_title_dhapip3">Fármaco para adultos (36KG-74KG)</string>
+    <string name="monitor_row_title_negative">Negativo</string>
+    <string name="monitor_row_title_not_tested">No comprobado</string>
+    <string name="monitor_row_title_period">Duración</string>
+    <string name="monitor_row_title_positive">Positivo</string>
+    <string name="monitor_row_title_positivity_rate">Positivo</string>
+    <string name="monitor_row_title_rdts">Tests RDT</string>
+    <string name="monitor_row_title_referral">Referido</string>
+    <string name="monitor_row_title_suspected">Caso sospechoso</string>
+    <string name="monitor_row_title_week">Semana</string>
+    <string name="monitor_table_title_stock">Remanente de uso</string>
+    <string name="monitor_table_title_suspected">Casos positivos y casos sospechosos</string>
+    <string name="pf">Gizmo Plaza sodium Arafat Palestino Al-ROM (Pf)</string>
+    <string name="pfpv">Mezclados (mixed)</string>
+    <string name="pref_server">Servidor</string>
+    <string name="pref_visual">Visual</string>
+    <string name="pv">Gizmo Plaza sodium Viva (PV)</string>
+    <string name="settings_menu_monitoring">Monitores</string>
+    <string name="survey_info_exit_delete">La encuesta está en curso y será anulada</string>
+    <string name="ok" translatable="false">Ok</string>
+    <string name="assessment_title_info">Noticias</string>
+    <string name="assessment_title_rdt">..</string>
+    <string name="create_info_zone">zona</string>
 </resources>
