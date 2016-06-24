@@ -32,13 +32,14 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         multiDexEnabled true
-        /*dexOptions {
-            jumboMode = true
-            incremental true
-            javaMaxHeapSize "4g"
-        }*/
+        dexOptions {
+            //jumboMode = true
+            //incremental true
+            javaMaxHeapSize "6g"
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
+        useLibrary  'org.apache.http.legacy'
     }
     buildTypes {
         release {
@@ -66,20 +67,27 @@ android {
     }
     productFlavors {
         eds {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "EDS 2.0.0"
+            applicationId "org.eyeseetea.malariacare.eds_bb"
+            versionName "2.0.2"
             minSdkVersion 15
-            targetSdkVersion 21
+            targetSdkVersion 23
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqispull"
-            versionName "HNQIS 1.0.0"
+            applicationId "org.eyeseetea.malariacare.hnqis_bb"
+            versionName "1.1.1"
             minSdkVersion 15
-            targetSdkVersion 21
+            targetSdkVersion 23
+        }
+        surveillance {
+            applicationId "org.eyeseetea.malariacare.surveillance_bb"
+            versionName "5.0.0"
+            minSdkVersion 15
+            targetSdkVersion 23
         }
     }
     lintOptions {
         disable 'RtlSymmetry', 'RtlHardcoded'
+        checkReleaseBuilds false
     }
 
 }
