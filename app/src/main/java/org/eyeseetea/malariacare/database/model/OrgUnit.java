@@ -169,6 +169,14 @@ public class OrgUnit extends BaseModel {
         return children;
     }
 
+    public List<OrgUnit> getChildrenOrderedByName(){
+        if(this.children==null){
+            this.children = new Select().from(OrgUnit.class)
+                    .where(Condition.column(OrgUnit$Table.ID_PARENT).eq(this.getId_org_unit())).orderBy(OrgUnit$Table.NAME).queryList();
+        }
+        return children;
+    }
+
     public List<Survey> getSurveys(){
         if(this.surveys==null){
             this.surveys = new Select().from(Survey.class)
@@ -233,7 +241,7 @@ public class OrgUnit extends BaseModel {
      * @return
      */
     public static List<OrgUnit> list(){
-        return new Select().all().from(OrgUnit.class).orderBy(true, OrgUnit$Table.ID_ORG_UNIT_LEVEL).queryList();
+        return new Select().all().from(OrgUnit.class).orderBy(true, OrgUnit$Table.ID_ORG_UNIT_LEVEL, OrgUnit$Table.NAME).queryList();
     }
 
     public static OrgUnit getOrgUnit(String uid) {

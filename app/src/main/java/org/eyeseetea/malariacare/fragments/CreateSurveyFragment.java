@@ -375,7 +375,7 @@ public class CreateSurveyFragment extends Fragment {
 
 
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
-            List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
+            List<OrgUnit> orgUnitList = selectedOrgUnit.getChildrenOrderedByName();
 
             orgUnitHierarchy.addOrgUnit(selectedOrgUnit);
             if(orgUnitHierarchy.getLastSelected()!=null)
