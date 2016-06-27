@@ -45,9 +45,18 @@ public class Program extends BaseModel{
     String uid;
     @Column
     String name;
+    /**
+     * ProgramStage UID (require to build events with programStage uid (previously tabgroup uid)
+     */
+    @Column
+    String programStage;
 
     /**
-     * List of tabgroups for this program
+     * List of tabs for this program
+     */
+    List<Tab> tabs;
+    /**
+     * TODO Remove List of tabgroups for this program
      */
     List<TabGroup> tabGroups;
 
@@ -92,6 +101,24 @@ public class Program extends BaseModel{
         this.name = name;
     }
 
+    public String getProgramStage(){
+        return programStage;
+    }
+
+    public void setProgramStage(String programStage){
+        this.programStage=programStage;
+    }
+
+    public List<Tab> getTabs(){
+        if(tabs==null){
+            this.tabs = new Select().from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_program()))
+                    .queryList();
+        }
+        return this.tabs;
+    }
+
+    //TODO Remove
     public List<TabGroup> getTabGroups(){
         if(tabGroups==null){
             this.tabGroups = new Select().from(TabGroup.class)
@@ -101,6 +128,7 @@ public class Program extends BaseModel{
         return this.tabGroups;
     }
 
+    //TODO Remove
     /**
      * Returns the first tabgroup (most of cases thats ok)
      * @return

@@ -44,6 +44,16 @@ public class Tab extends BaseModel {
     Integer order_pos;
     @Column
     Integer type;
+
+    @Column
+    Long id_program;
+
+    /**
+     * Reference to parent program (loaded lazily)
+     */
+    Program program;
+
+    //TODO Remove
     @Column
     Long id_tab_group;
 
@@ -60,6 +70,14 @@ public class Tab extends BaseModel {
     public Tab() {
     }
 
+    public Tab(String name, Integer order_pos, Integer type, Program program) {
+        this.name = name;
+        this.order_pos = order_pos;
+        this.type = type;
+        setProgram(program);
+    }
+
+    //TODO Remove
     public Tab(String name, Integer order_pos, Integer type, TabGroup tabGroup) {
         this.name = name;
         this.order_pos = order_pos;
@@ -99,6 +117,29 @@ public class Tab extends BaseModel {
         this.type = type;
     }
 
+    public Program getProgram() {
+        if(program==null){
+            if (id_program== null) return null;
+
+            program= new Select()
+                    .from(Program.class)
+                    .where(Condition.column(Program$Table.ID_PROGRAM)
+                            .is(id_program)).querySingle();
+        }
+        return program;
+    }
+
+    public void setProgram(Long id_program){
+        this.id_program=id_program;
+        this.program=null;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+        this.id_program = (program!=null)?program.getId_program():null;
+    }
+
+    //TODO Remove
     public TabGroup getTabGroup() {
         if(tabGroup==null){
             if (id_tab_group == null) return null;
@@ -111,11 +152,13 @@ public class Tab extends BaseModel {
         return tabGroup;
     }
 
+    //TODO Remove
     public void setTabGroup(Long id_tab_group){
         this.id_tab_group=id_tab_group;
         this.tabGroup=null;
     }
 
+    //TODO Remove
     public void setTabGroup(TabGroup tabGroup) {
         this.tabGroup = tabGroup;
         this.id_tab_group = (tabGroup!=null)?tabGroup.getId_tab_group():null;
@@ -135,7 +178,7 @@ public class Tab extends BaseModel {
      */
     public static List<Tab> getTabsBySession(String module){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(Session.getSurveyByModule(module).getTabGroup().getId_tab_group()))
+                .where(Condition.column(Tab$Table.ID_PROGRAM).eq(Session.getSurveyByModule(module).getProgram().getId_program()))
                 .orderBy(Tab$Table.ORDER_POS).queryList();
     }
 
@@ -193,7 +236,7 @@ public class Tab extends BaseModel {
         if (order_pos != null ? !order_pos.equals(tab.order_pos) : tab.order_pos != null)
             return false;
         if (type != null ? !type.equals(tab.type) : tab.type != null) return false;
-        return !(id_tab_group != null ? !id_tab_group.equals(tab.id_tab_group) : tab.id_tab_group != null);
+        return !(id_program != null ? !id_program.equals(tab.id_program) : tab.id_program!= null);
 
     }
 
@@ -203,7 +246,7 @@ public class Tab extends BaseModel {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (id_tab_group != null ? id_tab_group.hashCode() : 0);
+        result = 31 * result + (id_program != null ? id_program.hashCode() : 0);
         return result;
     }
 
@@ -215,7 +258,7 @@ public class Tab extends BaseModel {
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
                 ", type=" + type +
-                ", id_tab_group=" + id_tab_group +
+                ", id_program=" + id_program +
                 '}';
     }
 

@@ -45,7 +45,6 @@ public class PopulateDB {
     public static final String TAG=".PopulateDB";
 
     public static final String PROGRAMS_CSV = "Programs.csv";
-    public static final String TAB_GROUPS_CSV = "TabGroups.csv";
     public static final String TABS_CSV = "Tabs.csv";
     public static final String HEADERS_CSV = "Headers.csv";
     public static final String ANSWERS_CSV = "Answers.csv";
@@ -62,7 +61,6 @@ public class PopulateDB {
 
 
     static Map<Integer, Program> programs;
-    static Map<Integer, TabGroup> tabGroups;
     static Map<Integer, Tab> tabs;
     static Map<Integer, Header> headers;
     static Map<Integer, Question> questions;
@@ -87,7 +85,7 @@ public class PopulateDB {
         //Clear database
         wipeDatabase();
 
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV, ORG_UNIT_PROGRAM_RELATIONS);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV, ORG_UNIT_PROGRAM_RELATIONS);
 
         CSVReader reader;
         for (String table : tables2populate) {
@@ -102,17 +100,11 @@ public class PopulateDB {
                         program.setName(line[2]);
                         saveItem(programs, program, Integer.valueOf(line[0]));
                         break;
-                    case TAB_GROUPS_CSV:
-                        TabGroup tabGroup = new TabGroup();
-                        tabGroup.setName(line[1]);
-                        tabGroup.setProgram(programs.get(Integer.valueOf(line[2])));
-                        saveItem(tabGroups, tabGroup, Integer.valueOf(line[0]));
-                        break;
                     case TABS_CSV:
                         Tab tab = new Tab();
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
-                        tab.setTabGroup(tabGroups.get(Integer.valueOf(line[3])));
+                        tab.setProgram(programs.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
                         saveItem(tabs, tab, Integer.valueOf(line[0]));
                         break;
@@ -127,7 +119,6 @@ public class PopulateDB {
                     case ANSWERS_CSV:
                         Answer answer = new Answer();
                         answer.setName(line[1]);
-//                        answer.setOutput(Integer.valueOf(line[2]));
                         saveItem(answers, answer, Integer.valueOf(line[0]));
                         break;
                     case OPTION_ATTRIBUTES_CSV:
@@ -252,7 +243,6 @@ public class PopulateDB {
                 Answer.class,
                 Header.class,
                 Tab.class,
-                TabGroup.class,
                 Program.class,
                 ServerMetadata.class
         );
@@ -277,7 +267,6 @@ public class PopulateDB {
 
     protected static void initMaps(){
         programs = new LinkedHashMap<>();
-        tabGroups = new LinkedHashMap<>();
         tabs = new LinkedHashMap<>();
         headers = new LinkedHashMap<>();
         questions = new LinkedHashMap<>();
