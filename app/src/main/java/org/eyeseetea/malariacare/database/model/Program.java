@@ -19,18 +19,14 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +51,6 @@ public class Program extends BaseModel{
      * List of tabs for this program
      */
     List<Tab> tabs;
-    /**
-     * TODO Remove List of tabgroups for this program
-     */
-    List<TabGroup> tabGroups;
 
     /**
      * List of orgUnit authorized for this program
@@ -116,30 +108,6 @@ public class Program extends BaseModel{
                     .queryList();
         }
         return this.tabs;
-    }
-
-    //TODO Remove
-    public List<TabGroup> getTabGroups(){
-        if(tabGroups==null){
-            this.tabGroups = new Select().from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.ID_PROGRAM).eq(this.getId_program()))
-                    .queryList();
-        }
-        return this.tabGroups;
-    }
-
-    //TODO Remove
-    /**
-     * Returns the first tabgroup (most of cases thats ok)
-     * @return
-     */
-    public TabGroup getTabGroup(){
-        List<TabGroup> tg=getTabGroups();
-        if(tg==null || tg.size()==0){
-            return null;
-        }
-
-        return tg.get(0);
     }
 
     public static List<Program> getAllPrograms(){

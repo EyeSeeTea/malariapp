@@ -94,10 +94,10 @@ public class CompositeScoreBuilder {
      */
     public void add(CompositeScore compositeScore, String programUid){
 
-        //Find the right 'tabgroup' to group scores by program
+        //Find the right 'programStage' to group scores by program
         String programStageUID=findProgramStageByDataElementUID(compositeScore.getUid(),programUid);
         if(programStageUID==null){
-            Log.e(TAG,String.format("Cannot find tabgroup for composite score: %s",compositeScore.getLabel()));
+            Log.e(TAG,String.format("Cannot find programStage for composite score: %s",compositeScore.getLabel()));
             return;
         }
 
@@ -108,7 +108,7 @@ public class CompositeScoreBuilder {
             mapCompositeScores.put(programStageUID, compositeScoresXProgram);
         }
 
-        //Annotate the composite score in its proper map (x tabgroup|program)
+        //Annotate the composite score in its proper map (x program)
         compositeScoresXProgram.put(compositeScore.getHierarchical_code(), compositeScore);
     }
 
@@ -215,7 +215,7 @@ public class CompositeScoreBuilder {
      * @return
      */
     private static String findProgramStageByDataElementUID(String dataElementUID, String progamUid){
-        //Find the right 'tabgroup' to group scores by program
+        //Find the right 'programStage' to group scores by program
         List<ProgramStageDataElement> programStageDataElements = new Select().from(ProgramStageDataElement.class)
                 .indexedBy("ProgramStageDataElement_DataElement")
                 .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT).is(dataElementUID)).

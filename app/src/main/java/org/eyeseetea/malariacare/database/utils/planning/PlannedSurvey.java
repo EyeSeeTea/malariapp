@@ -63,13 +63,10 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return null;
         }
-        if(survey.getTabGroup()==null){
+        if(survey.getProgram()==null){
             return null;
         }
-        if(survey.getTabGroup().getProgram()==null){
-            return null;
-        }
-        return survey.getTabGroup().getProgram().getName();
+        return survey.getProgram().getName();
     }
 
     /**
@@ -125,7 +122,7 @@ public class PlannedSurvey implements PlannedItem {
             return true;
         }
 
-        Program surveyProgram=survey.getTabGroup().getProgram();
+        Program surveyProgram=survey.getProgram();
         //Returns if both match
         return filterProgram.getId_program().equals(surveyProgram.getId_program());
     }

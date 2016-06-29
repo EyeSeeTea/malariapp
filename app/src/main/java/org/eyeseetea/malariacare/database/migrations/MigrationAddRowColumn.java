@@ -26,7 +26,6 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Value;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 

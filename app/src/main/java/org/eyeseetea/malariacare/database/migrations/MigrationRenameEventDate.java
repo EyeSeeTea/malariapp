@@ -30,9 +30,6 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Survey;
 
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updateColumn;
-
 /**
  * Created by idelcano on 23/03/2016.
  */

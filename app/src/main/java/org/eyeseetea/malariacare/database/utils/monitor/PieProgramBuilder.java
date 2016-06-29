@@ -24,8 +24,8 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,10 +36,10 @@ import java.util.Map;
  * Build that creates and inyects the info into the piecharts
  * Created by arrizabalaga on 9/10/15.
  */
-public class PieTabGroupBuilder {
+public class PieProgramBuilder {
 
     public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:buildPieCharts(%s)";
-    private static final String TAG=".PieTabGroupBuilder";
+    private static final String TAG=".PieProgramBuilder";
     public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
@@ -55,13 +55,13 @@ public class PieTabGroupBuilder {
     /**
      * Map of entries per program
      */
-    private Map<TabGroup,PieTabGroupData> pieTabGroupDataMap;
+    private Map<Program,PieProgramData> pieProgramDataMap;
 
     /**
      * Default constructor
      */
-    public PieTabGroupBuilder(List<Survey> surveys, Context context) {
-        pieTabGroupDataMap = new HashMap<>();
+    public PieProgramBuilder(List<Survey> surveys, Context context) {
+        pieProgramDataMap = new HashMap<>();
         this.surveys = surveys;
         this.context = context;
     }
@@ -72,36 +72,36 @@ public class PieTabGroupBuilder {
      */
     public void addDataInChart(WebView webView){
         //Build entries
-        List<PieTabGroupData> entries=build(surveys);
+        List<PieProgramData> entries=build(surveys);
         //Inyect entries in view
         injectDataInChart(webView, entries);
     }
 
-    private List<PieTabGroupData> build(List<Survey> surveys) {
+    private List<PieProgramData> build(List<Survey> surveys) {
         for(Survey survey:surveys){
             build(survey);
         }
 
-        return new ArrayList(pieTabGroupDataMap.values());
+        return new ArrayList(pieProgramDataMap.values());
     }
 
     private void build(Survey survey) {
         //Get the program
-        TabGroup tabGroup=survey.getTabGroup();
+        Program program=survey.getProgram();
 
         //Get the entry for that program
-        PieTabGroupData pieTabGroupData = pieTabGroupDataMap.get(tabGroup);
+        PieProgramData pieProgramData = pieProgramDataMap.get(program);
 
         //First time no entry
-        if(pieTabGroupData ==null){
-            pieTabGroupData =new PieTabGroupData(tabGroup);
-            pieTabGroupDataMap.put(tabGroup, pieTabGroupData);
+        if(pieProgramData ==null){
+            pieProgramData =new PieProgramData(program);
+            pieProgramDataMap.put(program, pieProgramData);
         }
         //Increment surveys for that month
-        pieTabGroupData.incCounter(survey.getMainScore());
+        pieProgramData.incCounter(survey.getMainScore());
     }
 
-    private void injectDataInChart(WebView webView, List<PieTabGroupData> entries) {
+    private void injectDataInChart(WebView webView, List<PieProgramData> entries) {
         //Build array JSON
         String json=buildJSONArray(entries);
 
@@ -111,11 +111,11 @@ public class PieTabGroupBuilder {
         webView.loadUrl(updateChartJS);
     }
 
-    private String buildJSONArray(List<PieTabGroupData> entries){
+    private String buildJSONArray(List<PieProgramData> entries){
         String arrayJSON="[";
         int i=0;
-        for(PieTabGroupData pieTabGroupData :entries){
-            String pieJSON= pieTabGroupData.toJSON(context.getString(R.string.dashboard_tip_pie_chart));
+        for(PieProgramData pieProgramData :entries){
+            String pieJSON= pieProgramData.toJSON(context.getString(R.string.dashboard_tip_pie_chart));
             arrayJSON+=pieJSON;
             i++;
             if(i!=entries.size()){

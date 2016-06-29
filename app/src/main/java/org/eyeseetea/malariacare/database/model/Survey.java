@@ -61,14 +61,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     Program program;
 
-
-    @Column
-    Long id_tab_group;
-    /**
-     * Reference to the tabgroup associated to this survey (loaded lazily)
-     */
-    TabGroup tabGroup;
-
     @Column
     Long id_org_unit;
     /**
@@ -152,19 +144,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.setUser(user);
     }
 
-    //TODO Remove
-    public Survey(OrgUnit orgUnit, TabGroup tabGroup, User user) {
-        this();
-
-        // Possibilities [ In progress | Completed | Sent ]
-        this.status = Constants.SURVEY_IN_PROGRESS;
-
-        //Set context of the survey
-        this.setOrgUnit(orgUnit);
-        this.setTabGroup(tabGroup);
-        this.setUser(user);
-    }
-
     public Long getId_survey() {
         return id_survey;
     }
@@ -221,28 +200,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public void setProgram(Long id_program){
         this.id_program = id_program;
         this.id_program= null;
-    }
-
-
-    public TabGroup getTabGroup() {
-        if(tabGroup==null){
-            if (id_tab_group==null) return null;
-            tabGroup = new Select()
-                    .from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.ID_TAB_GROUP)
-                            .is(id_tab_group)).querySingle();
-        }
-        return tabGroup;
-    }
-
-    public void setTabGroup(TabGroup tabGroup) {
-        this.tabGroup = tabGroup;
-        this.id_tab_group = (tabGroup!=null)?tabGroup.getId_tab_group():null;
-    }
-
-    public void setTabGroup(Long id_tab_group){
-        this.id_tab_group = id_tab_group;
-        this.tabGroup = null;
     }
 
     public User getUser() {
@@ -612,7 +569,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Returns a survey in progress for the given orgUnit and tabGroup
+     * Returns a survey in progress for the given orgUnit and program
      * @param orgUnit
      * @param program
      * @return
@@ -625,26 +582,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.ID_PROGRAM).eq(program.getId_program()))
-                .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(Survey$Table.COMPLETION_DATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
-    }
-
-    /**
-     * Returns a survey in progress for the given orgUnit and tabGroup
-     * @param orgUnit
-     * @param tabGroup
-     * @return
-     */
-    //TODO Remove
-    public static Survey getInProgressSurveys(OrgUnit orgUnit, TabGroup tabGroup) {
-        if(orgUnit==null || tabGroup==null){
-            return null;
-        }
-
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.STATUS).is(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).querySingle();
@@ -890,9 +827,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Finds a survey with a given orgunit and tabgroup
+     * Finds a survey with a given orgunit and program
      * @param orgUnit
-     * @param tabGroup
+     * @param program
      * @return
      */
     public static Survey findByOrgUnitAndProgram(OrgUnit orgUnit, Program program) {
@@ -904,25 +841,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
-
     /**
-     * Finds a survey with a given orgunit and tabgroup
-     * @param orgUnit
-     * @param tabGroup
-     * @return
-     */
-    //TODO Remove
-    public static Survey findByOrgUnitAndTabGroup(OrgUnit orgUnit, TabGroup tabGroup) {
-        return new Select()
-                .from(Survey.class)
-                .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
-                .and(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
-                .querySingle();
-    }
-
-    /**
-     * Find the last survey that has been sent for each orgunit+tabgroup combination
+     * Find the last survey that has been sent for each orgunit+program combination
      * @return
      */
     public static List<Survey> listLastByOrgUnitProgram() {
@@ -930,20 +850,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where()
                 .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_PROGRAM))
-                .having(Condition.columnsWithFunction("max", "completion_date"))
-                .queryList();
-    }
-
-    /**
-     * Find the last survey that has been sent for each orgunit+tabgroup combination
-     * @return
-     */
-    //TODO Remove
-    public static List<Survey> listLastByOrgUnitTabGroup() {
-        return new Select()
-                .from(Survey.class)
-                .where()
-                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_TAB_GROUP))
                 .having(Condition.columnsWithFunction("max", "completion_date"))
                 .queryList();
     }
@@ -958,23 +864,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_IN_PROGRESS))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
                 .and(Condition.column(Survey$Table.ID_PROGRAM).eq(program.getId_program()))
-                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
-                .and(Condition.column(Survey$Table.EVENTUID).eq(lastEventInServer.getEvent()))
-                .orderBy(false,Survey$Table.COMPLETION_DATE)
-                .querySingle();
-    }
-
-    //TODO Remove
-    public static Survey findSurveyWith(OrgUnit orgUnit, TabGroup tabGroup,Event lastEventInServer) {
-
-        if(lastEventInServer==null){
-            return null;
-        }
-        return new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_IN_PROGRESS))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_HIDE))
-                .and(Condition.column(Survey$Table.ID_TAB_GROUP).eq(tabGroup.getId_tab_group()))
                 .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
                 .and(Condition.column(Survey$Table.EVENTUID).eq(lastEventInServer.getEvent()))
                 .orderBy(false,Survey$Table.COMPLETION_DATE)

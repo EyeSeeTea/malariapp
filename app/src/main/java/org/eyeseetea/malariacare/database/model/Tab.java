@@ -53,15 +53,6 @@ public class Tab extends BaseModel {
      */
     Program program;
 
-    //TODO Remove
-    @Column
-    Long id_tab_group;
-
-    /**
-     * Reference to parent tabgroup (loaded lazily)
-     */
-    TabGroup tabGroup;
-
     /**
      * List of headers that belongs to this tab
      */
@@ -75,14 +66,6 @@ public class Tab extends BaseModel {
         this.order_pos = order_pos;
         this.type = type;
         setProgram(program);
-    }
-
-    //TODO Remove
-    public Tab(String name, Integer order_pos, Integer type, TabGroup tabGroup) {
-        this.name = name;
-        this.order_pos = order_pos;
-        this.type = type;
-        setTabGroup(tabGroup);
     }
 
     public Long getId_tab() {
@@ -137,31 +120,6 @@ public class Tab extends BaseModel {
     public void setProgram(Program program) {
         this.program = program;
         this.id_program = (program!=null)?program.getId_program():null;
-    }
-
-    //TODO Remove
-    public TabGroup getTabGroup() {
-        if(tabGroup==null){
-            if (id_tab_group == null) return null;
-
-            tabGroup= new Select()
-                    .from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.ID_TAB_GROUP)
-                            .is(id_tab_group)).querySingle();
-        }
-        return tabGroup;
-    }
-
-    //TODO Remove
-    public void setTabGroup(Long id_tab_group){
-        this.id_tab_group=id_tab_group;
-        this.tabGroup=null;
-    }
-
-    //TODO Remove
-    public void setTabGroup(TabGroup tabGroup) {
-        this.tabGroup = tabGroup;
-        this.id_tab_group = (tabGroup!=null)?tabGroup.getId_tab_group():null;
     }
 
     public List<Header> getHeaders(){
