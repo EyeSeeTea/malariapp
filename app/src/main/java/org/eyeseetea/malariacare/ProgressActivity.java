@@ -190,7 +190,8 @@ public class ProgressActivity extends Activity {
 
     @Subscribe
     public void onProgressChange(final SyncProgressStatus syncProgressStatus) {
-        if(syncProgressStatus ==null){
+        //bad event or activity not in foreground -> show nothing
+        if(syncProgressStatus ==null || isOnPause){
             return;
         }
         runOnUiThread(new Runnable() {
