@@ -6,7 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
     }
 }
 apply plugin: 'com.android.application'
@@ -76,9 +76,15 @@ android {
             minSdkVersion 15
             targetSdkVersion 21
         }
-        surveillance {
-            applicationId "org.eyeseetea.malariacare.surveillance_bb"
-            versionName "5.0.0"
+        surveillance_cambodia {
+            applicationId 'org.eyeseetea.malariacare.surveillance_kh_bb'
+            versionName "1.2.4"
+            minSdkVersion 15
+            targetSdkVersion 21
+        }
+        surveillance_laos {
+            applicationId 'org.eyeseetea.malariacare.surveillance_la_bb'
+            versionName "1.2.4"
             minSdkVersion 15
             targetSdkVersion 21
         }

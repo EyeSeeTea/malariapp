@@ -1,0 +1,12 @@
+1;'RDT';'What is your patient\'s RDT result?';;'តើលទ្ធផលតេស្តឈាមរបស់អ្នកជំងឺដោយប្រើ​ ឧបករណ៏ RDT បង្ហាញថាជាអ្វី?';'OEdLEjF6Z8p';1;0;0;1;1;0;14;1;0
+2;'Reason';'Why was the patient not tested for malaria?';;'ហេតុអ្វីបានជាអ្នកជំងឺមិនត្រូវបានធ្វើតេស្តឈាម?';'fkBDnkiQbWY';1;0;0;1;2;0;14;2;1
+3;'Gender';'Male or Female?';;'ប្រុស ឬ ស្រី?';'uuudizosfpU';1;0;0;1;3;0;10;9;1
+4;'Age';'How old is your patient (years)?';;'តើអ្នកជំងឺរបស់អ្នកមានអាយុប៉ុន្មាន (ឆ្នាំ)?';'JMM92njKuSc';2;0;0;1;4;0;6;9;1
+5;'Specie';'What type of malaria does your patient have?';;'តើអ្នកជំងឺរបស់អ្នកមានមេរោគគ្រុនចាញ់ប្រភេទអ្វី?';'X6RFHreAu0L';3;0;0;1;5;0;14;9;1
+6;'Treatment';'What type of treatment did you provide?';;'តើការព្យាបាលបែបណាដែលអ្នកផ្តល់ជូនអ្នកជំងឺ?';'fNpYtVaL7OV';4;0;0;1;6;0;14;9;1
+7;'DHA-PIP';'How much Euratesim did you provide?';;'តើអ្នកផ្តល់អឺរ៉ាតេស៊ីមប៉ុន្មានគ្រាប់ឲ្យអ្នកជំងឺ?';'LRzOBn2rZA3';1;0;0;1;7;0;11;9;0
+8;'AS/MQ';'How much AS/MQ did you provide?';;'តើអ្នកផ្តល់អាតេស៊ុយណាត ម៉េហ្លូគីនប៉ុន្មានគ្រាប់ឲ្យអ្នកជំងឺ?';'mCSYUwYXnnj';1;0;0;1;8;0;14;9;0
+9;'Referral';'Why was the patient referred?';;'ហេតុុអ្វីបានជាអ្នកជំងឺត្រូវបានបញ្ជូន?';'Bi2NfBG8LGJ';1;0;0;1;9;0;14;9;0
+10;'Classification';'Has the patient slept overnight outside of the village in the past two weeks?';;'តើអ្នកជំងឺធ្លាប់គេង ពេលយប់នៅខាងក្រៅភូមិដែលគាត់រស់នៅដែរ ឬ ទេ កាលពី ២សប្តាហ៍មុន?';'ff3lAAW1VLh';5;0;0;1;10;0;10;9;0
+11;'Occupation';'What is the patient\'s occupation?';;'តើអ្នកជំងឺប្រកបមុខរបរអ្វី?';'Zf8O1uzl3JJ';6;0;0;1;11;0;15;9;0
+12;'Phone';'Please enter your patient\'s phone number.';;'សូមវាយបញ្ចូលលេខទូរស័ព្ទអ្នកជំងឺ';'rDubghVv1L8';7;0;0;1;12;0;13;9;0
