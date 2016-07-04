@@ -42,6 +42,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -501,6 +502,12 @@ public class AutoTabAdapter extends ATabAdapter {
 
         switch (question.getOutput()) {
             case Constants.DATE:
+                String valueString=ReadWriteDB.readValueQuestion(question, module);
+                Date valueDate=EventExtended.parseShortDate(valueString);
+                if(valueDate!=null) {
+                    viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
+                }
+                break;
             case Constants.SHORT_TEXT:
             case Constants.INT:
             case Constants.LONG_TEXT:
@@ -722,8 +729,8 @@ public class AutoTabAdapter extends ATabAdapter {
                     newCalendar.set(year, monthOfYear, dayOfMonth);
                     Date newScheduledDate = newCalendar.getTime();
                     if(!isCleared) {
-                        ((CustomButton) v).setText( AUtils.formatDate(newCalendar.getTime()));
-                        ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
+                        ((CustomButton) v).setText( AUtils.formatDate(newScheduledDate));
+                        ReadWriteDB.saveValuesText(question, EventExtended.formatShort(newScheduledDate), module);
                     }
                     isCleared =false;
                 }

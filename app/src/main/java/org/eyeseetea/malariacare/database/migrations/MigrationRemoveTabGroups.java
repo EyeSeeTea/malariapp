@@ -21,21 +21,19 @@ package org.eyeseetea.malariacare.database.migrations;
 
 
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
+
 import com.raizlabs.android.dbflow.annotation.Migration;
-import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
-import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Program$Table;
-import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Survey$Table;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Tab$Table;
+
+import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 /**
  * Created by idelcano on 23/03/2016.

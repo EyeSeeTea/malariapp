@@ -167,6 +167,17 @@ public class AUtils {
         return dateFormatter.format(date);
     }
 
+    public static String formatDateToServer(Date date){
+        if(date==null){
+            return "";
+        }
+        Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+
+
+        return dateFormatter.format(date);
+    }
+
 
     /**
      * This method check if the Internet conexion is active
