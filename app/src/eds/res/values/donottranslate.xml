@@ -21,7 +21,7 @@
 <resources>
 
     <!-- # general -->
-    <string name="app_name" translatable="false">EDS</string>
+    <string name="app_name" translatable="false">EDS2</string>
 
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false">https://</string>

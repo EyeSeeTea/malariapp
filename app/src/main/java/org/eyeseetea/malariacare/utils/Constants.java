@@ -98,6 +98,7 @@ public class Constants {
     public static final float MAX_RED = 50f;
 
     public static final String PUSH_MODULE_KEY="PUSH_MODULE_KEY";
+    public static final String PROGRESSACTIVITY_MODULE_KEY="PROGRESSACTIVITY_MODULE_KEY";
     public static final String MODULE_KEY="MODULE_KEY";
 
 }
