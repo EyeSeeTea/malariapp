@@ -82,6 +82,10 @@ public class DashboardSentFragment extends ListFragment {
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     OnFeedbackSelectedListener mCallback;
+    /*
+    ** Flag to prevents the false click on filter creation.
+     */
+    boolean initiatingFilters =true;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -159,6 +163,7 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private void initFilters() {
+        initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
         Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
@@ -185,7 +190,7 @@ public class DashboardSentFragment extends ListFragment {
                         reload=true;
                     }
                 }
-                if(reload)
+                if(reload && !initiatingFilters)
                     reloadSentSurveys(surveys);
             }
 
@@ -218,7 +223,7 @@ public class DashboardSentFragment extends ListFragment {
                         reload = true;
                     }
                 }
-                if (reload)
+                if (reload && !initiatingFilters)
                     reloadSentSurveys(surveys);
             }
 
@@ -228,6 +233,7 @@ public class DashboardSentFragment extends ListFragment {
             }
         });
         reloadSentSurveys(surveys);
+        initiatingFilters =false;
     }
 
     /**
@@ -392,13 +398,9 @@ public class DashboardSentFragment extends ListFragment {
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
-        if(hasSurveys) {
-            this.surveys.clear();
-            this.surveys.addAll(newListSurveys);
-            adapter.setItems(newListSurveys);
-            this.adapter.notifyDataSetChanged();
-        }
+        this.surveys.addAll(newListSurveys);
+        adapter.setItems(newListSurveys);
+        this.adapter.notifyDataSetChanged();
     }
 
     public void reloadData(){
