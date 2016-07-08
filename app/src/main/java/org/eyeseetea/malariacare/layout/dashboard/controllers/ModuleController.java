@@ -129,12 +129,11 @@ public abstract class ModuleController {
     }
 
     public String getActionBarSubTitleBySurvey(Survey survey){
-        String subtitle="";
-        Program program = survey.getTabGroup().getProgram();
+        Program program = survey.getProgram();
         if(program.getName()!=null) {
-            subtitle = program.getName()+":"+survey.getTabGroup().getName();
+            return program.getName();
         }
-        return subtitle;
+        return "";
     }
 
     public Drawable getIcon() {

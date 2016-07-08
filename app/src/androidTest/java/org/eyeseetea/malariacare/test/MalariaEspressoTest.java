@@ -151,7 +151,7 @@ public class MalariaEspressoTest {
         User user =getSafeUser();
 
         for(int i=0;i<numOrgs;i++){
-            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program.getTabGroups().get(0),user);
+            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
             survey.save();
         }
         List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();

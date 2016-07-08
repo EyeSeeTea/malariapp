@@ -19,21 +19,21 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor;
 
-import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * VO thats hold the info of a single pie chart
  * Created by arrizabalaga on 9/10/15.
  */
-public class PieTabGroupData {
+public class PieProgramData {
 
     private static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
 
     /**
      * Type of program for this chart
      */
-    private TabGroup tabGroup;
+    private Program program;
 
     /**
      * Number of surveys with A score
@@ -50,11 +50,11 @@ public class PieTabGroupData {
 
 
     /**
-     * Constructor per tabGroup
-     * @param tabGroup
+     * Constructor per program
+     * @param program
      */
-    public PieTabGroupData(TabGroup tabGroup) {
-        this.tabGroup = tabGroup;
+    public PieProgramData(Program program) {
+        this.program = program;
     }
 
     /**
@@ -88,8 +88,8 @@ public class PieTabGroupData {
      * @return
      */
     public String toJSON(String tipChat){
-        String pieTitle=String.format("%s (%s)",tabGroup.getName(),tabGroup.getProgram().getName());
-        String json= String.format(JSONFORMAT, pieTitle, tipChat,tabGroup.getId_tab_group(), this.numA, this.numB, this.numC, tabGroup.getProgram().getUid(),tabGroup.getUid());
+        String pieTitle=String.format("%s", program.getName());
+        String json= String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC, program.getUid(), program.getUid());
         return json;
     }
 

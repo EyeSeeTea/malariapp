@@ -46,15 +46,10 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
@@ -98,12 +93,8 @@ public class CreateSurveyFragment extends Fragment {
     List<OrgUnit> orgUnitList;
     List<OrgUnitLevel> orgUnitLevelList;
 
-    //Last selected program
-    Program lastSelectedProgram;
-
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
-    private TabGroup tabGroupDefaultOption;
 
     private OrgUnitHierarchy orgUnitHierarchy;
 
@@ -192,7 +183,6 @@ public class CreateSurveyFragment extends Fragment {
         //Create default options
         orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
         programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
-        tabGroupDefaultOption = new TabGroup(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
         ViewHolder viewHolder = new ViewHolder();
@@ -280,9 +270,6 @@ public class CreateSurveyFragment extends Fragment {
             if(objectRow instanceof OrgUnit) {
                 value= ((OrgUnit) objectRow).getName();
             }
-            if(objectRow instanceof TabGroup) {
-                value= ((TabGroup) objectRow).getName();
-            }
             if (value.equalsIgnoreCase(myString)){
                 index = i;
                 break;
@@ -306,7 +293,7 @@ public class CreateSurveyFragment extends Fragment {
         OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
         Program program = (Program) programView.getSelectedItem();
 
-        Survey survey = Survey.getInProgressSurveys(orgUnit, program.getTabGroup());
+        Survey survey = Survey.getInProgressSurveys(orgUnit, program);
         return (survey != null);
     }
 
@@ -343,7 +330,7 @@ public class CreateSurveyFragment extends Fragment {
         //Get selected orgUnit
         OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
 
-        //Get selected tabGroup
+        //Get selected program
         Program program = (Program)programView.getSelectedItem();
 
         //save  the list of orgUnits
@@ -352,7 +339,7 @@ public class CreateSurveyFragment extends Fragment {
         //save the program in the preferents
         setLastSelectedProgram(program.getUid());
 
-        dashboardActivity.onCreateSurvey(orgUnit,program.getTabGroup());
+        dashboardActivity.onCreateSurvey(orgUnit,program);
     }
 
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -397,7 +384,7 @@ public class CreateSurveyFragment extends Fragment {
                     ViewHolder subViewHolder = new ViewHolder();
                     subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
 
-                    //Show tab group select and populate tab group spinner
+                    //Show  and populate orgunits spinner
                     if(orgUnitList.get(0).getUid()!=null){
                         orgUnitDefaultOption.setOrgUnitLevel(orgUnitList.get(0).getOrgUnitLevel());
                         orgUnitList.add(0, orgUnitDefaultOption);
@@ -444,9 +431,7 @@ public class CreateSurveyFragment extends Fragment {
             for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()) {
                 if (setInvisible) {
                     View childView = entry.getValue();
-                    // Select single tab group
                     ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, click);
-                    // Hide tab group tab selector
                     childView.setVisibility(View.GONE);
                 }
                 if (entry.getKey().equals((viewHolder.component).getTag())) {

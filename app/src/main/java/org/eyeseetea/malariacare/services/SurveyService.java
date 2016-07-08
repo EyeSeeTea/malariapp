@@ -34,7 +34,6 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
@@ -99,7 +98,7 @@ public class SurveyService extends IntentService {
     /**
      * Name of 'All filter sentfragment' action
      */
-    public static final String ALL_ORG_UNITS_AND_TABGROUP_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_TABGROUP_ACTION";
+    public static final String ALL_ORG_UNITS_AND_PROGRAMS_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION";
     /**
      * Name of 'All create survey data' action
      */
@@ -126,10 +125,7 @@ public class SurveyService extends IntentService {
      * Key of programs entry in shared session
      */
     public static final String PREPARE_PROGRAMS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_PROGRAMS";
-    /**
-     * Key of programs entry in shared session
-     */
-    public static final String PREPARE_TABGROUPS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_TABGROUPS";
+
     /**
      * Key of surveys entry in shared session
      */
@@ -208,7 +204,7 @@ public class SurveyService extends IntentService {
             case ALL_MONITOR_DATA_ACTION:
                 getAllMonitorData();
                 break;
-            case ALL_ORG_UNITS_AND_TABGROUP_ACTION:
+            case ALL_ORG_UNITS_AND_PROGRAMS_ACTION:
                 getAllOrgUnitsAndPrograms();
                 break;
             case ALL_CREATE_SURVEY_DATA_ACTION:
@@ -245,16 +241,16 @@ public class SurveyService extends IntentService {
     private void getAllOrgUnitsAndPrograms() {
         Log.d(TAG,"getAllOrgUnitAndPrograms (Thread:"+Thread.currentThread().getId()+")");
         List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
-        List<TabGroup> tabGroupList=TabGroup.getAllTabgroup();
+        List<Program> programList = Program.getAllPrograms();
 
         HashMap<String,List> orgUnitsAndPrograms=new HashMap<>();
         orgUnitsAndPrograms.put(PREPARE_ORG_UNIT, orgUnitList);
-        orgUnitsAndPrograms.put(PREPARE_TABGROUPS, tabGroupList);
+        orgUnitsAndPrograms.put(PREPARE_PROGRAMS, programList);
         //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_ORG_UNITS_AND_TABGROUP_ACTION, orgUnitsAndPrograms);
+        Session.putServiceValue(ALL_ORG_UNITS_AND_PROGRAMS_ACTION, orgUnitsAndPrograms);
 
         //Returning result to anyone listening
-        Intent resultIntent= new Intent(ALL_ORG_UNITS_AND_TABGROUP_ACTION);
+        Intent resultIntent= new Intent(ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
 
     }

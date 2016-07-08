@@ -296,9 +296,9 @@ public class PullController {
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        //Convert Programs, Tabgroups, Tabs
+        //Convert Programs, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
-        Log.i(TAG, "Converting programs, tabgroups and tabs...");
+        Log.i(TAG, "Converting programs and tabs...");
         List<String> assignedProgramsIDs = MetaDataController.getAssignedPrograms();
         for (String assignedProgramID : assignedProgramsIDs) {
             ProgramExtended programExtended = new ProgramExtended(MetaDataController.getProgram(assignedProgramID));

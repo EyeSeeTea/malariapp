@@ -162,7 +162,7 @@ public static void showData(WebView webView){
      */
     public void build(List<Survey> surveys){
         for(Survey survey:surveys){
-            if(survey.getTabGroup().getProgram().equals(program)) {
+            if(survey.getProgram().equals(program)) {
                 build(survey);
             }
         }
