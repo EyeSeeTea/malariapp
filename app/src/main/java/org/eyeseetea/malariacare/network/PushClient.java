@@ -106,7 +106,7 @@ public class PushClient {
     }
 
     public void pushSDK() {
-        if (AUtils.isNetworkAvailable()) {
+        if (AUtils.isNetworkAvailable() && !PushController.getInstance().isSending()) {
             malariaSdkPush();
         }
     }
