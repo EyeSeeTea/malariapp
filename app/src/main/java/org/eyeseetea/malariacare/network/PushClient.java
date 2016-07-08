@@ -80,9 +80,8 @@ public class PushClient {
 
     public void pushSDK() {
         //No network -> Done
-        if (!AUtils.isNetworkAvailable()) {
+        if (!AUtils.isNetworkAvailable() || PushController.getInstance().isSending())
             AlarmPushReceiver.isDone();
-        }
         //Push via sdk
         PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
     }

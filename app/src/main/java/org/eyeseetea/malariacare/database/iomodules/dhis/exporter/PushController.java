@@ -88,7 +88,16 @@ public class PushController {
         }
         return instance;
     }
+    /**
+     * Flag that locks the push of events.
+     *
+     */
 
+    private boolean isSending;
+
+    public boolean isSending() {
+        return isSending;
+    }
     /**
      * Launches the pull process:
      *  - Loads metadata from dhis2 server
@@ -120,8 +129,10 @@ public class PushController {
             Log.d(TAG, "Preparing survey for pushing...");
 
             PopulateDB.wipeSDKData();
-
+            if(isSending)
+                return false;
             convertToSDK(surveys);
+            isSending=EventExtended.getAllEvents().size()>0;
 
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
@@ -166,6 +177,7 @@ public class PushController {
                 }finally {
                     postFinish(success);
                     unregister();
+                    isSending=false;
                 }
             }
         }.start();
