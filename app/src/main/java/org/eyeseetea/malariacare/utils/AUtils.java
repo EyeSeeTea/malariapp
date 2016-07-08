@@ -272,10 +272,6 @@ public class AUtils {
         textTile.setText(BuildConfig.FLAVOR.toUpperCase() + "(bb) " + BuildConfig.VERSION_NAME);
         textTile.setGravity(Gravity.RIGHT);
 
-        //set up image view
-        ImageView img = (ImageView) dialog.findViewById(R.id.aboutImage);
-        img.setImageResource(R.drawable.psi);
-
         //set up text title
         TextView textContent = (TextView) dialog.findViewById(R.id.aboutMessage);
         textContent.setMovementMethod(LinkMovementMethod.getInstance());
