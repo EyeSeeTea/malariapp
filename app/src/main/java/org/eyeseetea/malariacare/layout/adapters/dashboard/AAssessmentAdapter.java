@@ -97,9 +97,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         String surveyDescription;
         if(survey.isCompleted())
-            surveyDescription = "* " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
+            surveyDescription = "* " + survey.getProgram().getName();
         else
-            surveyDescription = "- " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
+            surveyDescription = "- " + survey.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related

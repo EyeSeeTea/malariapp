@@ -33,10 +33,9 @@ import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -44,14 +43,9 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-
-import java.util.Date;
 import java.util.List;
 
 
@@ -282,47 +276,19 @@ public class DashboardActivity extends BaseActivity{
     public void onNewSurvey(View view){
         dashboardController.onNewSurvey();
     }
-    /**
-     * Modify survey from CreateSurveyFragment
-     * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
-     */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer, String module){
-        //Looking for that survey in local
-        Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, lastEventInServer);
-        //Survey in server BUT not local
-        if(survey==null){
-            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        }
-        if(lastEventInServer!=null){
-            survey.setEventUid(lastEventInServer.getEvent());
-            EventExtended lastEventExtended = new EventExtended(lastEventInServer);
-            survey.setCreationDate(lastEventExtended.getCreationDate());
-            survey.setCompletionDate(lastEventExtended.getEventDate());
-        }else{
-            //Mark the survey as a modify attempt for pushing accordingly
-            survey.setEventUid(PullClient.NO_EVENT_FOUND);
-        }
-
-        //Upgrade the uploaded date
-        survey.setUploadDate(new Date());
-        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurveyByModule(survey,module);
-        prepareLocationListener(survey);
-        dashboardController.onSurveySelected(survey);
-    }
 
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        createNewSurvey(orgUnit,tabGroup);
+    public void onCreateSurvey(final OrgUnit orgUnit,final Program program) {
+        createNewSurvey(orgUnit,program);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
-        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+    public void createNewSurvey(OrgUnit orgUnit, Program program){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }

@@ -19,36 +19,25 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+;
 
 /**
  * Created by ignac on 14/11/2015.
@@ -64,45 +53,41 @@ public class QuestionBuilder {
     /**
      * Mapping all the questions
      */
-    static Map<String, Question> mapQuestions;
+    Map<String, Question> mapQuestions;
 
     /**
      * Mapping all the question parents
      */
-    static Map<String, String> mapParent;
+    Map<String, String> mapParent;
     /**
      * Mapping all the question type(child/parent)
      */
-    static Map<String, String> mapType;
+    Map<String, String> mapType;
     /**
      * Mapping all the question level(it is needed for know who are the parent)
      */
-    static Map<String, String> mapLevel;
+    Map<String, String> mapLevel;
     /**
      * Mapping all the Match question parents
      */
-    static Map<String, String> mapMatchType;
+    Map<String, String> mapMatchType;
     /**
      * Mapping all the Match question type(child/parent)
      */
-    static Map<String, String> mapMatchLevel;
+    Map<String, String> mapMatchLevel;
     /**
      * Mapping all the Match question level(it is needed for know who are the parent)
      */
-    static Map<String, String> mapMatchParent;
+    Map<String, String> mapMatchParent;
     /**
      * Mapping all the Match question level(it is needed for know who are the parent)
      */
-    static Map<String, List<String>> mapMatchChilds;
+    Map<String, List<String>> mapMatchChilds;
     /**
      * Mapping headers(it is needed for not duplicate data)
      */
-    static Map<String, Header> mapHeader;
+    Map<String, Header> mapHeader;
 
-    /**
-     * Mapping headers(it is needed for not duplicate data)
-     */
-    static Map<String, TabGroup> mapTabGroup;
     /**
      * It is needed in the header order.
      */
@@ -111,7 +96,6 @@ public class QuestionBuilder {
     QuestionBuilder() {
         mapQuestions = new HashMap<>();
         mapHeader = new HashMap<>();
-        mapTabGroup = new HashMap<>();
         mapType = new HashMap<>();
         mapLevel = new HashMap<>();
         mapParent = new HashMap<>();
