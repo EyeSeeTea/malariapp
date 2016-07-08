@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -60,6 +61,10 @@ public class SurveyService extends IntentService {
      * Name of the parameter that holds every survey that goes into the planned tab
      */
     public static final String PLANNED_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS_ACTION";
+    /**
+     * Name of the parameter that holds every survey and filters that goes into the feedback
+     */
+    public static final String RELOAD_SENT_FRAGMENT_ACTION ="org.eyeseetea.malariacare.services.SurveyService.RELOAD_SENT_FRAGMENT_ACTION";
 
     /**
      * Name of 'list unsent or uncompleted' action
@@ -182,6 +187,9 @@ public class SurveyService extends IntentService {
             case ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION:
                 getAllSentCompletedOrConflictSurveys();
                 break;
+            case RELOAD_SENT_FRAGMENT_ACTION:
+                reloadSentFragment();
+                break;
             case ALL_COMPLETED_SURVEYS_ACTION:
                 getAllCompletedSurveys();
                 break;
@@ -213,6 +221,25 @@ public class SurveyService extends IntentService {
                 getAllPrograms();
                 break;
         }
+    }
+
+    private void reloadSentFragment() {
+        DashboardSentBundle sentDashboardBundle = new DashboardSentBundle();
+
+        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
+
+        //Select surveys from sql
+        sentDashboardBundle.setSentSurveys(Survey.getAllSentCompletedOrConflictSurveys());
+        sentDashboardBundle.setOrgUnits(OrgUnit.getAllOrgUnit());
+        sentDashboardBundle.setPrograms(Program.getAllPrograms());
+
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+
     }
 
     private void reloadPlannedSurveys() {

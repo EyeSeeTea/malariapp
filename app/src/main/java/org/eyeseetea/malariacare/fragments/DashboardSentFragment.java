@@ -25,7 +25,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -43,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -82,6 +82,10 @@ public class DashboardSentFragment extends ListFragment {
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     OnFeedbackSelectedListener mCallback;
+    /*
+    ** Flag to prevents the false click on filter creation.
+     */
+    boolean initiatingFilters =true;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -147,14 +151,19 @@ public class DashboardSentFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-        //hide list
-        if(isAdded())
-            setListShown(false);
         initAdapter();
         initListView();
+        resetList();
+    }
+
+    public void resetList() {
+        oneSurveyForOrgUnit= new ArrayList<>();
+        adapter.setItems(oneSurveyForOrgUnit);
+        this.adapter.notifyDataSetChanged();
     }
 
     private void initFilters() {
+        initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
         Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
@@ -181,8 +190,8 @@ public class DashboardSentFragment extends ListFragment {
                         reload=true;
                     }
                 }
-                if(reload)
-                    reloadSentSurveys();
+                if(reload && !initiatingFilters)
+                    reloadSentSurveys(surveys);
             }
 
             @Override
@@ -214,8 +223,8 @@ public class DashboardSentFragment extends ListFragment {
                         reload = true;
                     }
                 }
-                if (reload)
-                    reloadSentSurveys();
+                if (reload && !initiatingFilters)
+                    reloadSentSurveys(surveys);
             }
 
             @Override
@@ -223,7 +232,8 @@ public class DashboardSentFragment extends ListFragment {
 
             }
         });
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
+        initiatingFilters =false;
     }
 
     /**
@@ -245,19 +255,19 @@ public class DashboardSentFragment extends ListFragment {
     public void setScoreOrder()
     {
         orderBy=SCORE_ORDER;
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
 
     public void setFacilityOrder()
     {
         orderBy=FACILITY_ORDER;
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
 
     public void setDateOrder()
     {
         orderBy=DATE_ORDER;
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
@@ -369,8 +379,7 @@ public class DashboardSentFragment extends ListFragment {
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
+            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.RELOAD_SENT_FRAGMENT_ACTION));
         }
     }
 
@@ -389,32 +398,22 @@ public class DashboardSentFragment extends ListFragment {
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
-        this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        if(isAdded())
-            setListShown(true);
-        else{
-            reloadData();
-        }
     }
 
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
-    public void reloadSentSurveys() {
-        List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-
+    public void reloadSentSurveys(List<Survey> surveys) {
         // To prevent from reloading too fast, before service has finished its job
         if (surveys == null) return;
 
@@ -480,10 +479,13 @@ public class DashboardSentFragment extends ListFragment {
         reloadSurveys(oneSurveyForOrgUnit);
     }
 
-    public void getOrgUnitAndProgram(){
-        HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
-        orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-        programList=data.get(SurveyService.PREPARE_PROGRAMS);
+    public void reloadDataFromService(){
+        DashboardSentBundle sentDashboardBundle =(DashboardSentBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
+        orgUnitList= sentDashboardBundle.getOrgUnits();
+        programList= sentDashboardBundle.getPrograms();
+        surveys= sentDashboardBundle.getSentSurveys();
+        reloadSentSurveys(surveys);
+        initFilters();
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
@@ -504,41 +506,10 @@ public class DashboardSentFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadSentSurveys();
-            }
-            if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
-                getOrgUnitAndProgram();
-                new showContainer().execute();
+            if(SurveyService.RELOAD_SENT_FRAGMENT_ACTION.equals(intent.getAction())){
+                reloadDataFromService();
             }
         }
     }
 
-    private class showContainer extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            //sleep for wait the ontab change
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            initFilters();
-            if(isAdded())
-                setListShown(true);
-        }
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-        }
-    }
 }

@@ -133,6 +133,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 }
                 currentTab = tabId;
 
+                if(isDashboardUnsentFragmentActive()){
+                    sentFragment.resetList();
+                }
                 //If change of tab from surveyFragment or FeedbackFragment they could be closed.
                 if(isSurveyFragmentActive())
                     onExitFromSurvey();
