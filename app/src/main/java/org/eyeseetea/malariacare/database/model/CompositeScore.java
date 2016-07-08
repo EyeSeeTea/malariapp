@@ -20,9 +20,6 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -177,12 +174,12 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
 
     /**
      * Select all composite score that belongs to a program
-     * @param tabGroup Program whose composite scores are searched.
+     * @param program Program whose composite scores are searched.
      * @return
      */
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    public static List<CompositeScore> listByTabGroup(TabGroup tabGroup){
-        if(tabGroup==null || tabGroup.getId_tab_group()==null){
+    public static List<CompositeScore> listByProgram(Program program){
+        if(program==null || program.getId_program()==null){
             return new ArrayList<>();
         }
 
@@ -198,17 +195,13 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
                 .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
                         .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID_COMPOSITE_SCORE)))
-                .where(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP))
-                        .eq(tabGroup.getId_tab_group()))
+                .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(program.getId_program()))
                 .orderBy(true, CompositeScore$Table.ORDER_POS)
                 .queryList();
-
 
         // remove duplicates
         Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();

@@ -23,17 +23,13 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
@@ -41,14 +37,13 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
-import org.hisp.dhis.android.sdk.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -234,7 +229,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private Event buildFromServer()throws Exception{
         PullClient pullClient = new PullClient(DashboardActivity.dashboardActivity);
-        Event eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getTabGroup());
+        Event eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getProgram());
         //No event to modify -> create a new one
         if(eventFromServer==null){
             return buildNewEvent();
@@ -251,7 +246,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         eventToUpdate.setFromServer(false);
         eventToUpdate.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         eventToUpdate.setProgramId(currentSurvey.getProgram().getUid());
-        eventToUpdate.setProgramStageId(currentSurvey.getTabGroup().getUid());
+        eventToUpdate.setProgramStageId(currentSurvey.getProgram().getProgramStage());
         Location lastLocation=getEventLocation();
         //location -> set lat/lng
         if(lastLocation!=null) {
@@ -299,8 +294,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
-        currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
-        currentEvent.setProgramStageId(currentSurvey.getTabGroup().getUid());
+        currentEvent.setProgramId(currentSurvey.getProgram().getUid());
+        currentEvent.setProgramStageId(currentSurvey.getProgram().getProgramStage());
         updateEventLocation();
         Log.d(TAG, "Saving event " + currentEvent.toString());
         currentEvent.save();
@@ -494,6 +489,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
             //XXX Whats this?
             if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && ImportSummary.SUCCESS.equals(importSummary.getStatus())) {
+                if(iEvent.getEventDate()==null || iEvent.getEventDate().equals("")) {
+                    //the event is invalid. The event will be pushed but we need inform to the user.
+                    DashboardActivity.showException(context.getString(R.string.error_message), String.format(context.getString(R.string.error_message_push), iEvent.getEvent()));
+                }
                 saveSurveyFromImportSummary(iSurvey);
                 Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
             }

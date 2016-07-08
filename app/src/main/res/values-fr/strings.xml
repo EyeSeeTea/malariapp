@@ -252,5 +252,10 @@
     <string name="number_10">10</string>
     <string name="number_11">11</string>
     <string name="number_12">12</string>
+    <string name="error_message_push">L\'événement avec UID: %s. a été transféré sans la date. S\'il vous plaît contacter l\'administrateur.</string>
+
+
+
+    <string name="clear">Effacement</string>
 
 </resources>

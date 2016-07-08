@@ -43,7 +43,6 @@ import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -122,22 +121,24 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     /**
-     * Turns a sdk ProgramStage into a TabGroup
+     * Skips ProgramStage (no longer tabgroups).
+     *  - ProgramStage UID is added to a program column (for pushing purposes).
+     *  - ProgramStage UID is mapped to the program to ease linking tabs with the program
      * @param sdkProgramStageExtended
      */
     @Override
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
-        //Build tabgroup
+        //Recover program
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
         String sdkProgramUID = programStage.getProgram().getUid();
         org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(sdkProgramUID);
-        TabGroup appTabGroup = new TabGroup();
-        appTabGroup.setName(programStage.getName());
-        appTabGroup.setUid(programStage.getUid());
-        appTabGroup.setProgram(appProgram);
-        appTabGroup.save();
 
-        appMapObjects.put(appTabGroup.getUid(),appTabGroup);
+        //Update program with programStage column
+        appProgram.setProgramStage(programStage.getUid());
+        appProgram.save();
+
+        //ProgramStage UID -> parent program (to ease linking tabs with program)
+        appMapObjects.put(programStage.getUid(),appProgram);
 
         //Visit children
         for(ProgramStageSection pss:programStage.getProgramStageSections()){
@@ -202,10 +203,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        String tabGroupUID = programStageSection.getProgramStage();
-        TabGroup tabGroup = (TabGroup)appMapObjects.get(tabGroupUID);
+        String programStageUID = programStageSection.getProgramStage();
+        org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(programStageUID);
         Tab appTab = new Tab();
-        appTab.setTabGroup(tabGroup);
+        appTab.setProgram(appProgram);
         appTab.setName(programStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(programStageSection.getSortOrder());
@@ -300,7 +301,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
-        TabGroup tabGroup = (TabGroup)appMapObjects.get(event.getProgramStageId());
+        org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(event.getProgramStageId());
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
@@ -315,7 +316,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
-        survey.setTabGroup(tabGroup);
+        survey.setProgram(appProgram);
         survey.save();
 
         //Annotate object in map

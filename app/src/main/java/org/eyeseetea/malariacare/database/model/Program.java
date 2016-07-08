@@ -19,18 +19,14 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +41,16 @@ public class Program extends BaseModel{
     String uid;
     @Column
     String name;
+    /**
+     * ProgramStage UID (require to build events with programStage uid (previously tabgroup uid)
+     */
+    @Column
+    String programStage;
 
     /**
-     * List of tabgroups for this program
+     * List of tabs for this program
      */
-    List<TabGroup> tabGroups;
+    List<Tab> tabs;
 
     /**
      * List of orgUnit authorized for this program
@@ -92,26 +93,21 @@ public class Program extends BaseModel{
         this.name = name;
     }
 
-    public List<TabGroup> getTabGroups(){
-        if(tabGroups==null){
-            this.tabGroups = new Select().from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.ID_PROGRAM).eq(this.getId_program()))
-                    .queryList();
-        }
-        return this.tabGroups;
+    public String getProgramStage(){
+        return programStage;
     }
 
-    /**
-     * Returns the first tabgroup (most of cases thats ok)
-     * @return
-     */
-    public TabGroup getTabGroup(){
-        List<TabGroup> tg=getTabGroups();
-        if(tg==null || tg.size()==0){
-            return null;
-        }
+    public void setProgramStage(String programStage){
+        this.programStage=programStage;
+    }
 
-        return tg.get(0);
+    public List<Tab> getTabs(){
+        if(tabs==null){
+            this.tabs = new Select().from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_program()))
+                    .queryList();
+        }
+        return this.tabs;
     }
 
     public static List<Program> getAllPrograms(){
@@ -159,7 +155,7 @@ public class Program extends BaseModel{
      * @return
      */
     public static List<Program> list() {
-        return new Select().all().from(Program.class).queryList();
+        return new Select().all().from(Program.class).orderBy(true, Program$Table.NAME).queryList();
     }
 
     @Override

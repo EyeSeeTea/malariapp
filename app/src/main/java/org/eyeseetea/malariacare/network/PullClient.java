@@ -29,11 +29,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.hisp.dhis.android.sdk.controllers.wrappers.EventsWrapper;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -63,18 +61,18 @@ public class PullClient {
     }
 
     /**
-     * Find the last survey in the server for that orgunit and program (given a tabgroup) in the last month from now.
+     * Find the last survey in the server for that orgunit and program (given a program) in the last month from now.
      *
      * @param orgUnit
-     * @param tabGroup
+     * @param program
      * @return
      */
-    public Event getLastEventInServerWith(OrgUnit orgUnit, TabGroup tabGroup){
+    public Event getLastEventInServerWith(OrgUnit orgUnit, Program program){
         Event  lastEventInServer=null;
         Date oneMonthAgo = getOneMonthAgo();
 
-        //Lets for a last event with that orgunit/tabgroup
-        String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), tabGroup.getProgram().getUid(), oneMonthAgo);
+        //Lets for a last event with that orgunit/program
+        String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), program.getUid(), oneMonthAgo);
         try {
             JSONObject response = networkUtils.getData(data);
             JsonNode jsonNode=networkUtils.toJsonNode(response);
@@ -97,7 +95,7 @@ public class PullClient {
                 }
             }
         }catch (Exception ex){
-            Log.e(TAG,String.format("Cannot read last event from server with orgunit:%s | program:%s",orgUnit.getUid(),tabGroup.getProgram().getUid()));
+            Log.e(TAG,String.format("Cannot read last event from server with orgunit:%s | program:%s",orgUnit.getUid(),program.getUid()));
             ex.printStackTrace();
         }
 

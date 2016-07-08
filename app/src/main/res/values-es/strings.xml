@@ -250,4 +250,7 @@
     <string name="number_10">10</string>
     <string name="number_11">11</string>
     <string name="number_12">12</string>
+    <string name="error_message_push">El evento con UID: %s. fue subido sin fecha. Por favor, póngase en contacto con el administrador. </string>
+
+    <string name="clear">Limpiar</string>
 </resources>
