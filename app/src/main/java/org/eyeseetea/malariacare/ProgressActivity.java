@@ -236,6 +236,7 @@ public class ProgressActivity extends Activity {
      * @param msg
      */
     private void showException(String msg){
+        Log.d(TAG,"Error "+msg);
         final boolean isAPush=isAPush();
         String title=getDialogTitle(isAPush);
 
@@ -350,7 +351,11 @@ public class ProgressActivity extends Activity {
                         }
                     }
                 }).create();
-            alertDialog.show();
+            try {
+                //fixme after the first pull if the application is not closed the push crash here.
+                alertDialog.show();
+            }catch (RuntimeException e){e.printStackTrace();
+            Log.d(TAG,PreferencesState.getInstance().getContext().getResources().getString(msg)+"");}
         }
     }
 
