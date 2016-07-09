@@ -129,11 +129,19 @@ public class PushController {
             Log.d(TAG, "Preparing survey for pushing...");
 
             PopulateDB.wipeSDKData();
-            if(isSending)
+            //Locks before convertion to sdk
+            isSending=surveys.size()>0;
+            if(!isSending)
                 return false;
-            convertToSDK(surveys);
-            isSending=EventExtended.getAllEvents().size()>0;
 
+            convertToSDK(surveys);
+
+            //Check if had events to push to still locked or exit
+            int numberOfEvents=EventExtended.getAllEvents().size();
+            isSending=numberOfEvents>0;
+            Log.d(TAG, "Preparing for pushing... "+ numberOfEvents + " events");
+            if(!isSending)
+                return false;
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
