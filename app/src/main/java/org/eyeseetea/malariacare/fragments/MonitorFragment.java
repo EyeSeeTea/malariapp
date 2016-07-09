@@ -40,13 +40,14 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
-import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.PieProgramBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -152,10 +153,21 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
         HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
         if(data!=null) {
             surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
+            //Remove the bad surveys.
+            Iterator<Survey> iter = surveysForGraphic.iterator();
+            while(iter.hasNext()){
+                Survey survey = iter.next();
+                if(!survey.hasMainScore())
+                {
+                    iter.remove();
+                }
+            }
+
             programs = data.get(SurveyService.PREPARE_PROGRAMS);
-            reloadSurveys(surveysForGraphic, programs);
+            reloadSurveys(surveysForGraphic,programs);
         }
-    }
+
+}
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
@@ -189,10 +201,10 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
                 new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Add pie charts
-                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                new PieProgramBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Render the table and pie.
-                PieTabGroupBuilder.showPieTab(view);
+                PieProgramBuilder.showPieTab(view);
                 FacilityTableBuilder.showFacilities(view);
 
                 //Set the colors of red/green/yellow pie and table

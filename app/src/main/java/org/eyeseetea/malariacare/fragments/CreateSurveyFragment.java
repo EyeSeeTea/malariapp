@@ -46,15 +46,10 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.general.TabGroupArrayAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
@@ -79,6 +74,10 @@ public class CreateSurveyFragment extends Fragment {
     private String TOKEN = ";";
     private String orgUnitStorage = "";
 
+    public void init() {
+        loadHierarchy=true;
+    }
+
     static class ViewHolder {
         public View component;
     }
@@ -88,8 +87,6 @@ public class CreateSurveyFragment extends Fragment {
     private SurveyReceiver surveyReceiver;
 
     private Spinner programView;
-    private View tabGroupContainer;
-    private Spinner tabGroupView;
 
     //Loaded one time from service
     List<Program> allProgramList;
@@ -98,7 +95,6 @@ public class CreateSurveyFragment extends Fragment {
 
     private OrgUnit orgUnitDefaultOption;
     private Program programDefaultOption;
-    private TabGroup tabGroupDefaultOption;
 
     private OrgUnitHierarchy orgUnitHierarchy;
 
@@ -106,6 +102,9 @@ public class CreateSurveyFragment extends Fragment {
     LinearLayout llLayout;
 
     DashboardActivity dashboardActivity;
+
+    //Flag used to control the layout inflating is only in the creation of the fragment.
+    private boolean loadHierarchy=true;
 
     public CreateSurveyFragment() {
     }
@@ -149,6 +148,7 @@ public class CreateSurveyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+        init();
         if (container == null) {
             return null;
         }
@@ -183,7 +183,6 @@ public class CreateSurveyFragment extends Fragment {
         //Create default options
         orgUnitDefaultOption = new OrgUnit(Constants.DEFAULT_SELECT_OPTION);
         programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
-        tabGroupDefaultOption = new TabGroup(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
         ViewHolder viewHolder = new ViewHolder();
@@ -233,11 +232,7 @@ public class CreateSurveyFragment extends Fragment {
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
-        programView.setOnItemSelectedListener(new ProgramSpinnerListener());
 
-        //Create Tab Group View DDL. Not populated and not visible.
-        tabGroupContainer =  llLayout.findViewById(R.id.tab_group_container);
-        tabGroupView = (Spinner)  llLayout.findViewById(R.id.tab_group);
         //set the first orgUnit saved
         orgUnitStorage =orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
 
@@ -245,6 +240,7 @@ public class CreateSurveyFragment extends Fragment {
         if(!orgUnitStorage.equals("")){
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnit.getOrgUnit(orgUnitStorage).getName()));
         }
+        loadHierarchy=false;
     }
 
 
@@ -274,9 +270,6 @@ public class CreateSurveyFragment extends Fragment {
             if(objectRow instanceof OrgUnit) {
                 value= ((OrgUnit) objectRow).getName();
             }
-            if(objectRow instanceof TabGroup) {
-                value= ((TabGroup) objectRow).getName();
-            }
             if (value.equalsIgnoreCase(myString)){
                 index = i;
                 break;
@@ -289,8 +282,7 @@ public class CreateSurveyFragment extends Fragment {
         try {
             boolean isEverythingFilled = (!programView.getSelectedItem().equals(programDefaultOption));
             boolean isProgramInOrgUnit=orgUnitHierarchy.getLastSelected().getPrograms().contains((Program)programView.getSelectedItem());
-            boolean isTabGroupFilled = !tabGroupView.getSelectedItem().equals(tabGroupDefaultOption);
-            return isEverythingFilled && isTabGroupFilled && isProgramInOrgUnit;
+            return isEverythingFilled && isProgramInOrgUnit;
         }catch(NullPointerException ex){
             return false;
         }
@@ -299,8 +291,9 @@ public class CreateSurveyFragment extends Fragment {
     private boolean doesSurveyInProgressExist() {
         // Read Selected Items
         OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
-        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
-        Survey survey = Survey.getInProgressSurveys(orgUnit, tabGroup);
+        Program program = (Program) programView.getSelectedItem();
+
+        Survey survey = Survey.getInProgressSurveys(orgUnit, program);
         return (survey != null);
     }
 
@@ -337,57 +330,16 @@ public class CreateSurveyFragment extends Fragment {
         //Get selected orgUnit
         OrgUnit orgUnit = orgUnitHierarchy.getLastSelected();
 
-        //Get selected tabGroup
-        TabGroup tabGroup = (TabGroup) tabGroupView.getSelectedItem();
+        //Get selected program
+        Program program = (Program)programView.getSelectedItem();
 
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();
 
-        dashboardActivity.onCreateSurvey(orgUnit,tabGroup);
-    }
+        //save the program in the preferents
+        setLastSelectedProgram(program.getUid());
 
-    private class ProgramSpinnerListener implements AdapterView.OnItemSelectedListener {
-
-        public ProgramSpinnerListener() {
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Program selectedProgram = (Program) programView.getSelectedItem();
-            List<TabGroup> tabGroupList = selectedProgram.getTabGroups();
-            //remove null tabgrouplist
-            if (tabGroupList.size() > 1) {
-                for (int i = tabGroupList.size() - 1; i >= 0; i--) {
-                    if (tabGroupList.get(i).getName() == null) {
-                        tabGroupList.remove(i);
-                    }
-                }
-            }
-            if (tabGroupList.size() > 1){
-                // Populate tab group spinner
-                tabGroupList.add(0, tabGroupDefaultOption);
-                tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
-                //Show tab group select
-                tabGroupContainer.setVisibility(View.VISIBLE);
-            }
-            else{
-                if (tabGroupList.size() == 1){
-                    tabGroupList.add(0, tabGroupDefaultOption);
-                    tabGroupView.setAdapter(new TabGroupArrayAdapter( getActivity().getApplicationContext(), tabGroupList));
-                    tabGroupView.setSelection(1);
-                } else {
-                    // Select single tab group
-                    tabGroupView.setSelection(0);
-                }
-                //Hide tab group selector
-               tabGroupContainer.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
+        dashboardActivity.onCreateSurvey(orgUnit,program);
     }
 
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -410,7 +362,7 @@ public class CreateSurveyFragment extends Fragment {
 
 
             // Populate child view. If it exists in org unit map, grab it; otherwise inflate it
-            List<OrgUnit> orgUnitList = selectedOrgUnit.getChildren();
+            List<OrgUnit> orgUnitList = selectedOrgUnit.getChildrenOrderedByName();
 
             orgUnitHierarchy.addOrgUnit(selectedOrgUnit);
             if(orgUnitHierarchy.getLastSelected()!=null)
@@ -432,7 +384,7 @@ public class CreateSurveyFragment extends Fragment {
                     ViewHolder subViewHolder = new ViewHolder();
                     subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
 
-                    //Show tab group select and populate tab group spinner
+                    //Show  and populate orgunits spinner
                     if(orgUnitList.get(0).getUid()!=null){
                         orgUnitDefaultOption.setOrgUnitLevel(orgUnitList.get(0).getOrgUnitLevel());
                         orgUnitList.add(0, orgUnitDefaultOption);
@@ -479,9 +431,7 @@ public class CreateSurveyFragment extends Fragment {
             for (Map.Entry<OrgUnitLevel, View> entry : orgUnitHierarchyView.entrySet()) {
                 if (setInvisible) {
                     View childView = entry.getValue();
-                    // Select single tab group
                     ((Spinner) childView.findViewById(R.id.org_unit_item_spinner)).setSelection(0, click);
-                    // Hide tab group tab selector
                     childView.setVisibility(View.GONE);
                 }
                 if (entry.getKey().equals((viewHolder.component).getTag())) {
@@ -520,7 +470,10 @@ public class CreateSurveyFragment extends Fragment {
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
-        programView.setOnItemSelectedListener(new ProgramSpinnerListener());
+        Program lastSelectedProgram= getLastSelectedProgram();
+        if(lastSelectedProgram!=null){
+            programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+        }
         return initProgram;
     }
 
@@ -544,6 +497,22 @@ public class CreateSurveyFragment extends Fragment {
         SharedPreferences sharedPreferences = getSharedPreferences();
         return sharedPreferences.edit();
     }
+
+    //Gets the default program/
+    private Program getLastSelectedProgram() {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        Program lastSelectedProgram = Program.getProgram(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_program), ""));
+        return lastSelectedProgram;
+    }
+
+
+    //Sets the default program
+    private void setLastSelectedProgram(String uid) {
+            SharedPreferences.Editor editor = getEditor();
+            editor.putString(getString(R.string.default_program), uid);
+            editor.commit();
+    }
+
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
@@ -578,13 +547,14 @@ public class CreateSurveyFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-                orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
-                allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
-                create();
-            }
+            if(loadHierarchy)
+                if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
+                    HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
+                    orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
+                    orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
+                    allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
+                    create();
+                }
         }
     }
 

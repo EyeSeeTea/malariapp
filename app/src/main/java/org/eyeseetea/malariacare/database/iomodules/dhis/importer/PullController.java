@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -39,6 +41,8 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -54,6 +58,7 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
+import org.hisp.dhis.android.sdk.persistence.preferences.AppPreferences;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import org.hisp.dhis.android.sdk.utils.log.LogMessage;
@@ -156,7 +161,7 @@ public class PullController {
             Calendar month = Calendar.getInstance();
             month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
             TrackerController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
-
+            MetaDataController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
             PopulateDB.wipeSDKData();
@@ -291,9 +296,9 @@ public class PullController {
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        //Convert Programs, Tabgroups, Tabs
+        //Convert Programs, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
-        Log.i(TAG, "Converting programs, tabgroups and tabs...");
+        Log.i(TAG, "Converting programs and tabs...");
         List<String> assignedProgramsIDs = MetaDataController.getAssignedPrograms();
         for (String assignedProgramID : assignedProgramsIDs) {
             ProgramExtended programExtended = new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
@@ -330,18 +335,22 @@ public class PullController {
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
             List<ProgramStage> programStages = program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
-                    if (programStageDataElement.getDataElement().getUid() != null) {
+                    DataElement dataElement =programStageDataElement.getDataElement();
+                    if (dataElement!=null && dataElement.getUid() != null) {
                         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-                        dataElements.add(programStageDataElement.getDataElement());
+                        dataElements.add(dataElement);
                     }
                 }
             }
+            Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
@@ -372,19 +381,25 @@ public class PullController {
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
+        int i=0;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
+                if (++i%50==0)
+                    postProgress(context.getString(R.string.progress_pull_question) + String.format(" %s", i));
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
+                dataElementExtended.setProgramUid(programUid);
                 dataElementExtended.accept(converter);
             }
         }
+        new SaveModelTransaction<>(ProcessModelInfo.withModels(converter.getQuestions())).onExecute();
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
+        postProgress(context.getString(R.string.progress_pull_relationships));
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
@@ -392,6 +407,7 @@ public class PullController {
             for (DataElement dataElement : sortDataElements) {
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
+                dataElementExtended.setProgramUid(programUid);
                 converter.buildRelations(dataElementExtended);
             }
         }
@@ -447,6 +463,8 @@ public class PullController {
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                    if(event.getEventDate()==null || event.getEventDate().equals(""))
+                        break;
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }

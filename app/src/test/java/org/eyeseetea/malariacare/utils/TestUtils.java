@@ -24,19 +24,10 @@ import com.opencsv.CSVReader;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,7 +61,6 @@ public class TestUtils {
     public static final String QUESTIONS2_CSV = "Questions2.csv";
 
     public static Map<Integer, Program> programs;
-    public static Map<Integer, TabGroup> tabGroups;
     public static Map<Integer, Tab> tabs;
     public static Map<Integer, Header> headers;
     public static Map<Integer, Question> questions;
@@ -97,23 +87,14 @@ public class TestUtils {
                             program.setName(line[2]);
                             programs.put(Integer.valueOf(line[0]),program);
                             break;
-                        case TAB_GROUPS_CSV:
-                            TabGroup tabGroup = new TabGroup();
-                            tabGroup.setId_tab_group(Long.parseLong(line[0]));
-                            tabGroup.setName(line[1]);
-                            tabGroup.setProgram(programs.get(Integer.valueOf(line[2])));
-                            tabGroups.put(Integer.valueOf(line[0]),tabGroup);
-                            break;
                         case TABS_CSV:
                             Tab tab = new Tab();
                             tab.setId_tab(Long.parseLong(line[0]));
                             tab.setName(line[1]);
                             tab.setOrder_pos(Integer.valueOf(line[2]));
                             tab.setType(Integer.valueOf(line[4]));
-                            TabGroup tabgroup=tabGroups.get(Integer.valueOf(line[3]));
-                            tabgroup.addTab(tab);
-                            tabGroups.put(Integer.valueOf(line[3]),tabgroup);
-                            tab.setTabGroup(tabGroups.get(Integer.valueOf(line[3])));
+                            tab.setProgram(TestUtils.programs.get(Integer.valueOf(line[3])));
+                            tab.setProgram(TestUtils.programs.get(Integer.valueOf(line[3])).getId_program());
                             tabs.put(Integer.valueOf(line[0]),tab);
                             break;
                         case HEADERS_CSV:
@@ -199,12 +180,15 @@ public class TestUtils {
             }
         }
 
+            for (int d = 1; d < tabs.size(); d++) {
+                    programs.get(1).addTab(tabs.get(d));
+
+        }
     }
 
 
     protected static void initMaps(){
         programs = new LinkedHashMap<>();
-        tabGroups = new LinkedHashMap<>();
         tabs = new LinkedHashMap<>();
         headers = new LinkedHashMap<>();
         questions = new LinkedHashMap<>();
@@ -293,6 +277,10 @@ public class TestUtils {
                     }
                 }
             }
+
+            for (int d = 1; d < tabs.size(); d++)
+                programs.get(1).addTab(tabs.get(d));
+
         }
     }
 }

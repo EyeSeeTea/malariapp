@@ -24,7 +24,6 @@ import android.util.Log;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -64,8 +63,7 @@ public class SurveyPlanner {
         survey.setOrgUnit(orgUnit);
         survey.setUser(Session.getUser());
 
-        List<TabGroup> tabGroups = program.getTabGroups();
-        survey.setTabGroup(tabGroups.get(0));
+        survey.setProgram(program);
         survey.save();
 
         return survey;
@@ -83,7 +81,7 @@ public class SurveyPlanner {
         newSurvey.setOrgUnit(oldSurvey.getOrgUnit());
         newSurvey.setUser(oldSurvey.getUser());
 
-        newSurvey.setTabGroup(oldSurvey.getTabGroup());
+        newSurvey.setProgram(oldSurvey.getProgram());
         newSurvey.setScheduleDate(oldSurvey.getScheduleDate());
         newSurvey.setMainScore(oldSurvey.getMainScore());
         oldSurvey.setSurveyScheduleToSurvey(newSurvey);
@@ -106,7 +104,7 @@ public class SurveyPlanner {
         plannedSurvey.setStatus(Constants.SURVEY_PLANNED);
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
-        plannedSurvey.setTabGroup(survey.getTabGroup());
+        plannedSurvey.setProgram(survey.getProgram());
         plannedSurvey.setMainScore(survey.getMainScore());
         plannedSurvey.setScheduleDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
@@ -118,17 +116,17 @@ public class SurveyPlanner {
     }
 
     /**
-     * Starts a planned survey with the given orgUnit and tabGroup
+     * Starts a planned survey with the given orgUnit and program
      * @param orgUnit
-     * @param tabGroup
+     * @param program
      * @return
      */
-    public Survey startSurvey(OrgUnit orgUnit,TabGroup tabGroup){
+    public Survey startSurvey(OrgUnit orgUnit,Program program){
         //Find planned survey
-        Survey survey = Survey.findByOrgUnitAndTabGroup(orgUnit,tabGroup);
+        Survey survey = Survey.findByOrgUnitAndProgram(orgUnit,program);
         if(survey==null){
             survey = new Survey();
-            survey.setTabGroup(tabGroup);
+            survey.setProgram(program);
             survey.setOrgUnit(orgUnit.getId_org_unit());
         }
         return startSurvey(survey);
@@ -140,7 +138,9 @@ public class SurveyPlanner {
      * @return
      */
     public Survey startSurvey(Survey survey){
-        survey.setCreationDate(new Date());
+        Date now=new Date();
+        survey.setCreationDate(now);
+        survey.setUploadDate(now);
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
         survey.setUser(Session.getUser());
         survey.save();
@@ -156,7 +156,7 @@ public class SurveyPlanner {
      */
     public void buildNext(){
         //Plan a copy according to that survey
-        for(Survey survey:Survey.listLastByOrgUnitTabGroup()){
+        for(Survey survey:Survey.listLastByOrgUnitProgram()){
             buildNext(survey);
         }
 

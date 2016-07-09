@@ -53,19 +53,14 @@
     <dimen name="extra_large_text_size">34sp</dimen>
     <dimen name="extra_xlarge_text_size">36sp</dimen>
 
-    <!-- spinner padding -->
-    <dimen name="create_survey_spinner_padding">2dip</dimen>
     <!-- survey row padding -->
     <dimen name="survey_row_marging">14dip</dimen>
     <!-- title in createsurveyfragment marging-->
     <dimen name="create_survey_title_top_marging">20dip</dimen>
-    <!-- Float Button default -->
-    <dimen name="float_button_def">24sp</dimen>
-    <!-- Text Card default -->
-    <dimen name="text_card_def">24sp</dimen>
     <!-- left padding for button in feedbackfragment !-->
     <dimen name="margin_lateral_feedback_radiobutton">15dip</dimen>
     <dimen name="margin_feedback_top_bottom_radiobutton">8dip</dimen>
 
-
+    <!--Text size for age and phone-->
+    <dimen name="input_number_edit_text">32dp</dimen>
 </resources>

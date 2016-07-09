@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app_name" translatable="false">QA App</string>
+    <string name="developers" translatable="false">EyeSeeTea LTD</string>
+    <string name="empty_string" translatable="false"/>
+    <string name="ok" translatable="false">Ok</string>
+    <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
+
+    <string name="number_zero" translatable="false">0</string>
+    <string name="number_zero_percentage" translatable="false">0 % </string>
+
+    <string name="custom_info_one" translatable="false">1</string>
+
+    <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
+    <string name="light_font" translatable="false">Roboto-Light.ttf</string>
+    <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
+    <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
+    <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
+
+    <string name="font_size_level0" translatable="false">xsmall</string>
+    <string name="font_size_level1" translatable="false">small</string>
+    <string name="font_size_level2" translatable="false">medium</string>
+    <string name="font_size_level3" translatable="false">large</string>
+    <string name="font_size_level4" translatable="false">xlarge</string>
+    <string name="font_size_system" translatable="false">system</string>
+
+    <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
+    <item name="customize_fonts" type="string" translatable="false">customize_fonts</item>
+    <item name="font_sizes" type="string" translatable="false">font_sizes</item>
+    <item name="eula_accepted" type="string" translatable="false">eula_accepted</item>
+    <item name="dhis_url" type="string" translatable="false">dhis_url</item>
+    <item name="dhis_user" type="string" translatable="false">dhis_user</item>
+    <item name="dhis_password" type="string" translatable="false">dhis_password</item>
+    <item name="dhis_max_items" type="string" translatable="false">dhis_max_items</item>
+    <item name="dhis_default_max_items" type="string" translatable="false">30</item>
+    <item name="location_required" type="string" translatable="false">location_required</item>
+    <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
+    <item name="ask_modify_or_create" type="string" translatable="false">ask_modify_or_create</item>
+    <item name="default_tabGroup" type="string" translatable="false">default_tabGroup</item>
+    <item name="default_program" type="string" translatable="false">default_program</item>
+    <item name="default_orgUnit" type="string" translatable="false">default_orgUnit</item>
+    <item name="default_orgUnits" type="string" translatable="false">default_orgUnits</item>
+
+    <string name="tab_tag_plan" translatable="false">tab_plan</string>
+    <string name="tab_tag_assess" translatable="false">tab_assess</string>
+    <string name="tab_tag_improve" translatable="false">tab_improve</string>
+    <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
+    <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
+
+    <string name="forward_order_code" translatable="false">_FWR-sort</string>
+    <string name="forward_order_value" translatable="false">9999</string>
+
+    <string name="created_on_code" translatable="false">_CreatedOn</string>
+    <string name="upload_on_code" translatable="false">_UploadedOn</string>
+    <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
+    <string name="push_device_code" translatable="false">_PushDevice</string>
+    <string name="overall_score_code" translatable="false">_Overall Score</string>
+    <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
+
+    <string name="option" translatable="false">option</string>
+</resources>

@@ -33,11 +33,9 @@ import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -45,14 +43,9 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
-import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
-
-import java.util.Date;
 import java.util.List;
 
 
@@ -62,7 +55,7 @@ public class DashboardActivity extends BaseActivity{
     private boolean reloadOnResume=true;
     DashboardController dashboardController;
     static Handler handler;
-    public static Activity dashboardActivity;
+    public static DashboardActivity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +76,8 @@ public class DashboardActivity extends BaseActivity{
         //delegate modules initialization
         dashboardController.onCreate(this,savedInstanceState);
 
-        setAlarm();
+        //inits autopush alarm
+        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 
     @Override
@@ -198,9 +192,13 @@ public class DashboardActivity extends BaseActivity{
             reloadOnResume=true;
             return;
         }
-        Intent surveysIntent=new Intent(this, SurveyService.class);
+        reloadDashboard();
+    }
+
+    public static void reloadDashboard(){
+        Intent surveysIntent=new Intent(dashboardActivity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        this.startService(surveysIntent);
+        dashboardActivity.startService(surveysIntent);
     }
 
     /**
@@ -272,65 +270,27 @@ public class DashboardActivity extends BaseActivity{
     }
 
     /**
-     * A new survey starts to be edited
-     * @param survey
-     */
-    public void onCreateSurvey(Survey survey) {
-        dashboardController.onSurveySelected(survey);
-    }
-
-    /**
      * Moving into createSurvey fragment
      * @param view
      */
     public void onNewSurvey(View view){
         dashboardController.onNewSurvey();
     }
-    /**
-     * Modify survey from CreateSurveyFragment
-     * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
-     */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
-        Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
-        if(survey==null){
-            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            //if the event not is fake app event set the real event info in the survey:
-        }
-        if(!eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
-            survey.setCompletionDate(eventInfo.getEventDate());
-        }
-        survey.setEventUid(eventInfo.getEventUid());
-        //Upgrade the uploaded date
-        survey.setUploadDate(new Date());
-        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurvey(survey);
-        prepareLocationListener(survey);
-        dashboardController.onSurveySelected(survey);
-    }
 
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
-        variantSpecificUtils.createNewSurvey(orgUnit, tabGroup);
+    public void onCreateSurvey(final OrgUnit orgUnit,final Program program) {
+        createNewSurvey(orgUnit,program);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
-        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        Session.setSurvey(survey);
+    public void createNewSurvey(OrgUnit orgUnit, Program program){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
-    }
-
-    /**
-     * The alarm is always set in applicatin init.
-     */
-    public void setAlarm() {
-        AlarmPushReceiver.getInstance().setPushAlarm(this);
     }
 
     //Show dialog exception from class without activity.

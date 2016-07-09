@@ -24,8 +24,8 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class FacilityTableBuilder {
      */
     private List<Survey> surveys;
 
-    private Map<TabGroup,FacilityTableData> facilityTableDataMap;
+    private Map<Program,FacilityTableData> facilityTableDataMap;
 
 
     /**
@@ -75,10 +75,10 @@ public class FacilityTableBuilder {
         //Build tables
         build(surveys);
         //Inyect tables in view
-        for(Map.Entry<TabGroup,FacilityTableData> tableEntry:facilityTableDataMap.entrySet()){
-            TabGroup tabGroup=tableEntry.getKey();
+        for(Map.Entry<Program,FacilityTableData> tableEntry:facilityTableDataMap.entrySet()){
+            Program program=tableEntry.getKey();
             FacilityTableData facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, tabGroup, facilityTableData);
+            inyectDataInChart(webView, program, facilityTableData);
         }
 
     }
@@ -90,16 +90,16 @@ public class FacilityTableBuilder {
      */
     private void build(List<Survey> surveys){
         for(Survey survey:surveys){
-            //Current TabGroup
-            TabGroup tabGroup=survey.getTabGroup();
+            //Current program
+            Program program=survey.getProgram();
 
             //Get right table
-            FacilityTableData facilityTableData=facilityTableDataMap.get(tabGroup);
+            FacilityTableData facilityTableData=facilityTableDataMap.get(program);
 
             //Init entry first time of a tabgroup
             if(facilityTableData==null){
-                facilityTableData=new FacilityTableData(tabGroup);
-                facilityTableDataMap.put(survey.getTabGroup(),facilityTableData);
+                facilityTableData=new FacilityTableData(program);
+                facilityTableDataMap.put(program,facilityTableData);
             }
 
             //Add survey to that table
@@ -107,12 +107,12 @@ public class FacilityTableBuilder {
         }
     }
 
-    private void inyectDataInChart(WebView webView, TabGroup tabGroup,FacilityTableData facilityTableData) {
+    private void inyectDataInChart(WebView webView, Program program,FacilityTableData facilityTableData) {
         //Build JSON data
         String json=facilityTableData.getAsJSON();
 
         //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,tabGroup.getId_tab_group(),json);
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,program.getId_program(),json);
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
 

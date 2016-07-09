@@ -19,10 +19,8 @@
   -->
 
 <resources>
-  <string name="send">Envoyer</string>
   <string name="create_info_ok">Commencer</string>
-  <string name="assessment_sent_title_header">Evaluation(s) Envoyée(s)</string>
+  <string name="assessment_sent_title_header">Évaluation complète(s)</string>
   <string name="dialog_info_push_empty_survey">Enquêtes vides ne peuvent pas être poussés</string>
-  <string name="dialog_info_push_not_imported">Le serveur n\'a pas pu importer les donnés. Sil vous plaît, veuillez notifier au administrateur.</string>
   <string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionner une unité d'organisation finale"</string>
 </resources>

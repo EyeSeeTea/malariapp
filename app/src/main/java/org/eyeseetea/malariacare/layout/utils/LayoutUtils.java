@@ -134,12 +134,12 @@ public class LayoutUtils {
         String subtitle="";
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         String appNameColorString = String.format("%X", appNameColor).substring(2);
-        Program program = survey.getTabGroup().getProgram();
+        Program program = survey.getProgram();
         if(survey.getOrgUnit().getName()!=null) {
             title = survey.getOrgUnit().getName();
         }
         if(program.getName()!=null) {
-            subtitle = program.getName()+":"+survey.getTabGroup().getName();
+            subtitle = program.getName();
         }
         if(PreferencesState.getInstance().isVerticalDashboard()) {
             setActionbarVerticalSurvey(dashboardActivity,title, subtitle);

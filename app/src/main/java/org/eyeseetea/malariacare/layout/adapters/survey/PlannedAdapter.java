@@ -45,7 +45,7 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -272,7 +272,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //ScheduledDate
         textView=(TextView)rowLayout.findViewById(R.id.planning_survey_schedule_date);
-        textView.setText(Utils.formatDate(plannedSurvey.getNextAssesment()));
+        textView.setText(AUtils.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey()));
 
         //background color
@@ -330,7 +330,7 @@ public class PlannedAdapter extends BaseAdapter {
 //                survey=SurveyPlanner.getInstance().startSurvey(survey);
 //            }
 //
-//            Session.setSurvey(survey);
+//            Session.setSurveyByModule(survey);
 //            activity.prepareLocationListener(survey);
 //            //FIXME
 //
@@ -369,7 +369,7 @@ public class PlannedAdapter extends BaseAdapter {
 
             //Set current date
             final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
-            scheduleDatePickerButton.setText(Utils.formatDate(survey.getScheduleDate()));
+            scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduleDate()));
             //On Click open an specific DatePickerDialog
             scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -386,7 +386,7 @@ public class PlannedAdapter extends BaseAdapter {
                             Calendar newCalendar = Calendar.getInstance();
                             newCalendar.set(year, monthOfYear, dayOfMonth);
                             newScheduledDate = newCalendar.getTime();
-                            scheduleDatePickerButton.setText(Utils.formatDate(newScheduledDate));
+                            scheduleDatePickerButton.setText(AUtils.formatDate(newScheduledDate));
                         }
 
                     },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();

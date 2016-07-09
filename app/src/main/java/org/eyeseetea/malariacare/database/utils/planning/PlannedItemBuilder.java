@@ -236,12 +236,12 @@ public class PlannedItemBuilder {
      * @param survey
      */
     private void annotateSurvey(Survey survey){
-        if(survey.getTabGroup()!=null) {
-            String key= getSurveyKey(survey.getOrgUnit(), survey.getTabGroup().getProgram());
+        if(survey.getProgram()!=null) {
+            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
             surveyMap.put(key,survey);
         }
         else{
-            Log.d(TAG, "Error tabgroup null in surevy id: " + survey.getId_survey());
+            Log.d(TAG, "Error program null in survey id: " + survey.getId_survey());
         }
     }
 

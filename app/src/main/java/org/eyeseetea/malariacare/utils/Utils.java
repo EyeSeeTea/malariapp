@@ -74,11 +74,11 @@ public class Utils {
         return result;
     }
 
-    public static List preloadTabItems(Tab tab){
+    public static List preloadTabItems(Tab tab, String module){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup(),null);
+            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram(),null);
 
         else{
 

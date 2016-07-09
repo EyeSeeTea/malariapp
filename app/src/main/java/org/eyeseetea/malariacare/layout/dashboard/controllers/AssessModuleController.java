@@ -76,7 +76,7 @@ public class AssessModuleController extends ModuleController {
             return;
         }
 
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
@@ -108,23 +108,27 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onSurveySelected(Survey survey){
+
+        Session.setSurveyByModule(survey,getSimpleName());
+
         //Planned surveys needs to be started
         if(survey.getStatus()== Constants.SURVEY_PLANNED){
             survey= SurveyPlanner.getInstance().startSurvey(survey);
         }
 
         //Set the survey into the session
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,getSimpleName());
 
-        //Start looking for geo
-        dashboardActivity.prepareLocationListener(survey);
-
-        //Prepare survey fragment
-        if(surveyFragment==null) {
-            surveyFragment = SurveyFragment.newInstance(1);
+        if(!survey.isReadOnly()) {
+            //Start looking for geo if the survey is not sent/completed
+            dashboardActivity.prepareLocationListener(survey);
         }
+        //Prepare survey fragment
+        surveyFragment = SurveyFragment.newInstance(1);
+
+        surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, Session.getSurvey());
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
     public void onMarkAsCompleted(Survey survey){
@@ -135,12 +139,7 @@ public class AssessModuleController extends ModuleController {
             alertCompulsoryQuestionIncompleted();
         }
 
-        //Change state
-        survey.setCompleteSurveyState();
-        //Remove from list
-        ((DashboardUnsentFragment)fragment).removeSurveyFromAdapter(survey);
-        //Reload sent surveys
-        ((DashboardUnsentFragment)fragment).reloadToSend();
+        alertAreYouSureYouWantToComplete(survey);
     }
 
     public void onNewSurvey(){
@@ -160,7 +159,7 @@ public class AssessModuleController extends ModuleController {
      * It is called when the user press back in a surveyFragment
      */
     private void onSurveyBackPressed() {
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -179,7 +178,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //In survey -> custom action bar
-        Survey survey = Session.getSurvey();
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         String appNameColorString = getAppNameColorString();
         String title=getActionBarTitleBySurvey(survey);
         String subtitle=getActionBarSubTitleBySurvey(survey);
@@ -224,7 +223,7 @@ public class AssessModuleController extends ModuleController {
                 .setTitle(R.string.survey_title_exit)
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
-                Survey survey = Session.getSurvey();
+                Survey survey = Session.getSurveyByModule(getSimpleName());
                 survey.updateSurveyStatus();
                 dashboardController.setNavigatingBackwards(true);
                 closeSurveyFragment();
@@ -247,8 +246,8 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurvey();
-                        survey.setCompleteSurveyState();
+                        Survey survey = Session.getSurveyByModule(getSimpleName());
+                        survey.setCompleteSurveyState(getSimpleName());
                         alertOnComplete(survey);
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
@@ -264,7 +263,6 @@ public class AssessModuleController extends ModuleController {
         //Clear survey fragment
         SurveyFragment surveyFragment =  getSurveyFragment();
         surveyFragment.unregisterReceiver();
-
         //Reload Assess fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
@@ -286,11 +284,48 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
+    private void alertAreYouSureYouWantToComplete(final Survey survey){
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle(null)
+                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
+                .setPositiveButton((R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Change state
+                        survey.setCompleteSurveyState(getSimpleName());
+                        if(!survey.isInProgress()){
+                            alertOnCompleteGoToFeedback(survey);
+                        }
+                        //Remove from list
+                        ((DashboardUnsentFragment)fragment).removeSurveyFromAdapter(survey);
+                        //Reload sent surveys
+                        ((DashboardUnsentFragment)fragment).reloadToSend();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(true)
+                .create().show();
+    }
+
     private void alertOnComplete(Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, null)
+                .setCancelable(true)
+                .create().show();
+    }
+
+    public void alertOnCompleteGoToFeedback(final Survey survey) {
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle(null)
+                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete), survey.getProgram().getName()))
+                .setNeutralButton(android.R.string.ok, null)
+                .setPositiveButton((R.string.go_to_feedback), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Move to feedbackfragment
+                        dashboardActivity.onFeedbackSelected(survey);
+                    }
+                })
                 .setCancelable(true)
                 .create().show();
     }

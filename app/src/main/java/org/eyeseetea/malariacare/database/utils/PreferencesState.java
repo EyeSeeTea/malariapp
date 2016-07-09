@@ -28,8 +28,10 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
+import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -245,10 +247,7 @@ public class PreferencesState {
      * @return
      */
     public Boolean getPullFromServer() {
-        if(pullFromServer==null){
-            pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
-        }
-        return pullFromServer;
+        return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
     }
 
     /**
@@ -259,6 +258,36 @@ public class PreferencesState {
         return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
     }
 
+    /**
+     * Tells if the application is filter for last org unit
+     * @return
+     */
+    public Boolean isLastForOrgUnit() {
+        return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application is none filter
+     * @return
+     */
+    public Boolean isNoneFilter() {
+        return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application use the Automatic  adapter
+     * @return
+     */
+    public Boolean isAutomaticAdapter() {
+        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
+    }
+    /**
+     * Tells if the application use the Dynamic adapter
+     * @return
+     */
+    public Boolean isDynamicAdapter() {
+        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
+    }
     public Class getMainActivity(){
         if(getPullFromServer()){
             return ProgressActivity.class;
