@@ -91,7 +91,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
             surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         }
 
-        String surveyDescription = "- " + survey.getTabGroup().getProgram().getName();
+        String surveyDescription = "- " + survey.getTabGroup().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
