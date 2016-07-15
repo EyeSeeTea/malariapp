@@ -39,9 +39,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -279,13 +277,15 @@ public class AutoTabAdapter extends ATabAdapter {
                 ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question, module));
 
                 List<Float> numdenum = ScoreRegister.getNumDenum(question, idSurvey, module);
+                viewHolder.denum.setText(getContext().getString(R.string.number_zero));
+                viewHolder.num.setText(getContext().getString(R.string.number_zero));
                 if (numdenum != null) {
-                    viewHolder.num.setText(Float.toString(numdenum.get(0)));
-                    viewHolder.denum.setText(Float.toString(numdenum.get(1)));
+                    if(numdenum.get(0)!=null) {
+                        viewHolder.num.setText(Float.toString(numdenum.get(0)));
+                        viewHolder.denum.setText(Float.toString(numdenum.get(1)));
+                    }
                 } else {
-                    viewHolder.num.setText(getContext().getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question,idSurvey)));
-                    ((Spinner) viewHolder.component).setSelection(0);
+                ((Spinner) viewHolder.component).setSelection(0);
                 }
 
                 break;
@@ -294,17 +294,15 @@ public class AutoTabAdapter extends ATabAdapter {
                 //FIXME: it is almost the same as the previous case
                 Value value = question.getValueBySession(module);
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question, idSurvey, module);
-                if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
+                if (numdenumradiobutton == null) {// FIXME: this avoid app crash when onResume
                     break;
                 }
+                viewHolder.denum.setText(numdenumradiobutton.get(1).toString());
+                viewHolder.num.setText(getContext().getString(R.string.number_zero));
+
                 if (value != null) {
                     ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
-
                     viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
-                    viewHolder.denum.setText(Float.toString(numdenumradiobutton.get(1)));
-                } else {
-                    viewHolder.num.setText(getContext().getString(R.string.number_zero));
-                    viewHolder.denum.setText(Float.toString(ScoreRegister.calcDenum(question,idSurvey)));
                 }
                 break;
             default:
