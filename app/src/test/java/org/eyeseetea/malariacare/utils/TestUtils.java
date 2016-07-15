@@ -155,8 +155,14 @@ public class TestUtils {
                                 question.setQuestion(questions.get(Integer.valueOf(line[12])));
                             else
                                 question.setParent(false);
-                            if (line.length == 14 && !line[13].equals("")) {
-                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
+
+                            question.setCompulsory(false);
+                            if (!line[13].equals(""))
+                                if(line[13].equals("1"))
+                                question.setCompulsory(true);
+
+                            if (line.length == 15 && !line[14].equals("")) {
+                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[14])));
                             }
                             question.setOutput(Constants.RADIO_GROUP_HORIZONTAL);
                             questions.put(Integer.valueOf(line[0]),question);
@@ -250,8 +256,14 @@ public class TestUtils {
                                 question.setQuestion(questions.get(Integer.valueOf(line[12])));
                             else
                                 question.setParent(false);
-                            if (line.length == 14 && !line[13].equals("")) {
-                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
+
+                            question.setCompulsory(false);
+                            if (!line[13].equals(""))
+                                if(line[13].equals("1"))
+                                    question.setCompulsory(true);
+
+                            if (line.length == 15 && !line[14].equals("")) {
+                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[14])));
                             }
                             question.setOutput(Constants.RADIO_GROUP_HORIZONTAL);
                             questions.put(Integer.valueOf(line[0]), question);
