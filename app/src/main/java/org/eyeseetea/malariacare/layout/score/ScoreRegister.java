@@ -196,13 +196,12 @@ public class ScoreRegister {
         if(!question.getCompulsory()) {
             if (question.hasParent()) {
                 if (question.isHiddenBySurvey(idSurvey)) {
-                    if (value == null || !value.exists())
+                    if (value == null)
                         return null;
                 }
-            } else if (value == null || !value.exists())
+            } else if (value == null)
                 return null;
-        } else if (value == null || !value.exists())
-            return 0f;
+        }
 
         Option option=question.getOptionBySurvey(idSurvey);
         if(option==null){
