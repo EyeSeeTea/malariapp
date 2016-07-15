@@ -425,11 +425,8 @@ public class AutoTabLayoutUtils {
 
             Float num = ScoreRegister.calcNum(question, idSurvey);
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
-
-            totalNum = totalNum + num;
-            totalDenum = totalDenum + denum;
-
-            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+            if(num!=null)
+                ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }
 }
