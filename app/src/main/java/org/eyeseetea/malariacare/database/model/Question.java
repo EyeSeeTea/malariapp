@@ -544,6 +544,9 @@ public class Question extends BaseModel {
         }
 
         Float num = ScoreRegister.calcNum(this, idSurvey);
+        //If the num is null the question is ignored
+        if(num==null)
+            return null;
         Float denum = ScoreRegister.calcDenum(this, idSurvey);
         ScoreRegister.addRecord(this, num, denum, idSurvey, module);
         return Arrays.asList(num, denum);
