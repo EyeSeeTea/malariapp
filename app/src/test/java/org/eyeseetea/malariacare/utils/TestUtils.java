@@ -47,7 +47,6 @@ public class TestUtils {
     public static final String TAG = ".PopulateDB";
 
     public static final String PROGRAMS_CSV = "Programs.csv";
-    public static final String TAB_GROUPS_CSV = "TabGroups.csv";
     public static final String TABS_CSV = "Tabs.csv";
     public static final String HEADERS_CSV = "Headers.csv";
     public static final String ANSWERS_CSV = "Answers.csv";
@@ -70,7 +69,7 @@ public class TestUtils {
 
     public static void populateDBTest(String path) throws IOException {
         initMaps();
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -135,6 +134,8 @@ public class TestUtils {
                             compositeScores.put(Integer.valueOf(line[0]),compositeScore);
                             break;
                         case QUESTIONS_CSV:
+                            if(Integer.valueOf(line[0])>36)
+                                System.out.println("d");
                             Question question = new Question();
                             question.setId_question(Long.parseLong(line[0]));
                             question.setCode(line[1]);
