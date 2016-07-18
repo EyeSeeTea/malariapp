@@ -107,11 +107,13 @@ public class PushController {
      */
     public boolean push(Context ctx,List<Survey> surveys){
         Log.d(TAG, "Starting PUSH process...");
+        isSending=true;
         context=ctx;
 
         //No survey no push
         if(surveys==null || surveys.size()==0){
             postException(new Exception(context.getString(R.string.progress_push_no_survey)));
+            isSending=false;
             return false;
         }
 
@@ -129,19 +131,16 @@ public class PushController {
             Log.d(TAG, "Preparing survey for pushing...");
 
             PopulateDB.wipeSDKData();
-            //Locks before convertion to sdk
-            isSending=surveys.size()>0;
-            if(!isSending)
-                return false;
 
             convertToSDK(surveys);
 
             //Check if had events to push to still locked or exit
             int numberOfEvents=EventExtended.getAllEvents().size();
             isSending=numberOfEvents>0;
-            Log.d(TAG, "Preparing for pushing... "+ numberOfEvents + " events");
+            Log.d(TAG, "Preparing for pushing... "+ numberOfEvents + " events. IsSending: " + isSending);
             if(!isSending)
                 return false;
+
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
@@ -150,6 +149,7 @@ public class PushController {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();
             postException(ex);
+            isSending=false;
             return false;
         }
         return true;
