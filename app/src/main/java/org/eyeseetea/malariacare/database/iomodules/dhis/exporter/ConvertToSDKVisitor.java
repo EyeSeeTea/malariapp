@@ -425,7 +425,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey, String module){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
-        currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setEventUid(currentEvent.getUid());
     }
 
