@@ -93,10 +93,10 @@ public class PushController {
      *
      */
 
-    private boolean isSending;
+    private boolean isPushing;
 
-    public boolean isSending() {
-        return isSending;
+    public boolean isPushing() {
+        return isPushing;
     }
     /**
      * Launches the pull process:
@@ -107,13 +107,13 @@ public class PushController {
      */
     public boolean push(Context ctx,List<Survey> surveys){
         Log.d(TAG, "Starting PUSH process...");
-        isSending=true;
+        isPushing =true;
         context=ctx;
 
         //No survey no push
         if(surveys==null || surveys.size()==0){
             postException(new Exception(context.getString(R.string.progress_push_no_survey)));
-            isSending=false;
+            isPushing =false;
             return false;
         }
 
@@ -136,9 +136,9 @@ public class PushController {
 
             //Check if had events to push to still locked or exit
             int numberOfEvents=EventExtended.getAllEvents().size();
-            isSending=numberOfEvents>0;
-            Log.d(TAG, "Preparing for pushing... "+ numberOfEvents + " events. IsSending: " + isSending);
-            if(!isSending)
+            isPushing =numberOfEvents>0;
+            Log.d(TAG, "Preparing for pushing... "+ numberOfEvents + " events. IsSending: " + isPushing);
+            if(!isPushing)
                 return false;
 
             //Asks sdk to push localdata
@@ -149,7 +149,7 @@ public class PushController {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();
             postException(ex);
-            isSending=false;
+            isPushing =false;
             return false;
         }
         return true;
@@ -185,7 +185,7 @@ public class PushController {
                 }finally {
                     postFinish(success);
                     unregister();
-                    isSending=false;
+                    isPushing =false;
                 }
             }
         }.start();
