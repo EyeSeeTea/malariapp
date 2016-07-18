@@ -370,10 +370,17 @@ public class AutoTabLayoutUtils {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
-        viewHolder.num.setText(num.toString());
-        viewHolder.denum.setText(denum.toString());
-
         ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+        //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
+        viewHolder.num.setText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.denum.setText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        if(num!=null){
+            viewHolder.num.setText(num.toString());
+            viewHolder.denum.setText(denum.toString());
+            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+        }
+        else
+            ScoreRegister.deleteRecord(question, idSurvey, module);
     }
 
     /**
@@ -418,11 +425,8 @@ public class AutoTabLayoutUtils {
 
             Float num = ScoreRegister.calcNum(question, idSurvey);
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
-
-            totalNum = totalNum + num;
-            totalDenum = totalDenum + denum;
-
-            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+            if(num!=null)
+                ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }
 }

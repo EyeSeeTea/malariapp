@@ -26,8 +26,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.Session;
-
+import org.eyeseetea.malariacare.database.model.Value;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -183,18 +182,30 @@ public class ScoreRegister {
 
     /**
      * Calculates the numerator of the given question & survey
+     * returns null is invalid question to the scoreregister and the question denominator will be ignored too.
      * @param question
      * @param idSurvey
      * @return
      */
-    public static float calcNum(Question question, float idSurvey){
-        if(question==null){
-            return 0;
+    public static Float calcNum(Question question, float idSurvey) {
+        if (question == null) {
+            return null;
+        }
+        Value value = question.getValueBySurvey(idSurvey);
+        //Returns null if the question will be ignored(not compulsory, and not answered or child with inactive parent questions)
+        if(!question.getCompulsory()) {
+            if (question.hasParent()) {
+                if (question.isHiddenBySurvey(idSurvey)) {
+                    if (value == null)
+                        return null;
+                }
+            } else if (value == null)
+                return null;
         }
 
         Option option=question.getOptionBySurvey(idSurvey);
         if(option==null){
-            return 0;
+            return 0f;
         }
         return question.getNumerator_w()*option.getFactor();
     }
