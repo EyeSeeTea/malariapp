@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.network;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -106,7 +104,7 @@ public class PushClient {
     }
 
     public void pushSDK() {
-        if (AUtils.isNetworkAvailable() && !PushController.getInstance().isSending()) {
+        if (AUtils.isNetworkAvailable() && !PushController.getInstance().isPushing()) {
             malariaSdkPush();
         }
     }
@@ -124,7 +122,6 @@ public class PushClient {
             if(launchPush(survey)){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                survey.setSentSurveyState();
                 AlarmPushReceiver.setFail(false);
             }
             else{
