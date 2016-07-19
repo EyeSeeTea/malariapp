@@ -285,8 +285,12 @@ public class ScoreRegister {
         for(CompositeScore score:scores){
             //only parent scores are interesting
             if(score.getComposite_score()==null){
-                sumScores+=getCompositeScore(score, idSurvey, module);
-                numParentScores++;
+                List<Float> result=getCompositeScoreResult(score, idSurvey, module);
+                //count only the compositeScores with answers.
+                if(result.get(1)>0) {
+                    sumScores += ScoreUtils.calculateScoreFromNumDen(result);
+                    numParentScores++;
+                }
             }
         }
         return sumScores/numParentScores;
