@@ -110,6 +110,20 @@ public class ScoreRegister {
         return ScoreUtils.calculateScoreFromNumDen(result);
     }
 
+    /**
+     * Gets the list of numerators/denominator for a provided compositeScore, survey and module.
+     * @param cScore
+     * @param idSurvey
+     * @param module
+     */
+    public static List<Float> getCompositeScoreResult(CompositeScore cScore, float idSurvey, String module) {
+
+        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)), idSurvey, module);
+
+        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
+
+        return result;
+    }
 
     public static List<Float> calculateGeneralScore(Tab tab, float idSurvey, String module) {
         return tabScoreMap.get(module).get(idSurvey).get(tab).calculateTotal();
