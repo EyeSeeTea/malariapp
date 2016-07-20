@@ -63,5 +63,8 @@
     <dimen name="margin_lateral_feedback_radiobutton">15dip</dimen>
     <dimen name="margin_feedback_top_bottom_radiobutton">8dip</dimen>
 
+    <!-- Arrow padding !-->
+    <dimen name="left_padding_arrow">30dip</dimen>
+    <dimen name="right_padding_arrow">30dip</dimen>
 
 </resources>
