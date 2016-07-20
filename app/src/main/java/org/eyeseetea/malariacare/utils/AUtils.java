@@ -88,11 +88,11 @@ public abstract class AUtils {
         return result;
     }
 
-    public static List<? extends BaseModel> preloadTabItems(Tab tab){
+    public static List<? extends BaseModel> preloadTabItems(Tab tab, String module){
         List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            items = CompositeScore.listByTabGroup(Session.getSurveyByModule(module).getTabGroup());
 
         else{
 
@@ -235,7 +235,7 @@ public abstract class AUtils {
 
         //set up text title
         TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setText(BuildConfig.FLAVOR.toUpperCase() + "(bb) " + BuildConfig.VERSION_NAME);
         textTile.setGravity(Gravity.RIGHT);
 
         //set up text title

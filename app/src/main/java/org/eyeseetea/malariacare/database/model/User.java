@@ -43,6 +43,8 @@ public class User extends BaseModel {
     String uid;
     @Column
     String name;
+    @Column
+    String username;
 
     /**
      * List of surveys of this user
@@ -91,12 +93,26 @@ public class User extends BaseModel {
         return surveys;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public static User getLoggedUser(){
         // for the moment we return just the first entry assuming there will be only one entry,but in the future we will have to tag the logged user
         List<User> users = new Select().all().from(User.class).queryList();
         if (users != null && users.size() != 0)
             return users.get(0);
         return null;
+    }
+
+    public static User getUser(String value) {
+        return new Select()
+                .from(User.class)
+                .where(Condition.column(Score$Table.UID).eq(value)).querySingle();
     }
 
     @Override
@@ -127,11 +143,5 @@ public class User extends BaseModel {
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
-    }
-
-    public static User getUser(String value) {
-        return new Select()
-                .from(User.class)
-                .where(Condition.column(Score$Table.UID).eq(value)).querySingle();
     }
 }

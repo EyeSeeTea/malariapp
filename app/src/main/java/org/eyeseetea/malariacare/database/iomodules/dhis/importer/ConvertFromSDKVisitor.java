@@ -259,6 +259,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         User appUser = new User();
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
+        appUser.setUsername(userAccount.getUsername());
         appUser.save();
     }
 
@@ -481,7 +482,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScore.setUid(dataElement.getUid());
         compositeScore.setLabel(dataElement.getFormName());
         compositeScore.setHierarchical_code(compositeScoreBuilder.findHierarchicalCode(sdkDataElementExtended));
-
+        compositeScore.setOrder_pos(sdkDataElementExtended.findOrder());
         //Parent score and Order can only be set once every score in saved
         compositeScore.save();
 

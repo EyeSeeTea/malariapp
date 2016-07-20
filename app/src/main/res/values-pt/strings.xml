@@ -136,16 +136,6 @@
     <string name="pref_header_general">Geral</string>
     <string name="settings_text_dhis_password">Senha DHIS</string>
 
-    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
-
-    <string-array name="settings_array_values_font_sizes">
-        <item>@string/font_size_level0</item>
-        <item>@string/font_size_level1</item>
-        <item>@string/font_size_level2</item>
-        <item>@string/font_size_level3</item>
-        <item>@string/font_size_level4</item>
-    </string-array>
-
     <string name="dialog_info_on_complete">A pesquisa %s foi marcada como concluída. Você vai encontrá-lo agora no separador Melhorar</string>
     <string name="dialog_title_push_response">Reposta</string>
     <string name="dialog_info_push_bad_credentials">Bad credenciais para empurrar</string>
@@ -223,5 +213,5 @@
         <p>3. Execute "git checkout".</p> ]]>
     </string>
     <string name="no_previous_event_info">No evento anterior disponíveis</string>
-
+    <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 </resources>

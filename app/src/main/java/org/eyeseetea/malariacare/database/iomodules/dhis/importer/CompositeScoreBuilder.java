@@ -219,7 +219,7 @@ public class CompositeScoreBuilder {
 
         @Override
         public int compare(CompositeScore lhs, CompositeScore rhs) {
-            return lhs.getHierarchical_code().compareTo(rhs.getHierarchical_code());
+            return lhs.getOrder_pos().compareTo(rhs.getOrder_pos());
         }
 
         @Override

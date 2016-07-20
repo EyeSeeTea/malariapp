@@ -135,11 +135,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         Log.d(TAG,String.format("Creating event for survey (%d) ...",survey.getId_survey()));
         this.currentEvent=buildEvent();
-
         //Calculates scores and update survey
         Log.d(TAG,"Registering scores...");
-        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey);
-        updateSurvey(compositeScores);
+        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey, Constants.PUSH_MODULE_KEY);
+        updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
 
         //Turn score values into dataValues
         Log.d(TAG, "Creating datavalues from scores...");
@@ -148,8 +147,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //Turn question values into dataValues
-        Log.d(TAG, "Creating datavalues from questions...");
-        for(Value value:survey.getValues()){
+        Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
+        for(Value value:currentSurvey.getValues()) {
             value.accept(this);
         }
 
@@ -168,7 +167,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore)));
+        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY)));
         dataValue.save();
     }
 
@@ -241,27 +240,27 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Updated by user
         if(!uploadedByCode.equals(""))
-            buildAndSaveDataValue(uploadedByCode, Session.getUser().getUid());
+            buildAndSaveDataValue(uploadedByCode, Session.getUser().getUsername());
 
 
         //Overall score
-        if(!overallScoreCode.equals(""))
+        if(!overallScoreCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //MainScoreUID
-        if(!mainScoreClassCode.equals(""))
+        if(!mainScoreClassCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreClassCode, survey.getType());
 
         //MainScore A
-        if(!mainScoreACode.equals(""))
+        if(!mainScoreACode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
 
         //MainScore B
-        if(!mainScoreBCode.equals(""))
+        if(!mainScoreBCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
 
         //MainScoreC
-        if(!mainScoreCCode.equals(""))
+        if(!mainScoreCCode.equals("") && survey.hasMainScore())
             buildAndSaveDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
 
         //Forward Order
@@ -297,9 +296,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * This changes will be saved just when process finish successfully.
      * @param compositeScores
      */
-    private void updateSurvey(List<CompositeScore> compositeScores){
-        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores));
-        currentSurvey.setStatus(Constants.SURVEY_SENT);
+    private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey, String module){
+        currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
         currentSurvey.setUploadedDate(uploadedDate);
         currentSurvey.setEventUid(currentEvent.getUid());
     }
@@ -366,7 +364,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 iSurvey.setStatus(Constants.SURVEY_SENT);
                 iSurvey.saveMainScore();
                 iSurvey.save();
-
+                if(iEvent.getEventDate()==null || iEvent.getEventDate().equals("")) {
+                    //the event is invalid. The event will be pushed but we need inform to the user.
+                    DashboardActivity.showException(context.getString(R.string.error_message), String.format(context.getString(R.string.error_message_push), iEvent.getEvent()));
+                }
                 //To avoid several pushes
                 iEvent.setFromServer(true);
                 iEvent.save();

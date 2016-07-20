@@ -58,4 +58,14 @@ public class Constants {
 
     public static final float MAX_AMBER = 80f;
     public static final float MAX_RED = 50f;
+
+    //Keys used to know if a survey is saved in surveyfragment, in feedbackfragment, or in push.
+    public static final String PUSH_MODULE_KEY="PUSH_MODULE_KEY";
+    public static final String PROGRESSACTIVITY_MODULE_KEY="PROGRESSACTIVITY_MODULE_KEY";
+    public static final String MODULE_KEY="MODULE_KEY";
+    public static final String FRAGMENT_SURVEY_KEY ="FRAGMENT_SURVEY_KEY";
+    public static final String FRAGMENT_FEEDBACK_KEY ="FRAGMENT_FEEDBACK_KEY";
+
+    public static final int MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT = 500;
+    public static final int MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT = 1000;
 }

@@ -332,12 +332,10 @@ public class PlannedAdapter extends BaseAdapter {
             if(survey.getStatus()==Constants.SURVEY_PLANNED){
                 survey=SurveyPlanner.getInstance().startSurvey(survey);
             }
-
-            Session.setSurvey(survey);
             activity.prepareLocationListener(survey);
             //FIXME
 
-            activity.initSurveyFromPlanning();
+            activity.initSurveyFromPlanning(survey);
         }
     }
 

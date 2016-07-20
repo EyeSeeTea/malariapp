@@ -146,17 +146,6 @@
     <string name="settings_text_dhis_max_items">DHIS max loaded surveys</string>
     <string name="pref_header_general">General</string>
 
-    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
-
-    <string-array name="settings_array_values_font_sizes">
-        <item>@string/font_size_level0</item>
-        <item>@string/font_size_level1</item>
-        <item>@string/font_size_level2</item>
-        <item>@string/font_size_level3</item>
-        <item>@string/font_size_level4</item>
-    </string-array>
-
-
     <string name="dialog_title_push_response">Push response</string>
     <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
     <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
@@ -223,4 +212,6 @@
         <p>3. Run "git checkout". </p>]]>
     </string>
     <string name="no_previous_event_info">No previous event available</string>
+
+    <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 </resources>

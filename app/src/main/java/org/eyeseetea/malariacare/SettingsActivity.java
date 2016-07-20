@@ -125,6 +125,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
 
+        // fitler the font options by screen size
+        filterTextSizeOptions(findPreference(getApplicationContext().getString(R.string.font_sizes)));
+
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
@@ -158,6 +161,26 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    //Remove the last text size option if the screen size is small.
+    private static void filterTextSizeOptions(Preference preference) {
+        if(!PreferencesState.getInstance().isLargeTextShown()) {
+            ListPreference listPreference = (ListPreference) preference;
+            CharSequence[] entries = removeLastItem(listPreference.getEntries());
+            CharSequence[] values = removeLastItem(listPreference.getEntryValues());
+            listPreference.setEntries(entries);
+            listPreference.setEntryValues(values);
+        }
+    }
+
+    //Returns the provided charSequence without the last position.
+    private static CharSequence[] removeLastItem(CharSequence[] entries) {
+        CharSequence[] newEntries=new CharSequence[4];
+        for(int i=0;i<entries.length-1;i++){
+            newEntries[i]=entries[i];
+        }
+        return newEntries;
     }
 
     /**

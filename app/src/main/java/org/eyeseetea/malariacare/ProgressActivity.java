@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressSt
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -125,12 +126,14 @@ public class ProgressActivity extends Activity {
     boolean pullAfterPushInProgress;
     static Handler handler;
     static Activity progressActivity;
+    boolean isOnPause=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         PULL_IS_ACTIVE = true;
+        isOnPause=false;
         prepareUI();
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -157,24 +160,26 @@ public class ProgressActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-        Dhis2Application.bus.register(this);
-        }catch(Exception e){
-            e.printStackTrace();
-            Dhis2Application.bus.unregister(this);
-            Dhis2Application.bus.register(this);
+        if(!isOnPause) {
+            try {
+                Dhis2Application.bus.register(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Dhis2Application.bus.unregister(this);
+                Dhis2Application.bus.register(this);
+            }
+            launchAction();
         }
-        launchAction();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
         if(PULL_CANCEL==true)
             finishAndGo(LoginActivity.class);
-        else
+        else if(!hasAPullAfterPush())
             finishAndGo(DashboardActivity.class);
+        isOnPause=true;
     }
 
     private void prepareUI(){
@@ -185,7 +190,8 @@ public class ProgressActivity extends Activity {
 
     @Subscribe
     public void onProgressChange(final SyncProgressStatus syncProgressStatus) {
-        if(syncProgressStatus ==null){
+        //bad event or activity not in foreground -> show nothing
+        if(syncProgressStatus ==null || isOnPause){
             return;
         }
         runOnUiThread(new Runnable() {
@@ -428,6 +434,7 @@ public class ProgressActivity extends Activity {
         progressBar.setMax(MAX_PUSH_STEPS);
 
         List<Survey> surveys=findSurveysToPush();
+        Log.d(TAG,"surveys"+surveys.size());
         PushController.getInstance().push(this, surveys);
     }
 
@@ -437,11 +444,17 @@ public class ProgressActivity extends Activity {
      */
     private List<Survey> findSurveysToPush(){
         if(hasAPullAfterPush()){
-            return Survey.getAllUnsentUnplannedSurveys();
+            List <Survey> surveys= Survey.getAllUnsentUnplannedSurveys();
+            for(int i=0;i<surveys.size();i++) {
+                if(surveys.get(i).getCompletionDate()==null)
+                    surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
+            }
+            return surveys;
         }
 
         List<Survey> surveys=new ArrayList<>();
-        surveys.add(Session.getSurvey());
+        //Fixme it is not used anymore?.
+        //surveys.add(Session.getSurveyByModule(module));
         return surveys;
     }
 

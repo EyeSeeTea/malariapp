@@ -85,8 +85,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
             }
             else {
-                sentScore.setText(String.format("%.1f %%",survey.getMainScore()));
-                int colorId=LayoutUtils.trafficColor(survey.getMainScore());
+                float mainScore=(!survey.hasMainScore())?0f:survey.getMainScore();
+                sentScore.setText(String.format("%.1f %%",mainScore));
+                int colorId=LayoutUtils.trafficColor(mainScore);
                 sentScore.setTextColor(getContext().getResources().getColor(colorId));
             }
         } else {

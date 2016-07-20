@@ -104,7 +104,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      */
     public Integer getProductivity(Integer position){
         //No position -> no productivity
-        if(position==null || position<0){
+        if(position==null || position<=0){
             return 0;
         }
 
@@ -113,12 +113,12 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
             loadProductivityArray();
         }
         //Data is not configured properly
-        if(position>=productivityArray.length()){
+        if(position>productivityArray.length()){
             return 0;
         }
         //Get value from position
         try{
-            return Integer.parseInt(productivityArray.substring(position,position+1));
+            return Integer.parseInt(productivityArray.substring(position-1,position));
         }catch(Exception ex){
             Log.e(TAG, String.format("getProductivity(%d)-> %s", position, ex.getMessage()));
             return 0;

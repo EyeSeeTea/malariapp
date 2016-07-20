@@ -305,7 +305,21 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
         return mainScore;
     }
-
+    //hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
+    private Boolean hasMainScore=null;
+    public Boolean hasMainScore() {
+        if(hasMainScore==null) {
+            Score score = getScore();
+            Float value = (score == null) ? null : score.getScore();
+            if (value == null) {
+                hasMainScore = false;
+            }
+            else {
+                hasMainScore = true;
+            }
+        }
+        return hasMainScore;
+    }
     public void setMainScore(Float mainScore) {
         this.mainScore = mainScore;
     }
@@ -542,11 +556,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.save();
     }
 
-    private void saveScore() {        //Prepare scores info
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this);
+    private void saveScore(String module) {        //Prepare scores info
+        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
-        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList));
+        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
         this.saveMainScore();
     }
 
@@ -728,11 +742,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
         saveMainScore();
     }
 
-    public void setCompleteSurveyState(){
+    public void setCompleteSurveyState(String module){
         setStatus(Constants.SURVEY_COMPLETED);
         //CompletionDate
         this.setCompletionDate(new Date());
-        saveScore();
+        saveScore(module);
         save();
         saveMainScore();
         //Plan a new survey for the future

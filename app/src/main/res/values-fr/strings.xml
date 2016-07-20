@@ -125,15 +125,6 @@
     <string name="pref_header_general">General</string>
     <string name="settings_text_dhis_password">Mot de passe DHIS</string>
 
-    <string name="settings_array_values_font_sizes_def">@string/font_size_level2</string>
-
-    <string-array name="settings_array_values_font_sizes">
-        <item>@string/font_size_level0</item>
-        <item>@string/font_size_level1</item>
-        <item>@string/font_size_level2</item>
-        <item>@string/font_size_level3</item>
-        <item>@string/font_size_level4</item>
-    </string-array>
 
     <string name="dialog_info_on_complete">"L'enquête %s a été marquée comme terminée. Vous trouverez maintenant dans l'onglet Améliorer"</string>
     <string name="dashboard_info_sent">Envoyé</string>
@@ -218,5 +209,6 @@
         <p>3. Exécuter "git checkout".</p>" ]]>
     </string>
     <string name="no_previous_event_info">Aucun événement précédent disponible</string>
+    <string name="error_message_push">L\'événement avec UID: %s. a été transféré sans la date. S\'il vous plaît contacter l\'administrateur.</string>
 
 </resources>

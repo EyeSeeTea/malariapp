@@ -450,6 +450,8 @@ public class PullController {
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                    if(event.getEventDate()==null || event.getEventDate().equals(""))
+                        break;
                     EventExtended eventExtended = new EventExtended(event);
                     eventExtended.accept(converter);
                 }

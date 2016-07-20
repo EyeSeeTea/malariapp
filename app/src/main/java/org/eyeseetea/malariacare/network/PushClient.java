@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.network;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -43,6 +41,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -93,7 +92,7 @@ public class PushClient {
     }
 
     private boolean launchPush(Survey survey) {
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,Constants.PUSH_MODULE_KEY);
         //Pushing selected survey via sdk
         List<Survey> surveys = new ArrayList<>();
         surveys.add(survey);
@@ -105,7 +104,7 @@ public class PushClient {
     }
 
     public void pushSDK() {
-        if (AUtils.isNetworkAvailable()) {
+        if (AUtils.isNetworkAvailable() && !PushController.getInstance().isPushing()) {
             malariaSdkPush();
         }
     }
@@ -123,7 +122,6 @@ public class PushClient {
             if(launchPush(survey)){
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
-                survey.setSentSurveyState();
                 AlarmPushReceiver.setFail(false);
             }
             else{
@@ -148,7 +146,7 @@ public class PushClient {
             JSONObject data = PushUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
             //data = PushUtilsElements(data, controlData.get(""));
-            data = PushUtils.getInstance().PushUtilsElements(data, survey);
+            data = PushUtils.getInstance().PushUtilsElements(data, survey, Constants.PUSH_MODULE_KEY);
             pushResult = new PushResult(pushData(data));
             if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
                 //TODO: This should be removed once DHIS bug is solved

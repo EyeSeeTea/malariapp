@@ -55,13 +55,19 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private boolean [] hiddenPositions;
 
-    public FeedbackAdapter(Context context){
-        this(new ArrayList<Feedback>(), context);
+    float idSurvey;
+
+    String module;
+
+    public FeedbackAdapter(Context context, float idSurvey, String module){
+        this(new ArrayList<Feedback>(), context, idSurvey, module);
     }
 
-    public FeedbackAdapter(List<Feedback> items, Context context){
+    public FeedbackAdapter(List<Feedback> items, Context context, float idSurvey, String module){
         this.items=items;
         this.context=context;
+        this.idSurvey=idSurvey;
+        this.module=module;
         this.onlyFailed=true;
         this.hiddenPositions= new boolean[this.items.size()];
     }
@@ -107,13 +113,13 @@ public class FeedbackAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Feedback feedback=(Feedback)getItem(position);
         if (feedback instanceof CompositeScoreFeedback){
-            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent);
+            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent, module);
         }else{
             return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
         }
     }
 
-    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent){
+    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
@@ -133,13 +139,13 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.getScore()< Constants.MAX_RED)
+        if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
-        else if(feedback.getScore()< Constants.MAX_AMBER)
+        else if(feedback.getScore(idSurvey, module)< Constants.MAX_AMBER)
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
         else
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
-        textView.setText(feedback.getPercentageAsString());
+        textView.setText(feedback.getPercentageAsString(idSurvey, module));
 
         return rowLayout;
     }
