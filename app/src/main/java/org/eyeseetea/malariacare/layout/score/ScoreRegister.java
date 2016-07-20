@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,6 +120,20 @@ public class ScoreRegister {
         return ScoreUtils.calculateScoreFromNumDen(result);
     }
 
+    /**
+     * Gets the list of numerators/denominator for a provided compositeScore, survey and module.
+     * @param cScore
+     * @param idSurvey
+     * @param module
+     */
+    public static List<Float> getCompositeScoreResult(CompositeScore cScore, float idSurvey, String module) {
+
+        List<Float>result= getRecursiveScore(cScore, new ArrayList<>(Arrays.asList(0F, 0F)), idSurvey, module);
+
+        Log.d(TAG,String.format("getCompositeScore %s -> %s",cScore.getHierarchical_code(),result.toString()));
+
+        return result;
+    }
 
     public static List<Float> calculateGeneralScore(Tab tab, float idSurvey, String module) {
         return tabScoreMap.get(module).get(idSurvey).get(tab).calculateTotal();
@@ -280,8 +295,12 @@ public class ScoreRegister {
         for(CompositeScore score:scores){
             //only parent scores are interesting
             if(score.getComposite_score()==null){
-                sumScores+=getCompositeScore(score, idSurvey, module);
-                numParentScores++;
+                List<Float> result=getCompositeScoreResult(score, idSurvey, module);
+                //count only the compositeScores with answers.
+                if(result.get(1)>0) {
+                    sumScores += ScoreUtils.calculateScoreFromNumDen(result);
+                    numParentScores++;
+                }
             }
         }
         return sumScores/numParentScores;
