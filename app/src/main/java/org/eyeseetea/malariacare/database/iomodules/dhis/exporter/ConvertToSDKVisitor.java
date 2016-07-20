@@ -468,12 +468,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 continue;
             }
 
-            if(importSummary==null){
+            if(importSummary==null)
                 rollbackSurvey(iSurvey);
-            }
-
-            //Errors
-            Log.d(TAG, importSummary.toString());
+            else
+                Log.d(TAG, importSummary.toString());
             //Some error happened -> move back to completed
             if(failedItem!=null) {
                 rollbackSurvey(iSurvey);
