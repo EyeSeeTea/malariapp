@@ -281,7 +281,7 @@ public class DashboardSentFragment extends ListFragment {
 
         // call feedbackselected function(and it call surveyfragment)
 
-        mCallback.onFeedbackSelected(surveys.get(position - 1));
+        mCallback.onFeedbackSelected(oneSurveyForOrgUnit.get(position - 1));
     }
 
     @Override
