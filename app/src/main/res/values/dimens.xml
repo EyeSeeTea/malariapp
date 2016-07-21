@@ -63,4 +63,9 @@
 
     <!--Text size for age and phone-->
     <dimen name="input_number_edit_text">32dp</dimen>
+
+    <!-- Arrow padding !-->
+    <dimen name="left_padding_arrow">30dip</dimen>
+    <dimen name="right_padding_arrow">30dip</dimen>
+
 </resources>
