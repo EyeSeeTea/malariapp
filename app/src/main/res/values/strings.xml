@@ -132,13 +132,11 @@
     <string name="settings_checkbox_description_location_required">When activated, location is a required field for pushing data to dhis server</string>
     <string name="settings_checkbox_customize_fonts">Customize fonts?</string>
     <string name="settings_list_font_sizes">Fonts size</string>
-    <string-array name="settings_array_titles_font_sizes">
-        <item>Extra small</item>
-        <item>Small</item>
-        <item>Medium</item>
-        <item>Large</item>
-        <item>Extra large</item>
-    </string-array>
+    <string name="font_size_level0_title">"Extra small"</string>
+    <string name="font_size_level1_title">"Small"</string>
+    <string name="font_size_level2_title">"Medium"</string>
+    <string name="font_size_level3_title">"Large"</string>
+    <string name="font_size_level4_title">"Extra large"</string>
     <string name="server_url">DHIS2 server</string>
     <string name="settings_text_dhis_server_url">DHIS Server URL</string>
     <string name="settings_text_dhis_user">DHIS user</string>
@@ -198,19 +196,6 @@
 
     <string name="lastcommit">Version %s</string>
     <string name="unavailable">Unavailable</string>
-    <string name="lastcommit_unavailable"><![CDATA[
-        <p>This option requires some changes in the git repository.</p>
-        <p>Steps:</p>
-        <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
-            <p>2. If the file does not exist, add the following lines: </p>
-               <p>#!/bin/sh </p>
-               <p>gitPath=$(git rev-parse --show-toplevel)</p>
-               <p>sh ${gitPath}/generate_last_commit.sh </p>
-            <p>2. If the file already exists, you only need add the following lines at the end:</p>
-               <p>gitPath=$(git rev-parse --show-toplevel)</p>
-               <p>sh ${gitPath}/generate_last_commit.sh </p>
-        <p>3. Run "git checkout". </p>]]>
-    </string>
     <string name="no_previous_event_info">No previous event available</string>
 
     <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>

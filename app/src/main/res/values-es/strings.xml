@@ -114,13 +114,11 @@
     <string name="settings_checkbox_description_location_required">Si esta activo, la localizacion es obligatoria para enviar los datos al servidor dhis</string>
     <string name="settings_checkbox_customize_fonts">¿Personalizar fuentes?</string>
     <string name="settings_list_font_sizes">Tamaño de fuentes</string>
-    <string-array name="settings_array_titles_font_sizes">
-        <item>Extra pequeño</item>
-        <item>Pequeño</item>
-        <item>Medio</item>
-        <item>Grande</item>
-        <item>Extra grande</item>
-    </string-array>
+    <string name="font_size_level0_title">"Extra pequeño"</string>
+    <string name="font_size_level1_title">"Pequeño"</string>
+    <string name="font_size_level2_title">"Medio"</string>
+    <string name="font_size_level3_title">"Grande"</string>
+    <string name="font_size_level4_title">"Extra grande"</string>
     <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL de servidor DHIS</string>
     <string name="settings_text_dhis_password">Contraseña DHIS</string>
@@ -195,19 +193,6 @@
 
     <string name="lastcommit">Versión %s</string>
     <string name="unavailable">No disponible</string>
-    <string name="lastcommit_unavailable"><![CDATA[
-        <p>Esta opción necesita algunos cambios en el repositorio git. </p>
-        <p>Pasos: </p>
-        <p>1. Por favor, abra o edite los ficheros .git/hooks/post-commit y .git/hooks/post-checkout. </p>
-            <p>2. Si el fichero no existe añada: </p>
-                <p>#!/bin/sh </p>
-                <p>gitPath=$(git rev-parse --show-toplevel)</p>
-                <p>sh ${gitPath}/generate_last_commit.sh </p>
-            <p>2. Si el fichero existe, añada las siguientes lineas  al final: </p>
-                <p>gitPath=$(git rev-parse --show-toplevel)</p>
-                <p>sh ${gitPath}/generate_last_commit.sh </p>
-        <p>3. Ejecute "git checkout".</p> ]]>
-    </string>
     <string name="no_previous_event_info">Ningún evento previo disponible</string>
     <string name="error_message_push">El evento con UID: %s. fue subido sin fecha. Por favor, póngase en contacto con el administrador. </string>
 </resources>

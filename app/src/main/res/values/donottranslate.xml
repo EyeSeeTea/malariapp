@@ -72,6 +72,13 @@
         <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
         <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
         <string name="settings_array_values_font_sizes_def"  translatable="false">@string/font_size_level2</string>
+    <string-array name="settings_array_titles_font_sizes" translatable="false">
+        <item>@string/font_size_level0_title</item>
+        <item>@string/font_size_level1_title</item>
+        <item>@string/font_size_level2_title</item>
+        <item>@string/font_size_level3_title</item>
+        <item>@string/font_size_level4_title</item>
+    </string-array>
         <string-array name="settings_array_values_font_sizes"  translatable="false">
             <item>@string/font_size_level0</item>
             <item>@string/font_size_level1</item>
@@ -79,4 +86,17 @@
             <item>@string/font_size_level3</item>
             <item>@string/font_size_level4</item>
         </string-array>
+    <string name="lastcommit_unavailable" translatable="false"><![CDATA[
+        <p>This option requires some changes in the git repository.</p>
+        <p>Steps:</p>
+        <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
+            <p>2. If the file does not exist, add the following lines: </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. If the file already exists, you only need add the following lines at the end:</p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Run "git checkout". </p>]]>
+    </string>
     </resources>

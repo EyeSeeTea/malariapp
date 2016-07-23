@@ -124,13 +124,11 @@
     <string name="settings_checkbox_description_location_required">Quando ativada, a localização é um campo obrigatório para empurrar os dados para dhis servidor</string>
     <string name="settings_checkbox_customize_fonts">Personalizar tipos de letra?</string>
     <string name="settings_list_font_sizes">Tamanho dos tipos de letra</string>
-    <string-array name="settings_array_titles_font_sizes">
-        <item>Muito pequeno</item>
-        <item>Pequeno</item>
-        <item>Médio</item>
-        <item>Grande</item>
-        <item>Muito Grande</item>
-    </string-array>
+    <string name="font_size_level0_title">"Muito pequeno"</string>
+    <string name="font_size_level1_title">"Pequeno"</string>
+    <string name="font_size_level2_title">"Médio"</string>
+    <string name="font_size_level3_title">"Grande"</string>
+    <string name="font_size_level4_title">"Muito Grande"</string>
     <string name="server_url">Servidor DHIS2</string>
     <string name="settings_text_dhis_server_url">URL do servidor SISD</string>
     <string name="pref_header_general">Geral</string>
@@ -199,19 +197,6 @@
 
     <string name="lastcommit">Versão: %s</string>
     <string name="unavailable">indisponível</string>
-    <string name="lastcommit_unavailable"><![CDATA[
-        <p>Esta opção requer algumas mudanças no repositório git. </p>
-        <p>Passos: </p>
-        <p>1. Por favor, abrir ou criar arquivos .git/hooks/post-commit e .git/hooks/post-checkout. </p>
-           <p>2. Se o arquivo não existir add:  </p>
-               <p>#!/bin/sh </p>
-               <p>gitPath=$(git rev-parse --show-toplevel)</p>
-               <p>sh ${gitPath}/generate_last_commit.sh </p>
-           <p>2. Se o arquivo existir, adicione as seguintes linhas no final:  </p>
-               <p>gitPath=$(git rev-parse --show-toplevel)</p>
-               <p>sh ${gitPath}/generate_last_commit.sh </p>
-        <p>3. Execute "git checkout".</p> ]]>
-    </string>
     <string name="no_previous_event_info">No evento anterior disponíveis</string>
     <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 </resources>
