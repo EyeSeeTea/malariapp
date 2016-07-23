@@ -1,277 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!-- # general -->
-<string name="yes">"Yes"</string>
-<string name="no">"No"</string>
-<string name="cancel">"Cancel"</string>
-<string name="score">"Score"</string>
-<string name="title_id">"ID"</string>
-<string name="title_name">"Name"</string>
-<string name="good">"Good"</string>
-<string name="fair">"Fair"</string>
-<string name="poor">"Poor"</string>
-<string name="lorem_ipsum">"Lorem ipsum dolor sit amet"</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="score">Score</string>
+    <string name="title_id">ID</string>
+    <string name="title_name">Name</string>
+    <string name="good">Good</string>
+    <string name="fair">Fair</string>
+    <string name="poor">Poor</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
 
-<!-- settings -->
-<string name="settings_menu_about">"About"</string>
-<string name="settings_menu_configuration">"Settings"</string>
-<string name="settings_menu_licence">"License"</string>
-<string name="settings_menu_update">"Update questions (DHIS)"</string>
-<string name="settings_menu_logout">"Logout"</string>
+    <string name="settings_menu_about">About</string>
+    <string name="settings_menu_legal">Legal</string>
+    <string name="settings_menu_copyright">Copyright</string>
+    <string name="settings_menu_licenses">Software licenses</string>
+    <string name="settings_menu_eula">EULA</string>
+    <string name="settings_menu_configuration">Settings</string>
+    <string name="settings_menu_licence">License</string>
+    <string name="settings_menu_logout">Logout</string>
 
-<!-- login -->
-<string name="login_info_username">"User"</string>
-<string name="login_info_password">"Password"</string>
-<string name="login_info_sign_in">"Sign in"</string>
-<string name="login_error_bad_credentials">"Your user/password are incorrect"</string>
+    <string name="go_to_feedback">Go to feedback</string>
+    <string name="dialog_title_delete_survey">Delete Survey</string>
+    <string name="dialog_info_delete_survey">Are you sure you want to completely delete the survey: %s?</string>
+    <string name="dialog_title_missing_selection">Missing selection</string>
+    <string name="dialog_content_missing_selection">Please select Org Unit and Survey details</string>
+    <string name="dialog_title_existing_survey">Existing Survey</string>
+    <string name="dialog_content_existing_survey">There is already a not sent form in the system for that Org Unit/Survey</string>
+    <string name="dialog_title_incorrect_org_unit">Incorrect Org Unit</string>
+    <string name="dialog_content_incorrect_org_unit">Please select a final org unit</string>
+    <string name="dialog_content_logout_confirmation">If you exit the system, all the not sent data will be deleted. Do you still want to exit?</string>
+    <string name="dialog_button_preview_feedback">View Feedback</string>
+    <string name="dialog_question_complete_survey">All compulsory questions were completed. Would you like to mark this survey as completed?</string>
+    <string name="dialog_continue_later_option">Continue Later</string>
+    <string name="dialog_complete_option">Complete</string>
+    <string name="dialog_are_you_sure_complete_survey">Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey</string>
+    <string name="dialog_incompleted_compulsory_survey">This survey cannot be sent yet. Please answer at least all the compulsory questions</string>
+    <string name="dialog_incompleted_compulsory_pulling">Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions</string>
+    <string name="dialog_sent_survey_on_refresh_metadata">Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?</string>
 
-<!-- # dialogs -->
-<string name="dialog_title_delete_survey">"Delete Survey"</string>
-<string name="dialog_info_delete_survey">"Are you sure you want to completely delete the survey: %s?"</string>
-<string name="dialog_title_error">"Error"</string>
-<string name="dialog_error_denominator">"Error, denominator = 0"</string>
-<string name="dialog_title_missing_selection">"Missing selection"</string>
-<string name="dialog_content_missing_selection">"Please select Org Unit and Survey details"</string>
-<string name="dialog_title_existing_survey">"Existing Survey"</string>
-<string name="dialog_content_existing_survey">"There is already a not sent form in the system for that Org Unit/Survey"</string>
-<string name="dialog_title_incorrect_org_unit">"Incorrect Org Unit"</string>
-<string name="dialog_content_incorrect_org_unit">"Please select a final org unit"</string>
-<string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
+    <string name="cancellingPull">The process will be stopped in a few seconds </string>
 
-<!-- dashboard -->
-<string name="dashboard_info_feedback">"Feedback"</string>
-<string name="dashboard_info_active_assessments">"Active Assessments"</string>
-<string name="dashboard_info_new_assessment">"New assessment"</string>
-<string name="dashboard_info_future_assessments">"Future Assessments"</string>
-<string name="dashboard_info_performance">"Performance Against Target"</string>
-<string name="dashboard_info_analytics">"Analytics"</string>
-<string name="dashboard_button_new_survey">"New Survey"</string>
-<string name="dashboard_button_see_all">"See all"</string>
-<string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
-<string name="dashboard_info_sent">"Sent"</string>
+    <string name="dashboard_info_feedback">Feedback</string>
+    <string name="dashboard_info_ready_to_upload">Ready to upload</string>
+    <string name="dashboard_info_sent">Sent</string>
+    <string name="dashboard_title_total_assessments">Total number of assessments undertaken</string>
+    <string name="dashboard_title_planned_type_never">Never assessed</string>
+    <string name="dashboard_title_planned_type_overdue">Overdue</string>
+    <string name="dashboard_title_planned_type_next_30">Next 30 days</string>
+    <string name="dashboard_title_planned_type_future">Future</string>
+    <string name="dashboard_title_planned_productivity">Prd</string>
+    <string name="dashboard_title_planned_quality_of_care">QoC</string>
+    <string name="dashboard_title_planned_next_qa">Next QA</string>
 
-<!-- create -->
-<string name="create_info_ok">"Start"</string>
-<string name="create_info_organization_unit">"Organisation Unit"</string>
-<string name="create_info_survey">"Survey"</string>
-<string name="create_info_tabs_group">"Tab Group"</string>
 
-<!-- assessment -->
-<string name="assessment_title_facility_date">"Facility / Survey"</string>
-<string name="assessment_title_state">"% complete"</string>
-<string name="assessment_sent_title_state">"Status"</string>
-<string name="assessment_sent_date">"Completion date"</string>
-<string name="assessment_info_delete">"Delete"</string>
-<string name="assessment_title_header">"Active Assessment(s)"</string>
-<string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
+    <string name="create_info_ok">Start</string>
+    <string name="create_info_organization_unit">Organisation Unit</string>
+    <string name="create_info_survey">Survey</string>
+    <string name="create_info_tabs_group">Tab Group</string>
 
-<!-- feedback 
- XXX Should it be replaced by 'assessment_title_facility_date'? -->
-<string name="feedback_title_organization_unit_date">"Org Unit / Date"</string>
-<string name="feedback_title_header">"Feedback"</string>
 
-<!-- future -->
-<string name="future_title_facility">"Facility"</string>
-<string name="future_title_previous_date">"Date Prev. Assess."</string>
-<string name="future_title_due_date">"Due date"</string>
-<string name="future_title_action">"Action"</string>
-<string name="future_title_header">"Future Assessments"</string>
+    <string name="assessment_title_facility_date">Facility / Survey</string>
+    <string name="assessment_title_state">% complete</string>
+    <string name="assessment_sent_date">Completion date</string>
+    <string name="assessment_sent_score">Score</string>
+    <string name="assessment_title_header">Active Assessment(s)</string>
+    <string name="assessment_sent_title_header">Previous Assessment(s)</string>
 
-<!-- performance -->
-<string name="performance_title_period">"Period"</string>
-<string name="performance_title_target">"Target"</string>
-<string name="performance_title_completed">"Done"</string>
-<string name="performance_title_achievement">"Achievement"</string>
-<string name="performance_title_header">"Performance Against Target"</string>
+    <string name="feedback_show_only_failed">Show only failed questions</string>
+    <string name="feedback_return">Return to all assessments</string>
+    <string name="quality_of_care">Quality of Care (QoC) Score:</string>
+    <string name="feedback_info_passed">PASS</string>
+    <string name="feedback_info_failed">FAIL</string>
+    <string name="feedback_info_not_answered">NA</string>
+    <string name="feedback_info_no_feedback">No feedback</string>
+    <string name="feedback_info_conflict">Conflict</string>
 
-<!-- analytics -->
-<string name="analytics_title_period">"Period"</string>
-<string name="analytics_title_target">"Target"</string>
-<string name="analytics_title_completed">"Done"</string>
-<string name="analytics_title_achievement">"Achievement"</string>
-<string name="analytics_title_header">"Analytics"</string>
+    <string name="survey_title_exit">"Really Exit?"</string>
+    <string name="survey_info_exit">"Are you sure you want to exit?"</string>
 
-<!-- survey -->
-<string name="survey_title_exit">"Really Exit?"</string>
-<string name="survey_info_exit">"Are you sure you want to exit?"</string>
-<string name="survey_info_select_tab">"Select Tab: "</string>
+    <string name="widget_info_empty_statement">Question statement</string>
 
-<!-- widget -->
-<string name="widget_info_empty_statement">"Question statement"</string>
+    <string name="custom_title_tallies">TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet</string>
+    <string name="custom_info_tallies">TALLIES for the Month of</string>
 
-<!-- custom -->
-<string name="custom_title_tallies">"TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet"</string>
-<string name="custom_info_tallies">"TALLIES for the Month of"</string>
+    <string name="adherence_info_switchquestion">Are there laboratory registers and pharmacy or clinical registers available at this facility?</string>
+    <string name="adherence_title_explanation">Evaluation of Provider Adherence to Malaria Diagnostic Test Results</string>
+    <string name="adherence_title_explanation_content">Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.\nStep 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. </string>
+    <string name="adherence_title2_explanation_content">Step 1. In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.\nStep 2. Locate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N.</string>
+    <string name="adherence_title_gender">Gender</string>
+    <string name="adherence_title_age">Age (years)</string>
+    <string name="adherence_title_test_results">Test results</string>
+    <string name="adherence_info_patient_id">Patient\nID</string>
+    <string name="adherence_info_prescribed">ACT\nPrescribed?</string>
+    <string name="adherence_info_rdt_positive">RDT Positive</string>
+    <string name="adherence_info_rdt_negative">RDT Negative</string>
+    <string name="adherence_info_microscopy_positive">Microscopy Positive</string>
+    <string name="adherence_info_microscopy_negative">Microscopy Negative</string>
 
-<!-- adherence -->
-<string name="adherence_info_switchquestion">"Are there laboratory registers and pharmacy or clinical registers available at this facility?"</string>
-<string name="adherence_title_explanation">"Evaluation of Provider Adherence to Malaria Diagnostic Test Results"</string>
-<string name="adherence_title_explanation_content">"Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.
-Step 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. "</string>
-<string name="adherence_title2_explanation_content">"Step 1. In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.
-Step 2. Locate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N."</string>
-<string name="adherence_info_pharmacy_register">"Pharmacy Register"</string>
-<string name="adherence_title_gender">"Gender"</string>
-<string name="adherence_title_age">"Age (years)"</string>
-<string name="adherence_title_test_results">"Test results"</string>
-<string name="adherence_info_patient_id">"Patient
-ID"</string>
-<string name="adherence_info_prescribed">"ACT
-Prescribed?"</string>
-<string name="adherence_info_rdt_positive">"RDT Positive"</string>
-<string name="adherence_info_rdt_negative">"RDT Negative"</string>
-<string name="adherence_info_microscopy_positive">"Microscopy Positive"</string>
-<string name="adherence_info_microscopy_negative">"Microscopy Negative"</string>
+    <string name="iqatab_info_supervisor">Supervisor</string>
+    <string name="iqatab_info_parasites">Parasites/uL</string>
+    <string name="iqatab_info_species">Species</string>
+    <string name="iqatab_info_labstaff">Lab Staff</string>
+    <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
 
-<!-- iqa eqa -->
-<string name="iqatab_info_supervisor">"Supervisor"</string>
-<string name="iqatab_info_parasites">"Parasites/uL"</string>
-<string name="iqatab_info_species">"Species"</string>
-<string name="iqatab_info_labstaff">"Lab Staff"</string>
-<string name="iqatab_info_results">"Results below are auto-calculated"</string>
-<string name="iqatab_info_note">"Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose."</string>
+    <string name="reporting_info_reporting">Reporting</string>
+    <string name="reporting_info_results">Results</string>
+    <string name="reporting_info_register">Register</string>
+    <string name="reporting_info_monthly">Monthly \nReport</string>
 
-<!-- reporting -->
-<string name="reporting_info_reporting">"Reporting"</string>
-<string name="reporting_info_results">"Results"</string>
-<string name="reporting_info_register">"Register"</string>
-<string name="reporting_info_monthly">"Monthly 
-Report"</string>
-<string name="iqatab_info_supervisor_matches">"Supervisor matches lab staff?"</string>
+    <string name="score_title_clinical_fever">Clinical\nfever\nevaluation</string>
+    <string name="score_title_rdt">RDT</string>
+    <string name="score_title_avg">AVG</string>
+    <string name="score_title_environment">Environment</string>
+    <string name="score_title_profile">Profile</string>
 
-<!-- score -->
-<string name="score_title_clinical_fever">"Clinical
-fever
-evaluation"</string>
-<string name="score_title_rdt">"RDT"</string>
-<string name="score_title_avg">"AVG"</string>
-<string name="score_title_environment">"Environment"</string>
-<string name="score_title_profile">"Profile"</string>
-<string name="score_info_tab_score">"Score for tab:"</string>
-<string name="score_info_overall">"Overall"</string>
-<string name="score_info_accumulated">"Tab num/dem"</string>
-<string name="score_info_case1">"Case 1"</string>
-<string name="score_info_case2">"Case 2"</string>
-<string name="score_info_case3">"Case 3"</string>
-<string name="score_info_case4">"Case 4"</string>
+    <string name="score_info_tab_score">Score for tab:</string>
+    <string name="score_info_overall">Overall</string>
+    <string name="score_info_accumulated">Tab num/dem</string>
+    <string name="score_info_case1">Case 1</string>
+    <string name="score_info_case2">Case 2</string>
+    <string name="score_info_case3">Case 3</string>
 
-<!-- composite score -->
-<string name="compscore_title_score_percentage">"Score (%)"</string>
+    <string name="compscore_title_score_percentage">Score (%)</string>
 
-<!-- settings -->
-<string name="title_activity_settings">"Settings"</string>
-<string name="settings_checkbox_show_num_dems">"Show num/dems"</string>
-<string name="settings_checkbox_description_show_num_dems">"When activated, survey questions show their numerators and denominators, used to calc the survey score"</string>
-<string name="settings_checkbox_customize_fonts">"Customize fonts?"</string>
-<string name="settings_list_font_sizes">"Fonts size"</string>
-<string name="settings_text_dhis_server_url">"DHIS Server URL"</string>
-<string name="settings_text_dhis_user">"DHIS user"</string>
-<string name="pref_header_general">"General"</string>
-<string name="settings_array_values_font_sizes_def">"@string/font_size_level2"</string>
-<string name="dialog_title_push_response">"Push response"</string>
-<string name="dialog_info_push_ok">"Survey data has been successfully pushed to DHIS server"</string>
-<string name="dialog_info_push_bad_credentials">"Bad credentials for pushing"</string>
-<string name="dialog_info_push_empty_survey">"Empty surveys cannot be pushed"</string>
-<string name="dialog_error_push_no_location">"No location available"</string>
-<string name="dialog_info_push_not_imported">"Server was not able to import the data. Please, report to the server admin."</string>
-<string name="settings_menu_legal">"Legal"</string>
-<string name="settings_menu_copyright">"Copyright"</string>
-<string name="settings_menu_licenses">"Software licenses"</string>
-<string name="settings_menu_eula">"EULA"</string>
-<string name="go_to_feedback">"Go to feedback"</string>
-<string name="dialog_button_preview_feedback">"View Feedback"</string>
-<string name="dialog_question_complete_survey">"All compulsory questions were completed. Would you like to mark this survey as completed?"</string>
-<string name="dialog_continue_later_option">"Continue Later"</string>
-<string name="dialog_complete_option">"Complete"</string>
-<string name="dialog_are_you_sure_complete_survey">"Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey"</string>
-<string name="dialog_incompleted_compulsory_survey">"This survey cannot be sent yet. Please answer at least all the compulsory questions"</string>
-<string name="dialog_incompleted_compulsory_pulling">"Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions"</string>
-<string name="dialog_sent_survey_on_refresh_metadata">"Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?"</string>
-<string name="cancellingPull">"The process will be stopped in a few seconds "</string>
-<string name="dashboard_title_total_assessments">"Total number of assessments undertaken"</string>
-<string name="assessment_sent_score">"Score"</string>
-<string name="feedback_show_only_failed">"Show only failed questions"</string>
-<string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
-<string name="feedback_info_passed">"PASS"</string>
-<string name="feedback_info_failed">"FAIL"</string>
-<string name="feedback_info_not_answered">"NA"</string>
-<string name="feedback_info_no_feedback">"No feedback"</string>
-<string name="settings_checkbox_location_required">"Location required"</string>
-<string name="settings_checkbox_description_location_required">"When activated, location is a required field for pushing data to dhis server"</string>
-<string name="server_url">"DHIS2 server"</string>
-<string name="settings_text_dhis_password">"DHIS password"</string>
-<string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
-<string name="dialog_error_push_no_location_and_required">"No location available and it is a required field"</string>
-<string name="dialog_error_push_uids">"Incorrect UIDs found in push"</string>
-<string name="dialog_info_push_imported">"Imported"</string>
-<string name="dialog_info_push_updated">"Updated"</string>
-<string name="dialog_info_push_ignored">"Ignored"</string>
-<string name="dialog_info_push_stats">"Survey data pushed to server. Results:"</string>
-<string name="dashboard_tip_pie_chart">"Quality of care (based on last assessment)"</string>
-<string name="dialog_pull_error">"Error while trying to pull metadata from dhis server"</string>
-<string name="settings_menu_pull">"Refresh metadata"</string>
-<string name="dialog_pull_success">"Dhis metadata successfully pulled from server"</string>
-<string name="dialog_title_pull_response">"Pull status"</string>
-<string name="progress_pull_connecting">"Connecting to DHIS server..."</string>
-<string name="progress_pull_downloading">"Refreshing metadata (this might take a few minutes) ..."</string>
-<string name="progress_pull_preparing_program">"Loading programs ..."</string>
-<string name="progress_pull_preparing_answers">"Loading answers ..."</string>
-<string name="progress_pull_preparing_orgs">"Loading organisations ..."</string>
-<string name="progress_pull_questions">"Loading questions (this might take a few minutes) ..."</string>
-<string name="progress_pull_surveys">"Loading surveys ..."</string>
-<string name="progress_pull_done">"Done"</string>
-<string name="progress_push_posting_survey">"Pushing survey data to server..."</string>
-<string name="progress_push_preparing_survey">"Preparing survey for pushing ..."</string>
-<string name="progress_push_updating_survey">"Updating pushed survey data..."</string>
-<string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
-<string name="progress_push_no_survey">"No survey found for pushing"</string>
-<string name="dialog_push_before_pull_success">"Surveys successfully pushed to dhis server, starting to pull metadata"</string>
-<string name="dashboard_title_planned_next_qa">"Next QA"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_type_future">"Future"</string>
-<string name="dashboard_title_planned_type_never">"Never assessed"</string>
-<string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
-<string name="dashboard_title_planned_type_overdue">"Overdue"</string>
-<string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_schedule_date">"* Scheduled Date"</string>
-<string name="planning_label_comment">"* Comment"</string>
-<string name="option_edit">"Edit"</string>
-<string name="option_mark_completed">"Mark as completed"</string>
-<string name="option_delete">"Delete"</string>
-<string name="hide_planning_tab_title">"Hide planning tab"</string>
-<string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
-<string name="plan">"Plan"</string>
-<string name="assess">"Assess - active surveys"</string>
-<string name="improve">"Improve"</string>
-<string name="monitor">"Monitor"</string>
-<string name="filter_all_org_units">"all org units"</string>
-<string name="filter_all_org_assessments">"all assessments"</string>
-<string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
-<string name="settings_text_dhis_max_items">"DHIS max loaded surveys"</string>
-<string name="feedback_info_conflict">"Conflict"</string>
-<string name="dialog_deleting_children">"You're about to delete the answer for questions that depend on this one. Do you really want to continue?"</string>
-<string name="lastcommit">"Version %s"</string>
-<string name="unavailable">"Unavailable"</string>
-<string name="lastcommit_unavailable"><![CDATA[
-        <p>This option requires some changes in the git repository.</p>
-        <p>Steps:</p>
-        <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
-            <p>2. If the file does not exist, add the following lines: </p>
-               <p>#!/bin/sh </p>
-               <p>gitPath=$(git rev-parse --show-toplevel)</p>
-               <p>sh ${gitPath}/generate_last_commit.sh </p>
-            <p>2. If the file already exists, you only need add the following lines at the end:</p>
-               <p>gitPath=$(git rev-parse --show-toplevel)</p>
-               <p>sh ${gitPath}/generate_last_commit.sh </p>
-        <p>3. Run "git checkout". </p>]]></string>
-<string name="no_previous_event_info">"No previous event available"</string>
-<string name="error_message_push">"The event with UID: %s. was uploaded without date. Please contact the administrator. "</string>
-<string name="font_size_level0_title">"Extra small"</string>
-<string name="font_size_level1_title">"Small"</string>
-<string name="font_size_level2_title">"Medium"</string>
-<string name="font_size_level3_title">"Large"</string>
-<string name="font_size_level4_title">"Extra large"</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="settings_checkbox_show_num_dems">Show num/dems</string>
+    <string name="settings_checkbox_description_show_num_dems">When activated, survey questions show their numerators and denominators, used to calc the survey score</string>
+    <string name="settings_checkbox_location_required">Location required</string>
+    <string name="settings_checkbox_description_location_required">When activated, location is a required field for pushing data to dhis server</string>
+    <string name="settings_checkbox_customize_fonts">Customize fonts?</string>
+    <string name="settings_list_font_sizes">Fonts size</string>
+    <string name="font_size_level0_title">"Extra small"</string>
+    <string name="font_size_level1_title">"Small"</string>
+    <string name="font_size_level2_title">"Medium"</string>
+    <string name="font_size_level3_title">"Large"</string>
+    <string name="font_size_level4_title">"Extra large"</string>
+    <string name="server_url">DHIS2 server</string>
+    <string name="settings_text_dhis_server_url">DHIS Server URL</string>
+    <string name="settings_text_dhis_user">DHIS user</string>
+    <string name="settings_text_dhis_password">DHIS password</string>
+    <string name="settings_text_dhis_max_items">DHIS max loaded surveys</string>
+    <string name="pref_header_general">General</string>
+
+    <string name="dialog_title_push_response">Push response</string>
+    <string name="dialog_info_push_bad_credentials">Bad credentials for pushing</string>
+    <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
+    <string name="dialog_error_push_uids">Incorrect UIDs found in push</string>
+    <string name="dialog_error_push_no_location_and_required">No location available and it is a required field</string>
+    <string name="dialog_info_push_imported">Imported</string>
+    <string name="dialog_info_push_updated">Updated</string>
+    <string name="dialog_info_push_ignored">Ignored</string>
+    <string name="dialog_info_push_stats">Survey data pushed to server. Results:</string>
+    <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
+    <string name="dialog_deleting_children">You\'re about to delete the answer for questions that depend on this one. Do you really want to continue?</string>
+
+    <string name="dashboard_tip_pie_chart">Quality of care (based on last assessment)</string>
+    <string name="dialog_pull_error">Error while trying to pull metadata from dhis server</string>
+    <string name="settings_menu_pull">Refresh metadata</string>
+    <string name="dialog_pull_success">Dhis metadata successfully pulled from server</string>
+    <string name="dialog_title_pull_response">Pull status</string>
+    <string name="progress_pull_connecting" >Connecting to DHIS server...</string>
+    <string name="progress_pull_downloading">Refreshing metadata (this might take a few minutes) ...</string>
+    <string name="progress_pull_preparing_program">Loading programs ...</string>
+    <string name="progress_pull_preparing_answers">Loading answers ...</string>
+    <string name="progress_pull_preparing_orgs">Loading organisations ...</string>
+    <string name="progress_pull_questions">Loading questions (this might take a few minutes) ...</string>
+    <string name="progress_pull_surveys">Loading surveys ...</string>
+    <string name="progress_pull_done">Done</string>
+
+    <string name="dialog_push_success">Survey successfully pushed to dhis server</string>
+    <string name="progress_push_preparing_survey">Preparing survey for pushing ...</string>
+    <string name="progress_push_posting_survey">Pushing survey data to server...</string>
+    <string name="progress_push_updating_survey">Updating pushed survey data...</string>
+    <string name="progress_push_no_survey">No survey found for pushing</string>
+    <string name="dialog_push_before_pull_success">Surveys successfully pushed to dhis server, starting to pull metadata</string>
+    <string name="planning_title_dialog">Schedule survey</string>
+    <string name="planning_label_comment">* Comment</string>
+    <string name="planning_label_schedule_date">* Scheduled Date</string>
+    <string name="option_edit">Edit</string>
+    <string name="option_mark_completed">Mark as completed</string>
+    <string name="option_delete">Delete</string>
+
+    <string name="hide_planning_tab_title" >Hide planning tab</string>
+    <string name="hide_planning_tab_summary" >Check this box for hide planning tab</string>
+    <string name="plan">Plan</string>
+    <string name="assess">Assess - active surveys</string>
+    <string name="improve">Improve</string>
+    <string name="monitor">Monitor</string>
+
+    <string name="filter_all_org_units">all org units</string>
+    <string name="filter_all_org_assessments">all assessments</string>
+    <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
+
+    <string name="lastcommit">Version %s</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="no_previous_event_info">No previous event available</string>
+
+    <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 </resources>
