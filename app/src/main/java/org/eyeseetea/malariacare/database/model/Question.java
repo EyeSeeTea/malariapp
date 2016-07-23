@@ -386,10 +386,6 @@ public class Question extends BaseModel {
     public List<Question> getChildren() {
         if (this.children == null) {
 
-            //No matches no children
-            if (getId_question() == 74){
-                Log.d("Question", "testing");
-            }
             List<Match> matches = getMatches();
             if (matches.size() == 0) {
                 this.children = new ArrayList<>();
