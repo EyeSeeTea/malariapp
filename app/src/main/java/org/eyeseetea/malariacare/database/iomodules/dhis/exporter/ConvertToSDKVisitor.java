@@ -356,12 +356,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(controlDataElementExistsInServer(createdOnCode)){
-            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated date
         if(controlDataElementExistsInServer(updatedDateCode)){
-            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated by user
