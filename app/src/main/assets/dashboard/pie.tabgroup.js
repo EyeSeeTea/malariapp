@@ -133,40 +133,39 @@ function changedOrgunit(){
 			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
 		}
 	}  
-if(selectedProgram==="AllAssessment")
-	rebuildTableFacilities();
-else
-  renderPieCharts();
+    if(selectedProgram==="AllAssessment"){
+        rebuildTableFacilities();
+    }else{
+        renderPieCharts();
+    }
 }
 //Save the data of the pies
 function buildPieCharts(dataPies){
     //For each pie
 	setFacilityData(dataPies);
-	}
+}
 
 //Render the pie and create the select options
 function renderPieCharts(){
     for(var i=0;i<inputOrgUnit.length;i++){
-		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
-		{
-			showDataPie(inputOrgUnit[i]);
-			createSelectOrgUnit();
-		}
+        if (inputOrgUnit[i].uidorgunit==selectedOrgUnit){
+            showDataPie(inputOrgUnit[i]);
+            createSelectOrgUnit();
+        }
 	}
     createSelectProgram();
 }
 
 //Insert the pie in the html
 function showDataPie(dataPie){
-	
     var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
 	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
-			//Create template with right ids
-			var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
-			//Add DOM element
-			document.getElementById("pieChartContent").innerHTML=customTemplate;
-			//Draw chart on it
-			pieXTabGroupChart(dataPie);
+    //Create template with right ids
+    var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
+    //Add DOM element
+    document.getElementById("pieChartContent").innerHTML=customTemplate;
+    //Draw chart on it
+    pieXTabGroupChart(dataPie);
 
 }
 

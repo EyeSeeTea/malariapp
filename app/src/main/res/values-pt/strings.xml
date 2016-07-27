@@ -209,4 +209,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="unavailable">"indisponível"</string>
 <string name="no_previous_event_info">"No evento anterior disponíveis"</string>
 <string name="error_message_push">"O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador."</string>
+    <string name="monitor_js_assessments" >"Avaliações realizadas"</string>
+    <string name="monitor_js_target" >"Objetivo"</string>
+    <string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Ultimos"</string>
+    <string name="monitor_js_months" >" meses"</string>
 </resources>

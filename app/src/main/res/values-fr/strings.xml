@@ -207,4 +207,8 @@ Mensuelle"</string>
 <string name="unavailable">"Indisponible"</string>
 <string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
 <string name="error_message_push">"L'événement avec identifiant : %s. a été envoyé sans sa date. S'il vous plaît contactez l'administrateur."</string>
+    <string name="monitor_js_assessments" >"Les évaluations réalisées"</string>
+    <string name="monitor_js_target" >"Objectif"</string>
+    <string name="monitor_js_quality_of_care" >"La qualité des soins: Dernier"</string>
+    <string name="monitor_js_months" >" mois"</string>
 </resources>
