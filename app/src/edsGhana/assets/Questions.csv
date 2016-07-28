@@ -89,7 +89,7 @@
 121;'GHA-Pharm Obs-160';'GHA-Pharm Obs-Obs 1-160-Do pharmacy staff check if the patient has understood how to take the medication?';;'Do pharmacy staff check if the patient has understood how to take the medication?';'j2W4jk8CzJb';160;1.00;1.00;58;85;;32
 122;'GHA-Pharm Obs-170';'GHA-Pharm Obs-Obs 1-170-Do pharmacy staff advise patient potential side effect of medicine?';;'Do pharmacy staff advise patient potential side effect of medicine?';'AJYDYA9IHt5';170;1.00;1.00;58;85;;32
 123;'GHA-Gen OTSS-1060';'GHA-Gen OTSS-St/Eq-1060-Comments:';;'Comments:';'OtmERuZoiJH';1060;0.00;0.00;4;13;;
-124;'GHA-CR Obs 1-100';'GHA-CR Obs 1-Obs 1-100-Observe 3 fever consultations (1 adult and 2 children)';;'Observe 3 fever consultations (1 adult and 2 children)';'VNYa72TWdax';100;0.00;0.00;7;8;;
+124;'GHA-CR Obs 1-100';'GHA-CR Obs 1-Obs 1-100-Observe 3 consultations of febrile illnesses (1 adult and 2 children) per clinician, but preferably any three fever cases in case you do not find this combination in the facility';;'Observe 3 consultations of febrile illnesses (1 adult and 2 children) per clinician, but preferably any three fever cases in case you do not find this combination in the facility';'VNYa72TWdax';100;0.00;0.00;7;8;;
 125;'GHA-CR Obs 1-110';'GHA-CR Obs 1-Obs 1-110-This should be the first of three observations';;'This should be the first of three observations';'JmQc6Yvdgcf';110;0.00;0.00;7;8;;
 126;'GHA-CR Obs 1-120';'GHA-CR Obs 1-HW Info-120-Name of Health Worker';;'Name of Health Worker';'t6MdD8GDBrt';120;0.00;0.00;8;13;;
 127;'GHA-CR Obs 1-130';'GHA-CR Obs 1-HW Info-130-Sex';;'Sex';'TOe7sH1gfOG';130;0.00;0.00;8;77;;
@@ -108,7 +108,7 @@
 141;'GHA-CR Obs 1-270';'GHA-CR Obs 1-Cl hist-270-If yes, did clinician ask about duration of cough, if cough is productive and sputum color?';;'If yes, did clinician ask about duration of cough, if cough is productive and sputum color?';'z8SXyFQI1lB';270;1.00;1.00;10;85;140;36
 142;'GHA-CR Obs 1-280';'GHA-CR Obs 1-Cl hist-280-Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';;'Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';'uUlzF2t2nw2';280;1.00;1.00;10;85;;36
 143;'GHA-CR Obs 1-290';'GHA-CR Obs 1-Cl hist-290-Whether treatment given before coming to the health facility (either at home or another health facility)?';;'Whether treatment given before coming to the health facility (either at home or another health facility)?';'WGs1glfi32M';290;1.00;1.00;10;85;;36
-145;'GHA-CR Obs 1-310';'GHA-CR Obs 1-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';'cVyvDmW2Smp';310;1.00;1.00;10;85;;36
+145;'GHA-CR Obs 1-310';'GHA-CR Obs 1-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 4 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 4 weeks?';'cVyvDmW2Smp';310;1.00;1.00;10;85;;36
 146;'GHA-CR Obs 1-320';'GHA-CR Obs 1-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'gtDCqocAOWc';320;16.00;16.00;11;85;;36
 147;'GHA-CR Obs 1-330';'GHA-CR Obs 1-Signs Sev Mal-330-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'gMt7eQcj8rn';330;0.00;0.00;11;8;;
 148;'GHA-CR Obs 1-340';'GHA-CR Obs 1-Signs Sev Mal-340-Change in behavior, alterred consciousness or coma';;'Change in behavior, alterred consciousness or coma';'MfvUdd0XD2r';340;0.00;0.00;11;85;;
@@ -128,7 +128,7 @@
 162;'GHA-CR Obs 1-480';'GHA-CR Obs 1-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'e0nFsLB41AO';480;1.00;1.00;12;85;;36
 163;'GHA-CR Obs 1-490';'GHA-CR Obs 1-Cl sev assess-490-Neck stiffness';;'Neck stiffness';'LyLcMoECDbv';490;0.00;0.00;12;85;;
 164;'GHA-CR Obs 1-500';'GHA-CR Obs 1-Cl sev assess-500-Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';;'Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';'o7nJHzR2fBH';500;0.00;0.00;12;85;;
-166;'GHA-CR Obs 1-520';'GHA-CR Obs 1-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'iYDBciLzhyc';520;0.00;0.00;12;85;;
+166;'GHA-CR Obs 1-520';'GHA-CR Obs 1-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'iYDBciLzhyc';520;0.00;0.00;12;86;;
 167;'GHA-CR Obs 1-530';'GHA-CR Obs 1-Cl sev assess-530-Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';;'Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';'UdqbxabyOEj';530;0.00;0.00;12;85;;
 168;'GHA-CR Obs 1-540';'GHA-CR Obs 1-Cl sev assess-540-Altered consciousness';;'Altered consciousness';'beARbrEttI5';540;0.00;0.00;12;85;;
 169;'GHA-CR Obs 1-550';'GHA-CR Obs 1-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'KPZUU2ZZIr4';550;0.00;0.00;13;8;;
@@ -159,7 +159,7 @@
 199;'GHA-CR Obs 1-850';'GHA-CR Obs 1-Tx-850-Informed of transfer or hospitalization?';;'Informed of transfer or hospitalization?';'HxXaZcBrTk8';850;1.00;1.00;15;85;189;36
 200;'GHA-CR Obs 1-860';'GHA-CR Obs 1-Tx-860-Informed about treatment and admission at referral facility?';;'Informed about treatment and admission at referral facility?';'twI8nkkorQL';860;1.00;1.00;15;85;189;36
 201;'GHA-CR Obs 1-870';'GHA-CR Obs 1-Tx-870-Asked if they have any questions?';;'Asked if they have any questions?';'azKsvxMDgqo';870;1.00;1.00;15;85;189;36
-202;'GHA-CR Obs 2-100';'GHA-CR Obs 2-Obs 2-100-Observe 3 fever consultations (1 adult and 2 children)';;'Observe 3 fever consultations (1 adult and 2 children)';'MdrlzF13MUo';100;0.00;0.00;16;8;;
+202;'GHA-CR Obs 2-100';'GHA-CR Obs 2-Obs 2-100-Observe 3 consultations of febrile illnesses (1 adult and 2 children) per clinician, but preferably any three fever cases in case you do not find this combination in the facility';;'Observe 3 consultations of febrile illnesses (1 adult and 2 children) per clinician, but preferably any three fever cases in case you do not find this combination in the facility';'MdrlzF13MUo';100;0.00;0.00;16;8;;
 203;'GHA-CR Obs 2-110';'GHA-CR Obs 2-Obs 2-110-This should be the second of three observations';;'This should be the second of three observations';'eWA1OozdN3K';110;0.00;0.00;16;8;;
 209;'GHA-CR Obs 2-170';'GHA-CR Obs 2-Rec-170-Patient and care giver welcomed?';;'Patient and care giver welcomed?';'N4tR8serHlr';170;0.00;0.00;18;85;;
 211;'GHA-CR Obs 2-190';'GHA-CR Obs 2-Rec-190-Age of patient determined?';;'Age of patient determined?';'cXC7U5ZUKKE';190;1.00;1.00;18;85;;37
@@ -173,7 +173,7 @@
 219;'GHA-CR Obs 2-270';'GHA-CR Obs 2-Cl hist-270-If yes, did clinician ask about duration of cough, if cough is productive and sputum color?';;'If yes, did clinician ask about duration of cough, if cough is productive and sputum color?';'Rd5D64Tz8LW';270;1.00;1.00;19;85;218;37
 220;'GHA-CR Obs 2-280';'GHA-CR Obs 2-Cl hist-280-Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';;'Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';'Us2n7Zrv5lL';280;1.00;1.00;19;85;;37
 221;'GHA-CR Obs 2-290';'GHA-CR Obs 2-Cl hist-290-Whether treatment given before coming to the health facility (either at home or another health facility)?';;'Whether treatment given before coming to the health facility (either at home or another health facility)?';'Ugq22cg542X';290;1.00;1.00;19;85;;37
-223;'GHA-CR Obs 2-310';'GHA-CR Obs 2-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';'v0NsGci0F13';310;1.00;1.00;19;85;;37
+223;'GHA-CR Obs 2-310';'GHA-CR Obs 2-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 4 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 4 weeks?';'v0NsGci0F13';310;1.00;1.00;19;85;;37
 224;'GHA-CR Obs 2-320';'GHA-CR Obs 2-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'JHztvTEyPk4';320;16.00;16.00;20;85;;37
 225;'GHA-CR Obs 2-330';'GHA-CR Obs 2-Signs Sev Mal-330-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'UP2EnbdBwmo';330;0.00;0.00;20;8;;
 226;'GHA-CR Obs 2-340';'GHA-CR Obs 2-Signs Sev Mal-340-Change in behavior, alterred consciousness or coma';;'Change in behavior, alterred consciousness or coma';'BLKhWDPJbfh';340;0.00;0.00;20;85;;
@@ -193,7 +193,7 @@
 240;'GHA-CR Obs 2-480';'GHA-CR Obs 2-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'QrWuAu5g9Zz';480;1.00;1.00;21;85;;37
 241;'GHA-CR Obs 2-490';'GHA-CR Obs 2-Cl sev assess-490-Neck stiffness';;'Neck stiffness';'XuLIvyfEx8v';490;0.00;0.00;21;85;;
 242;'GHA-CR Obs 2-500';'GHA-CR Obs 2-Cl sev assess-500-Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';;'Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';'gIHHfOGZDTa';500;0.00;0.00;21;85;;
-244;'GHA-CR Obs 2-520';'GHA-CR Obs 2-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'eiWzZjdrjPG';520;0.00;0.00;21;85;;
+244;'GHA-CR Obs 2-520';'GHA-CR Obs 2-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'eiWzZjdrjPG';520;0.00;0.00;21;86;;
 245;'GHA-CR Obs 2-530';'GHA-CR Obs 2-Cl sev assess-530-Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';;'Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';'nMTHdBVEBAN';530;0.00;0.00;21;85;;
 246;'GHA-CR Obs 2-540';'GHA-CR Obs 2-Cl sev assess-540-Altered consciousness';;'Altered consciousness';'aWPWA8LRcB6';540;0.00;0.00;21;85;;
 247;'GHA-CR Obs 2-550';'GHA-CR Obs 2-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'fuAKrLn9XAb';550;0.00;0.00;22;8;;
@@ -224,7 +224,7 @@
 277;'GHA-CR Obs 2-850';'GHA-CR Obs 2-Tx-850-Informed of transfer or hospitalization?';;'Informed of transfer or hospitalization?';'LuOaWSVmW8s';850;1.00;1.00;24;85;267;37
 278;'GHA-CR Obs 2-860';'GHA-CR Obs 2-Tx-860-Informed about treatment and admission at referral facility?';;'Informed about treatment and admission at referral facility?';'JY2wUnQuYPL';860;1.00;1.00;24;85;267;37
 279;'GHA-CR Obs 2-870';'GHA-CR Obs 2-Tx-870-Asked if they have any questions?';;'Asked if they have any questions?';'QPwmmR3WlTb';870;1.00;1.00;24;85;267;37
-280;'GHA-CR Obs 3-100';'GHA-CR Obs 3-Obs 3-100-Observe 3 fever consultations (1 adult and 2 children) per clinician';;'Observe 3 fever consultations (1 adult and 2 children) per clinician';'DFFRUvJvLDm';100;0.00;0.00;25;8;;
+280;'GHA-CR Obs 3-100';'GHA-CR Obs 3-Obs 3-100-Observe 3 consultations of febrile illnesses (1 adult and 2 children) per clinician, but preferably any three fever cases in case you do not find this combination in the facility';;'Observe 3 consultations of febrile illnesses (1 adult and 2 children) per clinician, but preferably any three fever cases in case you do not find this combination in the facility';'DFFRUvJvLDm';100;0.00;0.00;25;8;;
 281;'GHA-CR Obs 3-110';'GHA-CR Obs 3-Obs 3-110-This should be the third of three observations';;'This should be the third of three observations';'IyFt6q0O8ZB';110;0.00;0.00;25;8;;
 287;'GHA-CR Obs 3-170';'GHA-CR Obs 3-Rec-170-Patient and care giver welcomed?';;'Patient and care giver welcomed?';'giMm9C5sRmX';170;0.00;0.00;27;85;;
 289;'GHA-CR Obs 3-190';'GHA-CR Obs 3-Rec-190-Age of patient determined?';;'Age of patient determined?';'QTRws0ckURO';190;1.00;1.00;27;85;;38
@@ -238,7 +238,7 @@
 297;'GHA-CR Obs 3-270';'GHA-CR Obs 3-Cl hist-270-If yes, did clinician ask about duration of cough, if cough is productive and sputum color?';;'If yes, did clinician ask about duration of cough, if cough is productive and sputum color?';'ACMOUtBkOBV';270;1.00;1.00;28;85;296;38
 298;'GHA-CR Obs 3-280';'GHA-CR Obs 3-Cl hist-280-Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';;'Any other symptoms (ear pain, discharge from ear, skin rash, painful urination) and their period of onset asked?';'SD3Gvh2XkAk';280;1.00;1.00;28;85;;38
 299;'GHA-CR Obs 3-290';'GHA-CR Obs 3-Cl hist-290-Whether treatment given before coming to the health facility (either at home or another health facility)?';;'Whether treatment given before coming to the health facility (either at home or another health facility)?';'EyCJZ55FeUc';290;1.00;1.00;28;85;;38
-301;'GHA-CR Obs 3-310';'GHA-CR Obs 3-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 2 weeks?';'atDXk8ny0XY';310;1.00;1.00;28;85;;38
+301;'GHA-CR Obs 3-310';'GHA-CR Obs 3-Cl hist-310-Whether the patient received a malaria test with heel stick or finger prick in last 4 weeks?';;'Whether the patient received a malaria test with heel stick or finger prick in last 4 weeks?';'atDXk8ny0XY';310;1.00;1.00;28;85;;38
 302;'GHA-CR Obs 3-320';'GHA-CR Obs 3-Signs Sev Mal-320-Does the health worker ask / check for signs of severe disease?';;'Does the health worker ask / check for signs of severe disease?';'AHoO4Hra7JP';320;16.00;16.00;29;85;;38
 303;'GHA-CR Obs 3-330';'GHA-CR Obs 3-Signs Sev Mal-330-Does the health worker ask / check for:';;'Does the health worker ask / check for:';'SWnWY2NWFeq';330;0.00;0.00;29;8;;
 304;'GHA-CR Obs 3-340';'GHA-CR Obs 3-Signs Sev Mal-340-Change in behavior, alterred consciousness or coma';;'Change in behavior, alterred consciousness or coma';'pA4FG0JUJR1';340;0.00;0.00;29;85;;
@@ -258,7 +258,7 @@
 318;'GHA-CR Obs 3-480';'GHA-CR Obs 3-Cl sev assess-480-Other signs of severe disease? including:';;'Other signs of severe disease? including:';'Iq5QQZALeIS';480;1.00;1.00;30;85;;38
 319;'GHA-CR Obs 3-490';'GHA-CR Obs 3-Cl sev assess-490-Neck stiffness';;'Neck stiffness';'ytjlSkszBoO';490;0.00;0.00;30;85;;
 320;'GHA-CR Obs 3-500';'GHA-CR Obs 3-Cl sev assess-500-Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';;'Severe Dehydration (sunken eyes, skin pinch goes back>2sec, drinks eagerly)';'Kxqw3dXCA95';500;0.00;0.00;30;85;;
-322;'GHA-CR Obs 3-520';'GHA-CR Obs 3-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'P0Jlb2LfN4k';520;0.00;0.00;30;85;;
+322;'GHA-CR Obs 3-520';'GHA-CR Obs 3-Cl sev assess-520-Papilledema on eye exam';;'Papilledema on eye exam';'P0Jlb2LfN4k';520;0.00;0.00;30;86;;
 323;'GHA-CR Obs 3-530';'GHA-CR Obs 3-Cl sev assess-530-Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';;'Shock: Weak & thready pulse, Cold extremities, capillary refill ≥ 3 s or hypotension (Systolic BP < 70 mm Hg in children, < 90 mmHg in Adult)';'nWIYzd3sO45';530;0.00;0.00;30;85;;
 324;'GHA-CR Obs 3-540';'GHA-CR Obs 3-Cl sev assess-540-Altered consciousness';;'Altered consciousness';'aXx38hIsmaC';540;0.00;0.00;30;85;;
 325;'GHA-CR Obs 3-550';'GHA-CR Obs 3-Gen Ex-550-Does the health worker conduct a general physical exam, including:';;'Does the health worker conduct a general physical exam, including:';'ZEiz3EErcYR';550;0.00;0.00;31;8;;
@@ -642,7 +642,7 @@
 796;'GHA-Data Mgmt-160';'GHA-Data Mgmt-Fac Rec-160-On-the-job coaching';;'On-the-job coaching';'UoyvR6ZiMZm';160;0.00;0.00;79;85;;
 797;'GHA-Data Mgmt-170';'GHA-Data Mgmt-Fac Rec-170-Not trained';;'Not trained';'DpHGpfsA9mw';170;0.00;0.00;79;85;;
 798;'GHA-Data Mgmt-180';'GHA-Data Mgmt-Fac Rec-180-Can  the person in charge of records clearly:';;'Can  the person in charge of records clearly:';'AsoByn7H9iK';180;0.00;0.00;79;8;;
-799;'GHA-Data Mgmt-190';'GHA-Data Mgmt-Fac Rec-190-Identify all the malaria reporting forms(CRR, OPD Morbidity, Monthly Antimalarial report, CBA Monthly summary report)';;'Identify all the malaria reporting forms(CRR, OPD Morbidity, Monthly Antimalarial report, CBA Monthly summary report)';'epgImzpgLwo';190;1.00;1.00;79;85;;43
+799;'GHA-Data Mgmt-190';'GHA-Data Mgmt-Fac Rec-190-Identify all the malaria reporting forms(CRR, OPD Morbidity, Monthly Antimalarial report, CBA Monthly summary report)';;'Identify all the malaria reporting forms(CRR, OPD Morbidity, Monthly Antimalarial report, CBA Monthly summary report)';'epgImzpgLwo';190;1.00;1.00;79;86;;43
 800;'GHA-Data Mgmt-200';'GHA-Data Mgmt-Fac Rec-200-Identify a suspected malaria case in the CR register';;'Identify a suspected malaria case in the CR register';'DL6Hjkkzu0l';200;1.00;1.00;79;85;;43
 801;'GHA-Data Mgmt-210';'GHA-Data Mgmt-Fac Rec-210-Identify suspected malaria cases tested';;'Identify suspected malaria cases tested';'swrzQ8eSoWl';210;1.00;1.00;79;85;;43
 802;'GHA-Data Mgmt-220';'GHA-Data Mgmt-Fac Rec-220-Identify suspected malaria cases tested positive';;'Identify suspected malaria cases tested positive';'ldyi3ZXJWaY';220;1.00;1.00;79;85;;43
@@ -652,12 +652,12 @@
 806;'GHA-Data Mgmt-260';'GHA-Data Mgmt-Fac Rec-260-Identify a confirmed malaria case';;'Identify a confirmed malaria case';'jfvBpkuQvYm';260;1.00;1.00;79;85;;43
 807;'GHA-Data Mgmt-270';'GHA-Data Mgmt-Fac Rec-270-Differentiate between new and old malaria cases';;'Differentiate between new and old malaria cases';'woPJe0na1pp';270;1.00;1.00;79;85;;43
 808;'GHA-Data Mgmt-280';'GHA-Data Mgmt-Fac Rec-280-Differentiate between provisional and additional diagnosis';;'Differentiate between provisional and additional diagnosis';'qsIcpdJszGH';280;1.00;1.00;79;85;;43
-809;'GHA-Data Mgmt-290';'GHA-Data Mgmt-Fac Rec-290-Does the records in-charge train other staff on the use of the following data collection tools?:';;'Does the records in-charge train other staff on the use of the following data collection tools?:';'WkIbmWwigas';290;0.00;0.00;79;8;;
+809;'GHA-Data Mgmt-290';'GHA-Data Mgmt-Fac Rec-290-Does the records in-charge train other staff on the use of the following data collection tools?:';;'Does records staff train other staff on the use the data collection tools?';'WkIbmWwigas';290;0.00;0.00;79;8;;
 810;'GHA-Data Mgmt-300';'GHA-Data Mgmt-Fac Rec-300-Consulting Room Register';;'Consulting Room Register';'k9d3un8xfms';300;0.00;0.00;79;85;;
 811;'GHA-Data Mgmt-310';'GHA-Data Mgmt-Fac Rec-310-OPD register';;'OPD register';'NJUGl4IJLMc';310;0.00;0.00;79;85;;
 812;'GHA-Data Mgmt-320';'GHA-Data Mgmt-Fac Rec-320-Monthly OPD Morbidity Form';;'Monthly OPD Morbidity Form';'qAFWzsj2k8A';320;0.00;0.00;79;85;;
 813;'GHA-Data Mgmt-330';'GHA-Data Mgmt-Fac Rec-330-Monthly Antimalarial Report';;'Monthly Antimalarial Report';'rAiFe4G5fPa';330;0.00;0.00;79;85;;
-814;'GHA-Data Mgmt-340';'GHA-Data Mgmt-Fac Rec-340-Monthly CBA returns (if applicable)';;'Monthly CBA returns (if applicable)';'YMaH60NcKLU';340;0.00;0.00;79;85;;
+814;'GHA-Data Mgmt-340';'GHA-Data Mgmt-Fac Rec-340-Monthly CBA returns (if applicable)';;'Monthly CBA returns (if applicable)';'YMaH60NcKLU';340;0.00;0.00;79;86;;
 815;'GHA-Data Mgmt-350';'GHA-Data Mgmt-Data Mgmt-350-Which of the following does the facility use for data entry into DHIS2?';;'Which of the following does the facility use for data entry into DHIS2?';'eC9FtVTmb4H';350;0.00;0.00;80;100;;
 816;'GHA-Data Mgmt-360';'GHA-Data Mgmt-Data Mgmt-360-How does the facility usually transfer the data into DHIS2?';;'How does the facility usually transfer the data into DHIS2?';'hFmrY2HnvAr';360;0.00;0.00;80;101;;
 817;'GHA-Data Mgmt-370';'GHA-Data Mgmt-Data Mgmt-370-If other, specify';;'If other, specify';'WFBwrP295ly';370;0.00;0.00;80;13;;
@@ -675,22 +675,20 @@
 829;'GHA-Data Mgmt-490';'GHA-Data Mgmt-Data Mgmt-490-When was the last time the facility head accessed DHIS2?';;'When was the last time the facility head accessed DHIS2?';'hM1ZtsyHZ6k';490;0.00;0.00;80;99;;
 830;'GHA-Data Mgmt-500';'GHA-Data Mgmt-Data Use-500-How does the facility validate its data prior to transmitting to the next level? (Look for evidence of validation such as minutes)';;'How does the facility validate its data prior to transmitting to the next level? (Look for evidence of validation such as minutes)';'WxwKus96vpE';500;0.00;0.00;81;102;;
 831;'GHA-Data Mgmt-510';'GHA-Data Mgmt-Data Use-510-In what ways does the facilty use its data? Probe for examples';;'In what ways does the facilty use its data? Probe for examples';'pU4gtSIYLqo';510;0.00;0.00;81;14;;
-832;'GHA-Data Mgmt-520';'GHA-Data Mgmt-Rept Tools-520-Are the following malaria tools available?';;'Are the following malaria tools available?';'vXo7oRNYgmt';520;0.00;0.00;82;85;;
-833;'GHA-Data Mgmt-530';'GHA-Data Mgmt-Rept Tools-530-OPD Register';;'OPD Register';'wAzI3HRGt1V';530;0.00;0.00;82;85;;
+833;'GHA-Data Mgmt-530';'GHA-Data Mgmt-Rept Tools-530-OPD Register';;'OPD Register';'wAzI3HRGt1V';530;0.00;0.00;82;86;;
 834;'GHA-Data Mgmt-540';'GHA-Data Mgmt-Rept Tools-540-Is it complete and accurate?';;'Is it complete and accurate?';'VGdEQa8cpnv';540;0.00;0.00;82;85;833;
-835;'GHA-Data Mgmt-550';'GHA-Data Mgmt-Rept Tools-550-Consulting Room Register';;'Consulting Room Register';'SjwtOK1h05O';550;0.00;0.00;82;85;;
+835;'GHA-Data Mgmt-550';'GHA-Data Mgmt-Rept Tools-550-Consulting Room Register';;'Consulting Room Register';'SjwtOK1h05O';550;0.00;0.00;82;86;;
 836;'GHA-Data Mgmt-560';'GHA-Data Mgmt-Rept Tools-560-Is it complete and accurate?';;'Is it complete and accurate?';'mBjC0Qsu0ns';560;0.00;0.00;82;85;835;
-837;'GHA-Data Mgmt-570';'GHA-Data Mgmt-Rept Tools-570-Monthly OPD Morbidity Form';;'Monthly OPD Morbidity Form';'Y8mQRA8KodC';570;0.00;0.00;82;85;;
+837;'GHA-Data Mgmt-570';'GHA-Data Mgmt-Rept Tools-570-Monthly OPD Morbidity Form';;'Monthly OPD Morbidity Form';'Y8mQRA8KodC';570;0.00;0.00;82;86;;
 838;'GHA-Data Mgmt-580';'GHA-Data Mgmt-Rept Tools-580-Is it complete and accurate?';;'Is it complete and accurate?';'RpuN9VywDiU';580;0.00;0.00;82;85;837;
-839;'GHA-Data Mgmt-590';'GHA-Data Mgmt-Rept Tools-590-Monthly Antimalarial Report';;'Monthly Antimalarial Report';'nL02HGDr3IO';590;0.00;0.00;82;85;;
+839;'GHA-Data Mgmt-590';'GHA-Data Mgmt-Rept Tools-590-Monthly Antimalarial Report';;'Monthly Antimalarial Report';'nL02HGDr3IO';590;0.00;0.00;82;86;;
 840;'GHA-Data Mgmt-600';'GHA-Data Mgmt-Rept Tools-600-Is it complete and accurate?';;'Is it complete and accurate?';'XiUuLW2Wjp6';600;0.00;0.00;82;85;839;
-841;'GHA-Data Mgmt-610';'GHA-Data Mgmt-Rept Tools-610-CHO/CBA Summary Booklet';;'CHO/CBA Summary Booklet';'EhVjPUl1T5R';610;0.00;0.00;82;85;;
+841;'GHA-Data Mgmt-610';'GHA-Data Mgmt-Rept Tools-610-CHO/CBA Summary Booklet';;'CHO/CBA Summary Booklet';'EhVjPUl1T5R';610;0.00;0.00;82;86;;
 842;'GHA-Data Mgmt-620';'GHA-Data Mgmt-Rept Tools-620-Is it complete and accurate?';;'Is it complete and accurate?';'EVk6eoRHVEE';620;0.00;0.00;82;85;841;
 843;'GHA-Data Mgmt-630';'GHA-Data Mgmt-Rept Tools-630-For each of the following reports, have all reports due in the past 3 months been submitted to the DHD?';;'For each of the following reports, have all reports due in the past 3 months been submitted to the DHD?';'lqWmLnsrpfU';630;0.00;0.00;82;8;;
 844;'GHA-Data Mgmt-640';'GHA-Data Mgmt-Rept Tools-640-Monthly OPD Morbidity Form';;'Monthly OPD Morbidity Form';'jRE6YR0rlxH';640;0.00;0.00;82;85;;
-845;'GHA-Data Mgmt-650';'GHA-Data Mgmt-Rept Tools-650-Monthly Antimalarial Report';;'Monthly Antimalarial Report';'GxWhFd4peLo';650;0.00;0.00;82;85;;
 846;'GHA-Data Mgmt-660';'GHA-Data Mgmt-Rept Tools-660-Monthly Antimalarial Report';;'Monthly Antimalarial Report';'Mdmeqly1BoC';660;0.00;0.00;82;85;;
-847;'GHA-Data Mgmt-670';'GHA-Data Mgmt-Rept Tools-670-Is DHIS2 entry available on-site?';;'Is DHIS2 entry available on-site?';'pfoUOa0oXlI';670;0.00;0.00;82;85;;
+847;'GHA-Data Mgmt-670';'GHA-Data Mgmt-Rept Tools-670-Is DHIS2 entry available on-site?';;'Is DHIS2 entry available on-site?';'pfoUOa0oXlI';670;0.00;0.00;82;86;;
 848;'GHA-Data Mgmt-680';'GHA-Data Mgmt-Rept Tools-680-For each of the following reports, have all reports due in the past 3 months been entered into DHIS2?';;'For each of the following reports, have all reports due in the past 3 months been entered into DHIS2?';'zbl6ptUuCbv';680;0.00;0.00;82;8;847;
 849;'GHA-Data Mgmt-690';'GHA-Data Mgmt-Rept Tools-690-Monthly OPD Morbidity Form';;'Monthly OPD Morbidity Form';'yonu39JvGif';690;0.00;0.00;82;85;847;
 850;'GHA-Data Mgmt-700';'GHA-Data Mgmt-Rept Tools-700-Monthly Antimalarial Report';;'Monthly Antimalarial Report';'hst7z7JAL1D';700;0.00;0.00;82;85;847;
@@ -754,6 +752,7 @@
 906;'GHA-CR Obs 1-791';'GHA-CR Obs 1-Tx-791-Informed about danger signs and need to report immediately?';;'Informed about danger signs and need to report immediately?';'bBmFLHzNGkT';791;1.00;1.00;15;85;190;36
 907;'GHA-CR Obs 2-791';'GHA-CR Obs 2-Tx-791-Informed about danger signs and need to report immediately';;'Informed about danger signs and need to report immediately?';'mZeZIChgLIJ';791;1.00;1.00;24;85;268;37
 908;'GHA-CR Obs 3-791';'GHA-CR Obs 3-Tx-791-Informed about danger signs and need to report immediately';;'Informed about danger signs and need to report immediately?';'jNVcyVppUdC';791;1.00;1.00;33;85;346;38
+909;'GHA-Data Mgmt-495';'GHA-Data Mgmt-Data Use-495-Does the facility have a data validation team?';;'Does the facility have a data validation team?';'sPYwE2d63HZ';495;0.00;0.00;81;85;;
 1001;'GHA-Gen OTSS-230';'GHA-Gen OTSS-HR_T-230-Number of clinical staff trained on RDTs in last 2 years';;'Number of clinical staff trained on RDTs in last 2 years';'ntU6u0UJ5yj';230;0.00;0.00;2;10;26;
 1204;'GHA-CR Obs 2-120';'GHA-CR Obs 2-HW Info-120-Name of Health Worker';;'Name of Health Worker';'uNleadfJ5kq';120;0.00;0.00;17;13;540;
 1205;'GHA-CR Obs 2-130';'GHA-CR Obs 2-HW Info-130-Sex';;'Sex';'tOMPdaph2am';130;0.00;0.00;17;77;540;
