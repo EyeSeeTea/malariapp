@@ -294,12 +294,12 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey, String module) {
+    public static void autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey, String module) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int option=question.isTriggered(idSurvey)?0:1;
 
         //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter, idSurvey, module);
+        itemSelected(viewHolder, question, question.getAnswer().getOptions().get(option), context, elementInvisibility, adapter, idSurvey, module);
     }
 
     /**
@@ -308,49 +308,50 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, final float idSurvey, final String module) {
-        boolean refreshTab = false;
+    public static void itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, Question question, Option option, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, final float idSurvey, final String module) {
 
+        //No children -> save and calculate values
         if (!question.hasChildren()) {
             // Write option to DB
             ReadWriteDB.saveValuesDDL(question, option, module);
             recalculateScores(viewHolder, question, idSurvey, module);
+            return;
         }
 
-        // If parent relation found, toggle Children Spinner Visibility
-        // If question has question-option, refresh the tab
-        if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren()) {
-                QuestionVisibility.question = question;
-                QuestionVisibility.elementInvisibility = elementInvisibility;
-                QuestionVisibility.adapter = adapter;
-                QuestionVisibility.option = option;
-                boolean notEmpty = false;
-                for (Question childQuestion: question.getChildren()){
-                    if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
-                }
-                if (notEmpty) {
-                    new AlertDialog.Builder(context)
-                            .setTitle(null)
-                            .setMessage(context.getString(R.string.dialog_deleting_children))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    expandChildren(viewHolder, idSurvey, module);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    QuestionVisibility.adapter.notifyDataSetChanged();
-                                }
-                            }).create().show();
-                } else{
-                    expandChildren(viewHolder, idSurvey, module);
-                }
+        QuestionVisibility.question = question;
+        QuestionVisibility.elementInvisibility = elementInvisibility;
+        QuestionVisibility.adapter = adapter;
+        QuestionVisibility.option = option;
+
+        //Children + Values -> Ask for confirm
+        if (hasChildValues(question,module)) {
+            new AlertDialog.Builder(context)
+                    .setTitle(null)
+                    .setMessage(context.getString(R.string.dialog_deleting_children))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            expandChildren(viewHolder, idSurvey, module);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            QuestionVisibility.adapter.notifyDataSetChanged();
+                        }
+                    }).create().show();
+            return;
+        }
+
+        //Children questions without values (nothing to confirm)
+        expandChildren(viewHolder, idSurvey, module);
+    }
+
+    private static boolean hasChildValues(Question question, String module){
+        for (Question childQuestion: question.getChildren()){
+            if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+                return true;
             }
-            refreshTab = true;
         }
-
-        return refreshTab;
+        return false;
     }
 
     public static void expandChildren(ViewHolder viewHolder, float idSurvey, String module){
@@ -392,9 +393,9 @@ public class AutoTabLayoutUtils {
         LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
-        Survey survey=Session.getSurveyByModule(module);
         boolean visible;
 
+        //Update each children -> visibility, score, value
         for (Question child : children) {
             Header childHeader = child.getHeader();
             visible=!child.isHiddenBySurvey(idSurvey);

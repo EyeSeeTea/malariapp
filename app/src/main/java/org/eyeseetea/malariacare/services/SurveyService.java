@@ -122,10 +122,7 @@ public class SurveyService extends IntentService {
      * Key of tabs entry in shared session
      */
     public static final String PREPARE_SURVEY_ACTION_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_TABS";
-    /**
-     * Key of tabs entry in shared session
-     */
-    public static final String PREPARE_ALL_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ALL_TABS";
+
     /**
      * Key of programs entry in shared session
      */
@@ -343,7 +340,6 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "reloadDashboard");
         List<OrgUnit> orgUnitListParents = new Select().all().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
-        List<OrgUnit> orgUnitList=OrgUnit.getAllOrgUnit();
         List<Survey> completedUnsentSurveys=Survey.getAllCompletedUnsentSurveys();
         List<Survey> unsentSurveys=Survey.getAllInProgressSurveys();
         for(Survey survey:unsentSurveys){
@@ -444,7 +440,6 @@ public class SurveyService extends IntentService {
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession(module);
-        List<Tab> allTabs = new Select().all().from(Tab.class).queryList();
 
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, Session.getSurveyByModule(module).getId_survey(), module);
@@ -452,7 +447,6 @@ public class SurveyService extends IntentService {
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);
         Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS, tabs);
-        Session.putServiceValue(PREPARE_ALL_TABS, allTabs);
 
         //Returning result to anyone listening
         Intent resultIntent = new Intent(PREPARE_SURVEY_ACTION);

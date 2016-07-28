@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -56,8 +57,10 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public abstract class AUtils {
 
@@ -89,7 +92,7 @@ public abstract class AUtils {
     }
 
     public static List<? extends BaseModel> preloadTabItems(Tab tab, String module){
-        List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
+        List<? extends BaseModel> items;
 
         if (tab.isCompositeScore())
             items = CompositeScore.listByTabGroup(Session.getSurveyByModule(module).getTabGroup());

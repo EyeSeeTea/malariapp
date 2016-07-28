@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,6 +129,11 @@ public class Question extends BaseModel {
 
     Boolean parent;
 
+    /**
+     * Cached value that tells if this questions launches a match trigger or not
+     */
+    Boolean matchTrigger;
+
     public Question() {
     }
 
@@ -143,6 +149,7 @@ public class Question extends BaseModel {
         this.feedback = feedback;
         this.output = output;
         this.parent = null;
+        this.matchTrigger=null;
         this.compulsory=compulsory;
 
         this.setHeader(header);
@@ -342,6 +349,29 @@ public class Question extends BaseModel {
         return parent;
     }
 
+    /**
+     * Tells if this questions triggers a match
+     * @return
+     */
+    public boolean hasAMatchTrigger(){
+        if(this.output!= Constants.DROPDOWN_LIST){
+            return false;
+        }
+
+        if(matchTrigger==null){
+            for(Match match:getMatches()){
+                QuestionRelation questionRelation = match.getQuestionRelation();
+                if(questionRelation.getOperation()==QuestionRelation.MATCH){
+                    matchTrigger=true;
+                    return matchTrigger;
+                }
+            }
+            matchTrigger=false;
+        }
+
+        return matchTrigger;
+    }
+
     public List<QuestionRelation> getQuestionRelations() {
         if(questionRelations ==null){
             this.questionRelations = new Select()
@@ -358,18 +388,18 @@ public class Question extends BaseModel {
         return !this.getQuestionRelations().isEmpty();
     }
 
-    public List<QuestionOption> getQuestionOption() {
-        //if (this.children == null){
-        return new Select().from(QuestionOption.class)
-                .indexedBy("QuestionOption_id_question")
-                .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
-                .queryList();
-        //}
-    }
+//    public List<QuestionOption> getQuestionOption() {
+//        //if (this.children == null){
+//        return new Select().from(QuestionOption.class)
+//                .indexedBy("QuestionOption_id_question")
+//                .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
+//                .queryList();
+//        //}
+//    }
 
-    public boolean hasQuestionOption() {
-        return !this.getQuestionOption().isEmpty();
-    }
+//    public boolean hasQuestionOption() {
+//        return !this.getQuestionOption().isEmpty();
+//    }
 
     public List<Match> getMatches() {
         if (matches == null) {
@@ -399,7 +429,7 @@ public class Question extends BaseModel {
             }
 
             //Select question from questionrelation where operator=1 and id_match in (..)
-            return new Select().from(Question.class).as("q")
+            this.children= new Select().from(Question.class).as("q")
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                     .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
