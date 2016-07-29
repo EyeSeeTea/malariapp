@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
@@ -64,6 +65,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         TypefaceCache.getInstance().init(getApplicationContext());
+        AutoTabLayoutUtils.init();
 
         //Set the Phone metadata
         PhoneMetaData phoneMetaData=this.getPhoneMetadata();

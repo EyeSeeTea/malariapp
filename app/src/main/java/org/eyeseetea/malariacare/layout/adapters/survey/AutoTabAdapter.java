@@ -364,12 +364,10 @@ public class AutoTabAdapter extends ATabAdapter {
                 viewCreated=true;
                 return;
             }
-            Log.d(TAG,"onItemSelected...");
             AutoTabLayoutUtils.itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), getContext(), elementInvisibility, adapter, idSurvey, module);
             if(question.hasAMatchTrigger()) {
                 notifyDataSetChanged();
             }
-            Log.d(TAG,"onItemSelected...DONE");
         }
 
         @Override
@@ -388,7 +386,6 @@ public class AutoTabAdapter extends ATabAdapter {
             this.viewHolder = viewHolder;
             this.adapter = adapter;
         }
-
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {

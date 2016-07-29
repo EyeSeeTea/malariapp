@@ -34,14 +34,15 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.Tab$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
-import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -122,6 +123,11 @@ public class SurveyService extends IntentService {
      * Key of tabs entry in shared session
      */
     public static final String PREPARE_SURVEY_ACTION_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEY_ACTION_TABS";
+
+    /**
+     * Key of tabs entry in shared session
+     */
+    public static final String PREPARE_ALL_TABS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_ALL_TABS";
 
     /**
      * Key of programs entry in shared session
@@ -436,17 +442,20 @@ public class SurveyService extends IntentService {
 
         //register composite scores for current survey and module
         List<CompositeScore> compositeScores = CompositeScore.list();
-        ScoreRegister.registerCompositeScores(compositeScores,Session.getSurveyByModule(module).getId_survey(),module);
+        Survey survey = Session.getSurveyByModule(module);
+        ScoreRegister.registerCompositeScores(compositeScores,survey.getId_survey(),module);
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession(module);
+        List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(survey.getTabGroup().getId_tab_group())).queryList();
 
         //register tabs scores for current survey and module
-        ScoreRegister.registerTabScores(tabs, Session.getSurveyByModule(module).getId_survey(), module);
+        ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);
         Session.putServiceValue(PREPARE_SURVEY_ACTION_TABS, tabs);
+        Session.putServiceValue(PREPARE_ALL_TABS, allTabs);
 
         //Returning result to anyone listening
         Intent resultIntent = new Intent(PREPARE_SURVEY_ACTION);

@@ -103,6 +103,11 @@ public class SurveyFragment extends  Fragment {
      */
     private List<Tab> tabsList=new ArrayList<>();
 
+    /**
+     * List of all tabs
+     */
+    List<Tab> allTabs;
+
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
     /**
@@ -269,6 +274,16 @@ public class SurveyFragment extends  Fragment {
     private int currentTabPosition() {
         Log.d(TAG, "onItemSelect(" + spinner.getSelectedItemPosition() + ")");
         return spinner.getSelectedItemPosition();
+    }
+
+    private void preLoadItems(){
+        for(Tab tab: allTabs) {
+            Intent preLoadService = new Intent(getActivity().getApplicationContext(), SurveyService.class);
+            preLoadService.putExtra(Constants.MODULE_KEY, moduleName);
+            preLoadService.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PRELOAD_TAB_ITEMS);
+            preLoadService.putExtra("tab", tab.getId_tab());
+            getActivity().getApplicationContext().startService(preLoadService);
+        }
     }
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
@@ -575,6 +590,10 @@ public class SurveyFragment extends  Fragment {
             tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
+
+            allTabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+            // After loading first tab we start the individual services that preload the items for the rest of tabs
+            preLoadItems();
         }
     }
 
