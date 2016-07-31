@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
@@ -190,6 +191,9 @@ public class MonitorFragment extends Fragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+                //Update hardcoded messages
+                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
                 //Add line chart
                 new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);

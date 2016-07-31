@@ -209,4 +209,8 @@ clínica"</string>
 <string name="unavailable">"No disponible"</string>
 <string name="no_previous_event_info">"Ningún evento previo disponible"</string>
 <string name="error_message_push">"El evento con UID: %s. fue subido sin fecha. Por favor, póngase en contacto con el administrador. "</string>
+    <string name="monitor_js_assessments" >Encuestas realizadas</string>
+    <string name="monitor_js_target" >"Objetivo"</string>
+    <string name="monitor_js_quality_of_care" >"Calidad de cuidados: Últimos "</string>
+    <string name="monitor_js_months" >" meses"</string>
 </resources>
