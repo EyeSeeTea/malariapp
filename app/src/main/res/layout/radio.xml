@@ -24,81 +24,51 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <RelativeLayout
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/statement"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.45"
-        android:padding="5dip">
+        android:padding="5dip"
+        android:fontFamily="@string/normal_font"
+        android:paddingLeft="@dimen/question_padding_left"
+        android:text="@string/widget_info_empty_statement"
+        android:textColor="@color/black"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/statement"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@string/normal_font"
-            android:paddingLeft="@dimen/question_padding_left"
-            android:text="@string/widget_info_empty_statement"
-            android:textColor="@color/black"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-    </RelativeLayout>
-
-    <RelativeLayout
+    <RadioGroup
+        android:id="@+id/answer"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.35"
         android:padding="5dip">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+    </RadioGroup>
 
-            <RadioGroup
-                android:id="@+id/answer"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-            </RadioGroup>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/num"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
-        android:padding="@dimen/question_padding_all">
+        android:padding="@dimen/question_padding_all"
+        android:fontFamily="@string/normal_font"
+        android:text="@string/number_zero"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/num"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@string/normal_font"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/number_zero"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-    </RelativeLayout>
-
-    <RelativeLayout
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/den"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
         android:gravity="center_vertical|center_horizontal"
-        android:padding="@dimen/question_padding_all">
-
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/den"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@string/normal_font"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/number_zero"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-    </RelativeLayout>
+        android:padding="@dimen/question_padding_all"
+        android:fontFamily="@string/normal_font"
+        android:text="@string/number_zero"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
 
 </LinearLayout>

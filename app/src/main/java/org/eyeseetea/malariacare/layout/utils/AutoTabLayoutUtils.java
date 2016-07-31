@@ -70,6 +70,22 @@ import java.util.Map;
 public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
+    public static final float STATEMENT_WEIGHT = 0.65f;
+    public static final float COMPONENT_WEIGHT = 0.35f;
+    public static final float NUM_DEN_WEIGHT = 0.0f;
+    public static final float STATEMENT_WEIGHT_WITH_NUM_DEN = 0.45f;
+    public static final float COMPONENT_WEIGHT_WITH_NUM_DEN = 0.25f;
+    public static final float NUM_DEN_WEIGHT_WITH_NUM_DEN = 0.15f;
+
+    private static String compulsoryColorString;
+
+    /**
+     * Inits red color to avoid going into resources every time
+     */
+    public static void init(){
+        int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
+        compulsoryColorString = String.format("%X", red).substring(2);
+    }
 
     //Store the Views references for each row (to avoid many calls to getViewById)
     public static class ViewHolder {
@@ -205,22 +221,21 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
         View rowView = lInflater.inflate(resource, parent, false);
-        if (question.hasChildren())
+        if (question.hasChildren()) {
             rowView.setBackgroundResource(R.drawable.background_parent);
-        else
+        }else {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+        }
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
 
         if(question.getCompulsory()){
-            int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
-            String appNameColorString = String.format("%X", red).substring(2);
-            Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + question.getForm_name());
+            Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", compulsoryColorString) + "*  " + "</b></font>" + question.getForm_name());
             viewHolder.statement.setText(spannedQuestion);
-        }
-        else
+        }else {
             viewHolder.statement.setText(question.getForm_name());
+        }
 
         return rowView;
     }
@@ -251,23 +266,28 @@ public class AutoTabLayoutUtils {
      */
     private static void configureViewByPreference(AutoTabLayoutUtils.ViewHolder viewHolder) {
         int visibility = View.GONE;
-        float statementWeight = 0.65f;
-        float componentWeight = 0.35f;
-        float numDenWeight = 0.0f;
+        float statementWeight = STATEMENT_WEIGHT;
+        float componentWeight = COMPONENT_WEIGHT;
+        float numDenWeight = NUM_DEN_WEIGHT;
 
         if (PreferencesState.getInstance().isShowNumDen()) {
             visibility = View.VISIBLE;
-            statementWeight = 0.45f;
-            componentWeight = 0.25f;
-            numDenWeight = 0.15f;
+            statementWeight = STATEMENT_WEIGHT_WITH_NUM_DEN;
+            componentWeight = COMPONENT_WEIGHT_WITH_NUM_DEN;
+            numDenWeight = NUM_DEN_WEIGHT_WITH_NUM_DEN;
         }
 
         viewHolder.num.setVisibility(visibility);
         viewHolder.denum.setVisibility(visibility);
-        ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
-        ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
-        ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
+
+        viewHolder.statement.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
+        if(viewHolder.component instanceof RadioGroup) {
+            viewHolder.component.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
+        }else{
+            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
+        }
+        viewHolder.num.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
+        viewHolder.denum.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     /**
@@ -294,12 +314,12 @@ public class AutoTabLayoutUtils {
         return Booleans.countTrue(Booleans.toArray(elementInvisibility.values()));
     }
 
-    public static boolean autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey, String module) {
+    public static void autoFillAnswer(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, float idSurvey, String module) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int option=question.isTriggered(idSurvey)?0:1;
 
         //Select option according to trigger
-        return itemSelected(viewHolder, scoreHolder, question, question.getAnswer().getOptions().get(option), totalNum, totalDenum, context, elementInvisibility, adapter, idSurvey, module);
+        itemSelected(viewHolder, question, question.getAnswer().getOptions().get(option), context, elementInvisibility, adapter, idSurvey, module);
     }
 
     /**
@@ -308,49 +328,50 @@ public class AutoTabLayoutUtils {
      * @param question the question that changes his value
      * @param option the option that has been selected
      */
-    public static boolean itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabLayoutUtils.ScoreHolder scoreHolder, Question question, Option option, float totalNum, float totalDenum, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, final float idSurvey, final String module) {
-        boolean refreshTab = false;
+    public static void itemSelected(final AutoTabLayoutUtils.ViewHolder viewHolder, Question question, Option option, Context context, LinkedHashMap<BaseModel, Boolean> elementInvisibility, AutoTabAdapter adapter, final float idSurvey, final String module) {
 
+        //No children -> save and calculate values
         if (!question.hasChildren()) {
             // Write option to DB
             ReadWriteDB.saveValuesDDL(question, option, module);
             recalculateScores(viewHolder, question, idSurvey, module);
+            return;
         }
 
-        // If parent relation found, toggle Children Spinner Visibility
-        // If question has question-option, refresh the tab
-        if (question.hasChildren() || question.hasQuestionOption()){
-            if (question.hasChildren()) {
-                QuestionVisibility.question = question;
-                QuestionVisibility.elementInvisibility = elementInvisibility;
-                QuestionVisibility.adapter = adapter;
-                QuestionVisibility.option = option;
-                boolean notEmpty = false;
-                for (Question childQuestion: question.getChildren()){
-                    if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED) notEmpty = true;
-                }
-                if (notEmpty) {
-                    new AlertDialog.Builder(context)
-                            .setTitle(null)
-                            .setMessage(context.getString(R.string.dialog_deleting_children))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    expandChildren(viewHolder, idSurvey, module);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    QuestionVisibility.adapter.notifyDataSetChanged();
-                                }
-                            }).create().show();
-                } else{
-                    expandChildren(viewHolder, idSurvey, module);
-                }
+        QuestionVisibility.question = question;
+        QuestionVisibility.elementInvisibility = elementInvisibility;
+        QuestionVisibility.adapter = adapter;
+        QuestionVisibility.option = option;
+
+        //Children + Values -> Ask for confirm
+        if (hasChildValues(question,module)) {
+            new AlertDialog.Builder(context)
+                    .setTitle(null)
+                    .setMessage(context.getString(R.string.dialog_deleting_children))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            expandChildren(viewHolder, idSurvey, module);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            QuestionVisibility.adapter.notifyDataSetChanged();
+                        }
+                    }).create().show();
+            return;
+        }
+
+        //Children questions without values (nothing to confirm)
+        expandChildren(viewHolder, idSurvey, module);
+    }
+
+    private static boolean hasChildValues(Question question, String module){
+        for (Question childQuestion: question.getChildren()){
+            if (childQuestion.getValueBySession(module)!=null && childQuestion.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+                return true;
             }
-            refreshTab = true;
         }
-
-        return refreshTab;
+        return false;
     }
 
     public static void expandChildren(ViewHolder viewHolder, float idSurvey, String module){
@@ -392,9 +413,9 @@ public class AutoTabLayoutUtils {
         LinkedHashMap<BaseModel, Boolean> elementInvisibility = QuestionVisibility.elementInvisibility;
         List<Question> children = question.getChildren();
         Question cachedQuestion = null;
-        Survey survey=Session.getSurveyByModule(module);
         boolean visible;
 
+        //Update each children -> visibility, score, value
         for (Question child : children) {
             Header childHeader = child.getHeader();
             visible=!child.isHiddenBySurvey(idSurvey);

@@ -108,11 +108,6 @@ public class SurveyFragment extends  Fragment {
      */
     List<Tab> allTabs;
 
-    /**
-     * Map of adapters, each tab requires a different adapter to show its form
-     */
-    private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
-
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
     /**
@@ -294,8 +289,6 @@ public class SurveyFragment extends  Fragment {
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
 
         private Tab tab;
-
-        String module;
 
         public AsyncChangeTab(Tab tab) {
             this.tab = tab;

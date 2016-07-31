@@ -24,6 +24,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -220,7 +221,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 case Constants.DROPDOWN_LIST_DISABLED:
                     rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                     // Initialise value depending on match question
-                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, scoreHolder, question, totalNum, totalDenum, getContext(), elementInvisibility, this, idSurvey, module);
+                    AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), elementInvisibility, this, idSurvey, module);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
@@ -358,11 +359,14 @@ public class AutoTabAdapter extends ATabAdapter {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            if (viewCreated) {
-                if (AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), totalNum, totalDenum, getContext(), elementInvisibility, adapter, idSurvey, module))
-                    notifyDataSetChanged();
-            } else {
-                viewCreated = true;
+            //Discard first change -> just a set
+            if(!viewCreated){
+                viewCreated=true;
+                return;
+            }
+            AutoTabLayoutUtils.itemSelected(viewHolder, question, (Option) ((Spinner) viewHolder.component).getItemAtPosition(pos), getContext(), elementInvisibility, adapter, idSurvey, module);
+            if(question.hasAMatchTrigger()) {
+                notifyDataSetChanged();
             }
         }
 
@@ -383,19 +387,19 @@ public class AutoTabAdapter extends ATabAdapter {
             this.adapter = adapter;
         }
 
-
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             if(!group.isShown()){
                 return;
             }
-
+            Log.d(TAG,"onCheckedChanged...");
             Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
             if (checkedId != -1) {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 option = (Option) customRadioButton.getTag();
             }
-            AutoTabLayoutUtils.itemSelected(viewHolder, scoreHolder, question, option, totalNum, totalDenum, getContext(), elementInvisibility, adapter, idSurvey, module);
+            AutoTabLayoutUtils.itemSelected(viewHolder, question, option, getContext(), elementInvisibility, adapter, idSurvey, module);
+            Log.d(TAG,"onCheckedChanged...DONE");
         }
     }
 
