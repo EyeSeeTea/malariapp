@@ -127,12 +127,12 @@ function createSelectOrgUnit(){
 
 //event on click select/or to change the selected orgunit and reload.
 function changedOrgunit(){
-	selectedOrgUnit=="";
+	selectedOrgUnit="";
 	for(var i=0;i<Object.keys(inputOrgUnit).length;i++){
 		if(inputOrgUnit[i].uidprogram==selectedProgram){
 			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
 		}
-	}  
+	}
     if(selectedProgram==="AllAssessment"){
         rebuildTableFacilities();
     }else{
@@ -147,13 +147,19 @@ function buildPieCharts(dataPies){
 
 //Render the pie and create the select options
 function renderPieCharts(){
-    for(var i=0;i<inputOrgUnit.length;i++){
-        if (inputOrgUnit[i].uidorgunit==selectedOrgUnit){
-            showDataPie(inputOrgUnit[i]);
-            createSelectOrgUnit();
+    if(selectedOrgUnit==""){
+                removeDataPie();
+                createSelectOrgUnit();
+    }
+    else{
+        for(var i=0;i<inputOrgUnit.length;i++){
+            if (inputOrgUnit[i].uidorgunit==selectedOrgUnit){
+                showDataPie(inputOrgUnit[i]);
+                createSelectOrgUnit();
+            }
         }
-	}
-    createSelectProgram();
+        createSelectProgram();
+    }
 }
 
 //Insert the pie in the html
@@ -168,5 +174,8 @@ function showDataPie(dataPie){
     pieXTabGroupChart(dataPie);
 
 }
-
+//Remove the pie from html
+function removeDataPie(){
+	document.getElementById("pieChartContent").innerHTML="";
+}
 
