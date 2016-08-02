@@ -248,17 +248,6 @@ public class AutoTabLayoutUtils {
         configureViewByPreference(viewHolder);
     }
 
-    public static void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
-        ((RadioGroup) viewHolder.component).setOrientation(orientation);
-
-        for (Option option : question.getAnswer().getOptions()) {
-            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
-            button.setOption(option);
-            button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
-            ((RadioGroup) viewHolder.component).addView(button);
-        }
-    }
-
     /**
      * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
      *
