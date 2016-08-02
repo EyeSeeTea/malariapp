@@ -2,27 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
+    android:background="@drawable/background_textfield"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_textfield">
+    android:paddingTop="@dimen/question_padding_all"
+    android:paddingBottom="@dimen/question_padding_all">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:layout_gravity="center_vertical"
-            android:padding="5dip"
+            android:paddingRight="@dimen/question_padding_all"
+            android:paddingLeft="@dimen/question_padding_left"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:paddingLeft="@dimen/question_padding_left"
             android:textColor="@color/black"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
+
         <org.eyeseetea.malariacare.views.CustomEditText
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:padding="5dip"
+            android:paddingRight="@dimen/question_padding_all"
+            android:paddingLeft="@dimen/question_padding_all"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text=""
