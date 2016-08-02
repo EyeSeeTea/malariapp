@@ -58,13 +58,6 @@ import java.util.List;
 public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
-    public static final float STATEMENT_WEIGHT = 0.65f;
-    public static final float COMPONENT_WEIGHT = 0.35f;
-    public static final float NUM_DEN_WEIGHT = 0.0f;
-    public static final float STATEMENT_WEIGHT_WITH_NUM_DEN = 0.45f;
-    public static final float COMPONENT_WEIGHT_WITH_NUM_DEN = 0.25f;
-    public static final float NUM_DEN_WEIGHT_WITH_NUM_DEN = 0.15f;
-
     private static String compulsoryColorString;
 
     /**
