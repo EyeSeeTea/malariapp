@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
@@ -224,15 +225,23 @@ public class AutoTabAdapter extends ATabAdapter {
                     AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), elementInvisibility, this, idSurvey, module);
                     break;
                 case Constants.RADIO_GROUP_HORIZONTAL:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    if(PreferencesState.getInstance().isShowNumDen()) {
+                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    }
+                    else
+                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     //Add Listener
                     ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    if(PreferencesState.getInstance().isShowNumDen()) {
+                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                        AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    }
+                    else
+                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                     //Add Listener
                     ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
@@ -278,12 +287,10 @@ public class AutoTabAdapter extends ATabAdapter {
                 ((Spinner) viewHolder.component).setSelection(ReadWriteDB.readPositionOption(question, module));
 
                 List<Float> numdenum = ScoreRegister.getNumDenum(question, idSurvey, module);
-                viewHolder.denum.setText(getContext().getString(R.string.number_zero));
-                viewHolder.num.setText(getContext().getString(R.string.number_zero));
+                viewHolder.setNumAndDenum(getContext().getString(R.string.number_zero), getContext().getString(R.string.number_zero));
                 if (numdenum != null) {
                     if(numdenum.get(0)!=null) {
-                        viewHolder.num.setText(Float.toString(numdenum.get(0)));
-                        viewHolder.denum.setText(Float.toString(numdenum.get(1)));
+                        viewHolder.setNumAndDenum(Float.toString(numdenum.get(0)), Float.toString(numdenum.get(1)));
                     }
                 } else {
                 ((Spinner) viewHolder.component).setSelection(0);
@@ -298,12 +305,11 @@ public class AutoTabAdapter extends ATabAdapter {
                 if (numdenumradiobutton == null) {// FIXME: this avoid app crash when onResume
                     break;
                 }
-                viewHolder.denum.setText(numdenumradiobutton.get(1).toString());
-                viewHolder.num.setText(getContext().getString(R.string.number_zero));
+                viewHolder.setNumAndDenum(numdenumradiobutton.get(1).toString(), getContext().getString(R.string.number_zero));
 
                 if (value != null) {
                     ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);
-                    viewHolder.num.setText(Float.toString(numdenumradiobutton.get(0)));
+                    viewHolder.setNum(Float.toString(numdenumradiobutton.get(0)));
                 }
                 break;
             default:
