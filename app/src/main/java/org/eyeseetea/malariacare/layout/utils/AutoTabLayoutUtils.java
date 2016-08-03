@@ -25,13 +25,10 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.common.primitives.Booleans;
@@ -39,30 +36,21 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by adrian on 15/08/15.
@@ -70,13 +58,6 @@ import java.util.Map;
 public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
-    public static final float STATEMENT_WEIGHT = 0.65f;
-    public static final float COMPONENT_WEIGHT = 0.35f;
-    public static final float NUM_DEN_WEIGHT = 0.0f;
-    public static final float STATEMENT_WEIGHT_WITH_NUM_DEN = 0.45f;
-    public static final float COMPONENT_WEIGHT_WITH_NUM_DEN = 0.25f;
-    public static final float NUM_DEN_WEIGHT_WITH_NUM_DEN = 0.15f;
-
     private static String compulsoryColorString;
 
     /**
@@ -124,6 +105,19 @@ public class AutoTabLayoutUtils {
             }
             return null;
         }
+
+        public void setNumAndDenum(String numText, String denumText) {
+            if(PreferencesState.getInstance().isShowNumDen()) {
+                num.setText(numText);
+                denum.setText(denumText);
+            }
+        }
+
+        public void setNum(String numText) {
+            if(PreferencesState.getInstance().isShowNumDen()) {
+                num.setText(numText);
+            }
+        }
     }
 
     /**
@@ -156,14 +150,16 @@ public class AutoTabLayoutUtils {
             return;
         }
 
+        //RadioGroup is different
         if (view instanceof RadioGroup) {
             RadioGroup radioGroup = (RadioGroup) view;
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 radioGroup.getChildAt(i).setEnabled(!readOnly);
             }
-        } else {
-            view.setEnabled(!readOnly);
+            return;
         }
+
+        view.setEnabled(!readOnly);        
     }
 
     /**
@@ -206,9 +202,12 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseDropDown(int position, ViewGroup parent, Question question, ViewHolder viewHolder, LayoutInflater lInflater, Context context) {
         View rowView;
-        rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
-
-        initialiseScorableComponent(rowView, viewHolder);
+        if(PreferencesState.getInstance().isShowNumDen()) {
+            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
+            initialiseScorableComponent(rowView, viewHolder);
+        }else{
+            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
+        }
 
         // In case the option is selected, we will need to show num/dems
         List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
@@ -221,14 +220,15 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
         View rowView = lInflater.inflate(resource, parent, false);
-        if (question.hasChildren()) {
-            rowView.setBackgroundResource(R.drawable.background_parent);
-        }else {
-            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+        int background=R.drawable.background_parent;
+        if (!question.hasChildren()) {
+            background=LayoutUtils.calculateBackgrounds(position);
         }
+        rowView.setBackgroundResource(background);
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+
 
         if(question.getCompulsory()){
             Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", compulsoryColorString) + "*  " + "</b></font>" + question.getForm_name());
@@ -244,39 +244,6 @@ public class AutoTabLayoutUtils {
         // In case the option is selected, we will need to show num/dems
         viewHolder.num = (CustomTextView) rowView.findViewById(R.id.num);
         viewHolder.denum = (CustomTextView) rowView.findViewById(R.id.den);
-
-        configureViewByPreference(viewHolder);
-    }
-
-    /**
-     * Set visibility of numerators and denominators depending on the user preference selected in the settings activity
-     *
-     * @param viewHolder view that holds the component to be more efficient
-     */
-    private static void configureViewByPreference(AutoTabLayoutUtils.ViewHolder viewHolder) {
-        int visibility = View.GONE;
-        float statementWeight = STATEMENT_WEIGHT;
-        float componentWeight = COMPONENT_WEIGHT;
-        float numDenWeight = NUM_DEN_WEIGHT;
-
-        if (PreferencesState.getInstance().isShowNumDen()) {
-            visibility = View.VISIBLE;
-            statementWeight = STATEMENT_WEIGHT_WITH_NUM_DEN;
-            componentWeight = COMPONENT_WEIGHT_WITH_NUM_DEN;
-            numDenWeight = NUM_DEN_WEIGHT_WITH_NUM_DEN;
-        }
-
-        viewHolder.num.setVisibility(visibility);
-        viewHolder.denum.setVisibility(visibility);
-
-        viewHolder.statement.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
-        if(viewHolder.component instanceof RadioGroup) {
-            viewHolder.component.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        }else{
-            ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        }
-        viewHolder.num.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
-        viewHolder.denum.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     /**
@@ -379,18 +346,16 @@ public class AutoTabLayoutUtils {
     private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float idSurvey, String module) {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
-
+        String zero=PreferencesState.getInstance().getContext().getString(R.string.number_zero);
         ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.num.setText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
-        viewHolder.denum.setText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.setNumAndDenum(zero,zero);
         if(num!=null){
-            viewHolder.num.setText(num.toString());
-            viewHolder.denum.setText(denum.toString());
+            viewHolder.setNumAndDenum(num.toString(),denum.toString());
             ScoreRegister.addRecord(question, num, denum, idSurvey, module);
-        }
-        else
+        }else {
             ScoreRegister.deleteRecord(question, idSurvey, module);
+        }
     }
 
     /**
@@ -416,8 +381,9 @@ public class AutoTabLayoutUtils {
                 }
                 ReadWriteDB.deleteValue(child, module); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
-                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
+                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header())) {
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
+                }
             } else {
                 Float denum = ScoreRegister.calcDenum(child, idSurvey);
                 ScoreRegister.addRecord(child, 0F, denum, idSurvey, module);
@@ -429,14 +395,18 @@ public class AutoTabLayoutUtils {
 
     public static void initScoreQuestion(Question question, float totalNum, float totalDenum, float idSurvey, String module) {
 
-        if (question.getOutput() == Constants.DROPDOWN_LIST
-                || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getOutput() == Constants.RADIO_GROUP_VERTICAL) {
+        //Not a (dropdown || radio) -> done
+        if (question.getOutput() != Constants.DROPDOWN_LIST
+                && question.getOutput() != Constants.RADIO_GROUP_HORIZONTAL
+                && question.getOutput() != Constants.RADIO_GROUP_VERTICAL) {
+            return;
+        }
 
-            Float num = ScoreRegister.calcNum(question, idSurvey);
+        //Init scores and register
+        Float num = ScoreRegister.calcNum(question, idSurvey);
+        if(num!=null) {
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
-            if(num!=null)
-                ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }
 }
