@@ -150,14 +150,16 @@ public class AutoTabLayoutUtils {
             return;
         }
 
+        //RadioGroup is different
         if (view instanceof RadioGroup) {
             RadioGroup radioGroup = (RadioGroup) view;
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 radioGroup.getChildAt(i).setEnabled(!readOnly);
             }
-        } else {
-            view.setEnabled(!readOnly);
+            return;
         }
+
+        view.setEnabled(!readOnly);        
     }
 
     /**
@@ -203,10 +205,9 @@ public class AutoTabLayoutUtils {
         if(PreferencesState.getInstance().isShowNumDen()) {
             rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
             initialiseScorableComponent(rowView, viewHolder);
-        }
-        else
+        }else{
             rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
-
+        }
 
         // In case the option is selected, we will need to show num/dems
         List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
@@ -219,14 +220,15 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
         View rowView = lInflater.inflate(resource, parent, false);
-        if (question.hasChildren()) {
-            rowView.setBackgroundResource(R.drawable.background_parent);
-        }else {
-            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
+        int background=R.drawable.background_parent;
+        if (!question.hasChildren()) {
+            background=LayoutUtils.calculateBackgrounds(position);
         }
+        rowView.setBackgroundResource(background);
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+
 
         if(question.getCompulsory()){
             Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", compulsoryColorString) + "*  " + "</b></font>" + question.getForm_name());
@@ -242,17 +244,6 @@ public class AutoTabLayoutUtils {
         // In case the option is selected, we will need to show num/dems
         viewHolder.num = (CustomTextView) rowView.findViewById(R.id.num);
         viewHolder.denum = (CustomTextView) rowView.findViewById(R.id.den);
-    }
-
-    public static void createRadioGroupComponent(Question question, ViewHolder viewHolder, int orientation, LayoutInflater lInflater, Context context) {
-        ((RadioGroup) viewHolder.component).setOrientation(orientation);
-
-        for (Option option : question.getAnswer().getOptions()) {
-            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
-            button.setOption(option);
-            button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
-            ((RadioGroup) viewHolder.component).addView(button);
-        }
     }
 
     /**
@@ -355,16 +346,16 @@ public class AutoTabLayoutUtils {
     private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float idSurvey, String module) {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
-
+        String zero=PreferencesState.getInstance().getContext().getString(R.string.number_zero);
         ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumAndDenum(PreferencesState.getInstance().getContext().getString(R.string.number_zero),PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.setNumAndDenum(zero,zero);
         if(num!=null){
             viewHolder.setNumAndDenum(num.toString(),denum.toString());
             ScoreRegister.addRecord(question, num, denum, idSurvey, module);
-        }
-        else
+        }else {
             ScoreRegister.deleteRecord(question, idSurvey, module);
+        }
     }
 
     /**
@@ -390,8 +381,9 @@ public class AutoTabLayoutUtils {
                 }
                 ReadWriteDB.deleteValue(child, module); // when we hide a question, we remove its value
                 // little cache to avoid double checking same
-                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header()))
+                if(cachedQuestion == null || (cachedQuestion.getHeader().getId_header() != child.getHeader().getId_header())) {
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
+                }
             } else {
                 Float denum = ScoreRegister.calcDenum(child, idSurvey);
                 ScoreRegister.addRecord(child, 0F, denum, idSurvey, module);
@@ -403,14 +395,18 @@ public class AutoTabLayoutUtils {
 
     public static void initScoreQuestion(Question question, float totalNum, float totalDenum, float idSurvey, String module) {
 
-        if (question.getOutput() == Constants.DROPDOWN_LIST
-                || question.getOutput() == Constants.RADIO_GROUP_HORIZONTAL
-                || question.getOutput() == Constants.RADIO_GROUP_VERTICAL) {
+        //Not a (dropdown || radio) -> done
+        if (question.getOutput() != Constants.DROPDOWN_LIST
+                && question.getOutput() != Constants.RADIO_GROUP_HORIZONTAL
+                && question.getOutput() != Constants.RADIO_GROUP_VERTICAL) {
+            return;
+        }
 
-            Float num = ScoreRegister.calcNum(question, idSurvey);
+        //Init scores and register
+        Float num = ScoreRegister.calcNum(question, idSurvey);
+        if(num!=null) {
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
-            if(num!=null)
-                ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }
 }

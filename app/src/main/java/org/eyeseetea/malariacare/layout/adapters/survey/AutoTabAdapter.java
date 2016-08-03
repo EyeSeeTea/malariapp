@@ -25,6 +25,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -228,25 +229,20 @@ public class AutoTabAdapter extends ATabAdapter {
                     if(PreferencesState.getInstance().isShowNumDen()) {
                         rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
                         AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                    }else{
+                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());                
                     }
-                    else
-                        rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                    AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
-                    //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
+                    createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                     break;
                 case Constants.RADIO_GROUP_VERTICAL:
                     if(PreferencesState.getInstance().isShowNumDen()) {
                         rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
                         AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
-                    }
-                    else
+                    }else{
                         rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                    AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
-                    //Add Listener
-                    ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder, this));
+                    }                
+                    createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                     break;
-
                 default:
                     break;
             }
@@ -317,6 +313,30 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
+
+    public void createRadioGroupComponent(final Question question, final AutoTabLayoutUtils.ViewHolder viewHolder, int orientation, LayoutInflater lInflater, final Context context) {
+        ((RadioGroup) viewHolder.component).setOrientation(orientation);
+
+        for (Option option : question.getAnswer().getOptions()) {
+            CustomRadioButton button = (CustomRadioButton) lInflater.inflate(R.layout.uncheckeable_radiobutton, null);
+            button.setOption(option);
+            button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CustomRadioButton customRadioButton = (CustomRadioButton)v;
+                    Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
+                    if (customRadioButton.isChecked()){
+                        option = customRadioButton.getOption();
+                    }
+                    AutoTabLayoutUtils.itemSelected(viewHolder, question, option, context, elementInvisibility, AutoTabAdapter.this, idSurvey, module);
+                    Log.d(TAG,String.format("radioButton.onClick-->checked: %b\toption:%s",customRadioButton.isChecked(),option.getName()));
+                }
+            });
+            ((RadioGroup) viewHolder.component).addView(button);
+        }
+    }
+
     //////////////////////////////////////
     /////////// LISTENERS ////////////////
     //////////////////////////////////////
@@ -379,33 +399,6 @@ public class AutoTabAdapter extends ATabAdapter {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
-        }
-    }
-
-    public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
-        private AutoTabLayoutUtils.ViewHolder viewHolder;
-        private Question question;
-        private AutoTabAdapter adapter;
-
-        public RadioGroupListener(Question question, AutoTabLayoutUtils.ViewHolder viewHolder, AutoTabAdapter adapter) {
-            this.question = question;
-            this.viewHolder = viewHolder;
-            this.adapter = adapter;
-        }
-
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            if(!group.isShown()){
-                return;
-            }
-            Log.d(TAG,"onCheckedChanged...");
-            Option option = new Option(Constants.DEFAULT_SELECT_OPTION);
-            if (checkedId != -1) {
-                CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
-                option = (Option) customRadioButton.getTag();
-            }
-            AutoTabLayoutUtils.itemSelected(viewHolder, question, option, getContext(), elementInvisibility, adapter, idSurvey, module);
-            Log.d(TAG,"onCheckedChanged...DONE");
         }
     }
 
