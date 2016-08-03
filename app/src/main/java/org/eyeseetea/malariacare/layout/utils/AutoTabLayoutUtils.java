@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +71,6 @@ public class AutoTabLayoutUtils {
 
     //Store the Views references for each row (to avoid many calls to getViewById)
     public static class ViewHolder {
-        //Label
-        public CustomTextView statement;
 
         // Main component in the row: Spinner, EditText or RadioGroup
         public View component;
@@ -219,21 +218,24 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseView(int resource, ViewGroup parent, Question question, ViewHolder viewHolder, int position, LayoutInflater lInflater) {
         View rowView = lInflater.inflate(resource, parent, false);
+        //Set background
         if (question.hasChildren()) {
             rowView.setBackgroundResource(R.drawable.background_parent);
         }else {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
         }
 
-        viewHolder.component = rowView.findViewById(R.id.answer);
-        viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
-
+        //Set statement
+        CustomTextView statement = (CustomTextView) rowView.findViewById(R.id.statement);
         if(question.getCompulsory()){
             Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", compulsoryColorString) + "*  " + "</b></font>" + question.getForm_name());
-            viewHolder.statement.setText(spannedQuestion);
+            statement.setText(spannedQuestion);
         }else {
-            viewHolder.statement.setText(question.getForm_name());
+            statement.setText(question.getForm_name());
         }
+
+        //Annotate component (to attach listeners and stuff)
+        viewHolder.component = rowView.findViewById(R.id.answer);
 
         return rowView;
     }
@@ -352,19 +354,38 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float idSurvey, String module) {
+    public static void recalculateScores(AutoTabLayoutUtils.ViewHolder viewHolder, Question question, float idSurvey, String module) {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
 
+        //Update scores in register
         ScoreRegister.addRecord(question, num, denum, idSurvey, module);
-        //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumAndDenum(PreferencesState.getInstance().getContext().getString(R.string.number_zero),PreferencesState.getInstance().getContext().getString(R.string.number_zero));
         if(num!=null){
-            viewHolder.setNumAndDenum(num.toString(),denum.toString());
             ScoreRegister.addRecord(question, num, denum, idSurvey, module);
-        }
-        else
+        }else {
             ScoreRegister.deleteRecord(question, idSurvey, module);
+        }
+        //update views
+        updateViewHolderNumDen(viewHolder,num,denum);
+    }
+
+    /**
+     * Updates views for num/den scores
+     * @param viewHolder
+     * @param num
+     * @param den
+     */
+    private static void updateViewHolderNumDen(AutoTabLayoutUtils.ViewHolder viewHolder, Float num, Float den){
+        if(viewHolder==null){
+            return;
+        }
+
+        if(num!=null && den!=null){
+            viewHolder.setNumAndDenum(num.toString(),den.toString());
+            return;
+        }
+        String zero=PreferencesState.getInstance().getContext().getString(R.string.number_zero);
+        viewHolder.setNumAndDenum(zero,zero);
     }
 
     /**
