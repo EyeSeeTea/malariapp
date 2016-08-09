@@ -60,6 +60,7 @@ public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
     private static String compulsoryColorString;
+    private static final String zero = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
 
     /**
      * Inits red color to avoid going into resources every time
@@ -374,7 +375,6 @@ public class AutoTabLayoutUtils {
             viewHolder.setNumAndDenum(num.toString(),den.toString());
             return;
         }
-        String zero=PreferencesState.getInstance().getContext().getString(R.string.number_zero);
         viewHolder.setNumAndDenum(zero,zero);
     }
 

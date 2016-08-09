@@ -137,7 +137,7 @@ public class Question extends BaseModel {
     /**
      * Reference to the question triggered with a match by this one
      */
-    Question questionTriggered;
+    //Question questionTriggered;
 
     public Question() {
     }
@@ -367,7 +367,7 @@ public class Question extends BaseModel {
             for(Match match:getMatches()){
                 QuestionRelation questionRelation = match.getQuestionRelation();
                 if(questionRelation.getOperation()==QuestionRelation.MATCH){
-                    questionTriggered=questionRelation.getQuestion();
+                    //questionTriggered=questionRelation.getQuestion();
                     matchTrigger=true;
                     return matchTrigger;
                 }
@@ -382,14 +382,14 @@ public class Question extends BaseModel {
      * Returns the question whose answer will be triggered according to this question's answer via a match relationship
      * @return
      */
-    public Question getQuestionTriggered(){
-        //Never try-> load
-        if(matchTrigger==null){
-            hasAMatchTrigger();
-        }
-
-        return questionTriggered;
-    }
+//    public Question getQuestionTriggered(){
+//        //Never try-> load
+//        if(matchTrigger==null){
+//            hasAMatchTrigger();
+//        }
+//
+//        return questionTriggered;
+//    }
 
     public List<QuestionRelation> getQuestionRelations() {
         if(questionRelations ==null){

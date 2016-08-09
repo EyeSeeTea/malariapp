@@ -72,7 +72,7 @@ public class AutoTabAdapter extends ATabAdapter {
     /**
      * Zero string to avoid resolution everytime
      */
-    String zero;
+    final String zero = getContext().getString(R.string.number_zero);
 
     // The length of this arrays is the same that the items list. Each position indicates if the item
     // on this position is hidden (true) or visible (false)
@@ -86,7 +86,6 @@ public class AutoTabAdapter extends ATabAdapter {
         super(tab, context, id_layout, idSurvey, module);
 
         readOnly=getReadOnly(module);
-        zero=getContext().getString(R.string.number_zero);
 
         // Initialize the elementInvisibility HashMap by reading all questions and headers and decide
         // whether or not they must be visible
