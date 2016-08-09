@@ -6,30 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by idelcano on 09/08/2016.
  */
-public class PlanningOrgUnitAdapter extends ADashboardAdapter implements IDashboardAdapter  {
+public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDashboardAdapter  {
     List<PlannedItem> items;
-    protected int backIndex = 0;
+
     protected boolean showNextFacilityName = true;
-    protected boolean multipleTabGroups = new Select().count().from(TabGroup.class).count() != 1;
-        public PlanningOrgUnitAdapter(List<PlannedItem> items, Context context) {
+
+        public PlanningPerOrgUnitAdapter(List<PlannedItem> items, Context context) {
             this.items = items;
             this.context = context;
             this.lInflater = LayoutInflater.from(context);
@@ -39,7 +33,7 @@ public class PlanningOrgUnitAdapter extends ADashboardAdapter implements IDashbo
 
         @Override
         public IDashboardAdapter newInstance(List items, Context context) {
-            return new PlanningOrgUnitAdapter((List<PlannedItem>) items, context);
+            return new PlanningPerOrgUnitAdapter((List<PlannedItem>) items, context);
         }
 
 
@@ -68,9 +62,9 @@ public class PlanningOrgUnitAdapter extends ADashboardAdapter implements IDashbo
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
         if(survey.getScheduledDate()!=null)
-            schedule.setText(survey.getScheduledDate().toString());
-        if(survey.getCompletionDate()!=null)
-        dueDate.setText(survey.getCompletionDate().toString());
+            schedule.setText(survey.getScheduledDate().getMonth()+"-"+survey.getScheduledDate().getDay());
+        if(survey.getCreationDate()!=null)
+            dueDate.setText(survey.getCreationDate().getMonth()+"-"+survey.getCreationDate().getDay());
 
         String surveyDescription = survey.getTabGroup().getProgram().getName();
         surveyType.setText(surveyDescription);

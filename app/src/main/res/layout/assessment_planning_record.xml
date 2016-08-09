@@ -31,37 +31,34 @@
         android:layout_height="fill_parent"
         android:id="@+id/facilityDateContainer"
         android:layout_weight="0.5"
-        android:gravity="left"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_vertical">
 
         <CheckBox
             android:id="@+id/survey_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
             android:text="@string/select_all" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/statusContainer"
         android:layout_weight="0.5"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_marginTop="@dimen/survey_row_marging"
         android:layout_marginBottom="@dimen/survey_row_marging">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.25"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/dueDate"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/black"
             app:tDimension="@string/font_size_level1"
@@ -70,10 +67,10 @@
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.25"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/schedule"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/black"
             app:tDimension="@string/font_size_level1"

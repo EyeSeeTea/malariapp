@@ -48,7 +48,6 @@
         android:textColor="@color/assess_grey"
         android:gravity="center"
         android:layout_weight="0.25"
-        android:layout_gravity="center"
         android:autoText="false"
         app:tDimension="@string/font_size_level4"
         app:tFontName="@string/condensed_font_name"/>
@@ -62,7 +61,6 @@
         android:textColor="@color/assess_grey"
         android:gravity="center"
         android:layout_weight="0.25"
-        android:layout_gravity="center"
         android:autoText="false"
         app:tDimension="@string/font_size_level4"
         app:tFontName="@string/condensed_font_name"/>

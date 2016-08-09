@@ -55,15 +55,13 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
-import org.eyeseetea.malariacare.fragments.PlannedOrgUnitsFragment;
+import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -80,7 +78,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     private boolean reloadOnResume=true;
     TabHost tabHost;
     PlannedFragment plannedFragment;
-    PlannedOrgUnitsFragment plannedOrgUnitsFragment;
+    PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
@@ -833,7 +831,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         plannedFragment = new PlannedFragment();
         plannedFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_init, plannedFragment);
-        //plannedFragment.reloadData();
     }
 
     private void initOrgUnitFragment(OrgUnit orgUnit) {
@@ -842,7 +839,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         changeLayout.setVisibility(View.GONE);
         changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
         changeLayout.setVisibility(View.VISIBLE);
-        plannedOrgUnitsFragment = new PlannedOrgUnitsFragment();
+        plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
         plannedOrgUnitsFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
         plannedOrgUnitsFragment.reloadData();

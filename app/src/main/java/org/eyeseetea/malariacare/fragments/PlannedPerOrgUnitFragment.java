@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
@@ -40,13 +39,11 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningOrgUnitAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ import java.util.List;
 /**
  * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class PlannedOrgUnitsFragment extends ListFragment {
+public class PlannedPerOrgUnitFragment extends ListFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
     private PlannedItemsReceiver plannedItemsReceiver;
@@ -69,7 +66,7 @@ public class PlannedOrgUnitsFragment extends ListFragment {
     private List<OrgUnit> orgUnitList;
 
 
-    public PlannedOrgUnitsFragment() {
+    public PlannedPerOrgUnitFragment() {
 
     }
 
@@ -132,7 +129,7 @@ public class PlannedOrgUnitsFragment extends ListFragment {
     private void initAdapter(List<PlannedItem> plannedItems){
         IDashboardAdapter adapterInSession = Session.getAdapterOrgUnit();
         if(adapterInSession == null){
-            adapterInSession = new PlanningOrgUnitAdapter(plannedItems, getActivity());
+            adapterInSession = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
         }else{
             adapterInSession = adapterInSession.newInstance(plannedItems, getActivity());
         }
