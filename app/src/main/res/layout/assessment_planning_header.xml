@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:paddingTop="10dip"
+          android:paddingBottom="10dip"
+          android:background="@color/white"
+          android:gravity="center">
+
+    <CheckBox
+        android:id="@+id/select_all_orgunits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_weight="0.5"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/assess_grey"
+        android:text="@string/select_all" />
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Due date"
+        android:id="@+id/nameHeader"
+        android:background="@color/assess_yellow"
+        android:textColor="@color/assess_grey"
+        android:gravity="center"
+        android:layout_weight="0.25"
+        android:layout_gravity="center"
+        android:autoText="false"
+        app:tDimension="@string/font_size_level4"
+        app:tFontName="@string/condensed_font_name"/>
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Schedule"
+        android:id="@+id/nameHeader2"
+        android:background="@color/assess_yellow"
+        android:textColor="@color/assess_grey"
+        android:gravity="center"
+        android:layout_weight="0.25"
+        android:layout_gravity="center"
+        android:autoText="false"
+        app:tDimension="@string/font_size_level4"
+        app:tFontName="@string/condensed_font_name"/>
+
+</TableRow>

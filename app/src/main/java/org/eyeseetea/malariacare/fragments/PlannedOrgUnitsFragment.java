@@ -19,34 +19,34 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -59,6 +59,8 @@ public class PlannedOrgUnitsFragment extends ListFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
     private PlannedItemsReceiver plannedItemsReceiver;
+    protected IDashboardAdapter adapter;
+    private List<Survey> surveys;
 
     private Program programDefaultOption;
     private OrgUnit orgUnitDefaultOption;
@@ -76,6 +78,8 @@ public class PlannedOrgUnitsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        this.adapter = Session.getAdapterSent();
+        this.surveys = new ArrayList();
         programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
         orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
     }
@@ -98,9 +102,42 @@ public class PlannedOrgUnitsFragment extends ListFragment {
     }
 
     private void prepareUI(List<PlannedItem> plannedItems) {
+        initAdapter(plannedItems);
+        initListView();
+        resetList();
     }
 
-
+    public void resetList() {
+        this.adapter.notifyDataSetChanged();
+    }
+    /**
+     * Initializes the listview component, adding a listener for swiping right
+     */
+    private void initListView(){
+        LayoutInflater inflater = LayoutInflater.from(PreferencesState.getInstance().getContext().getApplicationContext());
+        View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
+        ListView listView = getListView();
+        listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
+        listView.addHeaderView(header);
+        setListAdapter((BaseAdapter) adapter);
+        Session.listViewSent = listView;
+    }
+    /**
+     * Inits adapter.
+     * Most of times is just an AssessmentAdapter.
+     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
+     * @param plannedItems
+     */
+    private void initAdapter(List<PlannedItem> plannedItems){
+        IDashboardAdapter adapterInSession = Session.getAdapterOrgUnit();
+        if(adapterInSession == null){
+            adapterInSession = new PlanningOrgUnitAdapter(plannedItems, getActivity());
+        }else{
+            adapterInSession = adapterInSession.newInstance(plannedItems, getActivity());
+        }
+        this.adapter = adapterInSession;
+        Session.setAdapterOrgUnit(this.adapter);
+    }
 
     @Override
     public void onResume(){
@@ -170,9 +207,11 @@ public class PlannedOrgUnitsFragment extends ListFragment {
             //Listening only intents from this method
             if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
-                programList=plannedServiceBundle.getPrograms();
-                orgUnitList=plannedServiceBundle.getOrgUnits();
-                prepareUI(plannedServiceBundle.getPlannedItems());
+                List<PlannedItem> items= new ArrayList<>();
+                for(PlannedItem item: plannedServiceBundle.getPlannedItems())
+                    if(item instanceof PlannedSurvey)
+                        items.add(item);
+                prepareUI(items);
             }
         }
     }

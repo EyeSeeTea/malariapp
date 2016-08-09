@@ -825,14 +825,11 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     public void initPlanned(){
-        try {
-            LinearLayout list = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
-            list.setVisibility(View.GONE);
-            list = (LinearLayout) findViewById(R.id.dashboard_planning_init);
-            list.setVisibility(View.VISIBLE);
-        }catch(NullPointerException e){
-            e.printStackTrace();
-        }
+        //Show plannedFragment layout and hide plannedOrgUnitsFragment
+        LinearLayout changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
+        changeLayout.setVisibility(View.GONE);
+        changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_init);
+        changeLayout.setVisibility(View.VISIBLE);
         plannedFragment = new PlannedFragment();
         plannedFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_init, plannedFragment);
@@ -840,17 +837,15 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
     }
 
     private void initOrgUnitFragment(OrgUnit orgUnit) {
-        try {
-            LinearLayout list = (LinearLayout) findViewById(R.id.dashboard_planning_init);
-            list.setVisibility(View.GONE);
-            list = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
-            list.setVisibility(View.VISIBLE);
-        }catch(NullPointerException e){
-            e.printStackTrace();
-        }
+        //hide plannedFragment layout and show plannedOrgUnitsFragment
+        LinearLayout changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_init);
+        changeLayout.setVisibility(View.GONE);
+        changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
+        changeLayout.setVisibility(View.VISIBLE);
         plannedOrgUnitsFragment = new PlannedOrgUnitsFragment();
         plannedOrgUnitsFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+        plannedOrgUnitsFragment.reloadData();
     }
 
     @Override
