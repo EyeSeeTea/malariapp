@@ -118,7 +118,8 @@ public class PlannedOrgUnitsFragment extends ListFragment {
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         ListView listView = getListView();
         listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
-        listView.addHeaderView(header);
+        if(listView.getHeaderViewsCount()==0)
+            listView.addHeaderView(header);
         setListAdapter((BaseAdapter) adapter);
         Session.listViewSent = listView;
     }
