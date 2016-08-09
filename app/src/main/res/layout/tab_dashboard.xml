@@ -175,6 +175,32 @@
                                 android:id="@+id/dashboard_planning_orgunit"
                                 android:orientation="vertical" android:layout_width="match_parent"
                                 android:layout_height="match_parent">
+                            <LinearLayout
+                                android:id="@+id/reschedule_button_conteiner"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/White">
+                                <org.eyeseetea.malariacare.views.CustomButton
+                                    android:text="Reschedule"
+                                    android:id="@+id/reschedule_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBottom="@+id/imageView"
+                                    android:layout_alignRight="@+id/imageView"
+                                    android:layout_alignEnd="@+id/imageView"
+                                    android:layout_gravity="center_horizontal"
+                                    style="?android:textAppearanceSmall"
+                                    android:padding="12dp"
+                                    android:layout_margin="6dp"
+                                    app:tFontName="@string/bold_font_name"
+                                    app:tDimension="@string/font_size_level1"
+                                    android:textSize="@dimen/medium_text_size"
+                                    android:textColor="@color/white"
+                                    android:background="@drawable/button_cancel_shape"
+                                    android:textStyle="bold"
+                                    />
+                                </LinearLayout>
 
                             </LinearLayout>
                         </FrameLayout>
