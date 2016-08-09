@@ -39,7 +39,7 @@ function buildTableFacilities(tabGroupId,dataFacilities){
 function rebuildTableFacilities(){
 	for(var i=0;i<inputDataFacilities.length;i++){
 		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
-		var id=inputDataFacilities[i].id;
+		    var id=inputDataFacilities[i].id;
 			var facilitiesHeadId="facilitiesHead";
 			var facilitiesBodyId="facilitiesBody";
 			var titleFacilitiesId="titleFacilities";
