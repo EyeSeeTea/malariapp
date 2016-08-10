@@ -634,6 +634,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 }).create().show();
     }
 
+    /**
+     * This method closes the survey fragment and loads the Assess fragment(DashboardUnSentFragment) in the Assess tab
+     */
     public void closeSurveyFragment(){
         surveyFragment.unregisterReceiver();
         initAssess();
@@ -641,6 +644,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         setActionBarDashboard();
     }
 
+    /**
+     * This method closes the Feedback Fragment and loads the Improve fragment(DashboardSentFragment) in the Improve tab
+     */
     private void closeFeedbackFragment() {
         isMoveToFeedback=false;
         feedbackFragment.unregisterReceiver();
@@ -824,10 +830,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     public void initPlanned(){
         //Show plannedFragment layout and hide plannedOrgUnitsFragment
-        LinearLayout changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
-        changeLayout.setVisibility(View.GONE);
-        changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_init);
-        changeLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
+        findViewById(R.id.dashboard_planning_init).setVisibility(View.VISIBLE);
         plannedFragment = new PlannedFragment();
         plannedFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_init, plannedFragment);
@@ -835,10 +839,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
     private void initOrgUnitFragment(OrgUnit orgUnit) {
         //hide plannedFragment layout and show plannedOrgUnitsFragment
-        LinearLayout changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_init);
-        changeLayout.setVisibility(View.GONE);
-        changeLayout = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
-        changeLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
+        findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
         plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
         plannedOrgUnitsFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
