@@ -10,14 +10,11 @@ import java.util.List;
  * Created by idelcano on 08/08/2016.
  */
 public class PlannedServiceBundle {
-    List<PlannedItem> plannedItems = new ArrayList<>();
-    List<OrgUnit> orgUnits;
-    List<Program> programs;
+    private List<PlannedItem> plannedItems = new ArrayList<>();
+    private List<OrgUnit> orgUnits;
+    private List<Program> programs;
 
     public PlannedServiceBundle(){
-        plannedItems = new ArrayList<>();
-        orgUnits = new ArrayList<>();
-        programs = new ArrayList<>();
     }
     public List<PlannedItem> getPlannedItems(){return plannedItems;}
     public void setPlannedItems(List<PlannedItem> plannedItems){this.plannedItems=plannedItems;}
