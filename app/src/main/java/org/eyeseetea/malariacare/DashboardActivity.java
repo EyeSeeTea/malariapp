@@ -48,6 +48,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
@@ -59,8 +60,8 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -71,12 +72,13 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener {
+public class DashboardActivity extends BaseActivity implements DashboardUnsentFragment.onSurveySelectedListener,CreateSurveyFragment.OnCreatedSurveyListener,DashboardSentFragment.OnFeedbackSelectedListener, PlannedFragment.OnOrgUnitSelectedListener, PlannedFragment.OnProgramSelectedListener {
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
     TabHost tabHost;
     PlannedFragment plannedFragment;
+    PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
     MonitorFragment monitorFragment;
     DashboardUnsentFragment unsentFragment;
     DashboardSentFragment sentFragment;
@@ -262,12 +264,6 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
 
         ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
         imageView.setTag(tabName);
-    }
-
-    public void initPlanned(){
-        plannedFragment = new PlannedFragment();
-        plannedFragment.setArguments(getIntent().getExtras());
-        replaceListFragment(R.id.dashboard_planning_tab, plannedFragment);
     }
 
     public void initAssess(){
@@ -638,6 +634,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 }).create().show();
     }
 
+    /**
+     * This method closes the survey fragment and loads the Assess fragment(DashboardUnSentFragment) in the Assess tab
+     */
     public void closeSurveyFragment(){
         surveyFragment.unregisterReceiver();
         initAssess();
@@ -645,6 +644,9 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         setActionBarDashboard();
     }
 
+    /**
+     * This method closes the Feedback Fragment and loads the Improve fragment(DashboardSentFragment) in the Improve tab
+     */
     private void closeFeedbackFragment() {
         isMoveToFeedback=false;
         feedbackFragment.unregisterReceiver();
@@ -818,5 +820,40 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
                 });
             }
         }, 1000);
+    }
+
+    @Override
+    public void OnOrgUnitSelected(OrgUnit orgUnit) {
+        Log.d(TAG,"OnOrgUnitSelected");
+        initOrgUnitFragment(orgUnit);
+    }
+
+    public void initPlanned(){
+        //Show plannedFragment layout and hide plannedOrgUnitsFragment
+        findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
+        findViewById(R.id.dashboard_planning_init).setVisibility(View.VISIBLE);
+        plannedFragment = new PlannedFragment();
+        plannedFragment.setArguments(getIntent().getExtras());
+        replaceListFragment(R.id.dashboard_planning_init, plannedFragment);
+    }
+
+    private void initOrgUnitFragment(OrgUnit orgUnit) {
+        //hide plannedFragment layout and show plannedOrgUnitsFragment
+        findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
+        findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
+        plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
+        plannedOrgUnitsFragment.setArguments(getIntent().getExtras());
+        replaceListFragment(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+        plannedOrgUnitsFragment.reloadData();
+    }
+
+    @Override
+    public void OnProgramSelected(Program program) {
+        Log.d(TAG,"ONPROGRAMSELECTED");
+        LinearLayout list = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
+        if(list.getVisibility()==View.VISIBLE) {
+            initPlanned();
+            plannedFragment.reloadData();
+        }
     }
 }
