@@ -39,8 +39,10 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -102,7 +104,7 @@ public class PlannedFragment extends ListFragment {
 
     }
 
-    private void prepareUI(List<PlannedItem> plannedItems) {
+    private void prepareUI() {
         this.adapter = new PlannedAdapter(this.plannedItems,getActivity());
         this.setListAdapter(adapter);
 
@@ -150,7 +152,6 @@ public class PlannedFragment extends ListFragment {
 
             }
         });
-        reloadPlannedItems(plannedItems);
     }
     // Container Activity must implement this interface
     public interface OnProgramSelectedListener {
@@ -261,7 +262,8 @@ public class PlannedFragment extends ListFragment {
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
                 programList=plannedServiceBundle.getPrograms();
                 orgUnitList=plannedServiceBundle.getOrgUnits();
-                prepareUI(plannedServiceBundle.getPlannedItems());
+                prepareUI();
+                reloadPlannedItems(plannedServiceBundle.getPlannedItems());
             }
         }
     }
