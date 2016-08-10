@@ -106,9 +106,7 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
     /**
      * Flag that indicates if the current survey in current module session is already sent or not (it affects readonly settings)
      */
-    public boolean getReadOnly(String module){
-        return Session.getSurveyByModule(module).isSent();
-    }
+    public boolean getReadOnly(String module){ return Session.getSurveyByModule(module).isSent();}
 
     public Tab getTab() {
         return this.tab;
