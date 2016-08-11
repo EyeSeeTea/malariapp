@@ -166,9 +166,14 @@ public class AssessModuleController extends ModuleController {
             askToSendCompulsoryCompletedSurvey();
             return;
         }
-
-        //Confirm closing
-        askToCloseSurvey();
+        if(PreferencesState.getInstance().isDynamicAdapter()){
+            if(!Session.getSurveyByModule(getSimpleName()).isSent())
+                askToCloseAndRemoveSurvey();
+        }
+        else {
+            //Confirm closing
+            askToCloseSurvey();
+        }
     }
 
     public void setActionBarDashboard(){
@@ -180,15 +185,21 @@ public class AssessModuleController extends ModuleController {
         //In survey -> custom action bar
         Survey survey = Session.getSurveyByModule(getSimpleName());
         String appNameColorString = getAppNameColorString();
-        String title=getActionBarTitleBySurvey(survey);
-        String subtitle=getActionBarSubTitleBySurvey(survey);
 
         if(PreferencesState.getInstance().isVerticalDashboard()) {
-            LayoutUtils.setActionbarVerticalSurvey(dashboardActivity, title, subtitle);
+            if(survey!=null) {
+                String title = getActionBarTitleBySurvey(survey);
+                String subtitle = getActionBarSubTitleBySurvey(survey);
+                LayoutUtils.setActionbarVerticalSurvey(dashboardActivity, title, subtitle);
+            }
         }
         else{
-            Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString, title));
-            LayoutUtils.setActionbarTitle(dashboardActivity, spannedTitle, subtitle);
+            if(survey!=null) {
+                String title = getActionBarTitleBySurvey(survey);
+                String subtitle = getActionBarSubTitleBySurvey(survey);
+                Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString, title));
+                LayoutUtils.setActionbarTitle(dashboardActivity, spannedTitle, subtitle);
+            }
         }
     }
 
@@ -213,6 +224,34 @@ public class AssessModuleController extends ModuleController {
                         dashboardController.setNavigatingBackwards(false);
                     }
                 }).create().show();
+    }
+
+    /**
+     * This dialog is called when the user have a survey open, and close this survey, or when the user change of tab from DynamicAdapter
+     */
+    private void askToCloseAndRemoveSurvey() {
+        Survey survey=Session.getSurveyByModule(getSimpleName());
+        int infoMessage = survey.isInProgress() ? R.string.survey_info_exit_delete : R.string.survey_info_exit;
+        new AlertDialog.Builder(dashboardActivity)
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(infoMessage).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Survey survey = Session.getSurveyByModule(getSimpleName());
+                if(survey.isInProgress()){
+                    if(PreferencesState.getInstance().isDynamicAdapter()){
+                        Session.setSurveyByModule(null, getSimpleName());
+                        survey.delete();
+                    }
+                }
+                dashboardController.setNavigatingBackwards(true);
+                closeSurveyFragment();
+                dashboardController.setNavigatingBackwards(false);
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                //Closing survey cancel -> Nothing to do
+            }
+        }).create().show();
     }
 
     /**
@@ -259,7 +298,7 @@ public class AssessModuleController extends ModuleController {
                 }).create().show();
     }
 
-    private void closeSurveyFragment(){
+    public void closeSurveyFragment(){
         //Clear survey fragment
         SurveyFragment surveyFragment =  getSurveyFragment();
         surveyFragment.unregisterReceiver();
@@ -271,7 +310,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //Reset score register
-//        ScoreRegister.clear();
+        //ScoreRegister.clear();
 
         //Update action bar title
         super.setActionBarDashboard();
@@ -333,6 +372,5 @@ public class AssessModuleController extends ModuleController {
     private SurveyFragment getSurveyFragment(){
         return (SurveyFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_details_container);
     }
-
 
 }

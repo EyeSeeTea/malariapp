@@ -43,7 +43,9 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
@@ -109,16 +111,17 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
 
     private void createDBIndexes(){
         // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the DB on execution time
-        new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
-        new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStage").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
-        new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStageSection").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();
-        new Index<ProgramStage>("ProgramStage_Program").on(ProgramStage.class, ProgramStage$Table.PROGRAM).enable();
-        new Index<ProgramStage>("ProgramStage_Id").on(ProgramStage.class, ProgramStage$Table.ID).enable();
-        new Index<QuestionOption>("QuestionOption_id_question").on(QuestionOption.class, QuestionOption$Table.ID_QUESTION).enable();
-        new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class, QuestionRelation$Table.OPERATION).enable();
-        new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
-        new Index<Match>("Match_id_question_relation").on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
-        new Index<Value>("Value_id_survey").on(Value.class, Value$Table.ID_SURVEY).enable();
+        new Index<ProgramStageDataElement>(Constants.PROGRAM_STAGE_DATAELEMENT_DATAELEMENT_IDX).on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
+        new Index<ProgramStageDataElement>(Constants.PROGRAM_STAGE_DATAELEMENT_PROGRAMSTAGE_IDX).on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
+        new Index<ProgramStageDataElement>(Constants.PROGRAM_STAGE_DATAELEMENT_PROGRAMSTAGESECTION_IDX).on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();
+        new Index<ProgramStage>(Constants.PROGRAM_STAGE_PROGRAM_IDX).on(ProgramStage.class, ProgramStage$Table.PROGRAM).enable();
+        new Index<ProgramStage>(Constants.PROGRAMSTAGE_IDX).on(ProgramStage.class, ProgramStage$Table.ID).enable();
+        new Index<QuestionOption>(Constants.QUESTION_OPTION_QUESTION_IDX).on(QuestionOption.class, QuestionOption$Table.ID_QUESTION).enable();
+        new Index<QuestionOption>(Constants.QUESTION_OPTION_MATCH_IDX).on(QuestionOption.class, QuestionOption$Table.ID_MATCH).enable();
+        new Index<QuestionRelation>(Constants.QUESTION_RELATION_OPERATION_IDX).on(QuestionRelation.class, QuestionRelation$Table.OPERATION).enable();
+        new Index<QuestionRelation>(Constants.QUESTION_RELATION_QUESTION_IDX).on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
+        new Index<Match>(Constants.MATCH_QUESTION_RELATION_IDX).on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
+        new Index<Value>(Constants.VALUE_IDX).on(Value.class, Value$Table.ID_SURVEY).enable();
     }
 
     /**

@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.utils;
 
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -83,6 +84,28 @@ public class ReadWriteDB {
                 value.setUploadDate(new Date());
                 value.update();
             }
+        } else {
+            if (value != null) value.delete();
+        }
+    }
+
+    /**
+     * This method is used only by the Dynamic adapter to delete the recursive child values if the user come back in a survey.
+     */
+    public static void saveValuesDDL(Question question, Option option, Value value, String module) {
+
+        if (!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
+            if (value == null) {
+                value = new Value(option, question, Session.getSurveyByModule(module));
+            } else {
+                if(!value.getOption().equals(option) && question.hasChildren()) {
+                    Survey survey = Session.getSurveyByModule(module);
+                    survey.removeChildrenValuesFromQuestionRecursively(question);
+                }
+                value.setOption(option);
+                value.setValue(option.getName());
+            }
+            value.save();
         } else {
             if (value != null) value.delete();
         }

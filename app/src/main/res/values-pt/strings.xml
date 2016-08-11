@@ -67,6 +67,7 @@
 
     <string name="survey_title_exit">"Really Exit?"</string>
     <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
+    <string name="survey_info_exit_delete">A pesquisa em andamento serão excluídos</string>
 
     <string name="widget_info_empty_statement">Problema</string>
 
@@ -242,6 +243,9 @@
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
+    <string name="number_10">10</string>
+    <string name="number_11">11</string>
+    <string name="number_12">12</string>
     <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 
     <string name="clear">Limpar</string>

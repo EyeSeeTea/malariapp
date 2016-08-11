@@ -169,8 +169,10 @@ public class PopulateDB {
                         //set the output suvreillance
                         if (!line[13].equals(""))
                             question.setOutput(Integer.valueOf(line[13]));
-                        if (line.length == 14 && !line[13].equals(""))
+                        if ((line.length == 14 || line.length == 15) && !line[13].equals(""))
                             question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
+                        if (!line[14].equals(""))
+                            question.setTotalQuestions(Integer.valueOf(line[14]));
                         saveItem(questions, question, Integer.valueOf(line[0]));
                         break;
                     case QUESTION_RELATIONS_CSV:
@@ -186,6 +188,7 @@ public class PopulateDB {
                         break;
                     case QUESTION_OPTIONS_CSV:
                         QuestionOption questionOption = new QuestionOption();
+                        //The order in pictureapp csv are: question,option,match.
                         questionOption.setOption(options.get(Integer.valueOf(line[1])));
                         questionOption.setQuestion(questions.get(Integer.valueOf(line[2])));
                         questionOption.setMatch(matches.get(Integer.valueOf(line[3])));

@@ -423,6 +423,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Returns the list of answered values from this survey
+     * @return
+     */
+    public List<Value> getValuesFromDB(){
+        values = new Select()
+                .from(Value.class)
+                .where(Condition.column(Value$Table.ID_SURVEY)
+                        .eq(this.getId_survey())).queryList();
+        return values;
+    }
+
+    /**
      * Returns the list of previous schedules for this survey
      * @return
      */
@@ -531,6 +543,26 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return numOptionalQuestions;
     }
 
+    /**
+     * Updates ratios, status and completion date depending on the question and answer (text)
+     * and set as completed
+     */
+    public void updateSurveyStatusAndMarkAsCompleted(){
+        //Sent surveys are not updated
+        if(this.isSent()){
+            return;
+        }
+
+        SurveyAnsweredRatio answeredRatio=this.reloadSurveyAnsweredRatio();
+
+        //Update status & completionDate
+        if(answeredRatio.isCompleted()) {
+            this.setStatus(Constants.SURVEY_COMPLETED);
+            this.setCompletionDate(new Date());
+            //Saves new status & completionDate
+            this.save();
+        }
+    }
     /**
      * Updates ratios, status and completion date depending on the question and answer (text)
      */
@@ -964,5 +996,33 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public boolean isReadOnly() {
         return (isCompleted() || isSent());
+    }
+
+
+    public Question findLastSavedQuestion() {
+        List<Value> values=getValuesFromDB();
+        for(Value value:values){
+            if(value.getQuestion()!=null && !value.getQuestion().hasChildren())
+                return value.getQuestion();
+        }
+        return null;
+    }
+
+    public void removeChildrenValuesFromQuestionRecursively(Question question) {
+        List<Value> values= getValuesFromDB();
+        List<Question> questionChildren=question.getChildren();
+        for (int i=values.size()-1;i>0;i--) {
+            if(questionChildren.contains(values.get(i).getQuestion())){
+                removeValue(values.get(i));
+                for(Question child: questionChildren) {
+                    removeChildrenValuesFromQuestionRecursively(child);
+                }
+            }
+        }
+
+    }
+
+    private static void removeValue(Value value) {
+        value.delete();
     }
 }

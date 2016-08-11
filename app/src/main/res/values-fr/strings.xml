@@ -65,6 +65,7 @@
 
     <string name="survey_title_exit">"Vraiment quitter?"</string>
     <string name="survey_info_exit">"Êtes-vous sûr de vouloir quitter?"</string>
+    <string name="survey_info_exit_delete">"L'enquête en cours sera supprimé"</string>
 
     <string name="widget_info_empty_statement">Question statement</string>
 
@@ -248,6 +249,9 @@
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
+    <string name="number_10">10</string>
+    <string name="number_11">11</string>
+    <string name="number_12">12</string>
     <string name="error_message_push">L\'événement avec UID: %s. a été transféré sans la date. S\'il vous plaît contacter l\'administrateur.</string>
 
 

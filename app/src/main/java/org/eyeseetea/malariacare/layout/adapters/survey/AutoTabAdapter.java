@@ -619,10 +619,6 @@ public class AutoTabAdapter extends ATabAdapter {
         }
     }
 
-
-
-
-
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
         private boolean viewCreated;

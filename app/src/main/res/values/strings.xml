@@ -77,6 +77,7 @@
 
     <string name="survey_title_exit">"Really Exit?"</string>
     <string name="survey_info_exit">"Are you sure you want to exit?"</string>
+    <string name="survey_info_exit_delete">The survey in progress will be deleted</string>
 
     <string name="widget_info_empty_statement">Question statement</string>
 
@@ -246,6 +247,9 @@
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
+    <string name="number_10">10</string>
+    <string name="number_11">11</string>
+    <string name="number_12">12</string>
     <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 
     <string name="clear">Clear</string>
