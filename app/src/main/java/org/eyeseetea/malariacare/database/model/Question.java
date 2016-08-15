@@ -579,6 +579,45 @@ public class Question extends BaseModel {
     }
 
     /**
+     * Checks if a unique question UID is shown according to the values of the given survey
+     *
+     * @param uid
+     * @param id_survey
+     * @return
+     */
+    public static boolean isHiddenQuestionByUidAndSurvey(String uid, Long id_survey){
+        //get question by uid
+        Question question=getQuestionByUid(uid);
+        if(question==null)
+            return false;
+
+        Long id_question=question.getId_question();
+        long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
+                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
+                .join(Match.class, Join.JoinType.LEFT).as("m")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
+                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
+                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+                //Parent child relationship
+                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(id_survey))
+                //The child question in the relationship is 'this'
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(id_question))
+                .count();
+        return hasParentOptionActivated > 0 ? false : true;
+    }
+
+    /**
      * Add register to ScoreRegister if this is an scored question
      *
      * @return List</Float> {num, den}
@@ -681,6 +720,64 @@ public class Question extends BaseModel {
 
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions-numChildrenQuestion);
+    }
+
+    /**
+     * Gets all the children compulsory questions, and returns the  number of active children
+     *
+     * @param
+     * @return
+     */
+    public static int countChildrenCompulsoryBySurvey(Long id_survey) {
+        int numActiveChildrens=0;
+        //This query returns a list of children compulsory questions
+        // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
+        List<Question> questions =new Select().from(Question.class).as("q")
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)))
+                .join(Match.class, Join.JoinType.LEFT).as("m")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
+                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION)))
+                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH)))
+                .join(Value.class, Join.JoinType.LEFT).as("v")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
+                //Parent Child relationship
+                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(id_survey))
+                //The child question requires an answer
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
+                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).eq(true)).queryList();
+
+        //checks the children questions with the real id_question.
+        for(Question question:questions) {
+            if(!Question.isHiddenQuestionByUidAndSurvey(question.getUid(), id_survey)) {
+                numActiveChildrens++;
+            }
+        }
+        // Return number of active compulsory children
+        return (int) (numActiveChildrens);
+    }
+
+
+    /**
+     * Returns a Question by a UID
+     *
+     * @param uid
+     * @return
+     */
+    public static Question getQuestionByUid(String uid) {
+        return new Select().from(Question.class).where(Condition.column(ColumnAlias.column(Question$Table.UID)).eq(uid)).querySingle();
     }
 
 
