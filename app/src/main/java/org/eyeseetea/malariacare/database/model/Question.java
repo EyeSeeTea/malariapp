@@ -758,8 +758,9 @@ public class Question extends BaseModel {
                 //The child question requires an answer
                 .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).eq(true)).queryList();
-
-        //checks the children questions with the real id_question.
+        
+        //checks if the children questions are active by UID
+        // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
         for(Question question:questions) {
             if(!Question.isHiddenQuestionByUidAndSurvey(question.getUid(), id_survey)) {
                 numActiveChildrens++;
