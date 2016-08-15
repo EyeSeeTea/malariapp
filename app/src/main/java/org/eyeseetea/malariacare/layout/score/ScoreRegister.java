@@ -196,7 +196,7 @@ public class ScoreRegister {
 
     /**
      * Calculates the numerator of the given question & survey
-     * returns null is invalid question to the scoreregister and the question denominator will be ignored too.
+     * returns null if the question will be ignored by the scoreregister and the question denominator will be ignored too.
      * @param question
      * @param idSurvey
      * @return
@@ -206,14 +206,17 @@ public class ScoreRegister {
             return null;
         }
         Value value = question.getValueBySurvey(idSurvey);
-        //Returns null if the question will be ignored(not compulsory, and not answered or child with inactive parent questions)
+
+        //when a child question is compulsory but is not active, its ignored
+        if(question.getCompulsory() && question.hasParent()){
+            if (question.isHiddenBySurvey(idSurvey)) {
+                if (value == null)
+                    return null;
+            }
+        }
+        //Ignore the unanswered compulsory questions
         if(!question.getCompulsory()) {
-            if (question.hasParent()) {
-                if (question.isHiddenBySurvey(idSurvey)) {
-                    if (value == null)
-                        return null;
-                }
-            } else if (value == null)
+            if (value == null)
                 return null;
         }
 
