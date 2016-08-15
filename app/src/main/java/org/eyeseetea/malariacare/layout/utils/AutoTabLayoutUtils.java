@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -405,8 +404,13 @@ public class AutoTabLayoutUtils {
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
                 }
             } else {
-                Float denum = ScoreRegister.calcDenum(child, idSurvey);
-                ScoreRegister.addRecord(child, 0F, denum, idSurvey, module);
+                List<Float> numdenum = ScoreRegister.getNumDenum(child, idSurvey, module);
+                if(numdenum==null || numdenum.get(1)==null) {
+                    ScoreRegister.addRecord(child, 0F, 0F, idSurvey, module);
+                }
+                else {
+                    ScoreRegister.addRecord(child, 0F, numdenum.get(1), idSurvey, module);
+                }
                 elementInvisibility.put(childHeader, false);
             }
             cachedQuestion = question;
