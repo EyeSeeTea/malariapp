@@ -39,10 +39,8 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -84,7 +82,7 @@ public class PlannedFragment extends ListFragment {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_units).toUpperCase());
     }
 
     @Override
@@ -107,51 +105,8 @@ public class PlannedFragment extends ListFragment {
     private void prepareUI() {
         this.adapter = new PlannedAdapter(this.plannedItems,getActivity());
         this.setListAdapter(adapter);
-
-        Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
-        //Populate Program View DDL
-        if(!programList.contains(programDefaultOption))
-            programList.add(0, programDefaultOption);
-        programSpinner.setAdapter(new FilterProgramArrayAdapter(getActivity(), programList));
-        //Apply filter to listview
-        programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Spinner spinner=((Spinner) parent);
-                Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                adapter.applyFilter(selectedProgram);
-                if(selectedProgram!=null)
-                    mCallbackProgram.OnProgramSelected(selectedProgram);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
-
-        //Populate Program View DDL
-        if(!orgUnitList.contains(orgUnitDefaultOption))
-            orgUnitList.add(0, orgUnitDefaultOption);
-        orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getActivity(), orgUnitList));
-        //Apply filter to listview
-        orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Spinner spinner=((Spinner) parent);
-                OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_org_assessments).toUpperCase()))
-                    mCallback.OnOrgUnitSelected(selectedOrgUnit);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        //Load the selected program
+        reloadFilter();
     }
     // Container Activity must implement this interface
     public interface OnProgramSelectedListener {
@@ -244,7 +199,14 @@ public class PlannedFragment extends ListFragment {
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
+
+    public void reloadFilter(){
+        Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
+        Program selectedProgram=(Program) programSpinner.getSelectedItem();
+        if(selectedProgram!=null) {
+            adapter.applyFilter(selectedProgram);
+        }
     }
 
     /**
@@ -260,11 +222,68 @@ public class PlannedFragment extends ListFragment {
             //Listening only intents from this method
             if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
-                programList=plannedServiceBundle.getPrograms();
-                orgUnitList=plannedServiceBundle.getOrgUnits();
+                //Create the filters only the first time
+                if(programList==null && orgUnitList ==null) {
+                    programList = plannedServiceBundle.getPrograms();
+                    orgUnitList = plannedServiceBundle.getOrgUnits();
+                    prepareFilters();
+                }
                 prepareUI();
                 reloadPlannedItems(plannedServiceBundle.getPlannedItems());
             }
+        }
+
+        private void prepareFilters() {
+            final Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
+            final Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
+            //Populate Program View DDL
+            if(!programList.contains(programDefaultOption))
+                programList.add(0, programDefaultOption);
+            programSpinner.setAdapter(new FilterProgramArrayAdapter(getActivity(), programList));
+            //Apply filter to listview
+            programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Spinner spinner=((Spinner) parent);
+                    Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                    adapter.applyFilter(selectedProgram);
+                    if(selectedProgram!=null){
+                        //Set orgUnit to "All org units"
+                        orgUnitSpinner.setSelection(0);
+                        mCallbackProgram.OnProgramSelected(selectedProgram);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            //Populate Program View DDL
+            if(!orgUnitList.contains(orgUnitDefaultOption))
+                orgUnitList.add(0, orgUnitDefaultOption);
+            orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getActivity(), orgUnitList));
+            //Apply filter to listview
+            orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Spinner spinner=((Spinner) parent);
+                    OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                    if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_org_units).toUpperCase())) {
+                        //Set programSpinner to "All assessments" without click
+                        programSpinner.setSelection(0,false);
+                        mCallback.OnOrgUnitSelected(selectedOrgUnit);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
     }
 }

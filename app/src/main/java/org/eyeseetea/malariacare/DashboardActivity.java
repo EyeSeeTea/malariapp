@@ -60,9 +60,9 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
+import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
-import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -832,8 +832,10 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         //Show plannedFragment layout and hide plannedOrgUnitsFragment
         findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
         findViewById(R.id.dashboard_planning_init).setVisibility(View.VISIBLE);
-        plannedFragment = new PlannedFragment();
-        plannedFragment.setArguments(getIntent().getExtras());
+        if(plannedFragment==null){
+            plannedFragment = new PlannedFragment();
+            plannedFragment.setArguments(getIntent().getExtras());
+        }
         replaceListFragment(R.id.dashboard_planning_init, plannedFragment);
     }
 
@@ -842,6 +844,8 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
         findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
         plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
+        //put the org unit extra in the intent
+        getIntent().putExtra(getApplicationContext().getResources().getString(R.string.organisation_unit),orgUnit.getUid());
         plannedOrgUnitsFragment.setArguments(getIntent().getExtras());
         replaceListFragment(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
         plannedOrgUnitsFragment.reloadData();
@@ -853,7 +857,7 @@ public class DashboardActivity extends BaseActivity implements DashboardUnsentFr
         LinearLayout list = (LinearLayout) findViewById(R.id.dashboard_planning_orgunit);
         if(list.getVisibility()==View.VISIBLE) {
             initPlanned();
-            plannedFragment.reloadData();
+            plannedFragment.reloadFilter();
         }
     }
 }

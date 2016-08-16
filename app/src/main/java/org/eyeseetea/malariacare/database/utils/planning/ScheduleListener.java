@@ -85,7 +85,6 @@ public class ScheduleListener implements View.OnClickListener {
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO do something
                 //Check fields are ok
                 String comment = ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
                 if (!validateFields(newScheduledDate, comment)) {

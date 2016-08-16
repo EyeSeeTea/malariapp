@@ -62,7 +62,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
     static Button scheduleButton;
-
+    String filterOrgUnitUid;
     public PlannedPerOrgUnitFragment() {
 
     }
@@ -72,6 +72,9 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        //get the org unit uid from dashboardactivity
+        filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));
         this.adapter = Session.getAdapterSent();
         this.plannedSurveys = new ArrayList();
     }
@@ -273,9 +276,13 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
                 List<PlannedSurveyByOrgUnit> items= new ArrayList<>();
-                for(PlannedItem item: plannedServiceBundle.getPlannedItems())
-                    if(item instanceof PlannedSurvey)
-                        items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),((PlannedSurvey) item).getHeader()));
+                for(PlannedItem item: plannedServiceBundle.getPlannedItems()){
+                    if(item instanceof PlannedSurvey){
+                        if(((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(filterOrgUnitUid)){
+                            items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),((PlannedSurvey) item).getHeader()));
+                        }
+                    }
+                }
                 prepareUI(items);
             }
         }
