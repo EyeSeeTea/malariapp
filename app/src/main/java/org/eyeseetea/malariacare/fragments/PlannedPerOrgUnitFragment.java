@@ -37,12 +37,14 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurveyByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -106,7 +108,15 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"cambiar date");
+                List<Survey> scheduleSurveys=new ArrayList<>();
+                for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
+                    if(plannedSurveyByOrgUnit.getChecked())
+                        scheduleSurveys.add(plannedSurveyByOrgUnit.getSurvey());
+                }
+
+                if(scheduleSurveys.size()==0)return;
+
+                new ScheduleListener(scheduleSurveys,adapter.getContext());
             }
         });
         disableScheduleButton();
