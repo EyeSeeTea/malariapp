@@ -21,23 +21,23 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+;
 
 /**
  * Created by ignac on 14/11/2015.
@@ -213,6 +213,7 @@ public class QuestionBuilder {
     public void addRelations(DataElementExtended dataElementExtended) {
         if (mapQuestions.containsKey(dataElementExtended.getDataElement().getUid())) {
             addParent(dataElementExtended.getDataElement());
+            registerMultiLevelParentChildRelation(dataElementExtended);
             addQuestionRelations(dataElementExtended.getDataElement());
             addCompositeScores(dataElementExtended);
         }
@@ -274,6 +275,66 @@ public class QuestionBuilder {
         }
     }
 
+    private final String OPTIONSUBTOKEN=",";
+    private final String PARENTTOKEN=",";
+    private final String OPTIONTOKEN=";";
+    public void registerMultiLevelParentChildRelation(DataElementExtended dataElementExtended){
+        Log.d(TAG,"registerMultiLevelParentChildRelation" +dataElementExtended.getDataElement().getUid());
+        DataElement dataElement = dataElementExtended.getDataElement();
+        String parentUids = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_PARENT_QUESTION);
+        String optionsUids = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_PARENT_QUESTION_OPTIONS);
+        if (parentUids==null || optionsUids==null) {
+            return;
+        }
+        int parentChildRelations = parentUids.length() - parentUids.replace(PARENTTOKEN, "").length();
+        if(parentChildRelations==optionsUids.length() - optionsUids.replace(OPTIONTOKEN, "").length()){
+            Log.d(TAG,"The Parent relation is not configured correctly in the server side , some parents or options are null");
+        }
+
+        String[] parents = parentUids.split(PARENTTOKEN);
+        String[] options = optionsUids.split(OPTIONTOKEN);
+        for(int i=0; i<parentChildRelations;i++){
+            addDataElementParent(dataElement, parents[i],options[i]);
+        }
+    }
+
+
+    /**
+     * Save Question id_parent in Question
+     *
+     * @param dataElement
+     */
+    private void addDataElementParent(DataElement dataElement, String parent, String options) {
+        String[] matchOptions = options.split(OPTIONSUBTOKEN);
+
+        Question childQuestion = mapQuestions.get(dataElement.getUid());
+
+        //Save question relation
+        QuestionRelation questionRelation = new QuestionRelation();
+        questionRelation.setOperation(1);
+        questionRelation.setQuestion(childQuestion);
+
+        boolean isSaved=false;
+        //get parentquestion
+        Question parentQuestion = mapQuestions.get(parent);
+        //get parentquestion options
+        List<Option> parentOptions = parentQuestion.getAnswer().getOptions();
+        for (Option option : parentOptions)
+        {
+            for(String matchOption:matchOptions) {
+                if (matchOption.equals(option.getUid())) {
+                    if (!isSaved) {
+                        questionRelation.save();
+                        isSaved = true;
+                    }
+                    Match match = new Match();
+                    match.setQuestionRelation(questionRelation);
+                    match.save();
+                    new QuestionOption(option, parentQuestion, match).save();
+                }
+            }
+        }
+    }
     /**
      * Create QuestionOption QuestionRelation and Match relations
      * <p/>

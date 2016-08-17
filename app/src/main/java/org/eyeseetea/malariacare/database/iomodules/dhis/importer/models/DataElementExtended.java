@@ -68,6 +68,14 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static final String ATTRIBUTE_DENUMERATOR = "DEDenominator";
     /**
+     * Code of attribute of parent options separated by token
+     */
+    public static final String ATTRIBUTE_PARENT_QUESTION_OPTIONS = "DEQuestionParentOptions";
+    /**
+     * Code of attribute of parents separated by token
+     */
+    public static final String ATTRIBUTE_PARENT_QUESTION = "DEQuestionParents";
+    /**
      * Code of attribute of group of patern/child relation
      */
     public static final String ATTRIBUTE_HIDE_GROUP = "DEHideGroup";
