@@ -20,9 +20,6 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -30,8 +27,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -44,6 +39,8 @@ public class Option extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_option;
+    @Column
+    String uid;
     @Column
     String code;
     @Column
@@ -90,6 +87,14 @@ public class Option extends BaseModel {
 
     public void setId_option(Long id_option) {
         this.id_option = id_option;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getCode() {return code;}
@@ -166,6 +171,7 @@ public class Option extends BaseModel {
         Option option = (Option) o;
 
         if (id_option != option.id_option) return false;
+        if (uid != option.uid) return false;
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
@@ -176,6 +182,7 @@ public class Option extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_option ^ (id_option >>> 32));
+        result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
@@ -187,6 +194,7 @@ public class Option extends BaseModel {
     public String toString() {
         return "Option{" +
                 "id_option=" + id_option +
+                ", uid='" + uid + '\'' +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
