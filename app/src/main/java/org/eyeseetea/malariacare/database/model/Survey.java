@@ -484,9 +484,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
         int numRequired = Question.countRequiredByProgram(this.getTabGroup());
         int numCompulsory=Question.countCompulsoryByProgram(this.getTabGroup());
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
+        int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(this.id_survey);
         int numAnswered = Value.countBySurvey(this);
         int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory,numCompulsoryAnswered);
+        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory+numActiveChildrenCompulsory,numCompulsoryAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
