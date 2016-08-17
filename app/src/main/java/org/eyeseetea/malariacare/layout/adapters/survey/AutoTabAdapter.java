@@ -318,7 +318,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 if (numdenumradiobutton == null) {// FIXME: this avoid app crash when onResume
                     break;
                 }
-                viewHolder.setNumAndDenum(numdenumradiobutton.get(1).toString(), zero);
+                viewHolder.setNumAndDenum(numdenumradiobutton.get(0).toString(), numdenumradiobutton.get(1).toString());
 
                 if (value != null) {
                     ((CustomRadioButton) viewHolder.component.findViewWithTag(value.getOption())).setChecked(true);

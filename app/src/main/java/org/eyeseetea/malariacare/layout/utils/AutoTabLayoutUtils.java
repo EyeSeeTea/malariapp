@@ -404,13 +404,6 @@ public class AutoTabLayoutUtils {
                     elementInvisibility.put(childHeader, AutoTabLayoutUtils.hideHeader(childHeader, elementInvisibility));
                 }
             } else {
-                List<Float> numdenum = ScoreRegister.getNumDenum(child, idSurvey, module);
-                if(numdenum==null || numdenum.get(1)==null) {
-                    ScoreRegister.addRecord(child, 0F, 0F, idSurvey, module);
-                }
-                else {
-                    ScoreRegister.addRecord(child, 0F, numdenum.get(1), idSurvey, module);
-                }
                 elementInvisibility.put(childHeader, false);
             }
             cachedQuestion = question;
