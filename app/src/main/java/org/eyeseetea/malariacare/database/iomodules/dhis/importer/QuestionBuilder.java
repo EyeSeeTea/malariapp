@@ -93,6 +93,13 @@ public class QuestionBuilder {
      */
     private int header_order = 0;
 
+
+    /**
+     * It is needed by child/parent relationships
+     */
+    private final String OPTIONSUBTOKEN=",";
+    private final String PARENTTOKEN=",";
+    private final String OPTIONTOKEN=";";
     QuestionBuilder() {
         mapQuestions = new HashMap<>();
         mapHeader = new HashMap<>();
@@ -274,33 +281,29 @@ public class QuestionBuilder {
             }
         }
     }
-
-    private final String OPTIONSUBTOKEN=",";
-    private final String PARENTTOKEN=",";
-    private final String OPTIONTOKEN=";";
     public void registerMultiLevelParentChildRelation(DataElementExtended dataElementExtended){
-        Log.d(TAG,"registerMultiLevelParentChildRelation" +dataElementExtended.getDataElement().getUid());
         DataElement dataElement = dataElementExtended.getDataElement();
         String parentUids = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_PARENT_QUESTION);
         String optionsUids = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_PARENT_QUESTION_OPTIONS);
-        if (parentUids==null || optionsUids==null) {
+        if (parentUids==null || parentUids.equals("") || optionsUids==null || optionsUids.equals("")) {
             return;
         }
         int parentChildRelations = parentUids.length() - parentUids.replace(PARENTTOKEN, "").length();
-        if(parentChildRelations==optionsUids.length() - optionsUids.replace(OPTIONTOKEN, "").length()){
-            Log.d(TAG,"The Parent relation is not configured correctly in the server side , some parents or options are null");
+        if(parentChildRelations!=optionsUids.length() - optionsUids.replace(OPTIONTOKEN, "").length()){
+            Log.d(TAG,"The Parent relation is not configured correctly in the server side , some parents or options are null, dataelement uid: "+dataElement.getUid());
+            return;
         }
-
         String[] parents = parentUids.split(PARENTTOKEN);
         String[] options = optionsUids.split(OPTIONTOKEN);
-        for(int i=0; i<parentChildRelations;i++){
+        for(int i=0; i<parents.length;i++){
+            Log.d(TAG,"registerMultiLevelParentChildRelation: " +dataElementExtended.getDataElement().getUid());
             addDataElementParent(dataElement, parents[i],options[i]);
         }
     }
 
 
     /**
-     * Save Question id_parent in Question
+     * Create and save the parent reation
      *
      * @param dataElement
      */
@@ -309,12 +312,7 @@ public class QuestionBuilder {
 
         Question childQuestion = mapQuestions.get(dataElement.getUid());
 
-        //Save question relation
-        QuestionRelation questionRelation = new QuestionRelation();
-        questionRelation.setOperation(1);
-        questionRelation.setQuestion(childQuestion);
 
-        boolean isSaved=false;
         //get parentquestion
         Question parentQuestion = mapQuestions.get(parent);
         //get parentquestion options
@@ -323,10 +321,10 @@ public class QuestionBuilder {
         {
             for(String matchOption:matchOptions) {
                 if (matchOption.equals(option.getUid())) {
-                    if (!isSaved) {
-                        questionRelation.save();
-                        isSaved = true;
-                    }
+                    QuestionRelation questionRelation = new QuestionRelation();
+                    questionRelation.setOperation(1);
+                    questionRelation.setQuestion(childQuestion);
+                    questionRelation.save();
                     Match match = new Match();
                     match.setQuestionRelation(questionRelation);
                     match.save();
