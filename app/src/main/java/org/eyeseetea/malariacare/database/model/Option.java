@@ -171,7 +171,7 @@ public class Option extends BaseModel {
         Option option = (Option) o;
 
         if (id_option != option.id_option) return false;
-        if (uid != option.uid) return false;
+        if (uid != null ? !uid.equals(option.uid) : option.uid != null) return false;
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
