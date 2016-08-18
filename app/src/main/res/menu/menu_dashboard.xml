@@ -20,6 +20,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_settings" android:title="@string/settings_menu_configuration"
         android:orderInCategory="100"/>
+    <item android:id="@+id/action_license" android:title="@string/settings_menu_licence"
+        android:orderInCategory="102"/>
     <item android:id="@+id/action_about" android:title="@string/settings_menu_about"
         android:orderInCategory="103"/>
     <item android:title="@string/settings_menu_legal" android:orderInCategory="104">

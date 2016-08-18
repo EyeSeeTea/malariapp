@@ -102,6 +102,12 @@ public class Question extends BaseModel {
     @Column
     Long id_composite_score;
 
+    @Column
+    Integer row;
+
+    @Column
+    Integer column;
+
     /**
      * Reference to associated compositeScore for this question (loaded lazily)
      */
@@ -142,7 +148,7 @@ public class Question extends BaseModel {
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory,Integer row, Integer column) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -156,6 +162,8 @@ public class Question extends BaseModel {
         this.parent = null;
         this.matchTrigger=null;
         this.compulsory=compulsory;
+        this.row = row;
+        this.column = column;
 
         this.setHeader(header);
         this.setAnswer(answer);
@@ -249,6 +257,22 @@ public class Question extends BaseModel {
 
     public Boolean getCompulsory() {
         return compulsory;
+    }
+
+    public void setRow(Integer row){
+        this.row = row;
+    }
+
+    public Integer getRow(){
+        return this.row;
+    }
+
+    public void setColumn(Integer column){
+        this.column = column;
+    }
+
+    public Integer getColumn(){
+        return this.column;
     }
 
     public Header getHeader() {
@@ -378,19 +402,6 @@ public class Question extends BaseModel {
         return matchTrigger;
     }
 
-    /**
-     * Returns the question whose answer will be triggered according to this question's answer via a match relationship
-     * @return
-     */
-//    public Question getQuestionTriggered(){
-//        //Never try-> load
-//        if(matchTrigger==null){
-//            hasAMatchTrigger();
-//        }
-//
-//        return questionTriggered;
-//    }
-
     public List<QuestionRelation> getQuestionRelations() {
         if(questionRelations ==null){
             this.questionRelations = new Select()
@@ -407,19 +418,6 @@ public class Question extends BaseModel {
         return !this.getQuestionRelations().isEmpty();
     }
 
-//    public List<QuestionOption> getQuestionOption() {
-//        //if (this.children == null){
-//        return new Select().from(QuestionOption.class)
-//                .indexedBy("QuestionOption_id_question")
-//                .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
-//                .queryList();
-//        //}
-//    }
-
-//    public boolean hasQuestionOption() {
-//        return !this.getQuestionOption().isEmpty();
-//    }
-
     public List<Match> getMatches() {
         if (matches == null) {
             matches = new Select().from(Match.class).as("m")
@@ -435,6 +433,7 @@ public class Question extends BaseModel {
     public List<Question> getChildren() {
         if (this.children == null) {
 
+            //No matches no children
             List<Match> matches = getMatches();
             if (matches.size() == 0) {
                 this.children = new ArrayList<>();
@@ -534,10 +533,27 @@ public class Question extends BaseModel {
     }
 
 
-    /*Returns true if the question belongs to a Custom Tab*/
+    /**
+     * Returns true if the question belongs to a Custom Tab
+     * */
     public boolean belongsToCustomTab() {
+        return this.row!=null || this.column!=null;
+    }
 
-        return getHeader().getTab().isACustomTab();
+    /**
+     * Returns true if this question is a title of a custom Tab table
+     * @return
+     */
+    public boolean isCustomTabTableHeader(){
+        return this.row!=null && this.row==0;
+    }
+
+    /**
+     * Returns true if this question starts a new row
+     * @return
+     */
+    public boolean isCustomTabNewRow(){
+        return this.column!=null && this.column==1;
     }
 
     /**

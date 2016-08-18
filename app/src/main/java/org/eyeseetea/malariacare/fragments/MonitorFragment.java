@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,11 +35,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
@@ -56,16 +55,15 @@ import java.util.List;
 /**
  * Created by ignac on 10/12/2015.
  */
-public class MonitorFragment extends Fragment {
+public class MonitorFragment extends Fragment implements IModuleFragment{
     List<Survey> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     private List<Program> programs;
     protected IDashboardAdapter adapter;
-    private static int index = 0;
     private WebView webView;
-    
+
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
@@ -152,22 +150,23 @@ public class MonitorFragment extends Fragment {
     /**
      * load and reload sent surveys
      */
-    public void reloadSentSurveys() {
+    @Override
+    public void reloadData() {
         HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
-
-        surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
-        //Remove the bad surveys.
-        Iterator<Survey> iter = surveysForGraphic.iterator();
-        while(iter.hasNext()){
-            Survey survey = iter.next();
-            if(!survey.hasMainScore())
-            {
-                iter.remove();
+        if(data!=null) {
+            surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
+            //Remove the bad surveys.
+            Iterator<Survey> iter = surveysForGraphic.iterator();
+            while(iter.hasNext()){
+                Survey survey = iter.next();
+                if(!survey.hasMainScore()) {
+                    iter.remove();
+                }
             }
-        }
 
-        programs = data.get(SurveyService.PREPARE_PROGRAMS);
-        reloadSurveys(surveysForGraphic,programs);
+            programs = data.get(SurveyService.PREPARE_PROGRAMS);
+            reloadSurveys(surveysForGraphic,programs);
+        }
     }
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
@@ -221,7 +220,8 @@ public class MonitorFragment extends Fragment {
     }
 
     private WebView initMonitor() {
-        WebView webView = (WebView) getActivity().findViewById(R.id.dashboard_monitor);
+        Activity activity=getActivity();
+        WebView webView = (WebView) activity.findViewById(R.id.dashboard_monitor);
         //Init webView settings
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
@@ -248,13 +248,6 @@ public class MonitorFragment extends Fragment {
         }
     }
 
-    public void reloadData() {
-            //Reload data using service
-            Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_MONITOR_DATA_ACTION);
-            PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
-    }
-
 
     /**
      * Inner private class that receives the result from the service
@@ -268,7 +261,7 @@ public class MonitorFragment extends Fragment {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_MONITOR_DATA_ACTION.equals(intent.getAction())) {
-                reloadSentSurveys();
+                reloadData();
             }
         }
     }

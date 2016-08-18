@@ -33,8 +33,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -49,6 +52,7 @@ import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapt
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +60,7 @@ import java.util.List;
 /**
  * Created by ivan.arrizabalaga on 15/12/2015.
  */
-public class PlannedFragment extends ListFragment {
+public class PlannedFragment extends ListFragment implements IModuleFragment{
     public static final String TAG = ".PlannedFragment";
 
     private PlannedItemsReceiver plannedItemsReceiver;
@@ -117,8 +121,8 @@ public class PlannedFragment extends ListFragment {
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Spinner spinner=((Spinner) parent);
-                Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
+                Spinner spinner = ((Spinner) parent);
+                Program selectedProgram = position == 0 ? null : (Program) spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 adapter.applyFilter(selectedProgram);
                 if(selectedProgram!=null)
@@ -221,6 +225,7 @@ public class PlannedFragment extends ListFragment {
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.ALL_PROGRAMS_ACTION));
         }
     }
     /**
@@ -235,16 +240,15 @@ public class PlannedFragment extends ListFragment {
         }
     }
 
-    public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
-        adapter.reloadItems(plannedItemList);
-        setListShown(true);
+    @Override
+    public void reloadData(){
+        reloadPlannedItems((List<PlannedItem>) Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION));
     }
 
-    public void reloadData(){
-        //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
+        if(adapter!=null && plannedItemList!=null){
+        adapter.reloadItems(plannedItemList);
+        setListShown(true);}
     }
 
     /**
@@ -258,12 +262,12 @@ public class PlannedFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
-                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
-                programList=plannedServiceBundle.getPrograms();
-                orgUnitList=plannedServiceBundle.getOrgUnits();
+            if(SurveyService.ALL_PROGRAMS_ACTION.equals(intent.getAction())){
+                programList = (List<Program>)Session.popServiceValue(SurveyService.ALL_PROGRAMS_ACTION);
                 prepareUI();
-                reloadPlannedItems(plannedServiceBundle.getPlannedItems());
+            }
+            if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
+                reloadData();
             }
         }
     }

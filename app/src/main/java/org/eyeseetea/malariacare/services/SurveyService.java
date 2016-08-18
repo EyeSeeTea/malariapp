@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.Tab$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
@@ -42,6 +43,8 @@ import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -265,9 +268,9 @@ public class SurveyService extends IntentService {
         List<Program> programList = Program.list();
 
         HashMap<String,List> orgCreateSurveyData=new HashMap<>();
-        orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitList);
-        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, orgUnitLevelList);
-        orgCreateSurveyData.put(PREPARE_PROGRAMS, programList);
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT, OrgUnit.list());
+        orgCreateSurveyData.put(PREPARE_ORG_UNIT_LEVEL, OrgUnitLevel.list());
+        orgCreateSurveyData.put(PREPARE_PROGRAMS, Program.list());
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
@@ -339,7 +342,7 @@ public class SurveyService extends IntentService {
     private void preLoadTabItems(Long tabID, String module){
         Tab tab = Tab.findById(tabID);
         if (tab !=null) {
-            Utils.preloadTabItems(tab, module);
+            AUtils.preloadTabItems(tab, module);
         }
     }
 

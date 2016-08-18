@@ -48,7 +48,11 @@ public class Session {
      * The current selected survey by module
      */
     private static Map<String, Survey> surveyMappedByModule = new HashMap<>();
-
+    /**
+     *  The current selected surveyFeedback
+    */
+    private static Survey surveyFeedback;
+    /**
     /**
      * The current user
      */
@@ -76,7 +80,7 @@ public class Session {
      */
     private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
 
-     /**
+    /**
      * The current phone metadata
      */
     private static PhoneMetaData phoneMetaData;
@@ -91,6 +95,8 @@ public class Session {
     }
 
     public static User getUser() {
+        if(user==null)
+            user=User.getLoggedUser();
         return user;
     }
 
@@ -98,6 +104,7 @@ public class Session {
         Log.d(TAG,"setUser: "+user);
         Session.user = user;
     }
+
     public static IDashboardAdapter getAdapterOrgUnit() {
         return adapterOrgUnit;
     }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!-- # general -->
 <string name="yes">"Yes"</string>
 <string name="no">"No"</string>
 <string name="cancel">"Cancel"</string>
@@ -13,13 +12,11 @@
 <string name="poor">"Poor"</string>
 <string name="lorem_ipsum">"Lorem ipsum dolor sit amet"</string>
 
-<!-- settings -->
 <string name="settings_menu_about">"About"</string>
 <string name="settings_menu_configuration">"Settings"</string>
 <string name="settings_menu_licence">"License"</string>
 <string name="settings_menu_logout">"Logout"</string>
 
-<!-- # dialogs -->
 <string name="dialog_title_delete_survey">"Delete Survey"</string>
 <string name="dialog_info_delete_survey">"Are you sure you want to completely delete the survey: %s?"</string>
 <string name="dialog_title_missing_selection">"Missing selection"</string>
@@ -30,36 +27,29 @@
 <string name="dialog_content_incorrect_org_unit">"Please select a final org unit"</string>
 <string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
 
-<!-- dashboard -->
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
 <string name="dashboard_info_sent">"Sent"</string>
 
-<!-- create -->
 <string name="create_info_ok">"Start"</string>
 <string name="create_info_organization_unit">"Organisation Unit"</string>
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
-<!-- assessment -->
 <string name="assessment_title_facility_date">"Facility / Survey"</string>
 <string name="assessment_title_state">"% complete"</string>
 <string name="assessment_sent_date">"Completion date"</string>
 <string name="assessment_title_header">"Active Assessment(s)"</string>
 <string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
 
-<!-- survey -->
 <string name="survey_title_exit">"Really Exit?"</string>
 <string name="survey_info_exit">"Are you sure you want to exit?"</string>
 
-<!-- widget -->
 <string name="widget_info_empty_statement">"Question statement"</string>
 
-<!-- custom -->
 <string name="custom_title_tallies">"TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet"</string>
 <string name="custom_info_tallies">"TALLIES for the Month of"</string>
 
-<!-- adherence -->
 <string name="adherence_info_switchquestion">"Are there laboratory registers and pharmacy or clinical registers available at this facility?"</string>
 <string name="adherence_title_explanation">"Evaluation of Provider Adherence to Malaria Diagnostic Test Results"</string>
 <string name="adherence_title_explanation_content">"Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.
@@ -78,21 +68,18 @@ Prescribed?"</string>
 <string name="adherence_info_microscopy_positive">"Microscopy Positive"</string>
 <string name="adherence_info_microscopy_negative">"Microscopy Negative"</string>
 
-<!-- iqa eqa -->
 <string name="iqatab_info_supervisor">"Supervisor"</string>
 <string name="iqatab_info_parasites">"Parasites/uL"</string>
 <string name="iqatab_info_species">"Species"</string>
 <string name="iqatab_info_labstaff">"Lab Staff"</string>
 <string name="iqatab_info_note">"Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose."</string>
 
-<!-- reporting -->
 <string name="reporting_info_reporting">"Reporting"</string>
 <string name="reporting_info_results">"Results"</string>
 <string name="reporting_info_register">"Register"</string>
-<string name="reporting_info_monthly">"Monthly 
+<string name="reporting_info_monthly">"Monthly
 Report"</string>
 
-<!-- score -->
 <string name="score_title_clinical_fever">"Clinical
 fever
 evaluation"</string>
@@ -107,10 +94,8 @@ evaluation"</string>
 <string name="score_info_case2">"Case 2"</string>
 <string name="score_info_case3">"Case 3"</string>
 
-<!-- composite score -->
 <string name="compscore_title_score_percentage">"Score (%)"</string>
 
-<!-- settings -->
 <string name="title_activity_settings">"Settings"</string>
 <string name="settings_checkbox_show_num_dems">"Show num/dems"</string>
 <string name="settings_checkbox_description_show_num_dems">"When activated, survey questions show their numerators and denominators, used to calc the survey score"</string>
@@ -209,8 +194,32 @@ evaluation"</string>
 <string name="unavailable">"Unavailable"</string>
 <string name="no_previous_event_info">"No previous event available"</string>
 <string name="error_message_push">"The event with UID: %s. was uploaded without date. Please contact the administrator. "</string>
-    <string name="monitor_js_assessments" >Assessments undertaken</string>
-    <string name="monitor_js_target" >"Target"</string>
-    <string name="monitor_js_quality_of_care" >"Quality of care: Last "</string>
-    <string name="monitor_js_months" >" months"</string>
+<string name="monitor_js_assessments" >Assessments undertaken</string>
+<string name="monitor_js_target" >"Target"</string>
+<string name="monitor_js_quality_of_care" >"Quality of care: Last "</string>
+<string name="monitor_js_months" >" months"</string>
+
+<string name="create">Create</string>
+<string name="modify">Modify</string>
+<string name="create_or_modify">Do you want to create a new assessment or modify the latest assessment, dated [%s]?</string>
+<string name="loading_last_surveys">Loading last survey...</string>
+<string name="no_previous_event_info">No previous event available</string>
+<string name="dynamic_error_phone_format">Invalid format for phone number ( 0NN NNN NNN{N} )</string>
+<string name="dynamic_error_age">Invalid age</string>
+<string name="survey_title_completed">Survey completed</string>
+<string name="survey_info_completed">The survey has been successfully completed</string>
+<string name="review">Review</string>
+<string name="send">Send</string>
+<string name="number_0">0</string>
+<string name="number_1">1</string>
+<string name="number_2">2</string>
+<string name="number_3">3</string>
+<string name="number_4">4</string>
+<string name="number_5">5</string>
+<string name="number_6">6</string>
+<string name="number_7">7</string>
+<string name="number_8">8</string>
+<string name="number_9">9</string>
+<string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
+<string name="clear">Clear</string>
 </resources>

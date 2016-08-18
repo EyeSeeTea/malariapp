@@ -57,7 +57,7 @@ public class FeedbackBuilder {
         List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey, module);
 
 
-       //Calculate main score
+        //Calculate main score
         survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
 
         if (!parents) {

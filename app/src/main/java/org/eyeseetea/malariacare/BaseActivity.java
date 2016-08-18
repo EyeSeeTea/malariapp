@@ -49,9 +49,6 @@ import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
-import java.io.InputStream;
-
-
 public abstract class BaseActivity extends ActionBarActivity {
 
     /**
@@ -107,21 +104,25 @@ public abstract class BaseActivity extends ActionBarActivity {
                 debugMessage("User asked for settings");
                 goSettings();
                 break;
+            case R.id.action_license:
+                debugMessage("User asked for license");
+                AUtils.showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl, BaseActivity.this);
+                break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                new Utils().showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
+                AUtils.showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
                 break;
             case R.id.action_copyright:
                 debugMessage("User asked for copyright");
-                new Utils().showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright, BaseActivity.this);
+                AUtils.showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright, BaseActivity.this);
                 break;
             case R.id.action_licenses:
                 debugMessage("User asked for software licenses");
-                new Utils().showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses, BaseActivity.this);
+                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses, BaseActivity.this);
                 break;
             case R.id.action_eula:
                 debugMessage("User asked for EULA");
-                new Utils().showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
+                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");

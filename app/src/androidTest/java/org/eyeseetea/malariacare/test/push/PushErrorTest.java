@@ -105,11 +105,13 @@ public class PushErrorTest {
         //WHEN
         Long idSurvey=markInProgressAsCompleted();
 
-        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH,idSurvey);
+        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
 
         //THEN
         //then: Survey is NOT pushed (no UID)
-        assertTrue(survey.getEventUid() == null);
+        assertTrue("Survey not pushed"+survey.toString(),!survey.isSent());
+        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadDate()==null);
+        assertTrue("Survey not pushed"+survey.toString(),survey.isConflict());
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());

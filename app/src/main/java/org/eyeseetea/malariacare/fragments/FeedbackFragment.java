@@ -30,6 +30,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -244,7 +245,7 @@ public class FeedbackFragment extends Fragment {
     public void prepareFeedbackInfo(){
         Log.d(TAG, "prepareFeedbackInfo");
         Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(Constants.MODULE_KEY, moduleName);
+        surveysIntent.putExtra(Constants.MODULE_KEY,moduleName);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
         getActivity().getApplicationContext().startService(surveysIntent);
     }

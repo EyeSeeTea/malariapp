@@ -29,6 +29,11 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
+import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,11 +62,19 @@ public class PreferencesState {
     private boolean showNumDen;
 
     /**
+     * Flag that determines if data must be pulled from server
+     */
+    private Boolean pullFromServer;
+
+    /**
      * Flag that determines if large text is show in preferences
      */
     private Boolean showLargeText;
 
-    private Boolean pullFromServer;
+    /**
+     * Flag that determines if the planning tab must be hide or not
+     */
+    private Boolean hidePlanningTab;
 
     /**
      * Map that holds the relationship between a scale and a set of dimensions
@@ -96,6 +109,7 @@ public class PreferencesState {
         scale= initScale();
         showNumDen=initShowNumDen();
         locationRequired=initLocationRequired();
+        hidePlanningTab = initHidePlanningTab();
         maxEvents=initMaxEvents();
         showNumDen=initShowNumDen();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
@@ -130,6 +144,15 @@ public class PreferencesState {
     private boolean initLocationRequired(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
+    }
+
+    /**
+     * Inits hidePlanningTab flag according to preferences
+     * @return
+     */
+    private boolean initHidePlanningTab(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.hide_planning_tab_key), false);
     }
 
     /**
@@ -222,6 +245,10 @@ public class PreferencesState {
         this.locationRequired=value;
     }
 
+    public boolean isHidePlanningTab(){
+        return this.hidePlanningTab;
+    }
+
     public int getMaxEvents(){
         return this.maxEvents;
     }
@@ -241,9 +268,47 @@ public class PreferencesState {
      * @return
      */
     public Boolean getPullFromServer() {
-        return true;
+        return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
     }
 
+    /**
+     * Tells if the application is Vertical or horizontall
+     * @return
+     */
+    public Boolean isVerticalDashboard() {
+        return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
+    }
+
+    /**
+     * Tells if the application is filter for last org unit
+     * @return
+     */
+    public Boolean isLastForOrgUnit() {
+        return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application is none filter
+     * @return
+     */
+    public Boolean isNoneFilter() {
+        return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application use the Automatic  adapter
+     * @return
+     */
+    public Boolean isAutomaticAdapter() {
+        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
+    }
+    /**
+     * Tells if the application use the Dynamic adapter
+     * @return
+     */
+    public Boolean isDynamicAdapter() {
+        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
+    }
     public Class getMainActivity(){
         if(getPullFromServer()){
             return ProgressActivity.class;

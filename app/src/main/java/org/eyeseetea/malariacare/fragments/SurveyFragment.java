@@ -42,15 +42,19 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -107,6 +111,11 @@ public class SurveyFragment extends  Fragment {
      * List of all tabs
      */
     List<Tab> allTabs;
+
+    /**
+     * Map of adapters, each tab requires a different adapter to show its form
+     */
+    private Map<Tab, ITabAdapter> adaptersMap = new HashMap<Tab, ITabAdapter>();
 
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
@@ -206,6 +215,7 @@ public class SurveyFragment extends  Fragment {
 
     public void setModuleName(String simpleName) {
         this.moduleName=simpleName;
+
     }
 
     /**
@@ -214,29 +224,35 @@ public class SurveyFragment extends  Fragment {
     private void createMenu(final String moduleName) {
 
         Log.d(TAG, "createMenu");
-        this.tabAdapter=new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
+        this.tabAdapter = new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
         spinner = (Spinner) llLayout.findViewById(R.id.tabSpinner);
-        //Invisible until info ready
-        spinner.setVisibility(View.GONE);
-        spinner.setAdapter(this.tabAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected..");
-                final Tab selectedTab = (Tab) spinner.getSelectedItem();
-                llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
-                llLayout.findViewById(R.id.next_tab).setAlpha(0f);
-                new AsyncChangeTab(selectedTab).execute((Void) null);
-                Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
-            }
+        //If the spinner is null, is a survey without header tabs)
+        if (spinner != null) {
+            //Invisible until info ready
+            spinner.setVisibility(View.GONE);
+            spinner.setAdapter(this.tabAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "onItemSelected..");
+                    final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                    llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
+                    llLayout.findViewById(R.id.next_tab).setAlpha(0f);
+                    new AsyncChangeTab(selectedTab).execute((Void) null);
+                    Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+            if (!PreferencesState.getInstance().isVerticalDashboard())
+                tabPagination();
+        }
+    }
 
-
+    private void tabPagination() {
         ImageButton nextButton = (ImageButton) llLayout.findViewById(R.id.next_tab);
         ImageButton previousButton = (ImageButton) llLayout.findViewById(R.id.previous_tab);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -290,6 +306,8 @@ public class SurveyFragment extends  Fragment {
 
         private Tab tab;
 
+        String module;
+
         public AsyncChangeTab(Tab tab) {
             this.tab = tab;
         }
@@ -331,10 +349,12 @@ public class SurveyFragment extends  Fragment {
                         tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                     tabAdapter.initializeSubscore();
                 }
-                ListView mQuestions = (ListView) llLayout.findViewById(R.id.listView);
-                mQuestions.setAdapter((BaseAdapter) tabAdapter);
-                UnfocusScrollListener unfocusScrollListener = new UnfocusScrollListener();
-                mQuestions.setOnScrollListener(unfocusScrollListener);
+                ListView listView = (ListView) llLayout.findViewById(R.id.listView);
+                if (tabAdapter instanceof DynamicTabAdapter) {
+                    ((DynamicTabAdapter) tabAdapter).addOnSwipeListener(listView);
+                }
+                listView.setAdapter((BaseAdapter) tabAdapter);
+                listView.setOnScrollListener(new UnfocusScrollListener());
                 stopProgress();
                 checkArrows();
             }catch (Exception e){};
@@ -488,8 +508,9 @@ public class SurveyFragment extends  Fragment {
      * Stops progress view and shows real form
      */
     private void stopProgress(){
-        this.progressBar.setVisibility(View.GONE);
-        this.spinner.setVisibility(View.VISIBLE);
+        this.progressBar.setVisibility(View.INVISIBLE);
+        if(this.spinner!=null)
+            this.spinner.setVisibility(View.VISIBLE);
         this.content.setVisibility(View.VISIBLE);
 
     }
@@ -543,7 +564,11 @@ public class SurveyFragment extends  Fragment {
 
         this.tabsList.clear();
         this.tabsList.addAll(tabs);
-        this.tabAdapter.notifyDataSetChanged();
+        if(PreferencesState.getInstance().isAutomaticAdapter())
+            this.tabAdapter.notifyDataSetChanged();
+        else if(PreferencesState.getInstance().isDynamicAdapter()){
+            new AsyncChangeTab(tabs.get(0)).execute((Void) null);
+        }
 
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
@@ -590,10 +615,11 @@ public class SurveyFragment extends  Fragment {
             tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
-
-            allTabs=(List<Tab>)Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
-            // After loading first tab we start the individual services that preload the items for the rest of tabs
-            preLoadItems();
+            if(PreferencesState.getInstance().isAutomaticAdapter()) {
+                allTabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+                // After loading first tab we start the individual services that preload the items for the rest of tabs
+                preLoadItems();
+            }
         }
     }
 
@@ -658,8 +684,11 @@ public class SurveyFragment extends  Fragment {
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
-            this.compositeScores=compositeScores;
+            if (PreferencesState.getInstance().isDynamicAdapter())
+                this.adapters.put(firstTab, DynamicTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+            if (PreferencesState.getInstance().isAutomaticAdapter())
+                this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+            this.compositeScores = compositeScores;
         }
 
         /**
@@ -691,8 +720,16 @@ public class SurveyFragment extends  Fragment {
          * @param tab
          * @return
          */
-        private ITabAdapter buildAdapter(Tab tab){
-            return AutoTabAdapter.build(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+        private ITabAdapter buildAdapter(Tab tab) {
+            if (PreferencesState.getInstance().isDynamicAdapter()) {
+                if (tab.isDynamicTab())
+                    return new DynamicTabAdapter(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+                return null;
+            }
+            if (PreferencesState.getInstance().isAutomaticAdapter()) {
+                return AutoTabAdapter.build(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+            }
+            return null;
         }
     }
 }

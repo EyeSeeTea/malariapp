@@ -37,7 +37,7 @@ allprojects {
 
 ext {
     //App Version
-    versionCode = 28
+    versionCode = 29
     versionName = "QAApp"
     
     // Sdk and tools

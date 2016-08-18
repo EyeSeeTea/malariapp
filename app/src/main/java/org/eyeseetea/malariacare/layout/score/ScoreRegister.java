@@ -26,7 +26,10 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.layout.utils.QuestionRow;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,6 +70,13 @@ public class ScoreRegister {
              compositeScoreMapBySurvey.get(module).get(idSurvey).get(question.getCompositeScore()).addRecord(question, num, den);
         }
         tabScoreMap.get(module).get(idSurvey).get(question.getHeader().getTab()).addRecord(question, num, den);
+    }
+
+    public static void addQuestionRowRecords(QuestionRow questionRow, float idSurvey, String module){
+        for(Question question:questionRow.getQuestions()){
+            ScoreRegister.addRecord(question, 0F, ScoreRegister.calcDenum(question, idSurvey), idSurvey, module);
+        }
+
     }
 
     public static void deleteRecord(Question question, float idSurvey, String module){
@@ -227,7 +237,7 @@ public class ScoreRegister {
     /**
      * Calculates the denominator of the given question & survey
      * @param question
-     * @param idSurvey
+     * @param survey
      * @return
      */
     public static float calcDenum(Question question,float idSurvey) {

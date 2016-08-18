@@ -61,7 +61,7 @@ public class CustomEditText extends EditText implements IEyeSeeView{
 
     public void init(AttributeSet attrs, int defStyle) {
 
-        if(isInEditMode()){
+        if(!PreferencesState.getInstance().isVerticalDashboard() && isInEditMode()){
             return;
         }
 

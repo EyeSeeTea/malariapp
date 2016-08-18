@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class AssessmentSentAdapter extends AAssessmentAdapter implements IAssess
         this.headerLayout = R.layout.assessment_sent_header;
         this.recordLayout = R.layout.assessment_sent_record;
         this.footerLayout = R.layout.assessment_sent_footer;
-        //this.title = context.getString(R.string.assessment_sent_title_header);
+        if(PreferencesState.getInstance().isVerticalDashboard())
+            this.title = context.getString(R.string.assessment_sent_title_header);
     }
 
     @Override

@@ -165,6 +165,14 @@ public class Tab extends BaseModel {
     }
 
     /**
+     * Checks if this tab is a dynamic tab (sort of a wizard)
+     * @return
+     */
+    public boolean isDynamicTab(){
+        return getType() == Constants.TAB_DYNAMIC_AUTOMATIC_TAB;
+    }
+
+    /**
      * Checks if this tab is a custom tab
      * @return
      */

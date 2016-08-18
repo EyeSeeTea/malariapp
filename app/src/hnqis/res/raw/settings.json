@@ -1,0 +1,39 @@
+{
+  "database": {
+    "originType": "dhis",
+    "uri": "https://hnqis-dev-ci.psi-mis.org",
+    "fullHierarchy": false
+  },
+  "dashboard": {
+    "orientation": "horizontal",
+    "adapter": "automatic",
+    "layout": "tab_dashboard",
+    "listFilter": "lastForOU",
+    "modules": [{
+      "title": "plan",
+      "icon": "tab_plan",
+      "backgroundColor": "tab_orange_plan",
+      "layout": "dashboard_planning_tab",
+      "controller": "PlanModuleController"
+    }, {
+      "title": "assess",
+      "icon": "tab_assess",
+      "backgroundColor": "tab_yellow_assess",
+      "layout": "dashboard_details_container",
+      "controller": "AssessModuleController"
+    },{
+      "title": "improve",
+      "icon": "tab_improve",
+      "backgroundColor": "tab_blue_improve",
+      "layout": "dashboard_completed_container",
+      "controller": "ImproveModuleController"
+    },{
+      "title": "monitor",
+      "icon": "tab_monitor",
+      "backgroundColor": "tab_green_monitor",
+      "layout": "dashboard_charts_container",
+      "controller": "MonitorModuleController"
+    }
+    ]
+  }
+}
