@@ -151,6 +151,7 @@
     <string name="dialog_info_push_bad_credentials">Bad credenciais para empurrar</string>
     <string name="dialog_error_push_no_location_and_required">Nenhum local disponível e é um campo obrigatório</string>
     <string name="dialog_error_push_uids">UIDs incorretas encontradas no impulso</string>
+    <string name="dialog_error_attribute_null">"Atributo com id %s é nulo, por favor contacte o seu administrador do servidor."</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit errado</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione uma org unit de final</string>
     <string name="create_info_tabs_group">Tab Group</string>

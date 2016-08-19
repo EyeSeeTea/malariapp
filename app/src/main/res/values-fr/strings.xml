@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="cancel">Annuler</string>
@@ -147,6 +146,7 @@
     <string name="assessment_sent_score">But</string>
     <string name="dialog_error_push_uids">UID incorrects trouvés en push</string>
     <string name="dialog_error_push_no_location_and_required">Aucun emplacement disponible et il est un champ obligatoire</string>
+    <string name="dialog_error_attribute_null">"Attribut avec id %s est nulle, s'il vous plaît contacter votre admin serveur."</string>
     <string name="dialog_title_incorrect_org_unit">Org Unit erronées</string>
     <string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionner une unité d'organisation finale"</string>
     <string name="create_info_tabs_group">Tab Group</string>
