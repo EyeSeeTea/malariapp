@@ -165,6 +165,7 @@ evaluation"</string>
 <string name="settings_text_dhis_max_items">"DHIS max loaded surveys"</string>
 <string name="dialog_error_push_uids">"Incorrect UIDs found in push"</string>
 <string name="dialog_error_push_no_location_and_required">"No location available and it is a required field"</string>
+<string name="dialog_error_attribute_null">"Attribute with id %s null, please contact your server admin."</string>
 <string name="dialog_info_push_imported">"Imported"</string>
 <string name="dialog_info_push_updated">"Updated"</string>
 <string name="dialog_info_push_ignored">"Ignored"</string>
