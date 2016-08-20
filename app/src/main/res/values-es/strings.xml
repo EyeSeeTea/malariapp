@@ -147,6 +147,7 @@
     <string name="dialog_title_incorrect_org_unit" >Org Unit Incorrecta</string>
     <string name="dialog_error_push_uids">UIDs incorrectos encontrados en el envio</string>
     <string name="dialog_error_push_no_location_and_required">Localización no disponible y es un campo obligatorio</string>
+    <string name="dialog_error_attribute_null">"El atributo con id %s es null, por favor, póngase en contacto con el administrador del servidor."</string>
     <string name="dialog_content_incorrect_org_unit">Por favor seleccione una org unit final</string>
     <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
     <string name="settings_text_dhis_user">Usuario DHIS</string>

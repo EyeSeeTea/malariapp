@@ -26,11 +26,13 @@ import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
@@ -311,6 +313,9 @@ public class DataElementExtended implements VisitableFromSDK {
     public AttributeValue findAttributeValuefromDataElementCode(String code,DataElement dataElement){
         //select * from Attribute join AttributeValue on Attribute.id = attributeValue.attributeId join DataElementAttributeValue on attributeValue.id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue.dataElementId="vWgsPN1RPLl" and code="Order"
         for (AttributeValue attributeValue: dataElement.getAttributeValues()){
+            if(attributeValue.getAttribute().getCode()==null) {
+                throw new RuntimeException(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.dialog_error_attribute_null), attributeValue.getAttributeId()));
+            }
             if (attributeValue.getAttribute().getCode().equals(code))
                 return attributeValue;
         }
