@@ -165,6 +165,7 @@ clínica"</string>
 <string name="settings_text_dhis_max_items">"DHIS max encuestas descargadas"</string>
 <string name="dialog_error_push_uids">"UIDs incorrectos encontrados en el envio"</string>
 <string name="dialog_error_push_no_location_and_required">"Localización no disponible y es un campo obligatorio"</string>
+<string name="dialog_error_attribute_null">"El atributo con id %s es null, por favor, póngase en contacto con el administrador del servidor."</string>
 <string name="dialog_info_push_imported">"Importados"</string>
 <string name="dialog_info_push_updated">"Actualizados"</string>
 <string name="dialog_info_push_ignored">"Ignorados"</string>
