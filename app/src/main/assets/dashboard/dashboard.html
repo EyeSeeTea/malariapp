@@ -153,24 +153,24 @@
     .show {
     display:block;
     }
-    #selectProgram{
+    #spinnerProgram{
         top: -5px;
         position: absolute;
-        width: 98.2%;
+        width: 48.2%;
         border-radius: 0px;
+    }
+	#spinnerOrgUnit {
+		top: -5px;
+		left: 50%;
+		position: absolute;
+		width: 48.2%;
+		border-radius: 0px;
+		display: inline-block;
     }
     #tableCanvas,#pieChartContent{
         padding-top: 35px;
     }
-    #selectProgram>select{
-        background-size: 32px 32px;
-        text-transform: uppercase;
-        padding: 12 0 12 20px!important;
-        font-size: 30px;
-        font-weight:bold;
-        font-family: "Roboto-Medium.ttf";
-    }
-    #changeProgram>select{
+    #spinnerProgram>select,#spinnerOrgUnit>select{
         background-size: 32px 32px;
         text-transform: uppercase;
         padding: 12 0 12 20px!important;
@@ -183,7 +183,10 @@
 </head>
 <body>
 <!--Legend for this chart-->
-<div id="selectProgram" class="horizontal"></div>
+<div id="selectBlock">
+<div id="spinnerProgram" class="horizontal"></div>
+<div id="spinnerOrgUnit" class="horizontal"></div>
+</div>
 <!--Sent surveys x month-->
 <div id="tableCanvas" class="show">
     <!--title of the chart-->
@@ -232,6 +235,146 @@
             </div>
         </div>
     </div>
+</script>
+<script>
+initContext({'assesmentUnderTaken':'Assessments undertaken','target': 'Target','qualityOfCare': 'Quality of care: Last ','months':' months'});
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([10,0, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','Mar']);
+setProgramData([10,0, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','Apr']);
+setProgramData([0,10, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','May']);
+setProgramData([0,10, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','Jun']);
+setProgramData([10,0, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','Jul']);
+setProgramData([0,10, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Mar']);
+setProgramData([0,0, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Apr']);
+setProgramData([0,0, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','May']);
+setProgramData([0,0, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Jun']);
+setProgramData([0,0, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Jul']);
+setProgramData([0,0, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Mar']);
+setProgramData([0,0, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Apr']);
+setProgramData([0,0, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','May']);
+setProgramData([0,0, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Jun']);
+setProgramData([0,0, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Jul']);
+setProgramData([0,0, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Mar']);
+setProgramData([0,0, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Apr']);
+setProgramData([0,0, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','May']);
+setProgramData([0,0, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Jun']);
+setProgramData([0,0, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Jul']);
+setProgramData([0,0, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Mar']);
+setProgramData([0,0, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Apr']);
+setProgramData([0,0, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','May']);
+setProgramData([0,0, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Jun']);
+setProgramData([0,0, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Jul']);
+setProgramData([0,0, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'Smoke', 'xHn1Oua7W54','Mar']);
+setProgramData([0,0, 'Smoke', 'xHn1Oua7W54','Apr']);
+setProgramData([14,0, 'Smoke', 'xHn1Oua7W54','May']);
+setProgramData([1,0, 'Smoke', 'xHn1Oua7W54','Jun']);
+setProgramData([0,0, 'Smoke', 'xHn1Oua7W54','Jul']);
+setProgramData([0,0, 'Smoke', 'xHn1Oua7W54','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, '_XX HNQIS Test', 'ZeVPKI4b1JH','Mar']);
+setProgramData([0,0, '_XX HNQIS Test', 'ZeVPKI4b1JH','Apr']);
+setProgramData([0,0, '_XX HNQIS Test', 'ZeVPKI4b1JH','May']);
+setProgramData([0,0, '_XX HNQIS Test', 'ZeVPKI4b1JH','Jun']);
+setProgramData([0,0, '_XX HNQIS Test', 'ZeVPKI4b1JH','Jul']);
+setProgramData([0,0, '_XX HNQIS Test', 'ZeVPKI4b1JH','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Mar']);
+setProgramData([0,0, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Apr']);
+setProgramData([0,0, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','May']);
+setProgramData([0,0, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Jun']);
+setProgramData([0,0, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Jul']);
+setProgramData([0,0, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Mar']);
+setProgramData([0,0, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Apr']);
+setProgramData([0,0, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','May']);
+setProgramData([0,0, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Jun']);
+setProgramData([0,0, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Jul']);
+setProgramData([0,0, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Mar']);
+setProgramData([0,0, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Apr']);
+setProgramData([0,0, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','May']);
+setProgramData([0,0, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Jun']);
+setProgramData([0,0, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Jul']);
+setProgramData([0,0, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Family Planning', 'wK0958s1bdj','Mar']);
+setProgramData([0,0, 'KE HNQIS Family Planning', 'wK0958s1bdj','Apr']);
+setProgramData([0,0, 'KE HNQIS Family Planning', 'wK0958s1bdj','May']);
+setProgramData([0,0, 'KE HNQIS Family Planning', 'wK0958s1bdj','Jun']);
+setProgramData([0,0, 'KE HNQIS Family Planning', 'wK0958s1bdj','Jul']);
+setProgramData([0,0, 'KE HNQIS Family Planning', 'wK0958s1bdj','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS IMCI', 'd6PHrjjljS1','Mar']);
+setProgramData([0,0, 'KE HNQIS IMCI', 'd6PHrjjljS1','Apr']);
+setProgramData([8,0, 'KE HNQIS IMCI', 'd6PHrjjljS1','May']);
+setProgramData([5,0, 'KE HNQIS IMCI', 'd6PHrjjljS1','Jun']);
+setProgramData([19,0, 'KE HNQIS IMCI', 'd6PHrjjljS1','Jul']);
+setProgramData([1,0, 'KE HNQIS IMCI', 'd6PHrjjljS1','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS HIV', 'rKjg29O3RFu','Mar']);
+setProgramData([0,0, 'KE HNQIS HIV', 'rKjg29O3RFu','Apr']);
+setProgramData([0,0, 'KE HNQIS HIV', 'rKjg29O3RFu','May']);
+setProgramData([0,0, 'KE HNQIS HIV', 'rKjg29O3RFu','Jun']);
+setProgramData([0,0, 'KE HNQIS HIV', 'rKjg29O3RFu','Jul']);
+setProgramData([0,0, 'KE HNQIS HIV', 'rKjg29O3RFu','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Mar']);
+setProgramData([0,0, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Apr']);
+setProgramData([0,0, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','May']);
+setProgramData([0,0, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Jun']);
+setProgramData([0,0, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Jul']);
+setProgramData([0,0, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Mar']);
+setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Apr']);
+setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','May']);
+setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Jun']);
+setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Jul']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Mar']);
+setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Apr']);
+setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','May']);
+setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Jun']);
+setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Jul']);
+setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Mar']);
+setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Apr']);
+setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','May']);
+setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Jun']);
+setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Jul']);
+setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setOrgUnitData([5,0, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Mar']);
+setOrgUnitData([10,0, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Apr']);
+setOrgUnitData([5,10, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','May']);
+setOrgUnitData([0,10, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Jun']);
+setOrgUnitData([10,0, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Jul']);
+setOrgUnitData([0,10, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Aug']);
+showMainTable();
+buildTableFacilities(6,{title:'Smoke',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,50,100,null,null]}],tableuid:'sMoSzJVHWUk',id:'6'});
+buildTableFacilities(12,{title:'KE HNQIS ICM',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,25,12,80,null]},{name:'KE - HNQIS SF pilot test facility',values:[null,null,52,null,null,0]}],tableuid:'Gn9OaJy3MBO',id:'12'});
+javascript:setProgramPieData([{title:'Smoke (Smoke)',tip:'Quality of care (based on last assessment)',idTabGroup: 6,valueA:8,valueB:0,valueC:7,uidprogram:'xHn1Oua7W54',uidorgunit:'sMoSzJVHWUk'},{title:'KE HNQIS ICM (KE HNQIS IMCI)',tip:'Quality of care (based on last assessment)',idTabGroup: 12,valueA:12,valueB:7,valueC:14,uidprogram:'d6PHrjjljS1',uidorgunit:'Gn9OaJy3MBO'}]);
+buildTableFacilities(6,{title:'Smoke',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,10,50,null,null]}],tableuid:'XXXX1',id:'6'});
+buildTableFacilities(12,{title:'KE HNQIS ICM',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,35,52,80,null]},{name:'KE - HNQIS SF pilot test facility',values:[null,null,52,null,null,0]}],tableuid:'XXXX2',id:'12'});
+javascript:setOrgUnitPieData([{title:'Smoke (Smoke)',tip:'Quality of care (based on last assessment)',idTabGroup: 6,valueA:3,valueB:1,valueC:6,uidprogram:'XXXX1',uidorgunit:'HymjisclaI1'},{title:'KE HNQIS ICM (KE HNQIS IMCI)',tip:'Quality of care (based on last assessment)',idTabGroup: 12,valueA:11,valueB:2,valueC:1,uidprogram:'XXXX2',uidorgunit:'HymjisclaI2'}]);
+rebuildTableFacilities();
+renderPieChartsByProgram();
+setGreen({color:'#adda19'});
+setRed({color:'#d1213c'});
+setYellow({color:'#dbe444'});
 </script>
 </body>
 </html>

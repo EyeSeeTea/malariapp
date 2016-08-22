@@ -36,9 +36,9 @@ function buildTableFacilities(tabGroupId,dataFacilities){
 	inputDataFacilities.push(dataFacilities);
 }
 //Build the correct table
-function rebuildTableFacilities(){
+function rebuildTableFacilities(selectedUid){
 	for(var i=0;i<inputDataFacilities.length;i++){
-		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
+		if(inputDataFacilities[i].tableuid==selectedUid){
 		    var id=inputDataFacilities[i].id;
 			var facilitiesHeadId="facilitiesHead";
 			var facilitiesBodyId="facilitiesBody";
