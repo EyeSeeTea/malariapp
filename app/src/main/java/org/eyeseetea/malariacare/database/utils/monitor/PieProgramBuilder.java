@@ -38,8 +38,9 @@ import java.util.Map;
  */
 public class PieProgramBuilder {
 
-    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:buildPieCharts(%s)";
-    private static final String TAG=".PieProgramBuilder";
+    public static final String JAVASCRIPT_UPDATE_PROGRAM_CHARTS = "javascript:setProgramPieData(%s)";
+    public static final String JAVASCRIPT_UPDATE_ORGUNIT_CHARTS = "javascript:setOrgUnitPieData(%s)";
+    private static final String TAG=".PieTabGroupBuilder";
     public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
@@ -106,7 +107,7 @@ public class PieProgramBuilder {
         String json=buildJSONArray(entries);
 
         //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHARTS, json);
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_PROGRAM_CHARTS, json);
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }
