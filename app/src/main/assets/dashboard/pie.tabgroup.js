@@ -28,17 +28,17 @@ var red;
 
 function setGreen(color){
     green=color["color"];
-    console.log(green);
+    //console.log(green);
 }
 
 function setYellow(color){
     yellow=color["color"];
-    console.log(yellow);
+    //console.log(yellow);
 }
 
 function setRed(color){
     red=color["color"];
-    console.log(red);
+    //console.log(red);
 }
 function pieXTabGroupChart(data){
 
@@ -46,11 +46,11 @@ function pieXTabGroupChart(data){
     var legendDOMId="tabgroupLegend"+data.idTabGroup;
     var titleDOMId="tabgroupTitle"+data.idTabGroup;
     var titleTableDOMId="tabgroupTip"+data.idTabGroup;
-    console.log(green);
-    console.log(yellow);
-    console.log(red);
-    //Chart
+    //console.log(green);
+    //console.log(yellow);
+    //console.log(red);
 
+    //Chart
     var ctx = document.getElementById(canvasDOMId).getContext("2d");
     var  myChart  = new Chart(ctx).Doughnut(
                                [{
@@ -84,9 +84,7 @@ function pieXTabGroupChart(data){
 
     //Update title && tip
     updateChartTitle(titleTableDOMId,data.tip);
-
 }
-
 
 /*
     Use:
@@ -107,67 +105,119 @@ function pieXTabGroupChart(data){
             valueA:24,
             valueB:12,
             valueC:10
-        }        
-        ]);    
+        }
+        ]);
 */
-var selectedOrgUnit;
-var inputOrgUnit;
-//Show orgUnit, it is called from changedProgram.
-function showPie(){
-	changedOrgunit();
-}
-//Save the facility data in inputOrgUnit
-function setFacilityData(data){
-    inputOrgUnit=data;
-}
-//Create the select options for select diferentes org unit
-function createSelectOrgUnit(){
-	rebuildTableFacilities();
+var selectedPie;
+var piesDataByProgram;
+var piesDataByOrgUnit;
+//Show tables/Pies by program.
+function showProgram(){
+    removeDataPie();
+	changePieAndTablesByProgram();
 }
 
-//event on click select/or to change the selected orgunit and reload.
-function changedOrgunit(){
-	selectedOrgUnit=="";
-	for(var i=0;i<Object.keys(inputOrgUnit).length;i++){
-		if(inputOrgUnit[i].uidprogram==selectedProgram){
-			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
+//Show tables/Pies by org unit.
+function showOrgUnit(){
+    removeDataPie();
+	changePieAndTablesByOrgUnit();
+}
+
+//Save the pie data by uid(program or org unit)
+function setProgramPieData(data){
+    piesDataByProgram=data;
+}
+//Save the pie data by uid(program or org unit)
+function setOrgUnitPieData(data){
+    piesDataByOrgUnit=data;
+}
+
+//event on click select/or in program "spinner" to change the selected program and reload.
+function changePieAndTablesByProgram(){
+	selectedPie="";
+	for(var i=0;i<Object.keys(piesDataByProgram).length;i++){
+		if(piesDataByProgram[i].uidprogram==selectedProgram){
+			selectedPie=piesDataByProgram[i].uidprogram;
+			break;
 		}
-	}  
-if(selectedProgram==="AllAssessment")
-	rebuildTableFacilities();
-else
-  renderPieCharts();
+	}
+    if(selectedProgram===allAssessmentKey){
+        rebuildTableFacilities(selectedOrgUnit);
+    }else{
+        renderPieChartsByProgram();
+    }
+}
+
+//event on click select/or in program "spinner" to change the selected program and reload.
+function changePieAndTablesByOrgUnit(){
+	selectedPie="";
+	for(var i=0;i<Object.keys(piesDataByOrgUnit).length;i++){
+		if(piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
+			selectedPie=piesDataByOrgUnit[i].uidorgunit;
+			break;
+		}
+	}
+    if(selectedOrgUnit!=allOrgUnitKey){
+        renderPieChartsByOrgUnit();
+    }
 }
 //Save the data of the pies
 function buildPieCharts(dataPies){
     //For each pie
-	setFacilityData(dataPies);
-	}
+	setPieData(dataPies);
+}
 
-//Render the pie and create the select options
-function renderPieCharts(){
-    for(var i=0;i<inputOrgUnit.length;i++){
-		  if (inputOrgUnit[i].uidorgunit==selectedOrgUnit)
-		{
-			showDataPie(inputOrgUnit[i]);
-			createSelectOrgUnit();
-		}
-	}
-    createSelectProgram();
+//Render the pie and table by program filter and reload the spinners
+function renderPieChartsByProgram(){
+	var programOrgUnit="";
+    if(selectedProgram!=""){
+        for(var i=0;i<piesDataByProgram.length;i++){
+            if (piesDataByProgram[i].uidprogram==selectedProgram){
+				programOrgUnit=piesDataByProgram[i].uidprogram;
+                showDataPie(piesDataByProgram[i]);
+				break;
+            }
+        }
+        rebuildTableFacilities(programOrgUnit);
+    }
+	reloadSpinners();
+}
+
+function reloadSpinners(){
+    createSpinnerProgram();
+    createSpinnerOrgUnit();
+}
+
+//Render the pie and table by orgUnit filter and reload the spinners
+function renderPieChartsByOrgUnit(){
+	var orgUnitPrograms;
+    if(selectedOrgUnit!=""){
+        for(var i=0;i<piesDataByOrgUnit.length;i++){
+            if (piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
+				orgUnitPrograms=piesDataByOrgUnit[i].uidorgunit;
+                showDataPie(piesDataByOrgUnit[i]);
+				break;
+            }
+        }
+        rebuildTableFacilities(orgUnitPrograms);
+    }
+	reloadSpinners();
 }
 
 //Insert the pie in the html
 function showDataPie(dataPie){
-	
     var defaultTemplate= document.getElementById('pieTemplate').innerHTML;
 	document.getElementById("pieChartContent").innerHTML=defaultTemplate;
-			//Create template with right ids
-			var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
-			//Add DOM element
-			document.getElementById("pieChartContent").innerHTML=customTemplate;
-			//Draw chart on it
-			pieXTabGroupChart(dataPie);
+    //Create template with right ids
+    var customTemplate=defaultTemplate.replace(/###/g, dataPie.idTabGroup);
+    //Add DOM element
+    document.getElementById("pieChartContent").innerHTML=customTemplate;
+    //Draw chart on it
+    pieXTabGroupChart(dataPie);
 
 }
-
+//Remove the pie from html
+function removeDataPie(){
+	document.getElementById("pieChartContent").innerHTML="";
+}
 

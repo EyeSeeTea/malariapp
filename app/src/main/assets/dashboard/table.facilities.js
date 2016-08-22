@@ -36,10 +36,10 @@ function buildTableFacilities(tabGroupId,dataFacilities){
 	inputDataFacilities.push(dataFacilities);
 }
 //Build the correct table
-function rebuildTableFacilities(){
+function rebuildTableFacilities(selectedUid){
 	for(var i=0;i<inputDataFacilities.length;i++){
-		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
-		var id=inputDataFacilities[i].id;
+		if(inputDataFacilities[i].tableuid==selectedUid){
+		    var id=inputDataFacilities[i].id;
 			var facilitiesHeadId="facilitiesHead";
 			var facilitiesBodyId="facilitiesBody";
 			var titleFacilitiesId="titleFacilities";
@@ -48,7 +48,7 @@ function rebuildTableFacilities(){
 			document.getElementById(facilitiesBodyId).innerHTML='';
 
 			//Title to table
-			updateChartTitle(titleFacilitiesId,"Quality of care: Last "+inputDataFacilities[i].months.length+" months");
+			updateChartTitle(titleFacilitiesId,messages["qualityOfCare"]+inputDataFacilities[i].months.length+messages["months"]);
 
 			//Add header
 			buildTableHeader(id,inputDataFacilities[i].months);
@@ -57,7 +57,6 @@ function rebuildTableFacilities(){
 			buildTableBody(id,inputDataFacilities[i].facilities);
 
 		}
-	//}
 	}
 }
 
@@ -90,7 +89,7 @@ function buildRowFacility(facility){
 	for(var i=0;i<facility.values.length;i++){
 		var iValue=facility.values[i];
         row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
-	
+
 	}
 	//end row
 	row=row+"</tr>";

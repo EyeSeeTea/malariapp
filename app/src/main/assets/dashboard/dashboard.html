@@ -20,170 +20,173 @@
 <head>
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no">
     <script type = "text/javascript" src="Chart.min.js"> </script>
-<style>
-    select{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-size: 20px;
-    padding: 0 0 0 20px;
-    width: 102%;
-    background: url(img/select.png) no-repeat right #3e3e3f;
-    color: white;
-    margin-left: -9px;
-    }
-    @font-face {
-    font-family: 'Roboto-Condensed';
-    src: url('../fonts/Roboto-Condensed.ttf');;
-    font-weight:    bold;
-    }
-    body{
-    background-color:#e5e5e5;
-    font-family: 'Roboto-Condensed';
-    margin-top:20px;
-    }
-    .line-title{
-    float: left;
-    font-size: 20px;
-    padding: 10px;
-    padding-left: 0px;
-    }
+    <style>
+        select{
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: 20px;
+        padding: 0 0 0 20px;
+        width: 102%;
+        background: url(img/select.png) no-repeat right #3e3e3f;
+        color: white;
+        margin-left: -9px;
+        }
+        @font-face {
+        font-family: 'Roboto-Condensed';
+        src: url('../fonts/Roboto-Condensed.ttf');
+        font-weight:    bold;
+        }
+        body{
+        background-color:#e5e5e5;
+        font-family: 'Roboto-Condensed';
+        margin-top:20px;
+        }
+        .line-title{
+        float: left;
+        font-size: 20px;
+        padding: 10px;
+        padding-left: 0px;
+        }
 
-    .tip{
-    float:right;
-    }
+        .tip{
+        float:right;
+        }
 
-    canvas, table{
-    margin: 5px;
-    }
+        canvas, table{
+        margin: 5px;
+        }
 
-    .chart-legend li span{
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-right: 5px;
-    }
+        .chart-legend li span{
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+        }
 
-    .chart-legend ul{
-    list-style-type: none;
-    }
+        .chart-legend ul{
+        list-style-type: none;
+        }
 
-    .horizontal{
-    text-align:center;
-    clear:both;
-    }
+        .horizontal{
+        text-align:center;
+        clear:both;
+        }
 
-    .horizontal li{
-    display:inline;
-    padding-right:5px;
-    }
+        .horizontal li{
+        display:inline;
+        padding-right:5px;
+        }
 
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
 
-    table, td, th {
-    border: 0px solid black;
-    text-align: center;
-    }
-    td.green{
-    background-color: #81980d;
-    }
+        table, td, th {
+        border: 0px solid black;
+        text-align: center;
+        }
+        td.green{
+        background-color: #81980d;
+        }
 
-    td.amber{
-    background-color: #00b4e3;
-    }
+        td.amber{
+        background-color: #00b4e3;
+        }
 
-    td.red{
-    background-color: #fa8900;
-    }
+        td.red{
+        background-color: #fa8900;
+        }
 
-    th{
-    width:16.6%;
-    }
-    .circlerow{
-    margin: auto;
-    text-align: center;
-    width: 20px!important;
-    height: 20px!important;
-    align-content: center;
-    }
-    td.red{
-    background-color: #fa8900;
-    }
-    td.greencircle>div{
-    margin: auto;
-    border-radius: 50%;
-    height: 100%;
-    color: white;
-    font-weight: bold;
-    margin-top: 5px;
-    padding: 3px;
-    margin-bottom: 5px;
-    }
-    .centerspan{
-    margin: auto;
-    text-align: center;
-    align-content: center;
-    }
-    td.ambercircle>div{
-    margin: auto;
-    border-radius: 50%;
-    height: 100%;
-    color: white;
-    font-weight: bold;
-    margin-top: 5px;
-    padding: 3px;
-    margin-bottom: 5px;
-    }
-    td.redcircle>div{
-    margin: auto;
-    border-radius: 50%;
-    height: 100%;
-    color: white;
-    font-weight: bold;
-    margin-top: 5px;
-    padding: 3px;
-    margin-bottom: 5px;
-    }
-    .hide {
-    display:none;
-    }
-    .show {
-    display:block;
-    }
-    #selectProgram{
+        th{
+        width:16.6%;
+        }
+        .circlerow{
+        margin: auto;
+        text-align: center;
+        width: 20px!important;
+        height: 20px!important;
+        align-content: center;
+        }
+        td.red{
+        background-color: #fa8900;
+        }
+        td.greencircle>div{
+        margin: auto;
+        border-radius: 50%;
+        height: 100%;
+        color: white;
+        font-weight: bold;
+        margin-top: 5px;
+        padding: 3px;
+        margin-bottom: 5px;
+        }
+        .centerspan{
+        margin: auto;
+        text-align: center;
+        align-content: center;
+        }
+        td.ambercircle>div{
+        margin: auto;
+        border-radius: 50%;
+        height: 100%;
+        color: white;
+        font-weight: bold;
+        margin-top: 5px;
+        padding: 3px;
+        margin-bottom: 5px;
+        }
+        td.redcircle>div{
+        margin: auto;
+        border-radius: 50%;
+        height: 100%;
+        color: white;
+        font-weight: bold;
+        margin-top: 5px;
+        padding: 3px;
+        margin-bottom: 5px;
+        }
+        .hide {
+        display:none;
+        }
+        .show {
+        display:block;
+        }
+        #spinnerProgram{
         top: -5px;
         position: absolute;
-        width: 98.2%;
+        width: 48.2%;
         border-radius: 0px;
-    }
-    #tableCanvas,#pieChartContent{
+        }
+        #spinnerOrgUnit {
+        top: -5px;
+        left: 50%;
+        position: absolute;
+        width: 48.2%;
+        border-radius: 0px;
+        display: inline-block;
+        }
+        #tableCanvas,#pieChartContent{
         padding-top: 35px;
-    }
-    #selectProgram>select{
+        }
+        #spinnerProgram>select,#spinnerOrgUnit>select{
         background-size: 32px 32px;
         text-transform: uppercase;
         padding: 12 0 12 20px!important;
-        font-size: 30px;
+        font-size: 15px;
         font-weight:bold;
         font-family: "Roboto-Medium.ttf";
-    }
-    #changeProgram>select{
-        background-size: 32px 32px;
-        text-transform: uppercase;
-        padding: 12 0 12 20px!important;
-        font-size: 30px;
-        font-weight:bold;
-        font-family: "Roboto-Medium.ttf";
-    }
+        }
 
-</style>
+    </style>
 </head>
 <body>
 <!--Legend for this chart-->
-<div id="selectProgram" class="horizontal"></div>
+<div id="selectBlock">
+    <div id="spinnerProgram" class="horizontal"></div>
+    <div id="spinnerOrgUnit" class="horizontal"></div>
+</div>
 <!--Sent surveys x month-->
 <div id="tableCanvas" class="show">
     <!--title of the chart-->
@@ -198,6 +201,8 @@
 <!--Pie charts will be added right here-->
 
 <!--Table 12 months-->
+
+<script type = "text/javascript" src="translated.messages.js"> </script>
 
 <script type = "text/javascript" src="sent.month.js"> </script>
 
@@ -231,6 +236,123 @@
         </div>
     </div>
 </script>
+<!--
+<script>
+EXAMPLE DATA:
+javascript:initContext({'assesmentUnderTaken':'Assessments undertaken','target': 'Target','qualityOfCare': 'Quality of care: Last ','months':' months'});
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Mar']);
+setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Apr'])
+setOrgUnitData([6, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','May']);
+setOrgUnitData([5, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Jun']);
+setOrgUnitData([19, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Jul']);
+setOrgUnitData([2, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Mar']);
+setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Apr']);
+setOrgUnitData([2, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','May'])
+setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Jun']);
+setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Jul']);
+setOrgUnitData([3, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS IMCI', 'd6PHrjjljS1','Mar']);
+ setProgramData([0, 30, 'KE HNQIS IMCI', 'd6PHrjjljS1','Apr']);
+ setProgramData([8, 30, 'KE HNQIS IMCI', 'd6PHrjjljS1','May']);
+ setProgramData([5, 30, 'KE HNQIS IMCI', 'd6PHrjjljS1','Jun']);
+ setProgramData([19, 30, 'KE HNQIS IMCI', 'd6PHrjjljS1','Jul']);
+ setProgramData([4, 30, 'KE HNQIS IMCI', 'd6PHrjjljS1','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS HIV', 'rKjg29O3RFu','Mar']);
+ setProgramData([0, 30, 'KE HNQIS HIV', 'rKjg29O3RFu','Apr']);
+ setProgramData([0, 30, 'KE HNQIS HIV', 'rKjg29O3RFu','May']);
+ setProgramData([0, 30, 'KE HNQIS HIV', 'rKjg29O3RFu','Jun']);
+ setProgramData([0, 30, 'KE HNQIS HIV', 'rKjg29O3RFu','Jul']);
+ setProgramData([0, 30, 'KE HNQIS HIV', 'rKjg29O3RFu','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Mar']);
+ setProgramData([0, 30, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Apr']);
+ setProgramData([0, 30, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','May']);
+ setProgramData([0, 30, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Jun']);
+ setProgramData([0, 30, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Jul']);
+ setProgramData([0, 30, 'KE HNQIS Newborn Resuscitation', 'um7laExXhne','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Mar']);
+ setProgramData([0, 30, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Apr']);
+ setProgramData([0, 30, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','May']);
+ setProgramData([0, 30, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Jun']);
+ setProgramData([0, 30, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Jul']);
+ setProgramData([0, 30, 'KE HNQIS Pregnancy and Delivery Complications', 'O4IKyT6jfMf','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Mar']);
+ setProgramData([0, 30, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Apr']);
+ setProgramData([0, 30, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','May']);
+ setProgramData([0, 30, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Jun']);
+ setProgramData([0, 30, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Jul']);
+ setProgramData([0, 30, 'KE HNQIS Tuberculosis', 'uQCUliBmla1','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS Family Planning', 'wK0958s1bdj','Mar']);
+ setProgramData([0, 30, 'KE HNQIS Family Planning', 'wK0958s1bdj','Apr']);
+ setProgramData([0, 30, 'KE HNQIS Family Planning', 'wK0958s1bdj','May']);
+ setProgramData([0, 30, 'KE HNQIS Family Planning', 'wK0958s1bdj','Jun']);
+ setProgramData([0, 30, 'KE HNQIS Family Planning', 'wK0958s1bdj','Jul']);
+ setProgramData([0, 30, 'KE HNQIS Family Planning', 'wK0958s1bdj','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0, 30, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Mar']);
+ setProgramData([0, 30, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Apr']);
+ setProgramData([0, 30, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','May']);
+ setProgramData([0, 30, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Jun']);
+ setProgramData([0, 30, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Jul']);
+ setProgramData([0, 30, 'KE HNQIS Hypertension', 'oKCY1HEmMBF','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+ setProgramData([0, 30, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Mar']);
+ setProgramData([0, 30, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Apr']);
+ setProgramData([0, 30, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','May']);
+ setProgramData([0, 30, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Jun']);
+ setProgramData([0, 30, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Jul']);
+ setProgramData([0, 30, 'KE HNQIS Post Partum IUD', 'N5Z0gywdCKu','Aug']);
+ updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0, 30, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Mar']);
+setProgramData([0, 30, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Apr']);
+setProgramData([0, 30, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','May']);
+setProgramData([0, 30, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Jun']);
+setProgramData([0, 30, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Jul']);
+setProgramData([1, 30, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0, 30, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Mar']);
+setProgramData([0, 30, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Apr']);
+setProgramData([0, 30, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','May']);
+setProgramData([0, 30, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Jun']);
+setProgramData([0, 30, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Jul']);
+setProgramData([0, 30, 'KE HNQIS Cervical Cancer', 'g5JtETComKt','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0, 30, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Mar']);
+setProgramData([0, 30, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Apr']);
+setProgramData([0, 30, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','May']);
+setProgramData([0, 30, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Jun']);
+setProgramData([0, 30, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Jul']);
+setProgramData([0, 30, 'KE HNQIS Work Environment', 'oqXy5JbmNSb','Aug']);
+updateChartTitle('titleSent','Total number of assessments undertaken');
+setProgramData([0, 30, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Mar']);
+setProgramData([0, 30, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Apr']);
+setProgramData([0, 30, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','May']);
+setProgramData([0, 30, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Jun']);
+setProgramData([0, 30, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Jul']);
+setProgramData([0, 30, 'KE HNQIS Labour and Delivery', 'xNXRMVoG8Ku','Aug']);
+showMainTable();
+setOrgUnitPieData([{title:'KE - HNQIS SF pilot test facility 1 (1)',tip:'Quality of care (based on last assessment)',idTabGroup: 1,valueA:14,valueB:6,valueC:12,uidprogram:'QS7sK8XzdQc',uidorgunit:'QS7sK8XzdQc'},{title:'KE - HNQIS SF pilot test facility 2 (2)',tip:'Quality of care (based on last assessment)',idTabGroup: 2,valueA:2,valueB:1,valueC:2,uidprogram:'xNLfNAtUXfA',uidorgunit:'xNLfNAtUXfA'}]);
+setProgramPieData([{title:'KE HNQIS ANC (KE HNQIS Focused Antenatal Care)',tip:'Quality of care (based on last assessment)',idTabGroup: 9,valueA:1,valueB:0,valueC:0,uidprogram:'Iq1D7YfHYA4',uidorgunit:'upYw0TJU0zt'},{title:'KE HNQIS ICM (KE HNQIS IMCI)',tip:'Quality of care (based on last assessment)',idTabGroup: 1,valueA:15,valueB:7,valueC:14,uidprogram:'d6PHrjjljS1',uidorgunit:'Gn9OaJy3MBO'}]);
+rebuildTableFacilities();
+buildTableFacilities('6',{title:'KE HNQIS Family Planning',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility 1',values:[null,null,null,null,null,50]}],tableuid:'wK0958s1bdj',id:'6'});
+buildTableFacilities('9',{title:'KE HNQIS Focused Antenatal Care',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility 1',values:[null,null,null,null,null,100]}],tableuid:'Iq1D7YfHYA4',id:'9'})
+buildTableFacilities('1',{title:'KE HNQIS IMCI',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility 1',values:[null,null,25,12,80,100]},{name:'KE - HNQIS SF pilot test facility 2',values:[null,null,52,null,null,67]}],tableuid:'d6PHrjjljS1',id:'1'})
+buildTableFacilities('xNLfNAtUXfA',{title:'KE - HNQIS SF pilot test facility 2',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE HNQIS IMCI',values:[null,null,52,null,null,67]}],tableuid:'xNLfNAtUXfA',id:'2'})
+buildTableFacilities('QS7sK8XzdQc',{title:'KE - HNQIS SF pilot test facility 1',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE HNQIS Focused Antenatal Care',values:[null,null,null,null,null,100]},{name:'KE HNQIS Family Planning',values:[null,null,null,null,null,50]},{name:'KE HNQIS IMCI',values:[null,null,25,12,80,100]}],tableuid:'QS7sK8XzdQc',id:'1'})
+renderPieChartsByProgram();
+setGreen({color:'#adda19'});
+setRed({color:'#d1213c'});
+setYellow({color:'#dbe444'});
+
 </script>
+-->
 </body>
 </html>
