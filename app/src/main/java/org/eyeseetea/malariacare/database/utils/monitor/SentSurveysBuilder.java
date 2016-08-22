@@ -43,7 +43,7 @@ public class SentSurveysBuilder {
     private static final String TAG=".SentSurveysBuilder";
     private static final int EXPECTED_SENT_SURVEYS_PER_MONTH=30;
     public static final String JAVASCRIPT_UPDATE_CHART = "javascript:updateChartTitle('titleSent','%s')";
-    public static final String JAVASCRIPT_SHOW = "javascript:showData()";
+    public static final String JAVASCRIPT_SHOW = "javascript:showMainTable()";
     private static final int MAX_MONTHS=6;
 
     /**

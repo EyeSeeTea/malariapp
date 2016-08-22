@@ -28,7 +28,8 @@ import java.util.Date;
  * Created by arrizabalaga on 7/10/15.
  */
 public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
-    public static final String JAVASCRIPT_ADD_DATA = "javascript:setData([%d, %d, '%s', '%s','%s'])";
+    public static final String JAVASCRIPT_ADD_PROGRAM_DATA = "javascript:setProgramData([%d, %d, '%s', '%s','%s'])";
+    public static final String JAVASCRIPT_ADD_ORGUNIT_DATA = "javascript:setOrgUnitData([%d, %d, '%s', '%s','%s'])";
 
     /**
      * Number of surveys sent this month
@@ -91,7 +92,7 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
      * @return
      */
     public String getEntryAsJS(){
-        return String.format(JAVASCRIPT_ADD_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
+        return String.format(JAVASCRIPT_ADD_PROGRAM_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
     }
 
     @Override
