@@ -173,7 +173,7 @@ function renderPieChartsByProgram(){
     if(selectedProgram!=""){
         for(var i=0;i<piesDataByProgram.length;i++){
             if (piesDataByProgram[i].uidprogram==selectedProgram){
-				programOrgUnit=piesDataByProgram[i].uidorgunit;
+				programOrgUnit=piesDataByProgram[i].uidprogram;
                 showDataPie(piesDataByProgram[i]);
 				break;
             }
@@ -194,7 +194,7 @@ function renderPieChartsByOrgUnit(){
     if(selectedOrgUnit!=""){
         for(var i=0;i<piesDataByOrgUnit.length;i++){
             if (piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
-				orgUnitPrograms=piesDataByOrgUnit[i].uidprogram;
+				orgUnitPrograms=piesDataByOrgUnit[i].uidorgunit;
                 showDataPie(piesDataByOrgUnit[i]);
 				break;
             }

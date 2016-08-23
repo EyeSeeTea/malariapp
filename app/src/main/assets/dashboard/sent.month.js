@@ -114,7 +114,6 @@ function changeProgram(){
     selectedProgram=(myselect.options[myselect.selectedIndex].value);
 	if(selectedProgram===allAssessmentKey){
 		resetOrgUnitSpinner();
-		refreshCanvas();
         showElement("tableCanvas");
         hideElement("graphicCanvas");
 	}else{
