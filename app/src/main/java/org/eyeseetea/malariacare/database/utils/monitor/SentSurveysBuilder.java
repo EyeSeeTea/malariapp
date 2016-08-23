@@ -24,6 +24,7 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 
@@ -56,6 +57,11 @@ public class SentSurveysBuilder {
      */
     private List<Program>  programs;
     private Program  program;
+    /**
+     * List of sent surveys
+     */
+    private List<OrgUnit>  orgUnits;
+    private OrgUnit  orgUnit;
 
     /**
      * Map of entries per month
@@ -67,11 +73,12 @@ public class SentSurveysBuilder {
     /**
      * Default constructor
      */
-    public SentSurveysBuilder(List<Survey> surveyList, Context context,List<Program> programs) {
+    public SentSurveysBuilder(List<Survey> surveyList, Context context,List<Program> programs, List<OrgUnit> orgUnits) {
         sentSurveysChartMap = new HashMap<>();
         this.surveyList=surveyList;
         this.context = context;
         this.programs = programs;
+        this.orgUnits = orgUnits;
     }
 
     /**
@@ -82,19 +89,30 @@ public class SentSurveysBuilder {
         //Build entries
         for(Program program:programs) {
             this.program = program;
-            build(surveyList);
+            buildByProgram(surveyList);
             //Take only 6 months from now
-            List<EntrySentSurveysChart> entries = takeLast6Months();
+            List<EntrySentSurveysChart> entries = takeLast6MonthsByProgram();
             //Inyect entries in view
-            injectDataInChart(webView, entries);
+            injectProgramDataInChart(webView, entries);
         }
+        //Build entries
+        for(OrgUnit orgUnit:orgUnits) {
+            this.orgUnit = orgUnit;
+            buildByOrgUnit(surveyList);
+            //Take only 6 months from now
+            List<EntrySentSurveysChart> entries = takeLast6MonthsByOrgUnit();
+            //Inyect entries in view
+            injectOrgUnitDataInChart(webView, entries);
+        }
+
+
     }
 
     /**
      * Creates the list of entries for the last 6 months from 'now'
      * @return
      */
-    private List<EntrySentSurveysChart> takeLast6Months() {
+    private List<EntrySentSurveysChart> takeLast6MonthsByProgram() {
         List<EntrySentSurveysChart> last6entries=new ArrayList<>();
         Date today = new Date();
         //Loop over last 6 months
@@ -104,7 +122,7 @@ public class SentSurveysBuilder {
             EntrySentSurveysChart entryMonth=sentSurveysChartMap.get(currentMonth+program.getUid());
             //No entry for this month ->0
             if(entryMonth==null){
-                entryMonth=new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH,iMonth,program);
+                entryMonth=new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH,iMonth,program, orgUnit);
             }
             //Whatever was calculated
             last6entries.add(0,entryMonth);
@@ -113,6 +131,28 @@ public class SentSurveysBuilder {
         return last6entries;
     }
 
+    /**
+     * Creates the list of entries for the last 6 months from 'now'
+     * @return
+     */
+    private List<EntrySentSurveysChart> takeLast6MonthsByOrgUnit() {
+        List<EntrySentSurveysChart> last6entries=new ArrayList<>();
+        Date today = new Date();
+        //Loop over last 6 months
+        for(int i=0;i<MAX_MONTHS;i++){
+            Date iMonth= minusMonth(today, i);
+            String currentMonth=EntrySentSurveysChart.getDateAsString(iMonth);
+            EntrySentSurveysChart entryMonth=sentSurveysChartMap.get(currentMonth+orgUnit.getUid());
+            //No entry for this month ->0
+            if(entryMonth==null){
+                entryMonth=new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH,iMonth,program, orgUnit);
+            }
+            //Whatever was calculated
+            last6entries.add(0,entryMonth);
+        }
+
+        return last6entries;
+    }
     /**
      * Returns 'date' - 1 month
      * @param today
@@ -130,21 +170,32 @@ public class SentSurveysBuilder {
      * @param webView Android webView where data is inyected
      * @param entries List of entries for the chart
      */
-    private void injectDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
+    private void injectProgramDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
         //Set chart title
         injectChartTitle(webView);
 
         //Add data to the chart
         for(EntrySentSurveysChart entry:entries){
-            Log.d(TAG, entry.getEntryAsJS());
-            webView.loadUrl(entry.getEntryAsJS());
+            Log.d(TAG, entry.getEntryAsJSByProgram());
+            webView.loadUrl(entry.getEntryAsJSByProgram());
         }
     }
-public static void showData(WebView webView){
-    //Set chart title
-    Log.d(TAG, JAVASCRIPT_SHOW);
-    webView.loadUrl(String.format(JAVASCRIPT_SHOW));
-}
+    private void injectOrgUnitDataInChart(WebView webView, List<EntrySentSurveysChart> entries){
+        //Set chart title
+        injectChartTitle(webView);
+
+        //Add data to the chart
+        for(EntrySentSurveysChart entry:entries){
+            Log.d(TAG, entry.getEntryAsJSByOrgUnit());
+            webView.loadUrl(entry.getEntryAsJSByOrgUnit());
+        }
+    }
+
+    public static void showData(WebView webView){
+        //Set chart title
+        Log.d(TAG, JAVASCRIPT_SHOW);
+        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
+    }
     /**
      * Updates the title of the sent chart according to current language
      * @param webView
@@ -160,10 +211,47 @@ public static void showData(WebView webView){
      * @param surveys List of sent surveys to create the list
      * @return
      */
-    public void build(List<Survey> surveys){
+    public void buildByProgram(List<Survey> surveys){
         for(Survey survey:surveys){
+<<<<<<< HEAD
             if(survey.getProgram().equals(program)) {
                 build(survey);
+=======
+            if(survey.getTabGroup().getProgram().equals(program)) {
+
+                //Get the month for the survey (key)
+                String month = EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
+                //Get the entry for that month
+                EntrySentSurveysChart entrySentSurveysChartByProgram = sentSurveysChartMap.get(month+program.getUid());
+
+                //First time no entry
+                if (entrySentSurveysChartByProgram == null) {
+                    entrySentSurveysChartByProgram = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program, orgUnit);
+                    sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChartByProgram);
+                }
+                entrySentSurveysChartByProgram.incSent();
+            }
+        }
+    }    /**
+     * Builds a list of entry points for the chart from the list of surveys By Org Unit
+     * @param surveys List of sent surveys to create the list
+     * @return
+     */
+    public void buildByOrgUnit(List<Survey> surveys){
+        for(Survey survey:surveys){
+            if(survey.getOrgUnit().equals(orgUnit)) {
+
+                //Get the month for the survey (key)
+                String month = EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
+
+                //Get the entry for that month
+                EntrySentSurveysChart entrySentSurveysChartByOrgUnit = sentSurveysChartMap.get(month+orgUnit.getUid());
+                if (entrySentSurveysChartByOrgUnit == null) {
+                    entrySentSurveysChartByOrgUnit = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program, orgUnit);
+                    sentSurveysChartMap.put(month+orgUnit.getUid(), entrySentSurveysChartByOrgUnit);
+                }
+                entrySentSurveysChartByOrgUnit.incSent();
+>>>>>>> 8ff0c05... Add monitorrows by orgUnit
             }
         }
     }
@@ -174,17 +262,5 @@ public static void showData(WebView webView){
      * @return
      */
     private void build(Survey survey){
-        //Get the month for the survey (key)
-        String month = EntrySentSurveysChart.getDateAsString(survey.getCompletionDate());
-
-        //Get the entry for that month
-        EntrySentSurveysChart entrySentSurveysChart = sentSurveysChartMap.get(month+program.getUid());
-
-        //First time no entry
-        if (entrySentSurveysChart == null) {
-            entrySentSurveysChart = new EntrySentSurveysChart(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program);
-            sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChart);}
-        //Increment surveys for that month
-        entrySentSurveysChart.incSent();
     }
 }
