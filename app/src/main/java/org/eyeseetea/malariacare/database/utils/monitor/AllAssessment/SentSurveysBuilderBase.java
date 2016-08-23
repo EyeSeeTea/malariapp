@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.AllAssessment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
@@ -95,5 +96,12 @@ public class SentSurveysBuilderBase {
      * @return
      */
     private void build(Survey survey){
+    }
+
+    public static void init(List<Survey> surveysForGraphic, Activity activity, List<OrgUnit> orgUnits, List<Program> programs, WebView view) {
+        new SentSurveysBuilderByOrgUnit(surveysForGraphic, activity,orgUnits).addDataInChart(view);
+        new SentSurveysBuilderByProgram(surveysForGraphic, activity,programs).addDataInChart(view);
+        //Show stats by program
+        SentSurveysBuilderBase.showData(view);
     }
 }

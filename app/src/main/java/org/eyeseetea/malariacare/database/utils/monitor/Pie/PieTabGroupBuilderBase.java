@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.Pie;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
@@ -66,5 +67,13 @@ public class PieTabGroupBuilderBase {
         //Set chart title
         Log.d(TAG, JAVASCRIPT_SHOW);
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
+    }
+
+    public static void init(List<Survey> surveysForGraphic, Activity activity, WebView view) {
+        new PieTabGroupBuilderByOrgUnit(surveysForGraphic, activity).addDataInChart(view);
+        new PieTabGroupBuilderByProgram(surveysForGraphic, activity).addDataInChart(view);
+
+        //Render the table and pie.
+        PieTabGroupBuilderBase.showPieTab(view);
     }
 }

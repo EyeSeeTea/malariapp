@@ -19,8 +19,12 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.Facility;
 
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by arrizabalaga on 13/10/15.
@@ -53,5 +57,24 @@ public class FacilityTableDataBase {
             cal.add(Calendar.MONTH, -1);
         }
         return String.format("[%s]",monthsJSON);
+    }
+
+
+    /**
+     * Returns a JSONArray with the rows for each facility
+     */
+    String getFacilitiesAsJSONArray(Map<String, FacilityRowDataBase> rowData) {
+        StringBuffer facilitiesJSON=new StringBuffer("[");
+        int i=0;
+        Collection<FacilityRowDataBase> rows=rowData.values();
+        for(FacilityRowDataBase row:rows){
+            facilitiesJSON.append(row.getAsJSON());
+            i++;
+            if(i!=rows.size()){
+                facilitiesJSON.append(",");
+            }
+        }
+        facilitiesJSON.append("]");
+        return facilitiesJSON.toString();
     }
 }

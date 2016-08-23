@@ -19,10 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.Facility;
 
-<<<<<<< HEAD:app/src/main/java/org/eyeseetea/malariacare/database/utils/monitor/FacilityTableData.java
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-=======
->>>>>>> 8ff0c05... Add monitorrows by orgUnit:app/src/main/java/org/eyeseetea/malariacare/database/utils/monitor/Facility/FacilityTableDataByProgram.java
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 
@@ -36,45 +33,29 @@ import java.util.Map;
 public class FacilityTableDataByProgram extends  FacilityTableDataBase {
 
     private static final String TAG=".FacilityTableDataP";
-    Map<Program,FacilityRowDataBase> rowData;
-    public FacilityTableDataByProgram(TabGroup tabGroup){
-        this.title=tabGroup.getName();
-        this.uid=tabGroup.getUid();
-        this.id=String.valueOf(tabGroup.getId_tab_group());
+    Map<String,FacilityRowDataBase> rowData;
+
+    public FacilityTableDataByProgram(OrgUnit orgUnit){
+        this.title=orgUnit.getName();
+        this.uid=orgUnit.getUid();
+        this.id=String.valueOf(orgUnit.getId_org_unit());
         rowData=new HashMap<>();
     }
 
     public void addSurvey(Survey survey){
-        Program orgUnit=survey.getProgram();
+        OrgUnit orgUnit=survey.getOrgUnit();
         //Get facility row
-        FacilityRowDataBase facilityRow = rowData.get(orgUnit);
+        FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString()+survey.getProgram().getUid());
         //First time facility
         if(facilityRow==null){
-            facilityRow=new FacilityRowDataByProgram(orgUnit);
-            rowData.put(orgUnit,facilityRow);
+            facilityRow=new FacilityRowDataBase(survey.getProgram().getName());
+            rowData.put(orgUnit.toString()+survey.getProgram().getUid(),facilityRow);
         }
         //Add survey
         facilityRow.addSurvey(survey);
     }
 
-    /**
-     * Returns a JSONArray with the rows for each facility
-     */
-    private String getFacilitiesAsJSONArray() {
-        StringBuffer facilitiesJSON=new StringBuffer("[");
-        int i=0;
-        Collection<FacilityRowDataBase> rows=rowData.values();
-        for(FacilityRowDataBase row:rows){
-            facilitiesJSON.append(row.getAsJSON());
-            i++;
-            if(i!=rows.size()){
-                facilitiesJSON.append(",");
-            }
-        }
-        facilitiesJSON.append("]");
-        return facilitiesJSON.toString();
-    }
     public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(),uid,id);
+        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(rowData),uid,id);
     }
 }
