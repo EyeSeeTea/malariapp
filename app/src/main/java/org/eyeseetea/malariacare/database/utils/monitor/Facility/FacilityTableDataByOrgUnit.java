@@ -33,8 +33,8 @@ import java.util.Map;
 public class FacilityTableDataByOrgUnit extends FacilityTableDataBase{
 
     private static final String TAG=".FacilityTableDataOU";
-    Map<OrgUnit,FacilityRowDataBase> rowData;
-    public FacilityTableDataByOrgUnit(Program program){
+    Map<String,FacilityRowDataBase> rowData;
+    public FacilityTableDataByOrgUnit(Program program, OrgUnit orgUnit){
         this.title=program.getName();
         this.uid=program.getUid();
         this.id=String.valueOf(program.getId_program());
@@ -44,34 +44,16 @@ public class FacilityTableDataByOrgUnit extends FacilityTableDataBase{
     public void addSurvey(Survey survey){
         OrgUnit orgUnit=survey.getOrgUnit();
         //Get facility row
-        FacilityRowDataBase facilityRow = rowData.get(orgUnit);
+        FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString());
         //First time facility
         if(facilityRow==null){
-            facilityRow=new FacilityRowDataByOrgUnit(orgUnit);
-            rowData.put(orgUnit,facilityRow);
+            facilityRow=new FacilityRowDataBase(orgUnit.getName());
+            rowData.put(orgUnit.toString(),facilityRow);
         }
         //Add survey
         facilityRow.addSurvey(survey);
     }
-
-    /**
-     * Returns a JSONArray with the rows for each facility
-     */
-    private String getFacilitiesAsJSONArray() {
-        StringBuffer facilitiesJSON=new StringBuffer("[");
-        int i=0;
-        Collection<FacilityRowDataBase> rows=rowData.values();
-        for(FacilityRowDataBase row:rows){
-            facilitiesJSON.append(row.getAsJSON());
-            i++;
-            if(i!=rows.size()){
-                facilitiesJSON.append(",");
-            }
-        }
-        facilitiesJSON.append("]");
-        return facilitiesJSON.toString();
-    }
     public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(),uid,id);
+        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(rowData),uid,id);
     }
 }

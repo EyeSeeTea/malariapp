@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.database.utils.monitor.Facility;
 import android.content.Context;
 import android.webkit.WebView;
 
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
     private static final String TAG=".FacilityTableBuilderP";
-    Map<TabGroup,FacilityTableDataByProgram> facilityTableDataMap;
+    Map<String,FacilityTableDataByProgram> facilityTableDataMap;
     /**
      * Default constructor
      *
@@ -53,16 +54,14 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
      */
     private void build(List<Survey> surveys){
         for(Survey survey:surveys){
-            //Current TabGroup
-            TabGroup tabGroup=survey.getTabGroup();
 
             //Get right table
-            FacilityTableDataByProgram facilityTableData=facilityTableDataMap.get(tabGroup);
+            FacilityTableDataByProgram facilityTableData=facilityTableDataMap.get(survey.getOrgUnit().getUid());
 
             //Init entry first time of a tabgroup
             if(facilityTableData==null){
-                facilityTableData=new FacilityTableDataByProgram(tabGroup);
-                facilityTableDataMap.put(survey.getTabGroup(),facilityTableData);
+                facilityTableData=new FacilityTableDataByProgram(survey.getOrgUnit());
+                facilityTableDataMap.put(survey.getOrgUnit().getUid(),facilityTableData);
             }
 
             //Add survey to that table
@@ -78,10 +77,10 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
         //Build tables
         build(surveys);
         //Inyect tables in view
-        for(Map.Entry<TabGroup,FacilityTableDataByProgram> tableEntry:facilityTableDataMap.entrySet()){
-            TabGroup tabGroup=tableEntry.getKey();
+        for(Map.Entry<String,FacilityTableDataByProgram> tableEntry:facilityTableDataMap.entrySet()){
+            String cadena=tableEntry.getKey();
             FacilityTableDataByProgram facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, tabGroup.getId_tab_group(), facilityTableData.getAsJSON());
+            inyectDataInChart(webView, cadena, facilityTableData.getAsJSON());
         }
 
     }

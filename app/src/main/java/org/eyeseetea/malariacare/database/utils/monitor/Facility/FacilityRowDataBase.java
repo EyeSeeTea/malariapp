@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.Facility;
 
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.text.SimpleDateFormat;
@@ -38,6 +39,10 @@ public class FacilityRowDataBase {
     private SimpleDateFormat KEY_MONTH_FORMATTER=new SimpleDateFormat("yyyyMM");
     String name;
 
+    public FacilityRowDataBase(String name) {
+        this.name= name;
+        init();
+    }
     public void init(){
         //Init 12 empty months
         columnData=new ArrayList<>();

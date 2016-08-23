@@ -205,27 +205,13 @@ public class MonitorFragment extends Fragment {
                 new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
                 //Add line chart
-                new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),orgUnits).addDataInChart(view);
-                new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),programs).addDataInChart(view);
-
-                //Show stats by program
-                SentSurveysBuilderBase.showData(view);
-
-                //Add table x facility
-                new FacilityTableBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
-                new FacilityTableBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                SentSurveysBuilderBase.init(surveysForGraphic,getActivity(),orgUnits,programs, view);
 
                 //Add pie charts
-                new PieTabGroupBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
-                new PieTabGroupBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                PieTabGroupBuilderBase.init(surveysForGraphic,getActivity(),view);
 
-                //Render the table and pie.
-                PieTabGroupBuilderBase.showPieTab(view);
-                FacilityTableBuilderBase.showFacilities(view);
-
-                //Set the colors of red/green/yellow pie and table
-
-                FacilityTableBuilderBase.setColor(webView);
+                //Add table x facility
+                FacilityTableBuilderBase.init(surveysForGraphic,getActivity(),view);
             }
         });
         //Load html

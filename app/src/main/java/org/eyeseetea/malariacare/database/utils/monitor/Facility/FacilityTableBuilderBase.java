@@ -19,12 +19,14 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.Facility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -39,7 +41,7 @@ import java.util.Map;
  */
 public class FacilityTableBuilderBase {
 
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities(%d,%s)";
+    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities('%s',%s)";
     private static final String TAG=".FacilityTableBuilder";
     public static final String JAVASCRIPT_SHOW_PROGRAMS = "javascript:renderPieChartsByProgram()";
     public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
@@ -94,12 +96,22 @@ public class FacilityTableBuilderBase {
         return colorRRGGBB;
     }
 
-    void inyectDataInChart(WebView webView, Long id, String json) {
+    void inyectDataInChart(WebView webView, String id, String json) {
 
         //Inyect in browser
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
 
+    }
+
+    public static void init(List<Survey> surveysForGraphic, Activity activity, WebView view) {
+        new FacilityTableBuilderByOrgUnit(surveysForGraphic, activity).addDataInChart(view);
+        new FacilityTableBuilderByProgram(surveysForGraphic, activity).addDataInChart(view);
+
+        //Draw facility main table
+        FacilityTableBuilderBase.showFacilities(view);
+        //Set the colors of red/green/yellow pie and table
+        FacilityTableBuilderBase.setColor(view);
     }
 }
