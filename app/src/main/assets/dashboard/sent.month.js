@@ -45,7 +45,6 @@ function setOrgUnitData(data){
 	inputOrgUnits.push(data);
 }
  function countOrgUnits(data){
- 	console.log(data);
  	var exist=false;
  	for(var i=0;i<orgunits.length;i++){
  		if(orgunits[i]==data){
@@ -58,7 +57,6 @@ function setOrgUnitData(data){
  	}
  }
  function countPrograms(data){
- 	console.log(data);
  	var exist=false;
  	for(var i=0;i<programs.length;i++){
  		if(programs[i]==data){
@@ -115,22 +113,35 @@ function changeProgram(){
     var myselect = document.getElementById("changeProgram");
     selectedProgram=(myselect.options[myselect.selectedIndex].value);
 	if(selectedProgram===allAssessmentKey){
+		resetOrgUnitSpinner();
+		refreshCanvas();
         showElement("tableCanvas");
         hideElement("graphicCanvas");
 	}else{
+	    resetOrgUnitSpinner();
 		showProgram();
 		showElement("graphicCanvas");
 		hideElement("tableCanvas");
 	}
+}
+
+function resetOrgUnitSpinner(){
+		document.getElementById("changeOrgUnit").selectedIndex = allOrgUnitKey;
+		selectedOrgUnit=allOrgUnitKey;
+}
+function resetProgramSpinner(){
+		document.getElementById("changeProgram").selectedIndex = allAssessmentKey;
+		selectedProgram=allAssessmentKey;
 }
 //change orgUnit and refresh table and graphics (or refresh principal table with all the stats)
 function changeOrgUnit(){
     var myselect = document.getElementById("changeOrgUnit");
     selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
 	if(selectedOrgUnit===allOrgUnitKey){
-		document.getElementById("changeProgram").selectedIndex = allAssessmentKey;
+	    resetProgramSpinner();
 		changeProgram();
 	}else{
+	    resetProgramSpinner();
 		showOrgUnit();
 		showElement("graphicCanvas");
 		hideElement("tableCanvas");

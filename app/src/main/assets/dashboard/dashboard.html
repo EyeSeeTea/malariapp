@@ -236,7 +236,9 @@
         </div>
     </div>
 </script>
+<!--
 <script>
+EXAMPLE DATA:
 initContext({'assesmentUnderTaken':'Assessments undertaken','target': 'Target','qualityOfCare': 'Quality of care: Last ','months':' months'});
 updateChartTitle('titleSent','Total number of assessments undertaken');
 setProgramData([10,0, 'NG PPMVs Sales and Stock Tracker', 'HymjisclaIZ','Mar']);
@@ -342,39 +344,35 @@ setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Apr']);
 setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','May']);
 setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Jun']);
 setProgramData([0,0, 'KE HNQIS Focused Antenatal Care', 'Iq1D7YfHYA4','Jul']);
-updateChartTitle('titleSent','Total number of assessments undertaken');
-setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Mar']);
-setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Apr']);
-setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','May']);
-setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Jun']);
-setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Jul']);
-setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI1','Aug']);
-updateChartTitle('titleSent','Total number of assessments undertaken');
-setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Mar']);
-setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Apr']);
-setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','May']);
-setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Jun']);
-setOrgUnitData([10,0, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Jul']);
-setOrgUnitData([0,10, 'ORFUNIT1KE PPMVs Sales and Stock Tracker', 'HymjisclaI2','Aug']);
-updateChartTitle('titleSent','Total number of assessments undertaken');
-setOrgUnitData([5,0, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Mar']);
-setOrgUnitData([10,0, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Apr']);
-setOrgUnitData([5,10, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','May']);
-setOrgUnitData([0,10, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Jun']);
-setOrgUnitData([10,0, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Jul']);
-setOrgUnitData([0,10, 'ORFUNIT2KE PPMVs Sales and Stock Tracker', 'HymjisclaI3','Aug']);
+javascript:updateChartTitle('titleSent','Total number of assessments undertaken');
+javascript:setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Mar']);
+javascript:setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Apr']);
+javascript:setOrgUnitData([20, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','May']);
+javascript:setOrgUnitData([6, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Jun']);
+javascript:setOrgUnitData([19, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Jul']);
+javascript:setOrgUnitData([2, 30, 'KE - HNQIS SF pilot test facility 1', 'QS7sK8XzdQc','Aug']);
+javascript:updateChartTitle('titleSent','Total number of assessments undertaken');
+javascript:setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Mar']);
+javascript:setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Apr']);
+javascript:setOrgUnitData([2, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','May']);
+javascript:setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Jun']);
+javascript:setOrgUnitData([0, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Jul']);
+javascript:setOrgUnitData([1, 30, 'KE - HNQIS SF pilot test facility 2', 'xNLfNAtUXfA','Aug']);
 showMainTable();
 buildTableFacilities(6,{title:'Smoke',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,50,100,null,null]}],tableuid:'sMoSzJVHWUk',id:'6'});
 buildTableFacilities(12,{title:'KE HNQIS ICM',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,25,12,80,null]},{name:'KE - HNQIS SF pilot test facility',values:[null,null,52,null,null,0]}],tableuid:'Gn9OaJy3MBO',id:'12'});
-javascript:setProgramPieData([{title:'Smoke (Smoke)',tip:'Quality of care (based on last assessment)',idTabGroup: 6,valueA:8,valueB:0,valueC:7,uidprogram:'xHn1Oua7W54',uidorgunit:'sMoSzJVHWUk'},{title:'KE HNQIS ICM (KE HNQIS IMCI)',tip:'Quality of care (based on last assessment)',idTabGroup: 12,valueA:12,valueB:7,valueC:14,uidprogram:'d6PHrjjljS1',uidorgunit:'Gn9OaJy3MBO'}]);
 buildTableFacilities(6,{title:'Smoke',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,10,50,null,null]}],tableuid:'XXXX1',id:'6'});
-buildTableFacilities(12,{title:'KE HNQIS ICM',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility',values:[null,null,35,52,80,null]},{name:'KE - HNQIS SF pilot test facility',values:[null,null,52,null,null,0]}],tableuid:'XXXX2',id:'12'});
-javascript:setOrgUnitPieData([{title:'Smoke (Smoke)',tip:'Quality of care (based on last assessment)',idTabGroup: 6,valueA:3,valueB:1,valueC:6,uidprogram:'XXXX1',uidorgunit:'HymjisclaI1'},{title:'KE HNQIS ICM (KE HNQIS IMCI)',tip:'Quality of care (based on last assessment)',idTabGroup: 12,valueA:11,valueB:2,valueC:1,uidprogram:'XXXX2',uidorgunit:'HymjisclaI2'}]);
+javascript:buildTableFacilities(1,{title:'KE - HNQIS SF pilot test facility 1',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility 1',values:[null,null,42,27,80,33]}],tableuid:'QS7sK8XzdQc',id:'1'})
+javascript:buildTableFacilities(2,{title:'KE - HNQIS SF pilot test facility 2',months:['Mar','Apr','May','Jun','Jul','Aug'],facilities:[{name:'KE - HNQIS SF pilot test facility 2',values:[null,null,52,null,null,0]}],tableuid:'xNLfNAtUXfA',id:'2'})
+javascript:setProgramPieData([{title:'Smoke (Smoke)',tip:'Quality of care (based on last assessment)',idTabGroup: 6,valueA:8,valueB:0,valueC:7,uidprogram:'xHn1Oua7W54',uidorgunit:'sMoSzJVHWUk'},{title:'KE HNQIS Cervical Cancer (KE HNQIS Cervical Cancer)',tip:'Quality of care (based on last assessment)',idTabGroup: 10,valueA:0,valueB:1,valueC:1,uidprogram:'g5JtETComKt',uidorgunit:'PfMkyrcmucx'},{title:'KE HNQIS ICM (KE HNQIS IMCI)',tip:'Quality of care (based on last assessment)',idTabGroup: 12,valueA:12,valueB:7,valueC:14,uidprogram:'d6PHrjjljS1',uidorgunit:'Gn9OaJy3MBO'}])
+setOrgUnitPieData([{title:'KE - HNQIS SF pilot test facility 1 (1)',tip:'Quality of care (based on last assessment)',idTabGroup: 1,valueA:20,valueB:7,valueC:20,uidprogram:'QS7sK8XzdQc',uidorgunit:'QS7sK8XzdQc'},{title:'KE - HNQIS SF pilot test facility 2 (2)',tip:'Quality of care (based on last assessment)',idTabGroup: 2,valueA:0,valueB:1,valueC:2,uidprogram:'xNLfNAtUXfA',uidorgunit:'xNLfNAtUXfA'}])
 rebuildTableFacilities();
 renderPieChartsByProgram();
 setGreen({color:'#adda19'});
 setRed({color:'#d1213c'});
 setYellow({color:'#dbe444'});
+
 </script>
+-->
 </body>
 </html>
