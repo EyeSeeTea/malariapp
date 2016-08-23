@@ -67,5 +67,4 @@ public class PieTabGroupBuilderBase {
         Log.d(TAG, JAVASCRIPT_SHOW);
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
-
 }
