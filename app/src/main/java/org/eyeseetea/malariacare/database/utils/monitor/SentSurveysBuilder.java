@@ -213,10 +213,6 @@ public class SentSurveysBuilder {
      */
     public void buildByProgram(List<Survey> surveys){
         for(Survey survey:surveys){
-<<<<<<< HEAD
-            if(survey.getProgram().equals(program)) {
-                build(survey);
-=======
             if(survey.getTabGroup().getProgram().equals(program)) {
 
                 //Get the month for the survey (key)
@@ -251,7 +247,6 @@ public class SentSurveysBuilder {
                     sentSurveysChartMap.put(month+orgUnit.getUid(), entrySentSurveysChartByOrgUnit);
                 }
                 entrySentSurveysChartByOrgUnit.incSent();
->>>>>>> 8ff0c05... Add monitorrows by orgUnit
             }
         }
     }

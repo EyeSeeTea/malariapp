@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
  * This file is part of QA App.
  *
@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor.AllAssessment;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -28,41 +28,27 @@ import java.util.Date;
 /**
  * Created by arrizabalaga on 7/10/15.
  */
-public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
-    public static final String JAVASCRIPT_ADD_PROGRAM_DATA = "javascript:setProgramData([%d, %d, '%s', '%s','%s'])";
-    public static final String JAVASCRIPT_ADD_ORGUNIT_DATA = "javascript:setOrgUnitData([%d, %d, '%s', '%s','%s'])";
-
+public class EntrySentSurveysChartBase implements Comparable<EntrySentSurveysChartBase>{
     /**
      * Number of surveys sent this month
      */
-    private int sent;
+    int sent;
     /**
      * Number of surveys expected to be sent for this month
      */
-    private int expected;
+    int expected;
     /**
      * The date whose month represents this point (day info is discarded)
      */
     private Date date;
 
-    /**
-     * The date whose month represents this point (day info is discarded)
-     */
-    private Program program;
-    /**
-     * The date whose month represents this point (day info is discarded)
-     */
-    private OrgUnit orgUnit;
-
 
     private static final String MONTH_FORMAT="MMM";
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT=new SimpleDateFormat(MONTH_FORMAT);
 
-    public EntrySentSurveysChart(int expected, Date date, Program program, OrgUnit orgUnit) {
+    public EntrySentSurveysChartBase(int expected, Date date) {
         this.expected = expected;
         this.date = date;
-        this.program=program;
-        this.orgUnit=orgUnit;
     }
 
     /**
@@ -92,23 +78,10 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
         }
         return SIMPLE_DATE_FORMAT.format(date);
     }
-    /**
-     * Returns a javascript that be inyected into the webview
-     * @return
-     */
-    public String getEntryAsJSByOrgUnit(){
-        return String.format(JAVASCRIPT_ADD_ORGUNIT_DATA,sent,expected,orgUnit.getName(),orgUnit.getUid(),getDateAsString());
-    }
-    /**
-     * Returns a javascript that be inyected into the webview
-     * @return
-     */
-    public String getEntryAsJSByProgram(){
-        return String.format(JAVASCRIPT_ADD_PROGRAM_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
-    }
+
 
     @Override
-    public int compareTo(EntrySentSurveysChart another) {
+    public int compareTo(EntrySentSurveysChartBase another) {
         return date.compareTo(another.date);
     }
 }
