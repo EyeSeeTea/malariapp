@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor;
 
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 
 import java.text.SimpleDateFormat;
@@ -48,15 +49,20 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
      * The date whose month represents this point (day info is discarded)
      */
     private Program program;
+    /**
+     * The date whose month represents this point (day info is discarded)
+     */
+    private OrgUnit orgUnit;
 
 
     private static final String MONTH_FORMAT="MMM";
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT=new SimpleDateFormat(MONTH_FORMAT);
 
-    public EntrySentSurveysChart(int expected, Date date, Program program) {
+    public EntrySentSurveysChart(int expected, Date date, Program program, OrgUnit orgUnit) {
         this.expected = expected;
         this.date = date;
         this.program=program;
+        this.orgUnit=orgUnit;
     }
 
     /**
@@ -86,12 +92,18 @@ public class EntrySentSurveysChart implements Comparable<EntrySentSurveysChart>{
         }
         return SIMPLE_DATE_FORMAT.format(date);
     }
-
     /**
      * Returns a javascript that be inyected into the webview
      * @return
      */
-    public String getEntryAsJS(){
+    public String getEntryAsJSByOrgUnit(){
+        return String.format(JAVASCRIPT_ADD_ORGUNIT_DATA,sent,expected,orgUnit.getName(),orgUnit.getUid(),getDateAsString());
+    }
+    /**
+     * Returns a javascript that be inyected into the webview
+     * @return
+     */
+    public String getEntryAsJSByProgram(){
         return String.format(JAVASCRIPT_ADD_PROGRAM_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
     }
 

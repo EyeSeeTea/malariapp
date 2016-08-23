@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
  * This file is part of QA App.
  *
@@ -17,33 +17,25 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor.Facility;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by arrizabalaga on 13/10/15.
+ * Created by idelcano on 23/08/2016.
  */
-public class FacilityTableData {
-    private static final String MONTH_FORMAT="MMM";
-    private static final SimpleDateFormat HEADER_FORMATTER=new SimpleDateFormat(MONTH_FORMAT);
+public class FacilityTableDataByProgram extends  FacilityTableDataBase {
 
-    private String title;
+    private static final String TAG=".FacilityTableDataP";
+    Map<Program,FacilityRowDataBase> rowData;
 
-    private String uid;
-
-    private String id;
-    Map<OrgUnit,FacilityRowData> rowData;
-
-    public FacilityTableData(TabGroup tabGroup){
+    public FacilityTableDataByProgram(TabGroup tabGroup){
         this.title=tabGroup.getName();
         this.uid=tabGroup.getUid();
         this.id=String.valueOf(tabGroup.getId_tab_group());
@@ -51,40 +43,16 @@ public class FacilityTableData {
     }
 
     public void addSurvey(Survey survey){
-        OrgUnit orgUnit=survey.getOrgUnit();
+        Program orgUnit=survey.getProgram();
         //Get facility row
-        FacilityRowData facilityRow = rowData.get(orgUnit);
+        FacilityRowDataBase facilityRow = rowData.get(orgUnit);
         //First time facility
         if(facilityRow==null){
-            facilityRow=new FacilityRowData(orgUnit);
+            facilityRow=new FacilityRowDataByProgram(orgUnit);
             rowData.put(orgUnit,facilityRow);
         }
         //Add survey
         facilityRow.addSurvey(survey);
-    }
-
-    public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(),uid,id);
-    }
-
-    /**
-     * Returns an ordered list of the previous 12 months: ['jan','feb',...]
-     * @return
-     */
-    private String getMonthsAsJSONArray() {
-        String monthsJSON="";
-        Calendar cal=Calendar.getInstance();
-        for(int i=0;i<FacilityRowData.NUM_MONTHS;i++){
-            String monthLabel=String.format("'%s'",HEADER_FORMATTER.format(cal.getTime()));
-            //Separator BUT last and first month (in chronological order)
-            if(i!=FacilityRowData.NUM_MONTHS && i!=0){
-                monthsJSON=","+monthsJSON;
-            }
-            monthsJSON=monthLabel+monthsJSON;
-            //Go previous month
-            cal.add(Calendar.MONTH, -1);
-        }
-        return String.format("[%s]",monthsJSON);
     }
 
     /**
@@ -93,8 +61,8 @@ public class FacilityTableData {
     private String getFacilitiesAsJSONArray() {
         StringBuffer facilitiesJSON=new StringBuffer("[");
         int i=0;
-        Collection<FacilityRowData> rows=rowData.values();
-        for(FacilityRowData row:rows){
+        Collection<FacilityRowDataBase> rows=rowData.values();
+        for(FacilityRowDataBase row:rows){
             facilitiesJSON.append(row.getAsJSON());
             i++;
             if(i!=rows.size()){
@@ -103,5 +71,8 @@ public class FacilityTableData {
         }
         facilitiesJSON.append("]");
         return facilitiesJSON.toString();
+    }
+    public String getAsJSON(){
+        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(),uid,id);
     }
 }
