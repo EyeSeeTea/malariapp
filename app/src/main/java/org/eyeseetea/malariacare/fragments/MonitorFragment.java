@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.database.utils.monitor.Facility.FacilityTableBu
 import org.eyeseetea.malariacare.database.utils.monitor.Facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.database.utils.monitor.Facility.FacilityTableBuilderByProgram;
 import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.Pie.PieTabGroupBuilderBase;
 import org.eyeseetea.malariacare.database.utils.monitor.Pie.PieTabGroupBuilderByOrgUnit;
 import org.eyeseetea.malariacare.database.utils.monitor.Pie.PieTabGroupBuilderByProgram;
 import org.eyeseetea.malariacare.database.utils.monitor.AllAssessment.SentSurveysBuilderBase;
@@ -215,12 +216,11 @@ public class MonitorFragment extends Fragment {
                 new FacilityTableBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Add pie charts
-                new PieTabGroupBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
                 new PieTabGroupBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                new PieTabGroupBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
 
                 //Render the table and pie.
-                PieTabGroupBuilderByProgram.showPieTab(view);
-                PieTabGroupBuilderByOrgUnit.showPieTab(view);
+                PieTabGroupBuilderBase.showPieTab(view);
                 FacilityTableBuilderBase.showFacilities(view);
 
                 //Set the colors of red/green/yellow pie and table
