@@ -17,12 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.Facility;
+package org.eyeseetea.malariacare.database.utils.monitor.facility;
 
 import android.content.Context;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 

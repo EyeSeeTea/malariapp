@@ -17,13 +17,12 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.Facility;
+package org.eyeseetea.malariacare.database.utils.monitor.facility;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
