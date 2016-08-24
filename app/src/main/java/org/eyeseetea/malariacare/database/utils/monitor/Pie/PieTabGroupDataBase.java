@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
  * This file is part of QA App.
  *
@@ -17,45 +17,31 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor.pie;
 
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * VO thats hold the info of a single pie chart
  * Created by arrizabalaga on 9/10/15.
  */
-public class PieTabGroupData {
+public class PieTabGroupDataBase {
 
-    private static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
-
-    /**
-     * Type of program for this chart
-     */
-    private TabGroup tabGroup;
+    static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
 
     /**
      * Number of surveys with A score
      */
-    private int numA;
+    int numA;
     /**
      * Number of surveys with B score
      */
-    private int numB;
+    int numB;
     /**
      * Number of surveys with C score
      */
-    private int numC;
+    int numC;
 
-
-    /**
-     * Constructor per tabGroup
-     * @param tabGroup
-     */
-    public PieTabGroupData(TabGroup tabGroup) {
-        this.tabGroup = tabGroup;
-    }
 
     /**
      * Increments the right counter according to the score
@@ -76,22 +62,6 @@ public class PieTabGroupData {
         return;
     }
 
-    /**
-     * Turns this info into a JSON understandable by the js:
-     *  {
-     *    title:'First Program',
-     *    idProgram: 1,
-     *    valueA:14,
-     *    valueB:8,
-     *    valueC:10
-     *  }
-     * @return
-     */
-    public String toJSON(String tipChat){
-        String pieTitle=String.format("%s (%s)",tabGroup.getName(),tabGroup.getProgram().getName());
-        String json= String.format(JSONFORMAT, pieTitle, tipChat,tabGroup.getId_tab_group(), this.numA, this.numB, this.numC, tabGroup.getProgram().getUid(),tabGroup.getUid());
-        return json;
-    }
 
 
 }

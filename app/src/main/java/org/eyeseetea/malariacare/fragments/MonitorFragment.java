@@ -36,19 +36,19 @@ import android.webkit.WebViewClient;
 
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
-import org.eyeseetea.malariacare.database.utils.monitor.PieTabGroupBuilder;
-import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderBase;
+import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderBase;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,6 +62,7 @@ public class MonitorFragment extends Fragment {
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     private List<Program> programs;
+    private List<OrgUnit> orgUnits;
     protected IDashboardAdapter adapter;
     private static int index = 0;
     private WebView webView;
@@ -69,6 +70,8 @@ public class MonitorFragment extends Fragment {
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
+        this.programs = new ArrayList<>();
+        this.orgUnits = new ArrayList<>();
     }
 
     public static MonitorFragment newInstance(int index) {
@@ -166,19 +169,19 @@ public class MonitorFragment extends Fragment {
             }
         }
 
-        programs = data.get(SurveyService.PREPARE_PROGRAMS);
-        reloadSurveys(surveysForGraphic,programs);
+        reloadSurveys(surveysForGraphic,data.get(SurveyService.PREPARE_PROGRAMS), data.get(SurveyService.PREPARE_ORG_UNIT));
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
+    public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms, List<OrgUnit> newListOrgUnit) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         boolean hasPrograms = newListPrograms != null && newListPrograms.size() > 0;
+        boolean hasOrgUnits = newListOrgUnit != null && newListOrgUnit.size() > 0;
         this.surveys.clear();
         this.surveys.addAll(newListSurveys);
-        if(this.programs==null)
-            this.programs.addAll(newListPrograms);
-        if (hasPrograms && hasSurveys) {
+        this.programs = newListPrograms;
+        this.orgUnits = newListOrgUnit;
+        if (hasPrograms && hasSurveys && hasOrgUnits) {
             reloadMonitor();
         }
 
@@ -196,24 +199,13 @@ public class MonitorFragment extends Fragment {
                 new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
                 //Add line chart
-                new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);
-
-                //Show stats by program
-                SentSurveysBuilder.showData(view);
-
-                //Add table x facility
-                new FacilityTableBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                SentSurveysBuilderBase.init(surveysForGraphic,getActivity(),orgUnits,programs, view);
 
                 //Add pie charts
-                new PieTabGroupBuilder(surveysForGraphic, getActivity()).addDataInChart(view);
+                PieTabGroupBuilderBase.init(surveysForGraphic,getActivity(),view);
 
-                //Render the table and pie.
-                PieTabGroupBuilder.showPieTab(view);
-                FacilityTableBuilder.showFacilities(view);
-
-                //Set the colors of red/green/yellow pie and table
-
-                FacilityTableBuilder.setColor(webView);
+                //Add table x facility
+                FacilityTableBuilderBase.init(surveysForGraphic,getActivity(),view);
             }
         });
         //Load html
