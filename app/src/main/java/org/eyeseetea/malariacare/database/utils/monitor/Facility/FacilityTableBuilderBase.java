@@ -54,13 +54,14 @@ public class FacilityTableBuilderBase {
     List<Survey> surveys;
 
 
+
     /**
      * Default constructor
      */
     public FacilityTableBuilderBase(List<Survey> surveys, Context context) {
         this.surveys = surveys;
         this.context = context;
-   }
+    }
 
     public static void showFacilities(WebView webView) {
         Log.d(TAG, JAVASCRIPT_SHOW_PROGRAMS);

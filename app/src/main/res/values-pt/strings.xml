@@ -246,4 +246,9 @@
     <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 
     <string name="clear">Limpar</string>
+
+    <string name="monitor_js_assessments" >"Avaliações realizadas"</string>
+    <string name="monitor_js_target" >"Objetivo"</string>
+    <string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Ultimos"</string>
+    <string name="monitor_js_months" >" meses"</string>
 </resources>

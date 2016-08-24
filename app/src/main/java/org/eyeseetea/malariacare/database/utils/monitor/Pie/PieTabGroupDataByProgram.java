@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.pie;
 
-import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.database.model.Program;
 
 /**
  * Created by idelcano on 23/08/2016.
@@ -28,18 +28,18 @@ public class PieTabGroupDataByProgram extends PieTabGroupDataBase {
     /**
      * Type of program for this chart
      */
-    private TabGroup tabGroup;
+    private Program program;
 
     /**
-     * Constructor per tabGroup
-     * @param tabGroup
+     * Constructor per program
+     * @param program
      */
-    public PieTabGroupDataByProgram(TabGroup tabGroup) {
-        this.tabGroup = tabGroup;
+    public PieTabGroupDataByProgram(Program program) {
+        this.program = program;
     }
     public String toJSON(String tipChat){
-        String pieTitle = String.format("%s (%s)", tabGroup.getName(), tabGroup.getProgram().getName());
-        String json = String.format(JSONFORMAT, pieTitle, tipChat, tabGroup.getId_tab_group(), this.numA, this.numB, this.numC, tabGroup.getProgram().getUid(), tabGroup.getUid());
+        String pieTitle = String.format("%s (%s)", program.getName(), program.getName());
+        String json = String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC, program.getUid(), program.getUid());
         return json;
     }
 }

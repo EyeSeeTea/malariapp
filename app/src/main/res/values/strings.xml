@@ -250,4 +250,9 @@
     <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 
     <string name="clear">Clear</string>
+
+    <string name="monitor_js_assessments" >Assessments undertaken</string>
+    <string name="monitor_js_target" >"Target"</string>
+    <string name="monitor_js_quality_of_care" >"Quality of care: Last "</string>
+    <string name="monitor_js_months" >" months"</string>
 </resources>

@@ -118,7 +118,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
      */
     public void build(List<Survey> surveys){
         for(Survey survey:surveys){
-            if(survey.getTabGroup().getProgram().equals(program)) {
+            if(survey.getProgram().equals(program)) {
 
                 //Get the month for the survey (key)
                 String month = EntrySentSurveysChartByProgram.getDateAsString(survey.getCompletionDate());

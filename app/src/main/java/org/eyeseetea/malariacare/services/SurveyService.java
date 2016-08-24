@@ -325,6 +325,7 @@ public class SurveyService extends IntentService {
         HashMap<String,List> monitorMap=new HashMap<>();
         monitorMap.put(PREPARE_SURVEYS, Survey.getAllSentCompletedOrConflictSurveys());
         monitorMap.put(PREPARE_PROGRAMS, Program.getAllPrograms());
+        monitorMap.put(PREPARE_ORG_UNIT, OrgUnit.list());
 
         HashMap<String,List> orgCreateSurveyData=new HashMap<>();
         orgCreateSurveyData.put(PREPARE_ORG_UNIT, orgUnitListParents);

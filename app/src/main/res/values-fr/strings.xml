@@ -255,4 +255,8 @@
 
     <string name="clear">Effacement</string>
 
+    <string name="monitor_js_assessments" >"Les évaluations réalisées"</string>
+    <string name="monitor_js_target" >"Objectif"</string>
+    <string name="monitor_js_quality_of_care" >"La qualité des soins: Dernier"</string>
+    <string name="monitor_js_months" >" mois"</string>
 </resources>

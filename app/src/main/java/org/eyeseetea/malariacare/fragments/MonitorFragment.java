@@ -167,11 +167,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
                     iter.remove();
                 }
             }
-
-            programs = data.get(SurveyService.PREPARE_PROGRAMS);
-            reloadSurveys(surveysForGraphic,programs);
+            reloadSurveys(surveysForGraphic,data.get(SurveyService.PREPARE_PROGRAMS), data.get(SurveyService.PREPARE_ORG_UNIT));
         }
-        reloadSurveys(surveysForGraphic,data.get(SurveyService.PREPARE_PROGRAMS), data.get(SurveyService.PREPARE_ORG_UNIT));
     }
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms, List<OrgUnit> newListOrgUnit) {
@@ -196,6 +193,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+                //Update hardcoded messages
+                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
                 //Add line chart
                 SentSurveysBuilderBase.init(surveysForGraphic,getActivity(),orgUnits,programs, view);

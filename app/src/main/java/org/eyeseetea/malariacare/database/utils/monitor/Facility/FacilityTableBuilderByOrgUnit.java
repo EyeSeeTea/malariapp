@@ -22,8 +22,8 @@ package org.eyeseetea.malariacare.database.utils.monitor.facility;
 import android.content.Context;
 import android.webkit.WebView;
 
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
     private static final String TAG=".FacilityTableBuilderOU";
-    Map<TabGroup,FacilityTableDataByOrgUnit> facilityTableDataMap;
+    Map<Program,FacilityTableDataByOrgUnit> facilityTableDataMap;
     /**
      * Default constructor
      *
@@ -55,12 +55,12 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
         for(Survey survey:surveys){
 
             //Get right table
-            FacilityTableDataByOrgUnit facilityTableDataByOrgUnit= facilityTableDataMap.get(survey.getTabGroup());
+            FacilityTableDataByOrgUnit facilityTableDataByOrgUnit= facilityTableDataMap.get(survey.getProgram());
 
             //Init entry first time of a tabgroup
             if(facilityTableDataByOrgUnit==null){
                 facilityTableDataByOrgUnit=new FacilityTableDataByOrgUnit(survey.getProgram(), survey.getOrgUnit());
-                facilityTableDataMap.put(survey.getTabGroup(),facilityTableDataByOrgUnit);
+                facilityTableDataMap.put(survey.getProgram(),facilityTableDataByOrgUnit);
             }
 
 
@@ -77,10 +77,10 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
         //Build tables
         build(surveys);
         //Inyect tables in view
-        for(Map.Entry<TabGroup,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
-            TabGroup orgUnit=tableEntry.getKey();
+        for(Map.Entry<Program,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
+            Program program=tableEntry.getKey();
             FacilityTableDataByOrgUnit facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, String.valueOf(orgUnit.getId_tab_group()), facilityTableData.getAsJSON());
+            inyectDataInChart(webView, String.valueOf(program.getId_program()), facilityTableData.getAsJSON());
         }
 
     }

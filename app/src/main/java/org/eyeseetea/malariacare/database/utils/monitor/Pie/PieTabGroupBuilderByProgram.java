@@ -23,8 +23,8 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class PieTabGroupBuilderByProgram extends  PieTabGroupBuilderBase {
     /**
      * Map of entries per program
      */
-    private Map<TabGroup,PieTabGroupDataByProgram> pieTabGroupDataMap;
+    private Map<Program,PieTabGroupDataByProgram> pieTabGroupDataMap;
     /**
      * Default constructor
      *
@@ -66,15 +66,15 @@ public class PieTabGroupBuilderByProgram extends  PieTabGroupBuilderBase {
     }
     private void build(Survey survey) {
         //Get the program
-        TabGroup tabGroup=survey.getTabGroup();
+        Program program=survey.getProgram();
 
         //Get the entry for that program
-        PieTabGroupDataByProgram pieTabGroupData = pieTabGroupDataMap.get(tabGroup);
+        PieTabGroupDataByProgram pieTabGroupData = pieTabGroupDataMap.get(program);
 
         //First time no entry
         if(pieTabGroupData ==null){
-            pieTabGroupData =new PieTabGroupDataByProgram(tabGroup);
-            pieTabGroupDataMap.put(tabGroup, pieTabGroupData);
+            pieTabGroupData =new PieTabGroupDataByProgram(program);
+            pieTabGroupDataMap.put(program, pieTabGroupData);
         }
         //Increment surveys for that month
         pieTabGroupData.incCounter(survey.getMainScore());
