@@ -17,10 +17,9 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.Pie;
+package org.eyeseetea.malariacare.database.utils.monitor.pie;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 
 /**
  * Created by idelcano on 23/08/2016.

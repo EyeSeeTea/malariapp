@@ -17,10 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.AllAssessment;
-
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
+package org.eyeseetea.malariacare.database.utils.monitor.allassessment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
