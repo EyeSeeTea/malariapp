@@ -230,14 +230,17 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
                 //Add line chart
                 if(isOrgUnitFilterActive()) {
+                    //facility by progam-> is a orgunit facility
                     new FacilityTableBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                    FacilityTableBuilderByOrgUnit.showFacilities(view);
                 }
                 if(isProgramFilterActive()) {
+                    //facility by orgunit-> is a program facility
                     new FacilityTableBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                    FacilityTableBuilderByProgram.showFacilities(view);
                 }
 
                 //Draw facility main table
-                FacilityTableBuilderBase.showFacilities(view);
                 //Set the colors of red/green/yellow pie and table
                 FacilityTableBuilderBase.setColor(view);
             }

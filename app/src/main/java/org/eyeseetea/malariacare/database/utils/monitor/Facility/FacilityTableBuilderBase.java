@@ -38,7 +38,6 @@ public class FacilityTableBuilderBase {
 
     public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities('%s',%s)";
     private static final String TAG=".FacilityTableBuilder";
-    public static final String JAVASCRIPT_SHOW_PROGRAMS = "javascript:renderPieChartsByProgram()";
     public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
     public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
     public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
@@ -61,11 +60,6 @@ public class FacilityTableBuilderBase {
     public FacilityTableBuilderBase(List<Survey> surveys, Context context) {
         this.surveys = surveys;
         this.context = context;
-    }
-
-    public static void showFacilities(WebView webView) {
-        Log.d(TAG, JAVASCRIPT_SHOW_PROGRAMS);
-        webView.loadUrl(String.format(JAVASCRIPT_SHOW_PROGRAMS));
     }
     public static void setColor(WebView webView){
         //noinspection ResourceType

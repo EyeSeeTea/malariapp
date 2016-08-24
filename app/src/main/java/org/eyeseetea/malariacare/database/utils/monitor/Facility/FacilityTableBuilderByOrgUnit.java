@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.utils.monitor.facility;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.database.model.Program;
@@ -35,6 +36,7 @@ import java.util.Map;
 public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
     private static final String TAG=".FacilityTableBuilderOU";
     Map<Program,FacilityTableDataByOrgUnit> facilityTableDataMap;
+    public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByProgram()";
     /**
      * Default constructor
      *
@@ -83,5 +85,10 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
             inyectDataInChart(webView, String.valueOf(program.getId_program()), facilityTableData.getAsJSON());
         }
 
+    }
+
+    public static void showFacilities(WebView webView) {
+        Log.d(TAG, JAVASCRIPT_SHOW);
+        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
 }
