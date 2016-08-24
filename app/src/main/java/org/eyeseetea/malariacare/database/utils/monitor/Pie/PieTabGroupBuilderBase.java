@@ -68,12 +68,4 @@ public class PieTabGroupBuilderBase {
         Log.d(TAG, JAVASCRIPT_SHOW);
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
-
-    public static void init(List<Survey> surveysForGraphic, Activity activity, WebView view) {
-        new PieTabGroupBuilderByOrgUnit(surveysForGraphic, activity).addDataInChart(view);
-        new PieTabGroupBuilderByProgram(surveysForGraphic, activity).addDataInChart(view);
-
-        //Render the table and pie.
-        PieTabGroupBuilderBase.showPieTab(view);
-    }
 }

@@ -100,11 +100,42 @@ function setAllOrgUnit(data){
 }
 //show the data in the table.
 function showMainTable(){
-	for(var i=0;i<allDataByProgram.length;i++){
-	//Show the table filter by the select program(all assessment) or without filter if only have one program
-        if(allDataByProgram[i].indexOf(selectedProgram) > -1 || programs.length==1){
-			surveyXMonthChart.addData([allDataByProgram[i][0], allDataByProgram[i][1]], allDataByProgram[i][4]);
+	if(inputOrgUnits.length<1){
+	//orgunit filter not active
+		var d = document.getElementById("spinnerOrgUnit");
+		d.className = "hidden";
+
+		var d = document.getElementById("spinnerProgram");
+		d.className = "horizontal oneFilter";
+	}
+	else if(inputPrograms.length<1){
+	//program filter not active
+		var d = document.getElementById("spinnerProgram");
+		d.className = "hidden";
+
+		var d = document.getElementById("spinnerOrgUnit");
+		d.className = "horizontal oneFilter";
+	}
+	if(inputPrograms.length>1){
+	//Show main table by program
+		for(var i=0;i<allDataByProgram.length;i++){
+		//Show the table filter by the select program(all assessment) or without filter if only have one program
+			if(allDataByProgram[i].indexOf(selectedProgram) > -1 || programs.length==1){
+				surveyXMonthChart.addData([allDataByProgram[i][0], allDataByProgram[i][1]], allDataByProgram[i][4]);
+			}
 		}
+	}
+	else if(inputOrgUnits.length>1){
+	//Show main table by orgunit
+		for(var i=0;i<allDataByOrgUnit.length;i++){
+		//Show the table filter by the select program(all assessment) or without filter if only have one program
+			if(allDataByOrgUnit[i].indexOf(selectedOrgUnit) > -1 || orgunits.length==1){
+				surveyXMonthChart.addData([allDataByOrgUnit[i][0], allDataByOrgUnit[i][1]], allDataByOrgUnit[i][4]);
+			}
+		}
+	}
+	else{
+	    console.log("Not have surveys");
 	}
 }
 
@@ -138,7 +169,8 @@ function changeOrgUnit(){
     selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
 	if(selectedOrgUnit===allOrgUnitKey){
 	    resetProgramSpinner();
-		changeProgram();
+        showElement("tableCanvas");
+        hideElement("graphicCanvas");
 	}else{
 	    resetProgramSpinner();
 		showOrgUnit();

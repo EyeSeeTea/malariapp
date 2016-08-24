@@ -40,11 +40,18 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderByProgram;
 import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderBase;
 import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderBase;
+import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderByProgram;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -64,6 +71,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     private List<OrgUnit> orgUnits;
     protected IDashboardAdapter adapter;
     private WebView webView;
+    public MonitorFilter filterType;
 
     public MonitorFragment() {
         this.adapter = Session.getAdapterSent();
@@ -129,6 +137,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
         super.onPause();
     }
+
+
+    public void setFilterType(MonitorFilter monitorFilter) {
+        this.filterType=monitorFilter;
+    }
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
@@ -193,22 +206,52 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-
                 //Update hardcoded messages
                 new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
+                if(isOrgUnitFilterActive()) {
+                    new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(), orgUnits).addDataInChart(view);
+                }
+                if(isProgramFilterActive()) {
+                    new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(), programs).addDataInChart(view);
+                }
+                //Show stats by program
+                SentSurveysBuilderBase.showData(view);
+
                 //Add line chart
-                SentSurveysBuilderBase.init(surveysForGraphic,getActivity(),orgUnits,programs, view);
+                if(isOrgUnitFilterActive()) {
+                    new PieTabGroupBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                }
+                if(isProgramFilterActive()) {
+                    new PieTabGroupBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                }
+                //Render the table and pie.
+                PieTabGroupBuilderBase.showPieTab(view);
 
-                //Add pie charts
-                PieTabGroupBuilderBase.init(surveysForGraphic,getActivity(),view);
+                //Add line chart
+                if(isOrgUnitFilterActive()) {
+                    new FacilityTableBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                }
+                if(isProgramFilterActive()) {
+                    new FacilityTableBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                }
 
-                //Add table x facility
-                FacilityTableBuilderBase.init(surveysForGraphic,getActivity(),view);
+                //Draw facility main table
+                FacilityTableBuilderBase.showFacilities(view);
+                //Set the colors of red/green/yellow pie and table
+                FacilityTableBuilderBase.setColor(view);
             }
         });
         //Load html
         webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
+    }
+
+    private boolean isOrgUnitFilterActive() {
+        return filterType.equals(MonitorFilter.ALL) || filterType.equals(MonitorFilter.ORG_UNIT);
+    }
+
+    private boolean isProgramFilterActive() {
+        return filterType.equals(MonitorFilter.ALL) || filterType.equals(MonitorFilter.PROGRAM);
     }
 
     private WebView initMonitor() {

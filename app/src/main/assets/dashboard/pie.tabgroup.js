@@ -157,9 +157,12 @@ function changePieAndTablesByOrgUnit(){
 			break;
 		}
 	}
-    if(selectedOrgUnit!=allOrgUnitKey){
-        renderPieChartsByOrgUnit();
+    if(selectedOrgUnit===allOrgUnitKey){
+        rebuildTableFacilities(selectedOrgUnit);
     }
+	else{
+        renderPieChartsByOrgUnit();
+	}
 }
 //Save the data of the pies
 function buildPieCharts(dataPies){
@@ -220,4 +223,3 @@ function showDataPie(dataPie){
 function removeDataPie(){
 	document.getElementById("pieChartContent").innerHTML="";
 }
-

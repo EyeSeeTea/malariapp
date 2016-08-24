@@ -89,19 +89,4 @@ public class SentSurveysBuilderBase {
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }
-
-    /**
-     * Builds an entry from a survey
-     * @param survey
-     * @return
-     */
-    private void build(Survey survey){
-    }
-
-    public static void init(List<Survey> surveysForGraphic, Activity activity, List<OrgUnit> orgUnits, List<Program> programs, WebView view) {
-        new SentSurveysBuilderByOrgUnit(surveysForGraphic, activity,orgUnits).addDataInChart(view);
-        new SentSurveysBuilderByProgram(surveysForGraphic, activity,programs).addDataInChart(view);
-        //Show stats by program
-        SentSurveysBuilderBase.showData(view);
-    }
 }

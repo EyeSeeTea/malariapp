@@ -99,14 +99,4 @@ public class FacilityTableBuilderBase {
         webView.loadUrl(updateChartJS);
 
     }
-
-    public static void init(List<Survey> surveysForGraphic, Activity activity, WebView view) {
-        new FacilityTableBuilderByOrgUnit(surveysForGraphic, activity).addDataInChart(view);
-        new FacilityTableBuilderByProgram(surveysForGraphic, activity).addDataInChart(view);
-
-        //Draw facility main table
-        FacilityTableBuilderBase.showFacilities(view);
-        //Set the colors of red/green/yellow pie and table
-        FacilityTableBuilderBase.setColor(view);
-    }
 }
