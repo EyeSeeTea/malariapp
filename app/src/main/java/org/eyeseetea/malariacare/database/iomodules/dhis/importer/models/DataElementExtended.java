@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSD
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
@@ -109,6 +110,16 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code the attribute Column (for customTabs)
      */
     public static final String ATTRIBUTE_COLUMN = "DEColumn";
+
+    /**
+     * Code the attribute Video
+     */
+    public static final String ATTRIBUTE_VIDEO = "DEVideo";
+
+    /**
+     * Code the attribute Image
+     */
+    public static final String ATTRIBUTE_IMAGE = "DEImage";
 
     /**
      * Code of Question option for attribute DEType
@@ -311,6 +322,9 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     public AttributeValue findAttributeValuefromDataElementCode(String code,DataElement dataElement){
+        if(code==null || dataElement==null){
+            return null;
+        }
         //select * from Attribute join AttributeValue on Attribute.id = attributeValue.attributeId join DataElementAttributeValue on attributeValue.id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue.dataElementId="vWgsPN1RPLl" and code="Order"
         for (AttributeValue attributeValue: dataElement.getAttributeValues()){
             if(attributeValue.getAttribute().getCode()==null) {
@@ -455,7 +469,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public Float findNumerator() {
         String value = getValue(ATTRIBUTE_NUMERATOR);
         if (value != null && !value.equals("")) {
-            float numinator = Float.valueOf(value);
+            float numinator = AUtils.safeParseFloat(value);
             return numinator;
         } else
             return findDenominator();
@@ -464,7 +478,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public Float findDenominator() {
         String value = getValue(ATTRIBUTE_DENUMERATOR);
         if (value != null && !value.equals("")) {
-            float denominator = Float.valueOf(value);
+            float denominator = AUtils.safeParseFloat(value);
             return denominator;
         }
         return 0.0f;

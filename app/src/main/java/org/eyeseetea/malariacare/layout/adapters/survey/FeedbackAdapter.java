@@ -20,7 +20,10 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -28,11 +31,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.VideoActivity;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
@@ -40,6 +48,7 @@ import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,17 +135,17 @@ public class FeedbackAdapter extends BaseAdapter {
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
         //CompositeScore title
-        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_label);
-        String pattern="^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-        if(feedback.getLabel().matches(pattern)) {
-            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
-            //Calculate the size of the second header, with the pixels size between question label and header label.
-            LinearLayout questionLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
-            TextView questionTextView=(TextView)questionLayout.findViewById(R.id.feedback_question_label);
-            float size=(textView.getTextSize()+questionTextView.getTextSize())/2;
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
-        }
+        TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_label);
+        String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
+        if (!PreferencesState.getInstance().isVerticalDashboard())
+            if (feedback.getLabel().matches(pattern)) {
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+                //Calculate the size of the second header, with the pixels size between question label and header label.
+                LinearLayout questionLayout = (LinearLayout) inflater.inflate(R.layout.feedback_question_row, parent, false);
+                TextView questionTextView = (TextView) questionLayout.findViewById(R.id.feedback_question_label);
+                float size = (textView.getTextSize() + questionTextView.getTextSize()) / 2;
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+            }
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
@@ -210,17 +219,109 @@ public class FeedbackAdapter extends BaseAdapter {
             }
         });
 
+        //media stuff
+        addAllMedia(rowLayout,feedback);
+
+
         return rowLayout;
     }
 
-    private void toggleFeedback(LinearLayout rowLayout, boolean visible){
-        //Separator
-        View separator=rowLayout.findViewById(R.id.feedback_separator);
-        separator.setVisibility(visible?View.VISIBLE:View.GONE);
+    /**
+     * Adds N media items to the 1 feedback
+     * @param rowLayout
+     * @param feedback
+     */
+    private void addAllMedia(LinearLayout rowLayout, QuestionFeedback feedback) {
+        LinearLayout feedbackContainer = (LinearLayout)rowLayout.findViewById(R.id.feedback_container);
+        List<Media> mediaList = feedback.getMedia();
+        for(Media media:mediaList){
+            if(media.getMediaType()==Media.MEDIA_TYPE_IMAGE){
+                addImage(feedbackContainer,media);
+            }else{
+                addVideo(feedbackContainer,media);
+            }
+        }
+    }
 
-        //Feedback itself
-        TextView feedbackTextView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);
-        feedbackTextView.setVisibility(visible?View.VISIBLE:View.GONE);
+
+    /**
+     * Adds a image media to the feedback
+     * @param rowLayout
+     * @param media
+     */
+    private void addImage(LinearLayout rowLayout, Media media) {
+        if(media==null || media.getFilename()==null || media.getFilename().isEmpty()){
+            return;
+        }
+
+        //Get image uri
+        File file=new File(media.getFilename());
+        Uri uri = Uri.fromFile(file);
+
+        //Inflate media row
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_image_row, rowLayout, false);
+        ((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview)).setImageURI(uri);
+
+        //Add media row to feedback layout
+        rowLayout.addView(mediaLayout);
+    }
+
+    /**
+     * Adds a video media to the feedback
+     * @param rowLayout
+     * @param media
+     */
+    private void addVideo(LinearLayout rowLayout, Media media){
+
+        if(media==null || media.getFilename()==null || media.getFilename().isEmpty()){
+            return;
+        }
+
+        //Inflate media row
+        LayoutInflater inflater = LayoutInflater.from(context);
+        RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_video_row, rowLayout, false);
+
+        //add video link
+        mediaLayout.setTag(media.getFilename());
+        mediaLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mediaLink = (String)v.getTag();
+                Intent videoIntent = new Intent(DashboardActivity.dashboardActivity,VideoActivity.class);
+                videoIntent.putExtra(VideoActivity.VIDEO_PATH_PARAM,mediaLink);
+                DashboardActivity.dashboardActivity.startActivity(videoIntent);
+            }
+        });
+
+        //add preview frame
+        addPreview((ImageView)mediaLayout.findViewById(R.id.feedback_media_preview),media);
+
+        //Add media row to feedback layout
+        rowLayout.addView(mediaLayout);
+    }
+
+    private void addPreview(ImageView viewMediaLink, Media media) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        File mediaFile=new File(media.getFilename());
+        try {
+            retriever.setDataSource(mediaFile.getAbsolutePath());
+            viewMediaLink.setImageBitmap(retriever.getFrameAtTime(10000000,MediaMetadataRetriever.OPTION_CLOSEST));
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                retriever.release();
+            } catch (RuntimeException ex) {
+            }
+        }
+    }
+
+    private void toggleFeedback(LinearLayout rowLayout, boolean visible) {
+        View separator = rowLayout.findViewById(R.id.feedback_container);
+        separator.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     /**

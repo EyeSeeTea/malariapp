@@ -24,7 +24,10 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.Program;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,12 +75,24 @@ public class EventToSurveyBuilder {
 
         //Create a prototype of the score since it cannot be saved yet (will need 1 per final survey)
         mainScore= new Score();
-        mainScore.setScore(Float.parseFloat(dataValue.getValue()));
+        mainScore.setScore(AUtils.safeParseFloat(dataValue.getValue()));
         mainScore.setUid(dataValue.getDataElement());
     }
 
     public void setCreatedOn(DataValue dataValue){
         this.createdOn= EventExtended.parseShortDate(dataValue.getValue());
+    }
+
+    /**
+     * Returns the uploaded on date from the control data element.
+     * If it has NOT been loaded when a value comes in it will return a default 'now'.
+     * @return
+     */
+    public Date getSafeUploadedOn(){
+        if(this.uploadedOn!=null){
+            return this.uploadedOn;
+        }
+        return this.defaultUploadedOn;
     }
 
     public void setUploadedOn(DataValue dataValue){
@@ -127,6 +142,66 @@ public class EventToSurveyBuilder {
         }
 
         survey.save();
+    }
+
+    /**
+     * Finds of adds a new survey for the given tabgroup
+     * @param program
+     * @return
+     */
+    public Survey addSurveyForTabGroup(Program program){
+        if(program==null){
+            return null;
+        }
+        //Already there nothing to add
+        Survey surveyForTabGroup=mapProgramStageSurvey.get(program.getName());
+        if(surveyForTabGroup!=null){
+            return surveyForTabGroup;
+        }
+
+        //Real new survey is required
+        surveyForTabGroup=copyDefaultSurvey(program);
+
+        //Annotate tabgroup (for rest of values)
+        mapProgramStageSurvey.put(program.getName(),surveyForTabGroup);
+        return surveyForTabGroup;
+    }
+
+    /**
+     * Tries to get the question from the dataValue.dataElement.
+     * Returns null if its not possible.
+     * @param appMapObjects
+     * @param dataValue
+     * @return
+     */
+    public Question getQuestionFromDataValue(Map<String,Object> appMapObjects, DataValue dataValue){
+        if(appMapObjects==null || dataValue==null){
+            return null;
+        }
+        Object potentialQuestion=appMapObjects.get(dataValue.getDataElement());
+        if (potentialQuestion instanceof Question){
+            return (Question)potentialQuestion;
+        }
+
+        return null;
+    }
+
+    private Survey copyDefaultSurvey(Program program){
+        if(defaultSurvey==null){
+            return null;
+        }
+
+        Survey copySurvey=new Survey();
+        copySurvey.setStatus(Constants.SURVEY_SENT);
+        copySurvey.setCompletionDate(defaultSurvey.getCompletionDate());
+        copySurvey.setCreationDate(defaultSurvey.getCreationDate());
+        copySurvey.setUploadDate(defaultSurvey.getUploadDate());
+        copySurvey.setScheduleDate(defaultSurvey.getScheduleDate());
+        copySurvey.setOrgUnit(defaultSurvey.getOrgUnit());
+        copySurvey.setEventUid(defaultSurvey.getEventUid());
+        copySurvey.setProgram(program);
+        copySurvey.save();
+        return copySurvey;
     }
 
     /**

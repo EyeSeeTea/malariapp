@@ -230,6 +230,12 @@
 
     <string name="no_previous_event_info">No previous event available</string>
 
+    <!-- Ask for drive permissions -->
+    <string name="ask_account_permission">This app needs to access your Google account (via Contacts).</string>
+    <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
+    <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
+    <string name="feedback_media_link" >View video</string>
+    <string name="feedback_media">View video feedback</string>
     <string name="dynamic_error_phone_format">Invalid format for phone number ( 0NN NNN NNN{N} )</string>
     <string name="dynamic_error_age">Invalid age</string>
     <string name="survey_title_completed">Survey completed</string>
@@ -250,4 +256,44 @@
     <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 
     <string name="clear">Clear</string>
+    <string name="assessment_title_info">News</string>
+    <string name="dhis_url_error">DHIS URL error</string>
+    <string name="dhis_url_error_bad_credentials">This program is not allowed for the given server</string>
+    <string name="dhis_url_error_bad_version">Server DHIS inappropriate (2.20, 2.21, 2.22 only)</string>
+    <string name="dialog_error_push_no_location">No location available</string>
+    <string name="dialog_error_push_no_uid">UID code is not found in the server (Server)</string>
+    <string name="dialog_info_push_ok">The survey has been pushed to the server.</string>
+    <string name="dialog_title_delete_surveys">Are you sure you want to delete the survey sent out?</string>
+    <string name="dialog_title_error"> There were errors</string>
+    <string name="dialog_title_push">The data prompted a</string>
+    <string name="exception_org_unit_banned">Where services are closed. Contact Phil SI No. 123456789</string>
+    <string name="exception_org_unit_not_valid">Service code is incorrect. Contact Phil SI No. 123456789</string>
+    <string name="monitor_label">Please select one:</string>
+    <string name="monitor_label_option_days">6 days ago</string>
+    <string name="monitor_label_option_months">6 months</string>
+    <string name="monitor_label_option_weeks">6 weeks ago</string>
+    <string name="monitor_row_title_asmq">Swedish pharmaceutical Meng Florida</string>
+    <string name="monitor_row_title_dhapip1">Remedies for children (7KG-23KG)</string>
+    <string name="monitor_row_title_dhapip2">Pharmaceutical for adults (24KG-35KG)</string>
+    <string name="monitor_row_title_dhapip3">Pharmaceutical for adults (36KG-74KG)</string>
+    <string name="monitor_row_title_negative">Negative</string>
+    <string name="monitor_row_title_not_tested">Not tested</string>
+    <string name="monitor_row_title_period">Duration</string>
+    <string name="monitor_row_title_positive">Positive</string>
+    <string name="monitor_row_title_positivity_rate">Positive</string>
+    <string name="monitor_row_title_rdts">RDT tests</string>
+    <string name="monitor_row_title_referral">To transmit</string>
+    <string name="monitor_row_title_suspected">suspected case</string>
+    <string name="monitor_row_title_week">Week</string>
+    <string name="monitor_table_title_stock">Inventories of Use</string>
+    <string name="monitor_table_title_suspected">Positive cases and suspected cases</string>
+    <string name="pf">Gizmo Plaza sodium Arafat Palestinian Al-ROM (Pf)</string>
+    <string name="pfpv">Classifieds (mixed)</string>
+    <string name="pref_server">Server</string>
+    <string name="pref_visual">Visual</string>
+    <string name="pv">Gizmo Plaza sodium Viva (PV)</string>
+    <string name="settings_menu_monitoring">Monitors</string>
+    <string name="survey_info_exit_delete">The survey is in progress and will be canceled</string>
+    <string name="assessment_title_rdt">..</string>
+    <string name="create_info_zone">zone</string>
 </resources>

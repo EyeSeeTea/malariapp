@@ -20,12 +20,15 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
@@ -37,7 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-;
 
 /**
  * Created by ignac on 14/11/2015.
@@ -45,6 +47,16 @@ import java.util.Map;
 public class QuestionBuilder {
 
     private static final String TAG = ".QuestionBuilder";
+
+    /**
+     * Maps relationship between type of media and DEAttribute code
+     */
+    private static final Map<Integer, String> MAP_MEDIATYPE_DEATTRIBUTE;
+    static {
+        MAP_MEDIATYPE_DEATTRIBUTE = new HashMap<>();
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Media.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Media.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
+    }
 
     /**
      * It is the factor needed in a option to create the questionRelation
@@ -89,6 +101,15 @@ public class QuestionBuilder {
     Map<String, Header> mapHeader;
 
     /**
+     * Mapping headers(it is needed for not duplicate data)
+     */
+    Map<String, Program> mapProgram;
+
+    /**
+     * Contains all media (required for batch save)
+     */
+    List<Media> listMedia;
+    /**
      * It is needed in the header order.
      */
     private int header_order = 0;
@@ -96,6 +117,7 @@ public class QuestionBuilder {
     QuestionBuilder() {
         mapQuestions = new HashMap<>();
         mapHeader = new HashMap<>();
+        mapProgram = new HashMap<>();
         mapType = new HashMap<>();
         mapLevel = new HashMap<>();
         mapParent = new HashMap<>();
@@ -103,6 +125,11 @@ public class QuestionBuilder {
         mapMatchParent = new HashMap<>();
         mapMatchChilds = new HashMap<>();
         mapMatchType = new HashMap<>();
+        listMedia = new ArrayList<>();
+    }
+
+    public List<Media> getListMedia(){
+        return this.listMedia;
     }
 
     /**
@@ -167,6 +194,33 @@ public class QuestionBuilder {
 
         mapHeader.put(keyHeader, header);
         return header;
+    }
+
+    /**
+     * Create a Media object in the DB for each media attribute found  for a given question DE
+     * @param dataElementExtended
+     * @param question
+     * @return
+     */
+    public void attachMedia(DataElementExtended dataElementExtended, Question question){
+        // Loop on every media type to attach any possible media type for the DE
+        for (Integer mediaType: MAP_MEDIATYPE_DEATTRIBUTE.keySet()) {
+            String attributeMediaValue = dataElementExtended.getValue(MAP_MEDIATYPE_DEATTRIBUTE.get(mediaType));
+            if (attributeMediaValue == null || attributeMediaValue.isEmpty()) {
+                continue;
+            }
+
+            String[] mediaReferences=attributeMediaValue.split(Media.MEDIA_SEPARATOR);
+            for(String mediaReference:mediaReferences){
+                Log.i(TAG,String.format("Adding media %s to question %s",mediaReference, question.getForm_name()));
+                Media media = new Media();
+                media.setMediaType(mediaType);
+                media.setResourceUrl(mediaReference);
+                media.setQuestion(question);
+                //media is saved in batch once questions are saved
+                listMedia.add(media);
+            }
+        }
     }
 
     /**

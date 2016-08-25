@@ -21,6 +21,9 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
+
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
@@ -36,6 +39,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
@@ -88,6 +92,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
+    }
+
+    public void saveBatch(){
+        //Save questions in batch
+        new SaveModelTransaction<>(ProcessModelInfo.withModels(questions)).onExecute();
+
+        //Refresh media references
+        List<Media> medias = questionBuilder.getListMedia();
+        for(Media media: medias){
+            media.updateQuestion();
+        }
+        //Save media in batch
+        new SaveModelTransaction<>(ProcessModelInfo.withModels(medias)).onExecute();
     }
 
     public List<Question> getQuestions() {
@@ -429,7 +446,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
         appQuestion.setHeader(questionBuilder.findOrSaveHeader(dataElementExtended,appMapObjects));
         questionBuilder.registerParentChildRelations(dataElementExtended);
-        //appQuestion.save();
+        questionBuilder.attachMedia(dataElementExtended, appQuestion);
         questions.add(appQuestion);
         questionBuilder.add(appQuestion, dataElementExtended.getProgramUid());
         return appQuestion;
