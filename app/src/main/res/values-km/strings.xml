@@ -301,4 +301,6 @@
     <string name="monitor_row_title_positivity_rate">កម្រិតវិជ្ជមាន</string>
 
     <string name="clear">ច្បាស់ណាស់</string>
+    <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
+    <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 </resources>

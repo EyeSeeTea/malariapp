@@ -246,4 +246,6 @@
     <string name="error_message_push">O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador.</string>
 
     <string name="clear">Limpar</string>
+    <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
+    <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 </resources>

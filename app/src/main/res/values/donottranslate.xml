@@ -59,6 +59,7 @@
     <item name="default_program" type="string" translatable="false">default_program</item>
     <item name="default_orgUnit" type="string" translatable="false">default_orgUnit</item>
     <item name="default_orgUnits" type="string" translatable="false">default_orgUnits</item>
+    <item name="developer_option" type="string" translatable="false">show_dev_options</item>
 
     <string name="tab_tag_plan" translatable="false">tab_plan</string>
     <string name="tab_tag_assess" translatable="false">tab_assess</string>

@@ -254,5 +254,7 @@
 
 
     <string name="clear">Effacement</string>
+    <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
+    <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 
 </resources>

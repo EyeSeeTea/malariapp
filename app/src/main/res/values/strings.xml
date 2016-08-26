@@ -250,4 +250,6 @@
     <string name="error_message_push">The event with UID: %s. was uploaded without date. Please contact the administrator. </string>
 
     <string name="clear">Clear</string>
+    <string name="developer_option_summary">This feature activates the developer options</string>
+    <string name="developer_option_title">Show developer options</string>
 </resources>
