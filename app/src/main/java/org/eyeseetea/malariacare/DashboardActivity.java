@@ -54,7 +54,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
+import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.Date;
 import java.util.List;
