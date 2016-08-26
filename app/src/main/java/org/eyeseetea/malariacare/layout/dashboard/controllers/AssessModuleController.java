@@ -288,7 +288,7 @@ public class AssessModuleController extends ModuleController {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
-                .setPositiveButton((R.string.ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Change state
                         survey.setCompleteSurveyState(getSimpleName());
