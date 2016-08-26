@@ -254,7 +254,9 @@
 
 
     <string name="clear">Effacement</string>
-    <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
-    <string name="developer_option_title">Mostrar opciones de desarrollador</string>
+    <string name="developer_option_summary">"Cette option active les options de développement"</string>
+    <string name="developer_option_title">"Afficher les options développeur"</string>
+    <string name="export_data_option_summary">"Base de données à l'exportation et l'envoyer à un e-mail"</string>
+    <string name="export_data_option_title">"Base de données à l'exportation"</string>
 
 </resources>

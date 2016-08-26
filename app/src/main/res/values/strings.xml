@@ -252,4 +252,7 @@
     <string name="clear">Clear</string>
     <string name="developer_option_summary">This feature activates the developer options</string>
     <string name="developer_option_title">Show developer options</string>
+    <string name="export_data_option_summary">Export database and send it to an email</string>
+    <string name="export_data_option_title">Export database</string>
+
 </resources>

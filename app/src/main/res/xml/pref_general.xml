@@ -101,4 +101,11 @@
         android:title="@string/developer_option_title"
         android:summary="@string/developer_option_summary"
         android:defaultValue="false" />
+
+    <org.eyeseetea.malariacare.views.ButtonPreference
+        android:key="@string/export_data_option"
+        android:title="@string/export_data_option_title"
+        android:summary="@string/export_data_option_summary"
+        android:visibility="gone"
+        android:defaultValue="false"/>
 </PreferenceScreen>

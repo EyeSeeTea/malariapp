@@ -252,4 +252,6 @@
     <string name="clear">Limpiar</string>
     <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
     <string name="developer_option_title">Mostrar opciones de desarrollador</string>
+    <string name="export_data_option_summary">Exportar base de datos y enviarlo a un correo electrónico</string>
+    <string name="export_data_option_title">Exportar base de datos</string>
 </resources>
