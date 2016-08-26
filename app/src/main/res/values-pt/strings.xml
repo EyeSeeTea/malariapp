@@ -249,5 +249,4 @@
     <string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
     <string name="developer_option_title">Mostrar opções de desenvolvedor</string>
     <string name="export_data_option_title">Banco de dados de exportação</string>
-    <string name="export_data_option_summary">Banco de dados de exportação e enviá-lo para um e-mail</string>
 </resources>
