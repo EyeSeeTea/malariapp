@@ -128,12 +128,24 @@ public abstract class BaseActivity extends ActionBarActivity {
                 debugMessage("Go back");
                 onBackPressed();
                 break;
+            case R.id.export_db:
+                debugMessage("Export db");
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if(!PreferencesState.getInstance().isDevelopOptionActive()) {
+            MenuItem item = menu.findItem(R.id.export_db);
+            item.setVisible(false);
+        }
+        return true;
+    }
     /**
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
