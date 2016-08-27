@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ExportData;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -51,7 +52,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Extra param to annotate the activity to return after settings
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
-
+    private static final int DUMP_REQUEST_CODE=0;
     private SurveyLocationListener locationListener;
 
     @Override
@@ -130,6 +131,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.export_db:
                 debugMessage("Export db");
+                Intent emailIntent=ExportData.dumpAndSendToAIntent(this);
+                if(emailIntent!=null)
+                    startActivityForResult(emailIntent,DUMP_REQUEST_CODE);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -145,6 +149,15 @@ public abstract class BaseActivity extends ActionBarActivity {
             item.setVisible(false);
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        Log.d("b", "returns baseactivity");
+        if ((requestCode == DUMP_REQUEST_CODE) && (resultCode == RESULT_OK)){
+            ExportData.removeDumpIfExist(this);
+        }
     }
     /**
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
