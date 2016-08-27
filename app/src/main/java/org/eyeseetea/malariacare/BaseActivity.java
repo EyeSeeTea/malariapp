@@ -154,8 +154,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
-        Log.d("b", "returns baseactivity");
-        if ((requestCode == DUMP_REQUEST_CODE) && (resultCode == RESULT_OK)){
+        if ((requestCode == DUMP_REQUEST_CODE)){
             ExportData.removeDumpIfExist(this);
         }
     }
