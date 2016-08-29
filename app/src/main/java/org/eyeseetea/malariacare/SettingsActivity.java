@@ -39,6 +39,7 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -134,6 +135,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
         Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));
         Preference passwordPreference = (Preference)findPreference(getResources().getString(R.string.dhis_password));
+
+        //Hide developer option if is not active in the json
+        if(!AppSettingsBuilder.isDeveloperOptionsActive())
+            getPreferenceScreen().removePreference(getPreferenceScreen().findPreference(getResources().getString(R.string.developer_option)));
 
         bindPreferenceSummaryToValue(serverUrlPreference);
         bindPreferenceSummaryToValue(userPreference);
