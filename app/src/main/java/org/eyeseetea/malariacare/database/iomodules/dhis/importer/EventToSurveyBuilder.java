@@ -21,10 +21,10 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
@@ -146,25 +146,25 @@ public class EventToSurveyBuilder {
 
     /**
      * Finds of adds a new survey for the given tabgroup
-     * @param tabGroup
+     * @param program
      * @return
      */
-    public Survey addSurveyForTabGroup(TabGroup tabGroup){
-        if(tabGroup==null){
+    public Survey addSurveyForProgram(Program program){
+        if(program==null){
             return null;
         }
         //Already there nothing to add
-        Survey surveyForTabGroup=mapTabGroupSurvey.get(tabGroup.getName());
-        if(surveyForTabGroup!=null){
-            return surveyForTabGroup;
+        Survey surveyForProgram=mapTabGroupSurvey.get(program.getName());
+        if(surveyForProgram!=null){
+            return surveyForProgram;
         }
 
         //Real new survey is required
-        surveyForTabGroup=copyDefaultSurvey(tabGroup);
+        surveyForProgram=copyDefaultSurvey(program);
 
         //Annotate tabgroup (for rest of values)
-        mapTabGroupSurvey.put(tabGroup.getName(),surveyForTabGroup);
-        return surveyForTabGroup;
+        mapTabGroupSurvey.put(program.getName(),surveyForProgram);
+        return surveyForProgram;
     }
 
     /**
@@ -186,7 +186,7 @@ public class EventToSurveyBuilder {
         return null;
     }
 
-    private Survey copyDefaultSurvey(TabGroup tabGroup){
+    private Survey copyDefaultSurvey(Program program){
         if(defaultSurvey==null){
             return null;
         }
@@ -196,10 +196,10 @@ public class EventToSurveyBuilder {
         copySurvey.setCompletionDate(defaultSurvey.getCompletionDate());
         copySurvey.setCreationDate(defaultSurvey.getCreationDate());
         copySurvey.setUploadDate(defaultSurvey.getUploadDate());
-        copySurvey.setScheduleDate(defaultSurvey.getScheduleDate());
+        copySurvey.setScheduledDate(defaultSurvey.getScheduledDate());
         copySurvey.setOrgUnit(defaultSurvey.getOrgUnit());
         copySurvey.setEventUid(defaultSurvey.getEventUid());
-        copySurvey.setTabGroup(tabGroup);
+        copySurvey.setProgram(program);
         copySurvey.save();
         return copySurvey;
     }

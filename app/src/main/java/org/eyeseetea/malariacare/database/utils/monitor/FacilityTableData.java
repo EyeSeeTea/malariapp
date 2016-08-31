@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.utils.monitor;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 
@@ -43,10 +44,10 @@ public class FacilityTableData {
     private String id;
     Map<OrgUnit,FacilityRowData> rowData;
 
-    public FacilityTableData(TabGroup tabGroup){
-        this.title=tabGroup.getName();
-        this.uid=tabGroup.getUid();
-        this.id=String.valueOf(tabGroup.getId_tab_group());
+    public FacilityTableData(Program program){
+        this.title=program.getName();
+        this.uid=program.getUid();
+        this.id=String.valueOf(program.getId_program());
         rowData=new HashMap<>();
     }
 

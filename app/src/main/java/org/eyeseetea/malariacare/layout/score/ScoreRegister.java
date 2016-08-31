@@ -26,7 +26,6 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 
@@ -237,7 +236,7 @@ public class ScoreRegister {
     /**
      * Calculates the denominator of the given question & survey
      * @param question
-     * @param survey
+     * @param idSurvey
      * @return
      */
     public static float calcDenum(Question question,float idSurvey) {
@@ -277,14 +276,14 @@ public class ScoreRegister {
         ScoreRegister.clear(survey.getId_survey(), module);
 
         //Register scores for tabs
-        List<Tab> tabs=survey.getTabGroup().getTabs();
+        List<Tab> tabs=survey.getProgram().getTabs();
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByTabGroup(survey.getTabGroup());
+        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram());
         ScoreRegister.registerCompositeScores(compositeScoreList, survey.getId_survey(), module);
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getTabGroup()), survey, module);
+        ScoreRegister.initScoresForQuestions(Question.listByTabGroup(survey.getProgram()), survey, module);
         
         return compositeScoreList;
     }

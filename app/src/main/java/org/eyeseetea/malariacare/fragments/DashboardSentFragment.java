@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -50,6 +51,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -577,7 +579,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
             if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgram().getUid()))
-              orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
+              orgUnits.put(survey.getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }
 
@@ -600,7 +602,12 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadSentSurveys();
+                DashboardSentBundle sentDashboardBundle =(DashboardSentBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
+                orgUnitList= sentDashboardBundle.getOrgUnits();
+                programList= sentDashboardBundle.getPrograms();
+                surveys= sentDashboardBundle.getSentSurveys();
+                reloadSentSurveys(surveys);
+                initFilters();
             }
             if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
                 getOrgUnitAndProgram();

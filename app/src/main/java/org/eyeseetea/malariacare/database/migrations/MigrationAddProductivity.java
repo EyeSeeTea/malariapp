@@ -30,7 +30,6 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnit$Table;
 import org.eyeseetea.malariacare.database.model.Question;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;

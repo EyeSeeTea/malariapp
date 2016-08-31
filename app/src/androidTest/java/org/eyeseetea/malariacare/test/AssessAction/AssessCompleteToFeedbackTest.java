@@ -31,7 +31,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
@@ -112,8 +111,8 @@ public class AssessCompleteToFeedbackTest {
         }
         Espresso.unregisterIdlingResources(idlingResource);
         if(survey.isCompleted())
-            onView(withText( "* "  + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed()));
+            onView(withText( "* "  + survey.getProgram().getProgram().getName())).check(matches(isDisplayed()));
         else
-            onView(withText("- "   + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed()));
+            onView(withText("- "   + survey.getProgram().getProgram().getName())).check(matches(isDisplayed()));
     }
 }

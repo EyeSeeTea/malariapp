@@ -173,25 +173,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 dashboardActivity.onSurveySelected(survey);
                 return true;
             case R.id.option_mark_completed:
-
-                SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
-                if(surveyAnsweredRatio.getTotalCompulsory()>0) {
-                    if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
-                        survey.setCompleteSurveyState(Constants.FRAGMENT_SURVEY_KEY);
-                        mCallback.alertOnComplete(survey);
-                        removeSurveyFromAdapter(survey);
-                        reloadToSend();
-                    }
-                    else{
-                        mCallback.dialogCompulsoryQuestionIncompleted();
-                    }
-                }
-                else {
-                    survey.setCompleteSurveyState(Constants.FRAGMENT_SURVEY_KEY);
-                    mCallback.alertOnComplete(survey);
-                    removeSurveyFromAdapter(survey);
-                    reloadToSend();
-                }
+                dashboardActivity.onMarkAsCompleted(survey);
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
@@ -200,7 +182,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                         .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                //this method create a new survey geting the getScheduleDate date of the oldsurvey, and remove it.
+                                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
                                 SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
                                 removeSurveyFromAdapter(survey);
                             }

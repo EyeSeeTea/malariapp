@@ -24,21 +24,22 @@ import android.location.Location;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -47,8 +48,8 @@ import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
-import org.hisp.dhis.android.sdk.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,8 +85,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     String createdOnCode;
     String updatedDateCode;
     String updatedUserCode;
-    String overallScoreCode;
-    String pushDeviceCode;
+
     /**
      * List of surveys that are going to be pushed
      */
@@ -126,20 +126,19 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     ConvertToSDKVisitor(Context context){
         this.context=context;
         // FIXME: We should create a visitor to translate the ControlDataElement class
-        overallScoreCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.overall_score_code));
-        mainScoreClassCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_class_code));
-        mainScoreACode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_a_code));
-        mainScoreBCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_b_code));
-        mainScoreCCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.main_score_c_code));
-        forwardOrderCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.forward_order_code));
-        pushDeviceCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.push_device_code));
-        overallProductivityCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.overall_productivity_code));
-        nextAssessmentCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.next_assessment_code));
+        overallScoreCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.overall_score_code));
+        mainScoreClassCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_class_code));
+        mainScoreACode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_a_code));
+        mainScoreBCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_b_code));
+        mainScoreCCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_c_code));
+        forwardOrderCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.forward_order_code));
+        pushDeviceCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.push_device_code));
+        overallProductivityCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.overall_productivity_code));
+        nextAssessmentCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.next_assessment_code));
 
-        createdOnCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_on_code));
-        createdByCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
-        updatedDateCode =ControlDataElement.findControlDataElementUid(context.getString(R.string.upload_date_code));
-        updatedUserCode = ControlDataElement.findControlDataElementUid(context.getString(R.string.created_by_code));
+        createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
+        updatedDateCode =ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
         originalSurveysUIDs = new HashMap<>();
@@ -249,7 +248,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private Event buildFromServer()throws Exception{
         PullClient pullClient = new PullClient(DashboardActivity.dashboardActivity);
-        Event eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getTabGroup());
+        Event eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getProgram());
         //No event to modify -> create a new one
         if(eventFromServer==null){
             return buildNewEvent();
@@ -266,7 +265,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         eventToUpdate.setFromServer(false);
         eventToUpdate.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         eventToUpdate.setProgramId(currentSurvey.getProgram().getUid());
-        eventToUpdate.setProgramStageId(currentSurvey.getTabGroup().getUid());
+        eventToUpdate.setProgramStageId(currentSurvey.getProgram().getUid());
         Location lastLocation=getEventLocation();
         //location -> set lat/lng
         if(lastLocation!=null) {
@@ -318,8 +317,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setStatus(Event.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
-        currentEvent.setProgramId(currentSurvey.getTabGroup().getProgram().getUid());
-        currentEvent.setProgramStageId(currentSurvey.getTabGroup().getUid());
+        currentEvent.setProgramId(currentSurvey.getProgram().getUid());
+        currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
         updateEventLocation();
         Log.d(TAG, "Saving event " + currentEvent.toString());
         currentEvent.save();
@@ -334,7 +333,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
         currentEvent.setEventDate(date);
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         //Not used
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         currentEvent.save();
@@ -429,7 +428,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Push Device
         if(controlDataElementExistsInServer(pushDeviceCode)) {
-            addOrUpdateDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + new Utils().getCommitHash(context));
+            addOrUpdateDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(context));
         }
 
         //Overall productivity
@@ -508,14 +507,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             throw new Exception(context.getString(R.string.dialog_error_push_no_location_and_required));
         }
 
-        //No location + not required -> done
-        if(lastLocation==null){
-            return;
-        }
-
         //location -> set lat/lng
         currentEvent.setLatitude(lastLocation.getLatitude());
         currentEvent.setLongitude(lastLocation.getLongitude());
+
+        return lastLocation;
     }
 
     /**

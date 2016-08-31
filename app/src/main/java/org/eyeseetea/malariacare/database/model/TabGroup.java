@@ -130,7 +130,7 @@ public class TabGroup extends BaseModel {
     public List<Tab> getTabs(){
         if (tabs==null){
             tabs=new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(this.getId_tab_group()))
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_tab_group()))
                     .orderBy(Tab$Table.ORDER_POS).queryList();
         }
         return tabs;
@@ -139,7 +139,7 @@ public class TabGroup extends BaseModel {
     public List<Survey> getSurveys(){
         if(surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
+                    .where(Condition.column(Survey$Table.ID_PROGRAM).eq(this.getId_tab_group())).queryList();
         }
         return this.surveys;
     }
@@ -180,7 +180,7 @@ public class TabGroup extends BaseModel {
     @Override
     public String toString() {
         return "TabGroup{" +
-                "id_tab_group=" + id_tab_group +
+                "id_program=" + id_tab_group +
                 ", name='" + name + '\'' +
                 ", id_program=" + id_program +
                 ", uid='" + uid + '\'' +

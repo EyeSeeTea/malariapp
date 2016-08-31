@@ -39,8 +39,7 @@ import org.eyeseetea.malariacare.R;
  */
 public class Utils extends AUtils {
 
-    @Override
-    public void showAlert(int titleId, CharSequence text, Context context){
+    public static void showAlert(int titleId, CharSequence text, Context context){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);

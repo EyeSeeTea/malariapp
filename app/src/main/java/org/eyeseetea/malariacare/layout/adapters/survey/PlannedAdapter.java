@@ -40,20 +40,16 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by arrizabalaga on 14/09/15.
@@ -383,15 +379,15 @@ public class PlannedAdapter extends BaseAdapter {
 
             //Set current date
             final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
-            scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduleDate()));
+            scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduledDate()));
             //On Click open an specific DatePickerDialog
             scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Init secondary datepicker with current date
                     Calendar calendar = Calendar.getInstance();
-                    if(survey.getScheduleDate()!=null){
-                        calendar.setTime(survey.getScheduleDate());
+                    if(survey.getScheduledDate()!=null){
+                        calendar.setTime(survey.getScheduledDate());
                     }
                     //Show datepickerdialog -> updates newScheduledDate and button
                     new DatePickerDialog(PlannedAdapter.this.context, new DatePickerDialog.OnDateSetListener() {

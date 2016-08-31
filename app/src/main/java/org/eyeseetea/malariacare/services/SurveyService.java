@@ -34,7 +34,6 @@ import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.Tab$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
@@ -45,8 +44,6 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -450,7 +447,7 @@ public class SurveyService extends IntentService {
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession(module);
-        List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(survey.getTabGroup().getId_tab_group())).queryList();
+        List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
 
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);

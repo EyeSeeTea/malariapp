@@ -35,6 +35,7 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
@@ -286,12 +287,12 @@ public class DashboardActivity extends BaseActivity{
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, Event lastEventInServer, String module){
+    public void modifySurvey(OrgUnit orgUnit, Program program, Event lastEventInServer, String module){
         //Looking for that survey in local
-        Survey survey = Survey.findSurveyWith(orgUnit, tabGroup, lastEventInServer);
+        Survey survey = Survey.findSurveyWith(orgUnit, program, lastEventInServer);
         //Survey in server BUT not local
         if(survey==null){
-            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         }
         if(lastEventInServer!=null){
             survey.setEventUid(lastEventInServer.getEvent());
@@ -314,15 +315,15 @@ public class DashboardActivity extends BaseActivity{
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        createNewSurvey(orgUnit,tabGroup);
+    public void onCreateSurvey(final OrgUnit orgUnit,final Program program) {
+        createNewSurvey(orgUnit,program);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
-        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
+    public void createNewSurvey(OrgUnit orgUnit, Program program){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }

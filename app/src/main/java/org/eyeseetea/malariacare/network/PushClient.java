@@ -69,11 +69,12 @@ public class PushClient {
     }
 
     private boolean launchPush(Survey survey) {
-        Session.setSurveyByModule(survey,Constants.PUSH_MODULE_KEY);
+        Session.setSurveyByModule(survey, Constants.PUSH_MODULE_KEY);
         //Pushing selected survey via sdk
         List<Survey> surveys = new ArrayList<>();
         surveys.add(survey);
         return PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
+    }
 
     public PushClient(List<Survey> surveys, Context applicationContext, String user, String password) {
         this(applicationContext,user,password);

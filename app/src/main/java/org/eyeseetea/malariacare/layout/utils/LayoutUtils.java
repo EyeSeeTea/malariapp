@@ -19,18 +19,12 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -134,7 +128,7 @@ public class LayoutUtils {
         String subtitle="";
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         String appNameColorString = String.format("%X", appNameColor).substring(2);
-        Program program = survey.getTabGroup().getProgram();
+        Program program = survey.getProgram();
         if(survey.getOrgUnit().getName()!=null) {
             title = survey.getOrgUnit().getName();
         }

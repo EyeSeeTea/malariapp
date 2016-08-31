@@ -33,8 +33,6 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hamcrest.Description;
-import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
@@ -121,9 +119,9 @@ public class AssessCompleteGoToImprove {
 
         //WHEN
         if(survey.isCompleted())
-            onView(withText( "* "  + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed())).perform(click());
+            onView(withText( "* "  + survey.getProgram().getProgram().getName())).check(matches(isDisplayed())).perform(click());
         else
-            onView(withText("- "   + survey.getTabGroup().getProgram().getName())).check(matches(isDisplayed())).perform(click());
+            onView(withText("- "   + survey.getProgram().getProgram().getName())).check(matches(isDisplayed())).perform(click());
         Espresso.unregisterIdlingResources(idlingResource);
 
         //THEN

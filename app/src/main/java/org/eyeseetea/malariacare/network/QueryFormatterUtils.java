@@ -101,7 +101,7 @@ public class QueryFormatterUtils {
     public JSONObject prepareMetadata(Survey survey) throws Exception {
         Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
         JSONObject object = new JSONObject();
-        object.put(TAG_PROGRAM, survey.getTabGroup().getProgram().getUid());
+        object.put(TAG_PROGRAM, survey.getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
         object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
         object.put(TAG_STATUS, COMPLETED);

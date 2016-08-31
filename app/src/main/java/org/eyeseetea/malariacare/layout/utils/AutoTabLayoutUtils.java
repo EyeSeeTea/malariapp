@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;

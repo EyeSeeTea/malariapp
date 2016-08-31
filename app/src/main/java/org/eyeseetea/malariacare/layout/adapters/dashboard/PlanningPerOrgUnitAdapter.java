@@ -66,7 +66,7 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
         if(survey.getCreationDate()!=null)
             dueDate.setText(survey.getCreationDate().getMonth()+"-"+survey.getCreationDate().getDay());
 
-        String surveyDescription = survey.getTabGroup().getProgram().getName();
+        String surveyDescription = survey.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         rowView.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(plannedSurvey.getHeader().getBackgroundColor()));

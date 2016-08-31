@@ -616,11 +616,11 @@ public class Question extends BaseModel {
     /**
      * Counts the number of required questions (without a parent question).
      *
-     * @param tabGroup
+     * @param program
      * @return
      */
-    public static int countRequiredByProgram(TabGroup tabGroup) {
-        if (tabGroup == null || tabGroup.getId_tab_group() == null) {
+    public static int countRequiredByProgram(Program program) {
+        if (program == null || program.getId_program() == null) {
             return 0;
         }
 
@@ -634,7 +634,7 @@ public class Question extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program())).count();
 
         // Count children questions from the given taggroup
         long numChildrenQuestion = new Select().count()
@@ -649,7 +649,7 @@ public class Question extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program()))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
@@ -659,11 +659,11 @@ public class Question extends BaseModel {
     /**
      * Counts the number of compulsory questions (without a parent question).
      *
-     * @param tabGroup
+     * @param program
      * @return
      */
-    public static int countCompulsoryByProgram(TabGroup tabGroup) {
-        if (tabGroup == null || tabGroup.getId_tab_group() == null) {
+    public static int countCompulsoryByProgram(Program program) {
+        if (program == null || program.getId_program() == null) {
             return 0;
         }
 
@@ -677,7 +677,7 @@ public class Question extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group())).count();
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program())).count();
 
         // Count children questions from the given taggroup
         long numChildrenQuestion = new Select().count()
@@ -692,7 +692,7 @@ public class Question extends BaseModel {
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP)).eq(tabGroup.getId_tab_group()))
+                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program()))
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
@@ -748,11 +748,11 @@ public class Question extends BaseModel {
     /**
      * Returns all the questions that belongs to a program
      *
-     * @param tabGroup
+     * @param program
      * @return
      */
-    public static List<Question> listByTabGroup(TabGroup tabGroup) {
-        if (tabGroup == null || tabGroup.getId_tab_group() == null) {
+    public static List<Question> listByTabGroup(Program program) {
+        if (program == null || program.getId_program() == null) {
             return new ArrayList();
         }
 
@@ -767,11 +767,11 @@ public class Question extends BaseModel {
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("tg")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP)))
-                .where(Condition.column(ColumnAlias.columnWithTable("tg", TabGroup$Table.ID_TAB_GROUP))
-                        .eq(tabGroup.getId_tab_group()))
+                .join(Program.class, Join.JoinType.LEFT).as("tg")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("tg", Program$Table.ID_PROGRAM)))
+                .where(Condition.column(ColumnAlias.columnWithTable("tg", Program$Table.ID_PROGRAM))
+                        .eq(program.getId_program()))
                 .orderBy(Tab$Table.ORDER_POS)
                 .orderBy(Question$Table.ORDER_POS).queryList();
 

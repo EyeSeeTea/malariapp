@@ -102,17 +102,11 @@ public class PopulateDB {
                         program.setName(line[2]);
                         saveItem(programs, program, Integer.valueOf(line[0]));
                         break;
-                    case TAB_GROUPS_CSV:
-                        TabGroup tabGroup = new TabGroup();
-                        tabGroup.setName(line[1]);
-                        tabGroup.setProgram(programs.get(Integer.valueOf(line[2])));
-                        saveItem(tabGroups, tabGroup, Integer.valueOf(line[0]));
-                        break;
                     case TABS_CSV:
                         Tab tab = new Tab();
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
-                        tab.setTabGroup(tabGroups.get(Integer.valueOf(line[3])));
+                        tab.setProgram(programs.get(Integer.valueOf(line[3])));
                         tab.setType(Integer.valueOf(line[4]));
                         saveItem(tabs, tab, Integer.valueOf(line[0]));
                         break;
