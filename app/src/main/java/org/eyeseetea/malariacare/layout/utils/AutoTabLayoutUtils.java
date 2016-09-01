@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -159,7 +161,7 @@ public class AutoTabLayoutUtils {
      *
      * @param view
      */
-    public static void updateReadOnly(View view, Question question, boolean readonly) {
+    public static void updateReadOnly(View view, Question question, boolean readOnly) {
         if (view == null || question==null) {
             return;
         }
@@ -172,10 +174,10 @@ public class AutoTabLayoutUtils {
         if (view instanceof RadioGroup) {
             RadioGroup radioGroup = (RadioGroup) view;
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                radioGroup.getChildAt(i).setEnabled(!readonly);
+                radioGroup.getChildAt(i).setEnabled(!readOnly);
             }
         } else {
-            view.setEnabled(!readonly);
+            view.setEnabled(!readOnly);
         }
     }
 
@@ -219,9 +221,12 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseDropDown(int position, ViewGroup parent, Question question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context) {
         View rowView;
-        rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
-
-        initialiseScorableComponent(rowView, viewHolder);
+        if(PreferencesState.getInstance().isShowNumDen()) {
+            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
+            initialiseScorableComponent(rowView, viewHolder);
+        }else{
+            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
+        }
 
         // In case the option is selected, we will need to show num/dems
         List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
@@ -246,9 +251,9 @@ public class AutoTabLayoutUtils {
             String appNameColorString = String.format("%X", red).substring(2);
             Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + question.getForm_name());
             viewHolder.statement.setText(spannedQuestion);
-        }
-        else
+        }else{
             viewHolder.statement.setText(question.getForm_name());
+        }
 
         return rowView;
     }
@@ -270,6 +275,7 @@ public class AutoTabLayoutUtils {
             button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
         }
+        return true;
     }
 
     /**

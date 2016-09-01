@@ -20,26 +20,20 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Switch;
+
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Header;
@@ -49,26 +43,15 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.layout.utils.AutoTabInVisibilityState;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
-import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
-import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.layout.utils.QuestionRow;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -81,10 +64,15 @@ public class AutoTabAdapter extends ATabAdapter {
     float totalDenum;
 
 
-    /**
+ /**
      * Reference to the visibility state of items
      */
     private final AutoTabInVisibilityState inVisibilityState;
+
+    /**
+     * Tells if this survey is open readonly or not (sent, otherwise)
+     */
+    boolean readOnly;
 
     /**
      * Factory that holds common info between selected items
@@ -186,6 +174,7 @@ public class AutoTabAdapter extends ATabAdapter {
                         result = result + ScoreRegister.calcDenum(question, idSurvey);
                     }
                 }
+
             }
             totalDenum = result;
 
@@ -212,6 +201,7 @@ public class AutoTabAdapter extends ATabAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = null;
 
+        View rowView = null;
         final Object item = getItem(position);
         Question question;
         AutoTabViewHolder viewHolder = new AutoTabViewHolder();
@@ -282,13 +272,11 @@ public class AutoTabAdapter extends ATabAdapter {
                 //Add main component and listener
                 ((CustomButton) viewHolder.component).setOnClickListener(new DatePickerListener(question, viewHolder));
                 break;
-
             case Constants.SHORT_TEXT:
                 rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater());
                 //Add main component and listener
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
-
             case Constants.DROPDOWN_LIST:
                 rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                 // Initialise Listener
@@ -300,15 +288,23 @@ public class AutoTabAdapter extends ATabAdapter {
                 AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey, module);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                if(PreferencesState.getInstance().isShowNumDen()) {
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                }else{
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());                
+                }
                 AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                 //Add Listener
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                 break;
             case Constants.RADIO_GROUP_VERTICAL:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                if(PreferencesState.getInstance().isShowNumDen()) {
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                }else{
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
+                }
                 AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                 //Add Listener
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
@@ -618,9 +614,6 @@ public class AutoTabAdapter extends ATabAdapter {
     }
 
 
-
-
-
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
         private boolean viewCreated;
@@ -635,6 +628,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            //Discard first change -> just a set
             if(!viewCreated){
                 viewCreated = true;
                 return;
@@ -647,7 +641,6 @@ public class AutoTabAdapter extends ATabAdapter {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     }
 
