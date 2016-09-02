@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -134,9 +135,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
             }
         });
-        Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
+        /*Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
 
-        //Populate Program View DDL
+        //Populate OU View DDL
         if(!orgUnitList.contains(orgUnitDefaultOption))
             orgUnitList.add(0, orgUnitDefaultOption);
         orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getActivity(), orgUnitList));
@@ -155,7 +156,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
     }
     // Container Activity must implement this interface
     public interface OnProgramSelectedListener {
@@ -165,30 +166,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     // Container Activity must implement this interface
     public interface OnOrgUnitSelectedListener {
         public void OnOrgUnitSelected(OrgUnit orgUnit);
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnOrgUnitSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnOrgUnitSelectedListener");
-        }
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallbackProgram = (OnProgramSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnProgramSelectedListener");
-        }
     }
 
     @Override

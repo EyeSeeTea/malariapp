@@ -168,6 +168,7 @@ clínica"</string>
 <string name="progress_pull_preparing_answers">"Cargando respuestas ..."</string>
 <string name="progress_pull_preparing_orgs">"Cargando organizaciones ..."</string>
 <string name="progress_pull_questions">"Cargando preguntas (esto puede llevar algunos minutos) ..."</string>
+<string name="progress_pull_relationships">"Cargando relaciones entre preguntas ..."</string>
 <string name="progress_pull_surveys">"Cargando encuestas ..."</string>
 <string name="progress_pull_done">"Hecho"</string>
 <string name="dialog_push_success">"Encuestra correctamente subida al servidor Dhis"</string>

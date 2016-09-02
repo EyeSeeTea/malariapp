@@ -389,7 +389,7 @@ public class PullController {
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
                 if (++i%50==0)
-                    postProgress(context.getString(R.string.progress_pull_question) + String.format(" %s", i));
+                    postProgress(context.getString(R.string.progress_pull_questions) + String.format(" %s", i));
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
                 DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());

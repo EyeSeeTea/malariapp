@@ -248,11 +248,12 @@ public class SurveyService extends IntentService {
 
     private void reloadPlannedSurveys() {
         Log.d(TAG, "reloadPlanningSurveys");
-        PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
+        /*PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
         plannedServiceBundle.setOrgUnits(OrgUnit.getAllOrgUnit());
         plannedServiceBundle.setPrograms(Program.getAllPrograms());
-        Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);*/
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
     }

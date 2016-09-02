@@ -180,8 +180,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public Program getProgram() {
-        if(program ==null){
-            if (id_program ==null) return null;
+        if(program == null){
+            if (id_program == null) return null;
             program = new Select()
                     .from(Program.class)
                     .where(Condition.column(Program$Table.ID_PROGRAM)

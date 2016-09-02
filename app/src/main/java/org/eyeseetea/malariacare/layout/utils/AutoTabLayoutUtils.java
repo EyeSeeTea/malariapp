@@ -166,10 +166,6 @@ public class AutoTabLayoutUtils {
             return;
         }
 
-        if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
-            readonly=true;
-        }
-
         //RadioGroup is different
         if (view instanceof RadioGroup) {
             RadioGroup radioGroup = (RadioGroup) view;
@@ -275,7 +271,6 @@ public class AutoTabLayoutUtils {
             button.updateProperties(PreferencesState.getInstance().getScale(), context.getString(R.string.font_size_level1), context.getString(R.string.medium_font_name));
             ((RadioGroup) viewHolder.component).addView(button);
         }
-        return true;
     }
 
     /**

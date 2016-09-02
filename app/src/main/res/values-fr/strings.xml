@@ -166,6 +166,7 @@ Mensuelle"</string>
 <string name="progress_pull_preparing_answers">"Chargement des réponses..."</string>
 <string name="progress_pull_preparing_orgs">"Chargement des cabinets..."</string>
 <string name="progress_pull_questions">"Chargement des questions (cela peut prendre quelques minutes)..."</string>
+<string name="progress_pull_relationships">"Chargement des relations entre questions ..."</string>
 <string name="progress_pull_surveys">"Chargement des rapports..."</string>
 <string name="progress_pull_done">"Terminé"</string>
 <string name="dialog_push_success">"Téléchargement du rapport dans le serveur dhis réussi"</string>

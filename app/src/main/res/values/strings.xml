@@ -168,6 +168,7 @@ evaluation"</string>
 <string name="progress_pull_preparing_answers">"Loading answers ..."</string>
 <string name="progress_pull_preparing_orgs">"Loading organisations ..."</string>
 <string name="progress_pull_questions">"Loading questions (this might take a few minutes) ..."</string>
+<string name="progress_pull_relationships">"Building questions relations ..."</string>
 <string name="progress_pull_surveys">"Loading surveys ..."</string>
 <string name="progress_pull_done">"Done"</string>
 <string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
