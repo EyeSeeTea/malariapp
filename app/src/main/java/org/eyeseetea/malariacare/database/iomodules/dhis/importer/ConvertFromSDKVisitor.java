@@ -294,7 +294,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(EventExtended sdkEventExtended) {
-        android.os.Debug.waitForDebugger();
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
         org.eyeseetea.malariacare.database.model.Program program = (org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(ProgramStageExtended.getProgramStage(event.getProgramStageId()).getProgram().getUid());
@@ -313,9 +312,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
         survey.setProgram(program);
-        if (program == null){
-            Log.d("ConvertFromSDKVisitor", "null program");
-        }
         survey.save();
 
         //Annotate object in map
