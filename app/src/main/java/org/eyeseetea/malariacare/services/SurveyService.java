@@ -259,7 +259,6 @@ public class SurveyService extends IntentService {
     }
 
     private void getAllCreateSurveyData() {
-        //android.os.Debug.waitForDebugger();
         Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
         List<OrgUnit> orgUnitList = new Select().from(OrgUnit.class).where(Condition.column(OrgUnit$Table.ID_PARENT).isNull()).queryList();
         List<OrgUnitLevel> orgUnitLevelList = new Select().all().from(OrgUnitLevel.class).queryList();
@@ -370,6 +369,7 @@ public class SurveyService extends IntentService {
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION, unsentSurveys);
         Session.putServiceValue(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION, Survey.getAllSentCompletedOrConflictSurveys());
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION, completedUnsentSurveys);
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, PlannedItemBuilder.getInstance().buildPlannedItems());
         Session.putServiceValue(ALL_PROGRAMS_ACTION,Program.getAllPrograms());
 
         //Returning result to anyone listening
@@ -380,13 +380,15 @@ public class SurveyService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_IN_PROGRESS_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ALL_COMPLETED_SURVEYS_ACTION));
-        reloadPlannedSurveys();
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
+        //reloadPlannedSurveys();
     }
 
     /**
      * Action that calculates the 'feedback' items corresponding to the current survey in session
      */
     private void getFeedbackItems(String module){
+        //android.os.Debug.waitForDebugger();
         //Mock some items
         List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyByModule(module), module);
 

@@ -126,8 +126,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                 Program selectedProgram = position == 0 ? null : (Program) spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 adapter.applyFilter(selectedProgram);
-                if(selectedProgram!=null)
-                    mCallbackProgram.OnProgramSelected(selectedProgram);
             }
 
             @Override
@@ -148,8 +146,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                 Spinner spinner=((Spinner) parent);
                 OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_org_assessments).toUpperCase()))
-                    mCallback.OnOrgUnitSelected(selectedOrgUnit);
             }
 
             @Override
