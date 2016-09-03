@@ -29,6 +29,8 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -40,6 +42,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -69,6 +73,7 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -81,10 +86,15 @@ public class AutoTabAdapter extends ATabAdapter {
     float totalDenum;
 
 
-    /**
+ /**
      * Reference to the visibility state of items
      */
     private final AutoTabInVisibilityState inVisibilityState;
+
+    /**
+     * Tells if this survey is open readonly or not (sent, otherwise)
+     */
+    boolean readOnly;
 
     /**
      * Factory that holds common info between selected items
@@ -128,6 +138,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 inVisibilityState.updateHeaderVisibility((QuestionRow) item);
             }
         }
+
     }
 
     /**
@@ -185,6 +196,7 @@ public class AutoTabAdapter extends ATabAdapter {
                         result = result + ScoreRegister.calcDenum(question, idSurvey);
                     }
                 }
+
             }
             totalDenum = result;
 
@@ -281,13 +293,11 @@ public class AutoTabAdapter extends ATabAdapter {
                 //Add main component and listener
                 ((CustomButton) viewHolder.component).setOnClickListener(new DatePickerListener(question, viewHolder));
                 break;
-
             case Constants.SHORT_TEXT:
                 rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater());
                 //Add main component and listener
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
-
             case Constants.DROPDOWN_LIST:
                 rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
                 // Initialise Listener
@@ -299,15 +309,23 @@ public class AutoTabAdapter extends ATabAdapter {
                 AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey, module);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                if(PreferencesState.getInstance().isShowNumDen()) {
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                }else{
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());                
+                }
                 AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                 //Add Listener
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                 break;
             case Constants.RADIO_GROUP_VERTICAL:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
-                AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                if(PreferencesState.getInstance().isShowNumDen()) {
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                    AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
+                }else{
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
+                }
                 AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                 //Add Listener
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
@@ -502,7 +520,7 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
             case Constants.DATE:
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate=EventExtended.parseShortDate(valueString);
+                Date valueDate= EventExtended.parseShortDate(valueString);
                 if(valueDate!=null) {
                     viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
                 }
@@ -525,6 +543,8 @@ public class AutoTabAdapter extends ATabAdapter {
                         viewHolder.setDenumText(Float.toString(numdenum.get(1)));
                     }
                 } else {
+                    viewHolder.setNumText(getContext().getString(R.string.number_zero));
+                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question, idSurvey)));
                     viewHolder.setSpinnerSelection(0);
                 }
 
@@ -534,7 +554,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 //FIXME: it is almost the same as the previous case
                 Value value = question.getValueBySession(module);
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question, idSurvey, module);
-                if (numdenumradiobutton == null) {// FIXME: this avoid app crash when onResume
+                if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
                     break;
                 }
                 viewHolder.setDenumText(numdenumradiobutton.get(1).toString());
@@ -543,6 +563,10 @@ public class AutoTabAdapter extends ATabAdapter {
                 if (value != null) {
                     viewHolder.setRadioChecked(value.getOption());
                     viewHolder.setNumText(Float.toString(numdenumradiobutton.get(0)));
+                    viewHolder.setDenumText(Float.toString(numdenumradiobutton.get(1)));
+                } else {
+                    viewHolder.setNumText(getContext().getString(R.string.number_zero));
+                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question, idSurvey)));
                 }
                 break;
             case Constants.SWITCH_BUTTON:
@@ -620,9 +644,6 @@ public class AutoTabAdapter extends ATabAdapter {
     }
 
 
-
-
-
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
         private boolean viewCreated;
@@ -637,6 +658,7 @@ public class AutoTabAdapter extends ATabAdapter {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            //Discard first change -> just a set
             if(!viewCreated){
                 viewCreated = true;
                 return;
@@ -649,7 +671,6 @@ public class AutoTabAdapter extends ATabAdapter {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     }
 
@@ -729,8 +750,8 @@ public class AutoTabAdapter extends ATabAdapter {
                     newCalendar.set(year, monthOfYear, dayOfMonth);
                     Date newScheduledDate = newCalendar.getTime();
                     if(!isCleared) {
-                        ((CustomButton) v).setText( AUtils.formatDate(newScheduledDate));
-                        ReadWriteDB.saveValuesText(question, EventExtended.formatShort(newScheduledDate), module);
+                        ((CustomButton) v).setText( AUtils.formatDate(newCalendar.getTime()));
+                        ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
                     }
                     isCleared =false;
                 }

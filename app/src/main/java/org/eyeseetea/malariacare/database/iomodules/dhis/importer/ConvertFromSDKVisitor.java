@@ -121,24 +121,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     /**
-     * Skips ProgramStage (no longer tabgroups).
-     *  - ProgramStage UID is added to a program column (for pushing purposes).
-     *  - ProgramStage UID is mapped to the program to ease linking tabs with the program
+     * Turns a sdk ProgramStage into a TabGroup
      * @param sdkProgramStageExtended
      */
     @Override
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
-        //Recover program
+        //Build Program
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
         String sdkProgramUID = programStage.getProgram().getUid();
         org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(sdkProgramUID);
+        appProgram.setStageUid(programStage.getUid());
+        appProgram.update();
 
-        //Update program with programStage column
-        appProgram.setProgramStage(programStage.getUid());
-        appProgram.save();
-
-        //ProgramStage UID -> parent program (to ease linking tabs with program)
-        appMapObjects.put(programStage.getUid(),appProgram);
+        appMapObjects.put(appProgram.getUid(),appProgram);
 
         //Visit children
         for(ProgramStageSection pss:programStage.getProgramStageSections()){
@@ -203,10 +198,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        String programStageUID = programStageSection.getProgramStage();
-        org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program) appMapObjects.get(programStageUID);
+        String programUID = (ProgramStageExtended.getProgramStage(programStageSection.getProgramStage())).getProgram().getUid();
+        org.eyeseetea.malariacare.database.model.Program program = (org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(programUID);
         Tab appTab = new Tab();
-        appTab.setProgram(appProgram);
+        appTab.setProgram(program);
         appTab.setName(programStageSection.getDisplayName());
         appTab.setType(Constants.TAB_AUTOMATIC);
         appTab.setOrder_pos(programStageSection.getSortOrder());
@@ -301,7 +296,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit =(OrgUnit)appMapObjects.get(event.getOrganisationUnitId());
-        org.eyeseetea.malariacare.database.model.Program appProgram = (org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(event.getProgramStageId());
+        org.eyeseetea.malariacare.database.model.Program program = (org.eyeseetea.malariacare.database.model.Program)appMapObjects.get(ProgramStageExtended.getProgramStage(event.getProgramStageId()).getProgram().getUid());
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
@@ -312,11 +307,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setCreationDate(sdkEventExtended.getEventDate());
         survey.setUploadDate(sdkEventExtended.getEventDate());
         //Scheduled date == Due date
-        survey.setScheduleDate(sdkEventExtended.getDueDate());
+        survey.setScheduledDate(sdkEventExtended.getDueDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
-        survey.setProgram(appProgram);
+        survey.setProgram(program);
         survey.save();
 
         //Annotate object in map
@@ -358,11 +353,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
 
         //-> uploadedOn
-        if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_on_code))){
+        /*if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.upload_on_code))){
             eventToSurveyBuilder.setUploadedOn(dataValue);
             Log.i(TAG,String.format("Event %s uploaded on %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
             return;
-        }
+        }*/
 
         //-> uploadedBy (updatedBy is ignored)
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.uploaded_by_code))){

@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.test.AssessAction;
 import android.support.test.espresso.AmbiguousViewMatcherException;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -118,9 +119,9 @@ public class AssessCompleteGoToImprove {
 
         //WHEN
         if(survey.isCompleted())
-            onView(withText( "* "  + survey.getProgram().getName())).check(matches(isDisplayed())).perform(click());
+            onView(withText( "* "  + survey.getProgram().getProgram().getName())).check(matches(isDisplayed())).perform(click());
         else
-            onView(withText("- "   + survey.getProgram().getName())).check(matches(isDisplayed())).perform(click());
+            onView(withText("- "   + survey.getProgram().getProgram().getName())).check(matches(isDisplayed())).perform(click());
         Espresso.unregisterIdlingResources(idlingResource);
 
         //THEN

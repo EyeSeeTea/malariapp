@@ -23,11 +23,15 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
@@ -35,15 +39,16 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
-import org.eyeseetea.malariacare.layout.score.ScoreUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
+import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,13 +72,20 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     Context context;
 
+    String overallScoreCode;
+    String mainScoreClassCode;
+    String mainScoreACode;
+    String mainScoreBCode;
+    String mainScoreCCode;
     String forwardOrderCode;
+    String pushDeviceCode;
+    String overallProductivityCode;
+    String nextAssessmentCode;
 
     String createdOnCode;
     String updatedDateCode;
     String updatedUserCode;
-    String overallScoreCode;
-    String pushDeviceCode;
+
     /**
      * List of surveys that are going to be pushed
      */
@@ -113,14 +125,20 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     ConvertToSDKVisitor(Context context){
         this.context=context;
-        // FIXME: We should create a visitor to translate the ServerMetadata class
-
+        // FIXME: We should create a visitor to translate the ControlDataElement class
         overallScoreCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.overall_score_code));
+        mainScoreClassCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_class_code));
+        mainScoreACode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_a_code));
+        mainScoreBCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_b_code));
+        mainScoreCCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.main_score_c_code));
         forwardOrderCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.forward_order_code));
-        createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
-        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_on_code));
-        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         pushDeviceCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.push_device_code));
+        overallProductivityCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.overall_productivity_code));
+        nextAssessmentCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.next_assessment_code));
+
+        createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
+        updatedDateCode =ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
         originalSurveysUIDs = new HashMap<>();
@@ -247,7 +265,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         eventToUpdate.setFromServer(false);
         eventToUpdate.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         eventToUpdate.setProgramId(currentSurvey.getProgram().getUid());
-        eventToUpdate.setProgramStageId(currentSurvey.getProgram().getProgramStage());
+        eventToUpdate.setProgramStageId(currentSurvey.getProgram().getUid());
         Location lastLocation=getEventLocation();
         //location -> set lat/lng
         if(lastLocation!=null) {
@@ -269,7 +287,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
-        dataValue.setValue(AUtils.round(ScoreUtils.calculateScoreFromNumDen(result)));
+        dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY)));
         dataValue.save();
     }
 
@@ -300,7 +318,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
-        currentEvent.setProgramStageId(currentSurvey.getProgram().getProgramStage());
+        currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
         updateEventLocation();
         Log.d(TAG, "Saving event " + currentEvent.toString());
         currentEvent.save();
@@ -315,7 +333,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
         String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
         currentEvent.setEventDate(date);
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduleDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         //Not used
         currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         currentEvent.save();
@@ -356,12 +374,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(controlDataElementExistsInServer(createdOnCode)){
-            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
         }
 
         //Updated date
         if(controlDataElementExistsInServer(updatedDateCode)){
-            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.AMERICAN_DATE_FORMAT));
         }
 
         //Updated by user
@@ -374,9 +392,53 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             addOrUpdateDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
         }
 
+        //Overall score
+        if(!overallScoreCode.equals("") && survey.hasMainScore())
+            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+
         //Forward order
         if(controlDataElementExistsInServer(pushDeviceCode)) {
             addOrUpdateDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(context));
+        }
+
+        //MainScoreUID
+        if(controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {
+            addOrUpdateDataValue(mainScoreClassCode, survey.getType());
+        }
+
+        //MainScore A
+        if(controlDataElementExistsInServer(mainScoreACode) && survey.hasMainScore()) {
+            addOrUpdateDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
+        }
+
+        //MainScore B
+        if(controlDataElementExistsInServer(mainScoreBCode) && survey.hasMainScore()) {
+            addOrUpdateDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
+        }
+
+        //MainScoreC
+        if(controlDataElementExistsInServer(mainScoreCCode) && survey.hasMainScore()) {
+            addOrUpdateDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
+        }
+
+        //Forward Order
+        if(controlDataElementExistsInServer(forwardOrderCode)) {
+            addOrUpdateDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
+        }
+
+        //Push Device
+        if(controlDataElementExistsInServer(pushDeviceCode)) {
+            addOrUpdateDataValue(pushDeviceCode, Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(context));
+        }
+
+        //Overall productivity
+        if(controlDataElementExistsInServer(overallProductivityCode)) {
+            addOrUpdateDataValue(overallProductivityCode, Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
+        }
+
+        //Next assessment
+        if(controlDataElementExistsInServer(nextAssessmentCode)) {
+            addOrUpdateDataValue(nextAssessmentCode, EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey), EventExtended.AMERICAN_DATE_FORMAT));
         }
     }
 
@@ -430,6 +492,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey, String module){
         currentSurvey.setMainScore(ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
+        currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setEventUid(currentEvent.getUid());
     }
 
@@ -443,6 +506,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         if(PreferencesState.getInstance().isLocationRequired() && lastLocation==null){
             throw new Exception(context.getString(R.string.dialog_error_push_no_location_and_required));
         }
+
+        //location -> set lat/lng
+        currentEvent.setLatitude(lastLocation.getLatitude());
+        currentEvent.setLongitude(lastLocation.getLongitude());
 
         return lastLocation;
     }
@@ -473,10 +540,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 continue;
             }
 
-            if(importSummary==null)
+            if(importSummary==null){
                 rollbackSurvey(iSurvey);
-            else
-                Log.d(TAG, importSummary.toString());
+            }
+
+            //Errors
+            Log.d(TAG, importSummary.toString());
             //Some error happened -> move back to completed
             if(failedItem!=null) {
                 rollbackSurvey(iSurvey);
@@ -514,6 +583,19 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         iSurvey.save();
 
         Log.d(TAG, "PUSH process...OK. Survey saved");
+    }
+
+    /**
+     * Checks whether the given event contains errors in SDK FailedItem table or has been successful.
+     * If not return null, it is becouse this item had a conflict.
+     * @param localId
+     * @return
+     */
+    private FailedItem hasConflict(long localId){
+        return  new Select()
+                .from(FailedItem.class)
+                .where(Condition.column(FailedItem$Table.ITEMID)
+                        .is(localId)).querySingle();
     }
 
     /**

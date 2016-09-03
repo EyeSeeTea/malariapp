@@ -148,7 +148,7 @@ public class SurveyFragment extends  Fragment {
      */
     RelativeLayout llLayout;
 
-    String moduleName;
+    String moduleName=Constants.FRAGMENT_FEEDBACK_KEY;
 
     public static SurveyFragment newInstance(int index) {
         SurveyFragment f = new SurveyFragment();

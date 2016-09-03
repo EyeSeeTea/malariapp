@@ -32,8 +32,10 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +64,14 @@ public class PushClient {
         networkUtils.setDhisServer(sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url),""));
         networkUtils.setUser(user);
         networkUtils.setPassword(password);
+    }
+
+    private boolean launchPush(Survey survey) {
+        Session.setSurveyByModule(survey, Constants.PUSH_MODULE_KEY);
+        //Pushing selected survey via sdk
+        List<Survey> surveys = new ArrayList<>();
+        surveys.add(survey);
+        return PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
     }
 
     public PushClient(List<Survey> surveys, Context applicationContext, String user, String password) {

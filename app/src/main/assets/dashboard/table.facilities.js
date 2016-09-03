@@ -39,7 +39,7 @@ function buildTableFacilities(tabGroupId,dataFacilities){
 function rebuildTableFacilities(){
 	for(var i=0;i<inputDataFacilities.length;i++){
 		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
-		var id=inputDataFacilities[i].id;
+		    var id=inputDataFacilities[i].id;
 			var facilitiesHeadId="facilitiesHead";
 			var facilitiesBodyId="facilitiesBody";
 			var titleFacilitiesId="titleFacilities";
@@ -48,7 +48,7 @@ function rebuildTableFacilities(){
 			document.getElementById(facilitiesBodyId).innerHTML='';
 
 			//Title to table
-			updateChartTitle(titleFacilitiesId,"Quality of care: Last "+inputDataFacilities[i].months.length+" months");
+			updateChartTitle(titleFacilitiesId,messages["qualityOfCare"]+inputDataFacilities[i].months.length+messages["months"]);
 
 			//Add header
 			buildTableHeader(id,inputDataFacilities[i].months);
@@ -57,7 +57,6 @@ function rebuildTableFacilities(){
 			buildTableBody(id,inputDataFacilities[i].facilities);
 
 		}
-	//}
 	}
 }
 

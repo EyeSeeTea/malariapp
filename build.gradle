@@ -37,7 +37,7 @@ allprojects {
 
 ext {
     //App Version
-    versionCode = 26
+    versionCode = 29
     versionName = "QAApp"
     
     // Sdk and tools
@@ -51,6 +51,7 @@ ext {
     // App dependencies versions    
     guavaVersion = '18.0'
     okhttpVersion = '2.2.0'
+    libphonenumberVersion = '7.0.9'
     crashlyticsVersion = '2.5.2@aar'
     opencsvVersion = '3.3'
 

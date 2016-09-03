@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var input = [];
 	var inputall = [];
+	var programs = [];
 	var allAssessment="AllAssessment";
     var selectedProgram=allAssessment;
 	var chart=null;
@@ -23,11 +24,26 @@ function updateChartTitle(id,text){
 //Save the data of the stats
 function setData(data){
 	var temp=data.slice();
-	setAllAssassement(temp)
+	setAllAssessment(temp)
+	countPrograms(data[3]);
 	input.push(data);
 }
+
+ function countPrograms(data){
+ 	console.log(data);
+ 	var exist=false;
+ 	for(var i=0;i<programs.length;i++){
+ 		if(programs[i]==data){
+ 			exist=true;
+ 		}
+ 	}
+ 	if(!exist)
+ 	{
+ 		programs.push(data);
+ 	}
+ }
 //Save and merge a All assassement object with the stats of all the programs merged
-function setAllAssassement(data){
+function setAllAssessment(data){
 	var exist=false;
 	for(var i=0;i<Object.keys(inputall).length;i++){
 		if(inputall[i][4]==data[4]){
@@ -37,36 +53,32 @@ function setAllAssassement(data){
 			inputall[i][3]=allAssessment;
 		}
 	}
-	if(exist==false)
-		inputall.push(data);
+	if(exist==false){
+	    inputall.push(data);
+	}
 }
 //show the data in the table.
 function showData(){
 	for(var i=0;i<inputall.length;i++){
-        if(inputall[i].indexOf(selectedProgram) > -1){
+	//Show the table filter by the select program(all assessment) or without filter if only have one program
+        if(inputall[i].indexOf(selectedProgram) > -1 || programs.length==1){
 			surveyXMonthChart.addData([inputall[i][0], inputall[i][1]], inputall[i][4]);
 		}
 	}
 }
 //Create the select options for select the program
 function createSelectProgram(){
-	var selectHtml='<select onchange="changeProgram()" id="changeProgram" ">';
+	var selectHtml='<select onchange="changeProgram()" id="changeProgram">';
 	var selected="";
-	if(selectedProgram==="AllAssessment")
-		selected="selected";
+	if(selectedProgram==="AllAssessment"){
+	    selected="selected";
+	}
 	selectHtml+="<option "+selected+" value="+allAssessment+">"+"ALL ASSESSMENTS"+"</option>";
 	selected="selected";
 	for(var i=0;i<input.length;i++){
 		if(!(selectHtml.indexOf(input[i][3]) > -1) && !(input[i][3]=== undefined)){
-		if(input[i][3]==selectedProgram){
-			selected="selected";
-		}
-		else
-			selected="";
-		selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2].toUpperCase()+"</option>";
-		if(selected==="selected"){
-			selected="";
-		}
+            selected = input[i][3]==selectedProgram?"selected":"";
+            selectHtml+="<option "+selected+" value="+input[i][3]+">"+input[i][2].toUpperCase()+"</option>";
 		}
 	}
 	selectHtml+="</select>";
@@ -74,37 +86,45 @@ function createSelectProgram(){
 }
 //change program, change table, and change pie to load the pie from the new progra
 function changeProgram(){
-  var myselect = document.getElementById("changeProgram");
-  selectedProgram=(myselect.options[myselect.selectedIndex].value);
-	var hidden=false;
+    var myselect = document.getElementById("changeProgram");
+    selectedProgram=(myselect.options[myselect.selectedIndex].value);
 	if(selectedProgram==="AllAssessment"){
-		hidden=true;
-	}
-	if(hidden==true){
-		//Uncoment it for make the pie and chart program dependent.  
-		document.getElementById("tableCanvas").classList.remove("hide");
-		document.getElementById("tableCanvas").classList.add("show");
-		document.getElementById("graphicCanvas").classList.remove("show");
-		document.getElementById("graphicCanvas").classList.add("hide");
-	}
-	else{
+        showElement("tableCanvas");
+        hideElement("graphicCanvas");
+	}else{
 		showPie();
 		changedOrgunit();
-		document.getElementById("tableCanvas").classList.remove("show");
-		document.getElementById("tableCanvas").classList.add("hide");
-		document.getElementById("graphicCanvas").classList.remove("hide");
-		document.getElementById("graphicCanvas").classList.add("show");
+		showElement("graphicCanvas");
+		hideElement("tableCanvas");
 	}
 }
 
-var surveyXMonthChart= (function SentXMonthChart(){
+function hideElement(idElement){
+    var element = document.getElementById(idElement);
+    if(!element){
+        return;
+    }
+    element.classList.remove("show");
+    element.classList.add("hide");
+}
+
+function showElement(idElement){
+    var element = document.getElementById(idElement);
+    if(!element){
+        return;
+    }
+    element.classList.remove("hide");
+    element.classList.add("show");
+}
+
+function SentXMonthChart(){
     /* Prepares 'sent surveys x month' chart*/
     var ctx = document.getElementById("surveyXMonthCanvas").getContext("2d");
     chart = new Chart(ctx).Line({
         labels: [],
 		datasets: [
             {
-                label: "Assessment undertaken",
+                label: messages["assesmentUnderTaken"],
                 fillColor: "rgba(132,180,103,0)",
                 strokeColor: "#81980d",
                 pointColor: "#81980d",
@@ -114,7 +134,7 @@ var surveyXMonthChart= (function SentXMonthChart(){
                 data: []
             },
             {
-                label: "Target",
+                label: messages["target"],
                 fillColor: "rgba(132,180,103,0)",
                 strokeColor: "#00b4e3",
                 pointColor: "#00b4e3",
@@ -135,7 +155,7 @@ var surveyXMonthChart= (function SentXMonthChart(){
     //Adds legend to chart
     document.getElementById('sentLegend').innerHTML = chart.generateLegend();
     return chart;
-})();
+};
 
 /* Use:
 

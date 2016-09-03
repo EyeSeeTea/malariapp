@@ -48,12 +48,14 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -332,6 +334,10 @@ public class CreateSurveyFragment extends Fragment {
 
         //Get selected program
         Program program = (Program)programView.getSelectedItem();
+
+        // Put new survey in session
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,program);
+        Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
 
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();

@@ -97,6 +97,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceive");
 
         if(inProgress){
             Log.d(TAG, "onReceive but already pushing");

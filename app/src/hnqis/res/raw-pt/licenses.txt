@@ -6,7 +6,7 @@
 <p> O aviso de copyright acima e este aviso de permissão devem ser incluídos em todas as cópias ou partes substanciais do Software. </p>
 <p> O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, expressa ou implícita, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM NENHUM CASO OS AUTORES ou direitos de autor DETENTORES DE SER RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTES DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRA APLICAÇÃO DO SOFTWARE. </p>
 <br/>
-<p> <a href='https://github.com/nnnick/Chart.js/blob/master/LICENSE.md'> Chart.js </a> texto da licença </p>
+<p> Por favor, veja texto da licença Chart.js no seguinte endereço: https://github.com/nnnick/Chart.js/blob/master/LICENSE.md </p>
 <br/>
 
 <p> <b> b) DBFlow ORM </b> </p>
@@ -16,24 +16,18 @@
 <br/>
 <p> O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO, expressa ou implícita, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UM DETERMINADO FIM E NÃO VIOLAÇÃO. EM NENHUM CASO OS AUTORES ou direitos de autor DETENTORES DE SER RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA RESPONSABILIDADE, SEJA EM UMA AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTES DE, OU EM CONEXÃO COM O SOFTWARE OU O USO OU OUTRA APLICAÇÃO DO SOFTWARE. </p>
 <br/>
-<p> <a DBFlow href='https://github.com/Raizlabs/DBFlow/blob/master/LICENSE'> licença texto </a> </p>
+<p> Por favor, veja texto da licença DBFlow no seguinte endereço: https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2FRaizlabs%2FDBFlow%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGMxEwZSy7pTU-Owh-kp9akR05PUQ</p>
 <br/>
 
 <p> <b> 2. Apache License, Versão 2.0 </b> </p>
 <p> Os seguintes programas de software têm sido usados ​​para desenvolver esta aplicação sob a Licença Apache, Versão 2.0 (<a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>):</p>
 <br/>
-<p> a) as bibliotecas Android:
-support-v4 <br/>
-appcompat-7 <br/>
-support-anotações: <a href='https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation'>src pasta aqui </a> <br/>
-multidex - arquivo <a href='https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE'> Aviso encontrada aqui </a> <br/>>
-corredor <br/>
-regras <br/>
-b) OpenCSV: <um href='https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg'>src pasta aqui </a> <br/>
-c) goiaba: pasta <a href='https://github.com/google/guava'> src aqui </a> <br/>
-d) okhttp: <um href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA'>src pasta aqui </a> <br/>
+<p> a) as bibliotecas Android: apoio-v4, AppCompat-7, apoio-de anotações (https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation), multidex (consulte arquivo de AVISO na https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE), corredor, regras <br/>
+b) OpenCSV (https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg)<br/>
+c) goiaba (https://github.com/google/guava) <br/>
+d) okhttp (https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA)<br/>
 e) play-serviços <br/>
-f) libphonenumber: nenhum arquivo de aviso prévio, mas eles usam outra biblioteca que tem um arquivo de notificação, de modo que, para além da sua licença (<a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see aqui </a>), eles também incluem o <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw'>chromium </a> texto da licença. <br/>
+f) libphonenumber (Veja arquivo de Aviso de cromo em licença de cromo em 'https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see here</a>), they include also the <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw' )<br/>
 </p>
 
 <p> de Copyright © 2016 Population Services International (PSI). </p>
@@ -63,19 +57,22 @@ f) libphonenumber: nenhum arquivo de aviso prévio, mas eles usam outra bibliote
 <p> ESTE SOFTWARE É FORNECIDO PELOS DETENTORES DE DIREITOS AUTORAIS E SEUS COLABORADORES "COMO ESTÁ" E QUALQUER GARANTIA EXPRESSA OU IMPLÍCITA, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO E ADEQUAÇÃO A UM DETERMINADO PROPÓSITO. EM NENHUM CASO O DETENTOR DOS DIREITOS AUTORAIS OU SEUS COLABORADORES SER RESPONSÁVEL POR QUAISQUER DANOS DIRETOS,, ACIDENTAL, OU DANOS EXEMPLARES ESPECIAIS INDIRECTOS EMERGENTES (INCLUINDO, SEM LIMITAÇÕES, A AQUISIÇÃO DE BENS OU SERVIÇOS, PERDA DE USO, DADOS OU LUCROS; OU INTERRUPÇÃO DE NEGÓCIOS) CAUSADOS E EM QUALQUER TEORIA DE RESPONSABILIDADE, SEJA EM CONTRATO, RESPONSABILIDADE OBJETIVA OU ATO ILÍCITO (INCLUINDO NEGLIGÊNCIA OU NÃO) LEVANTADA DE QUALQUER FORMA DE USO DESTE SOFTWARE, MESMO QUE AVISADO SOBRE A POSSIBILIDADE DE TAIS DANOS. </p>
 <br/>
 
-<p> <b> 5. Creative Commons Attribution 2.5 License </b> (para Espresso (espresso-core, de café intenções, espresso-marcha lenta de recursos, expresso-web)) - <a href='https://creativecommons.org/licenses/by/2.5/legalcode'>https://creativecommons.org/licenses/by/2.5/legalcode</a></p>
+<p> <b> 5. Creative Commons Attribution 2.5 License </b> (para Espresso (espresso-core, de café intenções, espresso-marcha lenta de recursos, expresso-web)) - https://creativecommons.org/licenses/by/2.5/legalcode < / p>
 <p> PSI não tenha feito quaisquer modificações ou alterações no software Expresso acima referenciada para fins desta aplicação. </p>
 <br/>
 <p> <b> Você é livre para: </b> <br/>
-<b> Share </b> - copiar e redistribuir o material em qualquer meio ou formato <br/>
-<b> Adaptar </b> - Remix, transformar e construir sobre o material <br/>
+<B> Share </b> - copiar e redistribuir o material em qualquer meio ou formato <br/>
+<B> Adaptar </b> - Remix, transformar e construir sobre o material <br/>
 para qualquer finalidade, mesmo comercialmente. <br/>
 O licenciante não pode revogar essas liberdades, desde que você siga os termos da licença. </p>
 <br/>
 <p> <b> De acordo com os seguintes termos: </b> <br/>
-<b> Atribuição </b> - Você deve dar crédito adequado, fornecer um link para a licença, e indicar se as alterações foram feitas. Você pode fazê-lo de qualquer forma razoável, mas não de qualquer forma que sugira que o licenciante concorda com você ou seu uso. <br/>
+<B> Atribuição </b> - Você deve dar crédito adequado, fornecer um link para a licença, e indicar se as alterações foram feitas. Você pode fazê-lo de qualquer forma razoável, mas não de qualquer forma que sugira que o licenciante concorda com você ou seu uso. <br/>
 Não há restrições adicionais -. Você pode não se aplicar termos legais ou medidas tecnológicas que legalmente restringem os outros de fazer qualquer coisa a licença permite <p />
 <br/>
 <p> <b> Avisos: </b> <br/>
 Você não tem de cumprir a licença para elementos do material de domínio público ou onde o seu uso é permitido por uma excepção ou limitação aplicável. <br/>
 Nenhuma garantia é dada. A licença não pode dar-lhe todas as permissões necessárias para o seu uso pretendido. Por exemplo, outros direitos, tais como a publicidade, privacidade ou direitos morais podem limitar como você usa o material. </p>
+
+<p> <b> EXCLUSÕES </b> </p>
+<p> Este aplicativo usa software Crashlytics proprietários sob uma licença restrita de Crashlytics para fornecer informações para o desenvolvedor (s) sobre o funcionamento do aplicativo, incluindo, mas não limitado a, informações sobre como e em que circunstâncias o App caiu e como muitos usuários interagem com o App e como eles fazem isso. O software Crashlytics não está incluído na Licença Pública Geral GNU para a App; PSI não tem autoridade para sub-licenciar o software Crashlytics. Para mais informações sobre software Crashlytics, visite https://try.crashlytics.com/terms/. </p>

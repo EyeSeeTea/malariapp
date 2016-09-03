@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,12 +39,17 @@ import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -65,8 +71,13 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     private List<PlannedItem> plannedItems;
 
     private Program programDefaultOption;
+    private OrgUnit orgUnitDefaultOption;
 
     private List<Program> programList;
+    private List<OrgUnit> orgUnitList;
+
+    OnOrgUnitSelectedListener mCallback;
+    OnProgramSelectedListener mCallbackProgram;
 
     public PlannedFragment() {
         this.plannedItems = new ArrayList();
@@ -78,6 +89,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
     }
 
     @Override
@@ -98,12 +110,13 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     private void prepareUI() {
-        this.adapter = new PlannedAdapter(plannedItems,getActivity());
+        this.adapter = new PlannedAdapter(this.plannedItems,getActivity());
         this.setListAdapter(adapter);
 
         Spinner programSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_program);
         //Populate Program View DDL
-        programList.add(0, programDefaultOption);
+        if(!programList.contains(programDefaultOption))
+            programList.add(0, programDefaultOption);
         programSpinner.setAdapter(new FilterProgramArrayAdapter(getActivity(), programList));
         //Apply filter to listview
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -120,7 +133,35 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
             }
         });
+        /*Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
 
+        //Populate OU View DDL
+        if(!orgUnitList.contains(orgUnitDefaultOption))
+            orgUnitList.add(0, orgUnitDefaultOption);
+        orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getActivity(), orgUnitList));
+        //Apply filter to listview
+        orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Spinner spinner=((Spinner) parent);
+                OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
+    }
+    // Container Activity must implement this interface
+    public interface OnProgramSelectedListener {
+        public void OnProgramSelected(Program program);
+    }
+
+    // Container Activity must implement this interface
+    public interface OnOrgUnitSelectedListener {
+        public void OnOrgUnitSelected(OrgUnit orgUnit);
     }
 
     @Override

@@ -55,7 +55,7 @@ import java.util.List;
 /**
  * Created by ignac on 07/01/2016.
  */
-public class FeedbackFragment extends Fragment {
+public class FeedbackFragment extends Fragment implements IModuleFragment{
 
     public static final String TAG = ".FeedbackActivity";
 
@@ -117,6 +117,7 @@ public class FeedbackFragment extends Fragment {
 
         return f;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
@@ -129,6 +130,7 @@ public class FeedbackFragment extends Fragment {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
     }
+
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
@@ -137,6 +139,7 @@ public class FeedbackFragment extends Fragment {
         registerReceiver();
         prepareFeedbackInfo();
     }
+
     @Override
     public void onPause(){
         unregisterReceiver();
@@ -252,6 +255,14 @@ public class FeedbackFragment extends Fragment {
 
     public void setModuleName(String simpleName) {
         this.moduleName=simpleName;
+    }
+
+    @Override
+    public void reloadData() {
+        if (feedbackAdapter!=null){
+            List<Feedback> feedbackList=(List<Feedback>)Session.popServiceValue(SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS);
+            loadItems(feedbackList);;
+        }
     }
 
     /**
