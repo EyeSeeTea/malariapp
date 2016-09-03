@@ -135,6 +135,10 @@ public class SurveyService extends IntentService {
      */
     public static final String PREPARE_PROGRAMS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_PROGRAMS";
     /**
+     * Key of programs entry in shared session
+     */
+    public static final String PREPARE_TABGROUPS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_TABGROUPS";
+    /**
      * Key of surveys entry in shared session
      */
     public static final String PREPARE_SURVEYS ="org.eyeseetea.malariacare.services.SurveyService.PREPARE_SURVEYS";

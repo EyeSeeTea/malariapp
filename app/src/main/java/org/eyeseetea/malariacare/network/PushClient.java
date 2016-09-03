@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.network;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -30,11 +29,10 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
-import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -88,11 +86,12 @@ public class PushClient {
 
     public void pushSDK() {
         //No network -> Done
-        if (!AUtils.isNetworkAvailable()) {
+        if (!AUtils.isNetworkAvailable() || PushController.getInstance().isPushing())
             AlarmPushReceiver.isDone();
+        else {
+            //Push via sdk
+            PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
         }
-        //Push via sdk
-        PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
     }
 
     public PushResult pushAPI() {

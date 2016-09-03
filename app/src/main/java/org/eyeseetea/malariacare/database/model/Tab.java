@@ -111,9 +111,9 @@ public class Tab extends BaseModel {
         return program;
     }
 
-    public void setProgram(Long id_tab_group){
-        this.id_program =id_tab_group;
-        this.program =null;
+    public void setProgram(Long id_program){
+        this.id_program=id_program;
+        this.program=null;
     }
 
     public void setProgram(Program program) {

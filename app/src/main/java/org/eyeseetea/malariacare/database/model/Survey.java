@@ -195,9 +195,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.id_program = (program!=null)?program.getId_program():null;
     }
 
-    public void setProgram(Long id_tab_group){
-        this.id_program = id_tab_group;
-        this.program = null;
+    public void setProgram(Long id_program){
+        this.id_program = id_program;
+        this.id_program= null;
     }
 
     public User getUser() {
@@ -484,8 +484,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     public SurveyAnsweredRatio reloadSurveyAnsweredRatio(){
-        int numRequired = Question.countRequiredByProgram(this.getProgram());
-        int numCompulsory=Question.countCompulsoryByProgram(this.getProgram());
+        //TODO Review
+        Program surveyProgram = this.getProgram();
+        int numRequired = Question.countRequiredByProgram(surveyProgram);
+        int numCompulsory=Question.countCompulsoryByProgram(surveyProgram);
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
         int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(this.id_survey);
         int numAnswered = Value.countBySurvey(this);
@@ -929,11 +931,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
         stringBuilder.append(this.getOrgUnit().getName());
         stringBuilder.append(", ");
         stringBuilder.append(this.getProgram().getName());
-        stringBuilder.append(", ");
-        stringBuilder.append(this.getProgram().getName());
         return stringBuilder.toString();
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.utils.monitor;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

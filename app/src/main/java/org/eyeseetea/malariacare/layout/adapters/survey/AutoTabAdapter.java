@@ -46,6 +46,7 @@ import android.widget.Switch;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -518,6 +519,12 @@ public class AutoTabAdapter extends ATabAdapter {
 
         switch (question.getOutput()) {
             case Constants.DATE:
+                String valueString=ReadWriteDB.readValueQuestion(question, module);
+                Date valueDate= EventExtended.parseShortDate(valueString);
+                if(valueDate!=null) {
+                    viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
+                }
+                break;
             case Constants.SHORT_TEXT:
             case Constants.INT:
             case Constants.LONG_TEXT:
@@ -528,6 +535,8 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.DROPDOWN_LIST_DISABLED:
                 viewHolder.setSpinnerSelection(ReadWriteDB.readPositionOption(question, module));
                 List<Float> numdenum = ScoreRegister.getNumDenum(question, idSurvey, module);
+                viewHolder.setDenumText(getContext().getString(R.string.number_zero));
+                viewHolder.setNumText(getContext().getString(R.string.number_zero));
                 if (numdenum != null) {
                     if(numdenum.get(0)!=null) {
                         viewHolder.setNumText(Float.toString(numdenum.get(0)));
@@ -548,7 +557,8 @@ public class AutoTabAdapter extends ATabAdapter {
                 if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
                     break;
                 }
-                //viewHolder.setNumAndDenum(numdenumradiobutton.get(1).toString(), getContext().getString(R.string.number_zero));
+                viewHolder.setDenumText(numdenumradiobutton.get(1).toString());
+                viewHolder.setNumText(getContext().getString(R.string.number_zero));
 
                 if (value != null) {
                     viewHolder.setRadioChecked(value.getOption());

@@ -36,10 +36,10 @@ import java.util.Map;
  * Build that creates and inyects the info into the piecharts
  * Created by arrizabalaga on 9/10/15.
  */
-public class PieTabGroupBuilder {
+public class PieProgramBuilder {
 
     public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:buildPieCharts(%s)";
-    private static final String TAG=".PieTabGroupBuilder";
+    private static final String TAG=".PieProgramBuilder";
     public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
@@ -55,13 +55,13 @@ public class PieTabGroupBuilder {
     /**
      * Map of entries per program
      */
-    private Map<Program,PieProgramData> pieTabGroupDataMap;
+    private Map<Program,PieProgramData> pieProgramDataMap;
 
     /**
      * Default constructor
      */
-    public PieTabGroupBuilder(List<Survey> surveys, Context context) {
-        pieTabGroupDataMap = new HashMap<>();
+    public PieProgramBuilder(List<Survey> surveys, Context context) {
+        pieProgramDataMap = new HashMap<>();
         this.surveys = surveys;
         this.context = context;
     }
@@ -82,7 +82,7 @@ public class PieTabGroupBuilder {
             build(survey);
         }
 
-        return new ArrayList(pieTabGroupDataMap.values());
+        return new ArrayList(pieProgramDataMap.values());
     }
 
     private void build(Survey survey) {
@@ -90,12 +90,12 @@ public class PieTabGroupBuilder {
         Program program=survey.getProgram();
 
         //Get the entry for that program
-        PieProgramData pieProgramData = pieTabGroupDataMap.get(program);
+        PieProgramData pieProgramData = pieProgramDataMap.get(program);
 
         //First time no entry
         if(pieProgramData ==null){
             pieProgramData =new PieProgramData(program);
-            pieTabGroupDataMap.put(program, pieProgramData);
+            pieProgramDataMap.put(program, pieProgramData);
         }
         //Increment surveys for that month
         pieProgramData.incCounter(survey.getMainScore());

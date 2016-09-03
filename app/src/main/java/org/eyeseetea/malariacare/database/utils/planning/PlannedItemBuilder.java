@@ -241,7 +241,7 @@ public class PlannedItemBuilder {
             surveyMap.put(key,survey);
         }
         else{
-            Log.d(TAG, "Error tabgroup null in surevy id: " + survey.getId_survey());
+            Log.d(TAG, "Error program null in survey id: " + survey.getId_survey());
         }
     }
 

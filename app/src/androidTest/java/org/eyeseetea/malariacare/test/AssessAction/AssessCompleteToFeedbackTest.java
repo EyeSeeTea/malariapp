@@ -111,8 +111,8 @@ public class AssessCompleteToFeedbackTest {
         }
         Espresso.unregisterIdlingResources(idlingResource);
         if(survey.isCompleted())
-            onView(withText( "* "  + survey.getProgram().getProgram().getName())).check(matches(isDisplayed()));
+            onView(withText( "* "  + survey.getProgram().getName())).check(matches(isDisplayed()));
         else
-            onView(withText("- "   + survey.getProgram().getProgram().getName())).check(matches(isDisplayed()));
+            onView(withText("- "   + survey.getProgram().getName())).check(matches(isDisplayed()));
     }
 }

@@ -387,11 +387,16 @@ public class AutoTabLayoutUtils {
     private static void recalculateScores(AutoTabViewHolder viewHolder, Question question, float idSurvey, String module) {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
-
-        viewHolder.setNumText(num.toString());
-        viewHolder.setDenumText(denum.toString());
-
-        ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+        //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
+        viewHolder.setNumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.setDenumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        if(num!=null){
+            viewHolder.setNumText(num.toString());
+            viewHolder.setDenumText(denum.toString());
+            ScoreRegister.addRecord(question, num, denum, idSurvey, module);
+        }
+        else
+            ScoreRegister.deleteRecord(question, idSurvey, module);
     }
 
     public static void initScoreQuestion(Question question, float idSurvey, String module) {

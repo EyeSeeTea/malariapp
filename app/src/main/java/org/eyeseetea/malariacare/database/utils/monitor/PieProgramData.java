@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.database.utils.monitor;
 
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
@@ -89,7 +88,7 @@ public class PieProgramData {
      * @return
      */
     public String toJSON(String tipChat){
-        String pieTitle=String.format("%s (%s)", program.getName(), program.getName());
+        String pieTitle=String.format("%s", program.getName());
         String json= String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC, program.getUid(), program.getUid());
         return json;
     }

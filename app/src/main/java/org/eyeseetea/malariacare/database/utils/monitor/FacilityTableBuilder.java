@@ -91,7 +91,7 @@ public class FacilityTableBuilder {
      */
     private void build(List<Survey> surveys){
         for(Survey survey:surveys){
-            //Current TabGroup
+            //Current program
             Program program=survey.getProgram();
 
             //Get right table
@@ -100,7 +100,7 @@ public class FacilityTableBuilder {
             //Init entry first time of a tabgroup
             if(facilityTableData==null){
                 facilityTableData=new FacilityTableData(program);
-                facilityTableDataMap.put(survey.getProgram(),facilityTableData);
+                facilityTableDataMap.put(program,facilityTableData);
             }
 
             //Add survey to that table

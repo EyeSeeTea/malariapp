@@ -31,7 +31,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.hisp.dhis.android.sdk.controllers.wrappers.EventsWrapper;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.json.JSONArray;
@@ -64,7 +63,7 @@ public class PullClient {
     }
 
     /**
-     * Find the last survey in the server for that orgunit and program (given a tabgroup) in the last month from now.
+     * Find the last survey in the server for that orgunit and program (given a program) in the last month from now.
      *
      * @param orgUnit
      * @param program
@@ -74,7 +73,7 @@ public class PullClient {
         Event  lastEventInServer=null;
         Date oneMonthAgo = getOneMonthAgo();
 
-        //Lets for a last event with that orgunit/tabgroup
+        //Lets for a last event with that orgunit/program
         String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(), program.getUid(), oneMonthAgo);
         try {
             JSONObject response = networkUtils.getData(data);

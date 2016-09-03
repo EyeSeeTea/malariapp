@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
@@ -127,8 +128,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        //orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
-        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
+        orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
+        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
     }
 
     @Override
@@ -182,15 +183,16 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         super.onResume();
     }
 
-    private void initFilters() {
+    private void initProgramFilters() {
         initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-        List<Program> filterProgramList=programList;
-        Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
-        if(!filterProgramList.contains(allAssessemntsProgram))
-            filterProgramList.add(0, allAssessemntsProgram);
-        if(programFilter==null)
-            programFilter=allAssessemntsProgram.getUid();
+        List<Program> filterProgramList= programList;
+        Program defaultAllProgramFilter=new Program();
+        defaultAllProgramFilter.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
+        filterProgramList.add(0, defaultAllProgramFilter);
+        if(programFilter ==null) {
+            programFilter = defaultAllProgramFilter.getName();
+        }
         filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
         filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -202,12 +204,12 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
                     if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
                         programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
-                        reload=true;
+                        reload = true;
                     }
                 } else {
-                    if (programFilter != program.getUid()) {
-                        programFilter = program.getUid();
-                        reload=true;
+                    if (programFilter != program.getName()) {
+                        programFilter = program.getName();
+                        reload = true;
                     }
                 }
                 if(reload && !initiatingFilters)
@@ -219,6 +221,12 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
             }
         });
+        reloadSentSurveys(surveys);
+        initiatingFilters =false;
+    }
+
+    private void initOrgUnitFilters(){
+        initiatingFilters=true;
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
         //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
@@ -254,6 +262,12 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         });
         reloadSentSurveys(surveys);
         initiatingFilters =false;
+    }
+
+    private void initFilters() {
+        initProgramFilters();
+        initOrgUnitFilters();
+        reloadSentSurveys(surveys);
     }
 
     /**
@@ -379,15 +393,17 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                                     return position>0 && position<=surveys.size();
                                 }
 
+                                @SuppressLint("StringFormatInvalid")
                                 @Override
                                 public void onDismiss(ListView listView, int[] reverseSortedPositions) {
 
                                     for (final int position : reverseSortedPositions) {
                                         final Survey selectedSurvey=((Survey)adapter.getItem(position-1));
 
+                                        String confirmMessage =getActivity().getString(R.string.dialog_info_delete_survey);
                                         new AlertDialog.Builder(getActivity())
                                                 .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                                                .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey),selectedSurvey.getFullName()))
+                                                .setMessage(String.format(confirmMessage,selectedSurvey.getFullName()))
                                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface arg0, int arg1) {
                                                         selectedSurvey.delete();
@@ -449,7 +465,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.RELOAD_SENT_FRAGMENT_ACTION));
+            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION));
         }
     }
 
@@ -561,7 +578,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         reloadSurveys(oneSurveyForOrgUnit);
     }
 
-    public void getOrgUnitAndProgram(){
+    public void getOrgUnitAndPrograms(){
         HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
         orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
         programList=data.get(SurveyService.PREPARE_PROGRAMS);
@@ -578,8 +595,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
-            if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgram().getUid()))
-              orgUnits.put(survey.getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
+            if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgram().getName()))
+              orgUnits.put(survey.getProgram().getName()+survey.getOrgUnit().getUid(), survey);
         return orgUnits;
     }
 
@@ -601,16 +618,16 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
+            /*if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
                 DashboardSentBundle sentDashboardBundle =(DashboardSentBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
                 orgUnitList= sentDashboardBundle.getOrgUnits();
                 programList= sentDashboardBundle.getPrograms();
                 surveys= sentDashboardBundle.getSentSurveys();
                 reloadSentSurveys(surveys);
                 initFilters();
-            }
+            }*/
             if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
-                getOrgUnitAndProgram();
+                getOrgUnitAndPrograms();
                 new showContainer().execute();
             }
         }
