@@ -19,20 +19,32 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import android.app.FragmentTransaction;
+import android.view.View;
+import android.widget.LinearLayout;
+
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
+import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
 public class PlanModuleController extends ModuleController {
-
+    PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
     public PlanModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_plan_layout;
+    }
+
+    public static String getSimpleName(){
+        return PlanModuleController.class.getSimpleName();
     }
 
     @Override
@@ -45,4 +57,29 @@ public class PlanModuleController extends ModuleController {
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
+    public void onOrgUnitSelected(OrgUnit orgUnit) {
+        //hide plannedFragment layout and show plannedOrgUnitsFragment
+        getFragment().getView().findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
+        getFragment().getView().findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
+        plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
+
+        try{
+            //fix some visual problems
+            View vg = getFragment().getView().findViewById (R.id.dashboard_planning_orgunit);
+            vg.invalidate();
+        }catch (Exception e){}
+
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+        ft.commit();
+        plannedOrgUnitsFragment.reloadData();
+
+    }
+
+    public void onProgramSelected(Program program) {
+        LinearLayout list = (LinearLayout) getFragment().getView().findViewById(R.id.dashboard_planning_orgunit);
+        if(list.getVisibility()==View.VISIBLE) {
+            ((PlannedFragment)fragment).reloadData();
+        }
+    }
 }

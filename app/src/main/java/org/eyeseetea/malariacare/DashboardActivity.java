@@ -260,6 +260,20 @@ public class DashboardActivity extends BaseActivity{
     }
 
     /**
+     * Handler that starts or edits a given survey
+     * @param orgUnit
+     */
+    public void onOrgUnitSelected(OrgUnit orgUnit){
+        dashboardController.onOrgUnitSelected(orgUnit);
+    }
+    /**
+     * Handler that starts or edits a given survey
+     * @param program
+     */
+    public void onProgramSelected(Program program){
+        dashboardController.onProgramSelected(program);
+    }
+    /**
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
      * @param survey
