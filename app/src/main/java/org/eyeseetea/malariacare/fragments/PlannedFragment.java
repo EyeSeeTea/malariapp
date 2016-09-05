@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,27 +32,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
+import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +68,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     private List<Program> programList;
     private List<OrgUnit> orgUnitList;
-
-    OnOrgUnitSelectedListener mCallback;
-    OnProgramSelectedListener mCallbackProgram;
 
     public PlannedFragment() {
         this.plannedItems = new ArrayList();
@@ -122,10 +112,12 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Spinner spinner = ((Spinner) parent);
-                Program selectedProgram = position == 0 ? null : (Program) spinner.getItemAtPosition(position);
+                Spinner spinner=((Spinner) parent);
+                Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 adapter.applyFilter(selectedProgram);
+                if(selectedProgram!=null)
+                    DashboardActivity.dashboardActivity.onProgramSelected(selectedProgram);
             }
 
             @Override
@@ -133,9 +125,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
             }
         });
-        /*Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
+        Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
 
-        //Populate OU View DDL
+        //Populate Program View DDL
         if(!orgUnitList.contains(orgUnitDefaultOption))
             orgUnitList.add(0, orgUnitDefaultOption);
         orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getActivity(), orgUnitList));
@@ -146,22 +138,15 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                 Spinner spinner=((Spinner) parent);
                 OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_org_assessments).toUpperCase()))
+                    DashboardActivity.dashboardActivity.onOrgUnitSelected(selectedOrgUnit);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });*/
-    }
-    // Container Activity must implement this interface
-    public interface OnProgramSelectedListener {
-        public void OnProgramSelected(Program program);
-    }
-
-    // Container Activity must implement this interface
-    public interface OnOrgUnitSelectedListener {
-        public void OnOrgUnitSelected(OrgUnit orgUnit);
+        });
     }
 
     @Override
@@ -198,7 +183,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.ALL_PROGRAMS_ACTION));
         }
     }
     /**
@@ -215,7 +199,13 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     @Override
     public void reloadData(){
-        reloadPlannedItems((List<PlannedItem>) Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION));
+        PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
+        if(plannedServiceBundle==null)
+            return;
+        programList=(List<Program>) plannedServiceBundle.getModelList(Program.class.getName());
+        orgUnitList=(List<OrgUnit>)plannedServiceBundle.getModelList(OrgUnit.class.getName());
+        prepareUI();
+        reloadPlannedItems(plannedServiceBundle.getPlannedItems());
     }
 
     public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
@@ -235,11 +225,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.ALL_PROGRAMS_ACTION.equals(intent.getAction())){
-                programList = (List<Program>)Session.popServiceValue(SurveyService.ALL_PROGRAMS_ACTION);
-                prepareUI();
-            }
-            if (SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
+
+            if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 reloadData();
             }
         }

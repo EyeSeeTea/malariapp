@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieProgramBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
+import org.eyeseetea.malariacare.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
@@ -152,9 +153,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
      */
     @Override
     public void reloadData() {
-        HashMap<String,List> data= (HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
+        BaseServiceBundle data= (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
         if(data!=null) {
-            surveysForGraphic = data.get(SurveyService.PREPARE_SURVEYS);
+            surveysForGraphic = (List<Survey>)data.getModelList(Survey.class.getName());
             //Remove the bad surveys.
             Iterator<Survey> iter = surveysForGraphic.iterator();
             while(iter.hasNext()){
@@ -163,8 +164,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
                     iter.remove();
                 }
             }
+            programs = (List<Program>)data.getModelList(Program.class.getName());
 
-            programs = data.get(SurveyService.PREPARE_PROGRAMS);
             reloadSurveys(surveysForGraphic,programs);
         }
     }

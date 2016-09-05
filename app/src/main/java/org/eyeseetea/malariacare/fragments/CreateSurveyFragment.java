@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -555,10 +556,10 @@ public class CreateSurveyFragment extends Fragment {
             //Listening only intents from this method
             if(loadHierarchy)
                 if (SurveyService.ALL_CREATE_SURVEY_DATA_ACTION.equals(intent.getAction())) {
-                    HashMap<String,List> data=(HashMap<String,List>) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
-                    orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
-                    orgUnitLevelList=data.get(SurveyService.PREPARE_ORG_UNIT_LEVEL);
-                    allProgramList=data.get(SurveyService.PREPARE_PROGRAMS);
+                    BaseServiceBundle data=(BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
+                    orgUnitList=(List<OrgUnit>)data.getModelList(OrgUnit.class.getName());
+                    orgUnitLevelList=(List<OrgUnitLevel>)data.getModelList(OrgUnitLevel.class.getName());
+                    allProgramList=(List<Program>)data.getModelList(Program.class.getName());
                     create();
                 }
         }
