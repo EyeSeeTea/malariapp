@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -127,7 +128,6 @@ public class PlannedAdapter extends BaseAdapter {
         //Refresh view
         notifyDataSetChanged();
     }
-
     private void updateNumShown(){
         Log.d(TAG, "updateNumShown");
         //No list -> nothing to update

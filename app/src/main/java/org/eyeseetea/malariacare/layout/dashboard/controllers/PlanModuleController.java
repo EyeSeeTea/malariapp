@@ -50,6 +50,7 @@ public class PlanModuleController extends ModuleController {
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
+        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
         fragment= new PlannedFragment();
     }
 
@@ -59,27 +60,50 @@ public class PlanModuleController extends ModuleController {
 
     public void onOrgUnitSelected(OrgUnit orgUnit) {
         //hide plannedFragment layout and show plannedOrgUnitsFragment
-        getFragment().getView().findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
-        getFragment().getView().findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
-        plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
+        if(DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).getVisibility()!=View.VISIBLE) {
+            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
+            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
+            plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
 
-        try{
-            //fix some visual problems
-            View vg = getFragment().getView().findViewById (R.id.dashboard_planning_orgunit);
-            vg.invalidate();
-        }catch (Exception e){}
+            try {
+                //fix some visual problems
+                View vg = DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit);
+                vg.invalidate();
+            } catch (Exception e) {
+            }
 
-        FragmentTransaction ft = getFragmentTransaction();
-        ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
-        ft.commit();
-        plannedOrgUnitsFragment.reloadData();
+            FragmentTransaction ft = getFragmentTransaction();
+            ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+            ft.commit();
+            plannedOrgUnitsFragment.loadOrgUnit(orgUnit);
+        }
+        else {
+            plannedOrgUnitsFragment.loadOrgUnit(orgUnit);
+        }
 
     }
 
     public void onProgramSelected(Program program) {
-        LinearLayout list = (LinearLayout) getFragment().getView().findViewById(R.id.dashboard_planning_orgunit);
-        if(list.getVisibility()==View.VISIBLE) {
-            ((PlannedFragment)fragment).reloadData();
+        if(DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).getVisibility()!=View.VISIBLE)
+        {
+            //hide plannedFragment layout and show plannedOrgUnitsFragment
+            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(View.VISIBLE);
+            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
+            fragment = new PlannedFragment();
+
+            try {
+                //fix some visual problems
+                View vg = DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit);
+                vg.invalidate();
+            } catch (Exception e) {
+            }
+
+            FragmentTransaction ft = getFragmentTransaction();
+            ft.replace(R.id.dashboard_planning_init, fragment);
+            ft.commit();
+        }
+        else{
+            ((PlannedFragment) fragment).loadProgram(program);
         }
     }
 }

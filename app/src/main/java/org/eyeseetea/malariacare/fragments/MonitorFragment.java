@@ -38,6 +38,7 @@ import android.webkit.WebViewClient;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
@@ -148,11 +149,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             surveyReceiver = null;
         }
     }
-    /**
-     * load and reload sent surveys
-     */
-    @Override
-    public void reloadData() {
+    public void reloadSentSurveys() {
         BaseServiceBundle data= (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
         if(data!=null) {
             surveysForGraphic = (List<Survey>)data.getModelList(Survey.class.getName());
@@ -249,6 +246,17 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
         }
     }
 
+    /**
+     * load and reload sent surveys
+     */
+    @Override
+    public void reloadData() {
+            //Reload data using service
+            Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_MONITOR_DATA_ACTION);
+            PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+    }
+
 
     /**
      * Inner private class that receives the result from the service
@@ -262,7 +270,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
             if (SurveyService.ALL_MONITOR_DATA_ACTION.equals(intent.getAction())) {
-                reloadData();
+                reloadSentSurveys();
             }
         }
     }

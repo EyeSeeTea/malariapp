@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
@@ -65,6 +66,10 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private List<Program> programList;
     private List<OrgUnit> orgUnitList;
 
+    List<PlannedItem> plannedItems;
+
+    private OrgUnit orgUnitFilter=null;
+
 
     public PlannedPerOrgUnitFragment() {
 
@@ -79,6 +84,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         this.surveys = new ArrayList();
         programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
         orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        orgUnitFilter=null;
     }
 
     @Override
@@ -98,10 +104,22 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
     }
 
-    private void prepareUI(List<PlannedItem> plannedItems) {
-        initAdapter(plannedItems);
+    private void prepareUI() {
+        initAdapter(filteredData());
         initListView();
         resetList();
+    }
+
+    private List<PlannedItem> filteredData() {
+        List<PlannedItem> plannedSurveys=new ArrayList<>();
+        if(plannedItems!=null)
+            for(PlannedItem item:plannedItems){
+                if(orgUnitFilter==null || ((PlannedSurvey)item).getSurvey().getOrgUnit().getUid().equals(orgUnitFilter.getUid())){
+                    plannedSurveys.add(item);
+
+                }
+            }
+        return plannedSurveys;
     }
 
     public void resetList() {
@@ -170,7 +188,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_ORG_UNIT_SURVEYS_ACTION));
         }
     }
     /**
@@ -188,7 +206,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_ORG_UNIT_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -203,14 +221,19 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
-                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
+            if(SurveyService.PLANNED_ORG_UNIT_SURVEYS_ACTION.equals(intent.getAction())){
+                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_ORG_UNIT_SURVEYS_ACTION);
                 List<PlannedItem> items= new ArrayList<>();
                 for(PlannedItem item: plannedServiceBundle.getPlannedItems())
                     if(item instanceof PlannedSurvey)
-                        items.add(item);
-                prepareUI(items);
+                            items.add(item);
+                plannedItems=items;
+                prepareUI();
             }
         }
+    }
+    public void loadOrgUnit(OrgUnit orgUnit) {
+        orgUnitFilter=orgUnit;
+        reloadData();
     }
 }

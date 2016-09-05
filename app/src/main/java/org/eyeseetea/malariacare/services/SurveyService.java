@@ -61,6 +61,11 @@ public class SurveyService extends IntentService {
      * Name of the parameter that holds every survey that goes into the planned tab
      */
     public static final String PLANNED_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS_ACTION";
+
+    /**
+     * Name of the parameter that holds every survey that goes into the planned tab
+     */
+    public static final String PLANNED_ORG_UNIT_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_ORG_UNIT_SURVEYS_ACTION";
     /**
      * Name of the parameter that holds every survey and filters that goes into the feedback
      */
@@ -168,6 +173,9 @@ public class SurveyService extends IntentService {
             case PLANNED_SURVEYS_ACTION:
                 reloadPlannedSurveys();
                 break;
+            case PLANNED_ORG_UNIT_SURVEYS_ACTION:
+                reloadOrgUnitPlannedSurveys();
+                break;
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
@@ -209,6 +217,17 @@ public class SurveyService extends IntentService {
         Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
 
+    }
+
+    private void reloadOrgUnitPlannedSurveys() {
+        Log.d(TAG, "reloadPlanningSurveys");
+        PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
+        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
+        plannedServiceBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
+        plannedServiceBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
+        Session.putServiceValue(PLANNED_ORG_UNIT_SURVEYS_ACTION, plannedServiceBundle);
+        //Returning result to anyone listening
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_ORG_UNIT_SURVEYS_ACTION));
     }
 
     private void reloadPlannedSurveys() {
