@@ -96,10 +96,6 @@ public class SurveyService extends IntentService {
     public static final String ALL_MONITOR_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_MONITOR_DATA_ACTION";
 
     /**
-     * Name of 'All filter sentfragment' action
-     */
-    public static final String ALL_SENT_DASHBOARD_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_SENT_DASHBOARD_ACTION";
-    /**
      * Name of 'All create survey data' action
      */
     public static final String ALL_CREATE_SURVEY_DATA_ACTION ="org.eyeseetea.malariacare.services.SurveyService.ALL_CREATE_SURVEY_DATA_ACTION";
@@ -187,9 +183,6 @@ public class SurveyService extends IntentService {
             case ALL_MONITOR_DATA_ACTION:
                 getAllMonitorData();
                 break;
-            case ALL_SENT_DASHBOARD_ACTION:
-                getAllSentDashboardData();
-                break;
             case ALL_CREATE_SURVEY_DATA_ACTION:
                 getAllCreateSurveyData();
                 break;
@@ -243,19 +236,6 @@ public class SurveyService extends IntentService {
         //Returning result to anyone listening
         Intent resultIntent= new Intent(ALL_CREATE_SURVEY_DATA_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-    }
-
-    private void getAllSentDashboardData() {
-        Log.d(TAG,"getAllOrgUnitAndPrograms (Thread:"+Thread.currentThread().getId()+")");
-
-        BaseServiceBundle sentDashboardBundle = new BaseServiceBundle();
-        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getAllSentCompletedOrConflictSurveys());
-        sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
-        sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
-
-        //Since intents does NOT admit NON serializable as values we use Session instead
-        Session.putServiceValue(ALL_SENT_DASHBOARD_ACTION, sentDashboardBundle);
-
     }
 
     private void getAllMonitorData() {

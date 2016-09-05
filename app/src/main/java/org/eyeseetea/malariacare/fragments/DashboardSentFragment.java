@@ -464,7 +464,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_SENT_DASHBOARD_ACTION));
+            LocalBroadcastManager.getInstance(PreferencesState.getInstance().getContext()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.RELOAD_SENT_FRAGMENT_ACTION));
         }
     }
 
@@ -576,15 +576,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         reloadSurveys(oneSurveyForOrgUnit);
     }
 
-    public void reloadDataFromService(){
-        BaseServiceBundle sentDashboardBundle =(BaseServiceBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
-        orgUnitList= (List<OrgUnit>)sentDashboardBundle.getModelList(OrgUnit.class.getName());
-        programList= (List<Program>)sentDashboardBundle.getModelList(Program.class.getName());
-        surveys= (List<Survey>)sentDashboardBundle.getModelList(Survey.class.getName());
-        reloadSentSurveys(surveys);
-        initFilters();
-    }
-
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
         if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
             if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgram().getName()))
@@ -603,8 +594,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_DASHBOARD_ACTION.equals(intent.getAction())) {
-                BaseServiceBundle sentDashboardBundle = (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_SENT_DASHBOARD_ACTION);
+            if (SurveyService.RELOAD_SENT_FRAGMENT_ACTION.equals(intent.getAction())) {
+                BaseServiceBundle sentDashboardBundle = (BaseServiceBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
                 orgUnitList = (List<OrgUnit>) sentDashboardBundle.getModelList(OrgUnit.class.getName());
                 programList = (List<Program>) sentDashboardBundle.getModelList(Program.class.getName());
                 surveys = (List<Survey>) sentDashboardBundle.getModelList(Survey.class.getName());
