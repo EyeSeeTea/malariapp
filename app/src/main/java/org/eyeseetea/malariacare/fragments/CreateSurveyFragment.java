@@ -336,9 +336,6 @@ public class CreateSurveyFragment extends Fragment {
         //Get selected program
         Program program = (Program)programView.getSelectedItem();
 
-        // Put new survey in session
-        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit,program);
-        Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
 
         //save  the list of orgUnits
         orgUnitHierarchy.saveSelectionInPreferences();

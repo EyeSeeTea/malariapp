@@ -339,6 +339,8 @@ public class DashboardActivity extends BaseActivity{
     public void createNewSurvey(OrgUnit orgUnit, Program program){
         Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         prepareLocationListener(survey);
+        // Put new survey in session
+        Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);
     }
 
