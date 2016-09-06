@@ -151,7 +151,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     }
 
     public void resetList() {
-        oneSurveyForOrgUnit= new ArrayList<>();
         adapter.setItems(oneSurveyForOrgUnit);
         this.adapter.notifyDataSetChanged();
         initLongListClick();
@@ -482,8 +481,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     public void reloadSurveys(List<Survey> newListSurveys) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        this.surveys.clear();
-        this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
         if(isAdded())
