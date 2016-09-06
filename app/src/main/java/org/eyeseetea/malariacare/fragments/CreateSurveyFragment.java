@@ -191,7 +191,7 @@ public class CreateSurveyFragment extends Fragment {
         ViewHolder viewHolder = new ViewHolder();
         List <OrgUnit> orgUnitListFirstLevel=new ArrayList<>();
         for(OrgUnit orgUnit:orgUnitList){
-            if(orgUnitList.get(0).getOrgUnitLevel()==orgUnit.getOrgUnitLevel()) {
+            if(orgUnitList.get(0).getOrgUnitLevel().equals(orgUnit.getOrgUnitLevel())) {
                 orgUnitListFirstLevel.add(orgUnit);
             }
         }
