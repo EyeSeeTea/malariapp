@@ -55,6 +55,8 @@ public class PlanModuleController extends ModuleController {
     }
 
     public boolean isVisible(){
+        if(PreferencesState.getInstance().isHidePlanningTab())
+            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 

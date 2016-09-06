@@ -26,6 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Incorrect Org Unit"</string>
 <string name="dialog_content_incorrect_org_unit">"Please select a final org unit"</string>
 <string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Ready to upload"</string>

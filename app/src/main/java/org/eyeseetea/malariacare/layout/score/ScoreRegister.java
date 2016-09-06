@@ -216,15 +216,11 @@ public class ScoreRegister {
             return null;
         }
         Value value = question.getValueBySurvey(idSurvey);
-        //Returns null if the question will be ignored(not compulsory, and not answered or child with inactive parent questions)
-        if(!question.getCompulsory()) {
-            if (question.hasParent()) {
-                if (question.isHiddenBySurvey(idSurvey)) {
-                    if (value == null)
-                        return null;
-                }
-            } else if (value == null)
-                return null;
+
+        //If a question value is null it should be ignored, the question isn't be scored if it have null num
+        //Note: In case of the compulsory questions, that questions always have not null value, it is controlled by the app workflow.
+        if(value == null){
+            return null;
         }
 
         Option option=question.getOptionBySurvey(idSurvey);

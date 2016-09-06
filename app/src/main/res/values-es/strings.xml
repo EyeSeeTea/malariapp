@@ -26,6 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit Incorrecta"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione una org unit final"</string>
 <string name="dialog_content_logout_confirmation">"Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Lista para enviar"</string>
