@@ -58,7 +58,7 @@ public class MigrationRemoveTabGroups extends BaseMigration {
 
     private void addProgramStageToProgram(SQLiteDatabase database) {
         addColumn(database, Program.class, Program$Table.STAGE_UID, "text");
-        //move tabgroup uid (programStage) into program
+        //move programStage uid into program
         database.execSQL("update program set programStage = (select uid from tabgroup where id_program=program.id_program)");
     }
 

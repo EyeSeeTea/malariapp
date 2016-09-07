@@ -312,7 +312,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated prgoramStage (tabgroup)
+     * Find the associated programStage (tabgroup)
      *
      * @return
      */
@@ -321,7 +321,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated program (tabgroup) given a dataelement UID
+     * Find the associated program given a dataelement UID
      *
      * @param dataElementUID
      * @return

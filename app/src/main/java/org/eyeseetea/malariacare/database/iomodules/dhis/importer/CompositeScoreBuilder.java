@@ -210,7 +210,7 @@ public class CompositeScoreBuilder {
     }
 
     /**
-     * Find the associated prgoramStage (tabgroup) given a dataelement UID and program
+     * Find the associated programStage (tabgroup) given a dataelement UID and program
      * @param dataElementUID
      * @return
      */

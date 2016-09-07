@@ -36,12 +36,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Since 1 Event might correspond to N surveys (1 per tabgroup) it is needed to track all the info to share
+ * Since 1 Event might correspond to N surveys (1 per program) it is needed to track all the info to share
  * Created by arrizabalaga on 28/04/16.
  */
 public class EventToSurveyBuilder {
     Survey defaultSurvey;
-    Map<String,Survey> mapTabGroupSurvey;
+    Map<String,Survey> mapProgramSurvey;
     Score mainScore;
     Date createdOn;
     Date uploadedOn;
@@ -49,7 +49,7 @@ public class EventToSurveyBuilder {
     Date defaultUploadedOn;
 
     public EventToSurveyBuilder(Survey survey){
-        this.mapTabGroupSurvey =new HashMap<>();
+        this.mapProgramSurvey =new HashMap<>();
         this.defaultSurvey=survey;
         this.defaultUploadedOn = new Date();
     }
@@ -110,8 +110,8 @@ public class EventToSurveyBuilder {
      * Once all the values have been parsed you can safely
      */
     public void saveCommonData(){
-        Collection<Survey> surveys=mapTabGroupSurvey.values();
-        //No tabgroups, just update defaultsurvey;
+        Collection<Survey> surveys= mapProgramSurvey.values();
+        //No programs, just update defaultsurvey;
         if(surveys.size()==0){
             surveys=new ArrayList<>();
             surveys.add(defaultSurvey);
@@ -119,7 +119,7 @@ public class EventToSurveyBuilder {
         //Spread the common data across the N surveys whenever possible
         for(Survey survey:surveys){
             updateDataFromControlDataElements(survey);
-            //FIXME The best approach so far but its wrong anyway (same main score no matter what tabgroup)
+            //FIXME The best approach so far but its wrong anyway (same main score no matter what program)
             saveCommonScore(survey);
         }
     }
@@ -145,7 +145,7 @@ public class EventToSurveyBuilder {
     }
 
     /**
-     * Finds of adds a new survey for the given tabgroup
+     * Finds of adds a new survey for the given program
      * @param program
      * @return
      */
@@ -154,7 +154,7 @@ public class EventToSurveyBuilder {
             return null;
         }
         //Already there nothing to add
-        Survey surveyForProgram=mapTabGroupSurvey.get(program.getName());
+        Survey surveyForProgram= mapProgramSurvey.get(program.getName());
         if(surveyForProgram!=null){
             return surveyForProgram;
         }
@@ -162,8 +162,8 @@ public class EventToSurveyBuilder {
         //Real new survey is required
         surveyForProgram=copyDefaultSurvey(program);
 
-        //Annotate tabgroup (for rest of values)
-        mapTabGroupSurvey.put(program.getName(),surveyForProgram);
+        //Annotate program (for rest of values)
+        mapProgramSurvey.put(program.getName(),surveyForProgram);
         return surveyForProgram;
     }
 

@@ -59,7 +59,7 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
             //Get right table
             FacilityTableDataByOrgUnit facilityTableDataByOrgUnit= facilityTableDataMap.get(survey.getProgram());
 
-            //Init entry first time of a tabgroup
+            //Init entry first time of a program
             if(facilityTableDataByOrgUnit==null){
                 facilityTableDataByOrgUnit=new FacilityTableDataByOrgUnit(survey.getProgram(), survey.getOrgUnit());
                 facilityTableDataMap.put(survey.getProgram(),facilityTableDataByOrgUnit);

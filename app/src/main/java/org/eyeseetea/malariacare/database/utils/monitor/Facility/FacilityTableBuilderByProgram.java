@@ -58,7 +58,7 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
             //Get right table
             FacilityTableDataByProgram facilityTableData=facilityTableDataMap.get(survey.getOrgUnit().getUid());
 
-            //Init entry first time of a tabgroup
+            //Init entry first time of a program
             if(facilityTableData==null){
                 facilityTableData=new FacilityTableDataByProgram(survey.getOrgUnit());
                 facilityTableDataMap.put(survey.getOrgUnit().getUid(),facilityTableData);
