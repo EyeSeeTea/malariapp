@@ -77,6 +77,11 @@ public class AssessModuleController extends ModuleController {
         }
 
         Survey survey = Session.getSurveyByModule(getSimpleName());
+        if(survey.isCompleted() || survey.isSent()){
+            dashboardController.setNavigatingBackwards(false);
+            closeSurveyFragment();
+            return;
+        }
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
@@ -85,6 +90,12 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onBackPressed(){
+        Survey survey = Session.getSurveyByModule(getSimpleName());
+        if(survey.isCompleted() || survey.isSent()){
+            dashboardController.setNavigatingBackwards(false);
+            closeSurveyFragment();
+            return;
+        }
         //List Unsent surveys -> ask before leaving
         if(isFragmentActive(DashboardUnsentFragment.class)){
             super.onBackPressed();
@@ -104,7 +115,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //In a survey -> update status before leaving
-        onSurveyBackPressed();
+        onSurveyBackPressed(survey);
     }
 
     public void onSurveySelected(Survey survey){
@@ -157,9 +168,10 @@ public class AssessModuleController extends ModuleController {
 
     /**
      * It is called when the user press back in a surveyFragment
+     * @param survey
      */
-    private void onSurveyBackPressed() {
-        Survey survey = Session.getSurveyByModule(getSimpleName());
+    private void onSurveyBackPressed(Survey survey) {
+        //if the survey is opened in review mode exit.
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
