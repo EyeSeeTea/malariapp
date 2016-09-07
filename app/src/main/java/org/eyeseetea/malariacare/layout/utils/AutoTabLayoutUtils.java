@@ -293,10 +293,6 @@ public class AutoTabLayoutUtils {
 
         viewHolder.num.setVisibility(visibility);
         viewHolder.denum.setVisibility(visibility);
-        ((LinearLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, statementWeight));
-        ((LinearLayout) viewHolder.component.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        ((LinearLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
-        ((LinearLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey, String module) {
