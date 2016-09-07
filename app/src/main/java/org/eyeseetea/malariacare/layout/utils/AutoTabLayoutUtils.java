@@ -280,15 +280,9 @@ public class AutoTabLayoutUtils {
      */
     private static void configureViewByPreference(AutoTabViewHolder viewHolder) {
         int visibility = View.GONE;
-        float statementWeight = 0.65f;
-        float componentWeight = 0.35f;
-        float numDenWeight = 0.0f;
 
         if (PreferencesState.getInstance().isShowNumDen()) {
             visibility = View.VISIBLE;
-            statementWeight = 0.45f;
-            componentWeight = 0.25f;
-            numDenWeight = 0.15f;
         }
 
         viewHolder.num.setVisibility(visibility);
@@ -384,8 +378,8 @@ public class AutoTabLayoutUtils {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
-        viewHolder.setDenumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.setNumText(zero);
+        viewHolder.setDenumText(zero);
         if(num!=null){
             viewHolder.setNumText(num.toString());
             viewHolder.setDenumText(denum.toString());
@@ -403,6 +397,8 @@ public class AutoTabLayoutUtils {
 
             Float num = ScoreRegister.calcNum(question, idSurvey);
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
+            if(num==null)
+                denum=0f;
             ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }
