@@ -75,19 +75,26 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private static int LAST_ORDER =WITHOUT_ORDER;
 
     private SurveyReceiver surveyReceiver;
-    private List<Survey> surveys;
     protected IDashboardAdapter adapter;
+    //surveys contains all the surveys without filter
+    private List<Survey> surveys;
+    //oneSurveyForOrgUnit contains the filtered orgunit list
     List<Survey> oneSurveyForOrgUnit;
+    //orgUnitList contains the list of all orgUnits
     List<OrgUnit> orgUnitList;
-    List <Program> programList;
+    //programList contains the list of all prgorams
+    List<Program> programList;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;
+    //orgUnitFilter contains the selected orgUnit uid
     String orgUnitFilter;
+    //programFilter contains the selected program name
     String programFilter;
+    //orderBy contains the selected order
     int orderBy=WITHOUT_ORDER;
+    //reverse contains the selected order asc or desc
     static boolean reverse=false;
     DashboardActivity dashboardActivity;
-    OnFeedbackSelectedListener mCallback;
     /*
     ** Flag to prevents the false click on filter creation.
      */
@@ -163,7 +170,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 if(isPositionASurvey(position)){
                     // call onSurveySelected function(and it call surveyfragment.
                     // to looks only as read mode the survey should be iscompleted or issent)-
-                    dashboardActivity.onSurveySelected(surveys.get(position - 1));
+                    dashboardActivity.onSurveySelected(oneSurveyForOrgUnit.get(position - 1));
                 }
 
                 return true;
@@ -312,7 +319,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         }
 
         // call feedbackselected function(and it call surveyfragment)
-        dashboardActivity.onFeedbackSelected(surveys.get(position - 1));
+        dashboardActivity.onFeedbackSelected(oneSurveyForOrgUnit.get(position - 1));
     }
 
     @Override

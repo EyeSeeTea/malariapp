@@ -220,6 +220,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         if(adapter!=null && plannedItemList!=null){
         adapter.reloadItems(plannedItemList);
         setListShown(true);
+        adapter.notifyDataSetChanged();
         }
     }
 
