@@ -261,10 +261,12 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
         List<Program> programList=Program.getAllPrograms();
         List<Survey> sentSurveys=Survey.getAllSentCompletedOrConflictSurveys();
+        List<OrgUnit> orgUnits=OrgUnit.list();
 
         BaseServiceBundle monitorMap=new BaseServiceBundle();
         monitorMap.addModelList(Survey.class.getName(),sentSurveys);
         monitorMap.addModelList(Program.class.getName(),programList);
+        monitorMap.addModelList(OrgUnit.class.getName(),orgUnits);
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION, monitorMap);
 

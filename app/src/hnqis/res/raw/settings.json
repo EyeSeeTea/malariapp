@@ -32,7 +32,8 @@
       "icon": "tab_monitor",
       "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_charts_container",
-      "controller": "MonitorModuleController"
+      "controller": "MonitorModuleController",
+      "monitorFilter": "all"
     }
     ]
   }

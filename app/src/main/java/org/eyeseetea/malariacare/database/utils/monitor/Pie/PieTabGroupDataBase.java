@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
  * This file is part of QA App.
  *
@@ -17,45 +17,31 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor.pie;
 
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
  * VO thats hold the info of a single pie chart
  * Created by arrizabalaga on 9/10/15.
  */
-public class PieProgramData {
+public class PieTabGroupDataBase {
 
-    private static final String JSONFORMAT="{title:'%s',tip:'%s',idProgram: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
-
-    /**
-     * Type of program for this chart
-     */
-    private Program program;
+    static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
 
     /**
      * Number of surveys with A score
      */
-    private int numA;
+    int numA;
     /**
      * Number of surveys with B score
      */
-    private int numB;
+    int numB;
     /**
      * Number of surveys with C score
      */
-    private int numC;
+    int numC;
 
-
-    /**
-     * Constructor per program
-     * @param program
-     */
-    public PieProgramData(Program program) {
-        this.program = program;
-    }
 
     /**
      * Increments the right counter according to the score
@@ -76,22 +62,6 @@ public class PieProgramData {
         return;
     }
 
-    /**
-     * Turns this info into a JSON understandable by the js:
-     *  {
-     *    title:'First Program',
-     *    idProgram: 1,
-     *    valueA:14,
-     *    valueB:8,
-     *    valueC:10
-     *  }
-     * @return
-     */
-    public String toJSON(String tipChat){
-        String pieTitle=String.format("%s", program.getName());
-        String json= String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC, program.getUid(), program.getUid());
-        return json;
-    }
 
 
 }

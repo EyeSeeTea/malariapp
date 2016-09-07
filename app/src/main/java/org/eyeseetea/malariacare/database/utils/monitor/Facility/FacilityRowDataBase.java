@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
  * This file is part of QA App.
  *
@@ -17,9 +17,8 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor.facility;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.text.SimpleDateFormat;
@@ -32,15 +31,18 @@ import java.util.Map;
 /**
  * Created by arrizabalaga on 13/10/15.
  */
-public class FacilityRowData {
+public class FacilityRowDataBase {
     public static int NUM_MONTHS=6;
-    private OrgUnit facility;
     List<FacilityColumnData> columnData;
     private Map<String,Integer> monthsIndex;
     private SimpleDateFormat KEY_MONTH_FORMATTER=new SimpleDateFormat("yyyyMM");
+    String name;
 
-    public FacilityRowData(OrgUnit orgUnit){
-        this.facility=orgUnit;
+    public FacilityRowDataBase(String name) {
+        this.name= name;
+        init();
+    }
+    public void init(){
         //Init 12 empty months
         columnData=new ArrayList<>();
         for(int i=0;i<NUM_MONTHS;i++){
@@ -49,7 +51,6 @@ public class FacilityRowData {
         //Build monthsIndex
         initMonthsIndex();
     }
-
     /**
      * Builds a helper map with:
      *  201510->11, 201509->10, ...201411->0
@@ -79,7 +80,7 @@ public class FacilityRowData {
     }
 
     public String getAsJSON(){
-        return String.format("{name:'%s',values:%s}",facility.getName(),getColumnDataAsJSON());
+        return String.format("{name:'%s',values:%s}",name,getColumnDataAsJSON());
     }
 
     /**

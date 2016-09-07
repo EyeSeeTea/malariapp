@@ -106,6 +106,7 @@ public class AppSettingsBuilder {
             InputStream inputStream = context.getResources().openRawResource(jsonReference);
             return mapper.readValue(inputStream, AppSettings.class);
         }catch (Exception ex){
+            ex.printStackTrace();
             Log.e(TAG, "Error loading 'settings.json'");
             return null;
         }
