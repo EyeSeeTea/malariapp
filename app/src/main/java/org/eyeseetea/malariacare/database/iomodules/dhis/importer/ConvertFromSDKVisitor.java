@@ -243,6 +243,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Answer appAnswer=(Answer)appMapObjects.get(sdkOption.getOptionSet());
         org.eyeseetea.malariacare.database.model.Option appOption= new org.eyeseetea.malariacare.database.model.Option();
         appOption.setName(sdkOption.getName());
+        appOption.setUid(sdkOption.getUid());
         appOption.setCode(sdkOption.getCode());
         appOption.setAnswer(appAnswer);
         appOption.setFactor(sdkOptionExtended.getFactor());
