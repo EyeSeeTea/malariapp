@@ -20,24 +20,36 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
+import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
+
+import java.util.List;
 
 /**
  * Created by idelcano on 25/02/2016.
  */
 public class PlanModuleController extends ModuleController {
+    private static final String TAG = ".PlanModuleCOntroller";
     PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
+    Spinner orgUnitSpinner;
+    Spinner programSpinner;
+    private Program programDefaultOption;
+    private OrgUnit orgUnitDefaultOption;
     public PlanModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_plan_layout;
@@ -50,64 +62,132 @@ public class PlanModuleController extends ModuleController {
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
+        createFilters();
+        orgUnitVisibility(View.GONE);
+        programVisibility(View.VISIBLE);
         fragment= new PlannedFragment();
+    }
+
+    private void createFilters() {
+        programDefaultOption = new Program(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        orgUnitDefaultOption = new OrgUnit(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_units).toUpperCase());
+
+        orgUnitSpinner = (Spinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_orgUnit);
+        programSpinner = (Spinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
     }
 
     public boolean isVisible(){
         if(PreferencesState.getInstance().isHidePlanningTab())
             DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(View.GONE);
-        else
-            DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(View.VISIBLE);
         return !PreferencesState.getInstance().isHidePlanningTab();
+    }
+
+    public void prepareFilters(final List<Program> programList, List<OrgUnit> orgUnitList) {
+        //Populate Program View DDL
+        if (!programList.contains(programDefaultOption))
+            programList.add(0, programDefaultOption);
+        programSpinner.setAdapter(new FilterProgramArrayAdapter(DashboardActivity.dashboardActivity, programList));
+        //Apply filter to listview
+        programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Spinner spinner = ((Spinner) parent);
+                Program selectedProgram = (Program) spinner.getItemAtPosition(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                if (selectedProgram != null ) {
+                    //Fixme 
+                    //Set orgUnit to "All org units"
+                    //orgUnitSpinner.setSelection(0);
+                    DashboardActivity.dashboardActivity.onProgramSelected(selectedProgram);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Populate Program View DDL
+        if(!orgUnitList.contains(orgUnitDefaultOption))
+            orgUnitList.add(0, orgUnitDefaultOption);
+        orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(DashboardActivity.dashboardActivity, orgUnitList));
+        //Apply filter to listview
+        orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Spinner spinner=((Spinner) parent);
+                OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                if(selectedOrgUnit!=null) {
+                    //Set programSpinner to "All assessments"
+                    //programSpinner.setSelection(0);
+
+                    DashboardActivity.dashboardActivity.onOrgUnitSelected(selectedOrgUnit);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void onOrgUnitSelected(OrgUnit orgUnit) {
         //hide plannedFragment layout and show plannedOrgUnitsFragment
-        if(DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).getVisibility()!=View.VISIBLE) {
-            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(View.GONE);
-            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.VISIBLE);
+        programVisibility(View.GONE);
+        orgUnitVisibility(View.VISIBLE);
+
+        if(plannedOrgUnitsFragment==null) {
             plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
-
-            try {
-                //fix some visual problems
-                View vg = DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit);
-                vg.invalidate();
-            } catch (Exception e) {
-            }
-
-            FragmentTransaction ft = getFragmentTransaction();
-            ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
-            ft.commit();
-            plannedOrgUnitsFragment.loadOrgUnit(orgUnit);
         }
-        else {
-            plannedOrgUnitsFragment.loadOrgUnit(orgUnit);
-        }
-
+        plannedOrgUnitsFragment.setOrgUnitFilter(orgUnit.getUid());
+        FragmentTransaction ft = getFragmentTransaction();
+        ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+        ft.commit();
+        plannedOrgUnitsFragment.reloadData();
     }
 
-    public void onProgramSelected(Program program) {
-        if(DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).getVisibility()!=View.VISIBLE)
-        {
-            //hide plannedFragment layout and show plannedOrgUnitsFragment
-            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(View.VISIBLE);
-            DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(View.GONE);
-            fragment = new PlannedFragment();
 
-            try {
-                //fix some visual problems
-                View vg = DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit);
-                vg.invalidate();
-            } catch (Exception e) {
-            }
+    public void onProgramSelected(Program program) {
+        Log.d(TAG, "ONPROGRAMSELECTED");
+        if (DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
+            //hide plannedFragment layout and show plannedOrgUnitsFragment
+            orgUnitVisibility(View.GONE);
+            programVisibility(View.VISIBLE);
+
+
+            if (fragment == null)
+                fragment = new PlannedFragment();
 
             FragmentTransaction ft = getFragmentTransaction();
             ft.replace(R.id.dashboard_planning_init, fragment);
             ft.commit();
+            if(program!=null){
+                ((PlannedFragment)fragment).reloadFilter();
+            }
         }
-        else{
-            ((PlannedFragment) fragment).loadProgram(program);
-        }
+        else
+            ((PlannedFragment)fragment).reloadFilter();
+
+    }
+
+    private void programVisibility(int visibility) {
+        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_programs_header).setVisibility(visibility);
+    }
+
+    private void orgUnitVisibility(int visibility) {
+        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit_header).setVisibility(visibility);
+    }
+
+    public void clickOrgProgramSpinner() {
+        programSpinner.performClick();
+    }
+
+    public void clickOrgUnitSpinner() {
+        orgUnitSpinner.performClick();
     }
 }

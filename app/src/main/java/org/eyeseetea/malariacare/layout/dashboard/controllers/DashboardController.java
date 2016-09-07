@@ -260,11 +260,9 @@ public class DashboardController {
      * @param orgUnit
      */
     public void onOrgUnitSelected(OrgUnit orgUnit) {
-
         PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
         planModuleController.onOrgUnitSelected(orgUnit);
     }
-
     /**
      * Starts the program planning tab
      * @param program

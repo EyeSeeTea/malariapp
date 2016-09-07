@@ -34,6 +34,7 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -44,6 +45,7 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -223,6 +225,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         PopulateDB.wipeSDKData();
     };
 
+    public void clickOrgUnitSpinner(View view){
+    }
+
+    public void clickProgramSpinner(View view){
+    }
 
     /**
      * Asks for location (required while starting to edit a survey)

@@ -41,28 +41,26 @@
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Due date"
         android:id="@+id/nameHeader"
-        android:background="@color/assess_yellow"
         android:textColor="@color/assess_grey"
         android:gravity="center"
         android:layout_weight="0.25"
         android:autoText="false"
-        app:tDimension="@string/font_size_level4"
+        app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name"/>
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Schedule"
         android:id="@+id/nameHeader2"
-        android:background="@color/assess_yellow"
         android:textColor="@color/assess_grey"
         android:gravity="center"
         android:layout_weight="0.25"
         android:autoText="false"
-        app:tDimension="@string/font_size_level4"
+        app:tDimension="@string/font_size_level1"
         app:tFontName="@string/condensed_font_name"/>
 
 </TableRow>

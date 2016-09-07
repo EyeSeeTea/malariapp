@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -60,7 +61,7 @@ public class DashboardActivity extends BaseActivity{
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
-    DashboardController dashboardController;
+    public DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
 
@@ -368,5 +369,20 @@ public class DashboardActivity extends BaseActivity{
                 });
             }
         }, 1000);
+    }
+
+    public void preparePlanningFilters(List<Program> programList, List<OrgUnit> orgUnitList) {
+        ((PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName())).prepareFilters(programList,orgUnitList);
+    }
+
+    @Override
+    public void clickOrgUnitSpinner(View v){
+        PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
+        planModuleController.clickOrgUnitSpinner();
+    }
+    @Override
+    public void clickProgramSpinner(View v){
+        PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
+        planModuleController.clickOrgProgramSpinner();
     }
 }

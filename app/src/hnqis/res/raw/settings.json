@@ -13,7 +13,7 @@
       "title": "plan",
       "icon": "tab_plan",
       "backgroundColor": "tab_orange_plan",
-      "layout": "dashboard_planning_tab",
+      "layout": "dashboard_planning_init",
       "controller": "PlanModuleController"
     }, {
       "title": "assess",
