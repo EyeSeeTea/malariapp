@@ -181,7 +181,7 @@ public class PlannedAdapter extends BaseAdapter {
         for(int i=0;i<items.size();i++){
             PlannedItem plannedItem=items.get(i);
 
-            if(plannedItem.isShownByProgram(programFilter) && plannedItem.isShownByHeader(currentHeader)){
+            if((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())) && plannedItem.isShownByHeader(currentHeader)){
                 numShownItems++;
                 if(position==(numShownItems-1)) {
                     return plannedItem;

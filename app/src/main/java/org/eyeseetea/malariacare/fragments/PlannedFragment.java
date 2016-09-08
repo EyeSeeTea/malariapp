@@ -94,8 +94,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     }
 
-    private void prepareUI() {
-        this.adapter = new PlannedAdapter(this.plannedItems,getActivity());
+    private void prepareUI(List<PlannedItem> plannedItemList) {
+        this.adapter = new PlannedAdapter(plannedItemList,getActivity());
         this.setListAdapter(adapter);
 
         reloadFilter();
@@ -165,9 +165,10 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
     }
 
-    public void reloadPlannedItems(List<PlannedItem> plannedItemList) {
+    public void reloadPlannedItems() {
         adapter.reloadItems(plannedItemList);
         setListShown(true);
+        adapter.notifyDataSetChanged();
     }
 
     public void loadProgram(Program program) {
@@ -201,8 +202,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                     orgUnitList=(List<OrgUnit>) plannedServiceBundle.getModelList(OrgUnit.class.getName());
                     DashboardActivity.dashboardActivity.preparePlanningFilters(programList,orgUnitList);
                 }
-                prepareUI();
-                reloadPlannedItems(plannedServiceBundle.getPlannedItems());
+                prepareUI(plannedServiceBundle.getPlannedItems());
             }
         }
     }
