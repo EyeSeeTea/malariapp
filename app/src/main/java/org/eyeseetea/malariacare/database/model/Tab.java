@@ -44,12 +44,11 @@ public class Tab extends BaseModel {
     Integer order_pos;
     @Column
     Integer type;
-
     @Column
     Long id_program;
 
     /**
-     * Reference to parent program (loaded lazily)
+     * Reference to parent Program (loaded lazily)
      */
     Program program;
 
@@ -101,10 +100,10 @@ public class Tab extends BaseModel {
     }
 
     public Program getProgram() {
-        if(program==null){
-            if (id_program== null) return null;
+        if(program ==null){
+            if (id_program == null) return null;
 
-            program= new Select()
+            program = new Select()
                     .from(Program.class)
                     .where(Condition.column(Program$Table.ID_PROGRAM)
                             .is(id_program)).querySingle();
@@ -194,7 +193,7 @@ public class Tab extends BaseModel {
         if (order_pos != null ? !order_pos.equals(tab.order_pos) : tab.order_pos != null)
             return false;
         if (type != null ? !type.equals(tab.type) : tab.type != null) return false;
-        return !(id_program != null ? !id_program.equals(tab.id_program) : tab.id_program!= null);
+        return !(id_program != null ? !id_program.equals(tab.id_program) : tab.id_program != null);
 
     }
 

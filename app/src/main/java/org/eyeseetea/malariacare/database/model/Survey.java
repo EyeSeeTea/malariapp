@@ -39,7 +39,6 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.Constant;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
@@ -55,7 +54,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     @Column
     Long id_program;
-
     /**
      * Reference to the program associated to this survey (loaded lazily)
      */
@@ -85,7 +83,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     Date upload_date;
 
     @Column
-    Date schedule_date;
+    Date scheduled_date;
 
     @Column
     Integer status;
@@ -129,7 +127,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.creation_date = new Date();
         this.completion_date = null;
         this.upload_date = null;
-        this.schedule_date = null;
+        this.scheduled_date = null;
     }
 
     public Survey(OrgUnit orgUnit, Program program, User user) {
@@ -182,8 +180,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public Program getProgram() {
-        if(program==null){
-            if (id_program==null) return null;
+        if(program == null){
+            if (id_program == null) return null;
             program = new Select()
                     .from(Program.class)
                     .where(Condition.column(Program$Table.ID_PROGRAM)
@@ -193,7 +191,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public void setProgram(Program program) {
-        this.program= program;
+        this.program = program;
         this.id_program = (program!=null)?program.getId_program():null;
     }
 
@@ -247,12 +245,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
         this.upload_date = upload_date;
     }
 
-    public Date getScheduleDate() {
-        return schedule_date;
+    public Date getScheduledDate() {
+        return scheduled_date;
     }
 
-    public void setScheduleDate(Date schedule_date) {
-        this.schedule_date = schedule_date;
+    public void setScheduledDate(Date scheduled_date) {
+        this.scheduled_date = scheduled_date;
     }
 
     public Integer getStatus() {
@@ -295,9 +293,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_COMPLETED==this.status;
     }
 
-
     public boolean isConflict() {
         return Constants.SURVEY_CONFLICT==this.status;
+    }
+
+    public boolean isReadOnly() {
+        return (isCompleted() || isSent());
     }
 
     public Float getMainScore() {
@@ -488,9 +489,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
         int numRequired = Question.countRequiredByProgram(surveyProgram);
         int numCompulsory=Question.countCompulsoryByProgram(surveyProgram);
         int numOptional = (int)countNumOptionalQuestionsToAnswer();
+        int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(this.id_survey);
         int numAnswered = Value.countBySurvey(this);
         int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory,numCompulsoryAnswered);
+        SurveyAnsweredRatio surveyAnsweredRatio=new SurveyAnsweredRatio(numRequired+numOptional, numAnswered,numCompulsory+numActiveChildrenCompulsory,numCompulsoryAnswered);
         SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
@@ -762,23 +764,23 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Moves the schedule date for this survey to a new given date due to a given reason (comment)
+     * Moves the scheduled date for this survey to a new given date due to a given reason (comment)
      * @param newScheduledDate
      * @param comment
      */
     public void reschedule(Date newScheduledDate, String comment) {
         //Take currentDate
-        Date currentScheduleDate=this.getScheduleDate();
+        Date currentScheduledDate=this.getScheduledDate();
 
         //Add a history
-        SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduleDate,comment);
+        SurveySchedule previousSchedule=new SurveySchedule(this,currentScheduledDate,comment);
         previousSchedule.save();
 
         //Clean inner lazy schedulelist
         surveySchedules=null;
 
         //Move scheduledate and save
-        this.schedule_date =newScheduledDate;
+        this.scheduled_date =newScheduledDate;
         this.save();
     }
 
@@ -808,7 +810,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_PLANNED))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(true, Survey$Table.SCHEDULE_DATE)
+                .orderBy(true, Survey$Table.SCHEDULED_DATE)
                 .queryList();
     }
 
@@ -854,6 +856,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .queryList();
     }
 
+
     public static Survey findSurveyWith(OrgUnit orgUnit, Program program,Event lastEventInServer) {
 
         if(lastEventInServer==null){
@@ -868,6 +871,23 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Condition.column(Survey$Table.EVENTUID).eq(lastEventInServer.getEvent()))
                 .orderBy(false,Survey$Table.COMPLETION_DATE)
                 .querySingle();
+    }
+
+    public static Survey getLastSurvey(Long id_org_unit, Long id_program) {
+        return  new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_PROGRAM).eq(id_program))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_PROGRAM, Survey$Table.ID_ORG_UNIT))
+                .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
+    }
+
+
+    public static Survey getLastSurvey(Long id_org_unit, Program program){
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(id_org_unit))
+                .groupBy(new QueryBuilder().appendQuotedArray(Survey$Table.ID_PROGRAM, Survey$Table.ID_ORG_UNIT))
+                .having(Condition.columnsWithFunction("max", "completion_date")).querySingle();
     }
 
     /**
@@ -885,6 +905,16 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public Event getEvent(){
         Event event= new Select().from(Event.class)
                 .where(Condition.column(Event$Table.EVENT).eq(eventuid)).querySingle();
+        return event;
+    }
+
+    /**
+     * Get event from a survey local id if exist
+     * @return
+     */
+    public Event getEventFromLocalId(){
+        Event event= new Select().from(Event.class)
+                .where(Condition.column(Event$Table.LOCALID).eq(String.valueOf(id_survey))).querySingle();
         return event;
     }
 
@@ -911,7 +941,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         Survey survey = (Survey) o;
 
         if (id_survey != survey.id_survey) return false;
-        if (id_program != null ? !id_program.equals(survey.id_program) : survey.id_program!= null)
+        if (id_program != null ? !id_program.equals(survey.id_program) : survey.id_program != null)
             return false;
         if (id_org_unit != null ? !id_org_unit.equals(survey.id_org_unit) : survey.id_org_unit != null)
             return false;
@@ -925,7 +955,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;
         if (eventuid != null ? !eventuid.equals(survey.eventuid) : survey.eventuid != null)
             return false;
-        if (schedule_date != null ? !schedule_date.equals(survey.schedule_date) : survey.schedule_date != null)
+        if (scheduled_date != null ? !scheduled_date.equals(survey.scheduled_date) : survey.scheduled_date != null)
             return false;
         return !(status != null ? !status.equals(survey.status) : survey.status != null);
 
@@ -941,7 +971,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         result = 31 * result + (completion_date != null ? completion_date.hashCode() : 0);
                 result = 31 * result + (upload_date != null ? upload_date.hashCode() : 0);
         result = 31 * result + (eventuid != null ? eventuid.hashCode() : 0);
-        result = 31 * result + (schedule_date != null ? schedule_date.hashCode() : 0);
+        result = 31 * result + (scheduled_date != null ? scheduled_date.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
@@ -956,13 +986,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", creation_date=" + creation_date +
                 ", completion_date=" + completion_date +
                 ", upload_date=" + upload_date +
-                ", schedule_date=" + schedule_date +
+                ", scheduled_date=" + scheduled_date +
                 ", status=" + status +
                 ", eventuid="+eventuid+
                 '}';
     }
 
-    public boolean isReadOnly() {
-        return (isCompleted() || isSent());
-    }
 }

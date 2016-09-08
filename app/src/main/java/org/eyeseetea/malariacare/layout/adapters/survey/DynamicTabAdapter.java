@@ -620,7 +620,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         //Associate option
         button.setTag(option);
 
-        button.setId(R.string.option + buttonPosition); // uses for Espresso testing
+        //button.setId(R.string.option + buttonPosition); // uses for Espresso testing
         //Readonly (not clickable, enabled)
         if(readOnly){
             button.setEnabled(false);

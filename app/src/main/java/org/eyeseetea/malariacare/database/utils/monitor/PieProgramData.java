@@ -28,7 +28,7 @@ import org.eyeseetea.malariacare.utils.Constants;
  */
 public class PieProgramData {
 
-    private static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
+    private static final String JSONFORMAT="{title:'%s',tip:'%s',idProgram: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
 
     /**
      * Type of program for this chart

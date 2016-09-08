@@ -40,12 +40,14 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.monitor.FacilityTableBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.PieProgramBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.SentSurveysBuilder;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -157,8 +159,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             Iterator<Survey> iter = surveysForGraphic.iterator();
             while(iter.hasNext()){
                 Survey survey = iter.next();
-                if(!survey.hasMainScore())
-                {
+                if(!survey.hasMainScore()) {
                     iter.remove();
                 }
             }
@@ -166,8 +167,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             programs = data.get(SurveyService.PREPARE_PROGRAMS);
             reloadSurveys(surveysForGraphic,programs);
         }
-
-}
+    }
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
@@ -190,6 +190,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+                //Update hardcoded messages
+                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
                 //Add line chart
                 new SentSurveysBuilder(surveysForGraphic, getActivity(),programs).addDataInChart(view);

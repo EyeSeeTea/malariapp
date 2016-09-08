@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -87,6 +88,11 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     int orderBy=WITHOUT_ORDER;
     static boolean reverse=false;
     DashboardActivity dashboardActivity;
+    OnFeedbackSelectedListener mCallback;
+    /*
+    ** Flag to prevents the false click on filter creation.
+     */
+    boolean initiatingFilters =true;
 
     public DashboardSentFragment() {
         this.adapter = Session.getAdapterSent();
@@ -104,6 +110,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
         return f;
     }
+
+
+    // Container Activity must implement this interface
+    public interface OnFeedbackSelectedListener {
+        public void onFeedbackSelected(Survey survey);
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -133,13 +146,15 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
-//        hideContainer();
-//        //Loading...
-//        if(isAdded())
-//            setListShown(false);
         initAdapter();
         initListView();
+        resetList();
+    }
+
+    public void resetList() {
+        oneSurveyForOrgUnit= new ArrayList<>();
+        adapter.setItems(oneSurveyForOrgUnit);
+        this.adapter.notifyDataSetChanged();
         initLongListClick();
     }
 
@@ -168,7 +183,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         super.onResume();
     }
 
-    private void initProgramFilters(){
+    private void initProgramFilters() {
+        initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList= programList;
         Program defaultAllProgramFilter=new Program();
@@ -196,8 +212,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                         reload = true;
                     }
                 }
-                if (reload)
-                    reloadSentSurveys();
+                if(reload && !initiatingFilters)
+                    reloadSentSurveys(surveys);
             }
 
             @Override
@@ -205,9 +221,12 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
             }
         });
+        reloadSentSurveys(surveys);
+        initiatingFilters =false;
     }
 
     private void initOrgUnitFilters(){
+        initiatingFilters=true;
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
 
         //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
@@ -232,8 +251,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                         reload = true;
                     }
                 }
-                if (reload)
-                    reloadSentSurveys();
+                if (reload && !initiatingFilters)
+                    reloadSentSurveys(surveys);
             }
 
             @Override
@@ -241,12 +260,14 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
             }
         });
+        reloadSentSurveys(surveys);
+        initiatingFilters =false;
     }
-    
+
     private void initFilters() {
         initProgramFilters();
         initOrgUnitFilters();
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
 
     /**
@@ -268,19 +289,19 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void setScoreOrder()
     {
         orderBy=SCORE_ORDER;
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
 
     public void setFacilityOrder()
     {
         orderBy=FACILITY_ORDER;
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
 
     public void setDateOrder()
     {
         orderBy=DATE_ORDER;
-        reloadSentSurveys();
+        reloadSentSurveys(surveys);
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
@@ -478,17 +499,14 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
-    public void reloadSentSurveys() {
-        List<Survey> surveys = (List<Survey>) Session.popServiceValue(SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION);
-
+    public void reloadSentSurveys(List<Survey> surveys) {
         // To prevent from reloading too fast, before service has finished its job
         if (surveys == null) return;
 
@@ -562,9 +580,17 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     public void getOrgUnitAndPrograms(){
         HashMap<String,List> data=(HashMap) Session.popServiceValue(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION);
-
         orgUnitList=data.get(SurveyService.PREPARE_ORG_UNIT);
         programList=data.get(SurveyService.PREPARE_PROGRAMS);
+    }
+
+    public void reloadDataFromService(){
+        DashboardSentBundle sentDashboardBundle =(DashboardSentBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
+        orgUnitList= sentDashboardBundle.getOrgUnits();
+        programList= sentDashboardBundle.getPrograms();
+        surveys= sentDashboardBundle.getSentSurveys();
+        reloadSentSurveys(surveys);
+        initFilters();
     }
 
     private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
@@ -592,9 +618,14 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadSentSurveys();
-            }
+            /*if (SurveyService.ALL_SENT_OR_COMPLETED_OR_CONFLICT_SURVEYS_ACTION.equals(intent.getAction())) {
+                DashboardSentBundle sentDashboardBundle =(DashboardSentBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
+                orgUnitList= sentDashboardBundle.getOrgUnits();
+                programList= sentDashboardBundle.getPrograms();
+                surveys= sentDashboardBundle.getSentSurveys();
+                reloadSentSurveys(surveys);
+                initFilters();
+            }*/
             if(SurveyService.ALL_ORG_UNITS_AND_PROGRAMS_ACTION.equals(intent.getAction())){
                 getOrgUnitAndPrograms();
                 new showContainer().execute();
@@ -619,7 +650,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             if(!PreferencesState.getInstance().isVerticalDashboard()){
                 initFilters();
                 showContainer();
-            } 
+            }
         }
 
         @Override

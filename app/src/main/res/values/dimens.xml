@@ -53,6 +53,8 @@
     <dimen name="extra_large_text_size">34sp</dimen>
     <dimen name="extra_xlarge_text_size">36sp</dimen>
 
+    <!-- spinner padding -->
+    <dimen name="create_survey_spinner_padding">2dip</dimen>
     <!-- survey row padding -->
     <dimen name="survey_row_marging">14dip</dimen>
     <!-- title in createsurveyfragment marging-->
@@ -62,11 +64,11 @@
     <dimen name="margin_feedback_top_bottom_radiobutton">8dip</dimen>
     <dimen name="min_image_width">200dip</dimen>
 
-    <!--Text size for age and phone-->
-    <dimen name="input_number_edit_text">32dp</dimen>
 
     <!-- Arrow padding !-->
     <dimen name="left_padding_arrow">30dip</dimen>
     <dimen name="right_padding_arrow">30dip</dimen>
 
+    <!--Text size for age and phone-->
+    <dimen name="input_number_edit_text">32dp</dimen>
 </resources>

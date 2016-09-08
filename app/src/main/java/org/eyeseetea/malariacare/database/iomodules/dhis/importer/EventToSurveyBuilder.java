@@ -121,6 +121,7 @@ public class EventToSurveyBuilder {
         //Spread the common data across the N surveys whenever possible
         for(Survey survey:surveys){
             updateDataFromControlDataElements(survey);
+            //FIXME The best approach so far but its wrong anyway (same main score no matter what tabgroup)
             saveCommonScore(survey);
         }
     }
@@ -150,22 +151,22 @@ public class EventToSurveyBuilder {
      * @param program
      * @return
      */
-    public Survey addSurveyForTabGroup(Program program){
+    public Survey addSurveyForProgram(Program program){
         if(program==null){
             return null;
         }
         //Already there nothing to add
-        Survey surveyForTabGroup=mapProgramStageSurvey.get(program.getName());
-        if(surveyForTabGroup!=null){
-            return surveyForTabGroup;
+        Survey surveyForProgram=mapProgramStageSurvey.get(program.getName());
+        if(surveyForProgram!=null){
+            return surveyForProgram;
         }
 
         //Real new survey is required
-        surveyForTabGroup=copyDefaultSurvey(program);
+        surveyForProgram=copyDefaultSurvey(program);
 
         //Annotate tabgroup (for rest of values)
-        mapProgramStageSurvey.put(program.getName(),surveyForTabGroup);
-        return surveyForTabGroup;
+        mapProgramStageSurvey.put(program.getName(),surveyForProgram);
+        return surveyForProgram;
     }
 
     /**
@@ -197,7 +198,7 @@ public class EventToSurveyBuilder {
         copySurvey.setCompletionDate(defaultSurvey.getCompletionDate());
         copySurvey.setCreationDate(defaultSurvey.getCreationDate());
         copySurvey.setUploadDate(defaultSurvey.getUploadDate());
-        copySurvey.setScheduleDate(defaultSurvey.getScheduleDate());
+        copySurvey.setScheduledDate(defaultSurvey.getScheduledDate());
         copySurvey.setOrgUnit(defaultSurvey.getOrgUnit());
         copySurvey.setEventUid(defaultSurvey.getEventUid());
         copySurvey.setProgram(program);

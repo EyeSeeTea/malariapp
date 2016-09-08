@@ -6,7 +6,7 @@
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 <br/>
-<p><a href='https://github.com/nnnick/Chart.js/blob/master/LICENSE.md'>Chart.js</a> license text</p>
+<p>Please see Chart.js license text in the following address: https://github.com/nnnick/Chart.js/blob/master/LICENSE.md</p>
 <br/>
 
 <p><b>b) DBFlow ORM</b></p>
@@ -16,24 +16,18 @@
 <br/>
 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 <br/>
-<p>DBFlow <a href='https://github.com/Raizlabs/DBFlow/blob/master/LICENSE'>license</a> text</p>
+<p>Please see DBFlow license text in the following address: https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2FRaizlabs%2FDBFlow%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGMxEwZSy7pTU-Owh-kp9akR05PUQ</p>
 <br/>
 
 <p><b>2. Apache License, Version 2.0</b></p>
 <p>The following software programs have been used to develop this application under the Apache License, Version 2.0 (<a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>):</p>
 <br/>
-<p>a) Android libraries:
-support-v4<br/>
-appcompat-7<br/>
-support-annotations: <a href='https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation'>src folder here</a><br/>
-multidex – <a href='https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE'>Notice file found here</a><br/>>
-runner<br/>
-rules<br/>
-b) OpenCSV: <a href='https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg'>src folder here</a><br/>
-c) guava: <a href='https://github.com/google/guava'>src folder here</a><br/>
-d) okhttp: <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA'>src folder here</a><br/>
+<p>a) Android libraries: support-v4, appcompat-7, support-annotations (https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation), multidex (please see NOTICE file at https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE), runner, rules<br/>
+b) OpenCSV (https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg)<br/>
+c) guava (https://github.com/google/guava)<br/>
+d) okhttp (https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA)<br/>
 e) play-services<br/>
-f) libphonenumber: no notice file, but they use another library that has a notice file, so, apart from their license (<a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see here</a>), they include also the <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw'>chromium license text</a>.<br/>
+f) libphonenumber (See chromium Notice file in chromium license at 'https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see here</a>), they include also the <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw' )<br/>
 </p>
 
 <p>Copyright ©2016 Population Services International (PSI).</p>
@@ -63,7 +57,7 @@ f) libphonenumber: no notice file, but they use another library that has a notic
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 <br/>
 
-<p><b>5. Creative Commons Attribution 2.5 License</b> (for Espresso (espresso-core, espresso-intents, espresso-idling-resource, expresso-web)) -- <a href='https://creativecommons.org/licenses/by/2.5/legalcode'>https://creativecommons.org/licenses/by/2.5/legalcode</a></p>
+<p><b>5. Creative Commons Attribution 2.5 License</b> (for Espresso (espresso-core, espresso-intents, espresso-idling-resource, expresso-web)) -- https://creativecommons.org/licenses/by/2.5/legalcode</p>
 <p>PSI has not made any modifications or changes to the above-referenced Expresso software for purposes of this Application.</p>
 <br/>
 <p><b>You are free to:</b><br/>
@@ -79,3 +73,6 @@ No additional restrictions — You may not apply legal terms or technological me
 <p><b>Notices:</b><br/>
 You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.<br/>
 No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.</p>
+
+<p><b>EXCLUSIONS</b></p>
+<p>This App uses proprietary Crashlytics software under a restricted license from Crashlytics to provide information to the developer(s) about the functioning of the App, including, but not limited to, information about how and under what circumstances the App crashed and how many users interact with the App and how they do so.  The Crashlytics software is not included in the GNU General Public License for the App; PSI has no authority to sub-license the Crashlytics software.  For more information about Crashlytics software, please visit https://try.crashlytics.com/terms/.</p>

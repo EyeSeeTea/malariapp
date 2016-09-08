@@ -29,7 +29,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Helper that creates a 'next' planned survey from a given survey or from a orgUnit + program
@@ -82,7 +81,7 @@ public class SurveyPlanner {
         newSurvey.setUser(oldSurvey.getUser());
 
         newSurvey.setProgram(oldSurvey.getProgram());
-        newSurvey.setScheduleDate(oldSurvey.getScheduleDate());
+        newSurvey.setScheduledDate(oldSurvey.getScheduledDate());
         newSurvey.setMainScore(oldSurvey.getMainScore());
         oldSurvey.setSurveyScheduleToSurvey(newSurvey);
         newSurvey.save();
@@ -106,7 +105,7 @@ public class SurveyPlanner {
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
         plannedSurvey.setMainScore(survey.getMainScore());
-        plannedSurvey.setScheduleDate(findScheduledDateBySurvey(survey));
+        plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
 
         //Save last main score
@@ -116,7 +115,7 @@ public class SurveyPlanner {
     }
 
     /**
-     * Starts a planned survey with the given orgUnit and program
+     * Starts a planned survey with the given orgUnit and tabGroup
      * @param orgUnit
      * @param program
      * @return
@@ -162,7 +161,7 @@ public class SurveyPlanner {
 
     }
 
-    private Date findScheduledDateBySurvey(Survey survey) {
+    public Date findScheduledDateBySurvey(Survey survey) {
         if(survey==null){
             return null;
         }

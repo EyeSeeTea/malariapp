@@ -123,13 +123,13 @@ public class FeedbackAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Feedback feedback=(Feedback)getItem(position);
         if (feedback instanceof CompositeScoreFeedback){
-            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent);
+            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent, module);
         }else{
             return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
         }
     }
 
-    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent){
+    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
@@ -150,11 +150,11 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(!PreferencesState.getInstance().isVerticalDashboard()) {
-            if (feedback.getScore(idSurvey, module) < Constants.MAX_AMBER)
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else if (feedback.getScore(idSurvey, module) < Constants.MAX_RED)
+        if(!PreferencesState.getInstance().isVerticalDashboard()){
+            if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
+            else if(feedback.getScore(idSurvey, module)< Constants.MAX_AMBER)
+                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
             else
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         }

@@ -8,7 +8,7 @@ buildscript {
 
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.1.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         //classpath 'com.raizlabs:Griddle:1.0.3'
 
@@ -37,7 +37,7 @@ allprojects {
 
 ext {
     //App Version
-    versionCode = 26
+    versionCode = 29
     versionName = "QAApp"
     
     // Sdk and tools

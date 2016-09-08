@@ -43,7 +43,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_gravity="right"/>
-
                 <TextView
                     android:id="@+id/aboutMessage"
                     android:layout_width="match_parent"
