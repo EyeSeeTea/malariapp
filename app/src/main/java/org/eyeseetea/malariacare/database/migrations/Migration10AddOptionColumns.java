@@ -19,23 +19,23 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-
 import android.database.sqlite.SQLiteDatabase;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.model.Option;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updateColumn;
 
-@Migration(version = 9, databaseName = AppDatabase.NAME)
-public class MigrationAddUsername extends BaseMigration {
+/**
+ * Created by ignac on 30/11/2015.
+ */
+@Migration(version = 10, databaseName = AppDatabase.NAME)
+public class Migration10AddOptionColumns extends BaseMigration {
 
-    public MigrationAddUsername() {
+    public Migration10AddOptionColumns() {
         super();
     }
 
@@ -44,11 +44,14 @@ public class MigrationAddUsername extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        addColumn(database, User.class, "username", "string");
+        addColumn(database, Option.class, "uid", "string");
+        addColumn(database, Option.class, "id_option_attribute", "integer");
+
     }
 
     @Override
     public void onPostMigrate() {
+        //release migration resources
     }
 
 }

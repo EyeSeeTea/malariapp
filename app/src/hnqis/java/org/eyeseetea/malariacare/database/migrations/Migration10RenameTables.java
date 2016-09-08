@@ -31,12 +31,12 @@ import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Survey;
 
 /**
- * Created by idelcano on 23/03/2016.
+ * Created by idelcano on 08/09/2016.
  */
-@Migration(version = 7, databaseName = AppDatabase.NAME)
-public class MigrationRenameEventDate extends BaseMigration {
+@Migration(version =10, databaseName = AppDatabase.NAME)
+public class Migration10RenameTables extends BaseMigration {
 
-    public MigrationRenameEventDate() {
+    public Migration10RenameTables() {
         super();
     }
 
@@ -45,7 +45,11 @@ public class MigrationRenameEventDate extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        //The column name can't be renamed in sqlite. It is needed create a temporal table with the new column name.
+        migrateSurveyTable(database);
+        migrateServerMetadataTable(database);
+    }
+
+    private void migrateSurveyTable(SQLiteDatabase database) {
         ModelAdapter myAdapter = FlowManager.getModelAdapter(Survey.class);
 
         //Create temporal table
@@ -56,7 +60,7 @@ public class MigrationRenameEventDate extends BaseMigration {
         database.execSQL(sql);
 
         //Insert the data in temporal table
-        String sqlCopy="INSERT INTO Survey_temp(id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, uploadedDate, scheduledDate, status, eventuid) SELECT id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, eventDate, scheduledDate, status, eventuid FROM Survey";
+        String sqlCopy="INSERT INTO Survey_temp(id_survey, id_program, id_org_unit, id_user, creation_date, completion_date, upload_date, scheduled_date, status, eventuid) SELECT id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, uploadedDate, scheduledDate, status, eventuid FROM Survey";
         database.execSQL(sqlCopy);
 
         //Replace old table by new table with the new column name.
@@ -64,8 +68,14 @@ public class MigrationRenameEventDate extends BaseMigration {
         database.execSQL("ALTER TABLE Survey_temp RENAME TO Survey");
     }
 
-    @Override
-    public void onPostMigrate() {
+    private void migrateServerMetadataTable(SQLiteDatabase database) {
+
+        //Insert the data in new table
+        String sqlCopy="INSERT INTO ServerMetadata(id_control_dataelement, name, code, uid, value_type) SELECT id_control_dataelement, name, code, uid, valueType FROM ControlDataelement";
+        database.execSQL(sqlCopy);
+
+        //Replace old table by new table with the new column name.
+        database.execSQL("DROP TABLE IF EXISTS ControlDataelement");
     }
 
 }

@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -29,19 +28,15 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Question;
-
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updateColumn;
+import org.eyeseetea.malariacare.database.model.Survey;
 
 /**
- * Created by idelcano on 27/01/2016.
+ * Created by idelcano on 23/03/2016.
  */
-@Migration(version = 5, databaseName = AppDatabase.NAME)
-public class MigrationAddProductivity extends BaseMigration {
+@Migration(version = 7, databaseName = AppDatabase.NAME)
+public class Migration7RenameEventDate extends BaseMigration {
 
-    public MigrationAddProductivity() {
+    public Migration7RenameEventDate() {
         super();
     }
 
@@ -50,8 +45,23 @@ public class MigrationAddProductivity extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        addColumn(database, OrgUnit.class, "productivity", "Integer");
-        updateColumn(database, OrgUnit.class, "productivity", "0");
+        //The column name can't be renamed in sqlite. It is needed create a temporal table with the new column name.
+        ModelAdapter myAdapter = FlowManager.getModelAdapter(Survey.class);
+
+        //Create temporal table
+        String sql=myAdapter.getCreationQuery();
+        Log.d("DBMIGRATION", "old table " + sql);
+        sql=sql.replace("Survey", "Survey_temp");
+        Log.d("DBMIGRATION", "create temp table " + sql);
+        database.execSQL(sql);
+
+        //Insert the data in temporal table
+        String sqlCopy="INSERT INTO Survey_temp(id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, uploadedDate, scheduledDate, status, eventuid) SELECT id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, eventDate, scheduledDate, status, eventuid FROM Survey";
+        database.execSQL(sqlCopy);
+
+        //Replace old table by new table with the new column name.
+        database.execSQL("DROP TABLE IF EXISTS Survey");
+        database.execSQL("ALTER TABLE Survey_temp RENAME TO Survey");
     }
 
     @Override

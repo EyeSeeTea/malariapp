@@ -25,17 +25,17 @@ import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Question;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 /**
- * Created by ignac on 30/11/2015.
+ * Created by idelcano on 23/02/2016.
  */
-@Migration(version = 10, databaseName = AppDatabase.NAME)
-public class MigrationAddOptionUid extends BaseMigration {
+@Migration(version = 6, databaseName = AppDatabase.NAME)
+public class Migration6AddRowColumn extends BaseMigration {
 
-    public MigrationAddOptionUid() {
+    public Migration6AddRowColumn() {
         super();
     }
 
@@ -44,12 +44,12 @@ public class MigrationAddOptionUid extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-            addColumn(database, Option.class, "uid", "string");
+        addColumn(database, Question.class, "row", "Integer");
+        addColumn(database, Question.class, "column", "Integer");
     }
 
     @Override
     public void onPostMigrate() {
-        //release migration resources
     }
 
 }

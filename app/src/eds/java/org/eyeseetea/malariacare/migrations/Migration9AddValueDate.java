@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database.migrations;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
@@ -34,9 +35,9 @@ import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addCo
  */
 
 @Migration(version = 9, databaseName = AppDatabase.NAME)
-public class MigrationAddValueDate extends BaseMigration {
+public class Migration9AddValueDate extends BaseMigration {
 
-    public MigrationAddValueDate() {
+    public Migration9AddValueDate() {
         super();
     }
 
@@ -45,7 +46,7 @@ public class MigrationAddValueDate extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        addColumn(database, Value.class, "upload_date", "date");
+            addColumn(database, Value.class, "upload_date", "date");
     }
 
     @Override

@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.migrations;
 
 
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
@@ -38,10 +39,10 @@ import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addCo
 /**
  * Created by idelcano on 23/03/2016.
  */
-@Migration(version =10, databaseName = AppDatabase.NAME)
-public class MigrationRemoveTabGroups extends BaseMigration {
+@Migration(version =11, databaseName = AppDatabase.NAME)
+public class Migration11RemoveTabGroups extends BaseMigration {
 
-    public MigrationRemoveTabGroups() {
+    public Migration11RemoveTabGroups() {
         super();
     }
 
@@ -57,9 +58,9 @@ public class MigrationRemoveTabGroups extends BaseMigration {
     }
 
     private void addProgramStageToProgram(SQLiteDatabase database) {
-        addColumn(database, Program.class, Program$Table.STAGE_UID, "text");
+        addColumn(database, Program.class, Program$Table.STAGE_UID, "string");
         //move programStage uid into program
-        database.execSQL("update program set programStage = (select uid from tabgroup where id_program=program.id_program)");
+        database.execSQL("update program set stage_uid = (select uid from tabgroup where id_program=program.id_program)");
     }
 
     private void addProgramToTab(SQLiteDatabase database) {
@@ -69,9 +70,17 @@ public class MigrationRemoveTabGroups extends BaseMigration {
     }
 
     private void addProgramToSurvey(SQLiteDatabase database) {
-        addColumn(database, Survey.class, Survey$Table.ID_PROGRAM, "integer");
+        try {
+            //Is possible in some devices between versions the column id_program not exist and it will make a sqliteexception
+            addColumn(database, Survey.class, Survey$Table.ID_PROGRAM, "integer");
+            database.execSQL("update survey set id_program = (select id_program from tabgroup where id_tab_group=survey.id_tab_group)");
+        } catch (SQLiteException e){
+            e.printStackTrace();
+            //In the last migration the survey.id_tab_group was renamed to survey.id_program, but here is the fixed value.
+            database.execSQL("update survey set id_program = (select id_program from tabgroup where id_tab_group=survey.id_program)");
+        }
         //move id_program into survey
-        database.execSQL("update survey set id_program = (select id_program from tabgroup where id_tab_group=survey.id_tab_group)");
+
     }
 
     private void removeTabGroups(SQLiteDatabase database) {

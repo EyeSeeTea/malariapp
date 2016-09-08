@@ -19,24 +19,25 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.database.model.Value;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 /**
- * Created by idelcano on 27/01/2016.
+ * Created by idelcano on 31/03/2016.
  */
-@Migration(version = 5, databaseName = AppDatabase.NAME)
-public class MigrationAddOrgUnitLevelUID extends BaseMigration {
 
-    public MigrationAddOrgUnitLevelUID() {
+@Migration(version = 10, databaseName = AppDatabase.NAME)
+public class Migration10AddValueDate extends BaseMigration {
+
+    public Migration10AddValueDate() {
         super();
     }
 
@@ -45,7 +46,7 @@ public class MigrationAddOrgUnitLevelUID extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        addColumn(database, OrgUnitLevel.class, "uid", "string");
+            addColumn(database, Value.class, "upload_date", "date");
     }
 
     @Override

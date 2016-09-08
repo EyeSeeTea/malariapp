@@ -36,9 +36,9 @@ import org.eyeseetea.malariacare.database.model.Survey;
  * Created by idelcano on 23/03/2016.
  */
 @Migration(version =9, databaseName = AppDatabase.NAME)
-public class MigrationRenameTables extends BaseMigration {
+public class Migration9RenameTables extends BaseMigration {
 
-    public MigrationRenameTables() {
+    public Migration9RenameTables() {
         super();
     }
 
@@ -63,7 +63,7 @@ public class MigrationRenameTables extends BaseMigration {
         database.execSQL(sql);
 
         //Insert the data in temporal table
-        String sqlCopy="INSERT INTO Survey_temp(id_survey, id_tab_group, id_org_unit, id_user, creation_date, completion_date, upload_date, schedule_date, status, eventuid) SELECT id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, uploadedDate, scheduledDate, status, eventuid FROM Survey";
+        String sqlCopy="INSERT INTO Survey_temp(id_survey, id_program, id_org_unit, id_user, creation_date, completion_date, upload_date, scheduled_date, status, eventuid) SELECT id_survey, id_tab_group, id_org_unit, id_user, creationDate, completionDate, uploadedDate, scheduledDate, status, eventuid FROM Survey";
         database.execSQL(sqlCopy);
 
         //Replace old table by new table with the new column name.
@@ -72,7 +72,6 @@ public class MigrationRenameTables extends BaseMigration {
     }
 
     private void migrateServerMetadataTable(SQLiteDatabase database) {
-        ModelAdapter myAdapter = FlowManager.getModelAdapter(ServerMetadata.class);
 
         //Insert the data in new table
         String sqlCopy="INSERT INTO ServerMetadata(id_control_dataelement, name, code, uid, value_type) SELECT id_control_dataelement, name, code, uid, valueType FROM ControlDataelement";

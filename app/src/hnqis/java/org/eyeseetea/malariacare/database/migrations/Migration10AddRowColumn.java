@@ -25,17 +25,17 @@ import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.Value;
+import org.eyeseetea.malariacare.database.model.Question;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 /**
  * Created by idelcano on 23/02/2016.
  */
-@Migration(version = 6, databaseName = AppDatabase.NAME)
-public class MigrationAddConflictValue extends BaseMigration {
+@Migration(version = 10, databaseName = AppDatabase.NAME)
+public class Migration10AddRowColumn extends BaseMigration {
 
-    public MigrationAddConflictValue() {
+    public Migration10AddRowColumn() {
         super();
     }
 
@@ -44,7 +44,8 @@ public class MigrationAddConflictValue extends BaseMigration {
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        addColumn(database, Value.class, "conflict", "boolean");
+        addColumn(database, Question.class, "row", "Integer");
+        addColumn(database, Question.class, "column", "Integer");
     }
 
     @Override

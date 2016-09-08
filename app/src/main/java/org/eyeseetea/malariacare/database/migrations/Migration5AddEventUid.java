@@ -25,32 +25,30 @@ import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Survey;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 /**
  * Created by ignac on 30/11/2015.
  */
-@Migration(version = 4, databaseName = AppDatabase.NAME)
-public class MigrationAddCompulsory extends BaseMigration {
+@Migration(version = 5, databaseName = AppDatabase.NAME)
+public class Migration5AddEventUid extends BaseMigration {
 
-    public MigrationAddCompulsory() {
+    public Migration5AddEventUid() {
         super();
     }
 
     public void onPreMigrate() {
-//        FlowManager.getDatabase(AppDatabase.NAME).reset(PreferencesState.getInstance().getContext());
     }
 
     @Override
     public void migrate(SQLiteDatabase database) {
-            addColumn(database, Question.class, "compulsory", "boolean");
+        addColumn(database, Survey.class, "eventuid", "string");
     }
 
     @Override
     public void onPostMigrate() {
         //release migration resources
     }
-
 }

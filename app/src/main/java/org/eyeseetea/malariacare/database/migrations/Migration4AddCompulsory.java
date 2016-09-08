@@ -30,26 +30,27 @@ import org.eyeseetea.malariacare.database.model.Question;
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 /**
- * Created by idelcano on 23/02/2016.
+ * Created by ignac on 30/11/2015.
  */
-@Migration(version = 6, databaseName = AppDatabase.NAME)
-public class MigrationAddRowColumn extends BaseMigration {
+@Migration(version = 4, databaseName = AppDatabase.NAME)
+public class Migration4AddCompulsory extends BaseMigration {
 
-    public MigrationAddRowColumn() {
+    public Migration4AddCompulsory() {
         super();
     }
 
     public void onPreMigrate() {
+//        FlowManager.getDatabase(AppDatabase.NAME).reset(PreferencesState.getInstance().getContext());
     }
 
     @Override
     public void migrate(SQLiteDatabase database) {
-        addColumn(database, Question.class, "row", "Integer");
-        addColumn(database, Question.class, "column", "Integer");
+            addColumn(database, Question.class, "compulsory", "boolean");
     }
 
     @Override
     public void onPostMigrate() {
+        //release migration resources
     }
 
 }
