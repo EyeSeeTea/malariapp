@@ -32,9 +32,9 @@ import java.util.List;
  * Build that creates and inyects the info into the piecharts
  * Created by arrizabalaga on 9/10/15.
  */
-public class PieTabGroupBuilderBase {
+public class PieBuilderBase {
 
-    private static final String TAG=".PieTabGroupBuilderBase";
+    private static final String TAG=".PieBuilderBase";
     public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
@@ -51,7 +51,7 @@ public class PieTabGroupBuilderBase {
     /**
      * Default constructor
      */
-    public PieTabGroupBuilderBase(List<Survey> surveys, Context context) {
+    public PieBuilderBase(List<Survey> surveys, Context context) {
         this.surveys = surveys;
         this.context = context;
     }

@@ -6,7 +6,7 @@
 <p> L'avis de copyright ci-dessus et cet avis d'autorisation doivent être inclus dans toutes les copies ou parties substantielles du Logiciel. </p>
 <p> LE LOGICIEL EST FOURNI «TEL QUEL», SANS GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER LES GARANTIES DE QUALITÉ MARCHANDE, D'ADAPTATION À UN USAGE PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS LES AUTEURS OU COPYRIGHT TITULAIRES NE SERONT TENUS RESPONSABLES DE TOUTE RECLAMATION, DOMMAGE OU AUTRE RESPONSABILITÉ, QUE CE SOIT DANS UNE ACTION DE CONTRAT, TORT OU AUTREMENT, PROVENANT DE, DE OU EN RELATION AVEC LE LOGICIEL OU L'UTILISATION OU AUTRES TRAITEMENTS DU LOGICIEL. </p>
 <br/>
-<p> <a href='https://github.com/nnnick/Chart.js/blob/master/LICENSE.md'> Chart.js </a> texte de la licence </p>
+<p> S'il vous plaît voir Chart.js texte de la licence à l'adresse suivante: https://github.com/nnnick/Chart.js/blob/master/LICENSE.md </p>
 <br/>
 
 <p> <b> b) DBFlow ORM </b> </p>
@@ -16,24 +16,18 @@
 <br/>
 <p> LE LOGICIEL EST FOURNI «TEL QUEL», SANS GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER LES GARANTIES DE QUALITÉ MARCHANDE, D'ADAPTATION À UN USAGE PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS LES AUTEURS OU COPYRIGHT TITULAIRES NE SERONT TENUS RESPONSABLES DE TOUTE RECLAMATION, DOMMAGE OU AUTRE RESPONSABILITÉ, QUE CE SOIT DANS UNE ACTION DE CONTRAT, TORT OU AUTREMENT, PROVENANT DE, DE OU EN RELATION AVEC LE LOGICIEL OU L'UTILISATION OU AUTRES TRAITEMENTS DU LOGICIEL. </p>
 <br/>
-<p> <a DBFlow href='https://github.com/Raizlabs/DBFlow/blob/master/LICENSE'> licence texte </a> </p>
+<p> S'il vous plaît voir DBFlow texte de la licence à l'adresse suivante: https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2FRaizlabs%2FDBFlow%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGMxEwZSy7pTU-Owh-kp9akR05PUQ</p>
 <br/>
 
 <p> <b> 2. Apache License, Version 2.0 </b> </p>
 <p> Les programmes suivants ont été utilisés pour développer cette application sous licence Apache, Version 2.0 (<a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>):</p>
 <br/>
-<p> a) bibliothèques Android:
-soutien-v4 <br/>
-appcompat-7 <br/>
-support-annotations: <a href='https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation'>src dossier </a> <br/>
-multidex - fichier <a href='https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE'> Avis trouvé ici </a> <br/>>
-coureur <br/>
-règles <br/>
-b) OpenCSV: <a href='https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg'>src dossier </a> <br/>
-c) goyave: <a href='https://github.com/google/guava'> src dossier </a> <br/>
-d) okhttp: <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA'>src dossier </a> <br/>
+<p> a) bibliothèques Android: soutien-v4, AppCompat-7, support-annotations (https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation), multidex (s'il vous plaît voir fichier AVIS au https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE), coureur, règles <br/>
+b) OpenCSV (https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg)<br/>
+c) la goyave (https://github.com/google/guava) <br/>
+d) okhttp (https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA)<br/>
 e) play-services <br/>
-f) libphonenumber: aucun fichier de préavis, mais ils utilisent une autre bibliothèque qui a un dossier de préavis, donc, en dehors de leur licence (<a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see </a>), ils comprennent également le <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw'>chromium licence texte </a>. <br/>
+f) libphonenumber (Voir le dossier de l'avis de chrome licence de chrome à 'https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see here</a>), they include also the <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw' )<br/>
 </p>
 
 <p> Copyright © 2016 Population Services International (PSI). </p>
@@ -63,19 +57,22 @@ f) libphonenumber: aucun fichier de préavis, mais ils utilisent une autre bibli
 <p> CE LOGICIEL EST FOURNI PAR LES DÉTENTEURS COPYRIGHT ET SES COLLABORATEURS «TEL QUEL» ET TOUTE GARANTIE EXPLICITE OU IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER, LES GARANTIES DE QUALITÉ MARCHANDE ET D'ADAPTATION À UN USAGE PARTICULIER. EN AUCUN CAS LE PROPRIÉTAIRE OU SES COLLABORATEURS DU DROIT D'AUTEUR NE SERONT TENUS RESPONSABLES DES DOMMAGES DIRECTS, SPÉCIAUX, ACCESSOIRES, OU INDIRECTS SPÉCIAUX EXEMPLAIRES (Y COMPRIS, MAIS SANS S'Y LIMITER, LA FOURNITURE DE BIENS OU DE SERVICES DE SUBSTITUTION, LA PERTE D'UTILISATION, DE DONNEES OU DE PROFITS; OU INTERRUPTION dES AFFAIRES) SOIT lA CAUSE ET lA THÉORIE dE lA RESPONSABILITÉ, PAR CONTRAT, RESPONSABILITÉ STRICTE OU DÉLIT (Y COMPRIS lA NÉGLIGENCE OU AUTRE) PROVENANT dE TOUTE FAÇON dE L'UTILISATION dE CE LOGICIEL, MÊME SI lA POSSIBILITÉ d'UN TEL DOMMAGE. </p>
 <br/>
 
-<p> <b> 5. Creative Commons Attribution 2.5 License </b> (pour Espresso (espresso-core, espresso-intentions, espresso marche au ralenti des ressources, expresso-web)) - <a href='https://creativecommons.org/licenses/by/2.5/legalcode'>https://creativecommons.org/licenses/by/2.5/legalcode</a></p>
+<p> <b> 5. Creative Commons Attribution 2.5 License </b> (pour Espresso (espresso-core, espresso-intentions, espresso marche au ralenti des ressources, expresso-web)) - https://creativecommons.org/licenses/by/2.5/legalcode < / p>
 <p> PSI n'a pas apporté des modifications ou des modifications au logiciel Expresso référencé ci-dessus aux fins de la présente demande. </p>
 <br/>
 <p> <b> Vous êtes libre de: </b> <br/>
-<b> Partager </b> - copier et redistribuer le matériel sur tout support ou le format <br/>
-<b> Adapter </b> - remix, transformer et construire sur le matériau <br/>
+<B> Partager </b> - copier et redistribuer le matériel sur tout support ou le format <br/>
+<B> Adapter </b> - remix, transformer et construire sur le matériau <br/>
 à toutes fins, même commercialement. <br/>
 Le donneur de licence ne peut pas révoquer ces libertés aussi longtemps que vous suivez les termes de la licence. </p>
 <br/>
 <p> <b> Selon les termes suivants: </b> <br/>
-<b> Paternité </b> - Vous devez accorder le crédit, fournir un lien vers la licence, et d'indiquer si des modifications ont été apportées. Vous pouvez le faire de manière raisonnable, mais pas d'une façon qui suggère le donneur de licence vous ou votre utilisation approuve. <br/>
+<B> Paternité </b> - Vous devez accorder le crédit, fournir un lien vers la licence, et d'indiquer si des modifications ont été apportées. Vous pouvez le faire de manière raisonnable, mais pas d'une façon qui suggère le donneur de licence vous ou votre utilisation approuve. <br/>
 Pas de restrictions supplémentaires -. Vous ne pouvez pas appliquer des conditions juridiques ou mesures techniques qui limitent légalement les autres de faire quoi que ce soit les permis de licence <p />
 <br/>
 <p> <b> Avis: </b> <br/>
 Vous n'êtes pas obligé de se conformer à la licence pour les éléments de la matière dans le domaine public ou si votre utilisation est autorisée par une exception ou limitation applicable. <br/>
 Aucune garantie sont donnés. La licence ne peut pas vous donner toutes les autorisations nécessaires à l'utilisation prévue. Par exemple, d'autres droits tels que la publicité, la vie privée ou les droits moraux peuvent limiter la façon dont vous utilisez le matériel. </p>
+
+<p> <b> EXCLUSIONS </b> </p>
+<p> Cette application utilise le logiciel Crashlytics propriété en vertu d'un permis restreint de Crashlytics à fournir des informations au développeur (s) sur le fonctionnement de l'application, y compris, mais sans s'y limiter, des informations sur comment et dans quelles circonstances l'App écrasé et comment de nombreux utilisateurs interagissent avec l'application et la façon dont ils le font. Le logiciel Crashlytics ne sont pas inclus dans la GNU General Public License pour l'App; PSI n'a aucune autorité pour sous-licence du logiciel Crashlytics. Pour plus d'informations sur les logiciels Crashlytics, s'il vous plaît visitez https://try.crashlytics.com/terms/. </p>

@@ -21,9 +21,12 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 
 import java.util.ArrayList;
@@ -36,10 +39,9 @@ import java.util.Map;
  * Since 1 Event might correspond to N surveys (1 per tabgroup) it is needed to track all the info to share
  * Created by arrizabalaga on 28/04/16.
  */
-//TODO Remove: This is no longer required as long as there wont be tabgroups (1event -> 1 survey)
 public class EventToSurveyBuilder {
     Survey defaultSurvey;
-    Map<String,Survey> mapProgramStageSurvey;
+    Map<String,Survey> mapTabGroupSurvey;
     Score mainScore;
     Date createdOn;
     Date uploadedOn;
@@ -47,7 +49,7 @@ public class EventToSurveyBuilder {
     Date defaultUploadedOn;
 
     public EventToSurveyBuilder(Survey survey){
-        this.mapProgramStageSurvey =new HashMap<>();
+        this.mapTabGroupSurvey =new HashMap<>();
         this.defaultSurvey=survey;
         this.defaultUploadedOn = new Date();
     }
@@ -80,6 +82,18 @@ public class EventToSurveyBuilder {
         this.createdOn= EventExtended.parseShortDate(dataValue.getValue());
     }
 
+    /**
+     * Returns the uploaded on date from the control data element.
+     * If it has NOT been loaded when a value comes in it will return a default 'now'.
+     * @return
+     */
+    public Date getSafeUploadedOn(){
+        if(this.uploadedOn!=null){
+            return this.uploadedOn;
+        }
+        return this.defaultUploadedOn;
+    }
+
     public void setUploadedOn(DataValue dataValue){
         this.uploadedOn= EventExtended.parseShortDate(dataValue.getValue());
     }
@@ -96,7 +110,7 @@ public class EventToSurveyBuilder {
      * Once all the values have been parsed you can safely
      */
     public void saveCommonData(){
-        Collection<Survey> surveys= mapProgramStageSurvey.values();
+        Collection<Survey> surveys=mapTabGroupSurvey.values();
         //No tabgroups, just update defaultsurvey;
         if(surveys.size()==0){
             surveys=new ArrayList<>();
@@ -105,6 +119,7 @@ public class EventToSurveyBuilder {
         //Spread the common data across the N surveys whenever possible
         for(Survey survey:surveys){
             updateDataFromControlDataElements(survey);
+            //FIXME The best approach so far but its wrong anyway (same main score no matter what tabgroup)
             saveCommonScore(survey);
         }
     }
@@ -127,6 +142,66 @@ public class EventToSurveyBuilder {
         }
 
         survey.save();
+    }
+
+    /**
+     * Finds of adds a new survey for the given tabgroup
+     * @param program
+     * @return
+     */
+    public Survey addSurveyForProgram(Program program){
+        if(program==null){
+            return null;
+        }
+        //Already there nothing to add
+        Survey surveyForProgram=mapTabGroupSurvey.get(program.getName());
+        if(surveyForProgram!=null){
+            return surveyForProgram;
+        }
+
+        //Real new survey is required
+        surveyForProgram=copyDefaultSurvey(program);
+
+        //Annotate tabgroup (for rest of values)
+        mapTabGroupSurvey.put(program.getName(),surveyForProgram);
+        return surveyForProgram;
+    }
+
+    /**
+     * Tries to get the question from the dataValue.dataElement.
+     * Returns null if its not possible.
+     * @param appMapObjects
+     * @param dataValue
+     * @return
+     */
+    public Question getQuestionFromDataValue(Map<String,Object> appMapObjects, DataValue dataValue){
+        if(appMapObjects==null || dataValue==null){
+            return null;
+        }
+        Object potentialQuestion=appMapObjects.get(dataValue.getDataElement());
+        if (potentialQuestion instanceof Question){
+            return (Question)potentialQuestion;
+        }
+
+        return null;
+    }
+
+    private Survey copyDefaultSurvey(Program program){
+        if(defaultSurvey==null){
+            return null;
+        }
+
+        Survey copySurvey=new Survey();
+        copySurvey.setStatus(Constants.SURVEY_SENT);
+        copySurvey.setCompletionDate(defaultSurvey.getCompletionDate());
+        copySurvey.setCreationDate(defaultSurvey.getCreationDate());
+        copySurvey.setUploadDate(defaultSurvey.getUploadDate());
+        copySurvey.setScheduledDate(defaultSurvey.getScheduledDate());
+        copySurvey.setOrgUnit(defaultSurvey.getOrgUnit());
+        copySurvey.setEventUid(defaultSurvey.getEventUid());
+        copySurvey.setProgram(program);
+        copySurvey.save();
+        return copySurvey;
     }
 
     /**

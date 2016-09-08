@@ -24,7 +24,7 @@ import org.eyeseetea.malariacare.database.model.OrgUnit;
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class PieTabGroupDataByOrgUnit extends PieTabGroupDataBase {
+public class PieDataByOrgUnit extends PieDataBase {
     /**
      * Type of program for this chart
      */
@@ -35,7 +35,7 @@ public class PieTabGroupDataByOrgUnit extends PieTabGroupDataBase {
      * Constructor per OrgUnit
      * @param orgUnit
      */
-    public PieTabGroupDataByOrgUnit(OrgUnit orgUnit) {
+    public PieDataByOrgUnit(OrgUnit orgUnit) {
         this.orgUnit=orgUnit;
     }
     public String toJSON(String tipChat){

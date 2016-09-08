@@ -23,7 +23,7 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
 
 import java.util.ArrayList;
@@ -34,31 +34,30 @@ import java.util.Map;
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class PieTabGroupBuilderByProgram extends  PieTabGroupBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:setProgramPieData(%s)";
+public class PieBuilderByOrgUnit extends PieBuilderBase {
+    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:setOrgUnitPieData(%s)";
 
     /**
      * Map of entries per program
      */
-    private Map<Program,PieTabGroupDataByProgram> pieTabGroupDataMap;
+    private Map<OrgUnit,PieDataByOrgUnit> pieTabGroupDataMap;
     /**
      * Default constructor
      *
      * @param surveys
      * @param context
      */
-    public PieTabGroupBuilderByProgram(List<Survey> surveys, Context context) {
+    public PieBuilderByOrgUnit(List<Survey> surveys, Context context) {
         super(surveys, context);
-        pieTabGroupDataMap = new HashMap<>();
+        pieTabGroupDataMap=new HashMap<>();
     }
-
     /**
      * Adds calculated entries to the given webView
      * @param webView
      */
     public void addDataInChart(WebView webView){
         //Build entries
-        List<PieTabGroupDataByProgram> entries=build(surveys);
+        List<PieDataByOrgUnit> entries=build(surveys);
         //Inyect entries in view
         injectDataInChart(webView, entries);
         buildJSONArray(entries);
@@ -66,37 +65,40 @@ public class PieTabGroupBuilderByProgram extends  PieTabGroupBuilderBase {
     }
     private void build(Survey survey) {
         //Get the program
-        Program program=survey.getProgram();
+        OrgUnit orgUnit=survey.getOrgUnit();
 
         //Get the entry for that program
-        PieTabGroupDataByProgram pieTabGroupData = pieTabGroupDataMap.get(program);
+        PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
 
         //First time no entry
         if(pieTabGroupData ==null){
-            pieTabGroupData =new PieTabGroupDataByProgram(program);
-            pieTabGroupDataMap.put(program, pieTabGroupData);
+            pieTabGroupData =new PieDataByOrgUnit(orgUnit);
+            pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
         }
         //Increment surveys for that month
         pieTabGroupData.incCounter(survey.getMainScore());
     }
-    private List<PieTabGroupDataByProgram> build(List<Survey> surveys) {
+
+
+    private List<PieDataByOrgUnit> build(List<Survey> surveys) {
         for(Survey survey:surveys){
             build(survey);
         }
 
         return new ArrayList(pieTabGroupDataMap.values());
     }
-    private void injectDataInChart(WebView webView, List<PieTabGroupDataByProgram> entries) {
+    private void injectDataInChart(WebView webView, List<PieDataByOrgUnit> entries) {
         //Build array JSON
         String json=buildJSONArray(entries);
 
         //Inyect in browser
         inyectInBrowser(webView, JAVASCRIPT_UPDATE_CHARTS, json);
     }
-    private String buildJSONArray(List<PieTabGroupDataByProgram> entries){
+
+    private String buildJSONArray(List<PieDataByOrgUnit> entries){
         String arrayJSON="[";
         int i=0;
-        for(PieTabGroupDataByProgram pieTabGroupData :entries){
+        for(PieDataByOrgUnit pieTabGroupData :entries){
             String pieJSON= pieTabGroupData.toJSON(context.getString(R.string.dashboard_tip_pie_chart));
             arrayJSON+=pieJSON;
             i++;

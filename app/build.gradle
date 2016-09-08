@@ -72,7 +72,7 @@ android {
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_bb"
-            versionName "1.0.0"
+            versionName "1.0.6"
             minSdkVersion 15
             targetSdkVersion 21
         }
@@ -107,12 +107,13 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.googlecode.libphonenumber:libphonenumber:7.0.9'
+
     //3rd party dependencies
     compile "com.opencsv:opencsv:$rootProject.opencsvVersion"    
     compile "com.google.android.gms:play-services:$rootProject.gmsPlayVersion"
     compile "com.google.guava:guava:$rootProject.guavaVersion"
     compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
+    compile "com.googlecode.libphonenumber:libphonenumber:$rootProject.libphonenumberVersion"
 
     // Unit testing dependencies
     testCompile "junit:junit:$rootProject.junitVersion"

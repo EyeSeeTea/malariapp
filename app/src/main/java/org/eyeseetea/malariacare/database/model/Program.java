@@ -19,14 +19,18 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +45,11 @@ public class Program extends BaseModel{
     String uid;
     @Column
     String name;
-    /**
-     * ProgramStage UID (require to build events with programStage uid (previously tabgroup uid)
-     */
     @Column
-    String programStage;
+    String stage_uid;
 
     /**
-     * List of tabs for this program
+     * List of tabs that belongs to this tabgroup
      */
     List<Tab> tabs;
 
@@ -93,21 +94,12 @@ public class Program extends BaseModel{
         this.name = name;
     }
 
-    public String getProgramStage(){
-        return programStage;
+    public String getStageUid() {
+        return stage_uid;
     }
 
-    public void setProgramStage(String programStage){
-        this.programStage=programStage;
-    }
-
-    public List<Tab> getTabs(){
-        if(tabs==null){
-            this.tabs = new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_program()))
-                    .queryList();
-        }
-        return this.tabs;
+    public void setStageUid(String stage_uid) {
+        this.stage_uid = stage_uid;
     }
 
     public static List<Program> getAllPrograms(){
@@ -133,6 +125,15 @@ public class Program extends BaseModel{
             }
         }
         return orgUnits;
+    }
+
+    public List<Tab> getTabs(){
+        if (tabs==null){
+            tabs=new Select().from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_program()))
+                    .orderBy(Tab$Table.ORDER_POS).queryList();
+        }
+        return tabs;
     }
 
     public OrgUnitProgramRelation addOrgUnit(OrgUnit orgUnit){
@@ -176,6 +177,7 @@ public class Program extends BaseModel{
         int result = (int) (id_program ^ (id_program >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + name.hashCode();
+        result = 31 * result + (stage_uid != null ? stage_uid.hashCode() : 0);
         return result;
     }
 
@@ -185,6 +187,7 @@ public class Program extends BaseModel{
                 "id=" + id_program +
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
+                ", stage_uid='" + stage_uid + '\'' +
                 '}';
     }
 }

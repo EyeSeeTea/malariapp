@@ -1,5 +1,4 @@
 /*
-
 	Usage:
 		buildTableFacilities(
 			{
@@ -28,7 +27,6 @@
 				]
 			}
 		);
-
 */
 var inputDataFacilities=[];
 //Save the table data

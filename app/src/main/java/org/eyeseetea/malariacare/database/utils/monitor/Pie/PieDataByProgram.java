@@ -19,49 +19,27 @@
 
 package org.eyeseetea.malariacare.database.utils.monitor.pie;
 
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.database.model.Program;
 
 /**
- * VO thats hold the info of a single pie chart
- * Created by arrizabalaga on 9/10/15.
+ * Created by idelcano on 23/08/2016.
  */
-public class PieTabGroupDataBase {
-
-    static final String JSONFORMAT="{title:'%s',tip:'%s',idTabGroup: %d,valueA:%d,valueB:%d,valueC:%d,uidprogram:'%s',uidorgunit:'%s'}";
+public class PieDataByProgram extends PieDataBase {
+    /**
+     * Type of program for this chart
+     */
+    private Program program;
 
     /**
-     * Number of surveys with A score
+     * Constructor per program
+     * @param program
      */
-    int numA;
-    /**
-     * Number of surveys with B score
-     */
-    int numB;
-    /**
-     * Number of surveys with C score
-     */
-    int numC;
-
-
-    /**
-     * Increments the right counter according to the score
-     * @param score
-     */
-    public void incCounter(float score){
-        if(score< Constants.MAX_RED){
-            numC++;
-            return;
-        }
-
-        if(score< Constants.MAX_AMBER){
-            numB++;
-            return;
-        }
-
-        numA++;
-        return;
+    public PieDataByProgram(Program program) {
+        this.program = program;
     }
-
-
-
+    public String toJSON(String tipChat){
+        String pieTitle = String.format("%s (%s)", program.getName(), program.getName());
+        String json = String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC, program.getUid(), program.getUid());
+        return json;
+    }
 }

@@ -22,8 +22,10 @@ package org.eyeseetea.malariacare.layout.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -59,6 +62,76 @@ import java.util.List;
 public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
+    private static String compulsoryColorString;
+    private static final String zero = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
+
+    /**
+     * Inits red color to avoid going into resources every time
+     */
+    public static void init(){
+        int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
+        compulsoryColorString = String.format("%X", red).substring(2);
+    }
+
+    //Store the Views references for each row (to avoid many calls to getViewById)
+    public static class ViewHolder {
+
+        // Main component in the row: Spinner, EditText or RadioGroup
+        public View component;
+
+        public CustomTextView num;
+        public CustomTextView denum;
+        public int type;
+
+        /**
+         * Fixes a bug in older apis where a RadioGroup cannot find its children by id
+         * @param id
+         * @return
+         */
+        public CustomRadioButton findRadioButtonById(int id){
+            //No component -> done
+            if (component==null || ! (component instanceof RadioGroup)){
+                return null;
+            }
+
+            //Modern api -> delegate in its method
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+                return (CustomRadioButton)component.findViewById(id);
+            }
+
+            //Find button manually
+            for(int i=0;i<((RadioGroup) component).getChildCount();i++){
+                View button=((RadioGroup) component).getChildAt(i);
+                if(button.getId()==id){
+                    return (CustomRadioButton) button;
+                }
+            }
+            return null;
+        }
+
+        public void setNumAndDenum(String numText, String denumText) {
+            if(PreferencesState.getInstance().isShowNumDen()) {
+                num.setText(numText);
+                denum.setText(denumText);
+            }
+        }
+
+        public void setNum(String numText) {
+            if(PreferencesState.getInstance().isShowNumDen()) {
+                num.setText(numText);
+            }
+        }
+    }
+
+    /**
+     * Static class just to get the answer about the children deletion inside a listener
+     */
+    public static class QuestionVisibility{
+        public static Question question;
+        public static LinkedHashMap<BaseModel, Boolean> elementInvisibility;
+        public static AutoTabAdapter adapter;
+        public static Option option;
+    }
 
     //Store the views references for each view in the footer
     public static class ScoreHolder {
@@ -88,30 +161,68 @@ public class AutoTabLayoutUtils {
      *
      * @param view
      */
-    public static void updateReadOnly(View view, Question question, boolean readonly) {
+    public static void updateReadOnly(View view, Question question, boolean readOnly) {
         if (view == null || question==null) {
             return;
         }
 
-        if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
-            readonly=true;
-        }
-
+        //RadioGroup is different
         if (view instanceof RadioGroup) {
             RadioGroup radioGroup = (RadioGroup) view;
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                radioGroup.getChildAt(i).setEnabled(!readonly);
+                radioGroup.getChildAt(i).setEnabled(!readOnly);
             }
         } else {
-            view.setEnabled(!readonly);
+            view.setEnabled(!readOnly);
         }
+    }
+
+    /**
+     * Checks if given question should be hidden according to the current survey or not.
+     * @param question
+     * @return
+     */
+    public static boolean isHidden(Question question, float idSurvey) {
+        return question.isHiddenBySurvey(idSurvey);
+    }
+
+    /**
+     * Given a desired position (that means, the position shown in the screen) of an element, get the
+     * real position (that means, the position in the stored items list taking into account the hidden
+     * elements)
+     * @param position
+     * @return the real position in the elements list
+     */
+    public static int getRealPosition(int position, LinkedHashMap<BaseModel, Boolean> elementInvisibility, List<? extends BaseModel> items){
+        int hElements = getHiddenCountUpTo(position, elementInvisibility);
+        int diff = 0;
+
+        for (int i = 0; i < hElements; i++) {
+            diff++;
+            if (elementInvisibility.get(items.get(position + diff))) i--;
+        }
+        return (position + diff);
+    }
+
+    /**
+     * Get the number of elements that are hidden until a given position
+     * @param position
+     * @return number of elements hidden (true in elementInvisibility Map)
+     */
+    private static int getHiddenCountUpTo(int position, LinkedHashMap<BaseModel, Boolean> elementInvisibility) {
+        boolean [] upper = Arrays.copyOfRange(Booleans.toArray(elementInvisibility.values()), 0, position + 1);
+        int hiddens = Booleans.countTrue(upper);
+        return hiddens;
     }
 
     public static View initialiseDropDown(int position, ViewGroup parent, Question question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context) {
         View rowView;
-        rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
-
-        initialiseScorableComponent(rowView, viewHolder);
+        if(PreferencesState.getInstance().isShowNumDen()) {
+            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
+            initialiseScorableComponent(rowView, viewHolder);
+        }else{
+            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
+        }
 
         // In case the option is selected, we will need to show num/dems
         List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
@@ -136,9 +247,9 @@ public class AutoTabLayoutUtils {
             String appNameColorString = String.format("%X", red).substring(2);
             Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + question.getForm_name());
             viewHolder.statement.setText(spannedQuestion);
-        }
-        else
+        }else{
             viewHolder.statement.setText(question.getForm_name());
+        }
 
         return rowView;
     }

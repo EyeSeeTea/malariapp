@@ -39,17 +39,18 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
+import org.eyeseetea.malariacare.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderByOrgUnit;
 import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderBase;
-import org.eyeseetea.malariacare.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderBase;
 import org.eyeseetea.malariacare.database.utils.monitor.allassessment.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderByOrgUnit;
-import org.eyeseetea.malariacare.database.utils.monitor.pie.PieTabGroupBuilderByProgram;
+import org.eyeseetea.malariacare.database.utils.monitor.pie.PieBuilderByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.monitor.pie.PieBuilderByProgram;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -209,24 +210,29 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
                 //Update hardcoded messages
                 new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
+                //Update hardcoded messages
+                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+
+                //Add line chart
                 if(isOrgUnitFilterActive()) {
                     new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(), orgUnits).addDataInChart(view);
                 }
                 if(isProgramFilterActive()) {
                     new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(), programs).addDataInChart(view);
                 }
+
                 //Show stats by program
                 SentSurveysBuilderBase.showData(view);
 
                 //Add line chart
                 if(isOrgUnitFilterActive()) {
-                    new PieTabGroupBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                    new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
                 }
                 if(isProgramFilterActive()) {
-                    new PieTabGroupBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                    new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
                 }
                 //Render the table and pie.
-                PieTabGroupBuilderBase.showPieTab(view);
+                PieBuilderBase.showPieTab(view);
 
                 //Add line chart
                 if(isOrgUnitFilterActive()) {
