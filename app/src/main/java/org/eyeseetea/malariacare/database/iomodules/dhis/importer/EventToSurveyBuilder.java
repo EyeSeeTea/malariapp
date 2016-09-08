@@ -21,11 +21,12 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 
@@ -39,9 +40,10 @@ import java.util.Map;
  * Since 1 Event might correspond to N surveys (1 per tabgroup) it is needed to track all the info to share
  * Created by arrizabalaga on 28/04/16.
  */
+//TODO Remove: This is no longer required as long as there wont be tabgroups (1event -> 1 survey)
 public class EventToSurveyBuilder {
     Survey defaultSurvey;
-    Map<String,Survey> mapTabGroupSurvey;
+    Map<String,Survey> mapProgramStageSurvey;
     Score mainScore;
     Date createdOn;
     Date uploadedOn;
@@ -49,7 +51,7 @@ public class EventToSurveyBuilder {
     Date defaultUploadedOn;
 
     public EventToSurveyBuilder(Survey survey){
-        this.mapTabGroupSurvey =new HashMap<>();
+        this.mapProgramStageSurvey =new HashMap<>();
         this.defaultSurvey=survey;
         this.defaultUploadedOn = new Date();
     }
@@ -74,7 +76,7 @@ public class EventToSurveyBuilder {
 
         //Create a prototype of the score since it cannot be saved yet (will need 1 per final survey)
         mainScore= new Score();
-        mainScore.setScore(Float.parseFloat(dataValue.getValue()));
+        mainScore.setScore(AUtils.safeParseFloat(dataValue.getValue()));
         mainScore.setUid(dataValue.getDataElement());
     }
 
@@ -110,7 +112,7 @@ public class EventToSurveyBuilder {
      * Once all the values have been parsed you can safely
      */
     public void saveCommonData(){
-        Collection<Survey> surveys=mapTabGroupSurvey.values();
+        Collection<Survey> surveys= mapProgramStageSurvey.values();
         //No tabgroups, just update defaultsurvey;
         if(surveys.size()==0){
             surveys=new ArrayList<>();
@@ -154,7 +156,7 @@ public class EventToSurveyBuilder {
             return null;
         }
         //Already there nothing to add
-        Survey surveyForProgram=mapTabGroupSurvey.get(program.getName());
+        Survey surveyForProgram=mapProgramStageSurvey.get(program.getName());
         if(surveyForProgram!=null){
             return surveyForProgram;
         }
@@ -163,7 +165,7 @@ public class EventToSurveyBuilder {
         surveyForProgram=copyDefaultSurvey(program);
 
         //Annotate tabgroup (for rest of values)
-        mapTabGroupSurvey.put(program.getName(),surveyForProgram);
+        mapProgramStageSurvey.put(program.getName(),surveyForProgram);
         return surveyForProgram;
     }
 
