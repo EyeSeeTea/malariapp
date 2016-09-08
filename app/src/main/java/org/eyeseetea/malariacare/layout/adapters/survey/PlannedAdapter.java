@@ -145,7 +145,7 @@ public class PlannedAdapter extends BaseAdapter {
                 numItems++;
             }else{
                 //Surveys are shown
-                if(plannedItem.isShownByProgram(programFilter) && plannedItem.isShownByHeader(currentHeader)){
+                if((plannedItem.isShownByProgram(programFilter)|| programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())) && plannedItem.isShownByHeader(currentHeader)){
                     numItems++;
                 }
             }
@@ -165,7 +165,7 @@ public class PlannedAdapter extends BaseAdapter {
             }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey)plannedItem;
-            if(plannedSurvey.isShownByProgram(programFilter)){
+            if(plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())){
                 plannedSurvey.incHeaderCounter();
             }
         }
