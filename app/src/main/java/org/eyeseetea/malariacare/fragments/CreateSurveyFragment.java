@@ -237,7 +237,11 @@ public class CreateSurveyFragment extends Fragment {
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
 
         //set the first orgUnit saved
-        orgUnitStorage =orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
+        if(orgUnitHierarchy.getSavedUidsList().length()>1) {
+            orgUnitStorage = orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
+        }else{
+            orgUnitStorage="";
+        }
 
         //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
         if(!orgUnitStorage.equals("")){
