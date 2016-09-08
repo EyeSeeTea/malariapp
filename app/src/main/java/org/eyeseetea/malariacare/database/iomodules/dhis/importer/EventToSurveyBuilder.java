@@ -39,9 +39,10 @@ import java.util.Map;
  * Since 1 Event might correspond to N surveys (1 per program) it is needed to track all the info to share
  * Created by arrizabalaga on 28/04/16.
  */
+//TODO Remove: This is no longer required as long as there wont be tabgroups (1event -> 1 survey)
 public class EventToSurveyBuilder {
     Survey defaultSurvey;
-    Map<String,Survey> mapProgramSurvey;
+    Map<String,Survey> mapProgramStageSurvey;
     Score mainScore;
     Date createdOn;
     Date uploadedOn;
@@ -49,7 +50,7 @@ public class EventToSurveyBuilder {
     Date defaultUploadedOn;
 
     public EventToSurveyBuilder(Survey survey){
-        this.mapProgramSurvey =new HashMap<>();
+        this.mapProgramStageSurvey =new HashMap<>();
         this.defaultSurvey=survey;
         this.defaultUploadedOn = new Date();
     }
@@ -110,8 +111,8 @@ public class EventToSurveyBuilder {
      * Once all the values have been parsed you can safely
      */
     public void saveCommonData(){
-        Collection<Survey> surveys= mapProgramSurvey.values();
-        //No programs, just update defaultsurvey;
+        Collection<Survey> surveys= mapProgramStageSurvey.values();
+        //No programstage, just update defaultsurvey;
         if(surveys.size()==0){
             surveys=new ArrayList<>();
             surveys.add(defaultSurvey);
@@ -154,7 +155,7 @@ public class EventToSurveyBuilder {
             return null;
         }
         //Already there nothing to add
-        Survey surveyForProgram= mapProgramSurvey.get(program.getName());
+        Survey surveyForProgram= mapProgramStageSurvey.get(program.getName());
         if(surveyForProgram!=null){
             return surveyForProgram;
         }
@@ -163,7 +164,7 @@ public class EventToSurveyBuilder {
         surveyForProgram=copyDefaultSurvey(program);
 
         //Annotate program (for rest of values)
-        mapProgramSurvey.put(program.getName(),surveyForProgram);
+        mapProgramStageSurvey.put(program.getName(),surveyForProgram);
         return surveyForProgram;
     }
 

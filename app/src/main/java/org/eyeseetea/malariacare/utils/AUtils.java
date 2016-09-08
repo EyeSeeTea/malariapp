@@ -68,6 +68,14 @@ public abstract class AUtils {
         return Float.toString(bd.floatValue());
     }
 
+    public static float safeParseFloat(String floatStr){
+        try {
+            return Float.parseFloat(floatStr);
+        }catch (NumberFormatException nfe){
+            return 0f;
+        }
+    }
+
     public static String round(float base){
         return round(base, AUtils.ZERO_DECIMALS);
     }

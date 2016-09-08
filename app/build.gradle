@@ -2,11 +2,12 @@ buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
         mavenCentral()
+        mavenLocal()
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4'
     }
 }
 apply plugin: 'com.android.application'
@@ -31,11 +32,11 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         multiDexEnabled true
-        /*dexOptions {
-            jumboMode = true
-            incremental true
-            javaMaxHeapSize "4g"
-        }*/
+        dexOptions {
+            //jumboMode = true
+            //incremental true
+            javaMaxHeapSize "6g"
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
     }
@@ -68,25 +69,30 @@ android {
             applicationId "org.eyeseetea.malariacare.eds_bb"
             versionName "2.0.5"
             minSdkVersion 15
-            targetSdkVersion 21
+            targetSdkVersion 23
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_bb"
-            versionName "1.0.6"
+            versionName "1.1.1"
             minSdkVersion 15
-            targetSdkVersion 21
+            targetSdkVersion 23
         }
         surveillance {
             applicationId "org.eyeseetea.malariacare.surveillance_bb"
             versionName "5.0.0"
             minSdkVersion 15
-            targetSdkVersion 21
+            targetSdkVersion 23
         }
     }
     lintOptions {
         disable 'RtlSymmetry', 'RtlHardcoded'
+        checkReleaseBuilds false
     }
 
+}
+
+configurations {
+    all*.exclude group: 'com.google.guava', module:'guava-jdk5'
 }
 
 dependencies {
@@ -114,6 +120,18 @@ dependencies {
     compile "com.google.guava:guava:$rootProject.guavaVersion"
     compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
     compile "com.googlecode.libphonenumber:libphonenumber:$rootProject.libphonenumberVersion"
+
+    //Drive dependencies
+    compile "com.google.android.gms:play-services-identity:$rootProject.gmsPlayVersion"
+    compile("com.google.api-client:google-api-client-android:$rootProject.googleApiClientAndroidVersion") {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.code.findbugs'
+    }
+    compile("com.google.apis:google-api-services-drive:$rootProject.googleApiServicesDriveVersion") {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+    compile "com.google.code.findbugs:jsr305:$rootProject.jsr305Version"
 
     // Unit testing dependencies
     testCompile "junit:junit:$rootProject.junitVersion"

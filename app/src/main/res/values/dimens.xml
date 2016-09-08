@@ -62,6 +62,7 @@
     <!-- left padding for button in feedbackfragment !-->
     <dimen name="margin_lateral_feedback_radiobutton">15dip</dimen>
     <dimen name="margin_feedback_top_bottom_radiobutton">8dip</dimen>
+    <dimen name="min_image_width">200dip</dimen>
 
 
     <!-- Arrow padding !-->

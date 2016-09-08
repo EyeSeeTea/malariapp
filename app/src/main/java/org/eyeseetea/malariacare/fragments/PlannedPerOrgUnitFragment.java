@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -132,11 +133,11 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
     public static void enableScheduleButton(){
         scheduleButton.setEnabled(true);
-        scheduleButton.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.dark_navy_blue));
+        scheduleButton.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.dark_navy_blue));
     }
     public static void disableScheduleButton(){
         scheduleButton.setEnabled(false);
-        scheduleButton.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.common_signin_btn_dark_text_disabled));
+        scheduleButton.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.common_plus_signin_btn_text_light_disabled));
     }
 
     public void resetList() {

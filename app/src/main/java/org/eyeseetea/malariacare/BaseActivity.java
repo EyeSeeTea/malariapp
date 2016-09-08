@@ -54,8 +54,8 @@ import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
-public abstract class BaseActivity extends ActionBarActivity {
 
+public abstract class BaseActivity extends ActionBarActivity{
     /**
      * Extra param to annotate the activity to return after settings
      */
@@ -284,10 +284,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         startActivity(targetActivityIntent);
     }
 
-
-
-
-
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
      *   SurveyActivity => ".SurveyActivity"
@@ -296,5 +292,4 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void debugMessage(String message){
         Log.d("." + this.getClass().getSimpleName(), message);
     }
-
 }

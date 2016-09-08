@@ -30,12 +30,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
@@ -52,6 +53,10 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+
+import java.util.Date;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.Date;
 import java.util.List;
@@ -86,12 +91,31 @@ public class DashboardActivity extends BaseActivity{
 
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
+
+        //Media: init drive credentials
+        DriveRestController.getInstance().init(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
+    }
+
+
+
+
+    /**
+     * Handles resolution callbacks.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        Log.d(TAG, String.format("onActivityResult(%d, %d)", requestCode, resultCode));
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Delegate activity result to media controller
+        DriveRestController.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -181,6 +205,7 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
+        DriveRestController.getInstance().syncMedia();
     }
 
     @Override
@@ -220,9 +245,8 @@ public class DashboardActivity extends BaseActivity{
     /**
      * PUll data from DHIS server and turn into our model
      */
-    private void initDataIfRequired(){
-//            PullController.getInstance().pull(this);
-            initUserSessionIfRequired();
+    private void initDataIfRequired() {
+        initUserSessionIfRequired();
     }
 
     /**
@@ -343,6 +367,29 @@ public class DashboardActivity extends BaseActivity{
         // Put new survey in session
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);
+    }
+
+    /**
+     * Shows a quick toast message on screen
+     * @param message
+     */
+
+    public static void toast(String message) {
+        Toast.makeText(DashboardActivity.dashboardActivity, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastFromTask(final String message) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast(message);
+                    }
+                });
+            }
+        },1000);
     }
 
     //Show dialog exception from class without activity.
