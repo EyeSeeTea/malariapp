@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015.
+ * Copyright (c) 2016.
  *
  * This file is part of QA App.
  *
@@ -17,31 +17,28 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor;
+package org.eyeseetea.malariacare.database.utils.monitor.facility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Builds data for table of facilities
  * Created by arrizabalaga on 13/10/15.
  */
-public class FacilityTableBuilder {
+public class FacilityTableBuilderBase {
 
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities(%d,%s)";
+    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities('%s',%s)";
     private static final String TAG=".FacilityTableBuilder";
-    public static final String JAVASCRIPT_SHOW = "javascript:renderPieCharts()";
     public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
     public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
     public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
@@ -54,74 +51,16 @@ public class FacilityTableBuilder {
     /**
      * List of sent surveys
      */
-    private List<Survey> surveys;
+    List<Survey> surveys;
 
-    private Map<Program,FacilityTableData> facilityTableDataMap;
 
 
     /**
      * Default constructor
      */
-    public FacilityTableBuilder(List<Survey> surveys, Context context) {
+    public FacilityTableBuilderBase(List<Survey> surveys, Context context) {
         this.surveys = surveys;
         this.context = context;
-        this.facilityTableDataMap = new HashMap<>();
-    }
-
-    /**
-     * Adds calculated entries to the given webView
-     * @param webView
-     */
-    public void addDataInChart(WebView webView){
-        //Build tables
-        build(surveys);
-        //Inyect tables in view
-        for(Map.Entry<Program,FacilityTableData> tableEntry:facilityTableDataMap.entrySet()){
-            Program program=tableEntry.getKey();
-            FacilityTableData facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, program, facilityTableData);
-        }
-
-    }
-
-    /**
-     * Build table data from surveys
-     * @param surveys
-     * @return
-     */
-    private void build(List<Survey> surveys){
-        for(Survey survey:surveys){
-            //Current program
-            Program program=survey.getProgram();
-
-            //Get right table
-            FacilityTableData facilityTableData=facilityTableDataMap.get(program);
-
-            //Init entry first time of a tabgroup
-            if(facilityTableData==null){
-                facilityTableData=new FacilityTableData(program);
-                facilityTableDataMap.put(program,facilityTableData);
-            }
-
-            //Add survey to that table
-            facilityTableData.addSurvey(survey);
-        }
-    }
-
-    private void inyectDataInChart(WebView webView, Program program,FacilityTableData facilityTableData) {
-        //Build JSON data
-        String json=facilityTableData.getAsJSON();
-
-        //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,program.getId_program(),json);
-        Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
-
-    }
-
-    public static void showFacilities(WebView webView) {
-        Log.d(TAG, JAVASCRIPT_SHOW);
-        webView.loadUrl(String.format(JAVASCRIPT_SHOW));
     }
     public static void setColor(WebView webView){
         //noinspection ResourceType
@@ -145,5 +84,14 @@ public class FacilityTableBuilder {
         //remove the first two characters(about alpha color).
         String colorRRGGBB="#"+color.substring(3,9);
         return colorRRGGBB;
+    }
+
+    void inyectDataInChart(WebView webView, String id, String json) {
+
+        //Inyect in browser
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
+
     }
 }
