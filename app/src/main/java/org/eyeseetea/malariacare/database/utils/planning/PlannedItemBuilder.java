@@ -179,7 +179,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsNever(Survey survey){
-        Date scheduledDate = survey.getScheduleDate();
+        Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
         //No Scheduled
@@ -198,7 +198,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsOverdue(Survey survey){
-        Date scheduledDate = survey.getScheduleDate();
+        Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
         //scheduledDate<today
@@ -217,7 +217,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsNext30(Survey survey){
-        Date scheduledDate = survey.getScheduleDate();
+        Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
         Date today30 = getIn30Days(today);
 

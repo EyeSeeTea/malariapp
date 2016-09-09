@@ -71,7 +71,7 @@ public class Session {
     /**
      * Adapters that hold dashboard sent and unset surveys adapters
      */
-    private static IDashboardAdapter adapterUnsent, adapterSent;
+    private static IDashboardAdapter adapterUnsent, adapterSent, adapterOrgUnit;
 
     public static ListView listViewUnsent, listViewSent;
 
@@ -103,6 +103,14 @@ public class Session {
     public static void setUser(User user) {
         Log.d(TAG,"setUser: "+user);
         Session.user = user;
+    }
+
+    public static IDashboardAdapter getAdapterOrgUnit() {
+        return adapterOrgUnit;
+    }
+
+    public static void setAdapterOrgUnit(IDashboardAdapter adapterOrgUnit) {
+        Session.adapterOrgUnit = adapterOrgUnit;
     }
 
     public static IDashboardAdapter getAdapterUnsent() {

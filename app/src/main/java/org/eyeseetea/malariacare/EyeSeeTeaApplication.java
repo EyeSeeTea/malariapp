@@ -43,6 +43,8 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
@@ -64,6 +66,8 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         AppSettingsBuilder.getInstance().init(getApplicationContext());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
+        TypefaceCache.getInstance().init(getApplicationContext());
+        AutoTabLayoutUtils.init();
 
         //Set the Phone metadata
         PhoneMetaData phoneMetaData=this.getPhoneMetadata();
@@ -72,7 +76,6 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         FlowManager.init(this, "_EyeSeeTeaDB");
         // Create indexes to accelerate the DB selects and avoid SQlite errors
         createDBIndexes();
-
     }
 
     @Override

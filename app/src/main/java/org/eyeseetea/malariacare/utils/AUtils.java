@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -30,7 +31,6 @@ import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -57,7 +57,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class AUtils {
+public abstract class AUtils {
 
     private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
 
@@ -259,6 +259,15 @@ public class AUtils {
         }
         stringMessage=String.format(stringMessage,stringCommit);
         return stringMessage;
+    }
+
+    public static void showAlert(int titleId, CharSequence text, Context context){
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(titleId))
+                .setMessage(text)
+                .setNeutralButton(android.R.string.ok, null).create();
+        dialog.show();
+        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public static void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){

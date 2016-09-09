@@ -85,7 +85,6 @@ public class Match extends BaseModel {
             if(id_question_relation==null) return null;
             questionRelation = new Select()
                     .from(QuestionRelation.class)
-                    .indexedBy("QuestionRelation_operation")
                     .where(Condition.column(QuestionRelation$Table.ID_QUESTION_RELATION)
                             .is(id_question_relation)).querySingle();
         }
