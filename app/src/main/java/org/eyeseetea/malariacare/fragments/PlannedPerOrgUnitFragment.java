@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -51,6 +50,7 @@ import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.CustomCheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     protected IDashboardAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
     static Button scheduleButton;
-    CheckBox selectAllCheckbox;
+    CustomCheckBox selectAllCheckbox;
     String filterOrgUnitUid;
     public PlannedPerOrgUnitFragment() {
 
@@ -149,7 +149,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private void initListView(){
         LayoutInflater inflater = LayoutInflater.from(PreferencesState.getInstance().getContext().getApplicationContext());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
-        selectAllCheckbox=(CheckBox)header.findViewById(R.id.select_all_orgunits);
+        selectAllCheckbox=(CustomCheckBox) header.findViewById(R.id.select_all_orgunits);
         selectAllCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -162,7 +162,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             }
         });
         ListView listView = getListView();
-        listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         if(listView.getHeaderViewsCount()==0)
             listView.addHeaderView(header);
         setListAdapter((BaseAdapter) adapter);

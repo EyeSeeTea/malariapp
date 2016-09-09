@@ -21,46 +21,56 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
           android:orientation="horizontal"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
           android:paddingTop="10dip"
           android:paddingBottom="10dip"
-          android:background="@color/white"
-          android:gravity="center">
+          android:background="@color/planning_header_background"
+          android:gravity="center"
+          android:weightSum="1">
 
-    <CheckBox
+    <org.eyeseetea.malariacare.views.CustomCheckBox
         android:id="@+id/select_all_orgunits"
-        android:layout_width="wrap_content"
+        android:text="@string/select_all"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:layout_weight="0.5"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/assess_grey"
-        android:text="@string/select_all" />
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:paddingTop="@dimen/checkbox_text_top_padding"
+        android:paddingLeft="@dimen/dashboard_planning_padding"
+        android:textAllCaps="true"
+        app:tDimension="@string/font_size_level4"
+        app:tFontName="@string/medium_font_name"/>
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_height="wrap_content"
         android:text="Due date"
         android:id="@+id/nameHeader"
-        android:textColor="@color/assess_grey"
         android:gravity="center"
         android:layout_weight="0.25"
-        android:autoText="false"
-        app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/condensed_font_name"/>
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/dashboard_planning_padding"
+        android:textColor="@color/planning_header_text"
+        android:textAllCaps="true"
+        app:tDimension="@string/font_size_level4"
+        app:tFontName="@string/medium_font_name"/>
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_height="wrap_content"
         android:text="Schedule"
         android:id="@+id/nameHeader2"
-        android:textColor="@color/assess_grey"
+        android:textColor="@color/planning_header_text"
         android:gravity="center"
         android:layout_weight="0.25"
-        android:autoText="false"
-        app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/condensed_font_name"/>
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/dashboard_planning_padding"
+        android:textAllCaps="true"
+        app:tDimension="@string/font_size_level4"
+        app:tFontName="@string/medium_font_name"/>
 
 </TableRow>

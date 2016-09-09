@@ -153,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:background="@color/White">
+            android:background="@color/planning_header_background">
             <org.eyeseetea.malariacare.views.CustomButton
                 android:text="Reschedule"
                 android:id="@+id/reschedule_button"
