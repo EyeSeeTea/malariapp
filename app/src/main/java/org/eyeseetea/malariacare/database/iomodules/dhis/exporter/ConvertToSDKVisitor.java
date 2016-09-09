@@ -181,6 +181,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             value.accept(this);
         }
 
+
+        survey.setUploadDate(uploadedDate);
+
         //Update all the dates after checks the new values
         updateEventDates();
 
