@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.allassessment;
+package org.eyeseetea.malariacare.database.utils.monitor.allassessments;
 
 import android.content.Context;
 import android.util.Log;
@@ -127,7 +127,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
 
                 //First time no entry
                 if (entrySentSurveysChartByProgram == null) {
-                    entrySentSurveysChartByProgram = new EntrySentSurveysChartByProgram(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program);
+                    entrySentSurveysChartByProgram = new  EntrySentSurveysChartByProgram(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program);
                     sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChartByProgram);
                 }
                 entrySentSurveysChartByProgram.incSent();

@@ -17,9 +17,8 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.allassessment;
+package org.eyeseetea.malariacare.database.utils.monitor.allassessments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;

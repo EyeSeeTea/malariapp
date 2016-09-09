@@ -1,4 +1,4 @@
-/*
+package org.eyeseetea.malariacare.database.utils.monitor.allassessments;/*
  * Copyright (c) 2016.
  *
  * This file is part of QA App.
@@ -17,7 +17,6 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.allassessment;
 
 import android.content.Context;
 import android.util.Log;
@@ -25,6 +24,8 @@ import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.monitor.allassessments.EntrySentSurveysChartByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.monitor.allassessments.SentSurveysBuilderBase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +36,7 @@ import java.util.Map;
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class SentSurveysBuilderByOrgUnit extends  SentSurveysBuilderBase {
+public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
     private static final String TAG=".SentSurveysBuilderOU";
     /**
      * List of sent surveys

@@ -17,25 +17,26 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.utils.monitor.allassessment;
+package org.eyeseetea.malariacare.database.utils.monitor.allassessments;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.Date;
 
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class EntrySentSurveysChartByOrgUnit  extends  EntrySentSurveysChartBase{
-    public static final String JAVASCRIPT_ADD_DATA = "javascript:setOrgUnitData([%d, %d, '%s', '%s','%s'])";
+public class EntrySentSurveysChartByProgram extends  EntrySentSurveysChartBase {
+    public static final String JAVASCRIPT_ADD_DATA = "javascript:setProgramData([%d, %d, '%s', '%s','%s'])";
+
 
     /**
      * The date whose month represents this point (day info is discarded)
      */
-    OrgUnit orgUnit;
-    public EntrySentSurveysChartByOrgUnit(int expected, Date date,OrgUnit orgUnit) {
+    Program program;
+    public EntrySentSurveysChartByProgram(int expected, Date date, Program program) {
         super(expected, date);
-        this.orgUnit=orgUnit;
+        this.program=program;
     }
 
     /**
@@ -43,6 +44,6 @@ public class EntrySentSurveysChartByOrgUnit  extends  EntrySentSurveysChartBase{
      * @return
      */
     public String getEntryAsJS(){
-        return String.format(JAVASCRIPT_ADD_DATA,sent,expected,orgUnit.getName(),orgUnit.getUid(),getDateAsString());
+        return String.format(JAVASCRIPT_ADD_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
     }
 }
