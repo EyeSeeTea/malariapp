@@ -90,17 +90,6 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onBackPressed(){
-        Survey survey = Session.getSurveyByModule(getSimpleName());
-        if(survey.isCompleted() || survey.isSent()){
-            dashboardController.setNavigatingBackwards(false);
-            closeSurveyFragment();
-            return;
-        }
-        //List Unsent surveys -> ask before leaving
-        if(isFragmentActive(DashboardUnsentFragment.class)){
-            super.onBackPressed();
-            return;
-        }
 
         //Creating survey -> nothing to do
         if(isFragmentActive(CreateSurveyFragment.class)){
@@ -113,9 +102,21 @@ public class AssessModuleController extends ModuleController {
             }
             return;
         }
+        //List Unsent surveys -> ask before leaving
+        if(isFragmentActive(DashboardUnsentFragment.class)){
+            super.onBackPressed();
+            return;
+        }
 
+
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         //In a survey -> update status before leaving
         onSurveyBackPressed(survey);
+        if(survey.isCompleted() || survey.isSent()){
+            dashboardController.setNavigatingBackwards(false);
+            closeSurveyFragment();
+            return;
+        }
     }
 
     public void onSurveySelected(Survey survey){
