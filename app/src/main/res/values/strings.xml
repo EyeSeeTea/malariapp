@@ -222,4 +222,9 @@ evaluation"</string>
 <string name="number_8">8</string>
 <string name="number_9">9</string>
 <string name="clear">Clear</string>
+
+<string name="developer_option_summary">This feature activates the developer options</string>
+<string name="developer_option_title">Show developer options</string>
+<string name="export_data_option_title">Export database</string>
+
 </resources>

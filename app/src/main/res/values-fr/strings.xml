@@ -220,4 +220,8 @@ Mensuelle"</string>
 <string name="number_8">8</string>
 <string name="number_9">9</string>
 <string name="clear">Effacement</string>
+
+<string name="developer_option_summary">"Cette option active les options de développement"</string>
+<string name="developer_option_title">"Afficher les options développeur"</string>
+<string name="export_data_option_title">"Base de données à l'exportation"</string>
 </resources>
