@@ -169,7 +169,12 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                job = DhisService.loadLastData(context);
+                if(AppSettingsBuilder.isDownloadOnlyLastEvents()){
+                    job = DhisService.loadLastData(context);
+                }
+                else{
+                    job = DhisService.loadData(context);
+                }
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
@@ -193,6 +198,7 @@ public class PullController {
 
     @Subscribe
     public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
+        Log.d(TAG, "Subscribe method: onLoadMetadataFinished");
         new Thread() {
             @Override
             public void run() {

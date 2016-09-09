@@ -2,7 +2,8 @@
   "database": {
     "originType": "dhis",
     "uri": "https://hnqis-dev-ci.psi-mis.org",
-    "fullHierarchy": false
+    "fullHierarchy": false,
+    "downloadOnlyLastEvents": false
   },
   "dashboard": {
     "orientation": "horizontal",

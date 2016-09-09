@@ -84,6 +84,10 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDatabaseSettings().isFullHierarchy();
     }
 
+    public static boolean isDownloadOnlyLastEvents(){
+        return getInstance().getSettings().getDatabaseSettings().isDownloadOnlyLastEvents();
+    }
+
     public void init(Context context){
         settings = parse(R.raw.settings,context);
         dashboardController = build(settings);
