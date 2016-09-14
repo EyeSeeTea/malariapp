@@ -54,6 +54,7 @@ ext {
     libphonenumberVersion = '7.0.9'
     crashlyticsVersion = '2.5.2@aar'
     opencsvVersion = '3.3'
+    multidexVersion = '1.0.1'
 
     easypermissionsVersion = '0.1.5'
     googleApiClientAndroidVersion = '1.20.0'
