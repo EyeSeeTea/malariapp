@@ -26,7 +26,6 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
