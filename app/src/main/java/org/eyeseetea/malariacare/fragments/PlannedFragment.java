@@ -57,8 +57,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     private PlannedAdapter adapter;
 
-    private List<PlannedItem> plannedItems;
-
 
     private List<Program> programList;
     private List<OrgUnit> orgUnitList;
@@ -67,7 +65,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     List<PlannedItem> plannedItemList;
 
     public PlannedFragment() {
-        this.plannedItems = new ArrayList();
+
     }
 
 
@@ -166,12 +164,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
-    public void reloadPlannedItems() {
-        adapter.reloadItems(plannedItemList);
-        setListShown(true);
-        adapter.notifyDataSetChanged();
-    }
-
     public void loadProgram(Program program) {
         Log.d(TAG,"Loading program: "+program.getUid());
         programFilter=program;
@@ -204,6 +196,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                     DashboardActivity.dashboardActivity.preparePlanningFilters(programList,orgUnitList);
                 }
                 prepareUI(plannedServiceBundle.getPlannedItems());
+
+                setListShown(true);
+                adapter.notifyDataSetChanged();
             }
         }
     }
