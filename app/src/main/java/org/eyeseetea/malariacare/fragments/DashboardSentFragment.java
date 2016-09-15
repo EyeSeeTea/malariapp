@@ -181,8 +181,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        //Loading...
-        setListShown(false);
         //Listen for data
         registerSurveysReceiver();
         super.onResume();
