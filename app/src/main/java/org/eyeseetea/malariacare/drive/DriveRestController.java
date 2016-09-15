@@ -4,17 +4,21 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.services.drive.DriveScopes;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -79,11 +83,25 @@ public class DriveRestController {
         }
 
         if (!isGooglePlayServicesAvailable()) {
+            if(!isGooglePlayAppAvailable()){
+                Log.w(TAG, "No GooglePlay Available . acquire play services will not possible");
+                return;
+            }
             acquireGooglePlayServices();
             return;
         }
 
         new DownloadMediaTask(serviceCredential).execute();
+    }
+
+    private boolean isGooglePlayAppAvailable() {
+            try {
+                PreferencesState.getInstance().getContext().getPackageManager()
+                        .getPackageInfo(GooglePlayServicesUtil.GOOGLE_PLAY_STORE_PACKAGE, 0);
+                return true;
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
     }
 
     /**
