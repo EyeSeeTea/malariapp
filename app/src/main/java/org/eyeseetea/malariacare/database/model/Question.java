@@ -607,30 +607,7 @@ public class Question extends BaseModel {
         if(question==null)
             return false;
 
-        Long id_question=question.getId_question();
-        long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
-                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
-                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
-                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
-                //Parent child relationship
-                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
-                //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(id_survey))
-                //The child question in the relationship is 'this'
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(id_question))
-                .count();
-        return hasParentOptionActivated > 0 ? false : true;
+        return question.isHiddenBySurvey(id_survey);
     }
 
     /**
@@ -718,10 +695,9 @@ public class Question extends BaseModel {
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
                 .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program())).count();
 
-        // Count children questions from the given taggroup
-        long numChildrenQuestion = new Select().count()
-                .from(QuestionRelation.class).as("qr")
-                .join(Question.class, Join.JoinType.LEFT).as("q")
+        List<Question> questionsChild = new Select()
+                .from(Question.class).as("q")
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                 .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION))
                         .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
                 .join(Header.class, Join.JoinType.LEFT).as("h")
@@ -732,10 +708,10 @@ public class Question extends BaseModel {
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
                 .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
                 .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program()))
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
-
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION))
+                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(ColumnAlias.columnWithTable("q", Question$Table.UID)).queryList();
         // Return number of parents (total - children)
-        return (int) (totalAnswerableQuestions-numChildrenQuestion);
+        return (int) (totalAnswerableQuestions-questionsChild.size());
     }
 
     /**
@@ -778,12 +754,12 @@ public class Question extends BaseModel {
         //checks if the children questions are active by UID
         // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
         for(Question question:questions) {
-            if(!Question.isHiddenQuestionByUidAndSurvey(question.getUid(), id_survey)) {
+            if(question.getCompulsory() && !Question.isHiddenQuestionByUidAndSurvey(question.getUid(), id_survey)) {
                 numActiveChildrens++;
             }
         }
         // Return number of active compulsory children
-        return (int) (numActiveChildrens);
+        return numActiveChildrens;
     }
 
 
