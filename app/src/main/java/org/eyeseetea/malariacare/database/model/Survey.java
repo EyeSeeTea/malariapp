@@ -308,7 +308,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     //hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
     private Boolean hasMainScore=null;
     public Boolean hasMainScore() {
-        if(hasMainScore==null) {
+        if(hasMainScore==null || !hasMainScore) {
             Score score = getScore();
             Float value = (score == null) ? null : score.getScore();
             if (value == null) {
