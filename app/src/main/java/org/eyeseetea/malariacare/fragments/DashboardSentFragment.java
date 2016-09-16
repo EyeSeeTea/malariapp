@@ -424,12 +424,12 @@ public class DashboardSentFragment extends ListFragment {
         for (Survey survey : surveys) {
             if (survey.getOrgUnit() != null) {
                 if (!programOUSurveyDict.containsKey(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid())){
-                    filterSurvey(programOUSurveyDict, survey);
+                    AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                 } else {
                     Survey surveyMapped = programOUSurveyDict.get(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid());
                     Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
                     if((surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                        programOUSurveyDict = filterSurvey(programOUSurveyDict, survey);
+                        programOUSurveyDict = AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                     }
                 }
             }
@@ -488,7 +488,7 @@ public class DashboardSentFragment extends ListFragment {
         reloadSentSurveys(surveys);
     }
 
-    private ProgramOUSurveyDict filterSurvey(ProgramOUSurveyDict programOUSurveyDict, Survey survey) {
+    private ProgramOUSurveyDict AddSurveyIfNotfiltered(ProgramOUSurveyDict programOUSurveyDict, Survey survey) {
         if(isNotFilteredByOU(survey) && isNotFilteredByProgram(survey))
             programOUSurveyDict.put(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid(), survey);
         return programOUSurveyDict;
