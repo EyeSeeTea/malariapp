@@ -384,7 +384,6 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -397,8 +396,8 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+    public void refreshScreen(List<Survey> newListSurveys) {
+        Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
@@ -434,9 +433,8 @@ public class DashboardSentFragment extends ListFragment {
                 }
             }
         }
-        for (Survey survey : programOUSurveyDict.values()) {
-            oneSurveyForOrgUnit.add(survey);
-        }
+        oneSurveyForOrgUnit = programOUSurveyDict.values();
+
         //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
         if (orderBy != WITHOUT_ORDER) {
             reverse=false;
@@ -476,7 +474,7 @@ public class DashboardSentFragment extends ListFragment {
         else{
             LAST_ORDER=orderBy;
         }
-        reloadSurveys(oneSurveyForOrgUnit);
+        refreshScreen(oneSurveyForOrgUnit);
     }
 
     public void reloadDataFromService(){
@@ -488,9 +486,19 @@ public class DashboardSentFragment extends ListFragment {
         reloadSentSurveys(surveys);
     }
 
+    /**
+     * This method add a survey to the program/OU/survey map only in case it's not filtered by the
+     * selected filters and the survey is older than any previous existing in the map
+     * @param programOUSurveyDict
+     * @param survey
+     * @return
+     */
     private ProgramOUSurveyDict AddSurveyIfNotfiltered(ProgramOUSurveyDict programOUSurveyDict, Survey survey) {
-        if(isNotFilteredByOU(survey) && isNotFilteredByProgram(survey))
-            programOUSurveyDict.put(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid(), survey);
+        if(isNotFilteredByOU(survey) && isNotFilteredByProgram(survey)) {
+            Survey previousSurvey = programOUSurveyDict.get(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid());
+            if (previousSurvey==null || previousSurvey.getCompletionDate().compareTo(survey.getCompletionDate()) < 0)
+                programOUSurveyDict.put(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid(), survey);
+        }
         return programOUSurveyDict;
     }
 

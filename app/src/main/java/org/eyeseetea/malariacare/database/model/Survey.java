@@ -115,6 +115,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     Integer productivity;
 
+    //hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
+    private Boolean hasMainScore=null;
+
     public Survey() {
         //Set dates
         this.creationDate = new Date();
@@ -305,8 +308,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
         return mainScore;
     }
-    //hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
-    private Boolean hasMainScore=null;
+
     public Boolean hasMainScore() {
         if(hasMainScore==null || !hasMainScore) {
             Score score = getScore();
@@ -320,6 +322,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
         return hasMainScore;
     }
+
     public void setMainScore(Float mainScore) {
         this.mainScore = mainScore;
     }

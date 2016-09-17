@@ -171,7 +171,7 @@ public class MonitorFragment extends Fragment {
     }
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+        Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         boolean hasPrograms = newListPrograms != null && newListPrograms.size() > 0;
         this.surveys.clear();
