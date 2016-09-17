@@ -55,6 +55,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -383,7 +384,6 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -396,8 +396,8 @@ public class DashboardSentFragment extends ListFragment {
         }
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+    public void refreshScreen(List<Survey> newListSurveys) {
+        Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
@@ -417,26 +417,24 @@ public class DashboardSentFragment extends ListFragment {
         // To prevent from reloading too fast, before service has finished its job
         if (surveys == null) return;
 
-        HashMap<String, Survey> orgUnits;
-        orgUnits = new HashMap<>();
+        ProgramOUSurveyDict programOUSurveyDict = new ProgramOUSurveyDict();
         oneSurveyForOrgUnit = new ArrayList<>();
 
         for (Survey survey : surveys) {
             if (survey.getOrgUnit() != null) {
-                if (!orgUnits.containsKey(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid())) {
-                    filterSurvey(orgUnits, survey);
+                if (!programOUSurveyDict.containsKey(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid())){
+                    AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                 } else {
-                    Survey surveyMapped = orgUnits.get(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid());
+                    Survey surveyMapped = programOUSurveyDict.get(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid());
                     Log.d(TAG,"reloadSentSurveys check NPE \tsurveyMapped:"+surveyMapped+"\tsurvey:"+survey);
                     if((surveyMapped.getCompletionDate()!=null && survey.getCompletionDate()!=null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
-                        orgUnits=filterSurvey(orgUnits, survey);
+                        programOUSurveyDict = AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                     }
                 }
             }
         }
-        for (Survey survey : orgUnits.values()) {
-            oneSurveyForOrgUnit.add(survey);
-        }
+        oneSurveyForOrgUnit = programOUSurveyDict.values();
+
         //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
         if (orderBy != WITHOUT_ORDER) {
             reverse=false;
@@ -476,7 +474,7 @@ public class DashboardSentFragment extends ListFragment {
         else{
             LAST_ORDER=orderBy;
         }
-        reloadSurveys(oneSurveyForOrgUnit);
+        refreshScreen(oneSurveyForOrgUnit);
     }
 
     public void reloadDataFromService(){
@@ -484,15 +482,36 @@ public class DashboardSentFragment extends ListFragment {
         orgUnitList= sentDashboardBundle.getOrgUnits();
         programList= sentDashboardBundle.getPrograms();
         surveys= sentDashboardBundle.getSentSurveys();
-        reloadSentSurveys(surveys);
         initFilters();
+        reloadSentSurveys(surveys);
     }
 
-    private HashMap<String, Survey> filterSurvey(HashMap<String, Survey> orgUnits, Survey survey) {
+    /**
+     * This method add a survey to the program/OU/survey map only in case it's not filtered by the
+     * selected filters and the survey is older than any previous existing in the map
+     * @param programOUSurveyDict
+     * @param survey
+     * @return
+     */
+    private ProgramOUSurveyDict AddSurveyIfNotfiltered(ProgramOUSurveyDict programOUSurveyDict, Survey survey) {
+        if(isNotFilteredByOU(survey) && isNotFilteredByProgram(survey)) {
+            Survey previousSurvey = programOUSurveyDict.get(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid());
+            if (previousSurvey==null || previousSurvey.getCompletionDate().compareTo(survey.getCompletionDate()) < 0)
+                programOUSurveyDict.put(survey.getTabGroup().getProgram().getUid(), survey.getOrgUnit().getUid(), survey);
+        }
+        return programOUSurveyDict;
+    }
+
+    private boolean isNotFilteredByOU(Survey survey){
         if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
-            if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
-              orgUnits.put(survey.getTabGroup().getProgram().getUid()+survey.getOrgUnit().getUid(), survey);
-        return orgUnits;
+            return true;
+        return false;
+    }
+
+    private boolean isNotFilteredByProgram(Survey survey){
+        if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+            return true;
+        return false;
     }
 
     /**
@@ -509,6 +528,49 @@ public class DashboardSentFragment extends ListFragment {
             if(SurveyService.RELOAD_SENT_FRAGMENT_ACTION.equals(intent.getAction())){
                 reloadDataFromService();
             }
+        }
+    }
+
+    /**
+     * Inner class to create a multi-key dictionary. It's intended to associate programUID and OrgUnitUID
+     * with a Survey
+     */
+    private class ProgramOUSurveyDict {
+        Map<String, Map<String, Survey>> surveysByProgramOU;
+
+        public ProgramOUSurveyDict(){
+            surveysByProgramOU = new HashMap<>();
+        }
+
+        public void put(String programUID, String orgUnitUID, Survey survey){
+            Map<String, Survey> orgUnitSurvey = surveysByProgramOU.get(programUID);
+            if (orgUnitSurvey == null)
+                orgUnitSurvey = new HashMap<>();
+            orgUnitSurvey.put(orgUnitUID, survey);
+            surveysByProgramOU.put(programUID, orgUnitSurvey);
+        }
+
+        public Survey get(String programUID, String orgUnitUID){
+            Map<String, Survey> orgUnitSurvey = surveysByProgramOU.get(programUID);
+            if (orgUnitSurvey == null) return null;
+            else return orgUnitSurvey.get(orgUnitUID);
+        }
+
+        public void clear(){
+            surveysByProgramOU.clear();
+        }
+
+        public boolean containsKey(String programUID, String orgUnitUID){
+            Map<String, Survey> orgUnitSurvey = surveysByProgramOU.get(programUID);
+            return (orgUnitSurvey==null) ? false : (orgUnitSurvey.containsKey(orgUnitUID));
+        }
+
+        public List<Survey> values(){
+            List<Survey> surveys = new ArrayList<>();
+            for (Map<String, Survey> map : surveysByProgramOU.values()){
+                surveys.addAll(map.values());
+            }
+            return surveys;
         }
     }
 
