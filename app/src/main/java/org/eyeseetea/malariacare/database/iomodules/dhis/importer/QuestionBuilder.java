@@ -33,10 +33,12 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +57,8 @@ public class QuestionBuilder {
     private static final Map<Integer, String> MAP_MEDIATYPE_DEATTRIBUTE;
     static {
         MAP_MEDIATYPE_DEATTRIBUTE = new HashMap<>();
-        MAP_MEDIATYPE_DEATTRIBUTE.put(Media.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
-        MAP_MEDIATYPE_DEATTRIBUTE.put(Media.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Constants.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Constants.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
     }
 
     /**
@@ -218,8 +220,8 @@ public class QuestionBuilder {
                 continue;
             }
 
-            String[] mediaReferences=attributeMediaValue.split(Media.MEDIA_SEPARATOR);
-            for(String mediaReference:mediaReferences){
+            List<String> mediaReferences = Arrays.asList(attributeMediaValue.split(Constants.MEDIA_SEPARATOR));
+            for(String mediaReference: mediaReferences){
                 Log.i(TAG,String.format("Adding media %s to question %s",mediaReference, question.getForm_name()));
                 Media media = new Media();
                 media.setMediaType(mediaType);

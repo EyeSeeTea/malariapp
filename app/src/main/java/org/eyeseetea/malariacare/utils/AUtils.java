@@ -28,6 +28,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -72,6 +73,7 @@ public abstract class AUtils {
         try {
             return Float.parseFloat(floatStr);
         }catch (NumberFormatException nfe){
+            Log.d("AUtils", String.format("Error when parsing string %s to float number", floatStr));
             return 0f;
         }
     }
@@ -159,6 +161,7 @@ public abstract class AUtils {
                 stringBuilder.append(line + "\n");
             }
         } catch (IOException e) {
+            Log.d("AUtils", String.format("Error reading inputStream [%s]", inputStream));
             e.printStackTrace();
         }
 
