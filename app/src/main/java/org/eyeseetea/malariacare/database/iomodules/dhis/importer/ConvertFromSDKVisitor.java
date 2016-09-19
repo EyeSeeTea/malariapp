@@ -78,6 +78,7 @@ import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +108,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     public ConvertFromSDKVisitor(){
         programMapObjects = new HashMap();
+        dataElementMapObjects=new HashMap();
         programAnswerDict = new ProgramAnswerDict();
         programTabDict = new ProgramTabDict();
         programTabGroupDict = new ProgramTabGroupDict();

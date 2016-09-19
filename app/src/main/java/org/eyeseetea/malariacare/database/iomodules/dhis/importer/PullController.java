@@ -238,7 +238,9 @@ public class PullController {
                         Log.d(TAG, "PULL process...OK");
                     }
                 } catch (Exception ex) {
+                    ProgressActivity.PULL_ERROR=true;
                     Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
+                    ex.printStackTrace();
                     postException(ex);
                 } finally {
                     postFinish();
