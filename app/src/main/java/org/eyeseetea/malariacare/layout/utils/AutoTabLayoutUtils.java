@@ -28,9 +28,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.common.primitives.Booleans;
@@ -60,7 +58,7 @@ public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
     private static String compulsoryColorString;
-    private static final String zero = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
+    private static final String ZERO = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
 
     /**
      * Inits red color to avoid going into resources every time
@@ -375,8 +373,8 @@ public class AutoTabLayoutUtils {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumText(zero);
-        viewHolder.setDenumText(zero);
+        viewHolder.setNumText(ZERO);
+        viewHolder.setDenumText(ZERO);
         if(num!=null){
             viewHolder.setNumText(num.toString());
             viewHolder.setDenumText(denum.toString());

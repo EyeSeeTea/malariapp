@@ -121,7 +121,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
                         scheduleSurveys.add(plannedSurveyByOrgUnit.getSurvey());
                 }
 
-                if(scheduleSurveys.size()==0)return;
+                if(scheduleSurveys.size()==0) return;
 
                 new ScheduleListener(scheduleSurveys,adapter.getContext());
                 reloadData();
