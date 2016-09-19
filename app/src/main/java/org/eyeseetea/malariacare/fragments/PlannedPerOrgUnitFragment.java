@@ -281,14 +281,16 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
                 List<PlannedSurveyByOrgUnit> items= new ArrayList<>();
                 for(PlannedItem item: plannedServiceBundle.getPlannedItems()){
-                    if(item instanceof PlannedSurvey){
-                        if(((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(filterOrgUnitUid)){
-                            items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),((PlannedSurvey) item).getHeader()));
-                        }
+                    if(item instanceof PlannedSurvey && isNotFiltered(item)){
+                        items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),((PlannedSurvey) item).getHeader()));
                     }
                 }
                 prepareUI(items);
             }
+        }
+
+        private boolean isNotFiltered(PlannedItem item){
+            return ((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(filterOrgUnitUid);
         }
     }
 }
