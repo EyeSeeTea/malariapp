@@ -153,12 +153,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         selectAllCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked){
-                    checkAll(true);
-                }
-                else{
-                    checkAll(false);
-                }
+                checkAll(isChecked);
             }
         });
         ListView listView = getListView();
