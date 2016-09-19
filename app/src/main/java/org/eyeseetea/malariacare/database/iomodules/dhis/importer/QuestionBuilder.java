@@ -21,17 +21,15 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.util.ArrayList;
@@ -126,8 +124,8 @@ public class QuestionBuilder {
         if (attributeHeaderValue != null) {
             Tab questionTab;
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
-            if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
-                questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
+            if(ConvertFromSDKVisitor.programTabDict.containsKey(dataElementExtended.findProgramUID(),tabUid)) {
+                questionTab =  ConvertFromSDKVisitor.programTabDict.get(dataElementExtended.findProgramUID(),tabUid);
                 if(mapHeader.containsKey(tabUid+attributeHeaderValue)){
                         if(!mapHeader.get(tabUid+attributeHeaderValue).getTab().getName().equals(questionTab.getName()))
                             Log.d("Bug","Header with other tab"+header.getName()+" othertab "+questionTab.getName()+ "uid" + dataElementExtended.getDataElement().getUid());

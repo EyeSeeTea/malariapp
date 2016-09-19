@@ -23,6 +23,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.Model;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -34,6 +35,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Organis
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
+import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -355,11 +357,13 @@ public class PullController {
                     try {
                         dataelementOrder1 = dataElementExtended1.findOrder();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         dataelementOrder1 = null;
                     }
                     try {
                         dataelementOrder2 = dataElementExtended2.findOrder();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         dataelementOrder2 = null;
                     }
                     if (dataelementOrder1 == dataelementOrder2)
