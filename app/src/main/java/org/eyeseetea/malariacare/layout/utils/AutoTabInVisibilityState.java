@@ -163,8 +163,9 @@ public class AutoTabInVisibilityState {
 
             //Show child -> Show header, Update scores
             if(visible){
-                Float denum = ScoreRegister.calcDenum(childQuestion, idSurvey);
-                ScoreRegister.addRecord(childQuestion, 0F, denum, idSurvey, module);
+                Float num = ScoreRegister.calcNum(childQuestion, idSurvey);
+                Float denum = (num == null) ? 0f: ScoreRegister.calcDenum(childQuestion, idSurvey);;
+                ScoreRegister.addRecord(childQuestion, 0f, denum, idSurvey, module);
                 this.setInvisible(childHeader,false);
                 continue;
             }

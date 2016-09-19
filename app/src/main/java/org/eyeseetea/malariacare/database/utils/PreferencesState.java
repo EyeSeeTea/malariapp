@@ -111,7 +111,6 @@ public class PreferencesState {
         locationRequired=initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents=initMaxEvents();
-        showNumDen=initShowNumDen();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
     }
 

@@ -51,7 +51,6 @@ public class DashboardSettings {
      */
     @JsonDeserialize(using = DashboardListFilterDeserializer.class)
     DashboardListFilter listFilter;
-
     /**
      * Key that points to the layout id for the general dashboard layout (Ex: R.layout.vertical_main -> 'vertical_main')
      */

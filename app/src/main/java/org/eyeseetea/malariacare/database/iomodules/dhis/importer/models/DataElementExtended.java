@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
@@ -75,6 +76,14 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static final String ATTRIBUTE_DENUMERATOR = "DEDenominator";
     /**
+     * Code of attribute of parent options separated by token
+     */
+    public static final String ATTRIBUTE_PARENT_QUESTION_OPTIONS = "DEQuestionParentOptions";
+    /**
+     * Code of attribute of parents separated by token
+     */
+    public static final String ATTRIBUTE_PARENT_QUESTION = "DEQuestionParents";
+    /**
      * Code of attribute of group of patern/child relation
      */
     public static final String ATTRIBUTE_HIDE_GROUP = "DEHideGroup";
@@ -105,6 +114,16 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code the attribute Column (for customTabs)
      */
     public static final String ATTRIBUTE_COLUMN = "DEColumn";
+
+    /**
+     * Code the attribute Video
+     */
+    public static final String ATTRIBUTE_VIDEO = "DEVideo";
+
+    /**
+     * Code the attribute Image
+     */
+    public static final String ATTRIBUTE_IMAGE = "DEImage";
 
     /**
      * Code of Question option for attribute DEType
@@ -300,6 +319,9 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     public AttributeValue findAttributeValuefromDataElementCode(String code,DataElement dataElement){
+        if(code==null || dataElement==null){
+            return null;
+        }
         //select * from Attribute join AttributeValue on Attribute.id = attributeValue.attributeId join DataElementAttributeValue on attributeValue.id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue.dataElementId="vWgsPN1RPLl" and code="Order"
         for (AttributeValue attributeValue: dataElement.getAttributeValues()){
             if(attributeValue.getAttribute().getCode()==null) {
@@ -312,7 +334,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated prgoramStage (tabgroup)
+     * Find the associated programStage (tabgroup)
      *
      * @return
      */
@@ -321,7 +343,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated program (tabgroup) given a dataelement UID
+     * Find the associated program given a dataelement UID
      *
      * @param dataElementUID
      * @return
@@ -461,7 +483,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public Float findNumerator() {
         String value = getValue(ATTRIBUTE_NUMERATOR);
         if (value != null && !value.equals("")) {
-            float numinator = Float.valueOf(value);
+            float numinator = AUtils.safeParseFloat(value);
             return numinator;
         } else
             return findDenominator();
@@ -470,7 +492,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public Float findDenominator() {
         String value = getValue(ATTRIBUTE_DENUMERATOR);
         if (value != null && !value.equals("")) {
-            float denominator = Float.valueOf(value);
+            float denominator = AUtils.safeParseFloat(value);
             return denominator;
         }
         return 0.0f;

@@ -25,47 +25,48 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.database.utils.planning.PlannedSurveyByOrgUnit;
+import org.eyeseetea.malariacare.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.CustomCheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ivan.arrizabalaga on 15/12/2015.
+ * Created by idelcano on 09/08/2016.
  */
 public class PlannedPerOrgUnitFragment extends ListFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
     private PlannedItemsReceiver plannedItemsReceiver;
     protected IDashboardAdapter adapter;
-    private List<Survey> surveys;
-
-    private Program programDefaultOption;
-    private OrgUnit orgUnitDefaultOption;
-
-    private List<Program> programList;
-    private List<OrgUnit> orgUnitList;
-
-
+    private static List<PlannedSurveyByOrgUnit> plannedSurveys;
+    static Button scheduleButton;
+    CustomCheckBox selectAllCheckbox;
+    String filterOrgUnitUid;
     public PlannedPerOrgUnitFragment() {
 
     }
@@ -75,10 +76,11 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        //get the org unit uid from dashboardactivity
+        //filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));
         this.adapter = Session.getAdapterSent();
-        this.surveys = new ArrayList();
-        programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        this.plannedSurveys = new ArrayList();
     }
 
     @Override
@@ -98,10 +100,44 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
     }
 
-    private void prepareUI(List<PlannedItem> plannedItems) {
+    private void prepareUI(List<PlannedSurveyByOrgUnit> plannedItems) {
+        plannedSurveys=plannedItems;
         initAdapter(plannedItems);
+        initScheduleButton();
         initListView();
+        setListShown(true);
         resetList();
+    }
+
+    private void initScheduleButton() {
+
+        scheduleButton = (Button) getActivity().findViewById(R.id.reschedule_button);
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Survey> scheduleSurveys=new ArrayList<>();
+                for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
+                    if(plannedSurveyByOrgUnit.getChecked())
+                        scheduleSurveys.add(plannedSurveyByOrgUnit.getSurvey());
+                }
+
+                if(scheduleSurveys.size()==0) return;
+
+                new ScheduleListener(scheduleSurveys,adapter.getContext());
+                reloadData();
+                selectAllCheckbox.setChecked(false);
+            }
+        });
+        disableScheduleButton();
+    }
+
+    public static void enableScheduleButton(){
+        scheduleButton.setEnabled(true);
+        scheduleButton.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.dark_navy_blue));
+    }
+    public static void disableScheduleButton(){
+        scheduleButton.setEnabled(false);
+        scheduleButton.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.common_plus_signin_btn_text_light_disabled));
     }
 
     public void resetList() {
@@ -113,20 +149,40 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private void initListView(){
         LayoutInflater inflater = LayoutInflater.from(PreferencesState.getInstance().getContext().getApplicationContext());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
+        selectAllCheckbox=(CustomCheckBox) header.findViewById(R.id.select_all_orgunits);
+        selectAllCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                checkAll(isChecked);
+            }
+        });
         ListView listView = getListView();
-        listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         if(listView.getHeaderViewsCount()==0)
             listView.addHeaderView(header);
         setListAdapter((BaseAdapter) adapter);
         Session.listViewSent = listView;
     }
+
+    private void checkAll(boolean value) {
+        for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
+            plannedSurveyByOrgUnit.setChecked(value);
+        }
+        this.adapter.setItems(plannedSurveys);
+        this.adapter.notifyDataSetChanged();
+        if(value){
+            enableScheduleButton();
+        }else{
+            disableScheduleButton();
+        }
+    }
+
     /**
      * Inits adapter.
      * Most of times is just an AssessmentAdapter.
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      * @param plannedItems
      */
-    private void initAdapter(List<PlannedItem> plannedItems){
+    private void initAdapter(List<PlannedSurveyByOrgUnit> plannedItems){
         IDashboardAdapter adapterInSession = Session.getAdapterOrgUnit();
         if(adapterInSession == null){
             adapterInSession = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
@@ -192,6 +248,24 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
+    public static void reloadButtonState(boolean isChecked) {
+        if(isChecked){
+            enableScheduleButton();
+            return;
+        }
+        for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
+            if(plannedSurveyByOrgUnit.getChecked()) {
+                enableScheduleButton();
+                return;
+            }
+        }
+        disableScheduleButton();
+    }
+
+    public void setOrgUnitFilter(String uid) {
+        filterOrgUnitUid=uid;
+    }
+
     /**
      * Inner private class that receives the result from the service
      */
@@ -205,12 +279,18 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             //Listening only intents from this method
             if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
-                List<PlannedItem> items= new ArrayList<>();
-                for(PlannedItem item: plannedServiceBundle.getPlannedItems())
-                    if(item instanceof PlannedSurvey)
-                        items.add(item);
+                List<PlannedSurveyByOrgUnit> items= new ArrayList<>();
+                for(PlannedItem item: plannedServiceBundle.getPlannedItems()){
+                    if(item instanceof PlannedSurvey && isNotFiltered(item)){
+                        items.add(new PlannedSurveyByOrgUnit(((PlannedSurvey) item).getSurvey(),((PlannedSurvey) item).getHeader()));
+                    }
+                }
                 prepareUI(items);
             }
+        }
+
+        private boolean isNotFiltered(PlannedItem item){
+            return ((PlannedSurvey) item).getSurvey().getOrgUnit().getUid().equals(filterOrgUnitUid);
         }
     }
 }

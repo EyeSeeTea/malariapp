@@ -25,25 +25,20 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -63,7 +58,7 @@ public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
     private static String compulsoryColorString;
-    private static final String zero = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
+    private static final String ZERO = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
 
     /**
      * Inits red color to avoid going into resources every time
@@ -280,23 +275,13 @@ public class AutoTabLayoutUtils {
      */
     private static void configureViewByPreference(AutoTabViewHolder viewHolder) {
         int visibility = View.GONE;
-        float statementWeight = 0.65f;
-        float componentWeight = 0.35f;
-        float numDenWeight = 0.0f;
 
         if (PreferencesState.getInstance().isShowNumDen()) {
             visibility = View.VISIBLE;
-            statementWeight = 0.45f;
-            componentWeight = 0.25f;
-            numDenWeight = 0.15f;
         }
 
         viewHolder.num.setVisibility(visibility);
         viewHolder.denum.setVisibility(visibility);
-        ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
-        ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
-        ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey, String module) {
@@ -388,8 +373,8 @@ public class AutoTabLayoutUtils {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
-        viewHolder.setDenumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.setNumText(ZERO);
+        viewHolder.setDenumText(ZERO);
         if(num!=null){
             viewHolder.setNumText(num.toString());
             viewHolder.setDenumText(denum.toString());
@@ -407,6 +392,8 @@ public class AutoTabLayoutUtils {
 
             Float num = ScoreRegister.calcNum(question, idSurvey);
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
+            if(num==null)
+                denum=0f;
             ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }

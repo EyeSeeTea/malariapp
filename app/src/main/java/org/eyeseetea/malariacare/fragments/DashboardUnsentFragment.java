@@ -284,7 +284,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
         }
     }
 

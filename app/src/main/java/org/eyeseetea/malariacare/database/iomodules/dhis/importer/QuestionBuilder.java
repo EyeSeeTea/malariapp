@@ -20,24 +20,29 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-;
 
 /**
  * Created by ignac on 14/11/2015.
@@ -45,6 +50,16 @@ import java.util.Map;
 public class QuestionBuilder {
 
     private static final String TAG = ".QuestionBuilder";
+
+    /**
+     * Maps relationship between type of media and DEAttribute code
+     */
+    private static final Map<Integer, String> MAP_MEDIATYPE_DEATTRIBUTE;
+    static {
+        MAP_MEDIATYPE_DEATTRIBUTE = new HashMap<>();
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Constants.MEDIA_TYPE_IMAGE, DataElementExtended.ATTRIBUTE_IMAGE);
+        MAP_MEDIATYPE_DEATTRIBUTE.put(Constants.MEDIA_TYPE_VIDEO, DataElementExtended.ATTRIBUTE_VIDEO);
+    }
 
     /**
      * It is the factor needed in a option to create the questionRelation
@@ -89,13 +104,30 @@ public class QuestionBuilder {
     Map<String, Header> mapHeader;
 
     /**
+     * Mapping headers(it is needed for not duplicate data)
+     */
+    Map<String, Program> mapProgram;
+
+    /**
+     * Contains all media (required for batch save)
+     */
+    List<Media> listMedia;
+    /**
      * It is needed in the header order.
      */
     private int header_order = 0;
 
+
+    /**
+     * It is needed by child/parent relationships
+     */
+    private final String OPTIONSUBTOKEN=",";
+    private final String PARENTTOKEN=",";
+    private final String OPTIONTOKEN=";";
     QuestionBuilder() {
         mapQuestions = new HashMap<>();
         mapHeader = new HashMap<>();
+        mapProgram = new HashMap<>();
         mapType = new HashMap<>();
         mapLevel = new HashMap<>();
         mapParent = new HashMap<>();
@@ -103,6 +135,11 @@ public class QuestionBuilder {
         mapMatchParent = new HashMap<>();
         mapMatchChilds = new HashMap<>();
         mapMatchType = new HashMap<>();
+        listMedia = new ArrayList<>();
+    }
+
+    public List<Media> getListMedia(){
+        return this.listMedia;
     }
 
     /**
@@ -170,6 +207,33 @@ public class QuestionBuilder {
     }
 
     /**
+     * Create a Media object in the DB for each media attribute found  for a given question DE
+     * @param dataElementExtended
+     * @param question
+     * @return
+     */
+    public void attachMedia(DataElementExtended dataElementExtended, Question question){
+        // Loop on every media type to attach any possible media type for the DE
+        for (Integer mediaType: MAP_MEDIATYPE_DEATTRIBUTE.keySet()) {
+            String attributeMediaValue = dataElementExtended.getValue(MAP_MEDIATYPE_DEATTRIBUTE.get(mediaType));
+            if (attributeMediaValue == null || attributeMediaValue.isEmpty()) {
+                continue;
+            }
+
+            List<String> mediaReferences = Arrays.asList(attributeMediaValue.split(Constants.MEDIA_SEPARATOR));
+            for(String mediaReference: mediaReferences){
+                Log.i(TAG,String.format("Adding media %s to question %s",mediaReference, question.getForm_name()));
+                Media media = new Media();
+                media.setMediaType(mediaType);
+                media.setResourceUrl(mediaReference);
+                media.setQuestion(question);
+                //media is saved in batch once questions are saved
+                listMedia.add(media);
+            }
+        }
+    }
+
+    /**
      * Registers a Parent/child and Match Parent/child relations in maps
      * Its need the programid to diferenciate between programs dataelements.
      *
@@ -222,6 +286,7 @@ public class QuestionBuilder {
     public void addRelations(DataElementExtended dataElementExtended) {
         if (mapQuestions.containsKey(dataElementExtended.getDataElement().getUid()+dataElementExtended.getProgramUid())) {
             addParent(dataElementExtended);
+            registerMultiLevelParentChildRelation(dataElementExtended);
             addQuestionRelations(dataElementExtended);
             addCompositeScores(dataElementExtended);
         }
@@ -283,7 +348,60 @@ public class QuestionBuilder {
             }
         }
     }
+    public void registerMultiLevelParentChildRelation(DataElementExtended dataElementExtended){
+        DataElement dataElement = dataElementExtended.getDataElement();
+        String parentUids = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_PARENT_QUESTION);
+        String optionsUids = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_PARENT_QUESTION_OPTIONS);
+        if (parentUids==null || parentUids.equals("") || optionsUids==null || optionsUids.equals("")) {
+            return;
+        }
+        int parentChildRelations = parentUids.length() - parentUids.replace(PARENTTOKEN, "").length();
+        if(parentChildRelations!=optionsUids.length() - optionsUids.replace(OPTIONTOKEN, "").length()){
+            Log.d(TAG,"The Parent relation is not configured correctly in the server side , some parents or options are null, dataelement uid: "+dataElement.getUid());
+            return;
+        }
+        String[] parents = parentUids.split(PARENTTOKEN);
+        String[] options = optionsUids.split(OPTIONTOKEN);
+        for(int i=0; i<parents.length;i++){
+            Log.d(TAG,"registerMultiLevelParentChildRelation: " +dataElementExtended.getDataElement().getUid());
+            addDataElementParent(dataElementExtended, parents[i],options[i]);
+        }
+    }
 
+
+    /**
+     * Create and save the parent reation
+     *
+     * @param dataElementExtended
+     */
+    private void addDataElementParent(DataElementExtended dataElementExtended, String parent, String options) {
+        String[] matchOptions = options.split(OPTIONSUBTOKEN);
+        DataElement dataElement=dataElementExtended.getDataElement();
+        Question childQuestion = mapQuestions.get(dataElement.getUid()+ dataElementExtended.getProgramUid());
+
+
+        //get parentquestion
+        Question parentQuestion = mapQuestions.get(parent+ dataElementExtended.getProgramUid());
+        //get parentquestion options
+        if(parentQuestion==null)
+            Log.d(TAG, "the parent of "+ childQuestion.getUid()+ "is not downloaded (parentUid: "+parent);
+        List<Option> parentOptions = parentQuestion.getAnswer().getOptions();
+        for (Option option : parentOptions)
+        {
+            for(String matchOption:matchOptions) {
+                if (matchOption.equals(option.getUid())) {
+                    QuestionRelation questionRelation = new QuestionRelation();
+                    questionRelation.setOperation(1);
+                    questionRelation.setQuestion(childQuestion);
+                    questionRelation.save();
+                    Match match = new Match();
+                    match.setQuestionRelation(questionRelation);
+                    match.save();
+                    new QuestionOption(option, parentQuestion, match).save();
+                }
+            }
+        }
+    }
     /**
      * Create QuestionOption QuestionRelation and Match relations
      * <p/>

@@ -181,6 +181,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             value.accept(this);
         }
 
+
+        survey.setUploadDate(uploadedDate);
+
         //Update all the dates after checks the new values
         updateEventDates();
 
@@ -374,12 +377,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(controlDataElementExistsInServer(createdOnCode)){
-            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated date
         if(controlDataElementExistsInServer(updatedDateCode)){
-            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.AMERICAN_DATE_FORMAT));
+            addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated by user
@@ -545,7 +548,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             }
 
             //Errors
-            Log.d(TAG, importSummary.toString());
+            if(importSummary!=null) {
+                Log.d(TAG, importSummary.toString());
+            }
             //Some error happened -> move back to completed
             if(failedItem!=null) {
                 rollbackSurvey(iSurvey);

@@ -26,6 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Cabinet incorrect"</string>
 <string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionnez un cabinet médical"</string>
 <string name="dialog_content_logout_confirmation">"Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer ?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Prêt pour envoyer"</string>
@@ -220,4 +221,10 @@ Mensuelle"</string>
 <string name="number_8">8</string>
 <string name="number_9">9</string>
 <string name="clear">Effacement</string>
+
+<string name="ask_account_permission">Cette application a besoin d\'accéder à votre compte Google (via les contacts).</string>
+<string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
+<string name="account_permission_denied"> Contacts permission refusée. Médias ne sera pas synchronisé</string>
+<string name="feedback_media_link" >"Voir la vidéo"</string>
+<string name="feedback_media">Voir la vidéo commentaires</string>
 </resources>

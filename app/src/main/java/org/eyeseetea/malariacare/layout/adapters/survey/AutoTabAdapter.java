@@ -566,7 +566,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.setDenumText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.setNumText(getContext().getString(R.string.number_zero));
-                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question, idSurvey)));
+                    viewHolder.setDenumText(getContext().getString(R.string.number_zero));
                 }
                 break;
             case Constants.SWITCH_BUTTON:
