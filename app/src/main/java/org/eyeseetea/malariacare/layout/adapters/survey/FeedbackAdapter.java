@@ -235,7 +235,7 @@ public class FeedbackAdapter extends BaseAdapter {
         LinearLayout feedbackContainer = (LinearLayout)rowLayout.findViewById(R.id.feedback_container);
         List<Media> mediaList = feedback.getMedia();
         for(Media media:mediaList){
-            if(media.getMediaType()==Media.MEDIA_TYPE_IMAGE){
+            if(media.getMediaType()==Constants.MEDIA_TYPE_IMAGE){
                 addImage(feedbackContainer,media);
             }else{
                 addVideo(feedbackContainer,media);

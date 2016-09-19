@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,19 +35,10 @@ import java.util.List;
 @Table(databaseName = AppDatabase.NAME)
 public class Media extends BaseModel{
 
-     // Values to identify image/video on media_type column in the DB
-    public static final int MEDIA_TYPE_IMAGE = 0;
-
-    public static final int MEDIA_TYPE_VIDEO = 1;
-
-    public static final String MEDIA_SEPARATOR="#";
-
-    public static final int NO_MEDIA_ID=-1;
-
     /**
      * Null media value to express that a question has NO media without using querys
      */
-    private static Media noMedia = new Media(NO_MEDIA_ID,null,null);
+    private static Media noMedia = new Media(Constants.NO_MEDIA_ID,null,null);
 
     @Column
     @PrimaryKey(autoincrement = true)
