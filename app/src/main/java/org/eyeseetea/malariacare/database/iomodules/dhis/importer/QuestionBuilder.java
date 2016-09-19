@@ -37,6 +37,7 @@ import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,8 +219,8 @@ public class QuestionBuilder {
                 continue;
             }
 
-            String[] mediaReferences=attributeMediaValue.split(Media.MEDIA_SEPARATOR);
-            for(String mediaReference:mediaReferences){
+            List<String> mediaReferences = Arrays.asList(attributeMediaValue.split(Media.MEDIA_SEPARATOR));
+            for(String mediaReference: mediaReferences){
                 Log.i(TAG,String.format("Adding media %s to question %s",mediaReference, question.getForm_name()));
                 Media media = new Media();
                 media.setMediaType(mediaType);
