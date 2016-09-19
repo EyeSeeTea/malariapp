@@ -33,7 +33,7 @@
       "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_charts_container",
       "controller": "MonitorModuleController",
-      "monitorFilter": "all"
+      "monitorFilter": "program"
     }
     ]
   }
