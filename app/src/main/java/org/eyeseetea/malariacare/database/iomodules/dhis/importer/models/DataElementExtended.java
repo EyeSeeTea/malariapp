@@ -263,6 +263,7 @@ public class DataElementExtended implements VisitableFromSDK {
         Attribute attribute = AttributeExtended.findAttributeByCode(code);
         //No such attribute -> done
         if(attribute==null){
+            Log.d("DataElementExtended", String.format("findAttributeByCode(): Attribute with %s not found", code));
             return null;
         }
 

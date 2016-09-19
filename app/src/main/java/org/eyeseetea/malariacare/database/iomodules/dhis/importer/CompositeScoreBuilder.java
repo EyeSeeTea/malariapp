@@ -140,6 +140,7 @@ public class CompositeScoreBuilder {
 
         //Not a composite -> done
         if(dataElementExtended==null || !dataElementExtended.isCompositeScore()){
+            Log.d("CompositeScoreBuilder", String.format("dataElement %s is not CompositeScore", dataElementExtended.getDataElement().getUid()));
             return null;
         }
 

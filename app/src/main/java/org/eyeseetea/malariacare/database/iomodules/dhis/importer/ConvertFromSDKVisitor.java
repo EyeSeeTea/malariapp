@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
@@ -385,12 +387,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Value value=new Value();
         //Datavalue is a value from a question
         org.eyeseetea.malariacare.database.model.Option option = null;
-        try{
-            Question question=(Question)appMapObjects.get(dataValue.getDataElement());
-            value.setQuestion(question);
-            option=sdkDataValueExtended.findOptionByQuestion(question);
-            value.setOption(option);
-        }catch (ClassCastException e){
+        BaseModel model = (BaseModel)appMapObjects.get(dataValue.getDataElement());
+        if (model instanceof Question) {
+            try{
+                Question question = (Question)model; //(Question) appMapObjects.get(dataValue.getDataElement());
+                value.setQuestion(question);
+                option = sdkDataValueExtended.findOptionByQuestion(question);
+                value.setOption(option);
+            }catch (ClassCastException e){
+                Log.d(TAG,"Exception with controlDataelement in DataValue converting");
+            }
+        } else {
             Log.d(TAG,"Ignoring controlDataelement in DataValue converting");
         }
 
@@ -429,7 +436,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer((Answer) appMapObjects.get(dataElement.getOptionSet()));
         }else{
             //A question with NO optionSet is a Label Question
-            Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
+            //Log.d(TAG, String.format("Question (%s) is a LABEL", dataElement.getUid()));
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
