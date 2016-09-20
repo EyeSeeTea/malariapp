@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.CustomSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     private Program programFilter;
     List<PlannedItem> plannedItemList;
-
     public PlannedFragment() {
 
     }
@@ -99,7 +99,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     public void reloadFilter(){
-        Spinner programSpinner = (Spinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
+        CustomSpinner programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
         Program selectedProgram=(Program) programSpinner.getSelectedItem();
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);
