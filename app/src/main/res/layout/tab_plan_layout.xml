@@ -33,14 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/assess_grey">
-            <Spinner
+            <org.eyeseetea.malariacare.views.CustomSpinner
                 android:id="@+id/dashboard_planning_spinner_program"
                 android:layout_width="0dp"
                 android:layout_weight=".43"
                 android:layout_height="wrap_content"
                 android:background="@color/assess_grey"
                 android:paddingTop="5dip"
-                android:paddingBottom="5dip"></Spinner>
+                android:paddingBottom="5dip"></org.eyeseetea.malariacare.views.CustomSpinner>
 
             <ImageView
                 android:layout_width="0dp"
@@ -51,7 +51,7 @@
                 android:paddingTop="15dip"
                 android:paddingBottom="5dip"/>
 
-            <Spinner
+            <org.eyeseetea.malariacare.views.CustomSpinner
                 android:id="@+id/dashboard_planning_spinner_orgUnit"
                 android:layout_width="0dp"
                 android:layout_weight=".43"
