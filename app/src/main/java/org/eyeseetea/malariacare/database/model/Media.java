@@ -123,8 +123,7 @@ public class Media extends BaseModel{
 
         return new Select().all().
                 from(Media.class).
-                where(Condition.column(Media$Table.FILENAME).isNotNull()).
-                and(Condition.column(Media$Table.ID_QUESTION).eq(question.id_question)).
+                where(Condition.column(Media$Table.ID_QUESTION).eq(question.id_question)).
                 orderBy(true,Media$Table.ID_MEDIA).
                 queryList();
     }
