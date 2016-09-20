@@ -168,7 +168,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             listView.addHeaderView(header);
         setListAdapter((BaseAdapter) adapter);
         Session.listViewSent = listView;
-        selectAllCheckbox.setChecked(false);
     }
 
     private void checkAll(boolean value) {
