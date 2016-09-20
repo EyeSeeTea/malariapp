@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -115,6 +116,13 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectAllCheckbox.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        CustomCheckBox selectAllCheckbox=(CustomCheckBox) getView().findViewById(R.id.select_all_orgunits);
+                        selectAllCheckbox.setChecked(false);
+                    }
+                });
                 List<Survey> scheduleSurveys=new ArrayList<>();
                 for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
                     if(plannedSurveyByOrgUnit.getChecked())
@@ -125,7 +133,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
                 new ScheduleListener(scheduleSurveys,adapter.getContext());
                 reloadData();
-                selectAllCheckbox.setChecked(false);
             }
         });
         disableScheduleButton();
