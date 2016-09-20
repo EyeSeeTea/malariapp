@@ -41,7 +41,6 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -57,8 +56,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     private PlannedAdapter adapter;
 
-    private List<PlannedItem> plannedItems;
-
 
     private List<Program> programList;
     private List<OrgUnit> orgUnitList;
@@ -67,7 +64,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     List<PlannedItem> plannedItemList;
 
     public PlannedFragment() {
-        this.plannedItems = new ArrayList();
+
     }
 
 
@@ -166,12 +163,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
-    public void reloadPlannedItems() {
-        adapter.reloadItems(plannedItemList);
-        setListShown(true);
-        adapter.notifyDataSetChanged();
-    }
-
     public void loadProgram(Program program) {
         Log.d(TAG,"Loading program: "+program.getUid());
         programFilter=program;
@@ -199,12 +190,21 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
                 //Create the filters only the first time
                 if(programList==null && orgUnitList ==null) {
-                    programList=(List<Program>) plannedServiceBundle.getModelList(Program.class.getName());
-                    orgUnitList=(List<OrgUnit>) plannedServiceBundle.getModelList(OrgUnit.class.getName());
-                    DashboardActivity.dashboardActivity.preparePlanningFilters(programList,orgUnitList);
+                    createFilters(plannedServiceBundle);
                 }
                 prepareUI(plannedServiceBundle.getPlannedItems());
+
+                setListShown(true);
+                adapter.notifyDataSetChanged();
             }
         }
+
+        private void createFilters(PlannedServiceBundle plannedServiceBundle) {
+            programList=(List<Program>) plannedServiceBundle.getModelList(Program.class.getName());
+            orgUnitList=(List<OrgUnit>) plannedServiceBundle.getModelList(OrgUnit.class.getName());
+            DashboardActivity.dashboardActivity.preparePlanningFilters(programList,orgUnitList);
+        }
+
+
     }
 }

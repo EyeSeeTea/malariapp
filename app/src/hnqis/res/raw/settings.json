@@ -2,7 +2,8 @@
   "database": {
     "originType": "dhis",
     "uri": "https://hnqis-dev-ci.psi-mis.org",
-    "fullHierarchy": false
+    "fullHierarchy": false,
+    "downloadOnlyLastEvents": false
   },
   "dashboard": {
     "orientation": "horizontal",
@@ -33,7 +34,7 @@
       "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_charts_container",
       "controller": "MonitorModuleController",
-      "monitorFilter": "all"
+      "monitorFilter": "program"
     }
     ]
   }

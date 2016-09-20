@@ -58,6 +58,13 @@ public class Constants {
             OPERATION_TYPE_PARENT = 1,
             OPERATION_TYPE_OTHER = 2;
 
+    //############# MEDIA TYPE ##############
+    // Values to identify image/video on media_type column in the DB
+    public static final int MEDIA_TYPE_IMAGE = 0;
+    public static final int MEDIA_TYPE_VIDEO = 1;
+    public static final String MEDIA_SEPARATOR="#";
+    public static final int NO_MEDIA_ID=-1;
+
     public static final int MAX_ITEMS_IN_DASHBOARD=5;
 
     //############# LOGIN AUTHORIZATION ACTIONS ##############

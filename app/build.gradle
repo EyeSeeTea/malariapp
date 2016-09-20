@@ -112,8 +112,7 @@ dependencies {
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-    compile 'com.android.support:multidex:1.0.1'
-
+    compile "com.android.support:multidex:$rootProject.multidexVersion"
     //3rd party dependencies
     compile "com.opencsv:opencsv:$rootProject.opencsvVersion"    
     compile "com.google.android.gms:play-services:$rootProject.gmsPlayVersion"
