@@ -35,7 +35,7 @@ import java.util.Map;
 public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
     private static final String TAG=".FacilityTableBuilderP";
     Map<String,FacilityTableDataByProgram> facilityTableDataMap;
-    public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByOrgUnit()";
+    public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByProgram()";
     /**
      * Default constructor
      *
