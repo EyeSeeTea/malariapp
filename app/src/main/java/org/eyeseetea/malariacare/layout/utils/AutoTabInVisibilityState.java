@@ -172,12 +172,14 @@ public class AutoTabInVisibilityState {
 
             //Hide child ...
             //-> Remove value
-            ReadWriteDB.deleteValue(childQuestion, module);
+            deleteChildrenValueRecursively(childQuestion, module);
+            //ReadWriteDB.deleteValue(childQuestion, module);
 
             //-> Remove score
-            if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
+            removeScoreRecursively(childQuestion, idSurvey, module);
+            /*if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
                 ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
-            }
+            }*/
             //-> Check header visibility (no header,done)
             if(childHeader==null){
                 continue;
@@ -185,6 +187,33 @@ public class AutoTabInVisibilityState {
             //-> Check header visibility
             this.updateHeaderVisibility(childHeader);
         }
+    }
+
+    /**
+     * Remove recursively num and denums, and scores records
+     * @param question
+     * @param idSurvey
+     * @param module
+     */
+    public void removeScoreRecursively(Question question, float idSurvey, String module){
+        for(Question child: question.getChildren()){
+            removeScoreRecursively(child, idSurvey, module);
+        }
+        if (ScoreRegister.getNumDenum(question, idSurvey, module) != null) {
+            ScoreRegister.deleteRecord(question, idSurvey, module);
+        }
+    }
+
+    /**
+     * Remove recursively all children values from DB
+     * @param question
+     * @param module
+     */
+    public void deleteChildrenValueRecursively(Question question, String module){
+        for(Question child: question.getChildren()){
+            deleteChildrenValueRecursively(child, module);
+        }
+        ReadWriteDB.deleteValue(question, module);
     }
 
 
