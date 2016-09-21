@@ -334,6 +334,7 @@ public class PullController {
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
@@ -383,6 +384,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
@@ -395,6 +397,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
@@ -452,6 +455,7 @@ public class PullController {
         for (OrganisationUnit organisationUnit : MetaDataController.getAssignedOrganisationUnits()) {
             //Each assigned program
             for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION)) {
+                converter.actualProgram=program;
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
