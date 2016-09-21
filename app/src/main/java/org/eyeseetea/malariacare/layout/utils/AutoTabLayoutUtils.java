@@ -303,7 +303,7 @@ public class AutoTabLayoutUtils {
     public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module) {
 
         Question question = autoTabSelectedItem.getQuestion();
-        Option option = autoTabSelectedItem.getOption();
+        final Option option = autoTabSelectedItem.getOption();
         Context context = autoTabSelectedItem.getContext();
         final AutoTabViewHolder viewHolder = autoTabSelectedItem.getViewHolder();
 
@@ -322,21 +322,29 @@ public class AutoTabLayoutUtils {
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
-
-        //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
-        new AlertDialog.Builder(context)
-                .setTitle(null)
-                .setMessage(context.getString(R.string.dialog_deleting_children))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        autoTabSelectedItem.notifyDataSetChanged();
-                    }
-                }).create().show();
+        //Prevents the double dialog when click on a parent option
+        if(!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
+            //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
+            new AlertDialog.Builder(context)
+                    .setTitle(null)
+                    .setMessage(context.getString(R.string.dialog_deleting_children))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+                            //Remove the children when the option is the match option
+                            if(option.isActiveChildren()) {
+                                AutoTabSelectedItem positiveAutoTabSelectedItem= autoTabSelectedItem;
+                                positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
+                                saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            autoTabSelectedItem.notifyDataSetChanged();
+                        }
+                    }).create().show();
+        }
     }
 
     /**
