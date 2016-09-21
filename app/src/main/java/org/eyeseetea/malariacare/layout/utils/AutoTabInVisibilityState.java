@@ -153,8 +153,6 @@ public class AutoTabInVisibilityState {
     public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         Question question = autoTabSelectedItem.getQuestion();
         if(question.hasChildren()) {
-            List<Question> children = question.getChildren();
-
             recursiveToggleChildrenVisibility(idSurvey, module, question);
         }
     }

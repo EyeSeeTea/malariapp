@@ -331,10 +331,9 @@ public class AutoTabLayoutUtils {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
                             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
-                            android.os.Debug.waitForDebugger();
                             //Remove the children when the option is the match option
-                            if(option.isActiveChildren(question)) {
-                                AutoTabSelectedItem positiveAutoTabSelectedItem= autoTabSelectedItem;
+                            if(!autoTabSelectedItem.getOption().getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
+                                AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
                                 positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
                                 saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
                             }
