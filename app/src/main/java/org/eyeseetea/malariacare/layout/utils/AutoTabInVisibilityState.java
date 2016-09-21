@@ -152,11 +152,16 @@ public class AutoTabInVisibilityState {
      */
     public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         Question question = autoTabSelectedItem.getQuestion();
+        if(question.hasChildren()) {
+            List<Question> children = question.getChildren();
 
-        List<Question> children = question.getChildren();
+            recursiveToggleChildrenVisibility(idSurvey, module, question);
+        }
+    }
+
+    private void recursiveToggleChildrenVisibility(float idSurvey, String module, Question parentQuestion) {
         boolean visible;
-
-        for (Question childQuestion : children) {
+        for (Question childQuestion : parentQuestion.getChildren()) {
             Header childHeader = childQuestion.getHeader();
             visible=!childQuestion.isHiddenBySurvey(idSurvey);
             this.updateVisibility(childQuestion,visible);
@@ -172,17 +177,20 @@ public class AutoTabInVisibilityState {
 
             //Hide child ...
             //-> Remove value
-            deleteChildrenValueRecursively(childQuestion, module);
+            ReadWriteDB.deleteValue(childQuestion, module);
 
             //-> Remove score
-            removeScoreRecursively(childQuestion, idSurvey, module);
-
+            if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
+                ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
+            }
             //-> Check header visibility (no header,done)
             if(childHeader==null){
                 continue;
             }
             //-> Check header visibility
             this.updateHeaderVisibility(childHeader);
+            if(childQuestion.hasChildren())
+                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion);
         }
     }
 
