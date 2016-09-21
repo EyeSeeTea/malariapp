@@ -322,28 +322,38 @@ public class AutoTabLayoutUtils {
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
-        //Prevents the double dialog when click on a parent option
-        if(!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
+        //Prevents the double dialog when click on a parent option'
+        if(question.getValueBySession(module)!=null && !option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
             //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
-            new AlertDialog.Builder(context)
-                    .setTitle(null)
-                    .setMessage(context.getString(R.string.dialog_deleting_children))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
-                            //Remove the children when the option is the match option
-                            if(!autoTabSelectedItem.getOption().getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
-                                AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
-                                positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
-                                saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
+            boolean hasActiveChildren=false;
+            for(Question childQuestion:question.getChildren())
+                if(childQuestion.isHiddenBySurvey(idSurvey)==false) {
+                    if(childQuestion.getValueBySurvey(idSurvey)!=null) {
+                        hasActiveChildren = true;
+                        break;
+                    }
+                }
+            if(hasActiveChildren) {
+                new AlertDialog.Builder(context)
+                        .setTitle(null)
+                        .setMessage(context.getString(R.string.dialog_deleting_children))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+                                //Remove the children when the option is the match option
+                                if (!autoTabSelectedItem.getOption().isActiveChildren(question)) {
+                                    AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
+                                    positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
+                                    saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
+                                }
                             }
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            autoTabSelectedItem.notifyDataSetChanged();
-                        }
-                    }).create().show();
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                autoTabSelectedItem.notifyDataSetChanged();
+                            }
+                        }).create().show();
+            }
         }
     }
 
