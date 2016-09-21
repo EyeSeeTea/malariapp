@@ -27,14 +27,12 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Option extends BaseModel {
-
-    //FIXME A 'Yes' answer shows children questions, this should be configurable by some additional attribute in Option
-    public static final String CHECKBOX_YES_OPTION="Yes";
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -159,13 +157,22 @@ public class Option extends BaseModel {
         this.optionAttribute = optionAttribute;
         this.id_option_attribute = (optionAttribute!=null)?optionAttribute.getId_option_attribute():null;
     }
-
     /**
-     * Checks if this option actives the children questions
+     * Checks if this option actives the children questions by a parentQuestion
      * @return true: Children questions should be shown, false: otherwise.
      */
-    public boolean isActiveChildren(){
-        return CHECKBOX_YES_OPTION.equals(name);
+    public boolean isActiveChildren(Question question) {
+        for(QuestionRelation questionRelations:question.getQuestionRelations()){
+            if(questionRelations.getOperation()== Constants.OPERATION_TYPE_PARENT) {
+                for(Match match:question.getMatches()){
+                    for(QuestionOption questionOption:match.getQuestionOptions()){
+                        if(questionOption.getOption().getId_option()==id_option)
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**

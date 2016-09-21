@@ -302,7 +302,7 @@ public class AutoTabLayoutUtils {
      */
     public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module) {
 
-        Question question = autoTabSelectedItem.getQuestion();
+        final Question question = autoTabSelectedItem.getQuestion();
         final Option option = autoTabSelectedItem.getOption();
         Context context = autoTabSelectedItem.getContext();
         final AutoTabViewHolder viewHolder = autoTabSelectedItem.getViewHolder();
@@ -333,7 +333,7 @@ public class AutoTabLayoutUtils {
                             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
                             android.os.Debug.waitForDebugger();
                             //Remove the children when the option is the match option
-                            if(option.isActiveChildren()) {
+                            if(option.isActiveChildren(question)) {
                                 AutoTabSelectedItem positiveAutoTabSelectedItem= autoTabSelectedItem;
                                 positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
                                 saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
