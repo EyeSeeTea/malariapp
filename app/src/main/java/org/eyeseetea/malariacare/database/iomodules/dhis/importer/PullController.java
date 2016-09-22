@@ -356,6 +356,7 @@ public class PullController {
                             dataElements.add(dataElement);
                         }
                         else{
+                            //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
                             Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
                             int times=0;
                             while(dataElement==null){
