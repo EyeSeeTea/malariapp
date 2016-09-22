@@ -50,9 +50,9 @@ import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ObjectModelDict;
-import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramAnswerDict;
+import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramDataElementDict;
+import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
@@ -83,16 +83,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     private final static String TAG=".ConvertFromSDKVisitor";
     static Map<String,org.eyeseetea.malariacare.database.model.Program> programMapObjects;
-    static Map<String,Object> dataElementMapObjects;
+    static Map<String,Object> controlDataElementMapObjects;
     static Map<String,OrgUnitLevel> orgUnitLevelMap;
     static Map<String,OrgUnit> orgUnitDict;
     static Map<String,Answer> answerMap;
     static ProgramTabDict programTabDict;
     static ProgramTabGroupDict programTabGroupDict;
-    static ProgramDataElementDict programDataElementDict;
     static ProgramStageSectionTabDict programStageSectionTabDict;
     static ProgramSurveyDict programSurveyDict;
-    static ObjectModelDict objectModelDict;
+    static ProgramCompositeScoreDict programCompositeScoreDict;
+    static ProgramQuestionDict programQuestionDict;
+
 
     /**
      * Builders that helps while linking compositeScores and questions
@@ -105,18 +106,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     public ConvertFromSDKVisitor(){
         programMapObjects = new HashMap();
-        dataElementMapObjects=new HashMap();
+        controlDataElementMapObjects =new HashMap();
         orgUnitLevelMap = new HashMap();
         orgUnitDict = new HashMap();
         answerMap = new HashMap();
         programTabDict = new ProgramTabDict();
         programTabGroupDict = new ProgramTabGroupDict();
         programStageSectionTabDict = new ProgramStageSectionTabDict();
-        programDataElementDict = new ProgramDataElementDict();
+        programQuestionDict = new ProgramQuestionDict();
         programSurveyDict = new ProgramSurveyDict();
+        programCompositeScoreDict = new ProgramCompositeScoreDict();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
-        objectModelDict = new ObjectModelDict();
 
         //Reload static dataElement codes
         DataElementExtended.reloadDataElementTypeCodes();
@@ -301,21 +302,18 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         Object questionOrCompositeScore;
-        if(dataElementMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
-            return;
         if(sdkDataElementExtended.isCompositeScore()){
-            questionOrCompositeScore=buildCompositeScore(sdkDataElementExtended);
+            programCompositeScoreDict.put(actualProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildCompositeScore(sdkDataElementExtended));
         }else if(sdkDataElementExtended.isQuestion()){
-            questionOrCompositeScore=buildQuestion(sdkDataElementExtended);
+            programQuestionDict.put(actualProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildQuestion(sdkDataElementExtended));
             //Question type is annotated in 'answer' from an attribute of the question
         }else if (sdkDataElementExtended.isControlDataElement()) {
-            questionOrCompositeScore=buildControlDataElement(sdkDataElementExtended);
+            if(!controlDataElementMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
+                controlDataElementMapObjects.put(sdkDataElementExtended.getDataElement().getUid(),buildControlDataElement(sdkDataElementExtended));
         } else {
             Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().toString());
             return;
         }
-        dataElementMapObjects.put(sdkDataElementExtended.getDataElement().getUid(), questionOrCompositeScore);
-        //Both questions and scores are annotated
     }
 
     /**
@@ -360,9 +358,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         DataValue dataValue=sdkDataValueExtended.getDataValue();
         Survey survey=programSurveyDict.get(actualProgram.getUid(),dataValue.getEvent());
         //Data value is a value from compositeScore
-        if(dataElementMapObjects.get(dataValue.getDataElement()) instanceof CompositeScore){
+        if(programCompositeScoreDict.containsKey(actualProgram.getUid(),dataValue.getDataElement())){
             //CHeck if it is a root score -> score
-            CompositeScore compositeScore = (CompositeScore) dataElementMapObjects.get(dataValue.getDataElement());
+            CompositeScore compositeScore = programCompositeScoreDict.get(actualProgram.getUid(),dataValue.getDataElement());
             if(CompositeScoreBuilder.ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
                 Score score = new Score();
                 score.setScore(Float.parseFloat(dataValue.getValue()));
@@ -372,6 +370,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             }
             return;
         }
+        /**
+        else{
+            if(!controlDataElementMapObjects.containsKey(dataValue.getDataElement()) && !programQuestionDict.containsKey(actualProgram.getUid(),dataValue.getDataElement()) ) {
+                Log.i(TAG, "Error recovering Compositescore: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataElement());
+            }
+        }
+        */
 
         if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.created_on_code))){
             try{
@@ -415,19 +420,23 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         Value value=new Value();
         //Datavalue is a value from a question
         org.eyeseetea.malariacare.database.model.Option option = null;
-        BaseModel model = (BaseModel) dataElementMapObjects.get(dataValue.getDataElement());
-        if (model instanceof Question) {
-            try{
-                Question question = (Question)model; //(Question) programMapObjects.get(dataValue.getDataElement()+dataelement.getprogram.uid);
+        if(programQuestionDict.containsKey(actualProgram.getUid(),dataValue.getDataElement())){
+            Question question = programQuestionDict.get(actualProgram.getUid(), dataValue.getDataElement());
+            try {
                 value.setQuestion(question);
                 option = sdkDataValueExtended.findOptionByQuestion(question);
                 value.setOption(option);
-            }catch (ClassCastException e){
-                Log.d(TAG,"Exception with controlDataelement in DataValue converting");
+            } catch (ClassCastException e) {
+                Log.d(TAG, "Exception with controlDataelement in DataValue converting");
             }
-        } else {
-            Log.d(TAG,"Ignoring controlDataelement in DataValue converting");
         }
+        /**
+        else{
+            if(!controlDataElementMapObjects.containsKey(dataValue.getDataElement()) && !programCompositeScoreDict.containsKey(actualProgram.getUid(),dataValue.getDataElement()) ) {
+                Log.d(TAG, "Error recovering Question: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataElement());
+            }
+        }
+        */
 
         value.setSurvey(survey);
         //No option -> text question (straight value)
