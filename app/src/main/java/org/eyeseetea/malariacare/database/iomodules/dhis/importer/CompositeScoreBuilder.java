@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import com.google.common.base.Joiner;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -34,6 +35,7 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -179,26 +181,22 @@ public class CompositeScoreBuilder {
             String compositeScoreHierarchicalCode=compositeScore.getHierarchical_code();
 
             //Root node has no parent
-            if(ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
+            if(ROOT_NODE_CODE.equals(compositeScoreHierarchicalCode)){
                 continue;
             }
             //Split the hirarchical code in levels (5.11.1 -> [0]=5 [1]=11 [2]=1)
-            String[] hierarchicalCodeLevels=compositeScoreHierarchicalCode.split("\\.");
-            //0 levels -> parent: root | X level -> parent is the levels minus lastest
+            List<String> hierarchicalCodeLevels = Arrays.asList(compositeScoreHierarchicalCode.split("\\."));
+            //0 levels -> parent: root | X level -> parent is the levels minus last
             String parentHierarchicalCode="";
-            if(hierarchicalCodeLevels==null) {
+            if(hierarchicalCodeLevels==null || hierarchicalCodeLevels.size()==0) {
                 parentHierarchicalCode = ROOT_NODE_CODE;
-            }
-            else {
-                for(int i=0; i<hierarchicalCodeLevels.length-1;i++)
-                    parentHierarchicalCode=parentHierarchicalCode+hierarchicalCodeLevels[i]+".";
+            } else {
+                parentHierarchicalCode = Joiner.on(".").skipNulls().join(hierarchicalCodeLevels.subList(0, hierarchicalCodeLevels.size()-1));
             }
             if(parentHierarchicalCode.equals(""))
                 parentHierarchicalCode = ROOT_NODE_CODE;
 
             //Remove last dot if exist.
-            if(parentHierarchicalCode.endsWith("."))
-                parentHierarchicalCode=parentHierarchicalCode.substring(0,parentHierarchicalCode.length()-1);
             compositeScore.setCompositeScore(compositeScoreMap.get(parentHierarchicalCode));
             compositeScore.save();
         }
