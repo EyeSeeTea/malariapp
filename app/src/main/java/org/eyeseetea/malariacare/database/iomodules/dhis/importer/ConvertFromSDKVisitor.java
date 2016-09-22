@@ -301,7 +301,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
-        Object questionOrCompositeScore;
         if(sdkDataElementExtended.isCompositeScore()){
             programCompositeScoreDict.put(actualProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildCompositeScore(sdkDataElementExtended));
         }else if(sdkDataElementExtended.isQuestion()){
@@ -372,8 +371,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         /**
         else{
-            if(!controlDataElementMapObjects.containsKey(dataValue.getDataElement()) && !programQuestionDict.containsKey(actualProgram.getUid(),dataValue.getDataElement()) ) {
-                Log.i(TAG, "Error recovering Compositescore: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataElement());
+            if(!controlDataElementMapObjects.containsKey(dataValue.getDataelement()) && !programQuestionDict.containsKey(actualProgram.getUid(),dataValue.getDataelement()) ) {
+                Log.i(TAG, "Error recovering Compositescore: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataelement());
             }
         }
         */
@@ -432,8 +431,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         /**
         else{
-            if(!controlDataElementMapObjects.containsKey(dataValue.getDataElement()) && !programCompositeScoreDict.containsKey(actualProgram.getUid(),dataValue.getDataElement()) ) {
-                Log.d(TAG, "Error recovering Question: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataElement());
+            if(!controlDataElementMapObjects.containsKey(dataValue.getDataelement()) && !programCompositeScoreDict.containsKey(actualProgram.getUid(),dataValue.getDataelement()) ) {
+                Log.d(TAG, "Error recovering Question: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataelement());
             }
         }
         */

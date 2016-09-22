@@ -23,7 +23,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.structure.Model;
 import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -35,7 +34,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Organis
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
-import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -329,6 +327,7 @@ public class PullController {
         postProgress(context.getString(R.string.progress_pull_questions));
         Log.i(TAG, "Ordering questions and compositeScores...");
 
+        int count;
         //Dataelements ordered by program.
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = ProgramExtended.getAllPrograms();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
@@ -340,17 +339,48 @@ public class PullController {
             String programUid = program.getUid();
             List<ProgramStage> programStages = program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStage.getProgramStageDataElements().size());
                 Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
+                count=programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
-                    DataElement dataElement =programStageDataElement.getDataElement();
+                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                    DataElement dataElement = programStageDataElement.getDataElement();
                     if (dataElement!=null && dataElement.getUid() != null) {
-                        if (!ProgressActivity.PULL_IS_ACTIVE) return;
                         dataElements.add(dataElement);
                     }
+                    else{
+                        DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
+                        dataElement = MetaDataController.getDataElement(programStageDataElement.getDataelement());
+                        if (dataElement!=null) {
+                            dataElements.add(dataElement);
+                        }
+                        else{
+                            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
+                            int times=0;
+                            while(dataElement==null){
+                                times++;
+                                Log.d(TAG, "running : "+times);
+                                try {
+                                    Thread.sleep(100);
+                                    dataElement=MetaDataController.getDataElement(programStageDataElement.getDataelement());
+                                } catch (InterruptedException e) {//throw new RuntimeException("Null query");
+                                    e.printStackTrace();
+                                }
+                            }
+                            Log.d(TAG, "needed : "+times);
+                            dataElements.add(dataElement);
+                        }
+                    }
+                }
+                if(count!=dataElements.size()){
+                    Log.d(TAG, "missing dataelements");
+                    Log.d(TAG, "dataelements size: "+dataElements.size());
                 }
             }
             Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
+
+
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
