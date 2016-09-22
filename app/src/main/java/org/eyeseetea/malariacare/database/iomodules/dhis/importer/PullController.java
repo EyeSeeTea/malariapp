@@ -345,6 +345,14 @@ public class PullController {
                 count=programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
+
+                    //The ProgramStageDataElement without Dataelement uid is not correctly configured.
+                    if(programStageDataElement.getDataelement()==null || programStageDataElement.getDataelement().equals("")){
+                        Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
+                        continue;
+                    }
+
+                    //Note: the sdk method getDataElement returns the dataElement object, and getDataelement returns the dataelement uid.
                     DataElement dataElement = programStageDataElement.getDataElement();
                     if (dataElement!=null && dataElement.getUid() != null) {
                         dataElements.add(dataElement);
@@ -352,6 +360,7 @@ public class PullController {
                     else{
                         DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
                         dataElement = MetaDataController.getDataElement(programStageDataElement.getDataelement());
+
                         if (dataElement!=null) {
                             dataElements.add(dataElement);
                         }
@@ -374,9 +383,9 @@ public class PullController {
                         }
                     }
                 }
+
                 if(count!=dataElements.size()){
-                    Log.d(TAG, "missing dataelements");
-                    Log.d(TAG, "dataelements size: "+dataElements.size());
+                    Log.d(TAG, "The programStageDataElements size ("+count+") is different than the saved dataelements size ("+dataElements.size()+")");
                 }
             }
             Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
