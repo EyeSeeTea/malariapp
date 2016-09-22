@@ -182,13 +182,23 @@ public class CompositeScoreBuilder {
             if(ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
                 continue;
             }
+            //Split the hirarchical code in levels (5.11.1 -> [0]=5 [1]=11 [2]=1)
+            String[] hierarchicalCodeLevels=compositeScoreHierarchicalCode.split("\\.");
+            //0 levels -> parent: root | X level -> parent is the levels minus lastest
+            String parentHierarchicalCode="";
+            if(hierarchicalCodeLevels==null) {
+                parentHierarchicalCode = ROOT_NODE_CODE;
+            }
+            else {
+                for(int i=0; i<hierarchicalCodeLevels.length-1;i++)
+                    parentHierarchicalCode=parentHierarchicalCode+hierarchicalCodeLevels[i]+".";
+            }
+            if(parentHierarchicalCode.equals(""))
+                parentHierarchicalCode = ROOT_NODE_CODE;
 
-            //Count number of dots
-            int numDots = compositeScoreHierarchicalCode.length() - compositeScoreHierarchicalCode.replace(".", "").length();
-
-            //0 dots -> parent: root | X dots -> substring minus last index
-            String parentHierarchicalCode = (numDots==0)?ROOT_NODE_CODE:compositeScoreHierarchicalCode.substring(0,compositeScoreHierarchicalCode.length()-2);
-
+            //Remove last dot if exist.
+            if(parentHierarchicalCode.endsWith("."))
+                parentHierarchicalCode=parentHierarchicalCode.substring(0,parentHierarchicalCode.length()-1);
             compositeScore.setCompositeScore(compositeScoreMap.get(parentHierarchicalCode));
             compositeScore.save();
         }
