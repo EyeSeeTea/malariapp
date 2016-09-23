@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
+import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -528,49 +529,6 @@ public class DashboardSentFragment extends ListFragment {
             if(SurveyService.RELOAD_SENT_FRAGMENT_ACTION.equals(intent.getAction())){
                 reloadDataFromService();
             }
-        }
-    }
-
-    /**
-     * Inner class to create a multi-key dictionary. It's intended to associate programUID and OrgUnitUID
-     * with a Survey
-     */
-    private class ProgramOUSurveyDict {
-        Map<String, Map<String, Survey>> surveysByProgramOU;
-
-        public ProgramOUSurveyDict(){
-            surveysByProgramOU = new HashMap<>();
-        }
-
-        public void put(String programUID, String orgUnitUID, Survey survey){
-            Map<String, Survey> orgUnitSurvey = surveysByProgramOU.get(programUID);
-            if (orgUnitSurvey == null)
-                orgUnitSurvey = new HashMap<>();
-            orgUnitSurvey.put(orgUnitUID, survey);
-            surveysByProgramOU.put(programUID, orgUnitSurvey);
-        }
-
-        public Survey get(String programUID, String orgUnitUID){
-            Map<String, Survey> orgUnitSurvey = surveysByProgramOU.get(programUID);
-            if (orgUnitSurvey == null) return null;
-            else return orgUnitSurvey.get(orgUnitUID);
-        }
-
-        public void clear(){
-            surveysByProgramOU.clear();
-        }
-
-        public boolean containsKey(String programUID, String orgUnitUID){
-            Map<String, Survey> orgUnitSurvey = surveysByProgramOU.get(programUID);
-            return (orgUnitSurvey==null) ? false : (orgUnitSurvey.containsKey(orgUnitUID));
-        }
-
-        public List<Survey> values(){
-            List<Survey> surveys = new ArrayList<>();
-            for (Map<String, Survey> map : surveysByProgramOU.values()){
-                surveys.addAll(map.values());
-            }
-            return surveys;
         }
     }
 

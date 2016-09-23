@@ -21,18 +21,17 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;;
+import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.Program;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,14 +119,14 @@ public class QuestionBuilder {
      * @param dataElementExtended
      * @return question header
      */
-    public Header saveHeader(DataElementExtended dataElementExtended) {
+    public Header saveHeader(DataElementExtended dataElementExtended, Program actualProgram) {
         Header header = null;
         String attributeHeaderValue = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         if (attributeHeaderValue != null) {
             Tab questionTab;
             String tabUid = dataElementExtended.findProgramStageSectionUIDByDataElementUID(dataElementExtended.getDataElement().getUid());
-            if(ConvertFromSDKVisitor.appMapObjects.containsKey(tabUid)) {
-                questionTab = (Tab) ConvertFromSDKVisitor.appMapObjects.get(tabUid);
+            if(ConvertFromSDKVisitor.programTabDict.containsKey(actualProgram.getUid(),tabUid)) {
+                questionTab =  ConvertFromSDKVisitor.programTabDict.get(actualProgram.getUid(),tabUid);
                 if(mapHeader.containsKey(tabUid+attributeHeaderValue)){
                         if(!mapHeader.get(tabUid+attributeHeaderValue).getTab().getName().equals(questionTab.getName()))
                             Log.d("Bug","Header with other tab"+header.getName()+" othertab "+questionTab.getName()+ "uid" + dataElementExtended.getDataElement().getUid());

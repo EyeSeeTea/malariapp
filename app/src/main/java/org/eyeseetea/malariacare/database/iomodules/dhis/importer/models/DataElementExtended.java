@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
@@ -421,5 +422,11 @@ public class DataElementExtended implements VisitableFromSDK {
             }
         }
         return compositeScore;
+    }
+
+    public static boolean logDataElementsWithUid(String uid){
+        int result = (int) new Select().count().from(DataElement.class).where(Condition.column(DataElement$Table.ID).is(uid)).count();
+        Log.d(TAG, "dataelement "+uid+" count: "+result);
+        return (result>0) ? true : false;
     }
 }

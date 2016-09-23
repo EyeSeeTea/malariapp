@@ -33,7 +33,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -41,7 +40,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
@@ -198,13 +196,13 @@ public class ProgressActivity extends Activity {
             @Override
             public void run() {
                 if (syncProgressStatus.hasError()) {
-                    showException(syncProgressStatus.getException().getMessage());
+                    showException(syncProgressStatus.getException().getMessage()+" ");
                     return;
                 }
 
                 //Step
                 if (syncProgressStatus.hasProgress()) {
-                    step(syncProgressStatus.getMessage());
+                    step(syncProgressStatus.getMessage()+" ");
                     return;
                 }
 
@@ -236,30 +234,45 @@ public class ProgressActivity extends Activity {
      * Shows a dialog with the given message y move to login after showing error
      * @param msg
      */
-    private void showException(String msg){
+    private void showException(final String msg){
         final boolean isAPush=isAPush();
-        String title=getDialogTitle(isAPush);
+        Log.d(TAG,msg+" ");
 
-        this.alertDialog=new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(title)
-                .setMessage(msg)
-                .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        PULL_ERROR=true;
+        PULL_CANCEL=true;
+        PULL_IS_ACTIVE=false;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Run your task here
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //A crash during a push might be recoverable -> dashboard
-                        if (isAPush) {
-                            Log.d(TAG, "Push crashed, moving to dashboard...");
-                            finishAndGo(DashboardActivity.class);
-                        } else {
-                            //A crash during a pull requires to start from scratch -> logout
-                            Log.d(TAG, "Logging out from sdk...");
-                            DhisService.logOutUser(ProgressActivity.this);
-                        }
+                    public void run() {
+                        String dialogTitle="",dialogMessage="";
+                            dialogTitle=getDialogTitle(isAPush());
+                        if(msg!=null)
+                            dialogMessage=msg;
+                        new AlertDialog.Builder(progressActivity)
+                                .setCancelable(false)
+                                .setTitle(dialogTitle)
+                                .setMessage(dialogMessage)
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        //A crash during a push might be recoverable -> dashboard
+                                        if (isAPush) {
+                                            Log.d(TAG, "Push crashed, moving to dashboard...");
+                                            finishAndGo(DashboardActivity.class);
+                                        } else {
+                                            //A crash during a pull requires to start from scratch -> logout
+                                            Log.d(TAG, "Logging out from sdk...");
+                                            DhisService.logOutUser(ProgressActivity.this);
+                                        }
+                                    }
+                                }).create().show();
                     }
-                }).create();
-        alertDialog.show();
+                });
+            }
+        });
     }
 
     /**
