@@ -424,14 +424,9 @@ public class DataElementExtended implements VisitableFromSDK {
         return compositeScore;
     }
 
-    public static boolean existsDataElementByUid(String uid){
+    public static boolean logDataElementsWithUid(String uid){
         int result = (int) new Select().count().from(DataElement.class).where(Condition.column(DataElement$Table.ID).is(uid)).count();
         Log.d(TAG, "dataelement "+uid+" count: "+result);
-        if(result>0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return (result>0) ? true : false;
     }
 }

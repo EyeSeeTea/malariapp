@@ -172,8 +172,6 @@ public class CompositeScoreBuilder {
      * Registers a compositeScore in builder
      */
     private void buildHierarchy(Map<String,CompositeScore> compositeScoreMap){
-        CompositeScore rootScore=compositeScoreMap.get(ROOT_NODE_CODE);
-
         //Find the parent of each score
         for(CompositeScore compositeScore:compositeScoreMap.values()){
 
@@ -200,7 +198,6 @@ public class CompositeScoreBuilder {
             compositeScore.setCompositeScore(compositeScoreMap.get(parentHierarchicalCode));
             compositeScore.save();
         }
-
     }
 
     /**

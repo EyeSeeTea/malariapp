@@ -102,7 +102,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     QuestionBuilder questionBuilder;
     private final String ATTRIBUTE_PRODUCTIVITY_CODE="OUProductivity";
     private final String SDKDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    Program actualProgram;
+    Program currentProgram;
 
     public ConvertFromSDKVisitor(){
         programMapObjects = new HashMap();
@@ -130,7 +130,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramExtended sdkProgramExtended){
         //Build program
         Program program=sdkProgramExtended.getProgram();
-        actualProgram=program;
+        currentProgram =program;
         org.eyeseetea.malariacare.database.model.Program appProgram=new org.eyeseetea.malariacare.database.model.Program();
         appProgram.setUid(program.getUid());
         appProgram.setName(program.getDisplayName());
@@ -154,7 +154,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
         //Build tabgroup
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
-        org.eyeseetea.malariacare.database.model.Program appProgram=programMapObjects.get(actualProgram.getUid());
+        org.eyeseetea.malariacare.database.model.Program appProgram=programMapObjects.get(currentProgram.getUid());
         TabGroup appTabGroup = new TabGroup();
         //FIXME TabGroup has no UID right now
         appTabGroup.setName(programStage.getDisplayName());
@@ -163,7 +163,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTabGroup.save();
 
         //Annotate built tabgroup
-        programTabGroupDict.put(actualProgram.getUid(),programStage.getUid(), appTabGroup);
+        programTabGroupDict.put(currentProgram.getUid(),programStage.getUid(), appTabGroup);
 
         //Visit children
         for(ProgramStageSection pss:programStage.getProgramStageSections()){
@@ -228,7 +228,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=programTabGroupDict.get(actualProgram.getUid(),programStageSection.getProgramStage());
+        org.eyeseetea.malariacare.database.model.TabGroup appTabGroup=programTabGroupDict.get(currentProgram.getUid(),programStageSection.getProgramStage());
         Tab appTab = new Tab();
         //FIXME TabGroup has no UID right now
         appTab.setName(programStageSection.getDisplayName());
@@ -237,8 +237,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appTab.setTabGroup(appTabGroup);
         appTab.save();
         //Annotate build tab
-        programTabDict.put(actualProgram.getUid(),sdkProgramStageSectionExtended.getProgramStageSection().getUid(), appTab);
-        programStageSectionTabDict.put(actualProgram.getUid(),programStageSection.getUid(), appTab);
+        programTabDict.put(currentProgram.getUid(),sdkProgramStageSectionExtended.getProgramStageSection().getUid(), appTab);
+        programStageSectionTabDict.put(currentProgram.getUid(),programStageSection.getUid(), appTab);
     }
 
 
@@ -302,9 +302,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
         if(sdkDataElementExtended.isCompositeScore()){
-            programCompositeScoreDict.put(actualProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildCompositeScore(sdkDataElementExtended));
+            programCompositeScoreDict.put(currentProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildCompositeScore(sdkDataElementExtended));
         }else if(sdkDataElementExtended.isQuestion()){
-            programQuestionDict.put(actualProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildQuestion(sdkDataElementExtended));
+            programQuestionDict.put(currentProgram.getUid(),sdkDataElementExtended.getDataElement().getUid(),buildQuestion(sdkDataElementExtended));
             //Question type is annotated in 'answer' from an attribute of the question
         }else if (sdkDataElementExtended.isControlDataElement()) {
             if(!controlDataElementMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
@@ -323,7 +323,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit = orgUnitDict.get(event.getOrganisationUnitId());
-        TabGroup tabGroup=programTabGroupDict.get(actualProgram.getUid(),event.getProgramStageId());
+        TabGroup tabGroup=programTabGroupDict.get(currentProgram.getUid(),event.getProgramStageId());
 
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
@@ -342,7 +342,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.save();
 
         //Annotate object in map
-        programSurveyDict.put(actualProgram.getUid(),event.getUid(), survey);
+        programSurveyDict.put(currentProgram.getUid(),event.getUid(), survey);
 
         //Visit its values
         for(DataValue dataValue:event.getDataValues()){
@@ -355,11 +355,11 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(DataValueExtended sdkDataValueExtended) {
 
         DataValue dataValue=sdkDataValueExtended.getDataValue();
-        Survey survey=programSurveyDict.get(actualProgram.getUid(),dataValue.getEvent());
+        Survey survey=programSurveyDict.get(currentProgram.getUid(),dataValue.getEvent());
         //Data value is a value from compositeScore
-        if(programCompositeScoreDict.containsKey(actualProgram.getUid(),dataValue.getDataElement())){
+        if(programCompositeScoreDict.containsKey(currentProgram.getUid(),dataValue.getDataElement())){
             //CHeck if it is a root score -> score
-            CompositeScore compositeScore = programCompositeScoreDict.get(actualProgram.getUid(),dataValue.getDataElement());
+            CompositeScore compositeScore = programCompositeScoreDict.get(currentProgram.getUid(),dataValue.getDataElement());
             if(CompositeScoreBuilder.ROOT_NODE_CODE.equals(compositeScore.getHierarchical_code())){
                 Score score = new Score();
                 score.setScore(Float.parseFloat(dataValue.getValue()));
@@ -371,8 +371,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         /**
         else{
-            if(!controlDataElementMapObjects.containsKey(dataValue.getDataelement()) && !programQuestionDict.containsKey(actualProgram.getUid(),dataValue.getDataelement()) ) {
-                Log.i(TAG, "Error recovering Compositescore: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataelement());
+            if(!controlDataElementMapObjects.containsKey(dataValue.getDataElement()) && !programQuestionDict.containsKey(currentProgram.getUid(),dataValue.getDataElement()) ) {
+                Log.i(TAG, "Error recovering Compositescore: programuid " + currentProgram.getUid() + " dataelement" + dataValue.getDataElement());
             }
         }
         */
@@ -383,7 +383,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 survey.setCreationDate(date);
                 survey.save();
                 //Annotate object in map
-                programSurveyDict.put(actualProgram.getUid(),dataValue.getEvent(), survey);
+                programSurveyDict.put(currentProgram.getUid(),dataValue.getEvent(), survey);
             }catch(ParseException e){
                 Log.d(TAG,"Error converting creation date from datavalue in survey: "+survey.getId_survey());
             }
@@ -396,7 +396,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
                 survey.setUploadedDate(date);
                 survey.save();
                 //Annotate object in map
-                programSurveyDict.put(actualProgram.getUid(),dataValue.getEvent(), survey);
+                programSurveyDict.put(currentProgram.getUid(),dataValue.getEvent(), survey);
             }catch(ParseException e){
                 Log.d(TAG,"Error converting upload date from datavalue in survey:"+survey.getId_survey());
             }
@@ -412,15 +412,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             survey.setUser(user);
             survey.save();
             //Annotate object in map
-            programSurveyDict.put(actualProgram.getUid(),dataValue.getEvent(), survey);
+            programSurveyDict.put(currentProgram.getUid(),dataValue.getEvent(), survey);
             return;
         }
 
         Value value=new Value();
         //Datavalue is a value from a question
         org.eyeseetea.malariacare.database.model.Option option = null;
-        if(programQuestionDict.containsKey(actualProgram.getUid(),dataValue.getDataElement())){
-            Question question = programQuestionDict.get(actualProgram.getUid(), dataValue.getDataElement());
+        if(programQuestionDict.containsKey(currentProgram.getUid(),dataValue.getDataElement())){
+            Question question = programQuestionDict.get(currentProgram.getUid(), dataValue.getDataElement());
             try {
                 value.setQuestion(question);
                 option = sdkDataValueExtended.findOptionByQuestion(question);
@@ -431,8 +431,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         /**
         else{
-            if(!controlDataElementMapObjects.containsKey(dataValue.getDataelement()) && !programCompositeScoreDict.containsKey(actualProgram.getUid(),dataValue.getDataelement()) ) {
-                Log.d(TAG, "Error recovering Question: programuid " + actualProgram.getUid() + " dataelement" + dataValue.getDataelement());
+            if(!controlDataElementMapObjects.containsKey(dataValue.getDataElement()) && !programCompositeScoreDict.containsKey(currentProgram.getUid(),dataValue.getDataElement()) ) {
+                Log.d(TAG, "Error recovering Question: programuid " + currentProgram.getUid() + " dataelement" + dataValue.getDataElement());
             }
         }
         */
@@ -478,7 +478,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementUID(dataElement.getUid());
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
-        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended,actualProgram));
+        appQuestion.setHeader(questionBuilder.saveHeader(dataElementExtended, currentProgram));
         questionBuilder.registerParentChildRelations(dataElementExtended);
         appQuestion.save();
         questionBuilder.add(appQuestion);
