@@ -20,12 +20,14 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -49,6 +51,8 @@ import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.BuildConfig;
+import org.hisp.dhis.android.sdk.persistence.models.Dashboard;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -251,7 +255,7 @@ public class FeedbackAdapter extends BaseAdapter {
      * @param rowLayout
      * @param media
      */
-    private void addImage(LinearLayout rowLayout, Media media) {
+    private void addImage(LinearLayout rowLayout, final Media media) {
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_image));
         }
@@ -261,13 +265,29 @@ public class FeedbackAdapter extends BaseAdapter {
             }
             //Get image uri
             File file = new File(media.getFilename());
+            file.setReadable(true);
+            file.setExecutable(true);
+            file.setWritable(true);
             Uri uri = Uri.fromFile(file);
-
             //Inflate media row
             LayoutInflater inflater = LayoutInflater.from(context);
             RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_image_row, rowLayout, false);
-            ((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview)).setImageURI(uri);
+            ImageView imageView = (ImageView) mediaLayout.findViewById(R.id.feedback_media_preview);
+            imageView.setImageURI(uri);
+            imageView.setOnClickListener(new ImageView.OnClickListener() {
+                public void onClick(View v)
+                {
+                    Intent shareImageIntent = new Intent();
+                    shareImageIntent.setAction(android.content.Intent.ACTION_SEND);
+                    File file = new File(media.getFilename());
+                    Uri contentUri = FileProvider.getUriForFile(context, "org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter", file);
 
+                    shareImageIntent.setDataAndType(contentUri, PreferencesState.getInstance().getContext().getContentResolver().getType(contentUri));
+                    shareImageIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    shareImageIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                    DashboardActivity.dashboardActivity.startActivity(Intent.createChooser(shareImageIntent,PreferencesState.getInstance().getContext().getString(R.string.feedback_share_image)));
+                }
+            });
             //Add media row to feedback layout
             rowLayout.addView(mediaLayout);
         }
