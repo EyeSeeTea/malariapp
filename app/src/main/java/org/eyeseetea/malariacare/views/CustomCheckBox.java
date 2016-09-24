@@ -141,5 +141,26 @@ public class CustomCheckBox extends CheckBox implements IEyeSeeView{
     public String getmScale() {
         return this.mScale;
     }
+
+        private OnCheckedChangeListener _listener;
+
+        @Override
+        public void setOnCheckedChangeListener(final OnCheckedChangeListener listener)
+        {
+            _listener=listener;
+            super.setOnCheckedChangeListener(listener);
+        }
+
+        public void setChecked(final boolean checked,final boolean alsoNotify)
+        {
+            if(!alsoNotify)
+            {
+                super.setOnCheckedChangeListener(null);
+                super.setChecked(checked);
+                super.setOnCheckedChangeListener(_listener);
+                return;
+            }
+            super.setChecked(checked);
+        }
 }
 
