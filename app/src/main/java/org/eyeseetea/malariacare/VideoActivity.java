@@ -2,7 +2,6 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -10,7 +9,6 @@ import android.widget.VideoView;
  * Created by arrizabalaga on 30/05/16.
  */
 public class VideoActivity extends Activity {
-    public static final String TAG=".VideoActivity";
 
     public static final String VIDEO_PATH_PARAM="videoPathParam";
     VideoView mVideoView;
@@ -42,7 +40,7 @@ public class VideoActivity extends Activity {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState); 
+        super.onRestoreInstanceState(savedInstanceState);
         mVideoView.seekTo(savedInstanceState.getInt("video",0));
     }
 }
