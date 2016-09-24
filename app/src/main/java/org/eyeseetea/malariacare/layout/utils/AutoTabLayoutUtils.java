@@ -37,6 +37,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
@@ -334,6 +335,10 @@ public class AutoTabLayoutUtils {
                     }
                 }
             if(hasActiveChildren) {
+                if(autoTabSelectedItem.getQuestion().numberOfActiveParents(idSurvey)!=1 ) {
+                    saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+                    return;
+                }
                 new AlertDialog.Builder(context)
                         .setTitle(null)
                         .setMessage(context.getString(R.string.dialog_deleting_children))
@@ -341,7 +346,7 @@ public class AutoTabLayoutUtils {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
                                 //Remove the children when the option is the match option
-                                if (!autoTabSelectedItem.getOption().isActiveChildren(question)) {
+                                if (autoTabSelectedItem.getOption().isActiveChildren(question)) {
                                     AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
                                     positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
                                     saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);

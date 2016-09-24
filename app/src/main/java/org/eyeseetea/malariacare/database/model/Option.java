@@ -175,6 +175,27 @@ public class Option extends BaseModel {
         return false;
     }
 
+    public boolean isActiveChildren2(Question question) {
+        for(QuestionRelation questionRelations:question.getQuestionRelations()){
+            if(questionRelations.getQuestion().getUid().equals(question.getUid())) {
+                if (questionRelations.getOperation() == Constants.OPERATION_TYPE_PARENT) {
+                    for (Match match : questionRelations.getMatches()) {
+                        for (QuestionOption questionOption : match.getQuestionOptions()) {
+                            if (questionOption.getOption().getId_option() == id_option)
+                                return true;
+                        }
+                    }
+                    for (Match match : question.getMatches()) {
+                        for (QuestionOption questionOption : match.getQuestionOptions()) {
+                            if (questionOption.getOption().getId_option() == id_option)
+                                return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
     /**
      * Checks if this option name is equals to a given string.
      *
