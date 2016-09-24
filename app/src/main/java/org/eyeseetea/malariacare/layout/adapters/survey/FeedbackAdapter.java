@@ -20,13 +20,11 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
@@ -51,8 +49,6 @@ import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.BuildConfig;
-import org.hisp.dhis.android.sdk.persistence.models.Dashboard;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -265,10 +261,8 @@ public class FeedbackAdapter extends BaseAdapter {
             }
             //Get image uri
             File file = new File(media.getFilename());
-            file.setReadable(true);
-            file.setExecutable(true);
-            file.setWritable(true);
             Uri uri = Uri.fromFile(file);
+
             //Inflate media row
             LayoutInflater inflater = LayoutInflater.from(context);
             RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_image_row, rowLayout, false);
