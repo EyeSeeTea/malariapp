@@ -345,19 +345,19 @@ public class AutoTabLayoutUtils {
                 }
             }
         }
-        //The actual question not have values
+        //The current question  not have relevant values to delete children (0 active or more than 1 or question without value)
         if(maxActiveParentsForActiveChild!=1 || question.getOptionBySurvey(idSurvey)==null) {
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
-        //The actual question is not relevant to hide the child question
+        //The current question  not have relevant values to delete children(1 active parent, clicked question not null but not relevant for active children)
         else if(maxActiveParentsForActiveChild==1
                 && question.getOptionBySurvey(idSurvey)!=null
                 && !question.getOptionBySurvey(idSurvey).isActiveChildren(question)){
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
-
+        //ask and delete the children questions
         askDeleteChildrenQuestion(autoTabSelectedItem, idSurvey, module, question, context);
     }
 
