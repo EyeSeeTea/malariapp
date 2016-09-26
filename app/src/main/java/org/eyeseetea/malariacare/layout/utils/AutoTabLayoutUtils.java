@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -323,43 +324,68 @@ public class AutoTabLayoutUtils {
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
-        //Prevents the double dialog when click on a parent option'
-        if(question.getValueBySession(module)!=null && !option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
-            //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
-            boolean hasActiveChildren=false;
-            for(Question childQuestion:question.getChildren())
-                if(childQuestion.isHiddenBySurvey(idSurvey)==false) {
-                    if(childQuestion.getValueBySurvey(idSurvey)!=null) {
-                        hasActiveChildren = true;
-                        break;
-                    }
+
+        processParentQuestionWithoutQuestion(autoTabSelectedItem, idSurvey, module, question, context);
+    }
+
+    /**
+     * Process the parent question with active childs
+     * @param
+     * @return
+     */
+    private static void processParentQuestionWithoutQuestion(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module, Question question, Context context) {
+        int maxActiveParentsForActiveChild=0;
+        for(Question childQuestion:question.getChildren()) {
+            if (childQuestion.isHiddenBySurvey(idSurvey) == false) {
+                if (childQuestion.getValueBySurvey(idSurvey) != null) {
+                    int activeParents = childQuestion.numberOfActiveParents(idSurvey);
+                    if (maxActiveParentsForActiveChild < activeParents)
+                        maxActiveParentsForActiveChild = activeParents;
+                    break;
                 }
-            if(hasActiveChildren) {
-                if(autoTabSelectedItem.getQuestion().numberOfActiveParents(idSurvey)!=1 ) {
-                    saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
-                    return;
-                }
-                new AlertDialog.Builder(context)
-                        .setTitle(null)
-                        .setMessage(context.getString(R.string.dialog_deleting_children))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
-                                //Remove the children when the option is the match option
-                                if (autoTabSelectedItem.getOption().isActiveChildren(question)) {
-                                    AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
-                                    positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
-                                    saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
-                                }
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                autoTabSelectedItem.notifyDataSetChanged();
-                            }
-                        }).create().show();
             }
         }
+        //The actual question not have values
+        if(maxActiveParentsForActiveChild!=1 || question.getOptionBySurvey(idSurvey)==null) {
+            saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+            return;
+        }
+        //The actual question is not relevant to hide the child question
+        else if(maxActiveParentsForActiveChild==1
+                && question.getOptionBySurvey(idSurvey)!=null
+                && !question.getOptionBySurvey(idSurvey).isActiveChildren(question)){
+            saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+            return;
+        }
+
+        askDeleteChildrenQuestion(autoTabSelectedItem, idSurvey, module, question, context);
+    }
+
+    /**
+     * Children answers will be deleted -> Confirm -> Save, Expand|Collapse
+     * @param
+     * @return
+     */
+    private static void askDeleteChildrenQuestion(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module, final Question question, Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle(null)
+                .setMessage(context.getString(R.string.dialog_deleting_children))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+                        //Remove the children when the option is the match option
+                        if (autoTabSelectedItem.getOption().isActiveChildren(question)) {
+                            AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
+                            positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
+                            saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        autoTabSelectedItem.notifyDataSetChanged();
+                    }
+                }).create().show();
     }
 
     /**
