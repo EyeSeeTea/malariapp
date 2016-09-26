@@ -231,5 +231,5 @@ clínica"</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 <string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
-<string name="feedback_share_image">Comparte image con...</string>
+<string name="feedback_view_image">Abrir imagen con...</string>
 </resources>

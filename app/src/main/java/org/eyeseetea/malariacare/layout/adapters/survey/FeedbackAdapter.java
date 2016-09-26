@@ -254,8 +254,7 @@ public class FeedbackAdapter extends BaseAdapter {
     private void addImage(LinearLayout rowLayout, final Media media) {
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_image));
-        }
-        else {
+        } else {
             if(media == null || media.getFilename() == null || media.getFilename().isEmpty()){
                 return;
             }
@@ -266,20 +265,21 @@ public class FeedbackAdapter extends BaseAdapter {
             //Inflate media row
             LayoutInflater inflater = LayoutInflater.from(context);
             RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_image_row, rowLayout, false);
+
             ImageView imageView = (ImageView) mediaLayout.findViewById(R.id.feedback_media_preview);
             imageView.setImageURI(uri);
             imageView.setOnClickListener(new ImageView.OnClickListener() {
                 public void onClick(View v)
                 {
-                    Intent shareImageIntent = new Intent();
-                    shareImageIntent.setAction(android.content.Intent.ACTION_SEND);
+                    Intent implicitIntent = new Intent();
+                    implicitIntent.setAction(Intent.ACTION_VIEW);
                     File file = new File(media.getFilename());
                     Uri contentUri = FileProvider.getUriForFile(context, "org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter", file);
 
-                    shareImageIntent.setDataAndType(contentUri, PreferencesState.getInstance().getContext().getContentResolver().getType(contentUri));
-                    shareImageIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    shareImageIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
-                    DashboardActivity.dashboardActivity.startActivity(Intent.createChooser(shareImageIntent,PreferencesState.getInstance().getContext().getString(R.string.feedback_share_image)));
+                    implicitIntent.setDataAndType(contentUri, PreferencesState.getInstance().getContext().getContentResolver().getType(contentUri));
+                    implicitIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    implicitIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                    DashboardActivity.dashboardActivity.startActivity(Intent.createChooser(implicitIntent,PreferencesState.getInstance().getContext().getString(R.string.feedback_view_image)));
                 }
             });
             //Add media row to feedback layout
