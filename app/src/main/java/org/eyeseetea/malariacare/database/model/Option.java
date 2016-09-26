@@ -162,38 +162,16 @@ public class Option extends BaseModel {
      * @return true: Children questions should be shown, false: otherwise.
      */
     public boolean isActiveChildren(Question question) {
-        for(QuestionRelation questionRelations:question.getQuestionRelations()){
-            if(questionRelations.getOperation()== Constants.OPERATION_TYPE_PARENT) {
-                for(Match match:question.getMatches()){
-                    for(QuestionOption questionOption:match.getQuestionOptions()){
-                        if(questionOption.getOption().getId_option()==id_option)
+        for(Match match:question.getMatches()){
+            for(QuestionOption questionOption:match.getQuestionOptions()){
+                if(questionOption.getOption().getId_option()==id_option){
+                    QuestionRelation questionRelation=match.getQuestionRelation();
+                        if(questionRelation.getOperation()==Constants.OPERATION_TYPE_PARENT){
                             return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isActiveChildren2(Question question) {
-        for(QuestionRelation questionRelations:question.getQuestionRelations()){
-            if(questionRelations.getQuestion().getUid().equals(question.getUid())) {
-                if (questionRelations.getOperation() == Constants.OPERATION_TYPE_PARENT) {
-                    for (Match match : questionRelations.getMatches()) {
-                        for (QuestionOption questionOption : match.getQuestionOptions()) {
-                            if (questionOption.getOption().getId_option() == id_option)
-                                return true;
-                        }
-                    }
-                    for (Match match : question.getMatches()) {
-                        for (QuestionOption questionOption : match.getQuestionOptions()) {
-                            if (questionOption.getOption().getId_option() == id_option)
-                                return true;
                         }
                     }
                 }
             }
-        }
         return false;
     }
     /**
