@@ -196,13 +196,13 @@ public class ProgressActivity extends Activity {
             @Override
             public void run() {
                 if (syncProgressStatus.hasError()) {
-                    showException(syncProgressStatus.getException().getMessage());
+                    showException(syncProgressStatus.getException().getMessage()+" ");
                     return;
                 }
 
                 //Step
                 if (syncProgressStatus.hasProgress()) {
-                    step(syncProgressStatus.getMessage());
+                    step(syncProgressStatus.getMessage()+" ");
                     return;
                 }
 
@@ -236,7 +236,7 @@ public class ProgressActivity extends Activity {
      */
     private void showException(final String msg){
         final boolean isAPush=isAPush();
-        Log.d(TAG,msg);
+        Log.d(TAG,msg+" ");
 
         PULL_ERROR=true;
         PULL_CANCEL=true;

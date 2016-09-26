@@ -34,10 +34,10 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
@@ -49,7 +49,6 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Tabl
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
 
-import java.util.EmptyStackException;
 import java.util.List;
 
 /**
@@ -301,6 +300,7 @@ public class DataElementExtended implements VisitableFromSDK {
         Attribute attribute = AttributeExtended.findAttributeByCode(code);
         //No such attribute -> done
         if(attribute==null){
+            Log.d("DataElementExtended", String.format("findAttributeByCode(): Attribute with %s not found", code));
             return null;
         }
 
@@ -536,5 +536,15 @@ public class DataElementExtended implements VisitableFromSDK {
 
     public void setProgramUid(String programUid) {
         this.programUid = programUid;
+    }
+    public static boolean existsDataElementByUid(String uid){
+        int result = (int) new Select().count().from(DataElement.class).where(Condition.column(DataElement$Table.ID).is(uid)).count();
+        Log.d(TAG, "dataelement "+uid+" count: "+result);
+        if(result>0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
