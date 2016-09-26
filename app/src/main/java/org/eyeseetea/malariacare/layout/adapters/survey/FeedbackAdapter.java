@@ -25,7 +25,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -251,11 +251,10 @@ public class FeedbackAdapter extends BaseAdapter {
      * @param rowLayout
      * @param media
      */
-    private void addImage(LinearLayout rowLayout, Media media) {
+    private void addImage(LinearLayout rowLayout, final Media media) {
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_image));
-        }
-        else {
+        } else {
             if(media == null || media.getFilename() == null || media.getFilename().isEmpty()){
                 return;
             }
@@ -266,8 +265,23 @@ public class FeedbackAdapter extends BaseAdapter {
             //Inflate media row
             LayoutInflater inflater = LayoutInflater.from(context);
             RelativeLayout mediaLayout = (RelativeLayout) inflater.inflate(R.layout.feedback_image_row, rowLayout, false);
-            ((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview)).setImageURI(uri);
 
+            ImageView imageView = (ImageView) mediaLayout.findViewById(R.id.feedback_media_preview);
+            imageView.setImageURI(uri);
+            imageView.setOnClickListener(new ImageView.OnClickListener() {
+                public void onClick(View v)
+                {
+                    Intent implicitIntent = new Intent();
+                    implicitIntent.setAction(Intent.ACTION_VIEW);
+                    File file = new File(media.getFilename());
+                    Uri contentUri = FileProvider.getUriForFile(context, "org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter", file);
+
+                    implicitIntent.setDataAndType(contentUri, PreferencesState.getInstance().getContext().getContentResolver().getType(contentUri));
+                    implicitIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    implicitIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                    DashboardActivity.dashboardActivity.startActivity(Intent.createChooser(implicitIntent,PreferencesState.getInstance().getContext().getString(R.string.feedback_view_image)));
+                }
+            });
             //Add media row to feedback layout
             rowLayout.addView(mediaLayout);
         }
