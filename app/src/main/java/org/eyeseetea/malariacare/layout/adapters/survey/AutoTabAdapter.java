@@ -693,9 +693,14 @@ public class AutoTabAdapter extends ATabAdapter {
             if (checkedId != -1) {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 selectedOption = (Option) customRadioButton.getTag();
+                if(question.getOptionBySurvey(idSurvey)!=null && question.getOptionBySurvey(idSurvey).equals(selectedOption)){
+                    //if is already active ignore it( it is to ignore the first click of two)
+                    return;
+                }
             }
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
             AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
+            autoTabSelectedItemFactory.notifyDataSetChanged();
         }
     }
 
