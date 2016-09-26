@@ -612,28 +612,6 @@ public class Question extends BaseModel {
         if (!hasParent()) {
             return 0;
         }
-        Log.d("TAG",new Select().count().from(Value.class).as("v")
-                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
-                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
-                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
-                //Parent child relationship
-                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
-                //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
-                //The child question in the relationship is 'this'
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
-                .getQuery());
         long numberOfParentOptionActivated = new Select().count().from(Value.class).as("v")
                 .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
                 .on(
