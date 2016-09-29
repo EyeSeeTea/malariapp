@@ -65,7 +65,6 @@ public class Match extends BaseModel {
     public List<QuestionOption> getQuestionOptions() {
         if(questionOptions==null){
             this.questionOptions = new Select().from(QuestionOption.class)
-                    .indexedBy("QuestionOption_id_question")
                     .where(Condition.column(QuestionOption$Table.ID_MATCH).eq(this.getId_match()))
                     .queryList();
         }

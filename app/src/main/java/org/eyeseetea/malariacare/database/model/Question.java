@@ -563,11 +563,21 @@ public class Question extends BaseModel {
      * @return
      */
     public boolean isHiddenBySurvey(float idSurvey) {
+
         //No question relations
         if (!hasParent()) {
             return false;
         }
-        long hasParentOptionActivated = new Select().count().from(Value.class).as("v")
+
+        int hasParentOptionActivated=numberOfActiveParents(idSurvey);
+
+        //Parent with the right value -> not hidden
+        return hasParentOptionActivated > 0 ? false : true;
+    }
+
+    public List<Value> parentSavedValues(Float idSurvey){
+
+        List<Value> values = new Select().from(Value.class).as("v")
                 .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
                 .on(
                         Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
@@ -582,16 +592,49 @@ public class Question extends BaseModel {
                 .on(
                         Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
                                 .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
-                        //Parent child relationship
+                //Parent child relationship
                 .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
-                        //For the given survey
+                //For the given survey
                 .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
-                        //The child question in the relationship is 'this'
+                //The child question in the relationship is 'this'
+                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
+                .queryList();
+        return values;
+    }
+    /**
+     * Returns the number of parents that shown this questions
+     *
+     * @param idSurvey
+     * @return
+     */
+    public int numberOfActiveParents(float idSurvey) {
+        //No question relations
+        if (!hasParent()) {
+            return 0;
+        }
+        long numberOfParentOptionActivated = new Select().count().from(Value.class).as("v")
+                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
+                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
+                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
+                .join(Match.class, Join.JoinType.LEFT).as("m")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
+                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
+                .on(
+                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
+                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+                //Parent child relationship
+                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                //For the given survey
+                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
+                //The child question in the relationship is 'this'
                 .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
                 .count();
-
-        //Parent with the right value -> not hidden
-        return hasParentOptionActivated > 0 ? false : true;
+        return  (int)numberOfParentOptionActivated;
     }
 
     /**

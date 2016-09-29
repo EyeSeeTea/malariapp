@@ -39,6 +39,7 @@ android {
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
+        useLibrary  'org.apache.http.legacy'
     }
     buildTypes {
         release {
@@ -73,7 +74,7 @@ android {
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_bb"
-            versionName "1.1.1"
+            versionName "1.1.2"
             minSdkVersion 15
             targetSdkVersion 23
         }
