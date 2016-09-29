@@ -157,23 +157,31 @@ public class Option extends BaseModel {
         this.optionAttribute = optionAttribute;
         this.id_option_attribute = (optionAttribute!=null)?optionAttribute.getId_option_attribute():null;
     }
+
     /**
      * Checks if this option actives the children questions by a parentQuestion
      * @return true: Children questions should be shown, false: otherwise.
      */
     public boolean isActiveChildren(Question question) {
         for(Match match:question.getMatches()){
-            for(QuestionOption questionOption:match.getQuestionOptions()){
-                if(questionOption.getOption().getId_option()==id_option){
-                    QuestionRelation questionRelation=match.getQuestionRelation();
-                        if(questionRelation.getOperation()==Constants.OPERATION_TYPE_PARENT){
-                            return true;
-                        }
-                    }
-                }
-            }
+            if (isActiveChildren(match)) return true;
+        }
         return false;
     }
+
+    private boolean isActiveChildren(Match match) {
+        for(QuestionOption questionOption:match.getQuestionOptions()){
+            if(questionOption.getOption().getId_option()==id_option){
+                QuestionRelation questionRelation=match.getQuestionRelation();
+                if(questionRelation.getOperation()== Constants.OPERATION_TYPE_PARENT){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Checks if this option name is equals to a given string.
      *
