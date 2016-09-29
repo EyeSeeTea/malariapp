@@ -323,7 +323,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public void reloadSurveys(List<Survey> newListSurveys){
         if(newListSurveys!=null) {
-            Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+            Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();

@@ -311,7 +311,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public Boolean hasMainScore() {
-        if(hasMainScore==null) {
+        if(hasMainScore==null || !hasMainScore) {
             Score score = getScore();
             Float value = (score == null) ? null : score.getScore();
             if (value == null) {
@@ -323,6 +323,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
         return hasMainScore;
     }
+
     public void setMainScore(Float mainScore) {
         this.mainScore = mainScore;
     }

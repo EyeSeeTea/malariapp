@@ -92,7 +92,7 @@ public class DataValueExtended implements VisitableFromSDK {
             }
         }
 
-        Log.w(TAG,String.format("Cannot find option '%s' in %s",dataValue.getValue(),optionCodes.toString()));
+        Log.w(TAG,String.format("Cannot find option '%s' in %s and dataElement %s event %s",dataValue.getValue(),optionCodes.toString(),dataValue.getDataElement(),dataValue.getEvent()));
         return null;
     }
 

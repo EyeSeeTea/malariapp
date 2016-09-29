@@ -338,27 +338,70 @@ public class PullController {
         postProgress(context.getString(R.string.progress_pull_questions));
         Log.i(TAG, "Ordering questions and compositeScores...");
 
+        int count;
         //Dataelements ordered by program.
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = ProgramExtended.getAllPrograms();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
             List<ProgramStage> programStages = program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStage.getProgramStageDataElements().size());
                 Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
+                count=programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
-                    DataElement dataElement =programStageDataElement.getDataElement();
+                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
+
+                    //The ProgramStageDataElement without Dataelement uid is not correctly configured.
+                    if(programStageDataElement.getDataelement()==null || programStageDataElement.getDataelement().equals("")){
+                        Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
+                        continue;
+                    }
+
+                    //Note: the sdk method getDataElement returns the dataElement object, and getDataelement returns the dataelement uid.
+                    DataElement dataElement = programStageDataElement.getDataElement();
                     if (dataElement!=null && dataElement.getUid() != null) {
-                        if (!ProgressActivity.PULL_IS_ACTIVE) return;
                         dataElements.add(dataElement);
                     }
+                    else{
+                        DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
+                        dataElement = MetaDataController.getDataElement(programStageDataElement.getDataelement());
+
+                        if (dataElement!=null) {
+                            dataElements.add(dataElement);
+                        }
+                        else{
+                            //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
+                            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
+                            int times=0;
+                            while(dataElement==null){
+                                times++;
+                                Log.d(TAG, "running : "+times);
+                                try {
+                                    Thread.sleep(100);
+                                    dataElement=MetaDataController.getDataElement(programStageDataElement.getDataelement());
+                                } catch (InterruptedException e) {//throw new RuntimeException("Null query");
+                                    e.printStackTrace();
+                                }
+                            }
+                            Log.d(TAG, "needed : "+times);
+                            dataElements.add(dataElement);
+                        }
+                    }
+                }
+
+                if(count!=dataElements.size()){
+                    Log.d(TAG, "The programStageDataElements size ("+count+") is different than the saved dataelements size ("+dataElements.size()+")");
                 }
             }
             Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
+
+
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
@@ -368,11 +411,13 @@ public class PullController {
                     try {
                         dataelementOrder1 = dataElementExtended1.findOrder();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         dataelementOrder1 = null;
                     }
                     try {
                         dataelementOrder2 = dataElementExtended2.findOrder();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         dataelementOrder2 = null;
                     }
                     if (dataelementOrder1 == dataelementOrder2)
@@ -391,6 +436,7 @@ public class PullController {
         Log.i(TAG, "Building questions,compositescores,headers...");
         int i=0;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
@@ -411,6 +457,7 @@ public class PullController {
         Log.i(TAG, "Building relationships...");
         postProgress(context.getString(R.string.progress_pull_relationships));
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
@@ -469,6 +516,7 @@ public class PullController {
         for (OrganisationUnit organisationUnit : MetaDataController.getAssignedOrganisationUnits()) {
             //Each assigned program
             for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION)) {
+                converter.actualProgram=program;
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
