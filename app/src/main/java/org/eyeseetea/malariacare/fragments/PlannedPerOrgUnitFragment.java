@@ -100,14 +100,10 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
     private void prepareUI(List<PlannedSurveyByOrgUnit> plannedItems) {
         int countOfCheckedSurveys=0;
-        //Recovery the plannedItem last status.
+        //Recover the plannedItem last status.
         if(plannedSurveys!=null && plannedSurveys.size()>1){
             for (PlannedSurveyByOrgUnit newPlannedSurveys:plannedItems) {
-                for (PlannedSurveyByOrgUnit plannedSurvey:plannedSurveys){
-                    if (plannedSurvey.getSurvey() != null && newPlannedSurveys.getSurvey() != null && plannedSurvey.getSurvey().getId_survey().equals(newPlannedSurveys.getSurvey().getId_survey())) {
-                        newPlannedSurveys.setChecked(plannedSurvey.getChecked());
-                    }
-                }
+                reCheckCheckboxes(newPlannedSurveys);
                 if(newPlannedSurveys.getChecked()) {
                     countOfCheckedSurveys++;
                 }
@@ -126,6 +122,15 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             setSelectAllCheckboxAs(false,false);
         }
         resetList();
+    }
+
+    private void reCheckCheckboxes(PlannedSurveyByOrgUnit newPlannedSurveys) {
+        if (newPlannedSurveys.getSurvey() == null) return;
+        for (PlannedSurveyByOrgUnit plannedSurvey: plannedSurveys){
+            if (plannedSurvey.getSurvey() != null && plannedSurvey.getSurvey().getId_survey().equals(newPlannedSurveys.getSurvey().getId_survey())) {
+                newPlannedSurveys.setChecked(plannedSurvey.getChecked());
+            }
+        }
     }
 
     private void setSelectAllCheckboxAs(final boolean value, final boolean isClicked) {
