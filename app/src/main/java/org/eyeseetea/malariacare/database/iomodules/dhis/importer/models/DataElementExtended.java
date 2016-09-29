@@ -537,14 +537,11 @@ public class DataElementExtended implements VisitableFromSDK {
     public void setProgramUid(String programUid) {
         this.programUid = programUid;
     }
+
     public static boolean existsDataElementByUid(String uid){
-        int result = (int) new Select().count().from(DataElement.class).where(Condition.column(DataElement$Table.ID).is(uid)).count();
+        int result = (int) new Select().count().from(DataElement.class)
+                .where(Condition.column(DataElement$Table.ID).is(uid)).count();
         Log.d(TAG, "dataelement "+uid+" count: "+result);
-        if(result>0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return (result>0);
     }
 }
