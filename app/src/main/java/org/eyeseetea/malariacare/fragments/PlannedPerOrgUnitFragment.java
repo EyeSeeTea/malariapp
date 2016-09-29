@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -36,10 +35,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -102,37 +99,65 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     private void prepareUI(List<PlannedSurveyByOrgUnit> plannedItems) {
+        int countOfCheckedSurveys=0;
+        //Recover the plannedItem last status.
+        if(plannedSurveys!=null && plannedSurveys.size()>1){
+            for (PlannedSurveyByOrgUnit newPlannedSurveys:plannedItems) {
+                reCheckCheckboxes(newPlannedSurveys);
+                if(newPlannedSurveys.getChecked()) {
+                    countOfCheckedSurveys++;
+                }
+            }
+        }
         plannedSurveys=plannedItems;
         initAdapter(plannedItems);
         initScheduleButton();
         initListView();
         setListShown(true);
+        //checks the allSelect checkbox looking the reloaded surveys.
+        if(plannedItems.size()==countOfCheckedSurveys){
+            setSelectAllCheckboxAs(true,false);
+        }
+        else{
+            setSelectAllCheckboxAs(false,false);
+        }
         resetList();
     }
 
-    private void initScheduleButton() {
+    private void reCheckCheckboxes(PlannedSurveyByOrgUnit newPlannedSurveys) {
+        if (newPlannedSurveys.getSurvey() == null) return;
+        for (PlannedSurveyByOrgUnit plannedSurvey: plannedSurveys){
+            if (plannedSurvey.getSurvey() != null && plannedSurvey.getSurvey().getId_survey().equals(newPlannedSurveys.getSurvey().getId_survey())) {
+                newPlannedSurveys.setChecked(plannedSurvey.getChecked());
+            }
+        }
+    }
 
+    private void setSelectAllCheckboxAs(final boolean value, final boolean isClicked) {
+        selectAllCheckbox.post(new Runnable() {
+            @Override
+            public void run() {
+                CustomCheckBox selectAllCheckbox=(CustomCheckBox) getView().findViewById(R.id.select_all_orgunits);
+                selectAllCheckbox.setChecked(value,isClicked);
+            }
+        });
+    }
+
+    private void initScheduleButton() {
         scheduleButton = (Button) getActivity().findViewById(R.id.reschedule_button);
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectAllCheckbox.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        CustomCheckBox selectAllCheckbox=(CustomCheckBox) getView().findViewById(R.id.select_all_orgunits);
-                        selectAllCheckbox.setChecked(false);
-                    }
-                });
                 List<Survey> scheduleSurveys=new ArrayList<>();
                 for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
-                    if(plannedSurveyByOrgUnit.getChecked())
+                    if(plannedSurveyByOrgUnit.getChecked()) {
                         scheduleSurveys.add(plannedSurveyByOrgUnit.getSurvey());
+                    }
                 }
 
                 if(scheduleSurveys.size()==0) return;
 
                 new ScheduleListener(scheduleSurveys,adapter.getContext());
-                reloadData();
             }
         });
         disableScheduleButton();
@@ -176,6 +201,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         }
         this.adapter.setItems(plannedSurveys);
         this.adapter.notifyDataSetChanged();
+        selectAllCheckbox.setChecked(value,false);
         if(value){
             enableScheduleButton();
         }else{
