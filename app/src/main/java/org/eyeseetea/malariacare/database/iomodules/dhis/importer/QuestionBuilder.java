@@ -33,8 +33,8 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.QuestionOption;
 import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
 
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class QuestionBuilder {
      * @param dataElementExtended
      * @return question header
      */
-    public Header findOrSaveHeader(DataElementExtended dataElementExtended, Map<String,Object> appMapObjects) {
+    public Header findOrSaveHeader(DataElementExtended dataElementExtended, ProgramTabDict programTabDict, String programUid) {
         Header header;
         String attributeHeaderName = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         //No header attribute no header
@@ -179,7 +179,7 @@ public class QuestionBuilder {
             return header;
         }
 
-        Tab tab = (Tab)appMapObjects.get(tabUid);
+        Tab tab = programTabDict.get(programUid, tabUid);
         //No tab-> something wrong
         if(tab==null){
             return null;
