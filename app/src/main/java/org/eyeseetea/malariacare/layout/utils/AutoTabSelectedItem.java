@@ -82,6 +82,10 @@ public class AutoTabSelectedItem {
         return option;
     }
 
+    public void setOption(Option option){
+        this.option=option;
+    }
+
     public AutoTabViewHolder getViewHolder() {
         return viewHolder;
     }

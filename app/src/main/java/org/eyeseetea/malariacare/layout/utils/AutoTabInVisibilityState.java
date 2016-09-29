@@ -152,11 +152,14 @@ public class AutoTabInVisibilityState {
      */
     public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         Question question = autoTabSelectedItem.getQuestion();
+        if(question.hasChildren()) {
+            recursiveToggleChildrenVisibility(idSurvey, module, question);
+        }
+    }
 
-        List<Question> children = question.getChildren();
+    private void recursiveToggleChildrenVisibility(float idSurvey, String module, Question parentQuestion) {
         boolean visible;
-
-        for (Question childQuestion : children) {
+        for (Question childQuestion : parentQuestion.getChildren()) {
             Header childHeader = childQuestion.getHeader();
             visible=!childQuestion.isHiddenBySurvey(idSurvey);
             this.updateVisibility(childQuestion,visible);
@@ -184,7 +187,36 @@ public class AutoTabInVisibilityState {
             }
             //-> Check header visibility
             this.updateHeaderVisibility(childHeader);
+            if(childQuestion.hasChildren())
+                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion);
         }
+    }
+
+    /**
+     * Remove recursively num and denums, and scores records
+     * @param question
+     * @param idSurvey
+     * @param module
+     */
+    public void removeScoreRecursively(Question question, float idSurvey, String module){
+        for(Question child: question.getChildren()){
+            removeScoreRecursively(child, idSurvey, module);
+        }
+        if (ScoreRegister.getNumDenum(question, idSurvey, module) != null) {
+            ScoreRegister.deleteRecord(question, idSurvey, module);
+        }
+    }
+
+    /**
+     * Remove recursively all children values from DB
+     * @param question
+     * @param module
+     */
+    public void deleteChildrenValueRecursively(Question question, String module){
+        for(Question child: question.getChildren()){
+            deleteChildrenValueRecursively(child, module);
+        }
+        ReadWriteDB.deleteValue(question, module);
     }
 
 
