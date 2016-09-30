@@ -39,10 +39,8 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -83,8 +81,8 @@ public class PlannedFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        programDefaultOption = new Program(getResources().getString(R.string.filter_all_assessments).toUpperCase());
+        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_units).toUpperCase());
     }
 
     @Override
@@ -143,7 +141,7 @@ public class PlannedFragment extends ListFragment {
                 Spinner spinner=((Spinner) parent);
                 OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_org_assessments).toUpperCase()))
+                if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_assessments).toUpperCase()))
                     mCallback.OnOrgUnitSelected(selectedOrgUnit);
             }
 

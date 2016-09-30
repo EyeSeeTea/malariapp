@@ -203,7 +203,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="improve">"Melhorar"</string>
 <string name="monitor">"Monitor"</string>
 <string name="filter_all_org_units">"todas as unidades de organização"</string>
-<string name="filter_all_org_assessments">"todas as avaliações"</string>
+<string name="filter_all_assessments">"todas as avaliações"</string>
 <string name="dialog_content_dhis_preference_login">"Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?"</string>
 <string name="lastcommit">"Versão: %s"</string>
 <string name="unavailable">"indisponível"</string>

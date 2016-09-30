@@ -77,8 +77,8 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
-        programDefaultOption = new Program(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        programDefaultOption = new Program(getResources().getString(R.string.filter_all_assessments).toUpperCase());
+        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_assessments).toUpperCase());
     }
 
     @Override

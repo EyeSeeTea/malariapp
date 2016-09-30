@@ -54,9 +54,7 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -136,7 +134,7 @@ public class DashboardSentFragment extends ListFragment {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         //orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
-        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
+        programFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_assessments).toUpperCase();
     }
 
     @Override
@@ -168,7 +166,7 @@ public class DashboardSentFragment extends ListFragment {
         initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
         List<Program> filterProgramList=programList;
-        Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
+        Program allAssessemntsProgram=new Program(getActivity().getString(R.string.filter_all_assessments).toUpperCase(),getActivity().getString(R.string.filter_all_assessments).toUpperCase());
         if(!filterProgramList.contains(allAssessemntsProgram))
             filterProgramList.add(0, allAssessemntsProgram);
         if(programFilter==null)
@@ -181,9 +179,9 @@ public class DashboardSentFragment extends ListFragment {
                                        int position, long id) {
                 Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
-                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
-                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
-                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
+                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_assessments).toUpperCase())) {
+                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_assessments).toUpperCase()) {
+                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_assessments).toUpperCase();
                         reload=true;
                     }
                 } else {
@@ -510,7 +508,7 @@ public class DashboardSentFragment extends ListFragment {
     }
 
     private boolean isNotFilteredByProgram(Survey survey){
-        if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
+        if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_assessments).toUpperCase()) || programFilter.equals(survey.getTabGroup().getProgram().getUid()))
             return true;
         return false;
     }
