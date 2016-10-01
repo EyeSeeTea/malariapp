@@ -45,6 +45,8 @@ import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
@@ -119,6 +121,7 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class, QuestionRelation$Table.OPERATION).enable();
         new Index<Match>("Match_id_question_relation").on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
         new Index<Value>("Value_id_survey").on(Value.class, Value$Table.ID_SURVEY).enable();
+        new Index<DataElement>("DataElement_id").on(DataElement.class, DataElement$Table.ID).enable();
     }
 
     /**
