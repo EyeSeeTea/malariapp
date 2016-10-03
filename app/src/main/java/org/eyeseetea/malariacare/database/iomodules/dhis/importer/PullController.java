@@ -73,6 +73,9 @@ import java.util.Map;
  */
 public class PullController {
     private final String TAG = ".PullController";
+
+    public static final int MAX_QUERY_RETRIES = 1500;
+
     public static final int NUMBER_OF_MONTHS=6;
 
     private final static Class MANDATORY_METADATA_TABLES[] = {
@@ -441,9 +444,9 @@ public class PullController {
         } else {
             DataElementExtended.logDataElementsWithUid(programStageDataElement.getDataelement());
             //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
-            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
+            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage() + ":" + programStageDataElement.getDataelement());
             int times=0;
-            while(dataElement==null && times<1000){
+            while(dataElement==null && times<MAX_QUERY_RETRIES){
                 times++;
                 Log.d(TAG, "running : "+times);
                 try {
