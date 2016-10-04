@@ -171,6 +171,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="progress_pull_questions">"Carregando perguntas (isso pode levar alguns minutos) ..."</string>
 <string name="progress_pull_relationships">"Carregando relações entre perguntas ..."</string>
 <string name="progress_pull_surveys">"Carregando inquéritos ..."</string>
+<string name="progress_pull_validating_composite_scores">"Validação pontuações compostas ..."</string>
 <string name="progress_pull_done">"Feito"</string>
 <string name="dialog_push_success">"Pesquisa empurrou com êxito para o servidor dhis"</string>
 <string name="progress_push_preparing_survey">"Preparando pesquisa para empurrar ..."</string>
