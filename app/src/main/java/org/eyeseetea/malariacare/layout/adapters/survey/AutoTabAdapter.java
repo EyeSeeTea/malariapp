@@ -671,6 +671,9 @@ public class AutoTabAdapter extends ATabAdapter {
             Option selectedOption=(Option) ((Spinner) viewHolder.component).getItemAtPosition(pos);
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
             AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
+            if(question.hasAMatchTrigger()) {
+                notifyDataSetChanged();
+            }
         }
 
         @Override
