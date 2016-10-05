@@ -39,8 +39,10 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.database.utils.feedback.DashboardSentBundle;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -64,13 +66,8 @@ public class PlannedFragment extends ListFragment {
     private List<PlannedItem> plannedItems;
 
     private Program programDefaultOption;
-    private OrgUnit orgUnitDefaultOption;
 
     private List<Program> programList;
-    private List<OrgUnit> orgUnitList;
-
-    OnOrgUnitSelectedListener mCallback;
-    OnProgramSelectedListener mCallbackProgram;
 
     public PlannedFragment() {
         this.plannedItems = new ArrayList();
@@ -82,7 +79,6 @@ public class PlannedFragment extends ListFragment {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         programDefaultOption = new Program(getResources().getString(R.string.filter_all_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnit(getResources().getString(R.string.filter_all_org_units).toUpperCase());
     }
 
     @Override
@@ -117,10 +113,10 @@ public class PlannedFragment extends ListFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Spinner spinner=((Spinner) parent);
                 Program selectedProgram=position==0?null:(Program)spinner.getItemAtPosition(position);
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                TextView textView=((TextView) parent.getChildAt(0));
+                if(textView!=null)
+                    textView.setTextColor(Color.WHITE);
                 adapter.applyFilter(selectedProgram);
-                if(selectedProgram!=null)
-                    mCallbackProgram.OnProgramSelected(selectedProgram);
             }
 
             @Override
@@ -128,61 +124,6 @@ public class PlannedFragment extends ListFragment {
 
             }
         });
-        Spinner orgUnitSpinner = (Spinner) getActivity().findViewById(R.id.dashboard_planning_orgUnit);
-
-        //Populate Program View DDL
-        if(!orgUnitList.contains(orgUnitDefaultOption))
-            orgUnitList.add(0, orgUnitDefaultOption);
-        orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getActivity(), orgUnitList));
-        //Apply filter to listview
-        orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Spinner spinner=((Spinner) parent);
-                OrgUnit selectedOrgUnit=position==0?null:(OrgUnit)spinner.getItemAtPosition(position);
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                if(selectedOrgUnit!=null && !selectedOrgUnit.getName().equals(getResources().getString(R.string.filter_all_assessments).toUpperCase()))
-                    mCallback.OnOrgUnitSelected(selectedOrgUnit);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-    // Container Activity must implement this interface
-    public interface OnProgramSelectedListener {
-        public void OnProgramSelected(Program program);
-    }
-
-    // Container Activity must implement this interface
-    public interface OnOrgUnitSelectedListener {
-        public void OnOrgUnitSelected(OrgUnit orgUnit);
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnOrgUnitSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnOrgUnitSelectedListener");
-        }
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallbackProgram = (OnProgramSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnProgramSelectedListener");
-        }
     }
 
     @Override
@@ -259,7 +200,6 @@ public class PlannedFragment extends ListFragment {
             if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
                 programList=plannedServiceBundle.getPrograms();
-                orgUnitList=plannedServiceBundle.getOrgUnits();
                 prepareUI();
                 reloadPlannedItems(plannedServiceBundle.getPlannedItems());
             }
