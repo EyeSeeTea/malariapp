@@ -95,4 +95,10 @@
         android:title="@string/settings_checkbox_show_num_dems"
         android:summary="@string/settings_checkbox_description_show_num_dems"
         android:defaultValue="false" />
+    
+    <CheckBoxPreference
+        android:key="@string/developer_option"
+        android:title="@string/developer_option_title"
+        android:summary="@string/developer_option_summary"
+        android:defaultValue="false" />
 </PreferenceScreen>
