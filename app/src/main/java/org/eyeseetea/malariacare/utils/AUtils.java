@@ -28,6 +28,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -66,6 +67,15 @@ public abstract class AUtils {
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
+    }
+
+    public static float safeParseFloat(String floatStr){
+        try {
+            return Float.parseFloat(floatStr);
+        }catch (NumberFormatException nfe){
+            Log.d("AUtils", String.format("Error when parsing string %s to float number", floatStr));
+            return 0f;
+        }
     }
 
     public static String round(float base){
@@ -151,6 +161,7 @@ public abstract class AUtils {
                 stringBuilder.append(line + "\n");
             }
         } catch (IOException e) {
+            Log.d("AUtils", String.format("Error reading inputStream [%s]", inputStream));
             e.printStackTrace();
         }
 

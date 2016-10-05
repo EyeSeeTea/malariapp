@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
@@ -198,7 +200,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
+                .join(Program.class, Join.JoinType.LEFT).as("g")
                 .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
                         .eq(ColumnAlias.columnWithTable("g", Program$Table.ID_PROGRAM)))
                 .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
@@ -208,7 +210,6 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                         .eq(program.getId_program()))
                 .orderBy(true, CompositeScore$Table.ORDER_POS)
                 .queryList();
-
 
         // remove duplicates
         Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();

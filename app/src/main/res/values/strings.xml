@@ -26,6 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Incorrect Org Unit"</string>
 <string name="dialog_content_incorrect_org_unit">"Please select a final org unit"</string>
 <string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
@@ -226,5 +227,10 @@ evaluation"</string>
 <string name="developer_option_summary">This feature activates the developer options</string>
 <string name="developer_option_title">Show developer options</string>
 <string name="export_data_option_title">Export database</string>
-
+<string name="ask_account_permission">This app needs to access your Google account (via Contacts).</string>
+<string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
+<string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
+<string name="feedback_media_link" >View video</string>
+<string name="feedback_media">View video feedback</string>
+<string name="feedback_view_image">Open image with...</string>
 </resources>

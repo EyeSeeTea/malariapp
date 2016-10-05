@@ -77,6 +77,11 @@ public class AssessModuleController extends ModuleController {
         }
 
         Survey survey = Session.getSurveyByModule(getSimpleName());
+        if(survey.isCompleted() || survey.isSent()){
+            dashboardController.setNavigatingBackwards(false);
+            closeSurveyFragment();
+            return;
+        }
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
@@ -85,11 +90,6 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onBackPressed(){
-        //List Unsent surveys -> ask before leaving
-        if(isFragmentActive(DashboardUnsentFragment.class)){
-            super.onBackPressed();
-            return;
-        }
 
         //Creating survey -> nothing to do
         if(isFragmentActive(CreateSurveyFragment.class)){
@@ -102,9 +102,21 @@ public class AssessModuleController extends ModuleController {
             }
             return;
         }
+        //List Unsent surveys -> ask before leaving
+        if(isFragmentActive(DashboardUnsentFragment.class)){
+            super.onBackPressed();
+            return;
+        }
 
+
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         //In a survey -> update status before leaving
-        onSurveyBackPressed();
+        onSurveyBackPressed(survey);
+        if(survey.isCompleted() || survey.isSent()){
+            dashboardController.setNavigatingBackwards(false);
+            closeSurveyFragment();
+            return;
+        }
     }
 
     public void onSurveySelected(Survey survey){
@@ -157,9 +169,10 @@ public class AssessModuleController extends ModuleController {
 
     /**
      * It is called when the user press back in a surveyFragment
+     * @param survey
      */
-    private void onSurveyBackPressed() {
-        Survey survey = Session.getSurveyByModule(getSimpleName());
+    private void onSurveyBackPressed(Survey survey) {
+        //if the survey is opened in review mode exit.
         SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory() && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -288,7 +301,7 @@ public class AssessModuleController extends ModuleController {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
-                .setPositiveButton((R.string.ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Change state
                         survey.setCompleteSurveyState(getSimpleName());

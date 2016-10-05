@@ -1,16 +1,13 @@
 /**
 Copyright (c) 2013-2015 Nick Downie
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 **/
 
 /*
     Usage:
-   
+
     pieXTabGroupChart({
         title:'Sample tabgroup',
         tip:'Quality of care(based on last assessment)',
@@ -19,7 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         valueB:20,
         valueC:0
     })
-
 */
 
 var green;
@@ -88,7 +84,6 @@ function pieXTabGroupChart(data){
 
 /*
     Use:
-
       buildPieCharts([
         {
             title:'Sample tabgroup',
@@ -105,60 +100,106 @@ function pieXTabGroupChart(data){
             valueA:24,
             valueB:12,
             valueC:10
-        }        
-        ]);    
+        }
+        ]);
 */
-var selectedOrgUnit;
-var inputOrgUnit;
-//Show orgUnit, it is called from changedProgram.
-function showPie(){
-	changedOrgunit();
-}
-//Save the facility data in inputOrgUnit
-function setFacilityData(data){
-    inputOrgUnit=data;
-}
-//Create the select options for select diferentes org unit
-function createSelectOrgUnit(){
-	rebuildTableFacilities();
+var selectedPie;
+var piesDataByProgram;
+var piesDataByOrgUnit;
+//Show tables/Pies by program.
+function showProgram(){
+    removeDataPie();
+	changePieAndTablesByProgram();
 }
 
-//event on click select/or to change the selected orgunit and reload.
-function changedOrgunit(){
-	selectedOrgUnit="";
-	for(var i=0;i<Object.keys(inputOrgUnit).length;i++){
-		if(inputOrgUnit[i].uidprogram==selectedProgram){
-			selectedOrgUnit=inputOrgUnit[i].uidorgunit;
+//Show tables/Pies by org unit.
+function showOrgUnit(){
+    removeDataPie();
+	changePieAndTablesByOrgUnit();
+}
+
+//Save the pie data by uid(program or org unit)
+function setProgramPieData(data){
+    piesDataByProgram=data;
+}
+//Save the pie data by uid(program or org unit)
+function setOrgUnitPieData(data){
+    piesDataByOrgUnit=data;
+}
+
+//event on click select/or in program "spinner" to change the selected program and reload.
+function changePieAndTablesByProgram(){
+	selectedPie="";
+	for(var i=0;i<Object.keys(piesDataByProgram).length;i++){
+		if(piesDataByProgram[i].uidprogram==selectedProgram){
+			selectedPie=piesDataByProgram[i].uidprogram;
+			break;
 		}
 	}
-    if(selectedProgram==="AllAssessment"){
-        createSelectOrgUnit();
+    if(selectedProgram===allAssessmentKey){
+        rebuildTableFacilities(selectedOrgUnit);
     }else{
-        renderPieCharts();
+        renderPieChartsByProgram();
     }
+}
+
+//event on click select/or in program "spinner" to change the selected program and reload.
+function changePieAndTablesByOrgUnit(){
+	selectedPie="";
+	for(var i=0;i<Object.keys(piesDataByOrgUnit).length;i++){
+		if(piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
+			selectedPie=piesDataByOrgUnit[i].uidorgunit;
+			break;
+		}
+	}
+    if(selectedOrgUnit===allOrgUnitKey){
+        rebuildTableFacilities(selectedOrgUnit);
+    }
+	else{
+        renderPieChartsByOrgUnit();
+	}
 }
 //Save the data of the pies
 function buildPieCharts(dataPies){
     //For each pie
-	setFacilityData(dataPies);
+	setPieData(dataPies);
 }
 
-//Render the pie and create the select options
-function renderPieCharts(){
-    //If nothing to show, let's clean up the canvas
-    if(selectedOrgUnit==""){
-        removeDataPie();
-        createSelectOrgUnit();
-    }
-    else{
-        for(var i=0;i<inputOrgUnit.length;i++){
-            if (inputOrgUnit[i].uidorgunit==selectedOrgUnit){
-                showDataPie(inputOrgUnit[i]);
-                createSelectOrgUnit();
+//Render the pie and table by program filter and reload the spinners
+function renderPieChartsByProgram(){
+	var programOrgUnit="";
+    if(selectedProgram!=""){
+        for(var i=0;i<piesDataByProgram.length;i++){
+            if (piesDataByProgram[i].uidprogram==selectedProgram){
+				programOrgUnit=piesDataByProgram[i].uidprogram;
+                showDataPie(piesDataByProgram[i]);
+				break;
             }
         }
-        createSelectProgram();
+        rebuildTableFacilities(programOrgUnit);
     }
+	reloadSpinners();
+}
+
+function reloadSpinners(){
+    createSpinnerProgram();
+    createSpinnerOrgUnit();
+}
+
+//Render the pie and table by orgUnit filter and reload the spinners
+function renderPieChartsByOrgUnit(){
+	var orgUnitPrograms;
+    if(selectedOrgUnit!=""){
+        for(var i=0;i<piesDataByOrgUnit.length;i++){
+            if (piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
+				orgUnitPrograms=piesDataByOrgUnit[i].uidorgunit;
+                showDataPie(piesDataByOrgUnit[i]);
+				break;
+            }
+        }
+        rebuildTableFacilities(orgUnitPrograms);
+    }
+	reloadSpinners();
 }
 
 //Insert the pie in the html
@@ -177,4 +218,3 @@ function showDataPie(dataPie){
 function removeDataPie(){
 	document.getElementById("pieChartContent").innerHTML="";
 }
-

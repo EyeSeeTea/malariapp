@@ -303,4 +303,11 @@
     <string name="developer_option_summary">ជម្រើសនេះអនុញ្ញាតជម្រើសអភិវឌ្ឍន៍</string>
     <string name="developer_option_title">អភិវឌ្ឍន៍បង្ហាញជម្រើស</string>
     <string name="export_data_option_title">មូលដ្ឋានទិន្នន័យដែលបាននាំចេញ</string>
+    <string name="account_permission_denied">សិទ្ធិអនុញ្ញាតទំនាក់ទំនងបដិសេធ។ ប្រព័ន្ធផ្សព្វផ្សាយនឹងមិនត្រូវបានធ្វើសមកាលកម្ម</string>
+    <string name="ask_account_permission">កម្មវិធីនេះត្រូវការដើម្បីចូលដំណើរការគណនី Google របស់អ្នក (តាមរយៈការទំនាក់ទំនង) ។</string>
+    <string name="error_message_push">ព្រឹត្តិការណ៍នេះជាមួយនឹងលេខសម្គាល់អ្នកប្រើ %s ។ ត្រូវបានផ្ទុកឡើងដោយគ្មានកាលបរិច្ឆេទ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។</string>
+    <string name="feedback_media">មតិអ្នកមើលវីដេអូ</string>
+    <string name="feedback_media_link">មើលវីដេអូ</string>
+    <string name="google_play_required">នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។</string>
+    <string name="feedback_view_image">ចែករំលែករូបភាពជាមួយ ...</string>
 </resources>

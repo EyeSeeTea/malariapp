@@ -26,6 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit errado"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
 <string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
@@ -220,4 +221,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
 <string name="developer_option_title">Mostrar opções de desenvolvedor</string>
 <string name="export_data_option_title">Banco de dados de exportação</string>
+<string name="ask_account_permission">Este aplicativo precisa acessar sua conta do Google (via Contactos).</string>
+<string name="google_play_required">Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo.</string>
+<string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
+<string name="feedback_media_link" >"Exibição de vídeo"</string>
+<string name="feedback_media">Ver feedback de vídeo</string>
+<string name="feedback_view_image">Imagem aberta com...</string>
 </resources>

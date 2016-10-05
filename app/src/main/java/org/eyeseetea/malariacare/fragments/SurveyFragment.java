@@ -238,7 +238,7 @@ public class SurveyFragment extends  Fragment {
                     final Tab selectedTab = (Tab) spinner.getSelectedItem();
                     llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
                     llLayout.findViewById(R.id.next_tab).setAlpha(0f);
-                    new AsyncChangeTab(selectedTab).execute((Void) null);
+                    new AsyncChangeTab(selectedTab).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,(Void) null);
                     Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
                 }
 
@@ -283,7 +283,7 @@ public class SurveyFragment extends  Fragment {
     private void setCurrentTab(int position) {
         spinner.setSelection(position);
         final Tab selectedTab = (Tab) spinner.getSelectedItem();
-        new AsyncChangeTab(selectedTab).execute((Void) null);
+        new AsyncChangeTab(selectedTab).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,(Void) null);
         Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
     }
 
@@ -567,7 +567,7 @@ public class SurveyFragment extends  Fragment {
         if(PreferencesState.getInstance().isAutomaticAdapter())
             this.tabAdapter.notifyDataSetChanged();
         else if(PreferencesState.getInstance().isDynamicAdapter()){
-            new AsyncChangeTab(tabs.get(0)).execute((Void) null);
+            new AsyncChangeTab(tabs.get(0)).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,(Void) null);
         }
 
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");

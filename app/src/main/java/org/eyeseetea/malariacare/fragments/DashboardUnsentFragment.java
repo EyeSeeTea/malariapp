@@ -284,7 +284,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
         }
     }
 
@@ -324,7 +323,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public void reloadSurveys(List<Survey> newListSurveys){
         if(newListSurveys!=null) {
-            Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+            Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();

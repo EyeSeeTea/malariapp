@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -44,6 +45,7 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -127,7 +129,6 @@ public class PlannedAdapter extends BaseAdapter {
         //Refresh view
         notifyDataSetChanged();
     }
-
     private void updateNumShown(){
         Log.d(TAG, "updateNumShown");
         //No list -> nothing to update
@@ -144,7 +145,7 @@ public class PlannedAdapter extends BaseAdapter {
                 numItems++;
             }else{
                 //Surveys are shown
-                if(plannedItem.isShownByProgram(programFilter) && plannedItem.isShownByHeader(currentHeader)){
+                if((plannedItem.isShownByProgram(programFilter)|| programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())) && plannedItem.isShownByHeader(currentHeader)){
                     numItems++;
                 }
             }
@@ -164,7 +165,7 @@ public class PlannedAdapter extends BaseAdapter {
             }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey)plannedItem;
-            if(plannedSurvey.isShownByProgram(programFilter)){
+            if(plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())){
                 plannedSurvey.incHeaderCounter();
             }
         }
@@ -180,7 +181,7 @@ public class PlannedAdapter extends BaseAdapter {
         for(int i=0;i<items.size();i++){
             PlannedItem plannedItem=items.get(i);
 
-            if(plannedItem.isShownByProgram(programFilter) && plannedItem.isShownByHeader(currentHeader)){
+            if((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())) && plannedItem.isShownByHeader(currentHeader)){
                 numShownItems++;
                 if(position==(numShownItems-1)) {
                     return plannedItem;
@@ -273,7 +274,7 @@ public class PlannedAdapter extends BaseAdapter {
         //ScheduledDate
         textView=(TextView)rowLayout.findViewById(R.id.planning_survey_schedule_date);
         textView.setText(AUtils.formatDate(plannedSurvey.getNextAssesment()));
-        textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey()));
+        textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         //background color
         int colorId=plannedSurvey.getPlannedHeader().getSecondaryColor();
@@ -365,80 +366,5 @@ public class PlannedAdapter extends BaseAdapter {
         }
     }
 
-    class ScheduleListener implements View.OnClickListener {
-        Survey survey;
-        Date newScheduledDate;
-
-        ScheduleListener(Survey survey){this.survey=survey;}
-
-        @Override
-        public void onClick(View v){
-            final Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.planning_schedule_dialog);
-            dialog.setTitle(R.string.planning_title_dialog);
-
-            //Set current date
-            final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
-            scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduledDate()));
-            //On Click open an specific DatePickerDialog
-            scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Init secondary datepicker with current date
-                    Calendar calendar = Calendar.getInstance();
-                    if(survey.getScheduledDate()!=null){
-                        calendar.setTime(survey.getScheduledDate());
-                    }
-                    //Show datepickerdialog -> updates newScheduledDate and button
-                    new DatePickerDialog(PlannedAdapter.this.context, new DatePickerDialog.OnDateSetListener() {
-
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            Calendar newCalendar = Calendar.getInstance();
-                            newCalendar.set(year, monthOfYear, dayOfMonth);
-                            newScheduledDate = newCalendar.getTime();
-                            scheduleDatePickerButton.setText(AUtils.formatDate(newScheduledDate));
-                        }
-
-                    },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-                }
-            });
-
-            //Listens to close button
-            Button dialogButton = (Button) dialog.findViewById(R.id.planning_dialog_close_button);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialogButton = (Button) dialog.findViewById(R.id.planning_dialog_ok_button);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO do something
-                    //Check fields are ok
-                    String comment = ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
-                    if (!validateFields(newScheduledDate, comment)) {
-                        return;
-                    }
-                    //Reschedule survey
-                    survey.reschedule(newScheduledDate, comment);
-                    //Recalculate items
-                    reloadItems(PlannedItemBuilder.getInstance().buildPlannedItems());
-
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        }
-
-        private boolean validateFields(Date newDate,String comment){
-            return newDate!=null;
-        }
-
-
-    }
 
 }

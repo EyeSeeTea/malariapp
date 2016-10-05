@@ -11,6 +11,7 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Match;
+import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.OptionAttribute;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -243,7 +244,8 @@ public class PopulateDB {
                 Header.class,
                 Tab.class,
                 Program.class,
-                ServerMetadata.class
+                ServerMetadata.class,
+                Media.class
         );
     }
 

@@ -84,6 +84,10 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDatabaseSettings().isFullHierarchy();
     }
 
+    public static boolean isDownloadOnlyLastEvents(){
+        return getInstance().getSettings().getDatabaseSettings().isDownloadOnlyLastEvents();
+    }
+
     public static boolean isDeveloperOptionsActive(){
         return getInstance().getSettings().getDashboardSettings().isDeveloperOptions();
     }
@@ -110,6 +114,7 @@ public class AppSettingsBuilder {
             InputStream inputStream = context.getResources().openRawResource(jsonReference);
             return mapper.readValue(inputStream, AppSettings.class);
         }catch (Exception ex){
+            ex.printStackTrace();
             Log.e(TAG, "Error loading 'settings.json'");
             return null;
         }

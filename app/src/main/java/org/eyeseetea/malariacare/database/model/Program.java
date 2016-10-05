@@ -49,7 +49,7 @@ public class Program extends BaseModel{
     String stage_uid;
 
     /**
-     * List of tabs that belongs to this tabgroup
+     * List of tabs that belongs to this programstage
      */
     List<Tab> tabs;
 

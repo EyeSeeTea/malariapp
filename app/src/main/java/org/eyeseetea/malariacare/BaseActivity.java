@@ -28,9 +28,13 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -39,16 +43,19 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
+import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
+import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 public abstract class BaseActivity extends ActionBarActivity {
-
     /**
      * Extra param to annotate the activity to return after settings
      */
@@ -241,6 +248,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         PopulateDB.wipeSDKData();
     };
 
+    public void clickOrgUnitSpinner(View view){
+    }
+
+    public void clickProgramSpinner(View view){
+    }
 
     /**
      * Asks for location (required while starting to edit a survey)
@@ -295,10 +307,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         startActivity(targetActivityIntent);
     }
 
-
-
-
-
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
      *   SurveyActivity => ".SurveyActivity"
@@ -307,5 +315,4 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void debugMessage(String message){
         Log.d("." + this.getClass().getSimpleName(), message);
     }
-
 }
