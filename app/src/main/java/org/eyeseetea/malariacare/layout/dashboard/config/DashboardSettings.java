@@ -60,6 +60,11 @@ public class DashboardSettings {
      */
     int resLayout;
 
+    /**
+     * Boolean to hide or shown the developer options
+     */
+    boolean developerOptions;
+
     List<ModuleSettings> modules;
 
     public DashboardSettings(){
@@ -103,6 +108,14 @@ public class DashboardSettings {
         return resLayout;
     }
 
+    public boolean isDeveloperOptions(){
+        return developerOptions;
+    }
+
+    public void setDeveloperOptions(boolean developerOptions){
+        this.developerOptions =developerOptions;
+    }
+
     public List<ModuleSettings> getModules() {
         return modules;
     }
@@ -134,6 +147,7 @@ public class DashboardSettings {
                 ", modules=" + modules +
                 ", adapter=" + adapter +
                 ", list filter=" + listFilter +
+                ", developerOptions=" + developerOptions +
                 '}';
     }
 }
