@@ -235,7 +235,11 @@ public class AutoTabAdapter extends ATabAdapter {
             setValues(viewHolder, question, idSurvey, module);
 
             //Disables component if survey has already been sent (except match spinner that are always disabled)
-            AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly(module));
+            if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, true);
+            }else{
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly(module));
+            }
 
         } else if(item instanceof Header){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
@@ -667,6 +671,9 @@ public class AutoTabAdapter extends ATabAdapter {
             Option selectedOption=(Option) ((Spinner) viewHolder.component).getItemAtPosition(pos);
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
             AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
+            if(question.hasAMatchTrigger()) {
+                notifyDataSetChanged();
+            }
         }
 
         @Override
