@@ -169,6 +169,7 @@ Mensuelle"</string>
 <string name="progress_pull_questions">"Chargement des questions (cela peut prendre quelques minutes)..."</string>
 <string name="progress_pull_relationships">"Chargement des relations entre questions ..."</string>
 <string name="progress_pull_surveys">"Chargement des rapports..."</string>
+<string name="progress_pull_validating_composite_scores">"Validation scores composites ..."</string>
 <string name="progress_pull_done">"Terminé"</string>
 <string name="dialog_push_success">"Téléchargement du rapport dans le serveur dhis réussi"</string>
 <string name="progress_push_preparing_survey">"Préparation du rapport pour envoi..."</string>
@@ -222,6 +223,9 @@ Mensuelle"</string>
 <string name="number_9">9</string>
 <string name="clear">Effacement</string>
 
+<string name="developer_option_summary">"Cette option active les options de développement"</string>
+<string name="developer_option_title">"Afficher les options développeur"</string>
+<string name="export_data_option_title">"Base de données à l'exportation"</string>
 <string name="ask_account_permission">Cette application a besoin d\'accéder à votre compte Google (via les contacts).</string>
 <string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
 <string name="account_permission_denied"> Contacts permission refusée. Médias ne sera pas synchronisé</string>

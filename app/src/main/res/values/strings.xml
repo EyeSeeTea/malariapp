@@ -171,6 +171,7 @@ evaluation"</string>
 <string name="progress_pull_questions">"Loading questions (this might take a few minutes) ..."</string>
 <string name="progress_pull_relationships">"Building questions relations ..."</string>
 <string name="progress_pull_surveys">"Loading surveys ..."</string>
+<string name="progress_pull_validating_composite_scores">"Validating composite scores ..."</string>
 <string name="progress_pull_done">"Done"</string>
 <string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
 <string name="progress_push_preparing_survey">"Preparing survey for pushing ..."</string>
@@ -224,7 +225,9 @@ evaluation"</string>
 <string name="number_9">9</string>
 <string name="clear">Clear</string>
 
-
+<string name="developer_option_summary">This feature activates the developer options</string>
+<string name="developer_option_title">Show developer options</string>
+<string name="export_data_option_title">Export database</string>
 <string name="ask_account_permission">This app needs to access your Google account (via Contacts).</string>
 <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>

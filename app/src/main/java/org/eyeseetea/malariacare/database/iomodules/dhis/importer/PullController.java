@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Organis
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -243,6 +244,8 @@ public class PullController {
                         ProgressActivity.cancellPull("Error", "Error downloading metadata");
 
                     convertFromSDK();
+
+                    validateCS();
                     if (ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
                     }
@@ -257,6 +260,29 @@ public class PullController {
                 }
             }
         }.start();
+    }
+
+    private void validateCS() {
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        Log.d(TAG, "Validate Composite scores");
+        postProgress(context.getString(R.string.progress_pull_validating_composite_scores));
+        List<CompositeScore> compositeScores=CompositeScore.list();
+        for(CompositeScore compositeScore:compositeScores){
+            if(!compositeScore.hasChildren() && (compositeScore.getQuestions()==null || compositeScore.getQuestions().size()==0)){
+                Log.d(TAG, "CompositeScore without children and without questions will be removed: "+compositeScore.toString());
+                compositeScore.delete();
+                continue;
+            }
+            if(compositeScore.getHierarchical_code()==null){
+                Log.d(TAG, "CompositeScore without hierarchical code will be removed: "+compositeScore.toString());
+                compositeScore.delete();
+                continue;
+            }
+            if(compositeScore.getComposite_score()==null && !compositeScore.getHierarchical_code().equals(CompositeScoreBuilder.ROOT_NODE_CODE)){
+                Log.d(TAG, "CompositeScore not root and not parent should be fixed: "+compositeScore.toString());
+                continue;
+            }
+        }
     }
 
     private boolean mandatoryMetadataTablesNotEmpty(){
