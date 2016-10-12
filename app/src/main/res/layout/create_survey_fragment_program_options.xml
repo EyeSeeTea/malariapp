@@ -41,7 +41,7 @@
                 android:text="@string/create_info_survey"
                 android:id="@+id/textView3"
                 android:textAllCaps="true"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 app:tDimension="@string/font_size_level4"
                 app:tFontName="@string/medium_font_name"/>
         </LinearLayout>

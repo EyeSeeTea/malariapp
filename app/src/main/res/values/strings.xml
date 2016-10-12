@@ -234,4 +234,7 @@ evaluation"</string>
 <string name="feedback_media_link" >View video</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
+
+<!-- from old SDK -->
+<string name="select_all">Select all</string>
 </resources>

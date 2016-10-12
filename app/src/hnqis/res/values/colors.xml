@@ -18,19 +18,9 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/create_info_organization_unit"
-        android:textAllCaps="true"
-        app:tDimension="@string/font_size_level4"
-        app:tFontName="@string/medium_font_name"
-        android:id="@+id/textView"
-        android:background="@color/assess_grey"
-        android:textColor="@color/white"
-        android:gravity="center" />
-</merge>
+<resources>
+    <!-- from old SDK-->
+    <color name="button_login_state_enabled_false">#FF223F5C</color>
+    <color name="button_login_state_unpressed">#FF113151</color>
+    <color name="button_login_state_pressed">#FF0C243C</color>
+</resources>
