@@ -24,9 +24,11 @@ import com.raizlabs.android.dbflow.annotation.Database;
 /**
  * Created by nacho on 02/08/15.
  */
-@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, foreignKeysSupported = true, holderClassSuffix = AppDatabase.HOLDERCLASSSUFFIX)
+@Database(
+        name = AppDatabase.NAME, version = AppDatabase.VERSION
+)
+
 public class AppDatabase {
     public static final String NAME = "EyeSeeTeaDB";
     public static final int VERSION = 12;
-    public static final String HOLDERCLASSSUFFIX = "_EyeSeeTeaDB";
 }

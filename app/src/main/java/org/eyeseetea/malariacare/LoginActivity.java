@@ -37,8 +37,6 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.squareup.otto.Subscribe;
-
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;

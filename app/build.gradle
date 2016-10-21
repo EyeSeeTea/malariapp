@@ -91,6 +91,7 @@ android {
             targetModuleName 'EyeSeeTea'
         }
     }
+    buildToolsVersion '24.0.3'
 }
 
 configurations {
@@ -107,12 +108,6 @@ dependencies {
 
     apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
-
-    //Custom DBFlow
-    apt files('libs/dbflow-processor-3.0.1.jar')
-    compile files('libs/dbflow.jar')
-    compile files('libs/dbflow-core-3.0.1.jar')
-
 
     //Android support
     compile "com.android.support:support-v4:${libs.supportVersion}"
@@ -162,6 +157,12 @@ dependencies {
 
     // JavaPoet (sucessor to JavaWriter)
     compile "com.squareup:javapoet:${libs.javapoetVersion}"
+
+    //DBFlow
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${libs.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
 }
 
 

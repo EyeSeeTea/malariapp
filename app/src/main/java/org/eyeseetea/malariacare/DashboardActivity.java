@@ -32,12 +32,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.squareup.otto.Subscribe;
-
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
@@ -51,11 +48,9 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.Date;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.hisp.dhis.client.sdk.models.event.Event;
 import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.Date;
@@ -271,10 +266,10 @@ public class DashboardActivity extends BaseActivity{
      * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
      * @param uiEvent
      */
-    @Subscribe
+    /*@Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
         super.onLogoutFinished(uiEvent);
-    }
+    }*/
 
     /**
      * Handler that starts or edits a given survey

@@ -2,15 +2,14 @@
 
 buildscript {
     repositories {
-        jcenter()
         maven { url "https://raw.github.com/Raizlabs/maven-releases/master/releases" }
+        jcenter()
     }
 
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        classpath 'com.raizlabs:Griddle:1.0.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,7 +19,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://raw.github.com/Raizlabs/maven-releases/master/releases" }
+        maven { url "https://www.jitpack.io" }
     }
 
     configurations.all {
@@ -38,7 +37,7 @@ allprojects {
 ext {
     configuration = [
             package          : "org.hisp.dhis.android.skeleton",
-            buildToolsVersion: "23.0.3",
+            buildToolsVersion: "24.0.3",
             minSdkVersion    : 15,
             compileSdkVersion: 23,
             targetSdkVersion : 23,
@@ -89,4 +88,8 @@ ext {
 
     // Old App dependencies versions
     okhttpVersion = '2.2.0'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

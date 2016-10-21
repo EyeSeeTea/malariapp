@@ -25,13 +25,13 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue$Table;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
-import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
-import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
-import org.hisp.dhis.android.sdk.utils.support.DateUtils;
+import org.hisp.dhis.client.sdk.models.DataValue;
+import org.hisp.dhis.client.sdk.models.DataValue$Table;
+import org.hisp.dhis.client.sdk.models.event.Event;
+import org.hisp.dhis.client.sdk.models.event.Event$Table;
+import org.hisp.dhis.client.sdk.models.common.faileditem.FailedItem;
+import org.hisp.dhis.client.sdk.models.common.faileditem.FailedItem$Table;
+import org.hisp.dhis.client.sdk.utils.support.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

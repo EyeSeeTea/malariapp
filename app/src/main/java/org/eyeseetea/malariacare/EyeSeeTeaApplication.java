@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -27,6 +28,9 @@ import android.support.multidex.MultiDex;
 import android.telephony.TelephonyManager;
 
 import com.crashlytics.android.Crashlytics;
+import org.hisp.dhis.client.sdk.android.api.D2;
+
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.index.Index;
 
@@ -53,13 +57,14 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.eyeseetea.malariacare.database.utils.Session;
+import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 
 import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by nacho on 04/08/15.
  */
-public class EyeSeeTeaApplication extends Dhis2Application  {
+public class EyeSeeTeaApplication extends Application {
 
     @Override
     public void onCreate() {
@@ -75,7 +80,13 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         PhoneMetaData phoneMetaData=this.getPhoneMetadata();
         Session.setPhoneMetaData(phoneMetaData);
 
-        FlowManager.init(this, "_EyeSeeTeaDB");
+        D2.init(this);
+        FlowConfig flowConfig = new FlowConfig
+                .Builder(this)
+                .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
+                .build();
+        FlowManager.init(flowConfig);
+
         // Create indexes to accelerate the DB selects and avoid SQlite errors
         createDBIndexes();
     }
