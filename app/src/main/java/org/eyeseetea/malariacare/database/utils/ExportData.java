@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Database;
 
@@ -66,7 +67,7 @@ public class ExportData {
         tempFolder.mkdir();
         //copy databases
         dumpDatabase(AppDatabase.NAME + ".db", tempFolder);
-        dumpDatabase(Dhis2Database.NAME + ".db", tempFolder);
+        dumpDatabase(SdkController.getDhisDatabaseName() + ".db", tempFolder);
         //Copy the sharedPreferences
         dumpSharedPreferences(tempFolder);
 

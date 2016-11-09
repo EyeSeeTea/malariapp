@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.database.model.QuestionRelation;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.DataElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;

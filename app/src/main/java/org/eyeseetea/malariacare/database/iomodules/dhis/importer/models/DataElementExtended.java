@@ -32,22 +32,18 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSD
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.Attribute;
+import org.eyeseetea.malariacare.sdk.models.AttributeValue;
+import org.eyeseetea.malariacare.sdk.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.Option;
+import org.eyeseetea.malariacare.sdk.models.OptionSet;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.Program;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
-import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 
 import java.util.List;
 
@@ -210,6 +206,9 @@ public class DataElementExtended implements VisitableFromSDK {
         this.dataElement =dataElement;
     }
 
+    public DataElementExtended(DataElementFlow dataElement){
+        this.dataElement =(DataElement) dataElement;
+    }
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
@@ -426,7 +425,7 @@ public class DataElementExtended implements VisitableFromSDK {
             return null;
         }
         for(ProgramStageDataElement programStageDataElement:programDES){
-            if(MetaDataController.getProgramStage(programStageDataElement.getProgramStage()).getProgram().getUid().equals(programUID))
+            if(SdkController.getProgramStage(programStageDataElement.getProgramStage()).getProgram().getUId().equals(programUID))
                 return programStageDataElement;
         }
         return null;

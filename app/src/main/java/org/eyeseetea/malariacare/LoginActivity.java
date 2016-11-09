@@ -42,10 +42,8 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.android.sdk.job.NetworkJob;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.io.InputStream;
 
@@ -53,7 +51,7 @@ import java.io.InputStream;
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.LoginActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.LoginActivity implements LoaderCallbacks<Cursor> {
 
     private static final String TAG="LoginActivity";
     /**
@@ -78,7 +76,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
-                    ((Dhis2Application) getApplication()).getMainActivity()));
+                    SdkController.getBaseApplication(this);
             finish();
         }
         ProgressActivity.PULL_CANCEL =false;
@@ -172,7 +170,9 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         }
     }
 
+    /**
     @Subscribe
+    //// FIXME: 09/11/2016
     public void onLoginFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
         if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
             if(result.getResponseHolder().getApiException() == null) {
@@ -180,12 +180,13 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
 
                 populateFromAssetsIfRequired();
 
-                launchMainActivity();
+                SdkController.launchMainActivity(this,this);
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());
             }
         }
     }
+    */
 
     /**
      * Utility method to use while developing to avoid a real pull

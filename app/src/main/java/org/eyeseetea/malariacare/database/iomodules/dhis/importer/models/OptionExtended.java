@@ -26,13 +26,11 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.database.model.Option$Table;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionAttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
+import org.eyeseetea.malariacare.sdk.models.Attribute;
+import org.eyeseetea.malariacare.sdk.models.Option;
+import org.eyeseetea.malariacare.sdk.models.OptionAttributeValue;
+import org.eyeseetea.malariacare.sdk.models.OptionSet;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -81,8 +79,8 @@ public class OptionExtended implements VisitableFromSDK {
      */
     public static Option findOptionByOptionSetAndName(String optionSetUID, String name){
         return new Select().from(Option.class).
-                where(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Option$Table.NAME).is(name)).
-                and(Condition.column(org.hisp.dhis.android.sdk.persistence.models.Option$Table.OPTIONSET).is(optionSetUID)).querySingle();
+                where(Condition.column(org.eyeseetea.malariacare.sdk.models.Option$Table.NAME).is(name)).
+                and(Condition.column(org.eyeseetea.malariacare.sdk.models.Option$Table.OPTIONSET).is(optionSetUID)).querySingle();
     }
 
     /**

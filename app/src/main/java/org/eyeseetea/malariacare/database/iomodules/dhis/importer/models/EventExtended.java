@@ -25,13 +25,13 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.client.sdk.models.DataValue;
-import org.hisp.dhis.client.sdk.models.DataValue$Table;
-import org.hisp.dhis.client.sdk.models.event.Event;
-import org.hisp.dhis.client.sdk.models.event.Event$Table;
-import org.hisp.dhis.client.sdk.models.common.faileditem.FailedItem;
-import org.hisp.dhis.client.sdk.models.common.faileditem.FailedItem$Table;
-import org.hisp.dhis.client.sdk.utils.support.DateUtils;
+import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.DataValue$Table;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.Event$Table;
+import org.eyeseetea.malariacare.sdk.models.FailedItem;
+import org.eyeseetea.malariacare.sdk.models.FailedItem$Table;
+import org.hisp.dhis.client.sdk.utils.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,7 +73,7 @@ public class EventExtended implements VisitableFromSDK {
         if(event==null){
             return null;
         }
-        return DateUtils.parseDate(event.getCreated());
+        return event.getCreated().toDate();
     }
 
     /**
@@ -85,7 +85,7 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return DateUtils.parseDate(event.getLastUpdated());
+        return event.getLastUpdated().toDate();
     }
 
     /**
@@ -97,7 +97,7 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return DateUtils.parseDate(event.getEventDate());
+        return event.getEventDate().toDate();
     }
 
     /**
@@ -109,7 +109,7 @@ public class EventExtended implements VisitableFromSDK {
             return null;
         }
 
-        return DateUtils.parseDate(event.getDueDate());
+        return event.getDueDate().toDate();
     }
 
     public static  Date parseDate(String dateAsString,String format) throws  ParseException{
@@ -199,7 +199,7 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     public static List<Event> getAllEvents() {
-        return new Select().all().from(org.hisp.dhis.android.sdk.persistence.models.Event.class).queryList();
+        return new Select().all().from(org.eyeseetea.malariacare.sdk.models.Event.class).queryList();
     }
 
     public static Event getEvent(String eventUid){

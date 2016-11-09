@@ -39,8 +39,9 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.Event$Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
 import java.util.Date;
 import java.util.List;
@@ -152,6 +153,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public String getEventUid() {
         return eventuid;
+    }
+
+    public void setEventUid(EventFlow event) {
+        this.eventuid = event.getUId();
     }
 
     public void setEventUid(String eventuid) {

@@ -30,7 +30,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship;
 
 import java.util.ArrayList;
 import java.util.List;

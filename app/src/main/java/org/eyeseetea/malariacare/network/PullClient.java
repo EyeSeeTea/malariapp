@@ -27,13 +27,10 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.hisp.dhis.android.sdk.controllers.wrappers.EventsWrapper;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.json.JSONArray;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.Event;
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -78,7 +75,7 @@ public class PullClient {
         try {
             JSONObject response = networkUtils.getData(data);
             JsonNode jsonNode=networkUtils.toJsonNode(response);
-            List<Event> eventsFromThatDate= EventsWrapper.getEvents(jsonNode);
+            List<Event> eventsFromThatDate= SdkController.getEventsFromEventsWrapper(jsonNode);
             for(Event event:eventsFromThatDate){
                 //First event or events without date so far
                 if(lastEventInServer==null){
@@ -87,10 +84,8 @@ public class PullClient {
                 }
 
                 //Update event only if it comes afterwards
-                String lastEventInServerEventDateStr=lastEventInServer.getEventDate();
-                String eventDateStr=event.getEventDate();
-                Date lastEventInServerEventDate = EventExtended.parseLongDate(lastEventInServerEventDateStr);
-                Date eventDate = EventExtended.parseLongDate(eventDateStr);
+                Date lastEventInServerEventDate = lastEventInServer.getEventDate().toDate();
+                Date eventDate = event.getEventDate().toDate();
 
                 if(eventDate.after(lastEventInServerEventDate)){
                     lastEventInServer=event;

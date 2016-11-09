@@ -27,8 +27,8 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.Attribute;
+import org.eyeseetea.malariacare.sdk.models.DataElement;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.recreateTables;

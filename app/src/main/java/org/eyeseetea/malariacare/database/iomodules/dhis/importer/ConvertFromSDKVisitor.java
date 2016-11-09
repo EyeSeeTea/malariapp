@@ -21,9 +21,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
-import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
-
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
@@ -39,7 +36,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Media;
 import org.eyeseetea.malariacare.database.model.Score;
 import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
@@ -56,22 +52,23 @@ import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramQues
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
-import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabGroupDict;
+import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
-import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
-import org.hisp.dhis.android.sdk.utils.api.ProgramType;
+import org.eyeseetea.malariacare.sdk.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.Option;
+import org.eyeseetea.malariacare.sdk.models.OptionSet;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
+import org.eyeseetea.malariacare.sdk.models.Program;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
+import org.eyeseetea.malariacare.sdk.models.UserAccount;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,16 +122,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     public void saveBatch(){
-        //Save questions in batch
-        new SaveModelTransaction<>(ProcessModelInfo.withModels(questions)).onExecute();
-
-        //Refresh media references
-        List<Media> medias = questionBuilder.getListMedia();
-        for(Media media: medias){
-            media.updateQuestion();
-        }
-        //Save media in batch
-        new SaveModelTransaction<>(ProcessModelInfo.withModels(medias)).onExecute();
+        SdkController.saveBatch();
     }
 
     public List<Question> getQuestions() {
@@ -176,7 +164,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramStageExtended sdkProgramStageExtended) {
         //Build Program
         ProgramStage programStage=sdkProgramStageExtended.getProgramStage();
-        String sdkProgramUID = programStage.getProgram().getUid();
+        String sdkProgramUID = programStage.getProgramUid();
         org.eyeseetea.malariacare.database.model.Program appProgram = programMapObjects.get(sdkProgramUID);
         appProgram.setStageUid(programStage.getUid());
         appProgram.update();
@@ -197,7 +185,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(OrganisationUnitLevelExtended sdkOrganisationUnitLevelExtended){
         OrganisationUnitLevel organisationUnitLevel = sdkOrganisationUnitLevelExtended.getOrganisationUnitLevel();
         OrgUnitLevel orgUnitLevel = new OrgUnitLevel();
-        orgUnitLevel.setUid(organisationUnitLevel.getId());
+        orgUnitLevel.setUid(organisationUnitLevel.getUId());
         orgUnitLevel.setName(organisationUnitLevel.getDisplayName());
         orgUnitLevel.save();
 
@@ -222,7 +210,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         else
             appOrgUnit.setName(organisationUnit.getLabel());
         //Set uid
-        appOrgUnit.setUid(organisationUnit.getId());
+        appOrgUnit.setUid(organisationUnit.getUId());
         //Set orgUnitLevel
         appOrgUnit.setOrgUnitLevel(appOrgUnitLevel);
         //Since there is no guaranteed order in orgunits parent unit might not be yet converted or even pulled at all
@@ -230,7 +218,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         appOrgUnit.save();
         //Annotate built orgunit
-        orgUnitDict.put(organisationUnit.getId(), appOrgUnit);
+        orgUnitDict.put(organisationUnit.getUId(), appOrgUnit);
 
         //Associate programs
         sdkOrganisationUnitExtended.setAppOrgUnit(appOrgUnit);
@@ -246,7 +234,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Build Tab
 
         ProgramStageSection programStageSection=sdkProgramStageSectionExtended.getProgramStageSection();
-        String programUID = (ProgramStageExtended.getProgramStage(programStageSection.getProgramStage())).getProgram().getUid();
+        String programUID = (ProgramStageExtended.getProgramStage(programStageSection.getProgramStage().getUId())).getProgram().getUId();
         org.eyeseetea.malariacare.database.model.Program program = programMapObjects.get(programUID);
         Tab appTab = new Tab();
         appTab.setProgram(program);
@@ -277,7 +265,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         answerMap.put(sdkOptionSet.getUid(), appAnswer);
 
         //Visit children
-        for(Option option:sdkOptionSet.getOptions()){
+        for(Option option:sdkOptionSet.getOptionsList()){
             new OptionExtended(option).accept(this);
         }
     }
@@ -342,7 +330,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(EventExtended sdkEventExtended) {
         Event event=sdkEventExtended.getEvent();
         OrgUnit orgUnit = orgUnitDict.get(event.getOrganisationUnitId());
-        org.eyeseetea.malariacare.database.model.Program program = (org.eyeseetea.malariacare.database.model.Program)programMapObjects.get(ProgramStageExtended.getProgramStage(event.getProgramStageId()).getProgram().getUid());
+        org.eyeseetea.malariacare.database.model.Program program =programMapObjects.get(ProgramStageExtended.getProgramStage(event.getProgramStageId()).getProgram().getUId());
         Survey survey=new Survey();
         //Any survey that comes from the pull has been sent
         survey.setStatus(Constants.SURVEY_SENT);
@@ -378,7 +366,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(DataValueExtended sdkDataValueExtended) {
 
         DataValue dataValue=sdkDataValueExtended.getDataValue();
-        Survey survey=programSurveyDict.get(actualProgram.getUid(),dataValue.getEvent());
+        Survey survey=programSurveyDict.get(actualProgram.getUid(),dataValue.getEvent().getUId());
 
         //General common data (mainscore, createdby, createdon, uploadedon..)
 
@@ -427,7 +415,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             survey.setUser(user);
             survey.save();
             //Annotate object in map
-            programSurveyDict.put(actualProgram.getUid(),dataValue.getEvent(), survey);
+            programSurveyDict.put(actualProgram.getUid(),dataValue.getEvent().getUId(), survey);
             return;
             //eventToSurveyBuilder.setUploadedBy(dataValue);
             //Log.i(TAG,String.format("Event %s created by %s",eventToSurveyBuilder.getEventUid(),dataValue.getValue()));
@@ -573,7 +561,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OrgUnit appOrgUnit = sdkOrganisationUnitExtended.getAppOrgUnit();
         Log.d(TAG, "buildOrgUnitProgramRelation " + appOrgUnit.getName());
         //Each assigned program
-        for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
+        for (org.eyeseetea.malariacare.sdk.models.Program program : SdkController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
             ProgramExtended sdkProgramExtended = new ProgramExtended(program);
             sdkProgramExtended.setAppProgram( programMapObjects.get(program.getUid()));
 
@@ -617,7 +605,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             if(!ProgressActivity.PULL_IS_ACTIVE) return false;
 
             OrgUnit appOrgUnit = orgUnitDict.get(organisationUnit.getId());
-            String parentUID=organisationUnit.getParent();
+            String parentUID=organisationUnit.getParent().getUId();
             //FIXME: review this algorithm
             if(parentUID==null) {
                 //path format=/VaXGMQY18R2/TyoXRBeZ12K/TeqzAowss4n/Doa9u6qkSO3/qeENMD3x6y7

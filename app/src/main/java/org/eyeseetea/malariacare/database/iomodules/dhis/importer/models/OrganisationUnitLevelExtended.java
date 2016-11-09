@@ -30,8 +30,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
 
 public class OrganisationUnitLevelExtended implements VisitableFromSDK {
     OrganisationUnitLevel organisationUnitLevel;

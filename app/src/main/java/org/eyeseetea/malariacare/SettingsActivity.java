@@ -35,14 +35,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.squareup.otto.Subscribe;
-
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.eyeseetea.malariacare.sdk.SdkController;
 
 import java.util.List;
 
@@ -70,16 +66,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     protected void onCreate(Bundle savedInstanceState) {
         //Register into sdk bug for listening to logout events
-        Dhis2Application.bus.register(this);
+        SdkController.register(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onStop(){
-        try {
-            //Unregister from bus before leaving
-            Dhis2Application.bus.unregister(this);
-        }catch(Exception e){}
+        SdkController.unregister(this);
         super.onStop();
     }
 
@@ -97,6 +90,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      *
      * @param uiEvent
      */
+    /**
+     @Subscribe
+     //// FIXME: 09/11/2016
     @Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
         //No event or not a logout event -> done
@@ -109,6 +105,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         finish();
         startActivity(loginIntent);
     }
+    */
 
     /**
      * Shows the simplified settings UI if the device configuration if the
@@ -371,7 +368,7 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
                     public void onClick(DialogInterface arg0, int arg1) {
                         //finish activity and go to login
                         Log.i(TAG, "Logging out from sdk...");
-                        DhisService.logOutUser(activity);
+                        SdkController.logOutUser(activity);
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

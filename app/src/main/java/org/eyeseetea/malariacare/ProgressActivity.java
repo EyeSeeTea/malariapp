@@ -34,17 +34,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,13 +155,7 @@ public class ProgressActivity extends Activity {
     public void onResume() {
         super.onResume();
         if(!isOnPause) {
-            try {
-                Dhis2Application.bus.register(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Dhis2Application.bus.unregister(this);
-                Dhis2Application.bus.register(this);
-            }
+            SdkController.register(this);
             launchAction();
         }
     }
@@ -265,7 +255,7 @@ public class ProgressActivity extends Activity {
                                         } else {
                                             //A crash during a pull requires to start from scratch -> logout
                                             Log.d(TAG, "Logging out from sdk...");
-                                            DhisService.logOutUser(ProgressActivity.this);
+                                            SdkController.logOutUser(ProgressActivity.this);
                                         }
                                     }
                                 }).create().show();
@@ -300,9 +290,7 @@ public class ProgressActivity extends Activity {
         if(!isAPush) {
             //If is not active, we need restart the process
             if(!PULL_IS_ACTIVE) {
-                try{Dhis2Application.bus.unregister(this);}
-                catch(Exception e) {
-                }
+                SdkController.unregister(this);
                 finishAndGo(LoginActivity.class);
                 return;
             }
@@ -471,6 +459,8 @@ public class ProgressActivity extends Activity {
         return surveys;
     }
 
+    /**
+     * //// FIXME: 09/11/2016
     @Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
         //No event or not a logout event -> done
@@ -482,6 +472,7 @@ public class ProgressActivity extends Activity {
         //Go to login
         finishAndGo(LoginActivity.class);
     }
+    */
 
     /**
      * Finish current activity and launches an activity with the given class

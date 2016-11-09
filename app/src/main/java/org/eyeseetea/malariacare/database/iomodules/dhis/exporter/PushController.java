@@ -23,7 +23,6 @@ import android.content.Context;
 import android.util.Log;
 
 
-import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
@@ -31,11 +30,10 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.ImportSummary;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
 
 
 import java.util.HashMap;
@@ -68,14 +66,14 @@ public class PushController {
     }
 
     private void register(){
-        Dhis2Application.bus.register(this);
+        SdkController.register(this);
     }
 
     /**
      * Unregister pull controller from bus events
      */
     private void unregister(){
-        Dhis2Application.bus.unregister(this);
+        SdkController.unregister(this);
     }
 
     /**
@@ -141,7 +139,7 @@ public class PushController {
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
-            DhisService.sendEventChanges();
+            SdkController.sendEventChanges();
         }catch (Exception ex) {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();
@@ -229,7 +227,7 @@ public class PushController {
      * @param msg
      */
     private void postProgress(String msg){
-        Dhis2Application.getEventBus().post(new SyncProgressStatus(msg));
+        SdkController.postProgress(msg);
     }
 
     /**
@@ -239,7 +237,7 @@ public class PushController {
     private void postException(Exception ex){
         AlarmPushReceiver.isDoneFail();
         ex.printStackTrace();
-        Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
+        SdkController.postException(ex);
     }
 
     /**
@@ -252,7 +250,7 @@ public class PushController {
             }else{
                 AlarmPushReceiver.isDoneFail();
             }
-            Dhis2Application.getEventBus().post(new SyncProgressStatus());
+            SdkController.postFinish();
         }
         catch(Exception e){
             e.printStackTrace();
