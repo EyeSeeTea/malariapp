@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.activities.Dhis2Application;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.io.InputStream;
@@ -76,7 +77,7 @@ public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.Logi
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
-                    SdkController.getBaseApplication(this);
+                    ((EyeSeeTeaApplication) getApplication()).getMainActivity()));
             finish();
         }
         ProgressActivity.PULL_CANCEL =false;

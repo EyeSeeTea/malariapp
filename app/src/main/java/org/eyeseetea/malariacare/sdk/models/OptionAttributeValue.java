@@ -24,12 +24,10 @@ package org.eyeseetea.malariacare.sdk.models;
  */
 
 public class OptionAttributeValue {
-    @Override
+    //// FIXME: 09/11/2016
     public String getValue() {
         return null;
     }
-
-    @Override
     public Attribute getAttribute() {
         return null;
     }

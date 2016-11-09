@@ -17,25 +17,34 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.sdk.activities;
+
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.MenuItem;
+
+import org.eyeseetea.malariacare.BaseActivity;
+import org.hisp.dhis.client.sdk.ui.activities.AbsHomeActivity;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class OrganisationUnitLevel {
+public class Dhis2Application extends AbsHomeActivity {
+    @NonNull
+    @Override
+    protected Fragment getProfileFragment() {
+        return null;
+    }
 
-    //// FIXME: 09/11/2016
-    public int getLevel(){
-        return 0;
-    }
-    public String getUId() {
+    @NonNull
+    @Override
+    protected Fragment getSettingsFragment() {
         return null;
     }
-    public String getDisplayName() {
-        return null;
-    }
-    public String getId(){
-        return getUId();
+
+    @Override
+    protected boolean onItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }

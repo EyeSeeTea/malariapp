@@ -42,8 +42,8 @@ public class Event extends EventFlow {
     public static final EventStatus STATUS_FUTURE_VISIT = EventStatus.SCHEDULE;
     public static final EventStatus STATUS_SKIPPED = EventStatus.SKIPPED;
 
+    //// FIXME: 09/11/2016
     public void setFromServer(boolean value) {
-        //// FIXME: 09/11/2016
     }
     public void setOrganisationUnitId(String uid) {
         setOrgUnit(uid);
@@ -63,31 +63,6 @@ public class Event extends EventFlow {
             e.printStackTrace();
         }
         super.setLastUpdated(new DateTime(date));
-    }
-
-    public void setDueDate(String dateAsString) {
-        Date date=null;
-        try {
-            date=EventExtended.parseDate(dateAsString, EventExtended.DHIS2_GMT_DATE_FORMAT);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.setDueDate(new DateTime(date));
-    }
-
-    public void setEventDate(String dateAsString) {
-        Date date=null;
-        try {
-            date=EventExtended.parseDate(dateAsString, EventExtended.DHIS2_GMT_DATE_FORMAT);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        super.setEventDate(new DateTime(date));
-    }
-
-    public String getEventDateFormatted(){
-        Date date=super.getEventDate().toDate();
-        return EventExtended.format(date, EventExtended.DHIS2_GMT_DATE_FORMAT);
     }
 
     public long getLocalId() {
@@ -113,8 +88,8 @@ public class Event extends EventFlow {
         return super.getProgramStage();
     }
 
+    //// FIXME: 09/11/2016
     public List<DataValue> getDataValues() {
-        //// FIXME: 09/11/2016
         return null;
     }
 

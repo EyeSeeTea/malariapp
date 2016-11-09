@@ -24,5 +24,4 @@ package org.eyeseetea.malariacare.sdk.models;
  */
 
 public class DataElementAttributeValue {
-    //fixme
 }

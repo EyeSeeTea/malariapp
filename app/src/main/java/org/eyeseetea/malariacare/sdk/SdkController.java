@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.BaseActivity;
+import org.eyeseetea.malariacare.EyeSeeTeaApplication;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
@@ -201,16 +202,6 @@ public class SdkController {
 
     public static List<Event> getEventsFromEventsWrapper(JsonNode jsonNode) {
         return  EventsWrapper.getEvents(jsonNode);
-    }
-
-    public static void getBaseApplication(Application application) {
-                ((Dhis2Application) application) .getMainActivity());
-    }
-
-    public static void launchMainActivity(Application application, Activity activity) {
-        activity.startActivity(new Intent(activity,
-                ((Dhis2Application) application).getMainActivity()));
-        activity.finish();
     }
 
     public static ProgramStage getProgramStage(ProgramStageFlow programStage) {

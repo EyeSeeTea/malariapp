@@ -30,9 +30,8 @@ public class OrganisationUnit extends OrganisationUnitFlow {
         return getDisplayName();
     }
 
-
+    //// FIXME: 09/11/2016
     public String getPath() {
-        //// FIXME: 09/11/2016
         return null;
     }
 }
