@@ -77,6 +77,7 @@ public class SdkController {
     public static void setStartDate(String startDate) {
         TrackerController.setStartDate(startDate);
     }
+
     public static void setFullOrganisationUnitHierarchy(boolean fullHierarchy) {
         MetaDataController.setFullOrganisationUnitHierarchy(fullHierarchy);
     }
@@ -217,30 +218,6 @@ public class SdkController {
         DhisService.sendEventChanges();
     }
 
-    public static void wipeDatabase() {
-        Delete.tables(
-                Value.class,
-                Score.class,
-                Survey.class,
-                SurveySchedule.class,
-                OrgUnit.class,
-                OrgUnitLevel.class,
-                OrgUnitProgramRelation.class,
-                User.class,
-                QuestionOption.class,
-                Match.class,
-                QuestionRelation.class,
-                Question.class,
-                CompositeScore.class,
-                org.eyeseetea.malariacare.database.model.Option.class,
-                Answer.class,
-                Header.class,
-                Tab.class,
-                org.eyeseetea.malariacare.database.model.Program.class,
-                ServerMetadata.class,
-                Media.class
-        );
-    }
 
     public static void wipeSDKData() {
         Delete.tables(

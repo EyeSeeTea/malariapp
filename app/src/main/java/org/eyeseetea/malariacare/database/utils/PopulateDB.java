@@ -224,8 +224,30 @@ public class PopulateDB {
     /**
      * Deletes all data from the app database
      */
+
     public static void wipeDatabase() {
-        SdkController.wipeDatabase();
+        Delete.tables(
+                Value.class,
+                Score.class,
+                Survey.class,
+                SurveySchedule.class,
+                OrgUnit.class,
+                OrgUnitLevel.class,
+                OrgUnitProgramRelation.class,
+                User.class,
+                QuestionOption.class,
+                Match.class,
+                QuestionRelation.class,
+                Question.class,
+                CompositeScore.class,
+                org.eyeseetea.malariacare.database.model.Option.class,
+                Answer.class,
+                Header.class,
+                Tab.class,
+                org.eyeseetea.malariacare.database.model.Program.class,
+                ServerMetadata.class,
+                Media.class
+        );
     }
 
     /**
