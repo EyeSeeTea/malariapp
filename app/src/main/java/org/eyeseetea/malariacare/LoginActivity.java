@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -36,6 +38,7 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
@@ -43,8 +46,17 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.activities.Dhis2Application;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.core.common.network.ApiException;
+import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
+import org.hisp.dhis.client.sdk.ui.activities.*;
+import org.hisp.dhis.client.sdk.ui.bindings.commons.Inject;
+import org.hisp.dhis.client.sdk.ui.bindings.commons.NavigationHandler;
+import org.hisp.dhis.client.sdk.ui.bindings.presenters.LoginPresenter;
+import org.hisp.dhis.client.sdk.ui.bindings.views.DefaultLoginActivity;
+import org.hisp.dhis.client.sdk.ui.bindings.views.LoginView;
+import org.hisp.dhis.client.sdk.ui.bindings.presenters.LoginPresenter;
 
 import java.io.InputStream;
 
@@ -52,52 +64,54 @@ import java.io.InputStream;
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.LoginActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AbsLoginActivity  implements LoginView {
+    private LoginPresenter loginPresenter;
+    private AlertDialog alertDialog;
 
     private static final String TAG="LoginActivity";
-    /**
-     * DHIS server URL
-     */
-    private String serverUrl;
-
-    /**
-     * DHIS username account
-     */
-    private String username;
-
-    /**
-     * DHIS password (required since push is done natively instead of using sdk)
-     */
-    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        NavigationHandler.loginActivity(LoginActivity.class);
+        NavigationHandler.homeActivity(DashboardActivity.class);
+        Inject.getUserComponent().inject(this);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
-            startActivity(new Intent(LoginActivity.this,
-                    ((EyeSeeTeaApplication) getApplication()).getMainActivity()));
-            finish();
+            launchActivity(LoginActivity.this, DashboardActivity.class);
         }
         ProgressActivity.PULL_CANCEL =false;
-        EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
-        serverText.setText(R.string.login_info_dhis_default_server_url);
+        getServerUrl().setText(R.string.login_info_dhis_default_server_url);
+    }
+
+    private void launchActivity(Activity activity, Class<Activity> activityClass) {
+        Intent intent = new Intent(activity, activityClass);
+        ActivityCompat.startActivity(LoginActivity.this, intent, null);
+
+    }
+    /**
+     * Ask for EULA acceptance if this is the first time user login to the server, otherwise login
+     * @param server
+     * @param username
+     * @param password
+     */
+    @Override
+    protected void onLoginButtonClicked(Editable server, Editable username, Editable password) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
+            askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
+        } else {
+            loginToDhis(getServerUrl(), getUsername(), getPassword());
+        }
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+    protected void onLogoutButtonClicked() {
+        PreferencesState.getInstance().clearOrgUnitPreference();
+        SdkController.logOutUser(LoginActivity.this);
     }
 
     /**
@@ -119,7 +133,7 @@ public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.Logi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         rememberEulaAccepted(context);
-                        loginToDhis(serverUrl,username,password);
+                        loginToDhis(getServerUrl(), getUsername(), getPassword());
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create();
@@ -139,55 +153,28 @@ public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.Logi
     }
 
     /**
-     * User SDK function to login
-     * @param serverUrl
+     * @param server
      * @param username
      * @param password
      */
-    public void loginToDhis(String serverUrl, String username, String password){
-        //Delegate real login attempt to parent in sdk
-        super.login(serverUrl, username, password);
-    }
-
-    /**
-     * Ask for EULA acceptance if this is the first time user login to the server, otherwise login
-     * @param serverUrl
-     * @param username
-     * @param password
-     */
-    @Override
-    public void login(String serverUrl, String username, String password) {
-        //This method is overriden to capture credentials data
-        this.serverUrl=serverUrl;
-        this.username=username;
-        this.password=password;
-
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
-            askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
-        } else {
-            loginToDhis(serverUrl, username, password);
+    public void loginToDhis(EditText server, EditText username, EditText password){
+        try {
+            String authority = getString(org.hisp.dhis.client.sdk.ui.bindings.R.string.authority);
+            String accountType = getString(org.hisp.dhis.client.sdk.ui.bindings.R.string.account_type);
+            Inject.createUserComponent(server.toString(), authority, accountType).inject(this);
+        } catch (ApiException e) {
+            loginPresenter.handleError(e);
+            return;
         }
+
+        // since we have re-instantiated LoginPresenter, we
+        // also have to re-attach view to it
+        loginPresenter.attachView(this);
+        //loginToDhis(serverUrl, username, password);
+        loginPresenter.validateCredentials(
+                server.toString(), username.toString(), password.toString());
     }
 
-    /**
-    @Subscribe
-    //// FIXME: 09/11/2016
-    public void onLoginFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
-        if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
-            if(result.getResponseHolder().getApiException() == null) {
-                saveUserDetails();
-
-                populateFromAssetsIfRequired();
-
-                SdkController.launchMainActivity(this,this);
-            } else {
-                onLoginFail(result.getResponseHolder().getApiException());
-            }
-        }
-    }
-    */
 
     /**
      * Utility method to use while developing to avoid a real pull
@@ -201,8 +188,7 @@ public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.Logi
         //Populate locally
         try{
             PullController.getInstance().wipeDatabase();
-            User user = new User();
-            user.save();
+            User user = D2.me().userCredentials().toBlocking.first().getUsername();
             Session.setUser(user);
             PopulateDB.populateDB(getAssets());
         }catch(Exception ex){
@@ -215,9 +201,9 @@ public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.Logi
     private void saveUserDetails(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.dhis_url), this.serverUrl);
-        editor.putString(getString(R.string.dhis_user), this.username);
-        editor.putString(getString(R.string.dhis_password), this.password);
+        editor.putString(getString(R.string.dhis_url), getServerUrl());
+        editor.putString(getString(R.string.dhis_user), getUsername());
+        editor.putString(getString(R.string.dhis_password), getPassword());
         editor.commit();
     }
 
@@ -233,6 +219,74 @@ public class LoginActivity extends org.eyeseetea.malariacare.sdk.activities.Logi
         startActivity(intent);
     }
 
+    @Override
+    public void showProgress() {
+        onStartLoading();
+    }
+
+    @Override
+    public void hideProgress(OnProgressFinishedListener listener) {
+        onFinishLoading(new OnAnimationFinishListener() {
+            @Override
+            public void onFinish() {
+                if (listener != null) {
+                    listener.onProgressFinished();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void showServerError(String message) {
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        getServerUrl().setError(message);
+    }
+
+    @Override
+    public void showInvalidCredentialsError(String message) {
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        getUsername().setError(message);
+        getPassword().setError(message);
+    }
+
+    @Override
+    public void showUnexpectedError(String message) {
+        showErrorDialog(getString(org.hisp.dhis.client.sdk.ui.bindings.R.string.title_error_unexpected), message);
+    }
+
+    private void showErrorDialog(String title, String message) {
+        if (alertDialog == null) {
+            alertDialog = new AlertDialog.Builder(this)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create();
+        }
+
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.show();
+    }
+
+    //This method is called on success login
+    @Override
+    public void navigateToHome() {
+        saveUserDetails();
+
+        populateFromAssetsIfRequired();
+
+        launchActivity(this, DashboardActivity.class);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // to avoid leaks on configuration changes:
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
+
+        loginPresenter.detachView();
+    }
 }
 
 
