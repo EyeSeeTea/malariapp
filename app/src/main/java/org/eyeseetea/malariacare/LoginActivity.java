@@ -20,16 +20,14 @@
 package org.eyeseetea.malariacare;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.AlertDialog; 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
@@ -38,7 +36,6 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.model.User;
@@ -47,16 +44,10 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.network.ApiException;
-import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
-import org.hisp.dhis.client.sdk.ui.activities.*;
 import org.hisp.dhis.client.sdk.ui.bindings.commons.Inject;
-import org.hisp.dhis.client.sdk.ui.bindings.commons.NavigationHandler;
 import org.hisp.dhis.client.sdk.ui.bindings.presenters.LoginPresenter;
 import org.hisp.dhis.client.sdk.ui.bindings.views.DefaultLoginActivity;
-import org.hisp.dhis.client.sdk.ui.bindings.views.LoginView;
-import org.hisp.dhis.client.sdk.ui.bindings.presenters.LoginPresenter;
 
 import java.io.InputStream;
 
@@ -64,20 +55,16 @@ import java.io.InputStream;
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends AbsLoginActivity  implements LoginView {
+public class LoginActivity extends DefaultLoginActivity {
     private LoginPresenter loginPresenter;
     private AlertDialog alertDialog;
 
     private static final String TAG="LoginActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
-        NavigationHandler.loginActivity(LoginActivity.class);
-        NavigationHandler.homeActivity(DashboardActivity.class);
-        Inject.getUserComponent().inject(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
@@ -87,7 +74,7 @@ public class LoginActivity extends AbsLoginActivity  implements LoginView {
         getServerUrl().setText(R.string.login_info_dhis_default_server_url);
     }
 
-    private void launchActivity(Activity activity, Class<Activity> activityClass) {
+    private void launchActivity(Activity activity, Class<?> activityClass) {
         Intent intent = new Intent(activity, activityClass);
         ActivityCompat.startActivity(LoginActivity.this, intent, null);
 
@@ -188,7 +175,8 @@ public class LoginActivity extends AbsLoginActivity  implements LoginView {
         //Populate locally
         try{
             PullController.getInstance().wipeDatabase();
-            User user = D2.me().userCredentials().toBlocking.first().getUsername();
+            //User user = D2.me().userCredentials().first().toBlocking.first().getUsername();
+            User user = new User();
             Session.setUser(user);
             PopulateDB.populateDB(getAssets());
         }catch(Exception ex){
@@ -201,9 +189,9 @@ public class LoginActivity extends AbsLoginActivity  implements LoginView {
     private void saveUserDetails(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.dhis_url), getServerUrl());
-        editor.putString(getString(R.string.dhis_user), getUsername());
-        editor.putString(getString(R.string.dhis_password), getPassword());
+        editor.putString(getString(R.string.dhis_url), getServerUrl().getText().toString());
+        editor.putString(getString(R.string.dhis_user), getUsername().getText().toString());
+        editor.putString(getString(R.string.dhis_password), getPassword().getText().toString());
         editor.commit();
     }
 
@@ -217,23 +205,6 @@ public class LoginActivity extends AbsLoginActivity  implements LoginView {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    @Override
-    public void showProgress() {
-        onStartLoading();
-    }
-
-    @Override
-    public void hideProgress(OnProgressFinishedListener listener) {
-        onFinishLoading(new OnAnimationFinishListener() {
-            @Override
-            public void onFinish() {
-                if (listener != null) {
-                    listener.onProgressFinished();
-                }
-            }
-        });
     }
 
     @Override
