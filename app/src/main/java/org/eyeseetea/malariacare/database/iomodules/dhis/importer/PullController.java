@@ -22,9 +22,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
-import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
-import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
@@ -41,18 +39,14 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.job.Job;
-import org.hisp.dhis.android.sdk.job.JobExecutor;
-import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.eyeseetea.malariacare.sdk.models.DataElement;
 import org.eyeseetea.malariacare.sdk.models.Event;
 import org.eyeseetea.malariacare.sdk.models.OptionSet;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -100,14 +94,14 @@ public class PullController {
     }
 
     private void register() {
-        SdkController.register(this);
+        SdkController.register(PreferencesState.getInstance().getContext());
     }
 
     /**
      * Unregister pull controller from bus events
      */
     public void unregister() {
-        SdkController.unregister(this);
+        SdkController.unregister(PreferencesState.getInstance().getContext());
     }
 
     /**
@@ -173,9 +167,10 @@ public class PullController {
      * Enables loading all metadata
      */
     private void enableMetaDataFlags() {
-        SdkController.enableMetaDataFlags(this);
+        SdkController.enableMetaDataFlags(PreferencesState.getInstance().getContext());
     }
 
+    /*
     @Subscribe
     public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
         Log.d(TAG, "Subscribe method: onLoadMetadataFinished");
@@ -240,6 +235,7 @@ public class PullController {
             }
         }.start();
     }
+    */
 
     private void validateCS() {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -268,7 +264,7 @@ public class PullController {
 
         int elementsInTable = 0;
         for(Class table: MANDATORY_METADATA_TABLES) {
-            elementsInTable = (int) new Select().count()
+            elementsInTable = (int) new SQLite().selectCountOf()
                     .from(table).count();
             if (elementsInTable == 0) {
                 Log.d(TAG, "Error empty table: " + table.getName());

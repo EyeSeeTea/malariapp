@@ -19,13 +19,12 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage$Table;
 
 /**
  * Created by arrizabalaga on 5/11/15.

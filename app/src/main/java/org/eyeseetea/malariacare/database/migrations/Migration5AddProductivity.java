@@ -20,17 +20,12 @@
 package org.eyeseetea.malariacare.database.migrations;
 
 
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Migration;
-import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
-import com.raizlabs.android.dbflow.structure.ModelAdapter;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Question;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updateColumn;
@@ -38,7 +33,7 @@ import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updat
 /**
  * Created by idelcano on 27/01/2016.
  */
-@Migration(version = 5, databaseName = AppDatabase.NAME)
+@Migration(version = 5, database = AppDatabase.class)
 public class Migration5AddProductivity extends BaseMigration {
 
     public Migration5AddProductivity() {
@@ -49,7 +44,7 @@ public class Migration5AddProductivity extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
         addColumn(database, OrgUnit.class, "productivity", "Integer");
         updateColumn(database, OrgUnit.class, "productivity", "0");
     }

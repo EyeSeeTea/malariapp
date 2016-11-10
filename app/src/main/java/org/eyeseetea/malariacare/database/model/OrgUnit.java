@@ -20,17 +20,18 @@
 package org.eyeseetea.malariacare.database.model;
 
 
-
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.hisp.dhis.client.sdk.models.common.base.BaseModel;
 
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class OrgUnit extends BaseModel {
 
     @Column

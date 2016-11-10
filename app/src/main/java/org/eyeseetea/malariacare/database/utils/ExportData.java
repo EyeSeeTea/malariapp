@@ -1,23 +1,15 @@
 package org.eyeseetea.malariacare.database.utils;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Database;
 
 import java.io.BufferedWriter;
 import java.io.File;

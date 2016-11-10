@@ -21,23 +21,17 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
 import org.eyeseetea.malariacare.sdk.models.Program;
-import org.eyeseetea.malariacare.sdk.models.Program$Table;
 import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue;
-import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue$Table;
 import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage$Table;
 import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement$Table;
 import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 
 import java.util.List;

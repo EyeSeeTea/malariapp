@@ -104,11 +104,11 @@ public class SdkController {
         }
     }
 
-    public static Job loadLastData(Context context) {
+    public static Object loadLastData(Context context) {
         return DhisService.loadLastData(context);
     }
 
-    public static Job loadData(Context context) {
+    public static Object loadData(Context context) {
         return DhisService.loadData(context);
     }
 

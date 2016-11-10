@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.util.Log;
 
 import com.google.common.base.Joiner;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElementExtended;
@@ -32,10 +31,9 @@ import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.sdk.models.DataElement;
 import org.eyeseetea.malariacare.sdk.models.Option;
-import org.eyeseetea.malariacare.sdk.models.Program;
 import org.eyeseetea.malariacare.sdk.models.ProgramStage;
 import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement$Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -226,9 +224,9 @@ public class CompositeScoreBuilder {
     private static String findProgramStageByDataElementUID(String dataElementUID, String progamUid){
         //Find the right 'programStage' to group scores by program
         List<ProgramStageDataElement> programStageDataElements = new Select().from(ProgramStageDataElement.class)
-                .indexedBy("ProgramStageDataElement_DataElement")
-                .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT).is(dataElementUID)).
-                orderBy(true, ProgramStageDataElement$Table.SORTORDER).queryList();
+                //.indexedBy("ProgramStageDataElement_DataElement")
+                .where(ProgramStageDataElementFlow_Table.dataElement.is(dataElementUID))
+                .orderBy(ProgramStageDataElementFlow_Table.sortOrder, true).queryList();
         for(ProgramStageDataElement programStageDataElement:programStageDataElements){
             ProgramStage programStage= SdkController.getProgramStage(programStageDataElement.getProgramStage());
             if(programStage!= null && programStage.getProgram().getUId().equals(progamUid))

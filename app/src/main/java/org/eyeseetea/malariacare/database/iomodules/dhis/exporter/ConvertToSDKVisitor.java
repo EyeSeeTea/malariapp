@@ -23,7 +23,6 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -48,8 +47,9 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.sdk.models.DataValue;
 import org.eyeseetea.malariacare.sdk.models.Event;
 import org.eyeseetea.malariacare.sdk.models.FailedItem;
-import org.eyeseetea.malariacare.sdk.models.FailedItem$Table;
 import org.eyeseetea.malariacare.sdk.models.ImportSummary;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -564,7 +564,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             }
 
             //XXX Whats this?
-            if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && ImportSummary.SUCCESS.equals(importSummary.getStatus())) {
+            if(iSurvey.getStatus()!=Constants.SURVEY_CONFLICT && org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary.Status.SUCCESS.equals(importSummary.getStatus())) {
                 if(iEvent.getEventDate()==null || iEvent.getEventDate().equals("")) {
                     //the event is invalid. The event will be pushed but we need inform to the user.
                     DashboardActivity.showException(context.getString(R.string.error_message), String.format(context.getString(R.string.error_message_push), iEvent.getEvent()));
@@ -596,11 +596,12 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @param localId
      * @return
      */
-    private FailedItem hasConflict(long localId){
-        return  new Select()
-                .from(FailedItem.class)
-                .where(Condition.column(FailedItem$Table.ITEMID)
-                        .is(localId)).querySingle();
+    private FailedItemFlow hasConflict(long localId){
+        return new Select()
+                .from(FailedItemFlow.class)
+                .where(FailedItemFlow_Table.itemId
+                        .is(localId))
+                .querySingle();
     }
 
     /**

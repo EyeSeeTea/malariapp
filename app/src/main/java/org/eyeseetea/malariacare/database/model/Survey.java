@@ -23,8 +23,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.QueryBuilder;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
@@ -38,15 +37,14 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.sdk.models.Event;
-import org.eyeseetea.malariacare.sdk.models.Event$Table;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
 import java.util.Date;
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class Survey extends BaseModel implements VisitableToSDK {
 
     @Column
@@ -168,7 +166,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
             if (id_org_unit==null) return null;
             orgUnit = new Select()
                     .from(OrgUnit.class)
-                    .where(Condition.column(OrgUnit$Table.ID_ORG_UNIT)
+                    .where(Condition.column(OrgUnit_Table.id_org_unit)
                             .is(id_org_unit)).querySingle();
         }
         return orgUnit;

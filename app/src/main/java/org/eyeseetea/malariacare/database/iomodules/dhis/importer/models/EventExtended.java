@@ -20,18 +20,14 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import com.raizlabs.android.dbflow.sql.QueryBuilder;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.models.DataValue;
-import org.eyeseetea.malariacare.sdk.models.DataValue$Table;
 import org.eyeseetea.malariacare.sdk.models.Event;
-import org.eyeseetea.malariacare.sdk.models.Event$Table;
 import org.eyeseetea.malariacare.sdk.models.FailedItem;
-import org.eyeseetea.malariacare.sdk.models.FailedItem$Table;
-import org.hisp.dhis.client.sdk.utils.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

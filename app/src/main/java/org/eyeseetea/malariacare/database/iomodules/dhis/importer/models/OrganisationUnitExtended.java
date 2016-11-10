@@ -30,28 +30,18 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
-import org.eyeseetea.malariacare.sdk.models.AttributeValue;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnit$Table;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitAttributeValue;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitAttributeValue$Table;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet$Table;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 
 import java.util.List;
 

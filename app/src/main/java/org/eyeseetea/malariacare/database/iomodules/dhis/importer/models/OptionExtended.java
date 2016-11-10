@@ -19,9 +19,8 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
@@ -30,7 +29,6 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.sdk.models.Attribute;
 import org.eyeseetea.malariacare.sdk.models.Option;
 import org.eyeseetea.malariacare.sdk.models.OptionAttributeValue;
-import org.eyeseetea.malariacare.sdk.models.OptionSet;
 
 /**
  * Created by arrizabalaga on 6/11/15.

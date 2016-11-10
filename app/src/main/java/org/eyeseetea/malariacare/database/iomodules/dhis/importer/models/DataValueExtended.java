@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
@@ -30,8 +30,6 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.sdk.models.DataValue;
-import org.eyeseetea.malariacare.sdk.models.DataValue$Table;
-import org.eyeseetea.malariacare.sdk.models.Event;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
 import java.util.ArrayList;

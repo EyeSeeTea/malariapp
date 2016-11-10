@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 /**
  * Created by idelcano on 08/09/2016.
  */
-@Migration(version =10, databaseName = AppDatabase.NAME)
+@Migration(version =10, database = AppDatabase.class)
 public class Migration10RenameTables extends BaseMigration {
 
     public Migration10RenameTables() {
@@ -44,12 +44,13 @@ public class Migration10RenameTables extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
         migrateSurveyTable(database);
         migrateServerMetadataTable(database);
+
     }
 
-    private void migrateSurveyTable(SQLiteDatabase database) {
+    private void migrateSurveyTable(DatabaseWrapper database) {
         ModelAdapter myAdapter = FlowManager.getModelAdapter(Survey.class);
 
         //Create temporal table
@@ -68,7 +69,7 @@ public class Migration10RenameTables extends BaseMigration {
         database.execSQL("ALTER TABLE Survey_temp RENAME TO Survey");
     }
 
-    private void migrateServerMetadataTable(SQLiteDatabase database) {
+    private void migrateServerMetadataTable(DatabaseWrapper database) {
 
         //Insert the data in new table
         String sqlCopy="INSERT INTO ServerMetadata(id_control_dataelement, name, code, uid, value_type) SELECT id_control_dataelement, name, code, uid, valueType FROM ControlDataelement";
