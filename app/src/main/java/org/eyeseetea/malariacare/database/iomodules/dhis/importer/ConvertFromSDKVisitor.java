@@ -36,12 +36,12 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Score;
-import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Score;
+import org.eyeseetea.malariacare.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
@@ -53,7 +53,6 @@ import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramStag
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.sdk.models.DataElement;
 import org.eyeseetea.malariacare.sdk.models.DataValue;
 import org.eyeseetea.malariacare.sdk.models.Event;
@@ -66,8 +65,7 @@ import org.eyeseetea.malariacare.sdk.models.ProgramStage;
 import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
 import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 import org.eyeseetea.malariacare.sdk.models.UserAccount;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -478,7 +476,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
-        ProgramStageDataElement programStageDataElement = DataElementExtended.findProgramStageDataElementByDataElementExtended(dataElementExtended);
+
+        //// FIXME: 11/11/2016
+        ProgramStageDataElement programStageDataElement = (ProgramStageDataElement) DataElementExtended.findProgramStageDataElementByDataElementExtended(dataElementExtended);
         appQuestion.setCompulsory(programStageDataElement.getCompulsory());
         appQuestion.setHeader(questionBuilder.findOrSaveHeader(dataElementExtended,programTabDict, actualProgram.getUid()));
         questionBuilder.registerParentChildRelations(dataElementExtended);

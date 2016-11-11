@@ -19,15 +19,20 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.QueryBuilder;
-import com.raizlabs.android.dbflow.sql.language.Condition;
+import com.raizlabs.android.dbflow.sql.language.Method;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.DataValue;
 import org.eyeseetea.malariacare.sdk.models.Event;
-import org.eyeseetea.malariacare.sdk.models.FailedItem;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -157,21 +162,21 @@ public class EventExtended implements VisitableFromSDK {
      * @param localId
      * @return
      */
-    public static FailedItem hasConflict(long localId){
+    public static FailedItemFlow hasConflict(long localId){
         return  new Select()
-                .from(FailedItem.class)
-                .where(Condition.column(FailedItem$Table.ITEMID)
+                .from(FailedItemFlow.class)
+                .where(FailedItemFlow_Table.itemId
                         .is(localId)).querySingle();
     }
 
     public Event removeDataValues() {
         //Remove all dataValues
-        List<DataValue> dataValues = new Select().from(DataValue.class)
-                .where(Condition.column(DataValue$Table.EVENT).eq(event.getUid()))
+        List<TrackedEntityDataValueFlow> dataValues = new Select().from(TrackedEntityDataValueFlow.class)
+                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUid()))
                 .queryList();
         if(dataValues!=null) {
             for (int i=dataValues.size()-1;i>=0;i--) {
-                DataValue dataValue= dataValues.get(i);
+                TrackedEntityDataValueFlow dataValue= dataValues.get(i);
                 dataValue.delete();
                 dataValues.remove(i);
             }
@@ -181,27 +186,30 @@ public class EventExtended implements VisitableFromSDK {
         return event;
     }
 
-    public static Event getLastEvent(Long id_org_unit, String programUid, String dateField) {
-        return  new Select().from(Event.class)
-                .where(Condition.column(Event$Table.PROGRAMID).eq(programUid))
-                .and(Condition.column(Event$Table.ORGANISATIONUNITID).eq(id_org_unit))
-                .groupBy(new QueryBuilder().appendQuotedArray(Event$Table.PROGRAMID, Event$Table.ORGANISATIONUNITID))
-                .having(Condition.columnsWithFunction("max", dateField)).querySingle();
+    public static EventFlow getLastEvent(String orgUid, String programUid, String dateField) {
+        return SQLite.select(Method.max(EventFlow_Table.getProperty(dateField)), Property.ALL_PROPERTY)
+        .from(EventFlow.class)
+                .where(EventFlow_Table.program.eq(programUid))
+                .and(EventFlow_Table.orgUnit.eq(orgUid))
+                .groupBy(EventFlow_Table.program, EventFlow_Table.orgUnit)
+                //// FIXME: 11/11/2016
+                //.having(Condition.columnsWithFunction("max", dateField)).querySingle();
+                .querySingle();
     }
     public static long count(){
-        return new Select().count()
+        return SQLite.selectCountOf()
                 .from(Event.class)
                 .count();
     }
 
-    public static List<Event> getAllEvents() {
-        return new Select().all().from(org.eyeseetea.malariacare.sdk.models.Event.class).queryList();
+    public static List<EventFlow> getAllEvents() {
+        return new Select().from(EventFlow.class).queryList();
     }
 
-    public static Event getEvent(String eventUid){
+    public static EventFlow getEvent(String eventUid){
         return new Select()
-                .from(Event.class)
-                .where(Condition.column(Event$Table.EVENT).eq(eventUid))
+                .from(EventFlow.class)
+                .where(EventFlow_Table.uId.eq(eventUid))
                 .querySingle();
     }
 

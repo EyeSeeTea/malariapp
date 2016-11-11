@@ -20,15 +20,17 @@
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.database.model.Option_Table;
 import org.eyeseetea.malariacare.sdk.models.Attribute;
 import org.eyeseetea.malariacare.sdk.models.Option;
 import org.eyeseetea.malariacare.sdk.models.OptionAttributeValue;
+import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow_Table;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -65,7 +67,7 @@ public class OptionExtended implements VisitableFromSDK {
      * @return
      */
     public static Option findOptionByName(String name){
-        return new Select().from(Option.class).where(Condition.column(Option$Table.NAME).
+        return new Select().from(Option.class).where(Option_Table.name.
                 is(name)).querySingle();
     }
 
@@ -75,10 +77,10 @@ public class OptionExtended implements VisitableFromSDK {
      * @param name
      * @return
      */
-    public static Option findOptionByOptionSetAndName(String optionSetUID, String name){
-        return new Select().from(Option.class).
-                where(Condition.column(org.eyeseetea.malariacare.sdk.models.Option$Table.NAME).is(name)).
-                and(Condition.column(org.eyeseetea.malariacare.sdk.models.Option$Table.OPTIONSET).is(optionSetUID)).querySingle();
+    public static OptionFlow findOptionByOptionSetAndName(String optionSetUID, String name){
+        return new Select().from(OptionFlow.class).
+                where(OptionFlow_Table.name.is(name)).
+                and(OptionFlow_Table.optionSet.is(optionSetUID)).querySingle();
     }
 
     /**

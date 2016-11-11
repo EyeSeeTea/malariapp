@@ -455,7 +455,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @param value
      */
     private void addDataValue(String dataElementUID,String value){
-        DataValue dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        //// FIXME: 11/11/2016
+        DataValue dataValue= (DataValue) DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
         //Already added
         if(dataValue!=null){
             return;
@@ -466,7 +467,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     }
 
     private void addOrUpdateDataValue(String dataElementUID,String value){
-        DataValue dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        //// FIXME: 11/11/2016
+        DataValue dataValue= (DataValue) DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
         //Already added, update its value
         if(dataValue!=null){
             dataValue.setValue(value);
@@ -535,7 +537,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             Survey iSurvey=surveys.get(i);
             Event iEvent=events.get(iSurvey.getId_survey());
             ImportSummary importSummary=importSummaryMap.get(iEvent.getLocalId());
-            FailedItem failedItem= EventExtended.hasConflict(iEvent.getLocalId());
+            //// FIXME: 11/11/2016
+            FailedItem failedItem= (FailedItem) EventExtended.hasConflict(iEvent.getLocalId());
 
             //No errors -> Save and next
             if(!hasImportSummaryErrors(importSummary) && failedItem==null){

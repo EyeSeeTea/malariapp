@@ -19,12 +19,13 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.models.OptionSet;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow_Table;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -76,8 +77,8 @@ public class OptionSetExtended implements VisitableFromSDK {
      * @param name
      * @return
      */
-    public static OptionSet findOptionSetByName(String name){
-        return new Select().from(OptionSet.class).where(Condition.column(OptionSet$Table.NAME).
+    public static OptionSetFlow findOptionSetByName(String name){
+        return new Select().from(OptionSetFlow.class).where(OptionSetFlow_Table.name.
                 is(name)).querySingle();
     }
 
@@ -85,7 +86,7 @@ public class OptionSetExtended implements VisitableFromSDK {
      * Returns the optionSet that holds info for 'DB - DE Type'.
      * @return
      */
-    public static OptionSet findOptionSetForDataElementType(){
+    public static OptionSetFlow findOptionSetForDataElementType(){
         return findOptionSetByName(OPTION_SET_DATAELEMENT_TYPE_NAME);
     }
 
@@ -93,7 +94,7 @@ public class OptionSetExtended implements VisitableFromSDK {
      * Returns the optionSet that holds info for 'DB - Question Type'.
      * @return
      */
-    public static OptionSet findOptionSetForQuestionType(){
+    public static OptionSetFlow findOptionSetForQuestionType(){
         return findOptionSetByName(OPTION_SET_QUESTION_TYPE_NAME);
     }
 }
