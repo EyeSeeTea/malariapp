@@ -22,18 +22,12 @@ package org.eyeseetea.malariacare.database.model;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -92,7 +86,7 @@ public class QuestionRelation extends BaseModel {
             if(id_question==null) return null;
             question = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.ID_QUESTION)
+                    .where( Question_Table.id_question
                             .is(id_question)).querySingle();
         }
         return question;
@@ -138,8 +132,9 @@ public class QuestionRelation extends BaseModel {
     public List<Match> getMatches() {
         if(matches==null) {
             this.matches = new Select().from(Match.class)
-                    .indexedBy("Match_id_question_relation")
-                    .where(Condition.column(Match$Table.ID_QUESTION_RELATION).eq(this.getId_question_relation()))
+                    //// FIXME: 11/11/2016
+                    //.indexedBy("Match_id_question_relation")
+                    .where( Match_Table.id_question_relation.eq(this.getId_question_relation()))
                     .queryList();
         }
         return this.matches;

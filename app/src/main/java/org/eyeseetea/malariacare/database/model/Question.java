@@ -19,15 +19,29 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.headerAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.headerName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.matchAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.matchName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionOptionAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionOptionName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionRelationAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionRelationName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.tabAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.tabName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.valueAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.valueName;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Condition.In;
 import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -278,7 +292,7 @@ public class Question extends BaseModel {
             if(id_header==null) return null;
             header = new Select()
                     .from(Header.class)
-                    .where(Condition.column(Header$Table.ID_HEADER)
+                    .where(Header_Table.id_header
                             .is(id_header)).querySingle();
         }
         return header;
@@ -307,7 +321,7 @@ public class Question extends BaseModel {
             if(id_answer==null) return  null;
             answer = new Select()
                     .from(Answer.class)
-                    .where(Condition.column(Answer$Table.ID_ANSWER)
+                    .where(Answer_Table.id_answer
                             .is(id_answer)).querySingle();
         }
         return answer;
@@ -327,7 +341,7 @@ public class Question extends BaseModel {
         if(question ==null){
             question = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.ID_QUESTION)
+                    .where(Question_Table.id_question
                             .is(id_parent)).querySingle();
         }
         return question;
@@ -348,7 +362,7 @@ public class Question extends BaseModel {
             if(id_composite_score==null) return null;
             compositeScore = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.ID_COMPOSITE_SCORE)
+                    .where(CompositeScore_Table.id_composite_score
                             .is(id_composite_score)).querySingle();
         }
         return compositeScore;
@@ -366,10 +380,11 @@ public class Question extends BaseModel {
 
     public boolean hasParent() {
         if (parent == null) {
-            long countChildQuestionRelations = new Select().count().from(QuestionRelation.class)
-                    .indexedBy("QuestionRelation_operation")
-                    .where(Condition.column(QuestionRelation$Table.ID_QUESTION).eq(this.getId_question()))
-                    .and(Condition.column(QuestionRelation$Table.OPERATION).eq(QuestionRelation.PARENT_CHILD))
+            long countChildQuestionRelations = SQLite.selectCountOf().from(QuestionRelation.class)
+                    //// FIXME: 11/11/2016
+                    //.indexedBy("QuestionRelation_operation")
+                    .where(QuestionRelation_Table.id_question.eq(this.getId_question()))
+                    .and(QuestionRelation_Table.operation.eq(QuestionRelation.PARENT_CHILD))
                     .count();
             parent = countChildQuestionRelations > 0;
         }
@@ -404,8 +419,9 @@ public class Question extends BaseModel {
         if(questionRelations ==null){
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
-                    .indexedBy("QuestionRelation_id_question")
-                    .where(Condition.column(QuestionRelation$Table.ID_QUESTION)
+                    //// FIXME: 11/11/2016 https://github.com/Raizlabs/DBFlow/blob/f0d9e1710205952815db027cb560dd8868f5af0b/usage2/Indexing.md
+                    //.indexedBy("QuestionRelation_id_question")
+                    .where(QuestionRelation_Table.id_question
                             .eq(this.getId_question()))
                     .queryList();
         }
@@ -418,12 +434,12 @@ public class Question extends BaseModel {
 
     public List<Match> getMatches() {
         if (matches == null) {
-            matches = new Select().from(Match.class).as("m")
-                    .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                    .on(
-                            Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH))
-                                    .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH)))
-                    .where(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)).eq(this.getId_question())).queryList();
+
+            matches = new Select().from(Match.class).as(matchName)
+                    .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                    .on(Match_Table.id_match.withTable(matchAlias)
+                                    .eq(QuestionOption_Table.id_match.withTable(questionOptionAlias)))
+                    .where(QuestionOption_Table.id_question.withTable(questionOptionAlias).eq(this.getId_question())).queryList();
         }
         return matches;
     }
@@ -439,25 +455,26 @@ public class Question extends BaseModel {
             }
 
             Iterator<Match> matchesIterator = matches.iterator();
-            In in = Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)).in(Long.toString(matchesIterator.next().getId_match()));
+            In in = Match_Table.id_match.as(matchName)
+                    .in(matchesIterator.next().getId_match());
             while (matchesIterator.hasNext()){
                 in.and(Long.toString(matchesIterator.next().getId_match()));
             }
 
             //Select question from questionrelation where operator=1 and id_match in (..)
-            this.children= new Select().from(Question.class).as("q")
+            this.children= new Select().from(Question.class).as(questionName)
                     //Question + QuestioRelation
-                    .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                    .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
-                            .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)))
+                    .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                    .on(Question_Table.id_question.withTable(questionAlias)
+                            .eq(QuestionRelation_Table.id_question.withTable(questionRelationAlias)))
                             //+Match
-                    .join(Match.class, Join.JoinType.LEFT).as("m")
-                    .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
-                                    .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION)))
+                    .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                    .on(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)
+                                    .eq(Match_Table.id_question_relation))
                             //Parent child relationship
                     .where(in)
                             //In clause
-                    .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(QuestionRelation.PARENT_CHILD)).queryList();
+                    .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(QuestionRelation.PARENT_CHILD)).queryList();
         }
         return this.children;
     }
@@ -471,7 +488,7 @@ public class Question extends BaseModel {
         if(values==null){
             values = new Select()
                     .from(Value.class)
-                    .where(Condition.column(Value$Table.ID_QUESTION)
+                    .where(Value_Table.id_question
                             .eq(this.getId_question())).queryList();
         }
         return values;
@@ -494,9 +511,10 @@ public class Question extends BaseModel {
      */
     public Value getValueBySurvey(float idSurvey) {
         List<Value> returnValues = new Select().from(Value.class)
-                .indexedBy("Value_id_survey")
-                .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
-                .and(Condition.column(Value$Table.ID_SURVEY).eq(idSurvey)).queryList();
+                //// FIXME: 11/11/2016
+                //.indexedBy("Value_id_survey")
+                .where(Value_Table.id_question.eq(this.getId_question()))
+                .and(Value_Table.id_survey.eq((long)idSurvey)).queryList();
 
         if (returnValues.size() == 0) {
             return null;
@@ -575,27 +593,24 @@ public class Question extends BaseModel {
 
     public List<Value> parentSavedValues(Float idSurvey){
 
-        List<Value> values = new Select().from(Value.class).as("v")
-                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
-                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
-                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+        List<Value> values = new Select().from(Value.class).as(valueName)
+                .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                .on(Value_Table.id_question.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias)),
+                        Value_Table.id_option.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
+                .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionOption_Table.id_match.withTable(questionOptionAlias)
+                                .eq(Match_Table.id_match.withTable(matchAlias)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(Match_Table.id_question_relation.withTable(matchAlias)
+                                .eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
                 //Parent child relationship
-                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                .where(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(1))
                 //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
+                .and(Value_Table.id_survey.withTable(valueAlias).eq(idSurvey.longValue()))
                 //The child question in the relationship is 'this'
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
+                .and(QuestionRelation_Table.id_question.withTable(questionRelationAlias).eq(this.getId_question()))
                 .queryList();
         return values;
     }
@@ -610,27 +625,27 @@ public class Question extends BaseModel {
         if (!hasParent()) {
             return 0;
         }
-        long numberOfParentOptionActivated = new Select().count().from(Value.class).as("v")
-                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH))
-                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION))
-                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
+        long numberOfParentOptionActivated = SQLite.selectCountOf().from(Value.class).as(valueName)
+                .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                .on(Value_Table.id_question.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias))
+
+                        ,Value_Table.id_option.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
+                .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionOption_Table.id_match.withTable(questionOptionAlias)
+                                .eq(Match_Table.id_match.withTable(matchAlias)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(Match_Table.id_question_relation.withTable(matchAlias)
+                                .eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
                 //Parent child relationship
-                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                .where(QuestionRelation_Table.operation.eq(1))
                 //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
+                .and(Value_Table.id_survey.withTable(valueAlias)
+                        .eq((long)idSurvey))
                 //The child question in the relationship is 'this'
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
+                .and(QuestionRelation_Table.id_question.withTable(questionRelationAlias)
+                        .eq(this.getId_question()))
                 .count();
         return  (int)numberOfParentOptionActivated;
     }
@@ -682,32 +697,32 @@ public class Question extends BaseModel {
         }
 
         // Count all the quesions that may have an answer
-        long totalAnswerableQuestions = new Select().count()
-                .from(Question.class).as("q")
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program())).count();
+        long totalAnswerableQuestions = SQLite.selectCountOf()
+                .from(Question.class).as(questionName)
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .where(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
+                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program())).count();
 
         // Count children questions from the given taggroup
-        long numChildrenQuestion = new Select().count()
-                .from(QuestionRelation.class).as("qr")
-                .join(Question.class, Join.JoinType.LEFT).as("q")
-                .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION))
-                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program()))
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_PARENT)).count();
+        long numChildrenQuestion = SQLite.selectCountOf()
+                .from(QuestionRelation.class).as(questionRelationName)
+                .join(Question.class, Join.JoinType.LEFT_OUTER).as(questionName)
+                .on(QuestionRelation_Table.id_question.withTable(questionRelationAlias)
+                        .eq(Question_Table.id_question.withTable(questionAlias)))
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .where(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
+                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program()))
+                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions-numChildrenQuestion);
@@ -725,32 +740,32 @@ public class Question extends BaseModel {
         }
 
         // Count all the quesions that may have an answer
-        long totalAnswerableQuestions = new Select().count()
-                .from(Question.class).as("q")
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program())).count();
+        long totalAnswerableQuestions = SQLite.selectCountOf()
+                .from(Question.class).as(questionName)
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(headerAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .where(Question_Table.compulsory.withTable(questionAlias).is(true))
+                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program())).count();
 
         List<Question> questionsChild = new Select()
-                .from(Question.class).as("q")
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION))
-                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION)))
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).is(true))
-                .and(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM)).eq(program.getId_program()))
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION))
-                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(ColumnAlias.columnWithTable("q", Question$Table.UID)).queryList();
+                .from(Question.class).as(questionName)
+                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(QuestionRelation_Table.id_question.withTable(questionRelationAlias)
+                        .eq(Question_Table.id_question.withTable(questionAlias)))
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .where(Question_Table.compulsory.withTable(questionAlias).is(true))
+                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program()))
+                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias)
+                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  Question_Table.uid.withTable(questionAlias)).queryList();
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions-questionsChild.size());
     }
@@ -765,32 +780,28 @@ public class Question extends BaseModel {
         int numActiveChildrens=0;
         //This query returns a list of children compulsory questions
         // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
-        List<Question> questions =new Select().from(Question.class).as("q")
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)))
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION))
-                                .eq(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION)))
-                .join(QuestionOption.class, Join.JoinType.LEFT).as("qo")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH)))
-                .join(Value.class, Join.JoinType.LEFT).as("v")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
+        List<Question> questions =new Select().from(Question.class).as(questionName)
+                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(Question_Table.id_question.withTable(questionAlias)
+                                .eq(QuestionRelation_Table.id_question.withTable(questionRelationAlias)))
+                .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)
+                                .eq(Match_Table.id_question_relation.withTable(matchAlias)))
+                .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                .on(Match_Table.id_match.withTable(matchAlias)
+                                .eq(QuestionOption_Table.id_match.withTable(questionOptionAlias)))
+                .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(Value_Table.id_question.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias)),
+                        Value_Table.id_option.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
                 //Parent Child relationship
-                .where(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(1))
+                .where(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(1))
                 //For the given survey
-                .and(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(id_survey))
+                .and(Value_Table.id_survey.withTable(valueAlias).eq(id_survey.longValue()))
                 //The child question requires an answer
-                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
-                .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.COMPULSORY)).eq(true)).queryList();
+                .and(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
+                .and(Question_Table.compulsory.withTable(questionAlias).eq(true)).queryList();
         
         //checks if the children questions are active by UID
         // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
@@ -811,7 +822,7 @@ public class Question extends BaseModel {
      * @return
      */
     public static Question getQuestionByUid(String uid) {
-        return new Select().from(Question.class).where(Condition.column(ColumnAlias.column(Question$Table.UID)).eq(uid)).querySingle();
+        return new Select().from(Question.class).where(Question_Table.uid.eq(uid)).querySingle();
     }
 
 
@@ -830,22 +841,20 @@ public class Question extends BaseModel {
         }
 
         //Find questionoptions for q1 and q2 and check same match
-        List<QuestionOption> questionOptions = new Select().from(QuestionOption.class).as("qo")
-                .join(Match.class, Join.JoinType.LEFT).as("m")
-                .on(Condition.column(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_MATCH)).eq(ColumnAlias.columnWithTable("m", Match$Table.ID_MATCH)))
+        List<QuestionOption> questionOptions = new Select().from(QuestionOption.class).as(questionOptionName)
+                .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionOption_Table.id_match.withTable(questionOptionAlias).eq(Match_Table.id_match.withTable(matchAlias)))
+                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(Match_Table.id_question_relation.withTable(matchAlias).eq(QuestionRelation_Table.id_question_relation))
 
-                .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
-                .on(Condition.column(ColumnAlias.columnWithTable("m", Match$Table.ID_QUESTION_RELATION)).eq(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION_RELATION)))
-
-                .join(Value.class, Join.JoinType.LEFT).as("v")
-                .on(
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_QUESTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_QUESTION)),
-                        Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_OPTION))
-                                .eq(ColumnAlias.columnWithTable("qo", QuestionOption$Table.ID_OPTION)))
-                .where(Condition.column(ColumnAlias.columnWithTable("v", Value$Table.ID_SURVEY)).eq(idSurvey))
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.ID_QUESTION)).eq(this.getId_question()))
-                .and(Condition.column(ColumnAlias.columnWithTable("qr", QuestionRelation$Table.OPERATION)).eq(Constants.OPERATION_TYPE_MATCH))
+                .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(Value_Table.id_question.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias)),
+                        Value_Table.id_option.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
+                .where(Value_Table.id_survey.withTable(valueAlias).eq((long) idSurvey))
+                .and(QuestionRelation_Table.id_question.withTable(questionRelationAlias).eq(this.getId_question()))
+                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_MATCH))
                 .queryList();
 
         //No values no match
@@ -875,17 +884,17 @@ public class Question extends BaseModel {
         //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
 
 
-        return new Select().all().from(Question.class).as("q")
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+        return new Select().from(Question.class).as(questionName)
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .where(Tab_Table.id_program.withTable(tabAlias)
                         .eq(program.getId_program()))
-                .orderBy(Tab$Table.ORDER_POS)
-                .orderBy(Question$Table.ORDER_POS).queryList();
+                .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
+                .orderBy(OrderBy.fromProperty(Question_Table.order_pos.withTable(questionAlias))).queryList();
 
     }
 
@@ -896,22 +905,22 @@ public class Question extends BaseModel {
         }
 
         Iterator<Tab> iterator = tabs.iterator();
-        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)).in(Long.toString(iterator.next().getId_tab()));
+        In in = Tab_Table.id_tab.withTable(tabAlias).in(iterator.next().getId_tab());
         while (iterator.hasNext()) {
             in.and(Long.toString(iterator.next().getId_tab()));
         }
 
-        return new Select().from(Question.class).as("q")
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+        return new Select().from(Question.class).as(questionName)
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(in)
-                .and(Condition.column(Question$Table.ID_COMPOSITE_SCORE).isNull())
-                .orderBy(Tab$Table.ORDER_POS)
-                .orderBy(Question$Table.ORDER_POS).queryList();
+                .and(Question_Table.id_composite_score.withTable(questionAlias).isNull())
+                .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
+                .orderBy(OrderBy.fromProperty(Question_Table.order_pos.withTable(questionAlias))).queryList();
     }
 
     public static List<Question> listAllByTabs(List<Tab> tabs) {
@@ -921,21 +930,21 @@ public class Question extends BaseModel {
         }
 
         Iterator<Tab> iterator = tabs.iterator();
-        In in = Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)).in(Long.toString(iterator.next().getId_tab()));
+        In in =  Tab_Table.id_tab.withTable(tabAlias).in(iterator.next().getId_tab());
         while (iterator.hasNext()) {
             in.and(Long.toString(iterator.next().getId_tab()));
         }
 
-        return new Select().from(Question.class).as("q")
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+        return new Select().from(Question.class).as(questionName)
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(headerAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(in)
-                .orderBy(Tab$Table.ORDER_POS)
-                .orderBy(Question$Table.ORDER_POS).queryList();
+                .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
+                .orderBy(OrderBy.fromProperty(Question_Table.order_pos.withTable(questionAlias))).queryList();
     }
 
 
