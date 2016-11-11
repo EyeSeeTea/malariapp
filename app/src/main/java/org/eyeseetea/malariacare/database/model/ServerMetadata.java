@@ -24,7 +24,6 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -101,11 +100,11 @@ public class ServerMetadata extends BaseModel {
     }
 
     public static ServerMetadata findControlDataElementByCode(String code){
-        return new Select().from(ServerMetadata.class).where(Condition.column(ServerMetadata$Table.CODE).eq(code)).querySingle();
+        return new Select().from(ServerMetadata.class).where(ServerMetadata_Table.code.eq(code)).querySingle();
     }
 
     public static ServerMetadata findControlDataElementByName(String code){
-        return new Select().from(ServerMetadata.class).where(Condition.column(ServerMetadata$Table.NAME).eq(code)).querySingle();
+        return new Select().from(ServerMetadata.class).where(ServerMetadata_Table.name.eq(code)).querySingle();
     }
 
     public static String findControlDataElementUid(String code){

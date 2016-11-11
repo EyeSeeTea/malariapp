@@ -20,10 +20,16 @@
 package org.eyeseetea.malariacare.database.model;
 
 
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.orgUnitProgramRelationAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.orgUnitProgramRelationName;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.programAlias;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.programName;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
+import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -117,7 +123,7 @@ public class OrgUnit extends BaseModel {
             if (this.id_parent == null) return null;
             orgUnit = new Select()
                     .from(OrgUnit.class)
-                    .where(Condition.column(OrgUnit$Table.ID_ORG_UNIT)
+                    .where(OrgUnit_Table.id_org_unit
                             .is(id_parent)).querySingle();
         }
         return orgUnit;
@@ -138,7 +144,7 @@ public class OrgUnit extends BaseModel {
             if (this.id_org_unit_level==null) return null;
             orgUnitLevel  = new Select()
                     .from(OrgUnitLevel.class)
-                    .where(Condition.column(OrgUnitLevel$Table.ID_ORG_UNIT_LEVEL)
+                    .where(OrgUnitLevel_Table.id_org_unit_level
                             .is(id_org_unit_level)).querySingle();
         }
         return orgUnitLevel;
@@ -157,7 +163,7 @@ public class OrgUnit extends BaseModel {
     public List<OrgUnit> getChildren(){
         if(this.children==null){
             this.children = new Select().from(OrgUnit.class)
-                    .where(Condition.column(OrgUnit$Table.ID_PARENT).eq(this.getId_org_unit())).queryList();
+                    .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit())).queryList();
         }
         return children;
     }
@@ -165,7 +171,8 @@ public class OrgUnit extends BaseModel {
     public List<OrgUnit> getChildrenOrderedByName(){
         if(this.children==null){
             this.children = new Select().from(OrgUnit.class)
-                    .where(Condition.column(OrgUnit$Table.ID_PARENT).eq(this.getId_org_unit())).orderBy(OrgUnit$Table.NAME).queryList();
+                    .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit())).orderBy(
+                            OrderBy.fromProperty(OrgUnit_Table.name)).queryList();
         }
         return children;
     }
@@ -173,7 +180,7 @@ public class OrgUnit extends BaseModel {
     public List<Survey> getSurveys(){
         if(this.surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_ORG_UNIT).eq(this.getId_org_unit())).queryList();
+                    .where(Survey_Table.id_org_unit.eq(this.getId_org_unit())).queryList();
         }
         return surveys;
     }
@@ -184,12 +191,12 @@ public class OrgUnit extends BaseModel {
      */
     public List<Program> getPrograms(){
         if(programs==null){
-            this.programs=new Select().from(Program.class).as("p")
-                    .join(OrgUnitProgramRelation.class, Join.JoinType.LEFT).as("oup")
-                    .on(Condition.column(ColumnAlias.columnWithTable("p",Program$Table.ID_PROGRAM))
-                            .eq(ColumnAlias.columnWithTable("oup",OrgUnitProgramRelation$Table.ID_PROGRAM))
-                    ).where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
-                    .orderBy(true,Program$Table.NAME)
+            this.programs=new Select().from(Program.class).as(programName)
+                    .join(OrgUnitProgramRelation.class, Join.JoinType.LEFT_OUTER).as(orgUnitProgramRelationName)
+                    .on(Program_Table.id_program.withTable(programAlias)
+                            .eq(OrgUnitProgramRelation_Table.id_program.withTable(orgUnitProgramRelationAlias))
+                    ).where(OrgUnitProgramRelation_Table.id_org_unit.withTable(orgUnitProgramRelationAlias).eq(this.getId_org_unit()))
+                    .orderBy(Program_Table.name.withTable(programAlias), true)
                     .queryList();
         }
         return programs;
@@ -197,8 +204,8 @@ public class OrgUnit extends BaseModel {
 
     public OrgUnitProgramRelation getRelation(Program program){
         return new Select().from(OrgUnitProgramRelation.class)
-                .where(Condition.column(OrgUnitProgramRelation$Table.ID_ORG_UNIT).eq(this.getId_org_unit()))
-                .and(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(program.getId_program())).querySingle();
+                .where(OrgUnitProgramRelation_Table.id_org_unit.eq(this.getId_org_unit()))
+                .and(OrgUnitProgramRelation_Table.id_program.eq(program.getId_program())).querySingle();
     }
 
     public Integer getProductivity(Program program){
@@ -211,7 +218,7 @@ public class OrgUnit extends BaseModel {
     }
 
     public static List<OrgUnit> getAllOrgUnit() {
-        return new Select().all().from(OrgUnit.class).queryList();
+        return new Select().from(OrgUnit.class).queryList();
     }
 
     public OrgUnitProgramRelation addProgram(Program program){
@@ -234,13 +241,13 @@ public class OrgUnit extends BaseModel {
      * @return
      */
     public static List<OrgUnit> list(){
-        return new Select().all().from(OrgUnit.class).orderBy(true, OrgUnit$Table.ID_ORG_UNIT_LEVEL, OrgUnit$Table.NAME).queryList();
+        return new Select().from(OrgUnit.class).orderBy(OrgUnit_Table.id_org_unit_level,true).orderBy(OrgUnit_Table.name, true).queryList();
     }
 
     public static OrgUnit getOrgUnit(String uid) {
             OrgUnit orgUnit = new Select()
                     .from(OrgUnit.class)
-                    .where(Condition.column(OrgUnit$Table.UID)
+                    .where(OrgUnit_Table.uid
                             .is(uid)).querySingle();
         return orgUnit;
     }

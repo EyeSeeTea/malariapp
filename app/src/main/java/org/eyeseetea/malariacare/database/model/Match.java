@@ -20,18 +20,12 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
@@ -65,7 +59,7 @@ public class Match extends BaseModel {
     public List<QuestionOption> getQuestionOptions() {
         if(questionOptions==null){
             this.questionOptions = new Select().from(QuestionOption.class)
-                    .where(Condition.column(QuestionOption$Table.ID_MATCH).eq(this.getId_match()))
+                    .where(QuestionOption_Table.id_match.eq(this.getId_match()))
                     .queryList();
         }
         return this.questionOptions;
@@ -84,7 +78,7 @@ public class Match extends BaseModel {
             if(id_question_relation==null) return null;
             questionRelation = new Select()
                     .from(QuestionRelation.class)
-                    .where(Condition.column(QuestionRelation$Table.ID_QUESTION_RELATION)
+                    .where(QuestionRelation_Table.id_question_relation
                             .is(id_question_relation)).querySingle();
         }
         return questionRelation;

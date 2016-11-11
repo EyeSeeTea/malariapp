@@ -19,16 +19,13 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.*;
+ 
+import com.raizlabs.android.dbflow.annotation.Column; 
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -118,7 +115,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
             if (id_parent==null) return null;
             compositeScore = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.ID_COMPOSITE_SCORE)
+                    .where(CompositeScore_Table.id_composite_score
                             .is(id_parent)).querySingle();
         }
         return compositeScore;
@@ -158,8 +155,8 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         if (this.compositeScoreChildren == null){
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
-                    .where(Condition.column(CompositeScore$Table.ID_PARENT).eq(this.getId_composite_score()))
-                    .orderBy(CompositeScore$Table.ORDER_POS)
+                    .where(CompositeScore_Table.id_parent.eq(this.getId_composite_score()))
+                    .orderBy(OrderBy.fromProperty(CompositeScore_Table.order_pos))
                     .queryList();
         }
         return this.compositeScoreChildren;
@@ -169,8 +166,8 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         if(questions==null){
             questions = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.ID_COMPOSITE_SCORE).eq(this.getId_composite_score()))
-                    .orderBy(true, Question$Table.ORDER_POS)
+                    .where(Question_Table.id_composite_score.eq(this.getId_composite_score()))
+                    .orderBy(Question_Table.order_pos ,true)
                     .queryList();
         }
         return questions;
@@ -189,25 +186,25 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
 
         //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScore, so results are having Questions one, and should keep CompositeScore one. To solve it, we've introduced a last join with CompositeScore again and a HashSet to remove resulting duplicates
         //Take scores associated to questions of the program ('leaves')
-        List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
-                .join(Question.class, Join.JoinType.LEFT).as("q")
-                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
-                        .eq(ColumnAlias.columnWithTable("q", Question$Table.ID_COMPOSITE_SCORE)))
-                .join(Header.class, Join.JoinType.LEFT).as("h")
-                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                .join(Tab.class, Join.JoinType.LEFT).as("t")
-                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(Program.class, Join.JoinType.LEFT).as("g")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
-                        .eq(ColumnAlias.columnWithTable("g", Program$Table.ID_PROGRAM)))
-                .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
-                .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
-                        .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID_COMPOSITE_SCORE)))
-                .where(Condition.column(ColumnAlias.columnWithTable("g", Program$Table.ID_PROGRAM))
+        List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as(compositeScoreName)
+                .join(Question.class, Join.JoinType.LEFT_OUTER).as(questionName)
+                .on(CompositeScore_Table.id_composite_score.withTable(compositeScoreAlias)
+                        .eq(Question_Table.id_composite_score.withTable(questionAlias)))
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .join(Program.class, Join.JoinType.LEFT_OUTER).as(programName)
+                .on(Tab_Table.id_program.withTable(tabAlias)
+                        .eq(Program_Table.id_program.withTable(programAlias)))
+                .join(CompositeScore.class, Join.JoinType.LEFT_OUTER).as(compositeScoreTwoName)
+                .on(CompositeScore_Table.id_composite_score.withTable(compositeScoreAlias)
+                        .eq(CompositeScore_Table.id_composite_score.withTable(compositeScoreTwoAlias)))
+                .where(Program_Table.id_program.withTable(programAlias)
                         .eq(program.getId_program()))
-                .orderBy(true, CompositeScore$Table.ORDER_POS)
+                .orderBy(CompositeScore_Table.order_pos, true)
                 .queryList();
 
         // remove duplicates
@@ -270,7 +267,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<CompositeScore> list() {
-        return new Select().all().from(CompositeScore.class).queryList();
+        return new Select().from(CompositeScore.class).queryList();
     }
 
     @Override

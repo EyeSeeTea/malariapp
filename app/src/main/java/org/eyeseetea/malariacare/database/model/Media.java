@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -77,7 +76,7 @@ public class Media extends BaseModel{
             if(id_question==null) return null;
             question = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.ID_QUESTION)
+                    .where(Question_Table.id_question
                         .is(id_question)).querySingle();
         }
         return question;
@@ -108,11 +107,11 @@ public class Media extends BaseModel{
     }
 
     public static List<Media> getAllNotInLocal(){
-        return new Select().all().
+        return new Select().
                 from(Media.class).
-                where(Condition.column(Media$Table.FILENAME).isNull()).
-                and(Condition.column(Media$Table.RESOURCE_URL).isNotNull()).
-                orderBy(true,Media$Table.ID_MEDIA).
+                where(Media_Table.filename.isNull()).
+                and(Media_Table.resource_url.isNotNull()).
+                orderBy(Media_Table.id_media,true).
                 queryList();
     }
 
@@ -121,10 +120,10 @@ public class Media extends BaseModel{
             return new ArrayList<>();
         }
 
-        return new Select().all().
+        return new Select().
                 from(Media.class).
-                where(Condition.column(Media$Table.ID_QUESTION).eq(question.id_question)).
-                orderBy(true,Media$Table.ID_MEDIA).
+                where(Media_Table.id_question.eq(question.id_question)).
+                orderBy(Media_Table.id_media, true).
                 queryList();
     }
 
@@ -157,9 +156,9 @@ public class Media extends BaseModel{
      */
     public Media findLocalCopy(){
         return new Select().from(Media.class)
-                .where(Condition.column(Media$Table.FILENAME).isNotNull())
-                .and(Condition.column(Media$Table.ID_MEDIA).isNot(this.id_media))
-                .and(Condition.column(Media$Table.RESOURCE_URL).is(this.resource_url))
+                .where(Media_Table.filename.isNotNull())
+                .and(Media_Table.id_media.isNot(this.id_media))
+                .and(Media_Table.resource_url.is(this.resource_url))
                 .querySingle();
     }
 

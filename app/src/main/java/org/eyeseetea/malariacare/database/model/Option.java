@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -129,7 +128,7 @@ public class Option extends BaseModel {
             if(id_answer==null) return null;
             answer = new Select()
                     .from(Answer.class)
-                    .where(Condition.column(Answer$Table.ID_ANSWER)
+                    .where(Answer_Table.id_answer
                             .is(id_answer)).querySingle();
         }
         return answer;
@@ -148,7 +147,7 @@ public class Option extends BaseModel {
     public OptionAttribute getOptionAttribute() {
         if(optionAttribute==null){
             optionAttribute = new Select().from(OptionAttribute.class)
-                    .where(Condition.column(OptionAttribute$Table.ID_OPTION_ATTRIBUTE).eq(id_option_attribute)).querySingle();
+                    .where(OptionAttribute_Table.id_option_attribute.eq(id_option_attribute)).querySingle();
         }
         return optionAttribute;
     }
@@ -194,7 +193,7 @@ public class Option extends BaseModel {
     public List<Value> getValues(){
         if(values==null){
             values = new Select().from(Value.class)
-                    .where(Condition.column(Value$Table.ID_OPTION).eq(this.getId_option())).queryList();
+                    .where(Value_Table.id_option.eq(this.getId_option())).queryList();
         }
         return values;
     }
