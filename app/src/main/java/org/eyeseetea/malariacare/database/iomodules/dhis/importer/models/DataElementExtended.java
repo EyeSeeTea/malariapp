@@ -39,7 +39,6 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScore
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program_Table;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.sdk.models.Attribute;
@@ -51,6 +50,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
@@ -366,7 +366,7 @@ public class DataElementExtended implements VisitableFromSDK {
         //Find the right 'uid' of the dataelement program
         ProgramFlow program = new Select().from(ProgramFlow.class).as(programFlowName)
                 .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(programStageFlowName)
-                .on(Program_Table.id_program.withTable(programFlowAlias)
+                .on(ProgramFlow_Table.id.withTable(programFlowAlias)
                         .eq(ProgramStageFlow_Table.program.withTable(programStageFlowAlias)))
 
                 .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
