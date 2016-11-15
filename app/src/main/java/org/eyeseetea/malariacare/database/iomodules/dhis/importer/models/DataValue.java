@@ -17,13 +17,23 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class UserAccount extends UserAccountFlow {
+public class DataValue  extends TrackedEntityDataValueFlow {
+
+    public void setLocalEventId(long localId) {
+        setId(localId);
+    }
+
+    public void setProvidedElsewhere(boolean value) {
+        //fixme
+    }
 }

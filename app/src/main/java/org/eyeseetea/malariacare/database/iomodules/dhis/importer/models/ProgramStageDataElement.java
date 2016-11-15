@@ -17,13 +17,23 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
+import org.hisp.dhis.client.sdk.models.dataelement.*;
+import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class FailedItem extends FailedItemFlow {
+public class ProgramStageDataElement extends ProgramStageDataElementFlow {
+
+    public String getDataelement() {
+        return getDataElement().getUId();
+    }
+//// FIXME: 09/11/2016
+    public Boolean getCompulsory() {
+        return null;
+    }
 }

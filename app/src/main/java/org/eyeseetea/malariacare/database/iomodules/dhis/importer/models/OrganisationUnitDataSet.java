@@ -17,25 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class OrganisationUnitLevel {
-
-    //// FIXME: 09/11/2016
-    public int getLevel(){
-        return 0;
-    }
-    public String getUId() {
-        return null;
-    }
-    public String getDisplayName() {
-        return null;
-    }
-    public String getId(){
-        return getUId();
-    }
+public class OrganisationUnitDataSet{
 }

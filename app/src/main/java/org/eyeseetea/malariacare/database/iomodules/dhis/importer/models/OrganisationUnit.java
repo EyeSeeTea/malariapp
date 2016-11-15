@@ -17,18 +17,21 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
+
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class OptionAttributeValue {
-    //// FIXME: 09/11/2016
-    public String getValue() {
-        return null;
+public class OrganisationUnit extends OrganisationUnitFlow {
+    public String getLabel(){
+        return getDisplayName();
     }
-    public Attribute getAttribute() {
+
+    //// FIXME: 09/11/2016
+    public String getPath() {
         return null;
     }
 }

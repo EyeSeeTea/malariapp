@@ -31,6 +31,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
+
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -39,14 +41,22 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.DataElement;
-import org.eyeseetea.malariacare.sdk.models.Event;
-import org.eyeseetea.malariacare.sdk.models.OptionSet;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElement;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSet;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnit;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevel;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStage;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStageDataElement;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -66,17 +76,17 @@ public class PullController {
     public static final int NUMBER_OF_MONTHS=6;
 
     private final static Class MANDATORY_METADATA_TABLES[] = {
-            org.eyeseetea.malariacare.sdk.models.Attribute.class,
-            org.eyeseetea.malariacare.sdk.models.DataElement.class,
-            org.eyeseetea.malariacare.sdk.models.DataElementAttributeValue.class,
-            org.eyeseetea.malariacare.sdk.models.Option.class,
-            org.eyeseetea.malariacare.sdk.models.OptionSet.class,
-            org.eyeseetea.malariacare.sdk.models.UserAccount.class,
-            org.eyeseetea.malariacare.sdk.models.OrganisationUnit.class,
-            org.eyeseetea.malariacare.sdk.models.OrganisationUnitProgramRelationship.class,
-            org.eyeseetea.malariacare.sdk.models.ProgramStage.class,
-            org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement.class,
-            org.eyeseetea.malariacare.sdk.models.ProgramStageSection.class
+            AttributeFlow.class,
+            DataElementFlow.class,
+            //DataElementAttributeValueFlow.class,
+            OptionFlow.class,
+            OptionSetFlow.class,
+            UserAccountFlow.class,
+            OrganisationUnitFlow.class,
+            //OrganisationUnitProgramRelationshipFlow.class,
+            ProgramStageFlow.class,
+            ProgramStageDataElementFlow.class,
+            ProgramStageSectionFlow.class
     };
 
     private static PullController instance;
@@ -171,7 +181,6 @@ public class PullController {
     }
 
     /*
-    @Subscribe
     public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
         Log.d(TAG, "Subscribe method: onLoadMetadataFinished");
         new Thread() {
@@ -341,10 +350,10 @@ public class PullController {
 
         int count;
         //Dataelements ordered by program.
-        List<org.eyeseetea.malariacare.sdk.models.Program> programs = ProgramExtended.getAllPrograms();
-        Map<String, List<org.eyeseetea.malariacare.sdk.models.DataElement>> programsDataelements = new HashMap<>();
+        List<Program> programs = ProgramExtended.getAllPrograms();
+        Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        for (org.eyeseetea.malariacare.sdk.models.Program program : programs) {
+        for (Program program : programs) {
             converter.actualProgram=program;
             Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
@@ -436,7 +445,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
         int i=0;
-        for (org.eyeseetea.malariacare.sdk.models.Program program : programs) {
+        for (Program program : programs) {
             converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
@@ -457,7 +466,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
         postProgress(context.getString(R.string.progress_pull_relationships));
-        for (org.eyeseetea.malariacare.sdk.models.Program program : programs) {
+        for (Program program : programs) {
             converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
@@ -516,7 +525,7 @@ public class PullController {
         //For each unit
         for (OrganisationUnit organisationUnit : SdkController.getAssignedOrganisationUnits()) {
             //Each assigned program
-            for (org.eyeseetea.malariacare.sdk.models.Program program : SdkController.getProgramsForOrganisationUnit(organisationUnit.getUId(), ProgramType.WITHOUT_REGISTRATION)) {
+            for (Program program : SdkController.getProgramsForOrganisationUnit(organisationUnit.getUId(), ProgramType.WITHOUT_REGISTRATION)) {
                 converter.actualProgram=program;
                 List<Event> events = SdkController.getEvents(organisationUnit.getUId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));

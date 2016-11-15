@@ -17,24 +17,22 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class OptionSet extends OptionSetFlow {
-    public String getUid() {
-        return getUId();
+public class Program extends ProgramFlow {
+    public List<ProgramStage> getProgramStages() {
+        return getProgramStages();
     }
 
-    public List<Option> getOptionsList() {
-        return (List<Option>)(List<?>)getOptions();
+    public String getUid() {
+        return getUId();
     }
 }

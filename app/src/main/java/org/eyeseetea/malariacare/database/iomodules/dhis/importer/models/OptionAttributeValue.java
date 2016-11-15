@@ -17,22 +17,20 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
-
-import java.util.List;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class Program extends ProgramFlow {
-    public List<ProgramStage> getProgramStages() {
-        return getProgramStages();
+public class OptionAttributeValue {
+    //// FIXME: 09/11/2016
+    public String getValue() {
+        return null;
     }
-
-    public String getUid() {
-        return getUId();
+    public AttributeFlow getAttribute() {
+        return null;
     }
 }

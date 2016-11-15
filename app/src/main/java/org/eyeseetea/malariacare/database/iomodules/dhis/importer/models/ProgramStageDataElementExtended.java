@@ -28,51 +28,22 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 
-public class OrganisationUnitLevelExtended implements VisitableFromSDK {
-    OrganisationUnitLevelFlow organisationUnitLevel;
+public class ProgramStageDataElementExtended {
+    ProgramStageDataElementFlow programStageDataElementFlow;
 
-    public OrganisationUnitLevelExtended(){}
+    public ProgramStageDataElementExtended(){}
 
-    public OrganisationUnitLevelExtended(OrganisationUnitLevelFlow organisationUnitLevel){
-        this.organisationUnitLevel = organisationUnitLevel;
+    public ProgramStageDataElementExtended(ProgramStageDataElementFlow organisationUnitLevel){
+        this.programStageDataElementFlow = organisationUnitLevel;
     }
 
-    @Override
-    public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this);
+    public ProgramStageDataElementFlow getProgramStageDataElementFlow() {
+        return programStageDataElementFlow;
     }
 
-    public OrganisationUnitLevelFlow getOrganisationUnitLevel() {
-        return organisationUnitLevel;
-    }
-
-    /**
-     * Builds a synthetic key to use the map while converting levels
-     * Ex: buildKey(3) -> "OrganisationUnitLevel3"
-     * @param level Number of the level which key must be built (Ex: 3)
-     * @return The synthetic key (Ex: "OrganisationUnitLevel3")
-     */
-    public static String buildKey(int level){
-        return OrganisationUnitLevel.class.getSimpleName()+level;
-    }
-
-    /**
-     * Builds a synthetic key to the current level
-     * @return (Ex: "OrganisationUnitLevel3")
-     */
-    public String buildKey(){
-        return OrganisationUnitLevelExtended.buildKey(organisationUnitLevel.getLevel());
-    }
-
-    public String getUid() {
-        return organisationUnitLevel.getUId();
-    }
-
-    public String getDisplayName() {
-        return organisationUnitLevel.getDisplayName();
+    public Boolean getCompulsory() {
+        return programStageDataElementFlow.isCompulsory();
     }
 }

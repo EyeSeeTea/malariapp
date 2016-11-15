@@ -23,33 +23,31 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
+import org.eyeseetea.malariacare.sdk.models.AttributeValueFlow;
 
 
 /**
  * Created by arrizabalaga on 6/11/15.
  */
-public class AttributeExtended {
-    //// TODO: 14/11/2016 Implements attributes in the sdk
-    AttributeFlow attributeFlow;
+public class AttributeValueExtended {
 
-    public String getCode() {
-        return attributeFlow.getCode();
-    }
+
+    AttributeValueFlow attributeValueFlow;
 
     public String getUid() {
-        return attributeFlow.getUId();
+        return attributeValueFlow.getUId();
     }
 
 
-    public AttributeExtended(AttributeFlow attribute){
-        this.attributeFlow=attribute;
+    public AttributeValueExtended(AttributeValueFlow attributeValueFlow){
+        this.attributeValueFlow=attributeValueFlow;
     }
 
-    public AttributeFlow getAttribute() {
-        return attributeFlow;
+    public AttributeValueFlow getAttribute() {
+        return attributeValueFlow;
     }
 
-    public AttributeExtended(){}
+    public AttributeValueExtended(){}
 
     /**
      * Find an attribute by its code

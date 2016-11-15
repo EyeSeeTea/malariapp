@@ -20,28 +20,30 @@
 package org.eyeseetea.malariacare.sdk;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
-import org.eyeseetea.malariacare.BaseActivity;
-import org.eyeseetea.malariacare.EyeSeeTeaApplication;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataElement;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValue;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.FailedItem;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSet;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnit;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccount;
 import org.eyeseetea.malariacare.database.model.*;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevel;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramStage;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
-import org.eyeseetea.malariacare.sdk.models.*;
-import org.eyeseetea.malariacare.sdk.models.Program;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Program;
 import org.hisp.dhis.client.sdk.models.program.*;
 
 import java.util.ArrayList;
@@ -231,5 +233,9 @@ public class SdkController {
 
     public static String getDhisDatabaseName() {
         return Dhis2Database.NAME;
+    }
+
+    public static List<ProgramStageFlow> getProgramStages(ProgramFlow program) {
+        return null;
     }
 }

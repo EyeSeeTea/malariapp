@@ -17,13 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
-
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitToProgramRelationFlow;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class OrganisationUnitProgramRelationship extends OrganisationUnitToProgramRelationFlow{
+public class DataElementAttributeValue {
 }

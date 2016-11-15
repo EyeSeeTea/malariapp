@@ -17,21 +17,13 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityAttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ImportSummaryFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class AttributeValue  extends TrackedEntityAttributeValueFlow {
-    //// FIXME: 09/11/2016
-    public Attribute getAttribute() {
-        return null;
-    }
-
-    public String getAttributeId() {
-        return getTrackedEntityAttributeUId();
-    }
+public class ImportSummary extends ImportSummaryFlow {
 }

@@ -50,7 +50,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Date;
-import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
 import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.List;

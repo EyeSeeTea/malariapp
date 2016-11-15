@@ -17,32 +17,13 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-
-import java.util.List;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitToProgramRelationFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class DataElement extends DataElementFlow {
-    //// FIXME: 09/11/2016
-    public String getCode(){
-        return null;
-    }
-    public String getDescription(){
-        return null;
-    }
-    public String getShortName(){
-        return null;
-    }
-    public List<AttributeValue> getAttributeValues() {
-        return null;
-    }
-    public String getUid(){
-        return getUId();
-    }
-
+public class OrganisationUnitProgramRelationship extends OrganisationUnitToProgramRelationFlow{
 }

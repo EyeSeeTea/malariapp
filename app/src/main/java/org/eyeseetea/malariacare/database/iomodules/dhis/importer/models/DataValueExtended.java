@@ -29,7 +29,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
@@ -47,13 +48,13 @@ public class DataValueExtended implements VisitableFromSDK {
     private final static String TAG=".DataValueExtended";
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
 
-    DataValue dataValue;
+    DataValueFlow dataValue;
 
     String programUid;
 
     public DataValueExtended(){}
 
-    public DataValueExtended(DataValue dataValue){
+    public DataValueExtended(DataValueFlow dataValue){
         this.dataValue =dataValue;
     }
 
@@ -62,7 +63,7 @@ public class DataValueExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public DataValue getDataValue() {
+    public DataValueFlow getDataValue() {
         return dataValue;
     }
 
@@ -174,5 +175,17 @@ public class DataValueExtended implements VisitableFromSDK {
 
     public void setProgramUid(String programUid) {
         this.programUid = programUid;
+    }
+
+    public EventFlow getEvent() {
+        return dataValue.getEvent();
+    }
+
+    public String getDataElement() {
+        return dataValue.getDataElement().getUId();
+    }
+
+    public String getValue() {
+        return dataValue.getValue();
     }
 }

@@ -17,11 +17,13 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
+
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class OrganisationUnitGroup{
+public class UserAccount extends UserAccountFlow {
 }

@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
@@ -28,8 +26,8 @@ import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.recreateTables;
@@ -43,8 +41,8 @@ public class Migration1RestartDB extends BaseMigration {
     private final static String TAG=".Migration";
 
     private final static Class SDK_TABLES_TO_UPDATE[] = {
-            Attribute.class,
-            DataElement.class
+            AttributeFlow.class,
+            DataElementFlow.class
     };
 
     public Migration1RestartDB() {

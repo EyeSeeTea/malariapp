@@ -25,9 +25,10 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.Program;
-import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class ProgramExtended implements VisitableFromSDK {
     /**
      * Reference to sdk program
      */
-    Program program;
+    ProgramFlow program;
 
     /**
      * Reference to app program (useful to create relationships with orgunits)
@@ -55,7 +56,7 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public ProgramExtended(){}
 
-    public ProgramExtended(Program program){
+    public ProgramExtended(ProgramFlow program){
         this.program=program;
     }
 
@@ -64,7 +65,7 @@ public class ProgramExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public Program getProgram(){
+    public ProgramFlow getProgram(){
         return this.program;
     }
 
@@ -96,20 +97,20 @@ public class ProgramExtended implements VisitableFromSDK {
         try {
             return Integer.parseInt(programAttributeValue.getValue());
         }catch(Exception ex){
-            Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUid(), ex.getMessage()));
+            Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUId(), ex.getMessage()));
             return null;
         }
     }
 
-    public static Program getProgramByDataElement(String dataElementUid) {
-        Program program = null;
+    public static ProgramFlow getProgramByDataElement(String dataElementUid) {
+        ProgramFlow program = null;
         //// FIXME: 11/11/2016
         /*
         List<Program> programs = getAllPrograms();
         for (Program program1 : programs) {
             for (ProgramStage programStage : program1.getProgramStages()) {
                 for (ProgramStageSectionFlow programStageSection : programStage.getProgramStageSections()) {
-                    for (ProgramStageDataElementFlow programStageDataElement : programStageSection.getProgramStageDataElements()) {
+                    for (programStageDataElementFlow programStageDataElement : programStageSection.getProgramStageDataElements()) {
                         if (programStageDataElement.getDataElement().getUId().equals(dataElementUid)) {
                             return program1;
                         }
@@ -121,12 +122,25 @@ public class ProgramExtended implements VisitableFromSDK {
         return program;
     }
     
-    public static List<Program> getAllPrograms(){
-        return new Select().from(Program.class).queryList();
+    public static List<ProgramFlow> getAllPrograms(){
+        return new Select().from(ProgramFlow.class).queryList();
     }
 
-    public static Program getProgram(String id){
+    public static ProgramFlow getProgram(String id){
         return new Select()
                 .from(Program.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
+    }
+
+
+    public List<ProgramStageFlow> getProgramStages() {
+        return SdkController.getProgramStages(program);
+    }
+
+    public String getUid() {
+        return program.getUId();
+    }
+
+    public String getDisplayName() {
+        return program.getDisplayName();
     }
 }

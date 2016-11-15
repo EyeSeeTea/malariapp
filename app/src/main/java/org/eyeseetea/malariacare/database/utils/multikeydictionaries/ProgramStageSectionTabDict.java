@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.utils.multikeydictionaries;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
 
 import java.util.List;
 

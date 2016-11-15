@@ -23,19 +23,21 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
  */
 public class ProgramStageExtended implements VisitableFromSDK {
-    ProgramStage programStage;
+    ProgramStageFlow programStage;
 
     public ProgramStageExtended(){}
 
-    public ProgramStageExtended(ProgramStage programStage){
+    public ProgramStageExtended(ProgramStageFlow programStage){
         this.programStage=programStage;
     }
 
@@ -44,7 +46,7 @@ public class ProgramStageExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public ProgramStage getProgramStage() {
+    public ProgramStageFlow getProgramStage() {
         return programStage;
     }
 
@@ -55,4 +57,17 @@ public class ProgramStageExtended implements VisitableFromSDK {
                 .querySingle();
     }
 
+    public String getProgramUid() {
+        return programStage.getUId();
+    }
+
+    public String getUid() {
+        return programStage.getUId();
+    }
+
+    public List<ProgramStageSectionFlow> getProgramStageSections() {
+        //// TODO: 15/11/2016
+        //return programStage.getProgramStageSections();
+        return null;
+    }
 }

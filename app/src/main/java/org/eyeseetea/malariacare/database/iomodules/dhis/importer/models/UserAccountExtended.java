@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.UserAccount;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -44,4 +43,11 @@ public class UserAccountExtended implements VisitableFromSDK {
         return userAccount;
     }
 
+    public String getUid() {
+        return userAccount.getUId();
+    }
+
+    public String getName() {
+        return userAccount.getName();
+    }
 }

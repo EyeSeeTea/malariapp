@@ -26,7 +26,7 @@ import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
@@ -49,7 +49,7 @@ public class EventExtended implements VisitableFromSDK {
     public final static String DHIS2_LONG_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT ="yyyy-MM-dd";
 
-    Event event;
+    EventFlow event;
 
     public EventExtended(){}
 
@@ -62,7 +62,7 @@ public class EventExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public Event getEvent() {
+    public EventFlow getEvent() {
         return event;
     }
 
@@ -169,10 +169,10 @@ public class EventExtended implements VisitableFromSDK {
                         .is(localId)).querySingle();
     }
 
-    public Event removeDataValues() {
+    public EventFlow removeDataValues() {
         //Remove all dataValues
         List<TrackedEntityDataValueFlow> dataValues = new Select().from(TrackedEntityDataValueFlow.class)
-                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUid()))
+                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
                 .queryList();
         if(dataValues!=null) {
             for (int i=dataValues.size()-1;i>=0;i--) {
@@ -181,7 +181,8 @@ public class EventExtended implements VisitableFromSDK {
                 dataValues.remove(i);
             }
         }
-        event.setDataValues(null);
+        //// TODO: 15/11/2016
+        //event.setDataValues(null);
         event.save();
         return event;
     }
@@ -198,7 +199,7 @@ public class EventExtended implements VisitableFromSDK {
     }
     public static long count(){
         return SQLite.selectCountOf()
-                .from(Event.class)
+                .from(EventFlow.class)
                 .count();
     }
 
@@ -213,4 +214,24 @@ public class EventExtended implements VisitableFromSDK {
                 .querySingle();
     }
 
+    public String getOrganisationUnitId() {
+        return event.getOrgUnit();
+    }
+
+    public String getProgramStageId() {
+        return event.getProgramStage();
+    }
+
+    public String getUid() {
+        return event.getUId();
+    }
+
+    public List<DataValueFlow> getDataValues() {
+        //// TODO: 15/11/2016
+        return null;
+    }
+
+    public String getProgramId() {
+        return event.getProgram();
+    }
 }

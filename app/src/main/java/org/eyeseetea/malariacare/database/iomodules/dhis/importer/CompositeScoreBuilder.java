@@ -29,11 +29,10 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionE
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.DataElement;
-import org.eyeseetea.malariacare.sdk.models.Option;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +80,7 @@ public class CompositeScoreBuilder {
     CompositeScoreBuilder(){
         mapCompositeScores=new HashMap<>();
 
-        Option optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
+        OptionFlow optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
         //No Option with COMPOSITE_SCORE -> error
         if(optionCompositeScore==null){
             Log.e(TAG,"There is no option named 'COMPOSITE_SCORE' which is a severe data error");
@@ -143,7 +142,7 @@ public class CompositeScoreBuilder {
 
         //Not a composite -> done
         if(dataElementExtended==null || !dataElementExtended.isCompositeScore()){
-            Log.d("CompositeScoreBuilder", String.format("dataElement %s is not CompositeScore", dataElementExtended.getDataElement().getUid()));
+            Log.d("CompositeScoreBuilder", String.format("dataElement %s is not CompositeScore", dataElementExtended.getUid()));
             return null;
         }
 
@@ -223,12 +222,12 @@ public class CompositeScoreBuilder {
      */
     private static String findProgramStageByDataElementUID(String dataElementUID, String progamUid){
         //Find the right 'programStage' to group scores by program
-        List<ProgramStageDataElement> programStageDataElements = new Select().from(ProgramStageDataElement.class)
+        List<ProgramStageDataElementFlow> programStageDataElements = new Select().from(ProgramStageDataElementFlow.class)
                 //.indexedBy("ProgramStageDataElement_DataElement")
                 .where(ProgramStageDataElementFlow_Table.dataElement.is(dataElementUID))
                 .orderBy(ProgramStageDataElementFlow_Table.sortOrder, true).queryList();
-        for(ProgramStageDataElement programStageDataElement:programStageDataElements){
-            ProgramStage programStage= SdkController.getProgramStage(programStageDataElement.getProgramStage());
+        for(ProgramStageDataElementFlow programStageDataElement:programStageDataElements){
+            ProgramStageFlow programStage= SdkController.getProgramStage(programStageDataElement.getProgramStage());
             if(programStage!= null && programStage.getProgram().getUId().equals(progamUid))
                 return programStageDataElement.getProgramStage().getUId();
         }
@@ -250,7 +249,7 @@ public class CompositeScoreBuilder {
             return false;
         }
     }
-    public static CompositeScore getCompositeScoreFromDataElementAndHierarchicalCode(DataElement dataElement, String programUid, String HierarchicalCode){
+    public static CompositeScore getCompositeScoreFromDataElementAndHierarchicalCode(DataElementExtended dataElement, String programUid, String HierarchicalCode){
         CompositeScore compositeScore=null;
         String programId= findProgramStageByDataElementUID(dataElement.getUid(), programUid);
         Map<String,CompositeScore> compositeScoresInProgram=mapCompositeScores.get(programId);

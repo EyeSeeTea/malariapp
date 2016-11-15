@@ -17,13 +17,16 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.sdk.models;
+package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ImportSummaryFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+
+import java.util.List;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class ImportSummary extends ImportSummaryFlow {
+public class Option extends OptionFlow {
+
 }
