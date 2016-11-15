@@ -11,6 +11,9 @@ import org.joda.time.DateTime;
  * Created by idelcano on 15/11/2016.
  */
 
+/** This class will be disappeared soon.
+ * This is a SDK Pojo BaseModel
+ */
 public class TempModel extends BaseModel {
 
     @Column

@@ -6,9 +6,8 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import org.eyeseetea.malariacare.database.AppDatabase;
 
 /**
- * Created by idelcano on 14/11/2016.
+ * Created by idelcano on 15/11/2016.
  */
-
 
 /** This class will be disappeared soon.
  * This is a SDK Pojo and is created to fix the Queries,
@@ -17,17 +16,16 @@ import org.eyeseetea.malariacare.database.AppDatabase;
  * and necessary sdk new Pojos..
  */
 @Table(database = AppDatabase.class)
-public class AttributeFlow   extends TempModel {
-
+public class OrganisationUnitDataSetFlow  extends TempModel  {
     @Column
-    String code;
+    String organisationUnitId;
 
-    public String getCode() {
+    public String getOrganisationUnitId() {
         //return code;
-        return code;
+        return organisationUnitId;
     }
 
-    public void setCode(String code){
-        this.code=code;
+    public void setOrganisationUnitId(String organisationUnitId){
+        this.organisationUnitId=organisationUnitId;
     }
 }
