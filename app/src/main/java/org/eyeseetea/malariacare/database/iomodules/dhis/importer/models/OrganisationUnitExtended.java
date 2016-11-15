@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroupFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrganisationUnitExtended implements VisitableFromSDK {
@@ -75,6 +76,9 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
         this.organisationUnit = orgUnit;
     }
 
+    public OrganisationUnitExtended(OrganisationUnitExtended orgUnit){
+        this.organisationUnit = orgUnit.getOrganisationUnit();
+    }
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
@@ -225,5 +229,22 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
         //// TODO: 15/11/2016  create method in sdk
         //return organisationUnit.getPath();
         return null;
+    }
+
+    public String getId() {
+        return organisationUnit.getUId();
+    }
+
+    public String getParent() {
+        return organisationUnit.getParent().getUId();
+    }
+
+    public static List<OrganisationUnitExtended> getExtendedList(
+            List<OrganisationUnitFlow> flowList) {
+        List <OrganisationUnitExtended> extendedsList = new ArrayList<>();
+        for(OrganisationUnitFlow flowPojo:flowList){
+            extendedsList.add(new OrganisationUnitExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

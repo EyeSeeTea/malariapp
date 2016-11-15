@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValueFlow;
 import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ProgramExtended implements VisitableFromSDK {
     /**
      * Reference to app program (useful to create relationships with orgunits)
      */
-    org.eyeseetea.malariacare.database.model.Program appProgram;
+    Program appProgram;
 
     public ProgramExtended(){}
 
@@ -77,11 +77,11 @@ public class ProgramExtended implements VisitableFromSDK {
         return this.program;
     }
 
-    public void setAppProgram(org.eyeseetea.malariacare.database.model.Program appProgram) {
+    public void setAppProgram(Program appProgram) {
         this.appProgram = appProgram;
     }
 
-    public org.eyeseetea.malariacare.database.model.Program getAppProgram(){
+    public Program getAppProgram(){
         return this.appProgram;
     }
 
@@ -108,23 +108,20 @@ public class ProgramExtended implements VisitableFromSDK {
         }
     }
 
-    public static ProgramFlow getProgramByDataElement(String dataElementUid) {
-        ProgramFlow program = null;
-        //// FIXME: 11/11/2016
-        /*
-        List<Program> programs = getAllPrograms();
-        for (Program program1 : programs) {
-            for (ProgramStage programStage : program1.getProgramStages()) {
-                for (ProgramStageSectionFlow programStageSection : programStage.getProgramStageSections()) {
-                    for (programStageDataElementFlow programStageDataElement : programStageSection.getProgramStageDataElements()) {
-                        if (programStageDataElement.getDataElement().getUId().equals(dataElementUid)) {
+    public static ProgramExtended getProgramByDataElement(String dataElementUid) {
+        ProgramExtended program = null;
+        List<ProgramExtended> programs = getAllPrograms();
+        for (ProgramExtended program1 : programs) {
+            for (ProgramStageExtended programStage : program1.getProgramStages()) {
+                for (ProgramStageSectionExtended programStageSection : programStage.getProgramStageSections()) {
+                    for (ProgramStageDataElementExtended programStageDataElement : programStageSection.getProgramStageDataElements()) {
+                        if (programStageDataElement.getDataElement().getUid().equals(dataElementUid)) {
                             return program1;
                         }
                     }
                 }
             }
         }
-        */
         return program;
     }
     
@@ -137,21 +134,14 @@ public class ProgramExtended implements VisitableFromSDK {
         return programsExtended;
     }
 
-    public static List<ProgramExtended> getProgramsExtendedList(List<ProgramFlow> programFlows){
-        List<ProgramExtended> programsExtended = new ArrayList<>();
-        for(ProgramFlow programFlow : programFlows){
-            programsExtended.add(new ProgramExtended(programFlow));
-        }
-        return programsExtended;
-    }
     public static ProgramFlow getProgram(String id){
         return new Select()
                 .from(ProgramFlow.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
     }
 
 
-    public List<ProgramStageFlow> getProgramStages() {
-        return SdkController.getProgramStages(program);
+    public List<ProgramStageExtended> getProgramStages() {
+        return ProgramStageExtended.getExtendedList(SdkController.getProgramStages(program));
     }
 
     public String getUid() {
@@ -164,5 +154,12 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public String getName() {
         return program.getName();
+    }
+    public static List<ProgramExtended> getExtendedList(List<ProgramFlow> flowList){
+        List <ProgramExtended> extendedsList = new ArrayList<>();
+        for(ProgramFlow flowPojo:flowList){
+            extendedsList.add(new ProgramExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

@@ -23,14 +23,26 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by arrizabalaga on 6/11/15.
  */
 public class AttributeExtended {
-    //// TODO: 14/11/2016 Implements attributes in the sdk
+
     AttributeFlow attributeFlow;
+
+    public AttributeExtended(AttributeFlow attributeFlow){
+        this.attributeFlow =attributeFlow;
+    }
+    public AttributeExtended(AttributeExtended attributeFlow){
+        this.attributeFlow =attributeFlow.getAttribute();
+    }
 
     public String getCode() {
         return attributeFlow.getCode();
@@ -38,11 +50,6 @@ public class AttributeExtended {
 
     public String getUid() {
         return attributeFlow.getUId();
-    }
-
-
-    public AttributeExtended(AttributeFlow attribute){
-        this.attributeFlow=attribute;
     }
 
     public AttributeFlow getAttribute() {
@@ -64,4 +71,11 @@ public class AttributeExtended {
     }
 
 
+    public static List<AttributeExtended> getExtendedList(List<AttributeFlow> flowList) {
+        List <AttributeExtended> extendedsList = new ArrayList<>();
+        for(AttributeFlow flowPojo:flowList){
+            extendedsList.add(new AttributeExtended(flowPojo));
+        }
+        return extendedsList;
+    }
 }

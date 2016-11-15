@@ -21,7 +21,11 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -33,6 +37,9 @@ public class ProgramStageSectionExtended implements VisitableFromSDK {
 
     public ProgramStageSectionExtended(ProgramStageSectionFlow programStageSection){
         this.programStageSection=programStageSection;
+    }
+    public ProgramStageSectionExtended(ProgramStageSectionExtended programStageSection){
+        this.programStageSection=programStageSection.getProgramStageSection();
     }
 
     @Override
@@ -58,5 +65,17 @@ public class ProgramStageSectionExtended implements VisitableFromSDK {
 
     public String getUid() {
         return programStageSection.getUId();
+    }
+
+    public static List<ProgramStageSectionExtended> getExtendedList(List<ProgramStageSectionFlow> flowList) {
+        List <ProgramStageSectionExtended> extendedsList = new ArrayList<>();
+        for(ProgramStageSectionFlow flowPojo:flowList){
+            extendedsList.add(new ProgramStageSectionExtended(flowPojo));
+        }
+        return extendedsList;
+    }
+
+    public List<ProgramStageDataElementExtended> getProgramStageDataElements() {
+        return null;
     }
 }

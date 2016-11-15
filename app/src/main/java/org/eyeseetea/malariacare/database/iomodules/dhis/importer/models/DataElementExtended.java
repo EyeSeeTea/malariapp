@@ -60,6 +60,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSection
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.models.dataelement.ValueType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -182,6 +183,20 @@ public class DataElementExtended implements VisitableFromSDK {
 
     String programUid;
 
+
+    public DataElementExtended(DataElementFlow dataElement) {
+        this.dataElement = dataElement;
+    }
+
+    public DataElementExtended(DataElementExtended dataElement) {
+        this.dataElement = dataElement.getDataElementFlow();
+    }
+
+    @Override
+    public void accept(IConvertFromSDKVisitor visitor) {
+        visitor.visit(this);
+    }
+
     public String getCode() {
         // TODO: 15/11/2016
         //return dataElement.getCode()
@@ -236,20 +251,14 @@ public class DataElementExtended implements VisitableFromSDK {
         return option.getCode();
     }
 
-    public DataElementExtended(DataElementFlow dataElement) {
-        this.dataElement = dataElement;
+
+    public DataElementExtended getDataElement() {
+        return new DataElementExtended(dataElement);
     }
 
-    @Override
-    public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this);
-    }
-
-
-    public DataElementFlow getDataElement() {
+    public DataElementFlow getDataElementFlow() {
         return dataElement;
     }
-
     /**
      * Gets value in the AttributeValue table
      *
@@ -257,7 +266,7 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public String getValue(String attributeCode) {
         AttributeValueFlow attributeValue = findAttributeValuefromDataElementCode(attributeCode,
-                getDataElement());
+                getDataElementFlow());
         if (attributeValue != null) {
             return attributeValue.getValue();
         }
@@ -622,5 +631,13 @@ public class DataElementExtended implements VisitableFromSDK {
 
     public ValueType getValueType() {
         return dataElement.getValueType();
+    }
+
+    public static List<DataElementExtended> getExtendedList(List<DataElementFlow> flowList) {
+        List <DataElementExtended> extendedsList = new ArrayList<>();
+        for(DataElementFlow flowPojo:flowList){
+            extendedsList.add(new DataElementExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

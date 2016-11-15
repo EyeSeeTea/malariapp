@@ -31,6 +31,10 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrganisationUnitLevelExtended implements VisitableFromSDK {
     OrganisationUnitLevelFlow organisationUnitLevel;
@@ -57,7 +61,7 @@ public class OrganisationUnitLevelExtended implements VisitableFromSDK {
      * @return The synthetic key (Ex: "OrganisationUnitLevel3")
      */
     public static String buildKey(int level){
-        return OrganisationUnitLevel.class.getSimpleName()+level;
+        return OrganisationUnitLevelFlow.class.getSimpleName()+level;
     }
 
     /**
@@ -74,5 +78,13 @@ public class OrganisationUnitLevelExtended implements VisitableFromSDK {
 
     public String getDisplayName() {
         return organisationUnitLevel.getDisplayName();
+    }
+
+    public static List<OrganisationUnitLevelExtended> getExtendedList(List<OrganisationUnitLevelFlow> flowList) {
+        List <OrganisationUnitLevelExtended> extendedsList = new ArrayList<>();
+        for(OrganisationUnitLevelFlow flowPojo:flowList){
+            extendedsList.add(new OrganisationUnitLevelExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

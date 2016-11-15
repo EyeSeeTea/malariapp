@@ -27,6 +27,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow_Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +53,9 @@ public class OptionSetExtended implements VisitableFromSDK {
 
     public OptionSetExtended(OptionSetFlow optionSet){
         this.optionSet=optionSet;
+    }
+    public OptionSetExtended(OptionSetExtended optionSet){
+        this.optionSet=optionSet.getOptionSet();
     }
 
     @Override
@@ -108,7 +112,15 @@ public class OptionSetExtended implements VisitableFromSDK {
         return optionSet.getUid();
     }
 
-    public List<OptionFlow> getOptionsList() {
-        return optionSet.getOptions();
+    public List<OptionExtended> getOptions() {
+        return OptionExtended.getExtendedList(optionSet.getOptions());
+    }
+
+    public static List<OptionSetExtended> getExtendedList(List<OptionSetFlow> flowList) {
+        List <OptionSetExtended> extendedsList = new ArrayList<>();
+        for(OptionSetFlow flowPojo:flowList){
+            extendedsList.add(new OptionSetExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

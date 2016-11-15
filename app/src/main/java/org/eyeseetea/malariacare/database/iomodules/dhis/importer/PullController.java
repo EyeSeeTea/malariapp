@@ -43,18 +43,6 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -73,19 +61,6 @@ public class PullController {
     private final String TAG = ".PullController";
     public static final int NUMBER_OF_MONTHS=6;
 
-    private final static Class MANDATORY_METADATA_TABLES[] = {
-            AttributeFlow.class,
-            DataElementFlow.class,
-            //DataElementAttributeValueFlow.class,
-            OptionFlow.class,
-            OptionSetFlow.class,
-            UserAccountFlow.class,
-            OrganisationUnitFlow.class,
-            //OrganisationUnitProgramRelationshipFlow.class,
-            ProgramStageFlow.class,
-            ProgramStageDataElementFlow.class,
-            ProgramStageSectionFlow.class
-    };
 
     private static PullController instance;
 
@@ -270,7 +245,7 @@ public class PullController {
     private boolean mandatoryMetadataTablesNotEmpty(){
 
         int elementsInTable = 0;
-        for(Class table: MANDATORY_METADATA_TABLES) {
+        for(Class table: SdkController.MANDATORY_METADATA_TABLES) {
             elementsInTable = (int) new SQLite().selectCountOf()
                     .from(table).count();
             if (elementsInTable == 0) {
@@ -324,12 +299,11 @@ public class PullController {
         //Convert Answers, Options
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
-        List<OptionSetFlow> optionSets = SdkController.getOptionSets();
+        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(SdkController.getOptionSets());
         Log.i(TAG, "Converting answers and options...");
-        for (OptionSetFlow optionSet : optionSets) {
+        for (OptionSetExtended optionSet : optionSets) {
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
-            OptionSetExtended optionSetExtended = new OptionSetExtended(optionSet);
-            optionSetExtended.accept(converter);
+            optionSet.accept(converter);
         }
         //OrganisationUnits
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -349,52 +323,50 @@ public class PullController {
         int count;
         //Dataelements ordered by program.
         List<ProgramExtended> programs = ProgramExtended.getAllPrograms();
-        Map<String, List<DataElementFlow>> programsDataelements = new HashMap<>();
+        Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {
             converter.actualProgram=program;
             Log.i(TAG,String.format("\t program '%s' ",program.getName()));
-            List<DataElementFlow> dataElements = new ArrayList<>();
+            List<DataElementExtended> dataElements = new ArrayList<>();
             String programUid = program.getUid();
-            List<ProgramStageFlow> programStages = program.getProgramStages();
-            for (ProgramStageFlow programStage : programStages) {
-                ProgramStageExtended programStageExtended = new ProgramStageExtended(programStage);
-                Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStageExtended.getProgramStageDataElements().size());
+            List<ProgramStageExtended> programStages = program.getProgramStages();
+            for (ProgramStageExtended programStage : programStages) {
+                Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStage.getProgramStageDataElements().size());
                 Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
-                List<ProgramStageDataElementFlow> programStageDataElements = programStageExtended.getProgramStageDataElements();
-                count=programStageExtended.getProgramStageDataElements().size();
-                for (ProgramStageDataElementFlow programStageDataElement : programStageDataElements) {
-                    ProgramStageDataElementExtended programStageDataElementExtended = new ProgramStageDataElementExtended(programStageDataElement);
+                List<ProgramStageDataElementExtended> programStageDataElements = programStage.getProgramStageDataElements();
+                count=programStage.getProgramStageDataElements().size();
+                for (ProgramStageDataElementExtended programStageDataElement : programStageDataElements) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
 
                     //The ProgramStageDataElement without Dataelement uid is not correctly configured.
-                    if(programStageDataElementExtended.getDataelement()==null || programStageDataElementExtended.getDataelement().equals("")){
+                    if(programStageDataElement.getDataelement()==null || programStageDataElement.getDataelement().equals("")){
                         Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
                         continue;
                     }
 
                     //Note: the sdk method getDataElement returns the dataElement object, and getDataelement returns the dataelement uid.
-                    DataElementFlow dataElement = programStageDataElementExtended.getDataElement();
-                    if (dataElement!=null && dataElement.getUId() != null) {
-                        dataElements.add((DataElementFlow) dataElement);
+                    DataElementExtended dataElement = programStageDataElement.getDataElement();
+                    if (dataElement!=null && dataElement.getUid() != null) {
+                        dataElements.add(dataElement);
                     }
                     else{
-                        DataElementExtended.existsDataElementByUid(programStageDataElementExtended.getDataelement());
-                        dataElement = SdkController.getDataElement(programStageDataElementExtended.getDataelement());
+                        DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
+                        dataElement = new DataElementExtended(SdkController.getDataElement(programStageDataElement.getDataelement()));
 
                         if (dataElement!=null) {
-                            dataElements.add((DataElementFlow) dataElement);
+                            dataElements.add(dataElement);
                         }
                         else{
                             //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
-                            Log.d(TAG,"Null dataelement on first query "+ programStageDataElementExtended.getProgramStage());
+                            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
                             int times=0;
                             while(dataElement==null){
                                 times++;
                                 Log.d(TAG, "running : "+times);
                                 try {
                                     Thread.sleep(100);
-                                    dataElement=SdkController.getDataElement(programStageDataElementExtended.getDataelement());
+                                    dataElement= new DataElementExtended(SdkController.getDataElement(programStageDataElement.getDataelement()));
                                 } catch (InterruptedException e) {//throw new RuntimeException("Null query");
                                     e.printStackTrace();
                                 }
@@ -413,10 +385,8 @@ public class PullController {
 
 
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
-            Collections.sort(dataElements, new Comparator<DataElementFlow>() {
-                public int compare(DataElementFlow de1, DataElementFlow de2) {
-                    DataElementExtended dataElementExtended1 = new DataElementExtended(de1);
-                    DataElementExtended dataElementExtended2 = new DataElementExtended(de2);
+            Collections.sort(dataElements, new Comparator<DataElementExtended>() {
+                public int compare(DataElementExtended dataElementExtended1, DataElementExtended dataElementExtended2) {
                     Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
                     try {
                         dataelementOrder1 = dataElementExtended1.findOrder();
@@ -448,15 +418,14 @@ public class PullController {
         for (ProgramExtended program : programs) {
             converter.actualProgram=program;
             String programUid = program.getUid();
-            List<DataElementFlow> sortDataElements = programsDataelements.get(programUid);
-            for (DataElementFlow dataElement : sortDataElements) {
+            List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
+            for (DataElementExtended dataElement : sortDataElements) {
                 if (++i%50==0)
                     postProgress(context.getString(R.string.progress_pull_questions) + String.format(" %s", i));
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
-                DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
-                dataElementExtended.setProgramUid(programUid);
-                dataElementExtended.accept(converter);
+                dataElement.setProgramUid(programUid);
+                dataElement.accept(converter);
             }
         }
 
@@ -469,13 +438,12 @@ public class PullController {
         for (ProgramExtended program : programs) {
             converter.actualProgram=program;
             String programUid = program.getUid();
-            List<DataElementFlow> sortDataElements = programsDataelements.get(programUid);
+            List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
-            for (DataElementFlow dataElement : sortDataElements) {
+            for (DataElementExtended dataElement : sortDataElements) {
                 if (!ProgressActivity.PULL_IS_ACTIVE) return;
-                DataElementExtended dataElementExtended = new DataElementExtended(dataElement);
-                dataElementExtended.setProgramUid(programUid);
-                converter.buildRelations(dataElementExtended);
+                dataElement.setProgramUid(programUid);
+                converter.buildRelations(dataElement);
             }
         }
 
@@ -494,19 +462,17 @@ public class PullController {
     private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
         Log.i(TAG, "Converting organisationUnitLevels...");
-        List<OrganisationUnitLevelFlow> organisationUnitLevels = SdkController.getOrganisationUnitLevels();
-        for(OrganisationUnitLevelFlow organisationUnitLevel:organisationUnitLevels){
+        List<OrganisationUnitLevelExtended> organisationUnitLevels = OrganisationUnitLevelExtended.getExtendedList(SdkController.getOrganisationUnitLevels());
+        for(OrganisationUnitLevelExtended organisationUnitLevel:organisationUnitLevels){
             if(!ProgressActivity.PULL_IS_ACTIVE) return false;
-            OrganisationUnitLevelExtended organisationUnitLevelExtended = new OrganisationUnitLevelExtended(organisationUnitLevel);
-            organisationUnitLevelExtended.accept(converter);
+            organisationUnitLevel.accept(converter);
         }
 
         Log.i(TAG, "Converting organisationUnits...");
-        List<OrganisationUnitFlow> assignedOrganisationsUnits = SdkController.getAssignedOrganisationUnits();
-        for (OrganisationUnitFlow assignedOrganisationsUnit : assignedOrganisationsUnits) {
+        List<OrganisationUnitExtended> assignedOrganisationsUnits = OrganisationUnitExtended.getExtendedList(SdkController.getAssignedOrganisationUnits());
+        for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
             if (!ProgressActivity.PULL_IS_ACTIVE) return false;
-            OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
-            organisationUnitExtended.accept(converter);
+            assignedOrganisationsUnit.accept(converter);
         }
 
         Log.i(TAG,"Building orgunit hierarchy...");
@@ -523,18 +489,17 @@ public class PullController {
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
-        for (OrganisationUnitFlow organisationUnit : SdkController.getAssignedOrganisationUnits()) {
+        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(SdkController.getAssignedOrganisationUnits())) {
             //Each assigned program
-            for (ProgramExtended program : ProgramExtended.getProgramsExtendedList(SdkController.getProgramsForOrganisationUnit(organisationUnit.getUId(), ProgramType.WITHOUT_REGISTRATION))) {
+            for (ProgramExtended program : ProgramExtended.getExtendedList(SdkController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION))) {
                 converter.actualProgram=program;
-                List<EventFlow> events = SdkController.getEvents(organisationUnit.getUId(), program.getUid());
-                Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", new OrganisationUnitExtended(organisationUnit).getLabel(), program.getDisplayName()));
-                for (EventFlow event : events) {
+                List<EventExtended> events = EventExtended.getExtendedList(SdkController.getEvents(organisationUnit.getId(), program.getUid()));
+                Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
+                for (EventExtended event : events) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
                     if(event.getEventDate()==null || event.getEventDate().equals(""))
                         break;
-                    EventExtended eventExtended = new EventExtended(event);
-                    eventExtended.accept(converter);
+                    event.accept(converter);
                 }
             }
         }

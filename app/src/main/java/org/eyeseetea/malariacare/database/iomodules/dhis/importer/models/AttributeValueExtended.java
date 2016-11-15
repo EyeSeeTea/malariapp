@@ -25,6 +25,9 @@ import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
 import org.eyeseetea.malariacare.sdk.models.AttributeValueFlow;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -34,14 +37,18 @@ public class AttributeValueExtended {
 
     AttributeValueFlow attributeValueFlow;
 
+    public AttributeValueExtended(AttributeValueFlow attributeValueFlow){
+        this.attributeValueFlow=attributeValueFlow;
+    }
+    public AttributeValueExtended(AttributeValueExtended attributeValueFlow){
+        this.attributeValueFlow =attributeValueFlow.getAttribute();
+    }
+
     public String getUid() {
         return attributeValueFlow.getUId();
     }
 
 
-    public AttributeValueExtended(AttributeValueFlow attributeValueFlow){
-        this.attributeValueFlow=attributeValueFlow;
-    }
 
     public AttributeValueFlow getAttribute() {
         return attributeValueFlow;
@@ -62,4 +69,11 @@ public class AttributeValueExtended {
     }
 
 
+    public static List<AttributeValueExtended> getExtendedList(List<AttributeValueFlow> flowList) {
+        List <AttributeValueExtended> extendedsList = new ArrayList<>();
+        for(AttributeValueFlow flowPojo:flowList){
+            extendedsList.add(new AttributeValueExtended(flowPojo));
+        }
+        return extendedsList;
+    }
 }

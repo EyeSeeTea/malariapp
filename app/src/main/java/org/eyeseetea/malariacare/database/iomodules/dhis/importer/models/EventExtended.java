@@ -59,22 +59,27 @@ public class EventExtended implements VisitableFromSDK {
     public static final Event.EventStatus STATUS_FUTURE_VISIT = Event.EventStatus.SCHEDULE;
     public static final Event.EventStatus STATUS_SKIPPED = Event.EventStatus.SKIPPED;
 
-
-    public void setStatus(Event.EventStatus statusCompleted) {
-        event.setStatus(statusCompleted);
-
-    }
     EventFlow event;
-
-    public EventExtended(){}
 
     public EventExtended(EventFlow event){
         this.event =event;
+    }
+    public EventExtended(EventExtended event){
+        this.event =event.getEvent();
+    }
+
+    public EventExtended() {
+        event= new EventFlow();
     }
 
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public void setStatus(Event.EventStatus statusCompleted) {
+        event.setStatus(statusCompleted);
+
     }
 
     public EventFlow getEvent() {
@@ -265,7 +270,7 @@ public class EventExtended implements VisitableFromSDK {
         return event.getProgramStage();
     }
 
-    public List<DataValueFlow> getDataValues() {
+    public List<DataValueExtended> getDataValues() {
         //// FIXME: 09/11/2016
         return null;
     }
@@ -287,10 +292,10 @@ public class EventExtended implements VisitableFromSDK {
     }
 
 
-    public static List<EventExtended> getEventExtended(List<EventFlow> events){
+    public static List<EventExtended> getExtendedList(List<EventFlow> events){
         List <EventExtended> eventExtendeds = new ArrayList<>();
-        for(EventFlow eventFlow:events){
-            eventExtendeds.add(new EventExtended(eventFlow));
+        for(EventFlow pojoFlow:events){
+            eventExtendeds.add(new EventExtended(pojoFlow));
         }
         return eventExtendeds;
     }

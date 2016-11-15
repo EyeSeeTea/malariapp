@@ -32,18 +32,21 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressSt
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.*;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
-import org.hisp.dhis.client.sdk.models.program.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +57,19 @@ import java.util.List;
 
 public class SdkController {
 
+    public final static Class[] MANDATORY_METADATA_TABLES = {
+            AttributeFlow.class,
+            DataElementFlow.class,
+            //DataElementAttributeValueFlow.class,
+            OptionFlow.class,
+            OptionSetFlow.class,
+            UserAccountFlow.class,
+            OrganisationUnitFlow.class,
+            //OrganisationUnitProgramRelationshipFlow.class,
+            ProgramStageFlow.class,
+            ProgramStageDataElementFlow.class,
+            ProgramStageSectionFlow.class
+    };
     //from pull controller
     public static void register(Context context){
         try {

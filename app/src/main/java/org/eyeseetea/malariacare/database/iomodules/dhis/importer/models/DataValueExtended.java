@@ -31,10 +31,8 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.eyeseetea.malariacare.sdk.models.DataValueFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +51,13 @@ public class DataValueExtended implements VisitableFromSDK {
 
     String programUid;
 
-    public DataValueExtended(){}
+    public DataValueExtended(){dataValue=new DataValueFlow();}
 
     public DataValueExtended(DataValueFlow dataValue){
         this.dataValue =dataValue;
+    }
+    public DataValueExtended(DataValueExtended dataValueExtended){
+        this.dataValue =dataValueExtended.getDataValue();
     }
 
     @Override
@@ -178,7 +179,7 @@ public class DataValueExtended implements VisitableFromSDK {
         this.programUid = programUid;
     }
 
-    public EventFlow getEvent() {
+    public String getEvent() {
         //// FIXME: 15/11/2016
         //EventFlow event= dataValue.getEvent();
         //return event;
@@ -219,5 +220,13 @@ public class DataValueExtended implements VisitableFromSDK {
 
     public void save() {
         dataValue.save();
+    }
+
+    public static List<DataValueExtended> getExtendedList(List<DataValueFlow> flowList){
+        List <DataValueExtended> extendedsList = new ArrayList<>();
+        for(DataValueFlow flowPojo:flowList){
+            extendedsList.add(new DataValueExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

@@ -28,16 +28,19 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramStageDataElementExtended {
     ProgramStageDataElementFlow programStageDataElementFlow;
 
-    public ProgramStageDataElementExtended(){}
-
-    public ProgramStageDataElementExtended(ProgramStageDataElementFlow organisationUnitLevel){
-        this.programStageDataElementFlow = organisationUnitLevel;
+    public ProgramStageDataElementExtended(ProgramStageDataElementFlow programStageDataElementFlow){
+        this.programStageDataElementFlow = programStageDataElementFlow;
+    }
+    public ProgramStageDataElementExtended(ProgramStageDataElementExtended programStageDataElementExtended){
+        this.programStageDataElementFlow = programStageDataElementExtended.getProgramStageDataElementFlow();
     }
 
     public ProgramStageDataElementFlow getProgramStageDataElementFlow() {
@@ -48,8 +51,8 @@ public class ProgramStageDataElementExtended {
         return programStageDataElementFlow.isCompulsory();
     }
 
-    public DataElementFlow getDataElement() {
-        return programStageDataElementFlow.getDataElement();
+    public DataElementExtended getDataElement() {
+        return new DataElementExtended(programStageDataElementFlow.getDataElement());
     }
 
     //Returns dataElement uid
@@ -59,5 +62,13 @@ public class ProgramStageDataElementExtended {
 
     public String getProgramStage() {
         return programStageDataElementFlow.getProgramStage().getUId();
+    }
+
+    public static List<ProgramStageDataElementExtended> getExtendedList(List<ProgramStageDataElementFlow> flowList) {
+        List <ProgramStageDataElementExtended> extendedsList = new ArrayList<>();
+        for(ProgramStageDataElementFlow flowPojo:flowList){
+            extendedsList.add(new ProgramStageDataElementExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }
