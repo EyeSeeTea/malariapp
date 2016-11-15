@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
@@ -161,12 +162,12 @@ public class DataValueExtended implements VisitableFromSDK {
                 .count();
     }
 
-    public static TrackedEntityDataValueFlow findByEventAndUID(EventFlow event, String dataElementUID){
-        return new Select()
-                .from(TrackedEntityDataValueFlow.class)
-                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
-                .and(TrackedEntityDataValueFlow_Table.dataElement.eq(dataElementUID))
-                .querySingle();
+    public static DataValueExtended findByEventAndUID(EventFlow event, String dataElementUID){
+        return new DataValueExtended(new Select()
+                .from(DataValueFlow.class)
+                .where(DataValueFlow_Table.event.eq(event.getUId()))
+                .and(DataValueFlow_Table.dataElement.eq(dataElementUID))
+                .querySingle());
     }
 
     public String getProgramUid() {
@@ -178,14 +179,45 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public EventFlow getEvent() {
-        return dataValue.getEvent();
+        //// FIXME: 15/11/2016
+        //EventFlow event= dataValue.getEvent();
+        //return event;
+        return null;
     }
 
     public String getDataElement() {
-        return dataValue.getDataElement().getUId();
+        return dataValue.getDataElement();
     }
 
     public String getValue() {
         return dataValue.getValue();
+    }
+
+    public void setDataElement(String uid) {
+        dataValue.setDataElement(uid);
+    }
+
+    public void setLocalEventId(long localId) {
+        dataValue.setLocalId(localId);
+    }
+
+    public void setEvent(EventFlow event) {
+        dataValue.setEvent(event.getUId());
+    }
+
+    public void setProvidedElsewhere(boolean b) {
+        dataValue.setProvidedElsewhere(b);
+    }
+
+    public void setStoredBy(String safeUsername) {
+        dataValue.setStoredBy(safeUsername);
+    }
+
+    public void setValue(String round) {
+        dataValue.setValue(round);
+    }
+
+    public void save() {
+        dataValue.save();
     }
 }

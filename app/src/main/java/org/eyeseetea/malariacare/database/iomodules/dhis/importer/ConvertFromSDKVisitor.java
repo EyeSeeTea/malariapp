@@ -545,11 +545,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OrgUnit appOrgUnit = sdkOrganisationUnitExtended.getAppOrgUnit();
         Log.d(TAG, "buildOrgUnitProgramRelation " + appOrgUnit.getName());
         //Each assigned program
-        for (ProgramFlow program : SdkController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION)) {
-            ProgramExtended sdkProgramExtended = new ProgramExtended(program);
-            sdkProgramExtended.setAppProgram( programMapObjects.get(sdkProgramExtended.getUid()));
+        for (ProgramExtended program : ProgramExtended.getProgramsExtendedList(SdkController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION))) {
+            program.setAppProgram( programMapObjects.get(program.getUid()));
 
-            addOrgUnitProgramRelation(sdkOrganisationUnitExtended,sdkProgramExtended);
+            addOrgUnitProgramRelation(sdkOrganisationUnitExtended,program);
         }
     }
 

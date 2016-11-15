@@ -143,7 +143,7 @@ public class PushController {
 
     /*
     @Subscribe
-    public void onSendDataFinished(final NetworkJob.NetworkJobResult<Map<Long,ImportSummary>> result) {
+    public void onSendDataFinished(final NetworkJob.NetworkJobResult<Map<Long,ImportSummaryExtended>> result) {
         new Thread(){
             @Override
             public void run(){
@@ -196,8 +196,8 @@ public class PushController {
      * @return
      */
     /*
-    private Map<Long,ImportSummary> getImportSummaryMap(NetworkJob.NetworkJobResult<Map<Long,ImportSummary>> result){
-        Map<Long,ImportSummary> emptyImportSummaryMap=new HashMap<>();
+    private Map<Long,ImportSummaryExtended> getImportSummaryMap(NetworkJob.NetworkJobResult<Map<Long,ImportSummaryExtended>> result){
+        Map<Long,ImportSummaryExtended> emptyImportSummaryMap=new HashMap<>();
         //No result -> no details
         if(result==null){
             return emptyImportSummaryMap;
@@ -208,7 +208,7 @@ public class PushController {
             return emptyImportSummaryMap;
         }
 
-        ResponseHolder<Map<Long,ImportSummary>> responseHolder=result.getResponseHolder();
+        ResponseHolder<Map<Long,ImportSummaryExtended>> responseHolder=result.getResponseHolder();
         if(responseHolder==null || responseHolder.getItem()==null){
             return emptyImportSummaryMap;
         }

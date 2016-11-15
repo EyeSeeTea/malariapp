@@ -61,6 +61,9 @@ public class AliasConstants {
     public static final String programStageFlowName = "psf";
     public static final String programStageSectionFlowName = "pssf";
     public static final String programStageDataElementFlowName = "psdef";
+    public static final String programAttributeFlowName = "pafn";
+    public static final String attributeFlowName = "afn";
+
 
     public static final NameAlias programFlowAlias = NameAlias.builder(programFlowName).build();
     public static final NameAlias programStageFlowAlias = NameAlias.builder(
@@ -69,5 +72,9 @@ public class AliasConstants {
             programStageSectionFlowName).build();
     public static final NameAlias programStageDataElementFlowAlias = NameAlias.builder(
             programStageDataElementFlowName).build();
+    public static final NameAlias programAttributeFlowAlias = NameAlias.builder(
+            programAttributeFlowName).build();
+    public static final NameAlias attributeFlowAlias = NameAlias.builder(
+            attributeFlowName).build();
 
 }

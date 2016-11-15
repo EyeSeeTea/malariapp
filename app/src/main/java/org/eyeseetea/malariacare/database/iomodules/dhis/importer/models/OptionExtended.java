@@ -107,7 +107,7 @@ public class OptionExtended implements VisitableFromSDK {
 
 
     //// FIXME: 09/11/2016
-    public List<OptionAttributeValue> getAttributeValues() {
+    public List<OptionAttributeValueFlow> getAttributeValues() {
         //optionflow attributeValueFlow
         return  null;
     }

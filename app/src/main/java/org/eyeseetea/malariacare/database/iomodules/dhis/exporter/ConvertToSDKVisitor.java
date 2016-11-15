@@ -42,14 +42,13 @@ import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataValue;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.FailedItem;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ImportSummary;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ImportSummaryFlow;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,7 +94,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     /**
      * Map app surveys with sdk events (N to 1)
      */
-    Map<Long,Event> events;
+    Map<Long,EventFlow> events;
 
     /**
      * Each survey is new|known modification|unknow modification.
@@ -111,7 +110,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     /**
      * The generated event
      */
-    Event currentEvent;
+    EventExtended currentEvent;
 
     /**
      * Timestamp that captures the moment when the survey is converted right before being sent
@@ -214,7 +213,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @return
      * @throws Exception
      */
-    private Event buildCurrentEvent()throws Exception{
+    private EventExtended buildCurrentEvent()throws Exception{
         Log.d(TAG,String.format("Init event stuff for survey id: %d",this.currentSurvey.getId_survey()));
 
         //Brand new event
@@ -223,7 +222,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //A modification, look for a local built event
-        List<Event> eventsToBePushed= SdkController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid());
+        List<EventExtended> eventsToBePushed= EventExtended.getEventExtended(SdkController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid()));
 
         //No local events, try to build from server
         if(eventsToBePushed.isEmpty()){
@@ -234,12 +233,13 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         return eventsToBePushed.get(0);
     }
 
+
     /**
      * Builds an event from a survey
      * @return
      */
-    private Event buildNewEvent() throws Exception{
-        Event newEvent=new Event();
+    private EventExtended buildNewEvent() throws Exception{
+        EventExtended newEvent=new EventExtended(new EventFlow());
         newEvent = setBasicEventProperties(newEvent);
         Log.d(TAG, "Saving event " + newEvent.toString());
         newEvent.save();
@@ -250,9 +250,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Look for an event to modify from the server.
      * @return
      */
-    private Event buildFromServer()throws Exception{
+    private EventExtended buildFromServer()throws Exception{
         PullClient pullClient = new PullClient(DashboardActivity.dashboardActivity);
-        Event eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getProgram());
+        EventExtended eventFromServer=pullClient.getLastEventInServerWith(this.currentSurvey.getOrgUnit(), this.currentSurvey.getProgram());
         //No event to modify -> create a new one
         if(eventFromServer==null){
             return buildNewEvent();
@@ -264,8 +264,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         return eventFromServer;
     }
 
-    private Event setBasicEventProperties(Event eventToUpdate) throws Exception{
-        eventToUpdate.setStatus(Event.STATUS_COMPLETED);
+    private EventExtended setBasicEventProperties(EventExtended eventToUpdate) throws Exception{
+        eventToUpdate.setStatus(EventExtended.STATUS_COMPLETED);
         eventToUpdate.setFromServer(false);
         eventToUpdate.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         eventToUpdate.setProgramId(currentSurvey.getProgram().getUid());
@@ -285,7 +285,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         //Checks if the result have at least one valid denominator.
         if(result!=null && result.get(1)==0)
             return;
-        DataValue dataValue=new DataValue();
+        DataValueExtended dataValue=new DataValueExtended(new DataValueFlow());
         dataValue.setDataElement(compositeScore.getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
@@ -297,7 +297,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
     @Override
     public void visit(Value value) {
-        DataValue dataValue=new DataValue();
+        DataValueExtended dataValue=new DataValueExtended(new DataValueFlow());
         dataValue.setDataElement(value.getQuestion().getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
@@ -315,17 +315,17 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Builds an event from a survey
      * @return
      */
-    private Event buildEvent() throws Exception{
-        currentEvent=new Event();
-
-        currentEvent.setStatus(Event.STATUS_COMPLETED);
+    private EventExtended buildEvent() throws Exception{
+        EventFlow eventFlow = new EventFlow();
+        currentEvent=new EventExtended(eventFlow);
+        currentEvent.setStatus(EventExtended.STATUS_COMPLETED);
         currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
         currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
         updateEventLocation();
         Log.d(TAG, "Saving event " + currentEvent.toString());
-        currentEvent.save();
+        currentEvent.getEvent().save();
         return currentEvent;
     }
 
@@ -455,8 +455,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @param value
      */
     private void addDataValue(String dataElementUID,String value){
-        //// FIXME: 11/11/2016
-        DataValue dataValue= (DataValue) DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        DataValueExtended dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
         //Already added
         if(dataValue!=null){
             return;
@@ -467,8 +466,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     }
 
     private void addOrUpdateDataValue(String dataElementUID,String value){
-        //// FIXME: 11/11/2016
-        DataValue dataValue= (DataValue) DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        DataValueExtended dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
         //Already added, update its value
         if(dataValue!=null){
             dataValue.setValue(value);
@@ -480,7 +478,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     }
 
     private void buildAndSaveDataValue(String uid, String value){
-        DataValue dataValue=new DataValue();
+        DataValueExtended dataValue= new DataValueExtended(new DataValueFlow());
         dataValue.setDataElement(uid);
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
@@ -524,21 +522,21 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
-        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_GMT_DATE_FORMAT));
-        events.put(currentSurvey.getId_survey(),currentEvent);
+        currentEvent.setLastUpdated(new DateTime(uploadedDate.getTime()));
+        events.put(currentSurvey.getId_survey(),currentEvent.getEvent());
         Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
     }
 
     /**
      * Saves changes in the survey (supposedly after a successfull push)
      */
-    public void saveSurveyStatus(Map<Long,ImportSummary> importSummaryMap){
+    public void saveSurveyStatus(Map<Long,ImportSummaryFlow> importSummaryMap){
         for(int i=0;i<surveys.size();i++){
             Survey iSurvey=surveys.get(i);
-            Event iEvent=events.get(iSurvey.getId_survey());
-            ImportSummary importSummary=importSummaryMap.get(iEvent.getLocalId());
+            EventExtended iEvent=new EventExtended(events.get(iSurvey.getId_survey()));
+            ImportSummaryFlow importSummary=importSummaryMap.get(iEvent.getLocalId());
             //// FIXME: 11/11/2016
-            FailedItem failedItem= (FailedItem) EventExtended.hasConflict(iEvent.getLocalId());
+            FailedItemFlow failedItem=  EventExtended.hasConflict(iEvent.getLocalId());
 
             //No errors -> Save and next
             if(!hasImportSummaryErrors(importSummary) && failedItem==null){
@@ -594,7 +592,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     }
 
     /**
-     * Checks whether the given event contains errors in SDK FailedItem table or has been successful.
+     * Checks whether the given event contains errors in SDK FailedItemExtended table or has been successful.
      * If not return null, it is becouse this item had a conflict.
      * @param localId
      * @return
@@ -645,7 +643,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @param importSummary
      * @return
      */
-    private boolean hasImportSummaryErrors(ImportSummary importSummary){
+    private boolean hasImportSummaryErrors(ImportSummaryFlow importSummary){
         if(importSummary==null){
             return true;
         }

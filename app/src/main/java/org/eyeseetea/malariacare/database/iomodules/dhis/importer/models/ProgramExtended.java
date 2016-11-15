@@ -19,17 +19,25 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.*;
+
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValueFlow;
+import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,17 +87,15 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public Integer getProductivityPosition() {
         //// FIXME: 11/11/2016
-        /*
-        ProgramAttributeValue programAttributeValue = new Select().from(ProgramAttributeValue.class).as(programAttributeFlowName)
-                .join(TrackedEntityAttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
+        ProgramAttributeValueFlow programAttributeValue = new Select().from(ProgramAttributeValueFlow.class).as(programAttributeFlowName)
+                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
                 .on(ProgramAttributeValueFlow_Table.attributeId.withTable(programAttributeFlowAlias)
-                        .eq(TrackedEntityAttributeFlow_Table.id.withTable(attributeFlowAlias)))
-                .where(TrackedEntityAttributeFlow_Table.code)
-                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE)
-                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(this.getProgram().getUid()))
+                        .eq(AttributeFlow_Table.id.withTable(attributeFlowAlias)))
+                .where(AttributeFlow_Table.code
+                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
+                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(getUid()))
                 .querySingle();
-        */
-        ProgramAttributeValue programAttributeValue = null;
+
         if(programAttributeValue==null){
             return null;
         }
@@ -122,13 +128,25 @@ public class ProgramExtended implements VisitableFromSDK {
         return program;
     }
     
-    public static List<ProgramFlow> getAllPrograms(){
-        return new Select().from(ProgramFlow.class).queryList();
+    public static List<ProgramExtended> getAllPrograms(){
+        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).queryList();
+        List<ProgramExtended> programsExtended = new ArrayList<>();
+        for(ProgramFlow programFlow : programFlows){
+            programsExtended.add(new ProgramExtended(programFlow));
+        }
+        return programsExtended;
     }
 
+    public static List<ProgramExtended> getProgramsExtendedList(List<ProgramFlow> programFlows){
+        List<ProgramExtended> programsExtended = new ArrayList<>();
+        for(ProgramFlow programFlow : programFlows){
+            programsExtended.add(new ProgramExtended(programFlow));
+        }
+        return programsExtended;
+    }
     public static ProgramFlow getProgram(String id){
         return new Select()
-                .from(Program.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
+                .from(ProgramFlow.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
     }
 
 
@@ -142,5 +160,9 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public String getDisplayName() {
         return program.getDisplayName();
+    }
+
+    public String getName() {
+        return program.getName();
     }
 }

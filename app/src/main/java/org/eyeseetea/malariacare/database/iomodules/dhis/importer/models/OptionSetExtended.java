@@ -46,11 +46,11 @@ public class OptionSetExtended implements VisitableFromSDK {
      */
     public final static String OPTION_SET_QUESTION_TYPE_NAME="DB - Question Type";
 
-    OptionSet optionSet;
+    OptionSetFlow optionSet;
 
     public OptionSetExtended(){}
 
-    public OptionSetExtended(OptionSet optionSet){
+    public OptionSetExtended(OptionSetFlow optionSet){
         this.optionSet=optionSet;
     }
 
@@ -59,7 +59,7 @@ public class OptionSetExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public OptionSet getOptionSet() {
+    public OptionSetFlow getOptionSet() {
         return optionSet;
     }
 

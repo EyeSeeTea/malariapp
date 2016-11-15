@@ -35,6 +35,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSetFlow;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSetFlow_Table;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroupFlow;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroupFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
@@ -168,16 +170,13 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @param id
      * @return
      */
-    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
+    public static List<OrganisationUnitDataSetFlow> getOrganisationUnitDataSets(String id){
         //// FIXME: 11/11/2016
-        /*
         return new Select()
-                .from(OrganisationUnitDataSet.class)
-                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
+                .from(OrganisationUnitDataSetFlow.class)
+                .where(OrganisationUnitDataSetFlow_Table.organisationUnitId
                         .eq(id))
                 .queryList();
-        */
-        return null;
     }
 
     /**
@@ -198,9 +197,9 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @param id
      * @return
      */
-    public static OrganisationUnit getOrganisationUnit(String id){
+    public static OrganisationUnitFlow getOrganisationUnit(String id){
         return new Select()
-                .from(OrganisationUnit.class)
+                .from(OrganisationUnitFlow.class)
                 .where(OrganisationUnitFlow_Table.uId
                         .eq(id))
                 .querySingle();

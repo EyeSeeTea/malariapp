@@ -28,6 +28,7 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 
 public class ProgramStageDataElementExtended {
@@ -45,5 +46,18 @@ public class ProgramStageDataElementExtended {
 
     public Boolean getCompulsory() {
         return programStageDataElementFlow.isCompulsory();
+    }
+
+    public DataElementFlow getDataElement() {
+        return programStageDataElementFlow.getDataElement();
+    }
+
+    //Returns dataElement uid
+    public String getDataelement() {
+        return programStageDataElementFlow.getDataElement().getUId();
+    }
+
+    public String getProgramStage() {
+        return programStageDataElementFlow.getProgramStage().getUId();
     }
 }
