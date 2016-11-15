@@ -50,8 +50,8 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Date;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
 import org.eyeseetea.malariacare.database.model.Program;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
 import java.util.List;
 
@@ -320,7 +320,7 @@ public class DashboardActivity extends BaseActivity{
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, Program program, Event lastEventInServer, String module){
+    public void modifySurvey(OrgUnit orgUnit, Program program, EventFlow lastEventInServer, String module){
         //Looking for that survey in local
         Survey survey = Survey.findSurveyWith(orgUnit, program, lastEventInServer);
         //Survey in server BUT not local
@@ -328,7 +328,7 @@ public class DashboardActivity extends BaseActivity{
             survey= SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         }
         if(lastEventInServer!=null){
-            survey.setEventUid(lastEventInServer.getEvent());
+            survey.setEventUid(lastEventInServer.getUId());
             EventExtended lastEventExtended = new EventExtended(lastEventInServer);
             survey.setCreationDate(lastEventExtended.getCreationDate());
             survey.setCompletionDate(lastEventExtended.getEventDate());
