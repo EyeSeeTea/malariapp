@@ -26,7 +26,6 @@ import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;

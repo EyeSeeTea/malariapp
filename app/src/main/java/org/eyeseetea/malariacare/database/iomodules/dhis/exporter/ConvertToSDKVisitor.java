@@ -42,7 +42,6 @@ import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;

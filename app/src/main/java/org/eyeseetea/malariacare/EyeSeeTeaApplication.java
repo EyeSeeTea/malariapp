@@ -31,7 +31,7 @@ import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
+import com.raizlabs.android.dbflow.config.*;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;

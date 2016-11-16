@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleControll
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkLoginController;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -233,7 +234,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                         //Start logout
                         debugMessage("Logging out from sdk...");
                         PreferencesState.getInstance().clearOrgUnitPreference();
-                        SdkController.logOutUser(BaseActivity.this);
+                        SdkLoginController.logOutUser(BaseActivity.this);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();

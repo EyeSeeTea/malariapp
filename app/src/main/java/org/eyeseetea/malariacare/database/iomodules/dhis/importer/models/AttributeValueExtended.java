@@ -21,9 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
-import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
-import org.eyeseetea.malariacare.sdk.models.AttributeValueFlow;
+import org.eyeseetea.malariacare.database.model.AttributeFlow;
+import org.eyeseetea.malariacare.database.model.AttributeValueFlow;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -43,6 +43,8 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkPullController;
+import org.eyeseetea.malariacare.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -117,23 +119,23 @@ public class PullController {
             //Enabling resources to pull
             enableMetaDataFlags();
             //Delete previous metadata
-            SdkController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
+            SdkPullController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
             Calendar month = Calendar.getInstance();
             month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-            SdkController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
-            SdkController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
-            SdkController.clearMetaDataLoadedFlags();
-            SdkController.wipe();
+            SdkPullController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
+            SdkPullController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
+            SdkPullController.clearMetaDataLoadedFlags();
+            SdkPullController.wipe();
             PopulateDB.wipeSDKData();
             PopulateDB.wipeDatabase();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
                 if(AppSettingsBuilder.isDownloadOnlyLastEvents()){
-                    job = SdkController.loadLastData(context);
+                    SdkPullController.loadLastData();
                 }
                 else{
-                    job = SdkController.loadData(context);
+                    SdkPullController.loadData();
                 }
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
@@ -150,74 +152,42 @@ public class PullController {
      * Enables loading all metadata
      */
     private void enableMetaDataFlags() {
-        SdkController.enableMetaDataFlags(PreferencesState.getInstance().getContext());
+        SdkPullController.enableMetaDataFlags(PreferencesState.getInstance().getContext());
     }
 
-    /*
-    public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
-        Log.d(TAG, "Subscribe method: onLoadMetadataFinished");
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    if (result == null) {
-                        Log.e(TAG, "onLoadMetadataFinished with null");
-                        return;
-                    }
-
-                    //Error while pulling
-                    if (result.getResponseHolder() != null && result.getResponseHolder().getApiException() != null) {
-                        Log.e(TAG, result.getResponseHolder().getApiException().getMessage());
-                        ProgressActivity.cancellPull(context.getString(R.string.dialog_pull_error),result.getResponseHolder().getApiException().getMessage());
-                        postException(new Exception(context.getString(R.string.dialog_pull_error)));
-                        return;
-                    }
-
-                    //Get SdkLogger messages
-                    if(result.getResponseHolder().getItem()!=null) {
-                        Object item=(Object) result.getResponseHolder().getItem();
-                        List<LogMessage> messagesList = (List<LogMessage>) item;
-                        for (LogMessage message:messagesList){
-                            switch (message.getType()){
-                                case SdkLogger.INFO:
-                                    Log.d(TAG,"info"+message.getMessage());
-                                    break;
-                                case SdkLogger.WARNING:
-                                    Log.d(TAG,"Warning"+message.getMessage());
-                                    break;
-                                case SdkLogger.ERROR:
-                                    Log.d(TAG, "Error" + message.getMessage());
-                                    ProgressActivity.cancellPull(message.getException().getMessage(), message.getMessage());
-                                    postException(new Exception(context.getString(R.string.dialog_pull_error)));
-                                    return;
-                            }
-                        }
-                    }
-                    //Ok
-                    wipeDatabase();
-
-                    if(!mandatoryMetadataTablesNotEmpty())
-                        ProgressActivity.cancellPull("Error", "Error downloading metadata");
-
-                    convertFromSDK();
-
-                    validateCS();
-                    if (ProgressActivity.PULL_IS_ACTIVE) {
-                        Log.d(TAG, "PULL process...OK");
-                    }
-                } catch (Exception ex) {
-                    ProgressActivity.PULL_ERROR=true;
-                    Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
-                    ex.printStackTrace();
-                    postException(ex);
-                } finally {
-                    postFinish();
-                    unregister();
-                }
-            }
-        }.start();
+    private void onPullException(Exception ex) {
+        ProgressActivity.PULL_ERROR=true;
+        Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
+        ex.printStackTrace();
+        postException(ex);
     }
-    */
+
+    private void onPullFinish() {
+        postFinish();
+        unregister();
+    }
+
+    private void onPullError(String message) {
+        ProgressActivity.cancellPull(message, message);
+        postException(new Exception(context.getString(R.string.dialog_pull_error)));
+        ProgressActivity.cancellPull(context.getString(R.string.dialog_pull_error),message);
+        postException(new Exception(context.getString(R.string.dialog_pull_error)));
+    }
+
+    public void startConversion() {
+        //Ok
+        wipeDatabase();
+
+        if(!mandatoryMetadataTablesNotEmpty())
+            ProgressActivity.cancellPull("Error", "Error downloading metadata");
+
+        convertFromSDK();
+
+        validateCS();
+        if (ProgressActivity.PULL_IS_ACTIVE) {
+            Log.d(TAG, "PULL process...OK");
+        }
+    }
 
     private void validateCS() {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -290,16 +260,16 @@ public class PullController {
         //Convert Programs, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
         Log.i(TAG, "Converting programs and tabs...");
-        List<String> assignedProgramsIDs = SdkController.getAssignedPrograms();
+        List<String> assignedProgramsIDs = SdkQueries.getAssignedPrograms();
         for (String assignedProgramID : assignedProgramsIDs) {
-            ProgramExtended programExtended = new ProgramExtended(SdkController.getProgram(assignedProgramID));
+            ProgramExtended programExtended = new ProgramExtended(SdkQueries.getProgram(assignedProgramID));
             programExtended.accept(converter);
         }
 
         //Convert Answers, Options
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
-        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(SdkController.getOptionSets());
+        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(SdkQueries.getOptionSets());
         Log.i(TAG, "Converting answers and options...");
         for (OptionSetExtended optionSet : optionSets) {
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -312,7 +282,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         Log.i(TAG, "Converting user...");
-        UserAccountExtended userAccountExtended = new UserAccountExtended(SdkController.getUserAccount());
+        UserAccountExtended userAccountExtended = new UserAccountExtended(SdkQueries.getUserAccount());
         userAccountExtended.accept(converter);
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -352,7 +322,7 @@ public class PullController {
                     }
                     else{
                         DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
-                        dataElement = new DataElementExtended(SdkController.getDataElement(programStageDataElement.getDataelement()));
+                        dataElement = new DataElementExtended(SdkQueries.getDataElement(programStageDataElement.getDataelement()));
 
                         if (dataElement!=null) {
                             dataElements.add(dataElement);
@@ -366,7 +336,7 @@ public class PullController {
                                 Log.d(TAG, "running : "+times);
                                 try {
                                     Thread.sleep(100);
-                                    dataElement= new DataElementExtended(SdkController.getDataElement(programStageDataElement.getDataelement()));
+                                    dataElement= new DataElementExtended(SdkQueries.getDataElement(programStageDataElement.getDataelement()));
                                 } catch (InterruptedException e) {//throw new RuntimeException("Null query");
                                     e.printStackTrace();
                                 }
@@ -462,14 +432,14 @@ public class PullController {
     private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
         Log.i(TAG, "Converting organisationUnitLevels...");
-        List<OrganisationUnitLevelExtended> organisationUnitLevels = OrganisationUnitLevelExtended.getExtendedList(SdkController.getOrganisationUnitLevels());
+        List<OrganisationUnitLevelExtended> organisationUnitLevels = OrganisationUnitLevelExtended.getExtendedList(SdkQueries.getOrganisationUnitLevels());
         for(OrganisationUnitLevelExtended organisationUnitLevel:organisationUnitLevels){
             if(!ProgressActivity.PULL_IS_ACTIVE) return false;
             organisationUnitLevel.accept(converter);
         }
 
         Log.i(TAG, "Converting organisationUnits...");
-        List<OrganisationUnitExtended> assignedOrganisationsUnits = OrganisationUnitExtended.getExtendedList(SdkController.getAssignedOrganisationUnits());
+        List<OrganisationUnitExtended> assignedOrganisationsUnits = OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
         for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
             if (!ProgressActivity.PULL_IS_ACTIVE) return false;
             assignedOrganisationsUnit.accept(converter);
@@ -489,11 +459,11 @@ public class PullController {
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
-        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(SdkController.getAssignedOrganisationUnits())) {
+        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits())) {
             //Each assigned program
-            for (ProgramExtended program : ProgramExtended.getExtendedList(SdkController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION))) {
+            for (ProgramExtended program : ProgramExtended.getExtendedList(SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION))) {
                 converter.actualProgram=program;
-                List<EventExtended> events = EventExtended.getExtendedList(SdkController.getEvents(organisationUnit.getId(), program.getUid()));
+                List<EventExtended> events = EventExtended.getExtendedList(SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (EventExtended event : events) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;

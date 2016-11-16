@@ -29,8 +29,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
-import org.eyeseetea.malariacare.sdk.models.DataValueFlow_Table;
+import org.eyeseetea.malariacare.database.model.DataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 

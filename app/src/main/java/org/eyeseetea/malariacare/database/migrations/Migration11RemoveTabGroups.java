@@ -30,11 +30,8 @@ import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Program_Table;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey_Table;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.Tab_Table;
 
 /**
  * Created by idelcano on 23/03/2016.

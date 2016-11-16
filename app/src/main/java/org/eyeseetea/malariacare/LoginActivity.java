@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkLoginController;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.core.common.network.ApiException;
 import org.hisp.dhis.client.sdk.ui.bindings.commons.Inject;
@@ -98,7 +99,7 @@ public class LoginActivity extends DefaultLoginActivity {
     @Override
     protected void onLogoutButtonClicked() {
         PreferencesState.getInstance().clearOrgUnitPreference();
-        SdkController.logOutUser(LoginActivity.this);
+        SdkLoginController.logOutUser(LoginActivity.this);
     }
 
     /**

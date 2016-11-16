@@ -26,6 +26,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
+import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 
 import java.util.List;
 
