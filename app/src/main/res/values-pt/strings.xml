@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+<!-- # general -->
 <string name="yes">"Sim"</string>
 <string name="no">"Não"</string>
 <string name="cancel">"Cancelar"</string>
@@ -12,11 +13,13 @@
 <string name="poor">"Insuficiente"</string>
 <string name="lorem_ipsum">"Lorem ipsum dolor sit amet"</string>
 
+<!-- settings -->
 <string name="settings_menu_about">"Acerca de"</string>
 <string name="settings_menu_configuration">"Definições"</string>
 <string name="settings_menu_licence">"Licença"</string>
 <string name="settings_menu_logout">"Logout"</string>
 
+<!-- # dialogs -->
 <string name="dialog_title_delete_survey">"Apagar inquérito"</string>
 <string name="dialog_info_delete_survey">"Tem a certeza que quer apagar completamente la pesquisa %s ?"</string>
 <string name="dialog_title_missing_selection">"Selecção em falta"</string>
@@ -26,31 +29,37 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit errado"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
 <string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
-<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
+<!-- dashboard -->
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
 <string name="dashboard_info_sent">"Enviei"</string>
 
+<!-- create -->
 <string name="create_info_ok">"Criar"</string>
 <string name="create_info_organization_unit">"Unidade da Organização – Unid. Org."</string>
 <string name="create_info_survey">"Inquérito"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
+<!-- assessment -->
 <string name="assessment_title_facility_date">"Unidade de Saúde/Inquérito"</string>
 <string name="assessment_title_state">"% completo"</string>
 <string name="assessment_sent_date">"Data de conclusao"</string>
 <string name="assessment_title_header">"Avaliação activa"</string>
 <string name="assessment_sent_title_header">"Avaliação anterior(es)"</string>
 
+<!-- survey -->
 <string name="survey_title_exit">"Really Exit?"</string>
 <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
 
+<!-- widget -->
 <string name="widget_info_empty_statement">"Problema"</string>
 
+<!-- custom -->
 <string name="custom_title_tallies">"Folhas de controlo: Somar e dar entrada dos totais dos seguintes indicadores dos registos na coluna A. Na coluna B indique os números totais da folha de relatório mensal"</string>
 <string name="custom_info_tallies">"Folhas de Controlo do mês de"</string>
 
+<!-- adherence -->
 <string name="adherence_info_switchquestion">"Existem registos farmacêuticos para TCA dispensada?"</string>
 <string name="adherence_title_explanation">"Avaliação do Provedor de adesão aos Resultados de teste de diagnóstico da malária"</string>
 <string name="adherence_title_explanation_content">"Passo 1: Anote os Nºs. de ID de 20 pacientes receitados com ACT, encontrados no Registo de Farmácia ou Registos Clínicos
@@ -72,17 +81,20 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="adherence_info_microscopy_positive">"Microscopia positiva"</string>
 <string name="adherence_info_microscopy_negative">"Microscopia negativa"</string>
 
+<!-- iqa eqa -->
 <string name="iqatab_info_supervisor">"Supervisor"</string>
 <string name="iqatab_info_parasites">"Parasitas/mL"</string>
 <string name="iqatab_info_species">"Espécies"</string>
 <string name="iqatab_info_labstaff">"Pessoal de Laboratório"</string>
 <string name="iqatab_info_note">"Nota : Revisão de Lâminas deve ser realizada na unidade de saúde durante OTSS na presença do pessoal do laboratório facilidade. As lâminas não deve ser removido a partir da instalação para este propósito."</string>
 
+<!-- reporting -->
 <string name="reporting_info_reporting">"Relatórios"</string>
 <string name="reporting_info_results">"Resultados"</string>
 <string name="reporting_info_register">"Registo"</string>
 <string name="reporting_info_monthly">"Relatório/mensal"</string>
 
+<!-- score -->
 <string name="score_title_clinical_fever">"Avaliação clínica/febre"</string>
 <string name="score_title_rdt">"TDR"</string>
 <string name="score_title_avg">"AVG Grupos de Doentes de Ambulatório (GDA)"</string>
@@ -95,8 +107,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="score_info_case2">"Caso 2"</string>
 <string name="score_info_case3">"Caso 3"</string>
 
+<!-- composite score -->
 <string name="compscore_title_score_percentage">"Ponto (%)"</string>
 
+<!-- settings -->
 <string name="title_activity_settings">"Definições"</string>
 <string name="settings_checkbox_show_num_dems">"Mostrar numerador/denominador"</string>
 <string name="settings_checkbox_description_show_num_dems">"Quando activadas, as questões do inquérito mostram os seus numeradores e denominadores, usados para calcular resultados do inquérito"</string>
@@ -151,7 +165,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="settings_text_dhis_max_items">"DHIS max carregado inquéritos"</string>
 <string name="dialog_error_push_uids">"UIDs incorretas encontradas no impulso"</string>
 <string name="dialog_error_push_no_location_and_required">"Nenhum local disponível e é um campo obrigatório"</string>
-<string name="dialog_error_attribute_null">"Atributo com id %s é nulo, por favor contacte o seu administrador do servidor."</string>
 <string name="dialog_info_push_imported">"Importado"</string>
 <string name="dialog_info_push_updated">"Atualizado"</string>
 <string name="dialog_info_push_ignored">"Ignorado"</string>
@@ -169,9 +182,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="progress_pull_preparing_answers">"Carregando respostas ..."</string>
 <string name="progress_pull_preparing_orgs">"Carregando organizações ..."</string>
 <string name="progress_pull_questions">"Carregando perguntas (isso pode levar alguns minutos) ..."</string>
-<string name="progress_pull_relationships">"Carregando relações entre perguntas ..."</string>
 <string name="progress_pull_surveys">"Carregando inquéritos ..."</string>
-<string name="progress_pull_validating_composite_scores">"Validação pontuações compostas ..."</string>
 <string name="progress_pull_done">"Feito"</string>
 <string name="dialog_push_success">"Pesquisa empurrou com êxito para o servidor dhis"</string>
 <string name="progress_push_preparing_survey">"Preparando pesquisa para empurrar ..."</string>
@@ -196,36 +207,46 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_content_dhis_preference_login">"Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?"</string>
 <string name="lastcommit">"Versão: %s"</string>
 <string name="unavailable">"indisponível"</string>
+<string name="no_previous_event_info">"No evento anterior disponíveis"</string>
 <string name="error_message_push">"O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador."</string>
-<string name="monitor_js_assessments" >"Avaliações realizadas"</string>
-<string name="monitor_js_target" >"Objetivo"</string>
-<string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Ultimos"</string>
-<string name="monitor_js_months" >" meses"</string>
-
-<string name="create">Crio</string>
-<string name="modify">Modificar</string>
-<string name="create_or_modify">Você quer criar uma nova avaliação ou modificar a última avaliação, datas[%s]?</string>
-<string name="loading_last_surveys">Carregar a última pesquisa...</string>
-<string name="no_previous_event_info">No evento anterior disponíveis</string>
-<string name="number_0">0</string>
-<string name="number_1">1</string>
-<string name="number_2">2</string>
-<string name="number_3">3</string>
-<string name="number_4">4</string>
-<string name="number_5">5</string>
-<string name="number_6">6</string>
-<string name="number_7">7</string>
-<string name="number_8">8</string>
-<string name="number_9">9</string>
-<string name="clear">Limpar</string>
-
-<string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
-<string name="developer_option_title">Mostrar opções de desenvolvedor</string>
-<string name="export_data_option_title">Banco de dados de exportação</string>
-<string name="ask_account_permission">Este aplicativo precisa acessar sua conta do Google (via Contactos).</string>
-<string name="google_play_required">Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo.</string>
-<string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
-<string name="feedback_media_link" >"Exibição de vídeo"</string>
-<string name="feedback_media">Ver feedback de vídeo</string>
-<string name="feedback_view_image">Imagem aberta com...</string>
+<string name="monitor_js_assessments">"Avaliações realizadas"</string>
+<string name="monitor_js_target">"Objetivo"</string>
+<string name="monitor_js_quality_of_care">"A qualidade do atendimento: Ultimos"</string>
+<string name="monitor_js_months">" meses"</string>
+<string name="dialog_error_attribute_null">"Atributo com id %s é nulo, por favor contacte o seu administrador do servidor."</string>
+<string name="progress_pull_relationships">"Carregando relações entre perguntas ..."</string>
+<string name="create">"Crio"</string>
+<string name="modify">"Modificar"</string>
+<string name="create_or_modify">"Você quer criar uma nova avaliação ou modificar a última avaliação, datas[%s]?"</string>
+<string name="loading_last_surveys">"Carregar a última pesquisa..."</string>
+<string name="dynamic_error_phone_format">"Formato inválido para o número de telefone (Digite numero de celular)"</string>
+<string name="dynamic_error_age">"Idade inválida"</string>
+<string name="survey_title_completed">"Levantamento concluído"</string>
+<string name="survey_info_completed">"O Inquérito foi concluída com sucesso"</string>
+<string name="review">"Revisão"</string>
+<string name="send">"Enviar"</string>
+<string name="number_0">"0"</string>
+<string name="number_1">"1"</string>
+<string name="number_2">"2"</string>
+<string name="number_3">"3"</string>
+<string name="number_4">"4"</string>
+<string name="number_5">"5"</string>
+<string name="number_6">"6"</string>
+<string name="number_7">"7"</string>
+<string name="number_8">"8"</string>
+<string name="number_9">"9"</string>
+<string name="clear">"Limpar"</string>
+<string name="settings_checkbox_ask_modify_or_create">"Configurações_caixa de seleção_por favor_modificar_ou_criar"</string>
+<string name="settings_checkbox_description_ask_modify_or_create">"Configurações_ caixa de seleção_Descrição_pergunta_modificar_ou_criar"</string>
+<string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
+<string name="ask_account_permission">"Este aplicativo precisa acessar sua conta do Google (via Contactos)."</string>
+<string name="google_play_required">"Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo."</string>
+<string name="account_permission_denied">"Contatos permissão negada. A mídia não serão sincronizados"</string>
+<string name="feedback_media_link">"Exibição de vídeo"</string>
+<string name="feedback_media">"Ver feedback de vídeo"</string>
+<string name="feedback_view_image">"Imagem aberta com..."</string>
+<string name="developer_option_summary">"Esta opção permite que as opções de desenvolvedor"</string>
+<string name="developer_option_title">"Mostrar opções de desenvolvedor"</string>
+<string name="export_data_option_title">"Banco de dados de exportação"</string>
+<string name="progress_pull_validating_composite_scores">"Validação pontuações compostas ..."</string>
 </resources>
