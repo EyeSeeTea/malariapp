@@ -108,17 +108,21 @@ public class SdkPullController extends SdkController {
             pullFail();
         }
     }
+
     private static void loadMetaData() {
-        //Pull
+        //Pull metadata
         getPrograms();
     }
 
     private static void loadDataValues() {
-        //Pull
-        getEvents();
+        //Pull events
+        getEventsFromListByProgramAndOrganisationUnit();
     }
 
 
+    /**
+     * Pull the programs and all the metadata
+     */
     public static void getPrograms() {
         Set<ProgramType> programType = new HashSet<ProgramType>();
         programType.add(WITHOUT_REGISTRATION);
@@ -131,18 +135,21 @@ public class SdkPullController extends SdkController {
                             List<org.hisp.dhis.client.sdk.models.program.Program> programs) {
                         sdkPrograms = programs;
                         getProgramStages();
-                        Log.e(TAG, "programs: Done");
+                        Log.d(TAG, "Pull of programs finish");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         errorOnPull = false;
                         throwable.printStackTrace();
-                        Log.e(TAG, "programs: " + throwable.getLocalizedMessage());
+                        Log.e(TAG, "Error pulling programs: " + throwable.getLocalizedMessage());
                     }
                 });
     }
 
+    /**
+     * Pull the OrganisationUnits (not work at this moment)
+     */
     //// FIXME: 16/11/2016  this method is throwing a timeout exception in dev server.
     public static void getOrganisationUnits() {
         Set<String> organisationUnitUid = new HashSet<String>();
@@ -174,6 +181,9 @@ public class SdkPullController extends SdkController {
                 });
     }
 
+    /**
+     * Pull the ProgramStages and continues the pull with the ProgramStageSections
+     */
     public static void getProgramStages() {
         Observable<List<ProgramStage>> programStageObservable =
                 D2.programStages().pull();
@@ -184,19 +194,24 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<ProgramStage> programStages) {
                         getProgramStageSections();
-                        Log.e(TAG, "ProgramStage: Done");
+                        Log.d(TAG, "Pull of ProgramStage finish");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         errorOnPull = false;
                         throwable.printStackTrace();
-                        Log.e(TAG, "ProgramStage: " + throwable.getLocalizedMessage());
+                        Log.e(TAG,
+                                "Error pulling ProgramStage: " + throwable.getLocalizedMessage());
                     }
                 });
     }
 
 
+    /**
+     * Pull the ProgramStageDataSections and continues the pull with the
+     * getProgramStageDataElements
+     */
     public static void getProgramStageSections() {
         Observable<List<ProgramStageSection>> programStageSectionObservable =
                 D2.programStageSections().pull();
@@ -207,19 +222,22 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<ProgramStageSection> programStageSections) {
                         getProgramStageDataElements();
-                        Log.e(TAG, "ProgramStageSection: Done");
+                        Log.d(TAG, "Pull of ProgramStageSection finish");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         errorOnPull = false;
                         throwable.printStackTrace();
-                        Log.e(TAG, "ProgramStageSection: " + throwable.getLocalizedMessage());
+                        Log.e(TAG, "Error pulling ProgramStageSection: "
+                                + throwable.getLocalizedMessage());
                     }
                 });
     }
 
-
+    /**
+     * Pull the ProgramStageDataElements and continues the pull with the getDataElements
+     */
     public static void getProgramStageDataElements() {
         Observable<List<ProgramStageDataElement>> programStageDataElementObservable =
                 D2.programStageDataElements().pull();
@@ -229,19 +247,23 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<ProgramStageDataElement>>() {
                     @Override
                     public void call(List<ProgramStageDataElement> programStageDataElement) {
+                        Log.d(TAG, "Pull of ProgramStageDataElements finish");
                         getDataElements();
-                        Log.e(TAG, "ProgramStageDataElement: Done");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         errorOnPull = false;
                         throwable.printStackTrace();
-                        Log.e(TAG, "ProgramStageDataElement: " + throwable.getLocalizedMessage());
+                        Log.e(TAG, "Error pullling ProgramStageDataElement: "
+                                + throwable.getLocalizedMessage());
                     }
                 });
     }
 
+    /**
+     * Pull the dataElements and finish the pull of metadata
+     */
     public static void getDataElements() {
         Observable<List<DataElement>> dataElementObservable =
                 D2.dataElements().pull();
@@ -251,16 +273,23 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<DataElement>>() {
                     @Override
                     public void call(List<DataElement> dataElement) {
+                        Log.d(TAG, "Pull of DataElement finish");
                         //getOrganisationUnits();
+                        //finish of metadata pull
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        Log.d(TAG, "Error pulling DataElement");
                         throwable.printStackTrace();
                     }
                 });
     }
 
+    /**
+     * This method gets a organisation unit and program for each program(with organisation units)
+     * and removes it(it removes the organisation unit and the program without organisation units)
+     */
     private static ProgramAndOrganisationUnitDict getProgramAndOrganisationUnit() {
         if (sdkPrograms == null || sdkPrograms.size() == 0) {
             return null;
@@ -284,6 +313,9 @@ public class SdkPullController extends SdkController {
         return new ProgramAndOrganisationUnitDict(sdkPrograms.get(0), localOrganisationUnit);
     }
 
+    /**
+     * This class is a dictionary for program and organisationunits
+     */
     private static class ProgramAndOrganisationUnitDict {
         org.hisp.dhis.client.sdk.models.program.Program program;
         OrganisationUnit organisationUnit;
@@ -303,8 +335,36 @@ public class SdkPullController extends SdkController {
         }
     }
 
+    /**
+     * list all of events
+     * is not working at this moment.
+     */
+    private static void listEvents() {
+        final Observable<List<Event>> eventObservable = D2.events().list().asObservable();
+        eventObservable.
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Event>>() {
+                    @Override
+                    public void call(List<Event> events) {
+                        Log.d(TAG, "listed events: " + events.size());
+                        //finish
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d(TAG, "Error listing events");
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+    /**
+     * This method get a list of events by organisationUnit and program, and pull it.
+     * Is called recursively to pull, is not working at this moment
+     */
     //// FIXME: 16/11/2016  this method is return a timeout exception
-    private static void getEvents() {
+    private static void getEventsFromListByProgramAndOrganisationUnit() {
         final ProgramAndOrganisationUnitDict programAndOrganisationUnitDict =
                 getProgramAndOrganisationUnit();
         if (programAndOrganisationUnitDict == null) {
@@ -325,7 +385,7 @@ public class SdkPullController extends SdkController {
                             eventsUid.add(event.getUId());
                         }
                         if (eventsUid.size() > 0) {
-                            pullEvents(eventsUid);
+                            pullEvents(eventsUid, true);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -333,12 +393,20 @@ public class SdkPullController extends SdkController {
                     public void call(Throwable throwable) {
                         errorOnPull = false;
                         throwable.printStackTrace();
-                        Log.e(TAG, "events: " + throwable.getLocalizedMessage());
+                        Log.e(TAG, "Error pulling events by program and org: "
+                                + throwable.getLocalizedMessage());
                     }
                 });
     }
 
-    private static void pullEvents(Set<String> events) {
+    /**
+     * This method pull a list of uid events
+     *
+     * @param recursivePull if its used in combination with sdkProgram and organisation lists
+     *                      downloaded in the pull of the metadata
+     *                      It is not working at this moment
+     */
+    private static void pullEvents(Set<String> events, final boolean recursivePull) {
         Observable<List<Event>> eventObservable = D2.events().pull(SyncStrategy.DEFAULT,
                 events).asObservable();
         eventObservable.
@@ -347,12 +415,63 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<Event>>() {
                     @Override
                     public void call(List<Event> events) {
-                        getEvents();
+                        Log.d(TAG, "Pulled events: " + events.size());
+                        if (recursivePull) {
+                            getEventsFromListByProgramAndOrganisationUnit();
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        System.out.println("pull.events.pulled ERROR");
+                        Log.d(TAG, "Error pulling events");
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+
+    /**
+     * Pull a event uids
+     * It is not working at this moment
+     */
+    private void pullEvent(String uid) {
+        Set events = new HashSet();
+        events.add(uid);
+        D2.events().pull(events).asObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Event>>() {
+                    @Override
+                    public void call(List<Event> events) {
+                        Log.d(TAG, "Listed events: " + events.size());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d(TAG, "Error pulling events: ");
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+    /**
+     * Pull a list of event uids
+     *
+     * @param eventUids list of event uid to be pull
+     */
+    private void pullEvents(Set<String> eventUids) {
+        D2.events().pull(eventUids).asObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Event>>() {
+                    @Override
+                    public void call(List<Event> events) {
+                        Log.d(TAG, "Listed events: " + events.size());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d(TAG, "Error pulling events: ");
                         throwable.printStackTrace();
                     }
                 });

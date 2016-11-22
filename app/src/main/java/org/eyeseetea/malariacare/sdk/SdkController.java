@@ -19,25 +19,16 @@
 
 package org.eyeseetea.malariacare.sdk;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.raizlabs.android.dbflow.sql.language.Delete;
 
-import org.eyeseetea.malariacare.ProgressActivity;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.*;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.model.AttributeFlow;
-import org.eyeseetea.malariacare.database.model.DataValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
@@ -46,7 +37,6 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,8 +58,9 @@ public abstract class SdkController {
             ProgramStageDataElementFlow.class,
             ProgramStageSectionFlow.class
     };
+
     //from pull controller
-    public static void register(Context context){
+    public static void register(Context context) {
         try {
             //Dhis2Application.bus.register(context);
         } catch (Exception e) {
@@ -78,7 +69,7 @@ public abstract class SdkController {
         }
     }
 
-    public static void unregister(Context context){
+    public static void unregister(Context context) {
         try {
             //Dhis2Application.bus.unregister(context);
         } catch (Exception e) {
@@ -110,7 +101,8 @@ public abstract class SdkController {
             Log.d(TAG, "Job " + PullController.job.getJobId() + " is running");
             PullController.job.cancel(true);
             try {
-                try {JobExecutor.getInstance().dequeueRunningJob(PullController.job);} catch (Exception e) {e.printStackTrace();}
+                try {JobExecutor.getInstance().dequeueRunningJob(PullController.job);} catch
+                (Exception e) {e.printStackTrace();}
                 PullController.job.cancel(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -133,8 +125,6 @@ public abstract class SdkController {
         */
         return null;
     }
-
-
 
 
     public static void wipeSDKData() {

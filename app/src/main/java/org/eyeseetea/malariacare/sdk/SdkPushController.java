@@ -6,7 +6,7 @@ import org.hisp.dhis.client.sdk.android.api.D2;
  * Created by idelcano on 15/11/2016.
  */
 
-public class SdkPushController extends  SdkController {
+public class SdkPushController extends SdkController {
 
     public static void sendEventChanges() {
         //DhisService.sendEventChanges();

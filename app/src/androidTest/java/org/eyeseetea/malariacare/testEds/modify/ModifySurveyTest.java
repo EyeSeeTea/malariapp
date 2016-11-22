@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;

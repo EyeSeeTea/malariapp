@@ -35,8 +35,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrganisationUnitDataSetFlow;
-import org.eyeseetea.malariacare.database.model.OrganisationUnitGroupFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitDataSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitGroupFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
 

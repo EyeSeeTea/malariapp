@@ -28,14 +28,13 @@ package org.eyeseetea.malariacare.test.pull;
         import org.eyeseetea.malariacare.database.utils.PreferencesState;
         import org.eyeseetea.malariacare.sdk.SdkController;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-        import org.eyeseetea.malariacare.sdk.models.Event;
+        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;
         import org.junit.Test;
         import org.junit.runner.RunWith;
 
-        import java.text.ParseException;
         import java.util.Calendar;
         import java.util.Date;
         import java.util.HashMap;
@@ -92,7 +91,7 @@ public class PullCheckMaxEvents {
 
         //THEN: Each combination of program/orgunit has less events than the max
 
-        List<org.eyeseetea.malariacare.sdk.models.Event> events = EventExtended.getAllEvents();
+        List<Event> events = EventExtended.getAllEvents();
 
         Map<String,Integer> mapNumEventsXPair= new HashMap<>();
         for(Event event:events){

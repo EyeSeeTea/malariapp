@@ -1,13 +1,10 @@
 package org.eyeseetea.malariacare.sdk;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.database.model.OrganisationUnitLevelFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow;
 import org.eyeseetea.malariacare.database.model.OrganisationUnitLevelFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -23,20 +20,10 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
-import org.hisp.dhis.client.sdk.models.event.Event;
-import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
-import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by idelcano on 15/11/2016.
@@ -48,7 +35,7 @@ public class SdkQueries {
         //return MetaDataController.getAssignedPrograms();
         List<String> uids = new ArrayList<>();
         List<ProgramFlow> programsFlow = new Select().from(ProgramFlow.class).queryList();
-        for(ProgramFlow programFlow:programsFlow){
+        for (ProgramFlow programFlow : programsFlow) {
             uids.add(programFlow.getUId());
         }
         return uids;
@@ -56,12 +43,15 @@ public class SdkQueries {
 
 
     private static OrganisationUnitFlow getOrganisationUnit(String organisationUnitUId) {
-        return new Select().from(OrganisationUnitFlow.class).where(OrganisationUnitFlow_Table.uId.eq(organisationUnitUId)).querySingle();
+        return new Select().from(OrganisationUnitFlow.class).where(
+                OrganisationUnitFlow_Table.uId.eq(organisationUnitUId)).querySingle();
 
     }
+
     public static ProgramFlow getProgram(String assignedProgramID) {
         //return MetaDataController.getProgram(assignedProgramID);
-        return new Select().from(ProgramFlow.class).where(ProgramFlow_Table.uId.eq(assignedProgramID)).querySingle();
+        return new Select().from(ProgramFlow.class).where(
+                ProgramFlow_Table.uId.eq(assignedProgramID)).querySingle();
     }
 
     public static List<OptionSetFlow> getOptionSets() {
@@ -97,7 +87,8 @@ public class SdkQueries {
         //return MetaDataController.getAssignedOrganisationUnits();
     }
 
-    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId, ProgramType... programType) {
+    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId,
+            ProgramType... programType) {
 
         List<OrganisationUnitToProgramRelationFlow> organisationUnitProgramRelationships =
                 new Select().from(OrganisationUnitToProgramRelationFlow.class).where(
@@ -111,7 +102,7 @@ public class SdkQueries {
                     List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
                             ProgramFlow_Table.id.is(oupr.getProgram().getId()))
                             .and(
-                            ProgramFlow_Table.programType.is(kind)).queryList();
+                                    ProgramFlow_Table.programType.is(kind)).queryList();
                     programs.addAll(plist);
                 }
             }
@@ -124,7 +115,8 @@ public class SdkQueries {
         /*
         ProgramFlow programFlow=getProgram(programUId);
         OrganisationUnitFlow organisationUnitFlow = getOrganisationUnit(organisationUnitUId);
-        OrganisationUnit organisationUnit = OrganisationUnitFlow.MAPPER.mapToModel(organisationUnitFlow);
+        OrganisationUnit organisationUnit = OrganisationUnitFlow.MAPPER.mapToModel
+        (organisationUnitFlow);
 
         Program program = ProgramFlow.MAPPER.mapToModel(programFlow);
         Observable<List<Event>> eventListObservable = D2.events().list(
@@ -144,7 +136,8 @@ public class SdkQueries {
                     }
                 });
         */
-        return  new Select().from(EventFlow.class).where(EventFlow_Table.orgUnit.eq(organisationUnitUId))
+        return new Select().from(EventFlow.class).where(
+                EventFlow_Table.orgUnit.eq(organisationUnitUId))
                 .and(EventFlow_Table.program.eq(programUId)).queryList();
     }
 
@@ -164,7 +157,8 @@ public class SdkQueries {
     public static void saveBatch() {
         /*
         //Save questions in batch
-        new SaveModelTransaction<>(ProcessModelInfo.withModels(ConvertFromSDKVisitor.questions)).onExecute();
+        new SaveModelTransaction<>(ProcessModelInfo.withModels(ConvertFromSDKVisitor.questions))
+        .onExecute();
 
         //Refresh media references
         List<Media> medias = ConvertFromSDKVisitor.questionBuilder.getListMedia();
