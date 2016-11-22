@@ -4,7 +4,6 @@ import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow;
-import org.eyeseetea.malariacare.database.model.OrganisationUnitLevelFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -12,6 +11,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitToProgramRelationFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow
         .OrganisationUnitToProgramRelationFlow_Table;

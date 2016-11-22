@@ -36,9 +36,11 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSD
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitDataSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitDataSetFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitGroupFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitGroupFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;

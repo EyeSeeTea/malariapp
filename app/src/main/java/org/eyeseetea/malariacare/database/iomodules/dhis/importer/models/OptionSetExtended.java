@@ -109,7 +109,7 @@ public class OptionSetExtended implements VisitableFromSDK {
     }
 
     public String getUid() {
-        return optionSet.getUid();
+        return optionSet.getUId();
     }
 
     public List<OptionExtended> getOptions() {

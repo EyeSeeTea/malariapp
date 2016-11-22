@@ -29,8 +29,11 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramAttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramAttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.eyeseetea.malariacare.database.model.Program;
@@ -139,7 +142,7 @@ public class ProgramExtended implements VisitableFromSDK {
 
 
     public List<ProgramStageExtended> getProgramStages() {
-        return ProgramStageExtended.getExtendedList(SdkController.getProgramStages(program));
+        return ProgramStageExtended.getExtendedList(SdkQueries.getProgramStages(program));
     }
 
     public String getUid() {

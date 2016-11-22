@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkPushController;
 
 import java.util.List;
 
@@ -130,7 +131,7 @@ public class PushController {
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
-            SdkController.sendEventChanges();
+            SdkPushController.sendEventChanges();
         }catch (Exception ex) {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
             unregister();

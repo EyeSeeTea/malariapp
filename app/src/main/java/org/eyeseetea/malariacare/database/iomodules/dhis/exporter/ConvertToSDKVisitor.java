@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
@@ -220,7 +221,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //A modification, look for a local built event
-        List<EventExtended> eventsToBePushed= EventExtended.getExtendedList(SdkController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid()));
+        List<EventExtended> eventsToBePushed= EventExtended.getExtendedList(
+                SdkQueries.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid()));
 
         //No local events, try to build from server
         if(eventsToBePushed.isEmpty()){
