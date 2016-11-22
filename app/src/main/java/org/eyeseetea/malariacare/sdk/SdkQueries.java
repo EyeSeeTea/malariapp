@@ -140,6 +140,9 @@ public class SdkQueries {
                 EventFlow_Table.orgUnit.eq(organisationUnitUId))
                 .and(EventFlow_Table.program.eq(programUId)).queryList();
     }
+    public static List<EventFlow> getEvents() {
+        return new Select().from(EventFlow.class).queryList();
+    }
 
     public static ProgramStageFlow getProgramStage(ProgramStageFlow programStage) {
         return new Select().from(ProgramStageFlow.class).where(
