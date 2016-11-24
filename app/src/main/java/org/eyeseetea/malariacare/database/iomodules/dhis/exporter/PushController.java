@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.sdk.SdkPushController;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class PushController {
     /**
      * The stateful converter used to turn a survey into its corresponding event + datavalues;
      */
-    ConvertToSDKVisitor converter;
+    public static ConvertToSDKVisitor converter;
 
     /**
      * Constructs and register this pull controller to the event bus
@@ -83,7 +84,7 @@ public class PushController {
      *
      */
 
-    private boolean isPushing;
+    public static boolean isPushing;
 
     public boolean isPushing() {
         return isPushing;
@@ -142,44 +143,6 @@ public class PushController {
         return true;
     }
 
-    /*
-    @Subscribe
-    public void onSendDataFinished(final NetworkJob.NetworkJobResult<Map<Long,ImportSummaryExtended>> result) {
-        new Thread(){
-            @Override
-            public void run(){
-                boolean success=true;
-                try {
-                    if (result == null) {
-                        Log.e(TAG, "onSendDataFinished with null");
-                        return;
-                    }
-
-                    //Error while pulling
-                    if (result.getResponseHolder() != null && result.getResponseHolder().getApiException() != null) {
-                        Log.e(TAG, result.getResponseHolder().getApiException().getMessage());
-                        postException(new Exception(context.getString(R.string.dialog_pull_error)));
-                        return;
-                    }
-                    //Ok: Updates
-                    postProgress(context.getString(R.string.progress_push_updating_survey));
-                    Log.d(TAG, "Updating pushed survey data...");
-                    converter.saveSurveyStatus(getImportSummaryMap(result));
-                    Log.d(TAG, "PUSH process...Finish");
-                }catch (Exception ex){
-                    success=false;
-                    Log.e(TAG,"onSendDataFinished: "+ex.getLocalizedMessage());
-                    postException(ex);
-                }finally {
-                    postFinish(success);
-                    unregister();
-                    isPushing =false;
-                }
-            }
-        }.start();
-    }
-     */
-
     /**
      * Launches visitor that turns an APP survey into a SDK event
      */
@@ -190,33 +153,6 @@ public class PushController {
             survey.accept(converter);
         }
     }
-
-    /**
-     * Gets full importSummary for every Event that has been pushed to the server
-     * @param result
-     * @return
-     */
-    /*
-    private Map<Long,ImportSummaryExtended> getImportSummaryMap(NetworkJob.NetworkJobResult<Map<Long,ImportSummaryExtended>> result){
-        Map<Long,ImportSummaryExtended> emptyImportSummaryMap=new HashMap<>();
-        //No result -> no details
-        if(result==null){
-            return emptyImportSummaryMap;
-        }
-
-        //General exception -> no details
-        if (result.getResponseHolder() != null && result.getResponseHolder().getApiException() != null) {
-            return emptyImportSummaryMap;
-        }
-
-        ResponseHolder<Map<Long,ImportSummaryExtended>> responseHolder=result.getResponseHolder();
-        if(responseHolder==null || responseHolder.getItem()==null){
-            return emptyImportSummaryMap;
-        }
-
-        return responseHolder.getItem();
-    }
-    */
 
     /**
      * Notifies a progress into the bus (the caller activity will be listening)
@@ -239,7 +175,7 @@ public class PushController {
     /**
      * Notifies that the push is over
      */
-    private void postFinish(boolean success){
+    public static void postFinish(boolean success){
         try {
             if(success){
                 AlarmPushReceiver.isDoneSuccess();
@@ -254,4 +190,9 @@ public class PushController {
     }
 
 
+    public static void setSurveysAsQuarantine() {
+        for(Survey survey:converter.surveys){
+            survey.setStatus(Constants.SURVEY_QUARANTINE);
+        }
+    }
 }
