@@ -42,14 +42,15 @@ import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
+import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
-import org.hisp.dhis.android.sdk.persistence.models.FailedItem$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
+import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.FailedItem;
+import org.eyeseetea.malariacare.sdk.models.FailedItem$Table;
+import org.eyeseetea.malariacare.sdk.models.ImportSummary;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -222,7 +223,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //A modification, look for a local built event
-        List<Event> eventsToBePushed= TrackerController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid());
+        List<Event> eventsToBePushed= SdkController.getEvents(currentSurvey.getOrgUnit().getUid(),currentSurvey.getProgram().getUid());
 
         //No local events, try to build from server
         if(eventsToBePushed.isEmpty()){
@@ -334,11 +335,10 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
-        currentEvent.setEventDate(date);
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setEventDate(new DateTime(currentSurvey.getCompletionDate()));
+        currentEvent.setDueDate(new DateTime(currentSurvey.getScheduledDate()));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setLastUpdated(new DateTime(currentSurvey.getUploadDate()));
         currentEvent.save();
     }
 

@@ -28,10 +28,10 @@ import org.eyeseetea.malariacare.database.model.SurveySchedule;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
-import org.hisp.dhis.android.sdk.persistence.preferences.DateTimeManager;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.FailedItem;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -224,6 +224,7 @@ public class PopulateDB {
     /**
      * Deletes all data from the app database
      */
+
     public static void wipeDatabase() {
         Delete.tables(
                 Value.class,
@@ -239,11 +240,11 @@ public class PopulateDB {
                 QuestionRelation.class,
                 Question.class,
                 CompositeScore.class,
-                Option.class,
+                org.eyeseetea.malariacare.database.model.Option.class,
                 Answer.class,
                 Header.class,
                 Tab.class,
-                Program.class,
+                org.eyeseetea.malariacare.database.model.Program.class,
                 ServerMetadata.class,
                 Media.class
         );
@@ -253,13 +254,7 @@ public class PopulateDB {
      * Deletes all data from the sdk database
      */
     public static void wipeSDKData() {
-        Delete.tables(
-                Event.class,
-                DataValue.class,
-                FailedItem.class
-        );
-        DateTimeManager.getInstance().delete();
-        Log.d(TAG,"Delete sdk db");
+        SdkController.wipeSDKData();
     }
     protected static void saveItem(Map items, BaseModel model, Integer pk){
         items.put(pk,model);

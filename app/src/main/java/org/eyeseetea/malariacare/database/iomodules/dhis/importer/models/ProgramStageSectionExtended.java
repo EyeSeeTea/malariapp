@@ -21,8 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 
 /**
  * Created by arrizabalaga on 5/11/15.

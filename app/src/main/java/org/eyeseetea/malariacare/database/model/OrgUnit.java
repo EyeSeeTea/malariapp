@@ -280,4 +280,8 @@ public class OrgUnit extends BaseModel {
                 ", id_org_unit_level=" + id_org_unit_level +
                 '}';
     }
+
+    public void save() {
+        this.save();
+    }
 }

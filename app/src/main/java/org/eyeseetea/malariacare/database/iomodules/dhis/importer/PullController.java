@@ -25,7 +25,6 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
 import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
@@ -37,33 +36,24 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Organis
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.controllers.LoadingController;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.job.Job;
 import org.hisp.dhis.android.sdk.job.JobExecutor;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.preferences.AppPreferences;
-import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
-import org.hisp.dhis.android.sdk.utils.api.ProgramType;
-import org.hisp.dhis.android.sdk.utils.log.LogMessage;
-import org.hisp.dhis.android.sdk.utils.log.SdkLogger;
+import org.eyeseetea.malariacare.sdk.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.OptionSet;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
+import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
+import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,22 +72,22 @@ public class PullController {
     public static final int NUMBER_OF_MONTHS=6;
 
     private final static Class MANDATORY_METADATA_TABLES[] = {
-            org.hisp.dhis.android.sdk.persistence.models.Attribute.class,
-            org.hisp.dhis.android.sdk.persistence.models.DataElement.class,
-            org.hisp.dhis.android.sdk.persistence.models.DataElementAttributeValue.class,
-            org.hisp.dhis.android.sdk.persistence.models.Option.class,
-            org.hisp.dhis.android.sdk.persistence.models.OptionSet.class,
-            org.hisp.dhis.android.sdk.persistence.models.UserAccount.class,
-            org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit.class,
-            org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitProgramRelationship.class,
-            org.hisp.dhis.android.sdk.persistence.models.ProgramStage.class,
-            org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement.class,
-            org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection.class
+            org.eyeseetea.malariacare.sdk.models.Attribute.class,
+            org.eyeseetea.malariacare.sdk.models.DataElement.class,
+            org.eyeseetea.malariacare.sdk.models.DataElementAttributeValue.class,
+            org.eyeseetea.malariacare.sdk.models.Option.class,
+            org.eyeseetea.malariacare.sdk.models.OptionSet.class,
+            org.eyeseetea.malariacare.sdk.models.UserAccount.class,
+            org.eyeseetea.malariacare.sdk.models.OrganisationUnit.class,
+            org.eyeseetea.malariacare.sdk.models.OrganisationUnitProgramRelationship.class,
+            org.eyeseetea.malariacare.sdk.models.ProgramStage.class,
+            org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement.class,
+            org.eyeseetea.malariacare.sdk.models.ProgramStageSection.class
     };
 
     private static PullController instance;
 
-    private static Job job;
+    private static Object job;
     /**
      * Context required to i18n error messages while pulling
      */
@@ -110,22 +100,14 @@ public class PullController {
     }
 
     private void register() {
-        try {
-            Dhis2Application.bus.register(this);
-        } catch (Exception e) {
-            unregister();
-            Dhis2Application.bus.register(this);
-        }
+        SdkController.register(this);
     }
 
     /**
      * Unregister pull controller from bus events
      */
     public void unregister() {
-        try {
-            Dhis2Application.bus.unregister(this);
-        } catch (Exception e) {
-        }
+        SdkController.unregister(this);
     }
 
     /**
@@ -158,23 +140,23 @@ public class PullController {
             //Enabling resources to pull
             enableMetaDataFlags();
             //Delete previous metadata
-            TrackerController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
+            SdkController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
             Calendar month = Calendar.getInstance();
             month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-            TrackerController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
-            MetaDataController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
-            MetaDataController.clearMetaDataLoadedFlags();
-            MetaDataController.wipe();
+            SdkController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
+            SdkController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
+            SdkController.clearMetaDataLoadedFlags();
+            SdkController.wipe();
             PopulateDB.wipeSDKData();
             PopulateDB.wipeDatabase();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
                 if(AppSettingsBuilder.isDownloadOnlyLastEvents()){
-                    job = DhisService.loadLastData(context);
+                    job = SdkController.loadLastData(context);
                 }
                 else{
-                    job = DhisService.loadData(context);
+                    job = SdkController.loadData(context);
                 }
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
@@ -191,10 +173,7 @@ public class PullController {
      * Enables loading all metadata
      */
     private void enableMetaDataFlags() {
-        LoadingController.enableLoading(context, ResourceType.ASSIGNEDPROGRAMS);
-        LoadingController.enableLoading(context, ResourceType.PROGRAMS);
-        LoadingController.enableLoading(context, ResourceType.OPTIONSETS);
-        LoadingController.enableLoading(context, ResourceType.EVENTS);
+        SdkController.enableMetaDataFlags(this);
     }
 
     @Subscribe
@@ -333,16 +312,16 @@ public class PullController {
         //Convert Programs, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
         Log.i(TAG, "Converting programs and tabs...");
-        List<String> assignedProgramsIDs = MetaDataController.getAssignedPrograms();
+        List<String> assignedProgramsIDs = SdkController.getAssignedPrograms();
         for (String assignedProgramID : assignedProgramsIDs) {
-            ProgramExtended programExtended = new ProgramExtended(MetaDataController.getProgram(assignedProgramID));
+            ProgramExtended programExtended = new ProgramExtended(SdkController.getProgram(assignedProgramID));
             programExtended.accept(converter);
         }
 
         //Convert Answers, Options
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         postProgress(context.getString(R.string.progress_pull_preparing_answers));
-        List<OptionSet> optionSets = MetaDataController.getOptionSets();
+        List<OptionSet> optionSets = SdkController.getOptionSets();
         Log.i(TAG, "Converting answers and options...");
         for (OptionSet optionSet : optionSets) {
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -356,7 +335,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         Log.i(TAG, "Converting user...");
-        UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
+        UserAccountExtended userAccountExtended = new UserAccountExtended(SdkController.getUserAccount());
         userAccountExtended.accept(converter);
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -366,16 +345,16 @@ public class PullController {
 
         int count;
         //Dataelements ordered by program.
-        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = ProgramExtended.getAllPrograms();
-        Map<String, List<DataElement>> programsDataelements = new HashMap<>();
+        List<org.eyeseetea.malariacare.sdk.models.Program> programs = ProgramExtended.getAllPrograms();
+        Map<String, List<org.eyeseetea.malariacare.sdk.models.DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+        for (org.eyeseetea.malariacare.sdk.models.Program program : programs) {
             converter.actualProgram=program;
             Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
             List<ProgramStage> programStages = program.getProgramStages();
-            for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+            for (ProgramStage programStage : programStages) {
                 Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStage.getProgramStageDataElements().size());
                 Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
@@ -390,16 +369,16 @@ public class PullController {
                     }
 
                     //Note: the sdk method getDataElement returns the dataElement object, and getDataelement returns the dataelement uid.
-                    DataElement dataElement = programStageDataElement.getDataElement();
-                    if (dataElement!=null && dataElement.getUid() != null) {
-                        dataElements.add(dataElement);
+                    DataElementFlow dataElement = programStageDataElement.getDataElement();
+                    if (dataElement!=null && dataElement.getUId() != null) {
+                        dataElements.add((DataElement) dataElement);
                     }
                     else{
                         DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
-                        dataElement = MetaDataController.getDataElement(programStageDataElement.getDataelement());
+                        dataElement = SdkController.getDataElement(programStageDataElement.getDataelement());
 
                         if (dataElement!=null) {
-                            dataElements.add(dataElement);
+                            dataElements.add((DataElement) dataElement);
                         }
                         else{
                             //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
@@ -410,13 +389,13 @@ public class PullController {
                                 Log.d(TAG, "running : "+times);
                                 try {
                                     Thread.sleep(100);
-                                    dataElement=MetaDataController.getDataElement(programStageDataElement.getDataelement());
+                                    dataElement=SdkController.getDataElement(programStageDataElement.getDataelement());
                                 } catch (InterruptedException e) {//throw new RuntimeException("Null query");
                                     e.printStackTrace();
                                 }
                             }
                             Log.d(TAG, "needed : "+times);
-                            dataElements.add(dataElement);
+                            dataElements.add((DataElement) dataElement);
                         }
                     }
                 }
@@ -461,7 +440,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
         int i=0;
-        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+        for (org.eyeseetea.malariacare.sdk.models.Program program : programs) {
             converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
@@ -482,7 +461,7 @@ public class PullController {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
         postProgress(context.getString(R.string.progress_pull_relationships));
-        for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+        for (org.eyeseetea.malariacare.sdk.models.Program program : programs) {
             converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
@@ -510,7 +489,7 @@ public class PullController {
     private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
         postProgress(context.getString(R.string.progress_pull_preparing_orgs));
         Log.i(TAG, "Converting organisationUnitLevels...");
-        List<OrganisationUnitLevel> organisationUnitLevels = MetaDataController.getOrganisationUnitLevels();
+        List<OrganisationUnitLevel> organisationUnitLevels = SdkController.getOrganisationUnitLevels();
         for(OrganisationUnitLevel organisationUnitLevel:organisationUnitLevels){
             if(!ProgressActivity.PULL_IS_ACTIVE) return false;
             OrganisationUnitLevelExtended organisationUnitLevelExtended = new OrganisationUnitLevelExtended(organisationUnitLevel);
@@ -518,7 +497,7 @@ public class PullController {
         }
 
         Log.i(TAG, "Converting organisationUnits...");
-        List<OrganisationUnit> assignedOrganisationsUnits = MetaDataController.getAssignedOrganisationUnits();
+        List<OrganisationUnit> assignedOrganisationsUnits = SdkController.getAssignedOrganisationUnits();
         for (OrganisationUnit assignedOrganisationsUnit : assignedOrganisationsUnits) {
             if (!ProgressActivity.PULL_IS_ACTIVE) return false;
             OrganisationUnitExtended organisationUnitExtended = new OrganisationUnitExtended(assignedOrganisationsUnit);
@@ -539,11 +518,11 @@ public class PullController {
         postProgress(context.getString(R.string.progress_pull_surveys));
         //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
         //For each unit
-        for (OrganisationUnit organisationUnit : MetaDataController.getAssignedOrganisationUnits()) {
+        for (OrganisationUnit organisationUnit : SdkController.getAssignedOrganisationUnits()) {
             //Each assigned program
-            for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION)) {
+            for (org.eyeseetea.malariacare.sdk.models.Program program : SdkController.getProgramsForOrganisationUnit(organisationUnit.getUId(), ProgramType.WITHOUT_REGISTRATION)) {
                 converter.actualProgram=program;
-                List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
+                List<Event> events = SdkController.getEvents(organisationUnit.getUId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {
                     if (!ProgressActivity.PULL_IS_ACTIVE) return;
@@ -565,7 +544,7 @@ public class PullController {
      * @param msg
      */
     private void postProgress(String msg) {
-        Dhis2Application.getEventBus().post(new SyncProgressStatus(msg));
+        SdkController.postProgress(msg);
     }
 
     /**
@@ -574,7 +553,7 @@ public class PullController {
      * @param ex
      */
     private void postException(Exception ex) {
-        Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
+        SdkController.postException(ex);
     }
 
     /**
@@ -582,31 +561,12 @@ public class PullController {
      */
     private void postFinish() {
         //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
-        User user = User.getLoggedUser();
-        Session.setUser(user);
-        try {
-            Dhis2Application.getEventBus().post(new SyncProgressStatus());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SdkController.postFinish();
     }
 
     //Returns true if the pull thead is finish
     public boolean finishPullJob() {
-        if (JobExecutor.isJobRunning(job.getJobId())) {
-            Log.d(TAG, "Job " + job.getJobId() + " is running");
-            job.cancel(true);
-            try {
-                try {JobExecutor.getInstance().dequeueRunningJob(job);} catch (Exception e) {e.printStackTrace();}
-                job.cancel(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                return true;
-            }
-        }
-        return false;
-
+       return SdkController.finishPullJob();
     }
 
 }

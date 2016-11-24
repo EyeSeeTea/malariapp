@@ -28,17 +28,17 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
-import org.hisp.dhis.android.sdk.persistence.models.Program$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.eyeseetea.malariacare.sdk.models.Attribute;
+import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
+import org.eyeseetea.malariacare.sdk.models.Program;
+import org.eyeseetea.malariacare.sdk.models.Program$Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue;
+import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue$Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage$Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement$Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 
 import java.util.List;
 

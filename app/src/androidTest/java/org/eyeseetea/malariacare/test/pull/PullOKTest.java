@@ -54,9 +54,9 @@ public class PullOKTest {
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
     private final String ATTRIBUTE_SUPERVISION_ID="vInmonKS0rP";
     private final String PROGRAM_PROGRAMTYPE="without_registration";
-    private OrganisationUnit goldenOrganisationUnit;
+    private org.eyeseetea.malariacare.sdk.models.OrganisationUnit goldenOrganisationUnit;
     private OrgUnit goldenOrgUnit;
-    private org.hisp.dhis.android.sdk.persistence.models.Program goldenSdkProgram;
+    private org.eyeseetea.malariacare.sdk.models.Program goldenSdkProgram;
     private Program goldenProgram;
     private OrgUnitProgramRelation goldenOrgUnitProgramRelation;
     private List<String> goldenDataSets;
@@ -99,11 +99,11 @@ public class PullOKTest {
 
         //WHEN
         //Test organisationUnit has been downloaded with the correct propierties.
-        OrganisationUnit sdkOrganisationUnit=OrganisationUnitExtended.getOrganisationUnit(goldenOrganisationUnit.getId());
+        org.eyeseetea.malariacare.sdk.models.OrganisationUnit sdkOrganisationUnit=OrganisationUnitExtended.getOrganisationUnit(goldenOrganisationUnit.getUId());
         //Test orgUnit in app DB has been saved with the correct propierties.
         OrgUnit appOrgUnit=OrgUnit.getOrgUnit(goldenOrgUnit.getUid());
         //Test program (in sdk) has been downloaded with the correct propierties.
-        org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram= ProgramExtended.getProgram(goldenProgram.getUid());
+        org.eyeseetea.malariacare.sdk.models.Program sdkProgram= ProgramExtended.getProgram(goldenProgram.getUid());
 
         //THEN
         testSdkOrganisationUnit(sdkOrganisationUnit);
@@ -152,7 +152,7 @@ public class PullOKTest {
 
     public void createRealSdkProgram(){
         //sdk program
-        goldenSdkProgram =new org.hisp.dhis.android.sdk.persistence.models.Program();
+        goldenSdkProgram =new org.eyeseetea.malariacare.sdk.models.Program();
         goldenSdkProgram.setName("KE HNQIS Family Planning");
         goldenSdkProgram.setDisplayName("KE HNQIS Family Planning");
         goldenSdkProgram.setCreated("2015-10-16T13:51:32.264+0000");
@@ -267,10 +267,10 @@ public class PullOKTest {
         }
     }
 
-    private void testOrganisationUnitGroups(OrganisationUnit sdkOrganisationUnit) {
+    private void testOrganisationUnitGroups(org.eyeseetea.malariacare.sdk.models.OrganisationUnit sdkOrganisationUnit) {
         for(String organisationUnitGroupsUid: goldenOrganisationUnitGroups) {
             boolean isInSdk=false;
-            for (OrganisationUnitGroup organisationUnitGroupsSdk : OrganisationUnitExtended.getOrganisationUnitGroups(sdkOrganisationUnit.getId())) {
+            for (org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup organisationUnitGroupsSdk : OrganisationUnitExtended.getOrganisationUnitGroups(sdkOrganisationUnit.getId())) {
                 if(organisationUnitGroupsSdk.getOrganisationUnitGroupId().equals(organisationUnitGroupsUid))
                     isInSdk=true;
             }
@@ -278,12 +278,12 @@ public class PullOKTest {
         }
     }
 
-    private void testSdkOrganisationUnit(OrganisationUnit sdkOrganisationUnit) {
+    private void testSdkOrganisationUnit(org.eyeseetea.malariacare.sdk.models.OrganisationUnit sdkOrganisationUnit) {
         assertTrue(sdkOrganisationUnit.getLabel().equals(goldenOrganisationUnit.getLabel()));
-        assertTrue(sdkOrganisationUnit.getUuid().equals(goldenOrganisationUnit.getUuid()));
+        assertTrue(sdkOrganisationUnit.getUId().equals(goldenOrganisationUnit.getUId()));
         assertTrue(sdkOrganisationUnit.getLevel()== goldenOrganisationUnit.getLevel());
         assertTrue(sdkOrganisationUnit.getParent().equals(goldenOrganisationUnit.getParent()));
-        assertTrue(sdkOrganisationUnit.getUuid().equals(goldenOrganisationUnit.getUuid()));
+        assertTrue(sdkOrganisationUnit.getUId().equals(goldenOrganisationUnit.getUId()));
         assertTrue(sdkOrganisationUnit.getLastUpdated().equals(goldenOrganisationUnit.getLastUpdated()));
         assertTrue(sdkOrganisationUnit.getCreated().equals(goldenOrganisationUnit.getCreated()));
         assertTrue(sdkOrganisationUnit.getName().equals(goldenOrganisationUnit.getName()));

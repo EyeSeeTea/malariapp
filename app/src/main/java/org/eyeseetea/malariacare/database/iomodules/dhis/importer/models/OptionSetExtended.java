@@ -24,9 +24,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
-import org.hisp.dhis.android.sdk.persistence.models.OptionSet$Table;
+import org.eyeseetea.malariacare.sdk.models.OptionSet;
+import org.eyeseetea.malariacare.sdk.models.OptionSet$Table;
 
 /**
  * Created by arrizabalaga on 6/11/15.

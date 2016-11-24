@@ -29,13 +29,13 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataEle
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.models.DataElement;
-import org.hisp.dhis.android.sdk.persistence.models.Option;
-import org.hisp.dhis.android.sdk.persistence.models.Program;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.DataElement;
+import org.eyeseetea.malariacare.sdk.models.Option;
+import org.eyeseetea.malariacare.sdk.models.Program;
+import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement$Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -230,9 +230,9 @@ public class CompositeScoreBuilder {
                 .where(Condition.column(ProgramStageDataElement$Table.DATAELEMENT).is(dataElementUID)).
                 orderBy(true, ProgramStageDataElement$Table.SORTORDER).queryList();
         for(ProgramStageDataElement programStageDataElement:programStageDataElements){
-            ProgramStage programStage=MetaDataController.getProgramStage(programStageDataElement.getProgramStage());
-            if(programStage!= null && programStage.getProgram().getUid().equals(progamUid))
-                return programStageDataElement.getProgramStage();
+            ProgramStage programStage= SdkController.getProgramStage(programStageDataElement.getProgramStage());
+            if(programStage!= null && programStage.getProgram().getUId().equals(progamUid))
+                return programStageDataElement.getProgramStage().getUId();
         }
         return null;
     }

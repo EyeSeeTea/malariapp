@@ -40,18 +40,18 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
-import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
+import org.eyeseetea.malariacare.sdk.models.Attribute;
+import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
+import org.eyeseetea.malariacare.sdk.models.AttributeValue;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnit$Table;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitAttributeValue;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitAttributeValue$Table;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet$Table;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup$Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 
 import java.util.List;
 

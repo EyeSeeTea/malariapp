@@ -29,9 +29,10 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue;
-import org.hisp.dhis.android.sdk.persistence.models.DataValue$Table;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.DataValue$Table;
+import org.eyeseetea.malariacare.sdk.models.Event;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,10 +160,10 @@ public class DataValueExtended implements VisitableFromSDK {
                 .count();
     }
 
-    public static DataValue findByEventAndUID(String eventUid,String dataElementUID){
+    public static DataValue findByEventAndUID(EventFlow event, String dataElementUID){
         return new Select()
                 .from(DataValue.class)
-                .where(Condition.column(DataValue$Table.EVENT).eq(eventUid))
+                .where(Condition.column(DataValue$Table.EVENT).eq(event.getUId()))
                 .and(Condition.column(DataValue$Table.DATAELEMENT).eq(dataElementUID))
                 .querySingle();
     }

@@ -53,10 +53,9 @@ import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
 public abstract class BaseActivity extends ActionBarActivity {
     /**
@@ -71,7 +70,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
-        Dhis2Application.bus.register(this);
+        SdkController.register(this);
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
     }
@@ -195,25 +194,19 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     public void onStop(){
-        try {
-            Dhis2Application.bus.unregister(this);
-        }catch(Exception e){}
+        SdkController.unregister(this);
         super.onStop();
     }
 
     @Override
     public void onDestroy(){
-        try {
-            Dhis2Application.bus.unregister(this);
-        }catch(Exception e){}
+        SdkController.unregister(this);
         super.onDestroy();
     }
 
     @Override
     public void onRestart(){
-        try {
-            Dhis2Application.bus.register(this);
-        }catch(Exception e){}
+        SdkController.unregister(this);
         super.onRestart();
     }
 
@@ -240,7 +233,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                         //Start logout
                         debugMessage("Logging out from sdk...");
                         PreferencesState.getInstance().clearOrgUnitPreference();
-                        DhisService.logOutUser(BaseActivity.this);
+                        SdkController.logOutUser(BaseActivity.this);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
@@ -284,6 +277,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     //// FIXME: 09/11/2016
+     * Called from DashboardActivity Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
         //No event or not a logout event -> done
         if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
@@ -294,6 +290,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         Session.logout();
         finishAndGo(LoginActivity.class);
     }
+    */
 
     /**
      * Finish current activity and launches an activity with the given class
