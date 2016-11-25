@@ -42,13 +42,12 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.sdk.SdkLoginController;
+import org.eyeseetea.malariacare.sdk.activities.CustomDefaultLoginActivity;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.core.common.network.ApiException;
 import org.hisp.dhis.client.sdk.ui.bindings.commons.Inject;
 import org.hisp.dhis.client.sdk.ui.bindings.presenters.LoginPresenter;
-import org.hisp.dhis.client.sdk.ui.bindings.views.DefaultLoginActivity;
 
 import java.io.InputStream;
 
@@ -56,7 +55,7 @@ import java.io.InputStream;
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends DefaultLoginActivity {
+public class LoginActivity extends CustomDefaultLoginActivity {
     private LoginPresenter loginPresenter;
     private AlertDialog alertDialog;
 
@@ -149,7 +148,7 @@ public class LoginActivity extends DefaultLoginActivity {
         try {
             String authority = getString(org.hisp.dhis.client.sdk.ui.bindings.R.string.authority);
             String accountType = getString(org.hisp.dhis.client.sdk.ui.bindings.R.string.account_type);
-            Inject.createUserComponent(server.toString(), authority, accountType).inject(this);
+            //Inject.createUserComponent(server.toString(), authority, accountType).inject(this);
         } catch (ApiException e) {
             loginPresenter.handleError(e);
             return;
