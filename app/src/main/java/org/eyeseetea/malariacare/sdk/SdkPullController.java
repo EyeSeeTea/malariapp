@@ -5,11 +5,8 @@ import static org.hisp.dhis.client.sdk.models.program.ProgramType.WITHOUT_REGIST
 import android.content.Context;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.BaseActivity;
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.ExceptionHandler;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
@@ -21,7 +18,6 @@ import org.hisp.dhis.client.sdk.models.program.ProgramStage;
 import org.hisp.dhis.client.sdk.models.program.ProgramStageDataElement;
 import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
-import org.hisp.dhis.client.sdk.ui.bindings.presenters.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +36,12 @@ import rx.schedulers.Schedulers;
 
 public class SdkPullController extends SdkController {
 
+
+    /**
+     * This flag is used to control the async downloads before initialise the conversion from sdk to the app db
+     */
+    public static int asyncDownloads=0;
+    public static boolean pullData=false;
     private static final String TAG = ".SdkPullController";
     static List<org.hisp.dhis.client.sdk.models.program.Program> sdkPrograms;
     static HashMap<org.hisp.dhis.client.sdk.models.program.Program, List<OrganisationUnit>>
@@ -82,43 +84,45 @@ public class SdkPullController extends SdkController {
 
     public static void loadLastData() {
         //// FIXME: 16/11/2016  limit by last data
+        pullData=true;
         loadMetaData();
-
-        loadDataValues();
-
-        if (!errorOnPull) {
-            PullController.getInstance().startConversion();
-        } else {
-            pullFail();
-        }
     }
 
+
     private static void pullFail() {
-        //// FIXME: 16/11/2016
+        //// FIXME: 16/11/201
+        ProgressActivity.showException("Unexpected error");
     }
 
     public static void loadData() {
+        pullData=true;
         loadMetaData();
-
-        loadDataValues();
-
-        if (!errorOnPull) {
-            PullController.getInstance().startConversion();
-        } else {
-            pullFail();
-        }
     }
 
     private static void loadMetaData() {
+        asyncDownloads++;
         //Pull metadata
         getPrograms();
     }
 
     private static void loadDataValues() {
+        asyncDownloads++;
         //Pull events
         getEventsFromListByProgramAndOrganisationUnit();
     }
 
+
+
+    private static void convertData() {
+        if(asyncDownloads==0) {
+            if (!errorOnPull) {
+                PullController.getInstance().startConversion();
+                postFinish();
+            } else {
+                pullFail();
+            }
+        }
+    }
 
     /**
      * Pull the programs and all the metadata
@@ -140,9 +144,10 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = false;
+                        errorOnPull = true;
                         throwable.printStackTrace();
                         Log.e(TAG, "Error pulling programs: " + throwable.getLocalizedMessage());
+                        showException("Error pulling programs: ");
                     }
                 });
     }
@@ -174,9 +179,10 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = false;
+                        errorOnPull = true;
                         throwable.printStackTrace();
                         Log.e(TAG, "OrganisationUnit: " + throwable.getLocalizedMessage());
+                        showException("Error pulling OrganisationUnit: ");
                     }
                 });
     }
@@ -199,10 +205,11 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = false;
+                        errorOnPull = true;
                         throwable.printStackTrace();
                         Log.e(TAG,
                                 "Error pulling ProgramStage: " + throwable.getLocalizedMessage());
+                        showException("Error pulling ProgramStageSection: ");
                     }
                 });
     }
@@ -227,10 +234,11 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = false;
+                        errorOnPull = true;
                         throwable.printStackTrace();
                         Log.e(TAG, "Error pulling ProgramStageSection: "
                                 + throwable.getLocalizedMessage());
+                        showException("Error pulling ProgramStageSection: ");
                     }
                 });
     }
@@ -253,10 +261,11 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = false;
+                        errorOnPull = true;
                         throwable.printStackTrace();
                         Log.e(TAG, "Error pullling ProgramStageDataElement: "
                                 + throwable.getLocalizedMessage());
+                        showException("Error pulling ProgramStageDataElement: ");
                     }
                 });
     }
@@ -276,22 +285,28 @@ public class SdkPullController extends SdkController {
                         Log.d(TAG, "Pull of DataElement finish");
                         //getOrganisationUnits();
                         //finish of metadata pull
+                        asyncDownloads--;
+                        if(pullData) {
+                            loadDataValues();
+                        }
+                        convertData();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        errorOnPull = true;
                         Log.d(TAG, "Error pulling DataElement");
                         throwable.printStackTrace();
+                        showException("Error pulling DataElement");
                     }
                 });
     }
-
     /**
      * This method gets a organisation unit and program for each program(with organisation units)
      * and removes it(it removes the organisation unit and the program without organisation units)
      */
     private static ProgramAndOrganisationUnitDict getProgramAndOrganisationUnit() {
-        if (sdkPrograms == null || sdkPrograms.size() == 0) {
+        if (sdkPrograms == null || sdkPrograms.size() == 0 || programsAndOrganisationUnits==null || programsAndOrganisationUnits.size()==0) {
             return null;
         }
 
@@ -353,8 +368,10 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        errorOnPull = true;
                         Log.d(TAG, "Error listing events");
                         throwable.printStackTrace();
+                        showException("Error listing events");
                     }
                 });
     }
@@ -368,6 +385,8 @@ public class SdkPullController extends SdkController {
         final ProgramAndOrganisationUnitDict programAndOrganisationUnitDict =
                 getProgramAndOrganisationUnit();
         if (programAndOrganisationUnitDict == null) {
+            asyncDownloads--;
+            convertData();
             return;
         }
         Observable<List<Event>> eventListObservable = D2.events().list(
@@ -391,10 +410,11 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = false;
+                        errorOnPull = true;
                         throwable.printStackTrace();
                         Log.e(TAG, "Error pulling events by program and org: "
                                 + throwable.getLocalizedMessage());
+                        showException("Error pulling events");
                     }
                 });
     }
@@ -423,8 +443,10 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        errorOnPull = true;
                         Log.d(TAG, "Error pulling events");
                         throwable.printStackTrace();
+                        showException("Error pulling events");
                     }
                 });
     }
@@ -448,8 +470,10 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        errorOnPull = true;
                         Log.d(TAG, "Error pulling events: ");
                         throwable.printStackTrace();
+                        showException("Error pulling events");
                     }
                 });
     }
@@ -471,9 +495,15 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        errorOnPull = true;
                         Log.d(TAG, "Error pulling events: ");
                         throwable.printStackTrace();
+                        showException("Error pulling events");
                     }
                 });
+    }
+
+    private static void showException(String message) {
+        ProgressActivity.showException(message);
     }
 }

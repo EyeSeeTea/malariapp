@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.sdk.SdkLoginController;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -109,19 +110,22 @@ public class ProgressActivity extends Activity {
     /**
      * Reference to progress indicator
      */
-    ProgressBar progressBar;
+    public static ProgressBar progressBar;
     /**
      * Reference to progress message
      */
-    TextView textView;
+    public static TextView textView;
     /**
      * Reference required for testing purposes
      */
     AlertDialog alertDialog;
-    boolean pullAfterPushInProgress;
+    static boolean pullAfterPushInProgress;
     static Handler handler;
-    static Activity progressActivity;
-    boolean isOnPause=true;
+    public static Activity progressActivity;
+    static boolean isOnPause=true;
+
+    //Check intent params
+    static Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +144,7 @@ public class ProgressActivity extends Activity {
         //the handler and the static activity is needed to show the dialog with the pull controller error.
         handler = new Handler(Looper.getMainLooper());
         progressActivity=this;
+        intent = getIntent();
     }
 
     private void cancellPull() {
@@ -225,7 +230,7 @@ public class ProgressActivity extends Activity {
      * Shows a dialog with the given message y move to login after showing error
      * @param msg
      */
-    private void showException(final String msg){
+    public static void showException(final String msg){
         final boolean isAPush=isAPush();
         Log.d(TAG,msg+" ");
 
@@ -270,12 +275,11 @@ public class ProgressActivity extends Activity {
      * Prints the step in the progress bar
      * @param msg
      */
-    private void step(final String msg) {
+    public static void step(final String msg) {
         final int currentProgress = progressBar.getProgress();
         progressBar.setProgress(currentProgress + 1);
         textView.setText(msg);
     }
-
     /**
      * Shows a dialog to tell that pull is done and then moves into the dashboard.
      *
@@ -393,14 +397,12 @@ public class ProgressActivity extends Activity {
      * Tells if a push is required
      * @return
      */
-    private boolean isAPush() {
+    private static boolean isAPush() {
         //A push before pull
         if(pullAfterPushInProgress){
             return false;
         }
 
-        //Check intent params
-        Intent intent=getIntent();
         //Not a pull -> is a Push
         return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
     }
@@ -415,9 +417,9 @@ public class ProgressActivity extends Activity {
         return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)==ACTION_PUSH_BEFORE_PULL);
     }
 
-    private String getDialogTitle(boolean isAPush){
+    private static String getDialogTitle(boolean isAPush){
         int stringId=isAPush?R.string.dialog_title_push_response:R.string.dialog_title_pull_response;
-        return getString(stringId);
+        return PreferencesState.getInstance().getContext().getString(stringId);
     }
 
     private void launchPull(){
@@ -463,10 +465,10 @@ public class ProgressActivity extends Activity {
      * Finish current activity and launches an activity with the given class
      * @param targetActivityClass Given target activity class
      */
-    public void finishAndGo(Class targetActivityClass){
-        Intent targetActivityIntent = new Intent(this,targetActivityClass);
-        finish();
-        startActivity(targetActivityIntent);
+    public static void finishAndGo(Class targetActivityClass){
+        Intent targetActivityIntent = new Intent(progressActivity,targetActivityClass);
+        progressActivity.finish();
+        progressActivity.startActivity(targetActivityIntent);
     }
 
     public static void cancellPull(final String title, final String errorMessage) {
@@ -526,6 +528,7 @@ public class ProgressActivity extends Activity {
     }
 
     public static void postFinish() {
-
+        //// FIXME: 28/11/2016 
+        //showAndMoveOn();
     }
 }
