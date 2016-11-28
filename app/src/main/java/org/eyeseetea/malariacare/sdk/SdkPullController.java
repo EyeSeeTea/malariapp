@@ -5,8 +5,13 @@ import static org.hisp.dhis.client.sdk.models.program.ProgramType.WITHOUT_REGIST
 import android.content.Context;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.utils.ExceptionHandler;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
@@ -18,6 +23,7 @@ import org.hisp.dhis.client.sdk.models.program.ProgramStage;
 import org.hisp.dhis.client.sdk.models.program.ProgramStageDataElement;
 import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
+import org.hisp.dhis.client.sdk.ui.bindings.presenters.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +100,10 @@ public class SdkPullController extends SdkController {
         ProgressActivity.showException("Unexpected error");
     }
 
+    private static void next(String msg){
+        ProgressActivity.step(msg);
+    }
+
     public static void loadData() {
         pullData=true;
         loadMetaData();
@@ -128,6 +138,7 @@ public class SdkPullController extends SdkController {
      * Pull the programs and all the metadata
      */
     public static void getPrograms() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program));
         Set<ProgramType> programType = new HashSet<ProgramType>();
         programType.add(WITHOUT_REGISTRATION);
         D2.me().programs().pull(ProgramFields.ALL, programType).
@@ -191,6 +202,7 @@ public class SdkPullController extends SdkController {
      * Pull the ProgramStages and continues the pull with the ProgramStageSections
      */
     public static void getProgramStages() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program_stages));
         Observable<List<ProgramStage>> programStageObservable =
                 D2.programStages().pull();
         programStageObservable.
@@ -220,6 +232,7 @@ public class SdkPullController extends SdkController {
      * getProgramStageDataElements
      */
     public static void getProgramStageSections() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program_stage_sections));
         Observable<List<ProgramStageSection>> programStageSectionObservable =
                 D2.programStageSections().pull();
         programStageSectionObservable.
@@ -247,6 +260,7 @@ public class SdkPullController extends SdkController {
      * Pull the ProgramStageDataElements and continues the pull with the getDataElements
      */
     public static void getProgramStageDataElements() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program_stage_dataElements));
         Observable<List<ProgramStageDataElement>> programStageDataElementObservable =
                 D2.programStageDataElements().pull();
         programStageDataElementObservable.
@@ -274,6 +288,7 @@ public class SdkPullController extends SdkController {
      * Pull the dataElements and finish the pull of metadata
      */
     public static void getDataElements() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_dataElements));
         Observable<List<DataElement>> dataElementObservable =
                 D2.dataElements().pull();
         dataElementObservable.
@@ -382,6 +397,7 @@ public class SdkPullController extends SdkController {
      */
     //// FIXME: 16/11/2016  this method is return a timeout exception
     private static void getEventsFromListByProgramAndOrganisationUnit() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_events));
         final ProgramAndOrganisationUnitDict programAndOrganisationUnitDict =
                 getProgramAndOrganisationUnit();
         if (programAndOrganisationUnitDict == null) {

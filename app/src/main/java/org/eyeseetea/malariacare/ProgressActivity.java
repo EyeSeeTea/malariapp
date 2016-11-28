@@ -87,6 +87,7 @@ public class ProgressActivity extends Activity {
     /**
      * Num of expected steps while pulling
      */
+    //// FIXME: 28/11/2016 revise the max num of pull steps
     private static final int MAX_PULL_STEPS=7;
 
     /**
