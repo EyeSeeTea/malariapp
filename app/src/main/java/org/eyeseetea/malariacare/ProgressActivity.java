@@ -256,7 +256,7 @@ public class ProgressActivity extends Activity {
                                         } else {
                                             //A crash during a pull requires to start from scratch -> logout
                                             Log.d(TAG, "Logging out from sdk...");
-                                            SdkLoginController.logOutUser(ProgressActivity.this);
+                                            SdkLoginController.logOutUser(progressActivity);
                                         }
                                     }
                                 }).create().show();
@@ -459,22 +459,6 @@ public class ProgressActivity extends Activity {
         //surveys.add(Session.getSurveyByModule(module));
         return surveys;
     }
-
-    /**
-     * //// FIXME: 09/11/2016
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        //No event or not a logout event -> done
-        if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
-            return;
-        }
-        Log.d(TAG,"Logging out from sdk...OK");
-        Session.logout();
-        //Go to login
-        finishAndGo(LoginActivity.class);
-    }
-    */
-
     /**
      * Finish current activity and launches an activity with the given class
      * @param targetActivityClass Given target activity class
@@ -502,18 +486,29 @@ public class ProgressActivity extends Activity {
                             dialogTitle=title;
                         if(errorMessage!=null)
                             dialogMessage=errorMessage;
-                        new AlertDialog.Builder(progressActivity)
-                                .setCancelable(false)
-                                .setTitle(dialogTitle)
-                                .setMessage(dialogMessage)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        Intent targetActivityIntent = new Intent(progressActivity, LoginActivity.class);
-                                        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        progressActivity.getApplicationContext().startActivity(targetActivityIntent);
-                                        return;
-                                    }
-                                }).create().show();
+                        try {
+                            new AlertDialog.Builder(progressActivity)
+                                    .setCancelable(false)
+                                    .setTitle(dialogTitle)
+                                    .setMessage(dialogMessage)
+                                    .setNeutralButton(android.R.string.ok,
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    Intent targetActivityIntent = new Intent(
+                                                            progressActivity, LoginActivity.class);
+                                                    targetActivityIntent.setFlags(
+                                                            Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    progressActivity.getApplicationContext().startActivity(
+
+                                                            targetActivityIntent);
+                                                    return;
+                                                }
+                                            }).create().show();
+                        }catch (Exception e){
+                            Log.d(TAG,errorMessage);
+                        }
+
                     }
                 });
             }
@@ -528,5 +523,9 @@ public class ProgressActivity extends Activity {
         boolean isShowing=this.alertDialog!=null && this.alertDialog.isShowing();
         Log.d(TAG,"isDialogShowing ->"+isShowing);
         return isShowing;
+    }
+
+    public static void postFinish() {
+
     }
 }
