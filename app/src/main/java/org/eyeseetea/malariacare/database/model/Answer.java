@@ -20,20 +20,16 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class Answer extends BaseModel{
 
     /**
@@ -85,7 +81,7 @@ public class Answer extends BaseModel{
         if(options==null){
             options = new Select()
                     .from(Option.class)
-                    .where(Condition.column(Option$Table.ID_ANSWER)
+                    .where(Option_Table.id_answer
                             .eq(this.getId_answer())).queryList();
         }
         return options;
@@ -95,7 +91,7 @@ public class Answer extends BaseModel{
         if(questions==null){
             questions = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.ID_ANSWER)
+                    .where(Question_Table.id_answer
                             .eq(this.getId_answer())).queryList();
         }
         return questions;

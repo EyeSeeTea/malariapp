@@ -19,26 +19,18 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.database.utils.Session;
 
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class TabGroup extends BaseModel {
 
     @Column
@@ -112,7 +104,7 @@ public class TabGroup extends BaseModel {
             }
             program= new Select()
                     .from(Program.class)
-                    .where(Condition.column(Program$Table.ID_PROGRAM)
+                    .where(Program_Table.id_program
                             .is(id_program)).querySingle();
         }
         return program;
@@ -130,8 +122,8 @@ public class TabGroup extends BaseModel {
     public List<Tab> getTabs(){
         if (tabs==null){
             tabs=new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_tab_group()))
-                    .orderBy(Tab$Table.ORDER_POS).queryList();
+                    .where(Tab_Table.id_program.eq(this.getId_tab_group()))
+                    .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
         }
         return tabs;
     }
@@ -139,7 +131,7 @@ public class TabGroup extends BaseModel {
     public List<Survey> getSurveys(){
         if(surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_PROGRAM).eq(this.getId_tab_group())).queryList();
+                    .where(Survey_Table.id_program.eq(this.getId_tab_group())).queryList();
         }
         return this.surveys;
     }
@@ -148,7 +140,7 @@ public class TabGroup extends BaseModel {
     public static TabGroup getTabGroup(String uid) {
         TabGroup tabGroup = new Select()
                 .from(TabGroup.class)
-                .where(Condition.column(TabGroup$Table.UID)
+                .where(TabGroup_Table.uid
                         .is(uid)).querySingle();
         return tabGroup;
     }
@@ -188,6 +180,6 @@ public class TabGroup extends BaseModel {
     }
 
     public static List<TabGroup> getAllTabgroup() {
-        return new Select().all().from(TabGroup.class).queryList();
+        return new Select().from(TabGroup.class).queryList();
     }
 }

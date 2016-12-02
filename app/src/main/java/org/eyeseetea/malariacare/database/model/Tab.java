@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class Tab extends BaseModel {
 
     @Column
@@ -105,7 +105,7 @@ public class Tab extends BaseModel {
 
             program = new Select()
                     .from(Program.class)
-                    .where(Condition.column(Program$Table.ID_PROGRAM)
+                    .where(Program_Table.id_program
                             .is(id_program)).querySingle();
         }
         return program;
@@ -124,8 +124,8 @@ public class Tab extends BaseModel {
     public List<Header> getHeaders(){
         if(headers==null){
             headers =new Select().from(Header.class)
-                    .where(Condition.column(Header$Table.ID_TAB).eq(this.getId_tab()))
-                    .orderBy(Header$Table.ORDER_POS).queryList();
+                    .where(Header_Table.id_tab.eq(this.getId_tab()))
+                    .orderBy(OrderBy.fromProperty(Header_Table.order_pos)).queryList();
         }
         return headers;
     }
@@ -135,8 +135,8 @@ public class Tab extends BaseModel {
      */
     public static List<Tab> getTabsBySession(String module){
         return new Select().from(Tab.class)
-                .where(Condition.column(Tab$Table.ID_PROGRAM).eq(Session.getSurveyByModule(module).getProgram().getId_program()))
-                .orderBy(Tab$Table.ORDER_POS).queryList();
+                .where(Tab_Table.id_program.eq(Session.getSurveyByModule(module).getProgram().getId_program()))
+                .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
     }
 
     /**
@@ -145,7 +145,7 @@ public class Tab extends BaseModel {
      * @return
      */
     public static Tab findById(Long tabID) {
-        return new Select().from(Tab.class).where(Condition.column(Tab$Table.ID_TAB).eq(tabID)).querySingle();
+        return new Select().from(Tab.class).where(Tab_Table.id_tab.eq(tabID)).querySingle();
     }
 
     /**

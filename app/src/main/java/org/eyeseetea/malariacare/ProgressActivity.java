@@ -176,7 +176,7 @@ public class ProgressActivity extends Activity {
         textView=(TextView)findViewById(R.id.pull_text);
     }
 
-    @Subscribe
+    //@Subscribe
     public void onProgressChange(final SyncProgressStatus syncProgressStatus) {
         //bad event or activity not in foreground -> show nothing
         if(syncProgressStatus ==null || isOnPause){

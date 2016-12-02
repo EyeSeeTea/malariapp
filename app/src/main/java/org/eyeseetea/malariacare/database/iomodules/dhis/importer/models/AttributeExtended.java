@@ -19,12 +19,9 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
-import org.eyeseetea.malariacare.sdk.models.Option;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -49,8 +46,10 @@ public class AttributeExtended {
      * @return
      */
     public static Attribute findAttributeByCode(String code){
-        return new Select().from(Attribute.class).where(Condition.column(Attribute$Table.CODE).
-                is(code)).querySingle();
+        return new Select().from(Attribute.class)
+                //// FIXME: 11/11/2016 code not exists
+                //.where(TrackedEntityAttributeFlow_Table.code).is(code))
+        .querySingle();
     }
 
 

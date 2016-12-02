@@ -19,10 +19,9 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -32,7 +31,7 @@ import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addCo
 /**
  * Created by ignac on 30/11/2015.
  */
-@Migration(version = 4, databaseName = AppDatabase.NAME)
+@Migration(version = 4, database = AppDatabase.class)
 public class Migration4AddCompulsory extends BaseMigration {
 
     public Migration4AddCompulsory() {
@@ -44,7 +43,7 @@ public class Migration4AddCompulsory extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
             addColumn(database, Question.class, "compulsory", "boolean");
     }
 

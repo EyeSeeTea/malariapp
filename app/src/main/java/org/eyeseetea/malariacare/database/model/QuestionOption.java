@@ -20,22 +20,17 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 /**
  * Created by Jose on 25/05/2015.
  */
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class QuestionOption extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
@@ -83,7 +78,7 @@ public class QuestionOption extends BaseModel {
             if(id_option==null) return null;
             option = new Select()
                     .from(Option.class)
-                    .where(Condition.column(Option$Table.ID_OPTION)
+                    .where(Option_Table.id_option
                             .is(id_option)).querySingle();
         }
         return option;
@@ -104,7 +99,7 @@ public class QuestionOption extends BaseModel {
             if(id_question==null) return null;
             question = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.ID_QUESTION)
+                    .where(Question_Table.id_question
                             .is(id_question)).querySingle();
         }
         return question;
@@ -125,7 +120,7 @@ public class QuestionOption extends BaseModel {
             if(id_match==null) return null;
             match = new Select()
                     .from(Match.class)
-                    .where(Condition.column(Match$Table.ID_MATCH)
+                    .where(Match_Table.id_match
                             .is(id_match)).querySingle();
         }
         return match;

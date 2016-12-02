@@ -20,19 +20,16 @@
 package org.eyeseetea.malariacare.database.migrations;
 
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.User;
 
 import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.updateColumn;
 
-@Migration(version = 9, databaseName = AppDatabase.NAME)
+@Migration(version = 9, database = AppDatabase.class)
 public class Migration9AddUsername extends BaseMigration {
 
     public Migration9AddUsername() {
@@ -43,7 +40,7 @@ public class Migration9AddUsername extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
         addColumn(database, User.class, "username", "string");
     }
 

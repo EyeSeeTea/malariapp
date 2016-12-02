@@ -30,28 +30,16 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
-import org.eyeseetea.malariacare.sdk.models.AttributeValue;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnit$Table;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitAttributeValue;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitAttributeValue$Table;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet$Table;
 import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
 
 import java.util.List;
 
@@ -137,9 +125,10 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @return
      */
     public  String findOrganisationUnitAttributeValueByCode(String code){
-
+        /*
+        //// FIXME: 11/11/2016
         OrganisationUnitAttributeValue organisationUnitAttributeValue = new Select().from(OrganisationUnitAttributeValue.class).as("o")
-                .join(Attribute.class, Join.JoinType.LEFT).as("a")
+                .join(Attribute.class, Join.JoinType.LEFT_OUTER).as("a")
                 .on(Condition.column(ColumnAlias.columnWithTable("o", OrganisationUnitAttributeValue$Table.ATTRIBUTEID))
                         .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE))
@@ -151,6 +140,8 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
             return "";
         }
         return organisationUnitAttributeValue.getValue();
+        */
+        return null;
     }
 
     /**
@@ -169,8 +160,8 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
         return appOrgUnit;
     }
 
-    public static List<OrganisationUnit> getAllOrganisationUnits() {
-        return new Select().all().from(OrganisationUnit.class).queryList();
+    public static List<OrganisationUnitFlow> getAllOrganisationUnits() {
+        return new Select().from(OrganisationUnitFlow.class).queryList();
     }
 
     /**
@@ -179,11 +170,15 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @return
      */
     public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
+        //// FIXME: 11/11/2016
+        /*
         return new Select()
                 .from(OrganisationUnitDataSet.class)
                 .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
                         .eq(id))
                 .queryList();
+        */
+        return null;
     }
 
     /**
@@ -192,11 +187,15 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @return
      */
     public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
+        //// FIXME: 11/11/2016
+        /*
         return new Select()
                 .from(OrganisationUnitGroup.class)
                 .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
                         .eq(id))
                 .queryList();
+        */
+        return null;
     }
 
     /**
@@ -207,7 +206,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     public static OrganisationUnit getOrganisationUnit(String id){
         return new Select()
                 .from(OrganisationUnit.class)
-                .where(Condition.column(OrganisationUnit$Table.ID)
+                .where(OrganisationUnitFlow_Table.uId
                         .eq(id))
                 .querySingle();
     }

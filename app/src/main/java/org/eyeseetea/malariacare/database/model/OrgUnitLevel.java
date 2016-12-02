@@ -23,17 +23,14 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class OrgUnitLevel extends BaseModel {
 
     @Column
@@ -87,7 +84,7 @@ public class OrgUnitLevel extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
     public List<OrgUnit> getOrgUnits(){
         this.orgUnits = new Select().from(OrgUnit.class)
-                .where(Condition.column(OrgUnit$Table.ID_PARENT).eq(this.getId_org_unit_level())).queryList();
+                .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit_level())).queryList();
         return orgUnits;
     }
 
@@ -124,6 +121,6 @@ public class OrgUnitLevel extends BaseModel {
     }
 
     public static List<OrgUnitLevel> list() {
-        return new Select().all().from(OrgUnitLevel.class).queryList();
+        return new Select().from(OrgUnitLevel.class).queryList();
     }
 }

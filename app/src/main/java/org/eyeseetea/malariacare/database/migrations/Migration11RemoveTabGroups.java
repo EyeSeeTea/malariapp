@@ -20,26 +20,26 @@
 package org.eyeseetea.malariacare.database.migrations;
 
 
-import android.database.sqlite.SQLiteDatabase;
+import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
+
 import android.database.sqlite.SQLiteException;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Program$Table;
+import org.eyeseetea.malariacare.database.model.Program_Table;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey$Table;
+import org.eyeseetea.malariacare.database.model.Survey_Table;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.Tab$Table;
-
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
+import org.eyeseetea.malariacare.database.model.Tab_Table;
 
 /**
  * Created by idelcano on 23/03/2016.
  */
-@Migration(version =11, databaseName = AppDatabase.NAME)
+@Migration(version =11, database = AppDatabase.class)
 public class Migration11RemoveTabGroups extends BaseMigration {
 
     public Migration11RemoveTabGroups() {
@@ -50,29 +50,29 @@ public class Migration11RemoveTabGroups extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
         addProgramStageToProgram(database);
         addProgramToTab(database);
         addProgramToSurvey(database);
         removeTabGroups(database);
     }
 
-    private void addProgramStageToProgram(SQLiteDatabase database) {
-        addColumn(database, Program.class, Program$Table.STAGE_UID, "string");
+    private void addProgramStageToProgram(DatabaseWrapper database) {
+        addColumn(database, Program.class, Program_Table.stage_uid.getDefinition(), "string");
         //move programStage uid into program
         database.execSQL("update program set stage_uid = (select uid from tabgroup where id_program=program.id_program)");
     }
 
-    private void addProgramToTab(SQLiteDatabase database) {
-        addColumn(database, Tab.class, Tab$Table.ID_PROGRAM, "integer");
+    private void addProgramToTab(DatabaseWrapper database) {
+        addColumn(database, Tab.class, Tab_Table.id_program.getDefinition(), "integer");
         //move id_program into tab
         database.execSQL("update tab set id_program = (select id_program from tabgroup where id_tab_group=tab.id_tab_group)");
     }
 
-    private void addProgramToSurvey(SQLiteDatabase database) {
+    private void addProgramToSurvey(DatabaseWrapper database) {
         try {
             //Is possible in some devices between versions the column id_program not exist and it will make a sqliteexception
-            addColumn(database, Survey.class, Survey$Table.ID_PROGRAM, "integer");
+            addColumn(database, Survey.class, Survey_Table.id_program.getDefinition(), "integer");
             database.execSQL("update survey set id_program = (select id_program from tabgroup where id_tab_group=survey.id_tab_group)");
         } catch (SQLiteException e){
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class Migration11RemoveTabGroups extends BaseMigration {
 
     }
 
-    private void removeTabGroups(SQLiteDatabase database) {
+    private void removeTabGroups(DatabaseWrapper database) {
         database.execSQL("DROP TABLE IF EXISTS tabgroup");
     }
 

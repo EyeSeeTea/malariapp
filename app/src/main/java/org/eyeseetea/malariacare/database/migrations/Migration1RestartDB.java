@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -36,7 +37,7 @@ import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.recre
 /**
  * Created by ignac on 30/11/2015.
  */
-@Migration(version = 3, databaseName = AppDatabase.NAME)
+@Migration(version = 3, database = AppDatabase.class)
 public class Migration1RestartDB extends BaseMigration {
 
     private final static String TAG=".Migration";
@@ -54,7 +55,7 @@ public class Migration1RestartDB extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
         addColumn(database, Survey.class, "creationDate", "integer");
         addColumn(database, Survey.class, "scheduledDate", "integer");
         addColumn(database, Question.class,"output","integer");

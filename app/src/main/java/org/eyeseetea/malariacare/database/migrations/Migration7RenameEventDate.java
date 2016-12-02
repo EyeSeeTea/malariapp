@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 /**
  * Created by idelcano on 23/03/2016.
  */
-@Migration(version = 7, databaseName = AppDatabase.NAME)
+@Migration(version = 7, database = AppDatabase.class)
 public class Migration7RenameEventDate extends BaseMigration {
 
     public Migration7RenameEventDate() {
@@ -44,7 +44,7 @@ public class Migration7RenameEventDate extends BaseMigration {
     }
 
     @Override
-    public void migrate(SQLiteDatabase database) {
+    public void migrate(DatabaseWrapper database) {
         //The column name can't be renamed in sqlite. It is needed create a temporal table with the new column name.
         ModelAdapter myAdapter = FlowManager.getModelAdapter(Survey.class);
 

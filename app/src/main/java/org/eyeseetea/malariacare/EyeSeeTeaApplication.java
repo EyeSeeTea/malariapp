@@ -28,35 +28,19 @@ import android.support.multidex.MultiDex;
 import android.telephony.TelephonyManager;
 
 import com.crashlytics.android.Crashlytics;
-import org.hisp.dhis.client.sdk.android.api.D2;
-
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.index.Index;
 
-import org.eyeseetea.malariacare.database.model.Match;
-import org.eyeseetea.malariacare.database.model.Match$Table;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionOption$Table;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.QuestionRelation$Table;
+import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.views.TypefaceCache;
-import org.eyeseetea.malariacare.sdk.models.DataElement;
-import org.eyeseetea.malariacare.sdk.models.DataElement$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement$Table;
-import org.eyeseetea.malariacare.database.utils.Session;
-import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
+import org.hisp.dhis.client.sdk.android.api.D2;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -124,6 +108,7 @@ public class EyeSeeTeaApplication extends Application {
 
     private void createDBIndexes(){
         // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the DB on execution time
+        /*
         new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
         new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStage").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
         new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStageSection").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();
@@ -135,6 +120,7 @@ public class EyeSeeTeaApplication extends Application {
         new Index<Match>("Match_id_question_relation").on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
         new Index<Value>("Value_id_survey").on(Value.class, Value$Table.ID_SURVEY).enable();
         new Index<DataElement>("DataElement_id").on(DataElement.class, DataElement$Table.ID).enable();
+        */
     }
 
     /**

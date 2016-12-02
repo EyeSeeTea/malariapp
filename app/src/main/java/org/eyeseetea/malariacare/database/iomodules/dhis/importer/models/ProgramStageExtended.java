@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage$Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -48,9 +48,9 @@ public class ProgramStageExtended implements VisitableFromSDK {
         return programStage;
     }
 
-    public static ProgramStage getProgramStage(String programStageUID){
-        return new Select().from(ProgramStage.class)
-                .where(Condition.column(ProgramStage$Table.ID)
+    public static ProgramStageFlow getProgramStage(String programStageUID){
+        return  new Select().from(ProgramStageFlow.class)
+                .where(ProgramStageFlow_Table.uId
                         .eq(programStageUID))
                 .querySingle();
     }

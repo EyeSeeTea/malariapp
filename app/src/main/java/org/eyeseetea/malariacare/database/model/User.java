@@ -20,20 +20,16 @@
 package org.eyeseetea.malariacare.database.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class User extends BaseModel {
 
     @Column
@@ -87,7 +83,7 @@ public class User extends BaseModel {
         if(surveys==null){
             surveys = new Select()
                     .from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_USER)
+                    .where(Survey_Table.id_user
                             .eq(this.getId_user())).queryList();
         }
         return surveys;
@@ -103,7 +99,7 @@ public class User extends BaseModel {
 
     public static User getLoggedUser(){
         // for the moment we return just the first entry assuming there will be only one entry,but in the future we will have to tag the logged user
-        List<User> users = new Select().all().from(User.class).queryList();
+        List<User> users = new Select().from(User.class).queryList();
         if (users != null && users.size() != 0)
             return users.get(0);
         return null;
@@ -112,7 +108,7 @@ public class User extends BaseModel {
     public static User getUser(String value) {
         return new Select()
                 .from(User.class)
-                .where(Condition.column(Score$Table.UID).eq(value)).querySingle();
+                .where(Score_Table.uid.eq(value)).querySingle();
     }
 
     @Override

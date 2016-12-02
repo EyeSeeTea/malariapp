@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -33,7 +32,7 @@ import java.util.Date;
 /**
  * Created by ivan.arrizabalaga on 14/02/15.
  */
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class SurveySchedule extends BaseModel {
 
     @Column
@@ -91,7 +90,7 @@ public class SurveySchedule extends BaseModel {
             if(id_survey==null) return null;
             survey = new Select()
                     .from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_SURVEY)
+                    .where(Survey_Table.id_survey
                             .is(id_survey)).querySingle();
         }
         return survey;

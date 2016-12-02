@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
@@ -30,9 +30,9 @@ import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.sdk.models.DataValue;
-import org.eyeseetea.malariacare.sdk.models.DataValue$Table;
-import org.eyeseetea.malariacare.sdk.models.Event;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,16 +155,16 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public static long count(){
-        return new Select().count()
-                .from(DataValue.class)
+        return new SQLite().selectCountOf()
+                .from(TrackedEntityDataValueFlow.class)
                 .count();
     }
 
-    public static DataValue findByEventAndUID(EventFlow event, String dataElementUID){
+    public static TrackedEntityDataValueFlow findByEventAndUID(EventFlow event, String dataElementUID){
         return new Select()
-                .from(DataValue.class)
-                .where(Condition.column(DataValue$Table.EVENT).eq(event.getUId()))
-                .and(Condition.column(DataValue$Table.DATAELEMENT).eq(dataElementUID))
+                .from(TrackedEntityDataValueFlow.class)
+                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
+                .and(TrackedEntityDataValueFlow_Table.dataElement.eq(dataElementUID))
                 .querySingle();
     }
 

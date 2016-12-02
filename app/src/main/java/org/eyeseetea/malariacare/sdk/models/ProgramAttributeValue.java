@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.sdk.models;
 
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramTrackedEntityAttributeFlow;
 
 /**
  * Created by idelcano on 09/11/2016.
  */
 
-public class ProgramAttributeValue extends ProgramFlow {
+public class ProgramAttributeValue extends ProgramTrackedEntityAttributeFlow {
     //// FIXME: 09/11/2016
     public String getValue() {
         return null;

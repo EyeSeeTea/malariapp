@@ -19,11 +19,19 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import static org.eyeseetea.malariacare.database.AppDatabase.programFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageDataElementFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageDataElementFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageSectionFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageSectionFlowName;
+
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
@@ -37,13 +45,18 @@ import org.eyeseetea.malariacare.sdk.models.Attribute;
 import org.eyeseetea.malariacare.sdk.models.AttributeValue;
 import org.eyeseetea.malariacare.sdk.models.DataElement;
 import org.eyeseetea.malariacare.sdk.models.Option;
-import org.eyeseetea.malariacare.sdk.models.OptionSet;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.Program;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 
 import java.util.List;
 
@@ -172,12 +185,13 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static void reloadDataElementTypeCodes(){
         //Load code for each type
-        OptionSet deTypeOptionSet = OptionSetExtended.findOptionSetForDataElementType();
+        //// FIXME: 11/11/2016
+        OptionSetFlow deTypeOptionSet = (OptionSetFlow)OptionSetExtended.findOptionSetForDataElementType();
         if(deTypeOptionSet==null){
             Log.e(TAG,"No optionset with 'DB - DE Type', dataElements will not be loaded correctly");
             return;
         }
-        String optionSetUID=deTypeOptionSet.getUid();
+        String optionSetUID=deTypeOptionSet.getUId();
 
         //Reload codes for score, question and control
         OPTION_ELEMENT_TYPE_QUESTION_CODE = loadDataElementTypeCode(optionSetUID,OPTION_QUESTION_NAME);
@@ -192,7 +206,8 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     private static String loadDataElementTypeCode(String optionSetUID,String optionName){
-        Option option = OptionExtended.findOptionByOptionSetAndName(optionSetUID,optionName);
+        //// FIXME: 11/11/2016
+        Option option = (Option) OptionExtended.findOptionByOptionSetAndName(optionSetUID,optionName);
         if(option==null){
             Log.e(TAG,String.format("No option with '%s', dataElements will not be loaded correctly",optionName));
             return null;
@@ -349,19 +364,21 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static String findProgramUIDByDataElementUID(String dataElementUID) {
         //Find the right 'uid' of the dataelement program
-        Program program = new Select().from(Program.class).as("p")
-                .join(ProgramStage.class, Join.JoinType.LEFT).as("ps")
-                .on(Condition.column(ColumnAlias.columnWithTable("p", Program$Table.ID))
-                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.PROGRAM)))
-                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
-                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGE))
-                        .eq(ColumnAlias.columnWithTable("ps", ProgramStage$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+        ProgramFlow program = new Select().from(ProgramFlow.class).as(programFlowName)
+                .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(programStageFlowName)
+                .on(ProgramFlow_Table.id.withTable(programFlowAlias)
+                        .eq(ProgramStageFlow_Table.program.withTable(programStageFlowAlias)))
+
+                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        programStageDataElementFlowName)
+                .on(ProgramStageDataElementFlow_Table.programStage.withTable(programStageDataElementFlowAlias)
+                        .eq(ProgramStageFlow_Table.id.withTable(programStageFlowAlias)))
+                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(programStageDataElementFlowAlias).eq(dataElementUID))
                 .querySingle();
         if (program == null) {
             return null;
         }
-        return program.getUid();
+        return program.getUId();
     }
 
     /**
@@ -372,16 +389,16 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static String findProgramStageSectionUIDByDataElementUID(String dataElementUID) {
         //Find the right 'uid' of the dataelement program
-        ProgramStageSection programSS = new Select().from(ProgramStageSection.class).as("pss")
-                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psde")
-                .on(Condition.column(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID))
-                        .eq(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.PROGRAMSTAGESECTION)))
-                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+        ProgramStageSectionFlow programSS = new Select().from(ProgramStageSectionFlow.class).as(programStageSectionFlowName)
+                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(programStageDataElementFlowName)
+                .on(ProgramStageSectionFlow_Table.id.withTable(programStageSectionFlowAlias)
+                        .eq(ProgramStageDataElementFlow_Table.programStageSection.withTable(programStageDataElementFlowAlias)))
+                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(programStageDataElementFlowAlias).eq(dataElementUID))
                 .querySingle();
         if (programSS == null) {
             return null;
         }
-        return programSS.getUid();
+        return programSS.getUId();
     }
 
 
@@ -392,18 +409,21 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public String findProgramStageSection() {
 
-        List<ProgramStageSection> programStageSections = new Select().from(ProgramStageSection.class).as("pss")
-                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psde")
-                .on(Condition.column(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID))
-                        .eq(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.PROGRAMSTAGESECTION)))
-                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(getDataElement().getUid()))
+        List<ProgramStageSectionFlow> programStageSections = new Select().from(ProgramStageSectionFlow.class).as(
+
+
+                programStageSectionFlowName)
+                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(programStageDataElementFlowName)
+                .on(ProgramStageSectionFlow_Table.id.withTable(programStageSectionFlowAlias)
+                        .eq(ProgramStageDataElementFlow_Table.programStageSection.withTable(programStageDataElementFlowAlias)))
+                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(programStageDataElementFlowAlias).eq(getDataElement().getUid()))
                 .queryList();
         if (programStageSections == null) {
             return null;
         }
-        for(ProgramStageSection programStageSection:programStageSections){
-            if(MetaDataController.getProgramStage(programStageSection.getProgramStage()).getProgram().getUid().equals(programUid))
-                return programStageSection.getUid();
+        for(ProgramStageSectionFlow programStageSection:programStageSections){
+            if(SdkController.getProgramStage(programStageSection.getProgramStage()).getProgram().getUId().equals(programUid))
+                return programStageSection.getUId();
         }
         return null;
     }
@@ -414,17 +434,17 @@ public class DataElementExtended implements VisitableFromSDK {
      * @param dataElementExtended
      * @return
      */
-    public static ProgramStageDataElement findProgramStageDataElementByDataElementExtended(DataElementExtended dataElementExtended) {
+    public static ProgramStageDataElementFlow findProgramStageDataElementByDataElementExtended(DataElementExtended dataElementExtended) {
         String dataElementUID=dataElementExtended.getDataElement().getUid();
         String programUID=dataElementExtended.getProgramUid();
         //Find the right 'uid' of the dataelement program
-        List <ProgramStageDataElement> programDES = new Select().from(ProgramStageDataElement.class).as("psde")
-                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+        List <ProgramStageDataElementFlow> programDES = new Select().from(ProgramStageDataElementFlow.class).as(programStageDataElementFlowName)
+                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(programStageDataElementFlowAlias).eq(dataElementUID))
                 .queryList();
         if (programDES == null) {
             return null;
         }
-        for(ProgramStageDataElement programStageDataElement:programDES){
+        for(ProgramStageDataElementFlow programStageDataElement:programDES){
             if(SdkController.getProgramStage(programStageDataElement.getProgramStage()).getProgram().getUId().equals(programUID))
                 return programStageDataElement;
         }
@@ -437,10 +457,10 @@ public class DataElementExtended implements VisitableFromSDK {
      * @param dataElementUID
      * @return
      */
-    public static ProgramStageDataElement findProgramStageDataElementByDataElementUID(String dataElementUID) {
+    public static ProgramStageDataElementFlow findProgramStageDataElementByDataElementUID(String dataElementUID) {
         //Find the right 'uid' of the dataelement program
-        ProgramStageDataElement programDE = new Select().from(ProgramStageDataElement.class).as("psde")
-                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+        ProgramStageDataElementFlow programDE = new Select().from(ProgramStageDataElementFlow.class).as(programStageDataElementFlowName)
+                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(programStageDataElementFlowAlias).eq(dataElementUID))
                 .querySingle();
         if (programDE == null) {
             return null;
@@ -455,11 +475,14 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static String findProgramStageSectionOrderDataElementOrderByDataElementUID(String dataElementUID) {
         //Find the right 'uid' of the dataelement program
-        ProgramStageSection programSS = new Select().from(ProgramStageSection.class).as("pss")
-                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psd")
-                .on(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.PROGRAMSTAGESECTION))
-                        .eq(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("psd", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+        ProgramStageSectionFlow programSS = new Select().from(ProgramStageSectionFlow.class).as(
+                programStageSectionFlowName)
+                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        programStageDataElementFlowName)
+                .on(ProgramStageDataElementFlow_Table.programStageSection.withTable(programStageDataElementFlowAlias)
+                        .eq(ProgramStageSectionFlow_Table.id
+                                .withTable(programStageSectionFlowAlias)))
+                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(programStageDataElementFlowAlias).eq(dataElementUID))
                 .querySingle();
         if (programSS == null) {
             return null;
@@ -538,8 +561,8 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public static boolean existsDataElementByUid(String uid){
-        int result = (int) new Select().count().from(DataElement.class)
-                .where(Condition.column(DataElement$Table.ID).is(uid)).count();
+        int result = (int) new SQLite().selectCountOf().from(DataElementFlow.class)
+                .where(DataElementFlow_Table.uId.is(uid)).count();
         Log.d(TAG, "dataelement "+uid+" count: "+result);
         return (result>0);
     }

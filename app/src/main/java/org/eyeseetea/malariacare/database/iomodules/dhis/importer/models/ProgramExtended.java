@@ -21,24 +21,13 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.Attribute$Table;
 import org.eyeseetea.malariacare.sdk.models.Program;
-import org.eyeseetea.malariacare.sdk.models.Program$Table;
 import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue;
-import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageDataElement$Table;
-import org.eyeseetea.malariacare.sdk.models.ProgramStageSection;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 
 import java.util.List;
 
@@ -88,16 +77,18 @@ public class ProgramExtended implements VisitableFromSDK {
     }
 
     public Integer getProductivityPosition() {
-
-        ProgramAttributeValue programAttributeValue = new Select().from(ProgramAttributeValue.class).as("p")
-                .join(Attribute.class, Join.JoinType.LEFT).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("p", ProgramAttributeValue$Table.ATTRIBUTEID))
-                        .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE))
-                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
-                .and(Condition.column(ColumnAlias.columnWithTable("p", ProgramAttributeValue$Table.PROGRAM)).is(this.getProgram().getUid()))
+        //// FIXME: 11/11/2016
+        /*
+        ProgramAttributeValue programAttributeValue = new Select().from(ProgramAttributeValue.class).as(programAttributeFlowName)
+                .join(TrackedEntityAttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
+                .on(ProgramAttributeValueFlow_Table.attributeId.withTable(programAttributeFlowAlias)
+                        .eq(TrackedEntityAttributeFlow_Table.id.withTable(attributeFlowAlias)))
+                .where(TrackedEntityAttributeFlow_Table.code)
+                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE)
+                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(this.getProgram().getUid()))
                 .querySingle();
-
+        */
+        ProgramAttributeValue programAttributeValue = null;
         if(programAttributeValue==null){
             return null;
         }
@@ -112,18 +103,21 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public static Program getProgramByDataElement(String dataElementUid) {
         Program program = null;
+        //// FIXME: 11/11/2016
+        /*
         List<Program> programs = getAllPrograms();
         for (Program program1 : programs) {
             for (ProgramStage programStage : program1.getProgramStages()) {
-                for (ProgramStageSection programStageSection : programStage.getProgramStageSections()) {
-                    for (ProgramStageDataElement programStageDataElement : programStageSection.getProgramStageDataElements()) {
-                        if (programStageDataElement.getDataElement().getUid().equals(dataElementUid)) {
+                for (ProgramStageSectionFlow programStageSection : programStage.getProgramStageSections()) {
+                    for (ProgramStageDataElementFlow programStageDataElement : programStageSection.getProgramStageDataElements()) {
+                        if (programStageDataElement.getDataElement().getUId().equals(dataElementUid)) {
                             return program1;
                         }
                     }
                 }
             }
         }
+        */
         return program;
     }
     
@@ -133,6 +127,6 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public static Program getProgram(String id){
         return new Select()
-                .from(Program.class).where(Condition.column(Program$Table.ID).eq(id)).querySingle();
+                .from(Program.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
     }
 }

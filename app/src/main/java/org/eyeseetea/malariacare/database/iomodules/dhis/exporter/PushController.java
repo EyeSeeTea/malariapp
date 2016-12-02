@@ -22,23 +22,14 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
-
-
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.ImportSummary;
-import org.hisp.dhis.android.sdk.job.NetworkJob;
-import org.hisp.dhis.android.sdk.network.ResponseHolder;
 
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A static controller that orchestrate the push process
@@ -66,14 +57,14 @@ public class PushController {
     }
 
     private void register(){
-        SdkController.register(this);
+        SdkController.register(context);
     }
 
     /**
      * Unregister pull controller from bus events
      */
     private void unregister(){
-        SdkController.unregister(this);
+        SdkController.unregister(context);
     }
 
     /**
@@ -150,6 +141,7 @@ public class PushController {
         return true;
     }
 
+    /*
     @Subscribe
     public void onSendDataFinished(final NetworkJob.NetworkJobResult<Map<Long,ImportSummary>> result) {
         new Thread(){
@@ -185,6 +177,7 @@ public class PushController {
             }
         }.start();
     }
+     */
 
     /**
      * Launches visitor that turns an APP survey into a SDK event
@@ -202,6 +195,7 @@ public class PushController {
      * @param result
      * @return
      */
+    /*
     private Map<Long,ImportSummary> getImportSummaryMap(NetworkJob.NetworkJobResult<Map<Long,ImportSummary>> result){
         Map<Long,ImportSummary> emptyImportSummaryMap=new HashMap<>();
         //No result -> no details
@@ -221,6 +215,7 @@ public class PushController {
 
         return responseHolder.getItem();
     }
+    */
 
     /**
      * Notifies a progress into the bus (the caller activity will be listening)

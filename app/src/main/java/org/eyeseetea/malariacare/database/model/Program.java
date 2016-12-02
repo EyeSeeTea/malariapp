@@ -19,22 +19,19 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(databaseName = AppDatabase.NAME)
+@Table(database = AppDatabase.class)
 public class Program extends BaseModel{
 
     @Column
@@ -102,13 +99,13 @@ public class Program extends BaseModel{
     }
 
     public static List<Program> getAllPrograms(){
-        return new Select().all().from(Program.class).queryList();
+        return new Select().from(Program.class).queryList();
     }
 
     public static Program getProgram(String uid) {
         Program program = new Select()
                 .from(Program.class)
-                .where(Condition.column(Program$Table.UID)
+                .where(Program_Table.uid
                         .is(uid)).querySingle();
         return program;
     }
@@ -116,7 +113,7 @@ public class Program extends BaseModel{
     public List<OrgUnit> getOrgUnits(){
         if(orgUnits==null){
             List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
-                    .where(Condition.column(OrgUnitProgramRelation$Table.ID_PROGRAM).eq(this.getId_program()))
+                    .where(OrgUnitProgramRelation_Table.id_program.eq(this.getId_program()))
                     .queryList();
             this.orgUnits = new ArrayList<>();
             for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
@@ -129,8 +126,8 @@ public class Program extends BaseModel{
     public List<Tab> getTabs(){
         if (tabs==null){
             tabs=new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_program()))
-                    .orderBy(Tab$Table.ORDER_POS).queryList();
+                    .where(Tab_Table.id_program.eq(this.getId_program()))
+                    .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
         }
         return tabs;
     }
@@ -155,7 +152,7 @@ public class Program extends BaseModel{
      * @return
      */
     public static List<Program> list() {
-        return new Select().all().from(Program.class).orderBy(true, Program$Table.NAME).queryList();
+        return new Select().from(Program.class).orderBy(Program_Table.name, true).queryList();
     }
 
     @Override
