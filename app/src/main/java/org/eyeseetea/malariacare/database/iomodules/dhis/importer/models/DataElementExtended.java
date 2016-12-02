@@ -19,14 +19,14 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programFlowAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programFlowName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programStageDataElementFlowAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programStageDataElementFlowName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programStageFlowAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programStageFlowName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programStageSectionFlowAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programStageSectionFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageDataElementFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageDataElementFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageSectionFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programStageSectionFlowName;
 
 import android.util.Log;
 

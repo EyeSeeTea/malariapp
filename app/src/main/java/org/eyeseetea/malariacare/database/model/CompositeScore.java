@@ -19,9 +19,20 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.*;
- 
-import com.raizlabs.android.dbflow.annotation.Column; 
+import static org.eyeseetea.malariacare.database.AppDatabase.compositeScoreAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.compositeScoreName;
+import static org.eyeseetea.malariacare.database.AppDatabase.compositeScoreTwoAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.compositeScoreTwoName;
+import static org.eyeseetea.malariacare.database.AppDatabase.headerAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programName;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionName;
+import static org.eyeseetea.malariacare.database.AppDatabase.tabAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.tabName;
+import static org.eyeseetea.malariacare.database.AppDatabase.headerName;
+
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
