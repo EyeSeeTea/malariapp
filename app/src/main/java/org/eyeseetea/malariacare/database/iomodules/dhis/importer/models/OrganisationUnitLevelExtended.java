@@ -30,15 +30,18 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrganisationUnitLevelExtended implements VisitableFromSDK {
-    OrganisationUnitLevel organisationUnitLevel;
+    OrganisationUnitLevelFlow organisationUnitLevel;
 
     public OrganisationUnitLevelExtended(){}
 
-    public OrganisationUnitLevelExtended(OrganisationUnitLevel organisationUnitLevel){
+    public OrganisationUnitLevelExtended(OrganisationUnitLevelFlow organisationUnitLevel){
         this.organisationUnitLevel = organisationUnitLevel;
     }
 
@@ -47,7 +50,7 @@ public class OrganisationUnitLevelExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public OrganisationUnitLevel getOrganisationUnitLevel() {
+    public OrganisationUnitLevelFlow getOrganisationUnitLevel() {
         return organisationUnitLevel;
     }
 
@@ -58,7 +61,7 @@ public class OrganisationUnitLevelExtended implements VisitableFromSDK {
      * @return The synthetic key (Ex: "OrganisationUnitLevel3")
      */
     public static String buildKey(int level){
-        return OrganisationUnitLevel.class.getSimpleName()+level;
+        return OrganisationUnitLevelFlow.class.getSimpleName()+level;
     }
 
     /**
@@ -69,4 +72,19 @@ public class OrganisationUnitLevelExtended implements VisitableFromSDK {
         return OrganisationUnitLevelExtended.buildKey(organisationUnitLevel.getLevel());
     }
 
+    public String getUid() {
+        return organisationUnitLevel.getUId();
+    }
+
+    public String getDisplayName() {
+        return organisationUnitLevel.getDisplayName();
+    }
+
+    public static List<OrganisationUnitLevelExtended> getExtendedList(List<OrganisationUnitLevelFlow> flowList) {
+        List <OrganisationUnitLevelExtended> extendedsList = new ArrayList<>();
+        for(OrganisationUnitLevelFlow flowPojo:flowList){
+            extendedsList.add(new OrganisationUnitLevelExtended(flowPojo));
+        }
+        return extendedsList;
+    }
 }

@@ -26,16 +26,19 @@ import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.Event;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
+import org.hisp.dhis.client.sdk.models.event.Event;
+import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,12 +52,24 @@ public class EventExtended implements VisitableFromSDK {
     public final static String DHIS2_LONG_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT ="yyyy-MM-dd";
 
-    Event event;
 
-    public EventExtended(){}
 
-    public EventExtended(Event event){
+    public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
+    public static final Event.EventStatus STATUS_COMPLETED = Event.EventStatus.COMPLETED;
+    public static final Event.EventStatus STATUS_FUTURE_VISIT = Event.EventStatus.SCHEDULE;
+    public static final Event.EventStatus STATUS_SKIPPED = Event.EventStatus.SKIPPED;
+
+    EventFlow event;
+
+    public EventExtended(EventFlow event){
         this.event =event;
+    }
+    public EventExtended(EventExtended event){
+        this.event =event.getEvent();
+    }
+
+    public EventExtended() {
+        event= new EventFlow();
     }
 
     @Override
@@ -62,7 +77,12 @@ public class EventExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public Event getEvent() {
+    public void setStatus(Event.EventStatus statusCompleted) {
+        event.setStatus(statusCompleted);
+
+    }
+
+    public EventFlow getEvent() {
         return event;
     }
 
@@ -94,10 +114,6 @@ public class EventExtended implements VisitableFromSDK {
      * @return
      */
     public Date getEventDate(){
-        if(event==null){
-            return null;
-        }
-
         return event.getEventDate().toDate();
     }
 
@@ -157,7 +173,7 @@ public class EventExtended implements VisitableFromSDK {
 
 
     /**
-     * Checks whether the given event contains errors in SDK FailedItem table or has been successful.
+     * Checks whether the given event contains errors in SDK FailedItemExtended table or has been successful.
      * If not return null, it is becouse this item had a conflict.
      * @param localId
      * @return
@@ -169,10 +185,10 @@ public class EventExtended implements VisitableFromSDK {
                         .is(localId)).querySingle();
     }
 
-    public Event removeDataValues() {
+    public EventFlow removeDataValues() {
         //Remove all dataValues
         List<TrackedEntityDataValueFlow> dataValues = new Select().from(TrackedEntityDataValueFlow.class)
-                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUid()))
+                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
                 .queryList();
         if(dataValues!=null) {
             for (int i=dataValues.size()-1;i>=0;i--) {
@@ -181,7 +197,8 @@ public class EventExtended implements VisitableFromSDK {
                 dataValues.remove(i);
             }
         }
-        event.setDataValues(null);
+        //// TODO: 15/11/2016
+        //event.setDataValues(null);
         event.save();
         return event;
     }
@@ -198,7 +215,7 @@ public class EventExtended implements VisitableFromSDK {
     }
     public static long count(){
         return SQLite.selectCountOf()
-                .from(Event.class)
+                .from(EventFlow.class)
                 .count();
     }
 
@@ -213,4 +230,73 @@ public class EventExtended implements VisitableFromSDK {
                 .querySingle();
     }
 
+    //// FIXME: 09/11/2016
+    public void setFromServer(boolean value) {
+    }
+    public void setOrganisationUnitId(String uid) {
+        event.setOrgUnit(uid);
+    }
+    public void setProgramId(String uid) {
+        event.setProgram(uid);
+    }
+    public void setProgramStageId(String uid) {
+        event.setProgramStage(uid);
+    }
+
+    public void setLastUpdated(DateTime dateTime){
+        event.setLastUpdated(dateTime);
+    }
+
+    public void setEventDate(DateTime dateTime) {
+        event.setEventDate(dateTime);
+    }
+
+    public void setDueDate(DateTime dateTime) {
+        event.setEventDate(dateTime);
+    }
+    public long getLocalId() {
+        return event.getId();
+    }
+
+    public String getUid() {
+        return event.getUId();
+    }
+
+    public String getOrganisationUnitId() {
+        return event.getOrgUnit();
+    }
+
+    public String getProgramStageId() {
+        return event.getProgramStage();
+    }
+
+    public List<DataValueExtended> getDataValues() {
+        //// FIXME: 09/11/2016
+        return null;
+    }
+
+    public String getProgramId() {
+        return event.getProgram();
+    }
+
+    public void setLatitude(double latitude) {
+        event.setLatitude(latitude);
+    }
+
+    public void setLongitude(double longitude) {
+        event.setLongitude(longitude);
+    }
+
+    public void save() {
+        event.save();
+    }
+
+
+    public static List<EventExtended> getExtendedList(List<EventFlow> events){
+        List <EventExtended> eventExtendeds = new ArrayList<>();
+        for(EventFlow pojoFlow:events){
+            eventExtendeds.add(new EventExtended(pojoFlow));
+        }
+        return eventExtendeds;
+    }
 }

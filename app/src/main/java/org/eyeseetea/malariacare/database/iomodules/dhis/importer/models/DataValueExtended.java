@@ -29,10 +29,10 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.sdk.models.DataValue;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +47,17 @@ public class DataValueExtended implements VisitableFromSDK {
     private final static String TAG=".DataValueExtended";
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
 
-    DataValue dataValue;
+    DataValueFlow dataValue;
 
     String programUid;
 
-    public DataValueExtended(){}
+    public DataValueExtended(){dataValue=new DataValueFlow();}
 
-    public DataValueExtended(DataValue dataValue){
+    public DataValueExtended(DataValueFlow dataValue){
         this.dataValue =dataValue;
+    }
+    public DataValueExtended(DataValueExtended dataValueExtended){
+        this.dataValue =dataValueExtended.getDataValue();
     }
 
     @Override
@@ -62,7 +65,7 @@ public class DataValueExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public DataValue getDataValue() {
+    public DataValueFlow getDataValue() {
         return dataValue;
     }
 
@@ -160,12 +163,12 @@ public class DataValueExtended implements VisitableFromSDK {
                 .count();
     }
 
-    public static TrackedEntityDataValueFlow findByEventAndUID(EventFlow event, String dataElementUID){
-        return new Select()
-                .from(TrackedEntityDataValueFlow.class)
-                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
-                .and(TrackedEntityDataValueFlow_Table.dataElement.eq(dataElementUID))
-                .querySingle();
+    public static DataValueExtended findByEventAndUID(EventFlow event, String dataElementUID){
+        return new DataValueExtended(new Select()
+                .from(DataValueFlow.class)
+                .where(DataValueFlow_Table.event.eq(event.getUId()))
+                .and(DataValueFlow_Table.dataElement.eq(dataElementUID))
+                .querySingle());
     }
 
     public String getProgramUid() {
@@ -174,5 +177,56 @@ public class DataValueExtended implements VisitableFromSDK {
 
     public void setProgramUid(String programUid) {
         this.programUid = programUid;
+    }
+
+    public String getEvent() {
+        //// FIXME: 15/11/2016
+        //EventFlow event= dataValue.getEvent();
+        //return event;
+        return null;
+    }
+
+    public String getDataElement() {
+        return dataValue.getDataElement();
+    }
+
+    public String getValue() {
+        return dataValue.getValue();
+    }
+
+    public void setDataElement(String uid) {
+        dataValue.setDataElement(uid);
+    }
+
+    public void setLocalEventId(long localId) {
+        dataValue.setLocalId(localId);
+    }
+
+    public void setEvent(EventFlow event) {
+        dataValue.setEvent(event.getUId());
+    }
+
+    public void setProvidedElsewhere(boolean b) {
+        dataValue.setProvidedElsewhere(b);
+    }
+
+    public void setStoredBy(String safeUsername) {
+        dataValue.setStoredBy(safeUsername);
+    }
+
+    public void setValue(String round) {
+        dataValue.setValue(round);
+    }
+
+    public void save() {
+        dataValue.save();
+    }
+
+    public static List<DataValueExtended> getExtendedList(List<DataValueFlow> flowList){
+        List <DataValueExtended> extendedsList = new ArrayList<>();
+        for(DataValueFlow flowPojo:flowList){
+            extendedsList.add(new DataValueExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

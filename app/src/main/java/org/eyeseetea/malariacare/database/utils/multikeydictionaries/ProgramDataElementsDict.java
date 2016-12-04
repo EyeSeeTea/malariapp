@@ -21,8 +21,8 @@ package org.eyeseetea.malariacare.database.utils.multikeydictionaries;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.sdk.models.DataElement;
+
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 
 import java.util.List;
 
@@ -39,12 +39,12 @@ public class ProgramDataElementsDict extends ObjectModelDict {
     }
 
     @Override
-    public DataElement get(String programUid, String dataElementUid) {
-        return (DataElement) super.get(programUid, dataElementUid);
+    public DataElementFlow get(String programUid, String dataElementUid) {
+        return (DataElementFlow) super.get(programUid, dataElementUid);
     }
 
     @Override
-    public List<DataElement> values() {
-        return (List<DataElement>) super.values();
+    public List<DataElementFlow> values() {
+        return (List<DataElementFlow>) super.values();
     }
 }

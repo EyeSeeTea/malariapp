@@ -19,16 +19,25 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
+import static org.eyeseetea.malariacare.database.utils.AliasConstants.*;
+
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.Program;
-import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValue;
+import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
+import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValueFlow;
+import org.eyeseetea.malariacare.sdk.models.ProgramAttributeValueFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
+import org.eyeseetea.malariacare.database.model.Program;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,16 +55,16 @@ public class ProgramExtended implements VisitableFromSDK {
     /**
      * Reference to sdk program
      */
-    Program program;
+    ProgramFlow program;
 
     /**
      * Reference to app program (useful to create relationships with orgunits)
      */
-    org.eyeseetea.malariacare.database.model.Program appProgram;
+    Program appProgram;
 
     public ProgramExtended(){}
 
-    public ProgramExtended(Program program){
+    public ProgramExtended(ProgramFlow program){
         this.program=program;
     }
 
@@ -64,31 +73,29 @@ public class ProgramExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public Program getProgram(){
+    public ProgramFlow getProgram(){
         return this.program;
     }
 
-    public void setAppProgram(org.eyeseetea.malariacare.database.model.Program appProgram) {
+    public void setAppProgram(Program appProgram) {
         this.appProgram = appProgram;
     }
 
-    public org.eyeseetea.malariacare.database.model.Program getAppProgram(){
+    public Program getAppProgram(){
         return this.appProgram;
     }
 
     public Integer getProductivityPosition() {
         //// FIXME: 11/11/2016
-        /*
-        ProgramAttributeValue programAttributeValue = new Select().from(ProgramAttributeValue.class).as(programAttributeFlowName)
-                .join(TrackedEntityAttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
+        ProgramAttributeValueFlow programAttributeValue = new Select().from(ProgramAttributeValueFlow.class).as(programAttributeFlowName)
+                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
                 .on(ProgramAttributeValueFlow_Table.attributeId.withTable(programAttributeFlowAlias)
-                        .eq(TrackedEntityAttributeFlow_Table.id.withTable(attributeFlowAlias)))
-                .where(TrackedEntityAttributeFlow_Table.code)
-                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE)
-                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(this.getProgram().getUid()))
+                        .eq(AttributeFlow_Table.id.withTable(attributeFlowAlias)))
+                .where(AttributeFlow_Table.code
+                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
+                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(getUid()))
                 .querySingle();
-        */
-        ProgramAttributeValue programAttributeValue = null;
+
         if(programAttributeValue==null){
             return null;
         }
@@ -96,37 +103,63 @@ public class ProgramExtended implements VisitableFromSDK {
         try {
             return Integer.parseInt(programAttributeValue.getValue());
         }catch(Exception ex){
-            Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUid(), ex.getMessage()));
+            Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUId(), ex.getMessage()));
             return null;
         }
     }
 
-    public static Program getProgramByDataElement(String dataElementUid) {
-        Program program = null;
-        //// FIXME: 11/11/2016
-        /*
-        List<Program> programs = getAllPrograms();
-        for (Program program1 : programs) {
-            for (ProgramStage programStage : program1.getProgramStages()) {
-                for (ProgramStageSectionFlow programStageSection : programStage.getProgramStageSections()) {
-                    for (ProgramStageDataElementFlow programStageDataElement : programStageSection.getProgramStageDataElements()) {
-                        if (programStageDataElement.getDataElement().getUId().equals(dataElementUid)) {
+    public static ProgramExtended getProgramByDataElement(String dataElementUid) {
+        ProgramExtended program = null;
+        List<ProgramExtended> programs = getAllPrograms();
+        for (ProgramExtended program1 : programs) {
+            for (ProgramStageExtended programStage : program1.getProgramStages()) {
+                for (ProgramStageSectionExtended programStageSection : programStage.getProgramStageSections()) {
+                    for (ProgramStageDataElementExtended programStageDataElement : programStageSection.getProgramStageDataElements()) {
+                        if (programStageDataElement.getDataElement().getUid().equals(dataElementUid)) {
                             return program1;
                         }
                     }
                 }
             }
         }
-        */
         return program;
     }
     
-    public static List<Program> getAllPrograms(){
-        return new Select().from(Program.class).queryList();
+    public static List<ProgramExtended> getAllPrograms(){
+        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).queryList();
+        List<ProgramExtended> programsExtended = new ArrayList<>();
+        for(ProgramFlow programFlow : programFlows){
+            programsExtended.add(new ProgramExtended(programFlow));
+        }
+        return programsExtended;
     }
 
-    public static Program getProgram(String id){
+    public static ProgramFlow getProgram(String id){
         return new Select()
-                .from(Program.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
+                .from(ProgramFlow.class).where(ProgramFlow_Table.uId.eq(id)).querySingle();
+    }
+
+
+    public List<ProgramStageExtended> getProgramStages() {
+        return ProgramStageExtended.getExtendedList(SdkController.getProgramStages(program));
+    }
+
+    public String getUid() {
+        return program.getUId();
+    }
+
+    public String getDisplayName() {
+        return program.getDisplayName();
+    }
+
+    public String getName() {
+        return program.getName();
+    }
+    public static List<ProgramExtended> getExtendedList(List<ProgramFlow> flowList){
+        List <ProgramExtended> extendedsList = new ArrayList<>();
+        for(ProgramFlow flowPojo:flowList){
+            extendedsList.add(new ProgramExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

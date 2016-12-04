@@ -20,29 +20,33 @@
 package org.eyeseetea.malariacare.sdk;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
-import org.eyeseetea.malariacare.BaseActivity;
-import org.eyeseetea.malariacare.EyeSeeTeaApplication;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.*;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevel;
-import org.eyeseetea.malariacare.sdk.models.ProgramStage;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
+import org.eyeseetea.malariacare.sdk.models.DataValueFlow;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
-import org.eyeseetea.malariacare.sdk.models.*;
-import org.eyeseetea.malariacare.sdk.models.Program;
-import org.hisp.dhis.client.sdk.models.program.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +57,19 @@ import java.util.List;
 
 public class SdkController {
 
+    public final static Class[] MANDATORY_METADATA_TABLES = {
+            AttributeFlow.class,
+            DataElementFlow.class,
+            //DataElementAttributeValueFlow.class,
+            OptionFlow.class,
+            OptionSetFlow.class,
+            UserAccountFlow.class,
+            OrganisationUnitFlow.class,
+            //OrganisationUnitProgramRelationshipFlow.class,
+            ProgramStageFlow.class,
+            ProgramStageDataElementFlow.class,
+            ProgramStageSectionFlow.class
+    };
     //from pull controller
     public static void register(Context context){
         try {
@@ -151,39 +168,39 @@ public class SdkController {
         return MetaDataController.getAssignedPrograms();
     }
 
-    public static Program getProgram(String assignedProgramID) {
+    public static ProgramFlow getProgram(String assignedProgramID) {
         return MetaDataController.getProgram(assignedProgramID);
     }
 
-    public static List<OptionSet> getOptionSets() {
+    public static List<OptionSetFlow> getOptionSets() {
         MetaDataController.getOptionSets();
     }
 
-    public static UserAccount getUserAccount() {
+    public static UserAccountFlow getUserAccount() {
         return etaDataController.getUserAccount();
     }
 
-    public static DataElement getDataElement(DataElement dataElement) {
+    public static DataElementFlow getDataElement(DataElementFlow dataElement) {
         return MetaDataController.getDataElement(dataElement.getId());
     }
 
-    public static DataElement getDataElement(String UId) {
+    public static DataElementFlow getDataElement(String UId) {
         return MetaDataController.getDataElement(UId);
     }
 
-    public static List<OrganisationUnitLevel> getOrganisationUnitLevels() {
+    public static List<OrganisationUnitLevelFlow> getOrganisationUnitLevels() {
         return MetaDataController.getOrganisationUnitLevels();
     }
 
-    public static List<OrganisationUnit> getAssignedOrganisationUnits() {
+    public static List<OrganisationUnitFlow> getAssignedOrganisationUnits() {
         return MetaDataController.getAssignedOrganisationUnits();
     }
 
-    public static List<Program> getProgramsForOrganisationUnit(String UId, ProgramType programType) {
+    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId, ProgramType programType) {
         return MetaDataController.getProgramsForOrganisationUnit(UId, programType);
     }
 
-    public static List<Event> getEvents(String organisationUnitUId, String ProgramUId) {
+    public static List<EventFlow> getEvents(String organisationUnitUId, String ProgramUId) {
         return TrackerController.getEvents(organisationUnitUId, ProgramUId);
     }
 
@@ -201,11 +218,16 @@ public class SdkController {
         new SaveModelTransaction<>(ProcessModelInfo.withModels(medias)).onExecute();
     }
 
-    public static List<Event> getEventsFromEventsWrapper(JsonNode jsonNode) {
-        return  EventsWrapper.getEvents(jsonNode);
+    public static List<EventExtended> getEventsFromEventsWrapper(JsonNode jsonNode) {
+        List<EventExtended> eventExtendeds = new ArrayList<>();
+        List<EventFlow> eventFlows = EventsWrapper.getEvents(jsonNode);
+        for (EventFlow eventFlow:eventFlows){
+            eventExtendeds.add(new EventExtended(eventFlow));
+        }
+        return eventExtendeds;
     }
 
-    public static ProgramStage getProgramStage(ProgramStageFlow programStage) {
+    public static ProgramStageFlow getProgramStage(ProgramStageFlow programStage) {
         return MetaDataController.getProgramStage(programStage);
     }
 
@@ -221,9 +243,9 @@ public class SdkController {
 
     public static void wipeSDKData() {
         Delete.tables(
-                Event.class,
-                DataValue.class,
-                FailedItem.class
+                EventFlow.class,
+                DataValueFlow.class,
+                FailedItemFlow.class
         );
         DateTimeManager.getInstance().delete();
         //Log.d(TAG,"Delete sdk db");
@@ -231,5 +253,9 @@ public class SdkController {
 
     public static String getDhisDatabaseName() {
         return Dhis2Database.NAME;
+    }
+
+    public static List<ProgramStageFlow> getProgramStages(ProgramFlow program) {
+        return null;
     }
 }

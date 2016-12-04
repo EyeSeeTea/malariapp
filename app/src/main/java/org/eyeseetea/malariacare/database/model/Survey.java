@@ -46,7 +46,6 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.sdk.models.Event;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
@@ -905,7 +904,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
 
-    public static Survey findSurveyWith(OrgUnit orgUnit, Program program,Event lastEventInServer) {
+    public static Survey findSurveyWith(OrgUnit orgUnit, Program program,EventFlow lastEventInServer) {
 
         if(lastEventInServer==null){
             return null;
@@ -916,7 +915,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Survey_Table.status.isNot(Constants.SURVEY_HIDE))
                 .and( Survey_Table.id_program.eq(program.getId_program()))
                 .and(Survey_Table.id_org_unit.eq(orgUnit.getId_org_unit()))
-                .and(Survey_Table.eventuid.eq(lastEventInServer.getEvent().getUId()))
+                .and(Survey_Table.eventuid.eq(lastEventInServer.getUId()))
                 .orderBy(Survey_Table.completion_date,false)
                 .querySingle();
     }
@@ -954,18 +953,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Get event from a survey if exists.
      * @return
      */
-    public Event getEvent(){
-        EventFlow event= new Select().from(EventFlow.class)
+    public EventFlow getEvent(){
+        return new Select().from(EventFlow.class)
                 .where(EventFlow_Table.uId.eq(eventuid)).querySingle();
-        return (Event) event;
     }
 
     /**
      * Get event from a survey local id if exist
      * @return
      */
-    public Event getEventFromLocalId(){
-        Event event= new Select().from(Event.class)
+    public EventFlow getEventFromLocalId(){
+        EventFlow event= new Select().from(EventFlow.class)
                 .where(EventFlow_Table.id.eq( id_survey)).querySingle();
         return event;
     }

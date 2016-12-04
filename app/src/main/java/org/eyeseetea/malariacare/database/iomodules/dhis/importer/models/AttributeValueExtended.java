@@ -23,8 +23,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
 import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.eyeseetea.malariacare.sdk.models.AttributeValueFlow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,30 +32,29 @@ import java.util.List;
 /**
  * Created by arrizabalaga on 6/11/15.
  */
-public class AttributeExtended {
+public class AttributeValueExtended {
 
-    AttributeFlow attributeFlow;
 
-    public AttributeExtended(AttributeFlow attributeFlow){
-        this.attributeFlow =attributeFlow;
+    AttributeValueFlow attributeValueFlow;
+
+    public AttributeValueExtended(AttributeValueFlow attributeValueFlow){
+        this.attributeValueFlow=attributeValueFlow;
     }
-    public AttributeExtended(AttributeExtended attributeFlow){
-        this.attributeFlow =attributeFlow.getAttribute();
-    }
-
-    public String getCode() {
-        return attributeFlow.getCode();
+    public AttributeValueExtended(AttributeValueExtended attributeValueFlow){
+        this.attributeValueFlow =attributeValueFlow.getAttribute();
     }
 
     public String getUid() {
-        return attributeFlow.getUId();
+        return attributeValueFlow.getUId();
     }
 
-    public AttributeFlow getAttribute() {
-        return attributeFlow;
+
+
+    public AttributeValueFlow getAttribute() {
+        return attributeValueFlow;
     }
 
-    public AttributeExtended(){}
+    public AttributeValueExtended(){}
 
     /**
      * Find an attribute by its code
@@ -71,10 +69,10 @@ public class AttributeExtended {
     }
 
 
-    public static List<AttributeExtended> getExtendedList(List<AttributeFlow> flowList) {
-        List <AttributeExtended> extendedsList = new ArrayList<>();
-        for(AttributeFlow flowPojo:flowList){
-            extendedsList.add(new AttributeExtended(flowPojo));
+    public static List<AttributeValueExtended> getExtendedList(List<AttributeValueFlow> flowList) {
+        List <AttributeValueExtended> extendedsList = new ArrayList<>();
+        for(AttributeValueFlow flowPojo:flowList){
+            extendedsList.add(new AttributeValueExtended(flowPojo));
         }
         return extendedsList;
     }

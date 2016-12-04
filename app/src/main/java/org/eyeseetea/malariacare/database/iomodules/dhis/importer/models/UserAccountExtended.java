@@ -21,17 +21,20 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.UserAccount;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 6/11/15.
  */
 public class UserAccountExtended implements VisitableFromSDK {
-   UserAccount userAccount;
+    UserAccountFlow userAccount;
 
     public UserAccountExtended(){}
 
-    public UserAccountExtended(UserAccount userAccount){
+    public UserAccountExtended(UserAccountFlow userAccount){
         this.userAccount=userAccount;
     }
 
@@ -40,8 +43,27 @@ public class UserAccountExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public UserAccount getUserAccount() {
+    public UserAccountFlow getUserAccount() {
         return userAccount;
     }
 
+    public String getUid() {
+        return userAccount.getUId();
+    }
+
+    public String getName() {
+        return userAccount.getName();
+    }
+
+    public String getUId() {
+        return userAccount.getUId();
+    }
+
+    public static List<UserAccountExtended> getExtendedList(List<UserAccountFlow> flowList) {
+        List <UserAccountExtended> extendedsList = new ArrayList<>();
+        for(UserAccountFlow flowPojo:flowList){
+            extendedsList.add(new UserAccountExtended(flowPojo));
+        }
+        return extendedsList;
+    }
 }

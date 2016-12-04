@@ -23,9 +23,12 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.OptionSet;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow_Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -44,12 +47,15 @@ public class OptionSetExtended implements VisitableFromSDK {
      */
     public final static String OPTION_SET_QUESTION_TYPE_NAME="DB - Question Type";
 
-    OptionSet optionSet;
+    OptionSetFlow optionSet;
 
     public OptionSetExtended(){}
 
-    public OptionSetExtended(OptionSet optionSet){
+    public OptionSetExtended(OptionSetFlow optionSet){
         this.optionSet=optionSet;
+    }
+    public OptionSetExtended(OptionSetExtended optionSet){
+        this.optionSet=optionSet.getOptionSet();
     }
 
     @Override
@@ -57,7 +63,7 @@ public class OptionSetExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public OptionSet getOptionSet() {
+    public OptionSetFlow getOptionSet() {
         return optionSet;
     }
 
@@ -96,5 +102,25 @@ public class OptionSetExtended implements VisitableFromSDK {
      */
     public static OptionSetFlow findOptionSetForQuestionType(){
         return findOptionSetByName(OPTION_SET_QUESTION_TYPE_NAME);
+    }
+
+    public String getName() {
+        return optionSet.getName();
+    }
+
+    public String getUid() {
+        return optionSet.getUid();
+    }
+
+    public List<OptionExtended> getOptions() {
+        return OptionExtended.getExtendedList(optionSet.getOptions());
+    }
+
+    public static List<OptionSetExtended> getExtendedList(List<OptionSetFlow> flowList) {
+        List <OptionSetExtended> extendedsList = new ArrayList<>();
+        for(OptionSetFlow flowPojo:flowList){
+            extendedsList.add(new OptionSetExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

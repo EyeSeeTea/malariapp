@@ -35,12 +35,14 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnit;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSet;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroup;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSetFlow;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitDataSetFlow_Table;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroupFlow;
+import org.eyeseetea.malariacare.sdk.models.OrganisationUnitGroupFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrganisationUnitExtended implements VisitableFromSDK {
@@ -56,7 +58,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     /**
      * sdk organisation unit reference
      */
-    OrganisationUnit orgUnit;
+    OrganisationUnitFlow organisationUnit;
 
     /**
      * Productivity array values
@@ -70,17 +72,20 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
 
     public OrganisationUnitExtended(){}
 
-    public OrganisationUnitExtended(OrganisationUnit orgUnit){
-        this.orgUnit = orgUnit;
+    public OrganisationUnitExtended(OrganisationUnitFlow orgUnit){
+        this.organisationUnit = orgUnit;
     }
 
+    public OrganisationUnitExtended(OrganisationUnitExtended orgUnit){
+        this.organisationUnit = orgUnit.getOrganisationUnit();
+    }
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
     }
 
-    public OrganisationUnit getOrgUnit() {
-        return orgUnit;
+    public OrganisationUnitFlow getOrganisationUnit() {
+        return organisationUnit;
     }
 
     /**
@@ -133,7 +138,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
                         .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
                 .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE))
                         .eq(code))
-                .and(Condition.column(ColumnAlias.columnWithTable("o", OrganisationUnitAttributeValue$Table.ORGANISATIONUNIT)).is(this.getOrgUnit().getId()))
+                .and(Condition.column(ColumnAlias.columnWithTable("o", OrganisationUnitAttributeValue$Table.ORGANISATIONUNIT)).is(this.getOrganisationUnit().getId()))
                 .querySingle();
 
         if(organisationUnitAttributeValue==null){
@@ -145,7 +150,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     }
 
     /**
-     * App orgUnit setter
+     * App organisationUnit setter
      * @param appOrgUnit
      */
     public void setAppOrgUnit(OrgUnit appOrgUnit) {
@@ -153,7 +158,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     }
 
     /**
-     * App orgUnit setter
+     * App organisationUnit setter
      * @return
      */
     public OrgUnit getAppOrgUnit() {
@@ -169,16 +174,13 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @param id
      * @return
      */
-    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
+    public static List<OrganisationUnitDataSetFlow> getOrganisationUnitDataSets(String id){
         //// FIXME: 11/11/2016
-        /*
         return new Select()
-                .from(OrganisationUnitDataSet.class)
-                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
+                .from(OrganisationUnitDataSetFlow.class)
+                .where(OrganisationUnitDataSetFlow_Table.organisationUnitId
                         .eq(id))
                 .queryList();
-        */
-        return null;
     }
 
     /**
@@ -186,16 +188,12 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @param id
      * @return
      */
-    public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
-        //// FIXME: 11/11/2016
-        /*
+    public static List<OrganisationUnitGroupFlow> getOrganisationUnitGroups(String id){
         return new Select()
-                .from(OrganisationUnitGroup.class)
-                .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
+                .from(OrganisationUnitGroupFlow.class)
+                .where(OrganisationUnitGroupFlow_Table.organisationUnitId
                         .eq(id))
                 .queryList();
-        */
-        return null;
     }
 
     /**
@@ -203,11 +201,50 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * @param id
      * @return
      */
-    public static OrganisationUnit getOrganisationUnit(String id){
+    public static OrganisationUnitFlow getOrganisationUnit(String id){
         return new Select()
-                .from(OrganisationUnit.class)
+                .from(OrganisationUnitFlow.class)
                 .where(OrganisationUnitFlow_Table.uId
                         .eq(id))
                 .querySingle();
+    }
+
+    public int getLevel() {
+        return organisationUnit.getLevel();
+    }
+
+    public String getLabel() {
+        return organisationUnit.getDisplayName();
+    }
+
+    public String getName() {
+        return organisationUnit.getName();
+    }
+
+    public String getUid() {
+        return organisationUnit.getUId();
+    }
+
+    public String getPath() {
+        //// TODO: 15/11/2016  create method in sdk
+        //return organisationUnit.getPath();
+        return null;
+    }
+
+    public String getId() {
+        return organisationUnit.getUId();
+    }
+
+    public String getParent() {
+        return organisationUnit.getParent().getUId();
+    }
+
+    public static List<OrganisationUnitExtended> getExtendedList(
+            List<OrganisationUnitFlow> flowList) {
+        List <OrganisationUnitExtended> extendedsList = new ArrayList<>();
+        for(OrganisationUnitFlow flowPojo:flowList){
+            extendedsList.add(new OrganisationUnitExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

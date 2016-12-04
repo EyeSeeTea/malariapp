@@ -24,13 +24,15 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.database.model.Option_Table;
-import org.eyeseetea.malariacare.sdk.models.Attribute;
-import org.eyeseetea.malariacare.sdk.models.Option;
-import org.eyeseetea.malariacare.sdk.models.OptionAttributeValue;
+import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
+import org.eyeseetea.malariacare.sdk.models.OptionAttributeValueFlow;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow_Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 6/11/15.
@@ -44,20 +46,24 @@ public class OptionExtended implements VisitableFromSDK {
      */
     private static final String ATTRIBUTE_OPTION_FACTOR_NAME="OF";
 
-    Option option;
+    OptionFlow option;
 
     public OptionExtended(){}
 
-    public OptionExtended(Option option){
+    public OptionExtended(OptionFlow option){
         this.option=option;
     }
 
+    public OptionExtended(OptionExtended option){
+        this.option=option.getOption();
+    }
+    
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
     }
 
-    public Option getOption() {
+    public OptionFlow getOption() {
         return option;
     }
 
@@ -66,8 +72,8 @@ public class OptionExtended implements VisitableFromSDK {
      * @param name
      * @return
      */
-    public static Option findOptionByName(String name){
-        return new Select().from(Option.class).where(Option_Table.name.
+    public static OptionFlow findOptionByName(String name){
+        return new Select().from(OptionFlow.class).where(OptionFlow_Table.name.
                 is(name)).querySingle();
     }
 
@@ -88,8 +94,9 @@ public class OptionExtended implements VisitableFromSDK {
      * @return
      */
     public Float getFactor(){
-        for(OptionAttributeValue optionAttributeValue:option.getAttributeValues()){
-            Attribute attribute=optionAttributeValue.getAttribute();
+
+        for(OptionAttributeValueFlow optionAttributeValue:this.getOptionAttributeValuesFlow()){
+            AttributeFlow attribute=optionAttributeValue.getAttribute();
 
             //Not OptionFactor -> ignore
             if(!ATTRIBUTE_OPTION_FACTOR_NAME.equals(attribute.getCode())){
@@ -102,5 +109,46 @@ public class OptionExtended implements VisitableFromSDK {
 
         //Should not happen
         return 0f;
+    }
+
+
+    //// FIXME: 09/11/2016
+    public List<OptionAttributeValueFlow> getAttributeValues() {
+        //optionflow attributeValueFlow
+        return  null;
+    }
+    public OptionAttributeValueFlow getAttribute() {
+        //optionflow attributeFlow
+        return  null;
+    }
+
+    public List<OptionAttributeValueFlow> getOptionAttributeValuesFlow() {
+        //optionflow attributeFlow
+        return  null;
+    }
+
+    public String getUid() {
+        return option.getUId();
+    }
+
+    public String getOptionSet() {
+        return option.getOptionSet().getUId();
+    }
+
+    public String getName() {
+        return option.getName();
+    }
+
+    public String getCode() {
+        return option.getCode();
+    }
+
+
+    public static List<OptionExtended> getExtendedList(List<OptionFlow> flowList) {
+        List <OptionExtended> extendedsList = new ArrayList<>();
+        for(OptionFlow flowPojo:flowList){
+            extendedsList.add(new OptionExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }
