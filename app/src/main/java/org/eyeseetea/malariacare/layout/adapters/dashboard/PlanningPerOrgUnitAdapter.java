@@ -26,23 +26,13 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter {
     List<PlannedSurveyByOrgUnit> items;
 
     public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> items, Context context) {
+        super(context);
         this.items= new ArrayList<>();
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.assessment_planning_header;
         this.recordLayout = R.layout.assessment_planning_record;
-    }
-
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
     }
 
     @Override
