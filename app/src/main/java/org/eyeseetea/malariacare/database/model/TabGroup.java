@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
@@ -105,7 +107,9 @@ public class TabGroup extends BaseModel {
 
     public Program getProgram() {
         if(program==null){
-            if (id_program == null) return null;
+            if (id_program == null){
+                return null;
+            }
             program= new Select()
                     .from(Program.class)
                     .where(Condition.column(Program$Table.ID_PROGRAM)
@@ -126,7 +130,7 @@ public class TabGroup extends BaseModel {
     public List<Tab> getTabs(){
         if (tabs==null){
             tabs=new Select().from(Tab.class)
-                    .where(Condition.column(Tab$Table.ID_TAB_GROUP).eq(this.getId_tab_group()))
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_tab_group()))
                     .orderBy(Tab$Table.ORDER_POS).queryList();
         }
         return tabs;
@@ -135,7 +139,7 @@ public class TabGroup extends BaseModel {
     public List<Survey> getSurveys(){
         if(surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Condition.column(Survey$Table.ID_TAB_GROUP).eq(this.getId_tab_group())).queryList();
+                    .where(Condition.column(Survey$Table.ID_PROGRAM).eq(this.getId_tab_group())).queryList();
         }
         return this.surveys;
     }
@@ -176,11 +180,14 @@ public class TabGroup extends BaseModel {
     @Override
     public String toString() {
         return "TabGroup{" +
-                "id_tab_group=" + id_tab_group +
+                "id_program=" + id_tab_group +
                 ", name='" + name + '\'' +
                 ", id_program=" + id_program +
                 ", uid='" + uid + '\'' +
                 '}';
     }
 
+    public static List<TabGroup> getAllTabgroup() {
+        return new Select().all().from(TabGroup.class).queryList();
+    }
 }

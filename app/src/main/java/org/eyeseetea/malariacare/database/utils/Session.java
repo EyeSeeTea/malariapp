@@ -27,8 +27,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +44,13 @@ public class Session {
     private final static String TAG=".Session";
 
     /**
-     * The current selected survey
+     * The current selected survey by module
      */
-    private static Survey survey;
+    private static Map<String, Survey> surveyMappedByModule = new HashMap<>();
+    /**
+     *  The current selected surveyFeedback
+    */
+    private static Survey surveyFeedback;
     /**
      * The current user
      */
@@ -68,15 +71,23 @@ public class Session {
      */
     private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
 
-    public static Survey getSurvey() {
-        return survey;
+    /**
+     * The current phone metadata
+     */
+    private static PhoneMetaData phoneMetaData;
+
+
+    public static Survey getSurveyByModule(String module) {
+        return surveyMappedByModule.get(module);
     }
 
-    public static void setSurvey(Survey survey) {
-        Session.survey = survey;
+    public static void setSurveyByModule(Survey survey, String module) {
+            surveyMappedByModule.put(module,survey);
     }
 
     public static User getUser() {
+        if(user==null)
+            user=User.getLoggedUser();
         return user;
     }
 
@@ -101,7 +112,7 @@ public class Session {
             user.delete();
             user=null;
         }
-        survey=null;
+        surveyMappedByModule=null;
         if(serviceValues!=null){
             serviceValues.clear();
         }
@@ -142,6 +153,12 @@ public class Session {
 
     public static void setLocation(Location location) {
         Session.location = location;
+    }
+
+    public static PhoneMetaData getPhoneMetaData(){return phoneMetaData;}
+
+    public static void setPhoneMetaData(PhoneMetaData phoneMetaData) {
+        Session.phoneMetaData = phoneMetaData;
     }
 
 }

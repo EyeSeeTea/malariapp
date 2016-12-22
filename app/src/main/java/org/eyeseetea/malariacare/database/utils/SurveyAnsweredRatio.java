@@ -128,4 +128,17 @@ public class SurveyAnsweredRatio {
         return answered>=total;
     }
 
+    /**
+     * Checks if the related survey has every compulsory question completed.
+     * @return
+     */
+    public boolean isCompulsoryCompleted(){
+        //No compulsory -> ok
+        if(totalCompulsory==0){
+            return true;
+        }
+
+        return compulsoryAnswered>=totalCompulsory;
+    }
+
 }

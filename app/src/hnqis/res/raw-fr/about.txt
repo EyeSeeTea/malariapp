@@ -1,34 +1,42 @@
-<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
+<p> <b> Réseau de santé Amélioration de la qualité du système de PSI (HNQIS) </b> </p>
 
-<p>This app was developed by PSI for the African Health markets for Equity project (AHME). AHME is implemented by Marie Stopes International, with support from the Bill & Melinda Gates Foundation.</p>
+<p> <b> Build %s </b> </p>
 
-<p>This Application is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government. PSI acknowledges UNITAID for the support provided during the conceptual development of this Application by funding the first online prototype of the Application within the UNITAID Private Sector RDT Project.</p>
+<p> Cette application logicielle ( "App") a été développé par Population Services International (PSI) pour soutenir l'amélioration de la qualité des réseaux privés du secteur des soins de santé. Cette application a été développée avec le soutien de: <br/>
+Le Département pour le développement international (DFID) (Grande-Bretagne); et <br/>
+Le ministre du Commerce extérieur et Coopération au développement (Pays-Bas) </p>
 
-<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section in the application’s settings menu.</p>
+<p> Cette App est également rendue possible grâce au soutien généreux du peuple américain à travers l'Agence américaine pour le développement international (USAID). Le contenu est la responsabilité du PSI et ne reflètent pas nécessairement les vues de l'USAID ou du Gouvernement des États-Unis. </p>
 
-<p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
+<p> En outre, cette application contient certaines modifications à une application logicielle préparé en collaboration avec le Programme de technologie appropriée pour la santé (PATH), et donc les opinions exprimées ici ne reflètent pas nécessairement les vues de PATH. </p>
 
-<p><b><u>Contributing Organizations</u></b></p>
+<p> Pour plus d'informations sur cette application, s'il vous plaît écrivez à mis@psi.org </p>
 
-<p><b><i>Population Services International</i></b></p>
+<p> <b> <u> organisations contributifs </u> </b> </p>
 
-<p><i>Conceptual development and implementation</i></p>
+<p> <b> <i> Population Services International </i> </b> </p>
 
-<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p> <i> développement conceptuel principal et la mise en œuvre </i> </p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p> PSI est une organisation de santé mondiale à but non lucratif qui le rend plus facile pour les gens dans le monde en développement à mener des vies plus saines et de planifier les familles qu'ils désirent par la commercialisation des produits et des services abordables </p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p> <a href="http://www.psi.org"> www.psi.org </a> </p>
 
-<p><i>Liderazgo del desarrollo técnico.</i></p>
+<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- El desarrollo de software para ONG<br/>
-- El desarrollo y despliegue de infraestructuras TIC<br/>
-- El análisis de datos y su representación<br/></p>
+<p> <i> le développement Android </i> </p>
 
-<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+<p> EyeSeeTea LTD est une société basée à Londres, dédiée à: <br/>
+- <br/> De développement logiciel ONG
+- Le développement des TIC et <br/> déploiement
+- L'analyse des données et la représentation <br/> </p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
 
-<p><i>Desarrollo conceptual y técnico</i></p>
+<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
+
+<p> <i> la coordination du développement </i> </p>
+
+<p> KTT se spécialise dans l'architecture DHIS, développement personnalisé et le déploiement. </p>
+
+<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>

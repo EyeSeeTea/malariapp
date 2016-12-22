@@ -21,29 +21,26 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
-import java.util.List;
 
 /**
  * Created by Jose on 21/04/2015.
  */
 public class CompositeScoreAdapter extends ATabAdapter {
 
-    public CompositeScoreAdapter(Tab tab, Context context, int id_layout) {
-        super(tab, context, id_layout);
+    public CompositeScoreAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module) {
+        super(tab, context, id_layout, idSurvey, module);
     }
 
     /**
@@ -53,8 +50,8 @@ public class CompositeScoreAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static CompositeScoreAdapter build(Tab tab, Context context) {
-        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab);
+    public static CompositeScoreAdapter build(Tab tab, Context context, float idSurvey, String module) {
+        return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab, idSurvey, module);
     }
 
     @Override
@@ -79,12 +76,12 @@ public class CompositeScoreAdapter extends ATabAdapter {
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());
 
-        Float compositeScoreValue = ScoreRegister.getCompositeScore(item);
+        Float compositeScoreValue = ScoreRegister.getCompositeScore(item, idSurvey, module);
 
         if (compositeScoreValue == null)
             ((CustomTextView)rowView.findViewById(R.id.score)).setText(getContext().getString(R.string.number_zero));
         else
-            ((CustomTextView)rowView.findViewById(R.id.score)).setText(Utils.round(compositeScoreValue));
+            ((CustomTextView)rowView.findViewById(R.id.score)).setText(AUtils.round(compositeScoreValue));
 
         rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 

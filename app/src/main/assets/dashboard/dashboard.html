@@ -16,174 +16,185 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no">
     <script type = "text/javascript" src="Chart.min.js"> </script>
-</head>
 <style>
-    select{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-size: 20px;
-    padding: 0 0 0 20px;
-    width: 102%;
-    background: url(img/select.png) no-repeat right #3e3e3f;
-    color: white;
-    margin-left: -9px;
-    }
-    @font-face {
-    font-family: 'Roboto-Condensed';
-    src: url('Roboto-Condensed.ttf');;
-    font-weight:    bold;
-    }
-    body{
-    background-color:#e5e5e5;
-    font-family: 'Roboto-Condensed';
-    margin-top:20px;
-    }
-    .line-title{
-    float: left;
-    font-size: 20px;
-    padding: 10px;
-    padding-left: 0px;
-    }
+        select{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            font-size: 20px;
+            padding: 0 0 0 20px;
+            width: 102%;
+            background: url(img/select.png) no-repeat right #3e3e3f;
+            color: white;
+            margin-left: -9px;
+        }
+        @font-face {
+            font-family: 'Roboto-Condensed';
+            src: url('../fonts/Roboto-Condensed.ttf');
+            font-weight:    bold;
+        }
+        body{
+            background-color:#e5e5e5;
+            font-family: 'Roboto-Condensed';
+            margin-top:20px;
+        }
+        .line-title{
+            float: left;
+            font-size: 20px;
+            padding: 10px;
+            padding-left: 0px;
+        }
 
-    .tip{
-    float:right;
-    }
+        .tip{
+            float:right;
+        }
 
-    canvas, table{
-    margin: 5px;
-    }
+        canvas, table{
+            margin: 5px;
+        }
 
-    .chart-legend li span{
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-right: 5px;
-    }
+        .chart-legend li span{
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+        }
 
-    .chart-legend ul{
-    list-style-type: none;
-    }
+        .chart-legend ul{
+            list-style-type: none;
+        }
 
-    .horizontal{
-    text-align:center;
-    clear:both;
-    }
+        .horizontal{
+            text-align:center;
+            clear:both;
+        }
 
-    .horizontal li{
-    display:inline;
-    padding-right:5px;
-    }
+        .horizontal li{
+            display:inline;
+            padding-right:5px;
+        }
 
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    table, td, th {
-    border: 0px solid black;
-    text-align: center;
-    }
-    td.green{
-    background-color: #81980d;
-    }
+        table, td, th {
+            border: 0px solid black;
+            text-align: center;
+        }
+        td.green{
+            background-color: #81980d;
+        }
 
-    td.amber{
-    background-color: #00b4e3;
-    }
+        td.amber{
+            background-color: #00b4e3;
+        }
 
-    td.red{
-    background-color: #fa8900;
-    }
+        td.red{
+            background-color: #fa8900;
+        }
 
-    th{
-    width:16.6%;
-    }
-    .circlerow{
-    margin: auto;
-    text-align: center;
-    width: 20px!important;
-    height: 20px!important;
-    align-content: center;
-    }
-    td.red{
-    background-color: #fa8900;
-    }
-    td.greencircle>div{
-    margin: auto;
-    border-radius: 50%;
-    height: 100%;
-    background-color: #81980d;
-    color: white;
-    margin-top: 5px;
-    padding: 3px;
-    margin-bottom: 5px;
-    }
-    .centerspan{
-    margin: auto;
-    text-align: center;
-    align-content: center;
-    }
-    td.ambercircle>div{
-    margin: auto;
-    border-radius: 50%;
-    height: 100%;
-    background-color: #00b4e3;
-    color: white;
-    margin-top: 5px;
-    padding: 3px;
-    margin-bottom: 5px;
-    }
-    td.redcircle>div{
-    margin: auto;
-    border-radius: 50%;
-    height: 100%;
-    background-color: #fa8900;
-    color: white;
-    margin-top: 5px;
-    padding: 3px;
-    margin-bottom: 5px;
-    }
-    .hide {
-    display:none;
-    }
-    .show {
-    display:block;
-    }
-    #selectProgram{
-        top: -5px;
-        position: absolute;
-        width: 98.2%;
-        border-radius: 0px;
-    }
-    #tableCanvas,#pieChartContent{
-        padding-top: 35px;
-    }
-    #selectProgram>select{
-        background-size: 32px 32px;
-        text-transform: uppercase;
-        padding: 12 0 12 20px!important;
-        font-size: 30px;
-        font-weight:bold;
-        font-family: "Roboto-Medium.ttf";
-    }
-    #changeProgram>select{
-        background-size: 32px 32px;
-        text-transform: uppercase;
-        padding: 12 0 12 20px!important;
-        font-size: 30px;
-        font-weight:bold;
-        font-family: "Roboto-Medium.ttf";
-    }
+        th{
+            width:16.6%;
+        }
+        .circlerow{
+            margin: auto;
+            text-align: center;
+            width: 20px!important;
+            height: 20px!important;
+            align-content: center;
+        }
+        td.red{
+            background-color: #fa8900;
+        }
+        td.greencircle>div{
+            margin: auto;
+            border-radius: 50%;
+            height: 100%;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 3px;
+            margin-bottom: 5px;
+        }
+        .centerspan{
+            margin: auto;
+            text-align: center;
+            align-content: center;
+        }
+        td.ambercircle>div{
+            margin: auto;
+            border-radius: 50%;
+            height: 100%;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 3px;
+            margin-bottom: 5px;
+        }
+        td.redcircle>div{
+            margin: auto;
+            border-radius: 50%;
+            height: 100%;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 3px;
+            margin-bottom: 5px;
+        }
+        .hide {
+            display:none;
+        }
+        .show {
+            display:block;
+        }
+        #spinnerProgram{
+            top: -5px;
+            position: absolute;
+            width: 48.2%;
+            border-radius: 0px;
+        }
+        #spinnerOrgUnit {
+            top: -5px;
+            left: 50%;
+            position: absolute;
+            width: 48.2%;
+            border-radius: 0px;
+            display: inline-block;
+        }
+        #tableCanvas,#pieChartContent{
+            padding-top: 35px;
+        }
+        #spinnerProgram>select,#spinnerOrgUnit>select{
+            background-size: 32px 32px;
+            text-transform: uppercase;
+            padding: 12 0 12 20px!important;
+            font-size: 30px;
+            font-weight:bold;
+            font-family: "Roboto-Medium.ttf";
+        }
 
-</style>
+        .hidden{
+            display:none!important;
+        }
+        .oneFilter{
+            left: 0%!important;
+            width: 98.5%!important;
+            font-size: 40px!important;
+        }
+    </style>
+</head>
 <body>
 <!--Legend for this chart-->
-<div id="selectProgram" class="horizontal"></div>
+<div id="selectBlock">
+    <div id="spinnerProgram" class="horizontal"></div>
+    <div id="spinnerOrgUnit" class="horizontal"></div>
+</div>
 <!--Sent surveys x month-->
 <div id="tableCanvas" class="show">
     <!--title of the chart-->
@@ -198,6 +209,8 @@
 <!--Pie charts will be added right here-->
 
 <!--Table 12 months-->
+
+<script type = "text/javascript" src="translated.messages.js"> </script>
 
 <script type = "text/javascript" src="sent.month.js"> </script>
 
@@ -231,6 +244,6 @@
         </div>
     </div>
 </script>
-</script>
+<script type = "text/javascript" src="mockData.js"> </script>
 </body>
 </html>

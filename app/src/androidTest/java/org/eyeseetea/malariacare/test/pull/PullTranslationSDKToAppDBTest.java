@@ -8,6 +8,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
@@ -46,7 +48,7 @@ public class PullTranslationSDKToAppDBTest {
     private static final String TAG="TestingTransaltion";
     private final String ATTRIBUTE_OU_PRODUCTIVITY_VALUES_CODE="OUPV";
     private final String ATTRIBUTE_PROGRAM_PRODUCTIVITY_POSITION_CODE="PPP";
-
+    private final String PROGRAM_UID_WITH_SUPERVISION="wK0958s1bdj";
     private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
     private final String ATTRIBUTE_SUPERVISION_ID="vInmonKS0rP";
@@ -87,32 +89,40 @@ public class PullTranslationSDKToAppDBTest {
         testOrganisationUnitTranslation();
 
 
-        //Loop all the sdk programs and test if is saved in our DB
-        for(org.hisp.dhis.android.sdk.persistence.models.Program programSDK:programsSdkList){
-            boolean isProgramUid=false;
-            boolean isProgramSupervisor=false;
-            //WHEN
-            for(Program program : programList) {
-                List<ProgramAttributeValue> attributeValues=programSDK.getAttributeValues();
-                for(ProgramAttributeValue programAttributeValue:attributeValues) {
-                    if (programAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_SUPERVISION_CODE) && programAttributeValue.getAttribute().getUid().equals(ATTRIBUTE_SUPERVISION_ID)) {
-                        if(programAttributeValue.getValue().equals(ATTRIBUTE_SUPERVISION_VALUE)){
-                            isProgramSupervisor=true;
-                            //Fixme here we need check if the attribute of the program is translate to our app db. But at this moment is not converted from the sdk.
-                        }
-                    }
-                }
-                if(programSDK.getUid().equals(program.getUid())){
-                    isProgramUid=true;
-                }
-            }
-            //THEN
-            assertTrue("Checking program Supervisor Code",isProgramSupervisor);
-            assertTrue("Checking program name",isProgramUid);
-        }
+        //Each sdk program generates an app program
+        testProgramUIDTranslation();
+
+        //Check supervisor for an expected program
+        testProgramSupervisor();
 
     }
 
+    private void testProgramSupervisor() {
+        boolean hasExpectedSupervisor=false;
+        org.hisp.dhis.android.sdk.persistence.models.Program supervisedProgram= MetaDataController.getProgram(PROGRAM_UID_WITH_SUPERVISION);
+        for(ProgramAttributeValue programAttributeValue:supervisedProgram.getAttributeValues()) {
+            if (programAttributeValue.getAttribute().getCode().equals(ATTRIBUTE_SUPERVISION_CODE) && programAttributeValue.getAttribute().getUid().equals(ATTRIBUTE_SUPERVISION_ID)) {
+                if(programAttributeValue.getValue().equals(ATTRIBUTE_SUPERVISION_VALUE)){
+                    hasExpectedSupervisor=true;
+                    break;
+                }
+            }
+        }
+        assertTrue("Checking specific program has expected supervisor",hasExpectedSupervisor);
+    }
+
+    private void testProgramUIDTranslation() {
+        for(org.hisp.dhis.android.sdk.persistence.models.Program programSDK:programsSdkList){
+            boolean hasAProgramWithUID=false;
+            for(Program program:programList){
+                if(programSDK.getUid().equals(program.getUid())){
+                    hasAProgramWithUID=true;
+                    break;
+                }
+            }
+            assertTrue("Checking each sdk program generates an app program",hasAProgramWithUID);
+        }
+    }
 
 
     private void testOrganisationUnitTranslation() {
@@ -159,7 +169,7 @@ public class PullTranslationSDKToAppDBTest {
             //THEN
             assertTrue("Checking organisationUnit uid",isOrgUnitUid);
             assertTrue("Checking organisationUnit name",isOrgUnitName);
-            assertTrue("Checking organisationUnit productivity",isOrgUnitProductivity);
+//            assertTrue("Checking organisationUnit productivity",isOrgUnitProductivity);
             assertTrue("Checking organisationUnit program",isProgramListInOrgUnit);
             //Fixme the orgunitlevel is not pulled.
             //assertTrue("Checking organisationUnit orgUnitLevel",isOrgUnitOrgUnitLevel);
@@ -175,8 +185,8 @@ public class PullTranslationSDKToAppDBTest {
 
         programList = Program.getAllPrograms();
 
-        orgUnitSdkList= SDKTestUtils.getAllSDKOrganisationUnits();
-        programsSdkList= SDKTestUtils.getAllSDKPrograms();
+        orgUnitSdkList= OrganisationUnitExtended.getAllOrganisationUnits();
+        programsSdkList= ProgramExtended.getAllPrograms();
 
         Espresso.unregisterIdlingResources(idlingResource);
     }

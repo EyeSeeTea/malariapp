@@ -31,11 +31,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,6 +73,8 @@ public abstract class ADashboardAdapter extends BaseAdapter{
      */
     protected Integer recordLayout;
 
+    public String title;
+
     /**
      * Counter that helps with background calculation
      */
@@ -103,6 +102,14 @@ public abstract class ADashboardAdapter extends BaseAdapter{
 
     public void setItems(List items) {
         this.items = (List<Survey>) items;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getHeaderLayout() {
@@ -137,6 +144,7 @@ public abstract class ADashboardAdapter extends BaseAdapter{
 
         //Program
         CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
+
 
         // show facility name (or not) and write survey type name
         if (hasToShowFacility(position,survey)) {
@@ -195,6 +203,11 @@ public abstract class ADashboardAdapter extends BaseAdapter{
     }
 
     private void showFacility(CustomTextView facilityName, CustomTextView surveyType, Survey survey){
+        String surveyDescription;
+        if(survey.isCompleted())
+            surveyDescription = "* " + survey.getProgram().getName();
+        else
+            surveyDescription = "- " + survey.getProgram().getName();
         facilityName.setText(survey.getOrgUnit().getName());
         facilityName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         surveyType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
@@ -203,9 +216,9 @@ public abstract class ADashboardAdapter extends BaseAdapter{
     private CustomTextView decorateSurveyType(CustomTextView surveyType, Survey survey){
         String surveyDescription;
         if(survey.isCompleted())
-            surveyDescription = COMPLETED_SURVEY_MARK + survey.getTabGroup().getProgram().getName();
+            surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
         else
-            surveyDescription = SENT_SURVEY_MARK + survey.getTabGroup().getProgram().getName();
+            surveyDescription = SENT_SURVEY_MARK + survey.getProgram().getName();
         surveyType.setText(surveyDescription);
         return surveyType;
     }

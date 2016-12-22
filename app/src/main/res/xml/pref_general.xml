@@ -19,12 +19,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-        android:key="@string/show_num_dems"
-        android:title="@string/settings_checkbox_show_num_dems"
-        android:summary="@string/settings_checkbox_description_show_num_dems"
-        android:defaultValue="false" />
-
     <!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
     <CheckBoxPreference
@@ -94,5 +88,17 @@
         android:key="@string/hide_planning_tab_key"
         android:title="@string/hide_planning_tab_title"
         android:summary="@string/hide_planning_tab_summary"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/show_num_dems"
+        android:title="@string/settings_checkbox_show_num_dems"
+        android:summary="@string/settings_checkbox_description_show_num_dems"
+        android:defaultValue="false" />
+    
+    <CheckBoxPreference
+        android:key="@string/developer_option"
+        android:title="@string/developer_option_title"
+        android:summary="@string/developer_option_summary"
         android:defaultValue="false" />
 </PreferenceScreen>

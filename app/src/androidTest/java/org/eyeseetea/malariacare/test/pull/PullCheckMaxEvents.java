@@ -23,21 +23,27 @@ package org.eyeseetea.malariacare.test.pull;
         import android.support.test.runner.AndroidJUnit4;
 
         import org.eyeseetea.malariacare.LoginActivity;
-        import org.eyeseetea.malariacare.database.model.OrgUnit;
-        import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
-        import org.eyeseetea.malariacare.database.model.Program;
+        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
+        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
         import org.eyeseetea.malariacare.database.utils.PreferencesState;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-        import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+        import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+        import org.hisp.dhis.android.sdk.persistence.models.Event;
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;
         import org.junit.Test;
         import org.junit.runner.RunWith;
 
+        import java.text.ParseException;
+        import java.util.Calendar;
+        import java.util.Date;
+        import java.util.HashMap;
         import java.util.List;
+        import java.util.Map;
 
         import static junit.framework.Assert.assertTrue;
+        import static junit.framework.Assert.fail;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
         import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
@@ -75,33 +81,39 @@ public class PullCheckMaxEvents {
         //GIVEN
         int maxEvents= PreferencesState.getInstance().getMaxEvents();
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+
+        Calendar month = Calendar.getInstance();
+        month.add(Calendar.MONTH, -PullController.NUMBER_OF_MONTHS);
+        TrackerController.setStartDate(EventExtended.format(month.getTime(), EventExtended.AMERICAN_DATE_FORMAT));
+
+        //WHEN
         waitForPull(DEFAULT_WAIT_FOR_PULL);
 
 
-        //WHEN
+        //THEN: Each combination of program/orgunit has less events than the max
 
-        List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> organisationUnits=SDKTestUtils.getAllSDKOrganisationUnits();
-        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs=SDKTestUtils.getAllSDKPrograms();
-        List<org.hisp.dhis.android.sdk.persistence.models.Event> events=SDKTestUtils.getAllSDKEvents();
+        List<org.hisp.dhis.android.sdk.persistence.models.Event> events = EventExtended.getAllEvents();
 
+        Map<String,Integer> mapNumEventsXPair= new HashMap<>();
+        for(Event event:events){
+            try {
+                Date eventDate=EventExtended.parseDate(event.getEventDate(),EventExtended.DHIS2_GMT_DATE_FORMAT);
+                //Then event date is after than the start month date
+                assertTrue(eventDate.after(month.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String programId=event.getProgramId();
+            String organisationUnitId=event.getOrganisationUnitId();
+            String pairKey=programId+organisationUnitId;
+            //Get current count + increment
+            Integer numPair=mapNumEventsXPair.get(pairKey);
+            numPair=(numPair==null)?1:numPair++;
 
-        //THEN
-        int allEvents=0;
-        for(org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit organisationUnit:organisationUnits){
-            for(org.hisp.dhis.android.sdk.persistence.models.Program program:programs){
-                int count=0;
-                for(org.hisp.dhis.android.sdk.persistence.models.Event event:events){
-                    allEvents++;
-                    if(event.getProgramId().equals(program.getUid()) && event.getOrganisationUnitId().equals(organisationUnit.getUuid())){
-                        assertTrue(count <= maxEvents);
-                    }
-                }
+            if(numPair>maxEvents){
+                fail(String.format("More events %d than expected %d for orgUnit %s and program %s",numPair,maxEvents,organisationUnitId,programId));
             }
         }
-        //All events was in program && organisation pair
-        assertTrue(allEvents==events.size());
-
-
     }
 
 }

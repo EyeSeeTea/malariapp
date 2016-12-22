@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 
@@ -44,8 +43,10 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -54,7 +55,7 @@ import java.util.List;
 /**
  * Created by ignac on 07/01/2016.
  */
-public class FeedbackFragment extends Fragment {
+public class FeedbackFragment extends Fragment implements IModuleFragment{
 
     public static final String TAG = ".FeedbackActivity";
 
@@ -89,6 +90,8 @@ public class FeedbackFragment extends Fragment {
     private Menu menu;
 
 
+    private String moduleName;
+
     /**
      * Parent layout
      */
@@ -99,7 +102,7 @@ public class FeedbackFragment extends Fragment {
         FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
-        prepareUI();
+        prepareUI(moduleName);
 
         return llLayout; // We must return the loaded Layout
     }
@@ -114,6 +117,7 @@ public class FeedbackFragment extends Fragment {
 
         return f;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
@@ -126,6 +130,7 @@ public class FeedbackFragment extends Fragment {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
     }
+
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
@@ -134,33 +139,22 @@ public class FeedbackFragment extends Fragment {
         registerReceiver();
         prepareFeedbackInfo();
     }
+
     @Override
     public void onPause(){
         unregisterReceiver();
         super.onPause();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.overall_score:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
     /**
      * Gets a reference to the progress view in order to stop it later
      */
-    private void prepareUI(){
+    private void prepareUI(String module){
         //Get progress
         progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(getActivity().getApplicationContext());
+        feedbackAdapter=new FeedbackAdapter(getActivity(), Session.getSurveyByModule(module).getId_survey(), module);
         feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
@@ -185,12 +179,21 @@ public class FeedbackFragment extends Fragment {
         );
         
         //Set mainscore and color.
-        Survey survey = Session.getSurvey();
-        float average = survey.getMainScore();
-        CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
-        item.setText(String.format("%.1f%%", average));
-        int colorId= LayoutUtils.trafficColor(average);
-        item.setTextColor(getResources().getColor(colorId));
+        Survey survey = Session.getSurveyByModule(module);
+        if(survey.hasMainScore()) {
+            float average = survey.getMainScore();
+            CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("%.1f%%", average));
+            int colorId= LayoutUtils.trafficColor(average);
+            item.setTextColor(getResources().getColor(colorId));
+        }
+        else {
+            CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("NaN"));
+            float average=0;
+            int colorId= LayoutUtils.trafficColor(average);
+            item.setTextColor(getResources().getColor(colorId));
+        }
     }
 
     private void loadItems(List<Feedback> items){
@@ -245,8 +248,21 @@ public class FeedbackFragment extends Fragment {
     public void prepareFeedbackInfo(){
         Log.d(TAG, "prepareFeedbackInfo");
         Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
+        surveysIntent.putExtra(Constants.MODULE_KEY,moduleName);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
         getActivity().getApplicationContext().startService(surveysIntent);
+    }
+
+    public void setModuleName(String simpleName) {
+        this.moduleName=simpleName;
+    }
+
+    @Override
+    public void reloadData() {
+        if (feedbackAdapter!=null){
+            List<Feedback> feedbackList=(List<Feedback>)Session.popServiceValue(SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS);
+            loadItems(feedbackList);;
+        }
     }
 
     /**

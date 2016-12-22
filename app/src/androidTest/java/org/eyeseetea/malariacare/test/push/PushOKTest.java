@@ -27,6 +27,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
@@ -43,7 +44,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
@@ -84,17 +84,29 @@ public class PushOKTest {
     public void pushWithPermissionsDoesPush(){
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(1, 1);
-        fillSurvey(7, "Yes");
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+        long numberOfEvents = 1;
+        long eventCount = EventExtended.count();
+        fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 
         //then: Survey is pushed (UID)
         Log.d(TAG, "Session user ->"+ Session.getUser());
-        Survey survey=waitForPush(20,idSurvey);
+        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
+
+
+
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH *1000);
+        Espresso.registerIdlingResources(idlingResource);
+        Log.d(TAG,survey.toString());
+        Espresso.unregisterIdlingResources(idlingResource);
+
         assertTrue(survey.getEventUid()!=null);
+
+        assertTrue(numberOfEvents == EventExtended.count());
+        assertTrue(eventCount +1 == EventExtended.count());
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());
     }
-
 }

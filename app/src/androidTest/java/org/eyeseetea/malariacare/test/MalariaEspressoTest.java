@@ -50,7 +50,6 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 
 import java.util.Collection;
@@ -82,8 +81,7 @@ public class MalariaEspressoTest {
 
     public static void cleanSession(){
         Session.setUser(null);
-        Session.setSurvey(null);
-        Session.setAdapterUnsent(null);
+        Session.setSurveyByModule(null,"");
     }
 
     public static void cleanDB(){
@@ -138,7 +136,7 @@ public class MalariaEspressoTest {
     public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
         List<Survey> surveys=mockSurveys(numSurvey, numProgram);
         Survey survey=surveys.get(select);
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,"");
         return survey;
     }
 
@@ -153,11 +151,10 @@ public class MalariaEspressoTest {
         User user =getSafeUser();
 
         for(int i=0;i<numOrgs;i++){
-            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program.getTabGroups().get(0),user);
+            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
             survey.save();
         }
         List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();
-        Session.setAdapterUnsent(new AssessmentUnsentAdapter(surveys, InstrumentationRegistry.getTargetContext()));
         return surveys;
     }
 

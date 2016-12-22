@@ -19,49 +19,52 @@
 
 package org.eyeseetea.malariacare;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
-
-import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.ExportData;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
+import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
+import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 
-import java.io.InputStream;
-
-
 public abstract class BaseActivity extends ActionBarActivity {
-
     /**
      * Extra param to annotate the activity to return after settings
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
-
+    private static final int DUMP_REQUEST_CODE=0;
     private SurveyLocationListener locationListener;
 
     @Override
@@ -112,11 +115,23 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_license:
                 debugMessage("User asked for license");
-                showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl);
+                AUtils.showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl, BaseActivity.this);
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                showAlertWithHtmlMessage(R.string.settings_menu_about, R.raw.about);
+                AUtils.showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
+                break;
+            case R.id.action_copyright:
+                debugMessage("User asked for copyright");
+                AUtils.showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright, BaseActivity.this);
+                break;
+            case R.id.action_licenses:
+                debugMessage("User asked for software licenses");
+                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses, BaseActivity.this);
+                break;
+            case R.id.action_eula:
+                debugMessage("User asked for EULA");
+                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -126,12 +141,35 @@ public abstract class BaseActivity extends ActionBarActivity {
                 debugMessage("Go back");
                 onBackPressed();
                 break;
+            case R.id.export_db:
+                debugMessage("Export db");
+                Intent emailIntent=ExportData.dumpAndSendToAIntent(this);
+                if(emailIntent!=null)
+                    startActivityForResult(emailIntent,DUMP_REQUEST_CODE);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if(!PreferencesState.getInstance().isDevelopOptionActive() || !AppSettingsBuilder.isDeveloperOptionsActive()) {
+            MenuItem item = menu.findItem(R.id.export_db);
+            item.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if ((requestCode == DUMP_REQUEST_CODE)){
+            ExportData.removeDumpIfExist(this);
+        }
+    }
     /**
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
@@ -165,6 +203,22 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onDestroy(){
+        try {
+            Dhis2Application.bus.unregister(this);
+        }catch(Exception e){}
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRestart(){
+        try {
+            Dhis2Application.bus.register(this);
+        }catch(Exception e){}
+        super.onRestart();
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
@@ -193,6 +247,17 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setNegativeButton(android.R.string.no, null).create().show();
     }
 
+    public void wipeData(){
+        PopulateDB.wipeDatabase();
+        PopulateDB.wipeSDKData();
+    };
+
+    public void clickOrgUnitSpinner(View view){
+    }
+
+    public void clickProgramSpinner(View view){
+    }
+
     /**
      * Asks for location (required while starting to edit a survey)
      * @param survey
@@ -203,12 +268,16 @@ public abstract class BaseActivity extends ActionBarActivity {
         LocationManager locationManager=(LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             debugMessage("requestLocationUpdates via GPS");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            if(permissionCheck == PackageManager.PERMISSION_GRANTED)
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
         }
 
         if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
             debugMessage("requestLocationUpdates via NETWORK");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED)
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
         }else{
             Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             debugMessage("location not available via GPS|NETWORK, last know: " + lastLocation);
@@ -222,6 +291,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             return;
         }
         debugMessage("Logging out from sdk...OK");
+        wipeData();
         Session.logout();
         finishAndGo(LoginActivity.class);
     }
@@ -245,44 +315,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         startActivity(targetActivityIntent);
     }
 
-
-
-    /**
-     * Shows an alert dialog with a big message inside based on a raw resource
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource
-     */
-    private void showAlertWithMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        showAlert(titleId, Utils.convertFromInputStreamToString(message).toString());
-    }
-
-    /**
-     * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
-     * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource in HTML format
-     */
-    private void showAlertWithHtmlMessage(int titleId, int rawId){
-        InputStream message = getApplicationContext().getResources().openRawResource(rawId);
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(Utils.convertFromInputStreamToString(message).toString()));
-        Linkify.addLinks(linkedMessage, Linkify.ALL);
-        showAlert(titleId, linkedMessage);
-    }
-
-    /**
-     * Shows an alert dialog with a given string
-     * @param titleId Id of the title resource
-     * @param text String of the message
-     */
-    private void showAlert(int titleId, CharSequence text){
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(getApplicationContext().getString(titleId))
-                .setMessage(text)
-                .setNeutralButton(android.R.string.ok, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
      *   SurveyActivity => ".SurveyActivity"
@@ -291,5 +323,4 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void debugMessage(String message){
         Log.d("." + this.getClass().getSimpleName(), message);
     }
-
 }
