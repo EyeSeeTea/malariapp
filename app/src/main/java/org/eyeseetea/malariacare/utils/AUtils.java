@@ -28,6 +28,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -68,6 +69,15 @@ public abstract class AUtils {
         return Float.toString(bd.floatValue());
     }
 
+    public static float safeParseFloat(String floatStr){
+        try {
+            return Float.parseFloat(floatStr);
+        }catch (NumberFormatException nfe){
+            Log.d("AUtils", String.format("Error when parsing string %s to float number", floatStr));
+            return 0f;
+        }
+    }
+
     public static String round(float base){
         return round(base, AUtils.ZERO_DECIMALS);
     }
@@ -90,7 +100,7 @@ public abstract class AUtils {
         List<? extends BaseModel> items;
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram());
+            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram(), null);
 
         else{
 
@@ -151,6 +161,7 @@ public abstract class AUtils {
                 stringBuilder.append(line + "\n");
             }
         } catch (IOException e) {
+            Log.d("AUtils", String.format("Error reading inputStream [%s]", inputStream));
             e.printStackTrace();
         }
 
@@ -251,11 +262,11 @@ public abstract class AUtils {
         String stringCommit = getCommitHash(context);
         String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
         if(stringCommit.contains(context.getString(R.string.unavailable))){
-            stringCommit=String.format(context.getString(R.string.lastcommit),stringCommit);
+            stringCommit=String.format(""+context.getString(R.string.lastcommit),stringCommit);
             stringCommit=stringCommit+" "+context.getText(R.string.lastcommit_unavailable);
         }
         else {
-            stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
+            stringCommit = String.format(""+context.getString(R.string.lastcommit), stringCommit);
         }
         stringMessage=String.format(stringMessage,stringCommit);
         return stringMessage;

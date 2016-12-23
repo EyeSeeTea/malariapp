@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Organis
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
+import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -169,7 +170,12 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                job = DhisService.loadLastData(context);
+                if(AppSettingsBuilder.isDownloadOnlyLastEvents()){
+                    job = DhisService.loadLastData(context);
+                }
+                else{
+                    job = DhisService.loadData(context);
+                }
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
@@ -193,6 +199,7 @@ public class PullController {
 
     @Subscribe
     public void onLoadMetadataFinished(final NetworkJob.NetworkJobResult<ResourceType> result) {
+        Log.d(TAG, "Subscribe method: onLoadMetadataFinished");
         new Thread() {
             @Override
             public void run() {
@@ -237,6 +244,8 @@ public class PullController {
                         ProgressActivity.cancellPull("Error", "Error downloading metadata");
 
                     convertFromSDK();
+
+                    validateCS();
                     if (ProgressActivity.PULL_IS_ACTIVE) {
                         Log.d(TAG, "PULL process...OK");
                     }
@@ -251,6 +260,29 @@ public class PullController {
                 }
             }
         }.start();
+    }
+
+    private void validateCS() {
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        Log.d(TAG, "Validate Composite scores");
+        postProgress(context.getString(R.string.progress_pull_validating_composite_scores));
+        List<CompositeScore> compositeScores=CompositeScore.list();
+        for(CompositeScore compositeScore:compositeScores){
+            if(!compositeScore.hasChildren() && (compositeScore.getQuestions()==null || compositeScore.getQuestions().size()==0)){
+                Log.d(TAG, "CompositeScore without children and without questions will be removed: "+compositeScore.toString());
+                compositeScore.delete();
+                continue;
+            }
+            if(compositeScore.getHierarchical_code()==null){
+                Log.d(TAG, "CompositeScore without hierarchical code will be removed: "+compositeScore.toString());
+                compositeScore.delete();
+                continue;
+            }
+            if(compositeScore.getComposite_score()==null && !compositeScore.getHierarchical_code().equals(CompositeScoreBuilder.ROOT_NODE_CODE)){
+                Log.d(TAG, "CompositeScore not root and not parent should be fixed: "+compositeScore.toString());
+                continue;
+            }
+        }
     }
 
     private boolean mandatoryMetadataTablesNotEmpty(){
@@ -332,27 +364,70 @@ public class PullController {
         postProgress(context.getString(R.string.progress_pull_questions));
         Log.i(TAG, "Ordering questions and compositeScores...");
 
+        int count;
         //Dataelements ordered by program.
         List<org.hisp.dhis.android.sdk.persistence.models.Program> programs = ProgramExtended.getAllPrograms();
         Map<String, List<DataElement>> programsDataelements = new HashMap<>();
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             Log.i(TAG,String.format("\t program '%s' ",program.getName()));
             List<DataElement> dataElements = new ArrayList<>();
             String programUid = program.getUid();
             List<ProgramStage> programStages = program.getProgramStages();
             for (org.hisp.dhis.android.sdk.persistence.models.ProgramStage programStage : programStages) {
+                Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStage.getProgramStageDataElements().size());
                 Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
                 List<ProgramStageDataElement> programStageDataElements = programStage.getProgramStageDataElements();
+                count=programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElement programStageDataElement : programStageDataElements) {
-                    DataElement dataElement =programStageDataElement.getDataElement();
+                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
+
+                    //The ProgramStageDataElement without Dataelement uid is not correctly configured.
+                    if(programStageDataElement.getDataelement()==null || programStageDataElement.getDataelement().equals("")){
+                        Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
+                        continue;
+                    }
+
+                    //Note: the sdk method getDataElement returns the dataElement object, and getDataelement returns the dataelement uid.
+                    DataElement dataElement = programStageDataElement.getDataElement();
                     if (dataElement!=null && dataElement.getUid() != null) {
-                        if (!ProgressActivity.PULL_IS_ACTIVE) return;
                         dataElements.add(dataElement);
                     }
+                    else{
+                        DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
+                        dataElement = MetaDataController.getDataElement(programStageDataElement.getDataelement());
+
+                        if (dataElement!=null) {
+                            dataElements.add(dataElement);
+                        }
+                        else{
+                            //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
+                            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
+                            int times=0;
+                            while(dataElement==null){
+                                times++;
+                                Log.d(TAG, "running : "+times);
+                                try {
+                                    Thread.sleep(100);
+                                    dataElement=MetaDataController.getDataElement(programStageDataElement.getDataelement());
+                                } catch (InterruptedException e) {//throw new RuntimeException("Null query");
+                                    e.printStackTrace();
+                                }
+                            }
+                            Log.d(TAG, "needed : "+times);
+                            dataElements.add(dataElement);
+                        }
+                    }
+                }
+
+                if(count!=dataElements.size()){
+                    Log.d(TAG, "The programStageDataElements size ("+count+") is different than the saved dataelements size ("+dataElements.size()+")");
                 }
             }
             Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
+
+
             if (!ProgressActivity.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElement>() {
                 public int compare(DataElement de1, DataElement de2) {
@@ -362,11 +437,13 @@ public class PullController {
                     try {
                         dataelementOrder1 = dataElementExtended1.findOrder();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         dataelementOrder1 = null;
                     }
                     try {
                         dataelementOrder2 = dataElementExtended2.findOrder();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         dataelementOrder2 = null;
                     }
                     if (dataelementOrder1 == dataelementOrder2)
@@ -385,6 +462,7 @@ public class PullController {
         Log.i(TAG, "Building questions,compositescores,headers...");
         int i=0;
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             for (DataElement dataElement : sortDataElements) {
@@ -397,12 +475,15 @@ public class PullController {
                 dataElementExtended.accept(converter);
             }
         }
-        new SaveModelTransaction<>(ProcessModelInfo.withModels(converter.getQuestions())).onExecute();
+
+        //Saves questions and media in batch mode
+        converter.saveBatch();
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
         postProgress(context.getString(R.string.progress_pull_relationships));
         for (org.hisp.dhis.android.sdk.persistence.models.Program program : programs) {
+            converter.actualProgram=program;
             String programUid = program.getUid();
             List<DataElement> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
@@ -461,6 +542,7 @@ public class PullController {
         for (OrganisationUnit organisationUnit : MetaDataController.getAssignedOrganisationUnits()) {
             //Each assigned program
             for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION)) {
+                converter.actualProgram=program;
                 List<Event> events = TrackerController.getEvents(organisationUnit.getId(), program.getUid());
                 Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
                 for (Event event : events) {

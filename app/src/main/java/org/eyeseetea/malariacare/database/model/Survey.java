@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.Event$Table;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -311,7 +312,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public Boolean hasMainScore() {
-        if(hasMainScore==null) {
+        if(hasMainScore==null || !hasMainScore) {
             Score score = getScore();
             Float value = (score == null) ? null : score.getScore();
             if (value == null) {
@@ -323,6 +324,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
         return hasMainScore;
     }
+
     public void setMainScore(Float mainScore) {
         this.mainScore = mainScore;
     }
@@ -423,6 +425,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return values;
     }
 
+    public void addValue(Value value){
+        if(values==null){
+            values=new ArrayList<>();
+        }
+        values.add(value);
+    }
     /**
      * Returns the list of previous schedules for this survey
      * @return

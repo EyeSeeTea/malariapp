@@ -100,15 +100,21 @@ public class Tab extends BaseModel {
     }
 
     public Program getProgram() {
-        if(program ==null){
-            if (id_program == null) return null;
-
-            program = new Select()
-                    .from(Program.class)
-                    .where(Condition.column(Program$Table.ID_PROGRAM)
-                            .is(id_program)).querySingle();
+        if(program==null){
+            if (id_program== null) return null;
+                program = new Select()
+                        .from(Program.class)
+                        .where(Condition.column(Program$Table.ID_PROGRAM)
+                                .is(id_program)).querySingle();
         }
         return program;
+    }
+
+    /*
+    ** this method is used to compare the saved in memory program id without need sql querys, is used in tests without dbflow.
+     */
+    public Long getId_program(){
+        return id_program;
     }
 
     public void setProgram(Long id_program){

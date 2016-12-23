@@ -111,7 +111,6 @@ public class PreferencesState {
         locationRequired=initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents=initMaxEvents();
-        showNumDen=initShowNumDen();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
     }
 
@@ -154,7 +153,14 @@ public class PreferencesState {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.hide_planning_tab_key), false);
     }
-
+    /**
+     * Inits hidePlanningTab flag according to preferences
+     * @return
+     */
+    public boolean isDevelopOptionActive(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.developer_option), false);
+    }
     /**
      * Inits maxEvents settings
      * @return

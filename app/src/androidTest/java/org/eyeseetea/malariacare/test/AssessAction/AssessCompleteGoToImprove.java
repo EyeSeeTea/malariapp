@@ -119,9 +119,9 @@ public class AssessCompleteGoToImprove {
 
         //WHEN
         if(survey.isCompleted())
-            onView(withText( "* "  + survey.getProgram().getProgram().getName())).check(matches(isDisplayed())).perform(click());
+            onView(withText( "* "  + survey.getProgram().getName())).check(matches(isDisplayed())).perform(click());
         else
-            onView(withText("- "   + survey.getProgram().getProgram().getName())).check(matches(isDisplayed())).perform(click());
+            onView(withText("- "   + survey.getProgram().getName())).check(matches(isDisplayed())).perform(click());
         Espresso.unregisterIdlingResources(idlingResource);
 
         //THEN

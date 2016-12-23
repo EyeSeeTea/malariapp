@@ -1,5 +1,4 @@
 /*
-
 	Usage:
 		buildTableFacilities(
 			{
@@ -28,7 +27,6 @@
 				]
 			}
 		);
-
 */
 var inputDataFacilities=[];
 //Save the table data
@@ -36,9 +34,9 @@ function buildTableFacilities(tabGroupId,dataFacilities){
 	inputDataFacilities.push(dataFacilities);
 }
 //Build the correct table
-function rebuildTableFacilities(){
+function rebuildTableFacilities(selectedUid){
 	for(var i=0;i<inputDataFacilities.length;i++){
-		if(inputDataFacilities[i].tableuid==selectedOrgUnit){
+		if(inputDataFacilities[i].tableuid==selectedUid){
 		    var id=inputDataFacilities[i].id;
 			var facilitiesHeadId="facilitiesHead";
 			var facilitiesBodyId="facilitiesBody";
@@ -89,7 +87,7 @@ function buildRowFacility(facility){
 	for(var i=0;i<facility.values.length;i++){
 		var iValue=facility.values[i];
         row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
-	
+
 	}
 	//end row
 	row=row+"</tr>";

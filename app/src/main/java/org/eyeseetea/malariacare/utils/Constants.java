@@ -58,6 +58,13 @@ public class Constants {
             OPERATION_TYPE_PARENT = 1,
             OPERATION_TYPE_OTHER = 2;
 
+    //############# MEDIA TYPE ##############
+    // Values to identify image/video on media_type column in the DB
+    public static final int MEDIA_TYPE_IMAGE = 0;
+    public static final int MEDIA_TYPE_VIDEO = 1;
+    public static final String MEDIA_SEPARATOR="#";
+    public static final int NO_MEDIA_ID=-1;
+
     public static final int MAX_ITEMS_IN_DASHBOARD=5;
 
     //############# LOGIN AUTHORIZATION ACTIONS ##############
@@ -72,6 +79,7 @@ public class Constants {
     //Keys used to know if a survey is saved in surveyfragment, in feedbackfragment, or in push.
     public static final String PUSH_MODULE_KEY="PUSH_MODULE_KEY";
     public static final String PROGRESSACTIVITY_MODULE_KEY="PROGRESSACTIVITY_MODULE_KEY";
+    public static final String TEST_MODULE_KEY="TEST_MODULE_KEY";
     public static final String MODULE_KEY="MODULE_KEY";
     public static final String FRAGMENT_SURVEY_KEY ="FRAGMENT_SURVEY_KEY";
     public static final String FRAGMENT_FEEDBACK_KEY ="FRAGMENT_FEEDBACK_KEY";

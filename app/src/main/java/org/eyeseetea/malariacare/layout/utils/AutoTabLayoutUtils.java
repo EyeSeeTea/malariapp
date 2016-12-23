@@ -25,31 +25,28 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.common.primitives.Booleans;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +60,7 @@ public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
     private static String compulsoryColorString;
-    private static final String zero = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
+    private static final String ZERO = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
 
     /**
      * Inits red color to avoid going into resources every time
@@ -280,23 +277,13 @@ public class AutoTabLayoutUtils {
      */
     private static void configureViewByPreference(AutoTabViewHolder viewHolder) {
         int visibility = View.GONE;
-        float statementWeight = 0.65f;
-        float componentWeight = 0.35f;
-        float numDenWeight = 0.0f;
 
         if (PreferencesState.getInstance().isShowNumDen()) {
             visibility = View.VISIBLE;
-            statementWeight = 0.45f;
-            componentWeight = 0.25f;
-            numDenWeight = 0.15f;
         }
 
         viewHolder.num.setVisibility(visibility);
         viewHolder.denum.setVisibility(visibility);
-        ((RelativeLayout) viewHolder.statement.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, statementWeight));
-        ((RelativeLayout) viewHolder.component.getParent().getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, componentWeight));
-        ((RelativeLayout) viewHolder.num.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
-        ((RelativeLayout) viewHolder.denum.getParent()).setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, numDenWeight));
     }
 
     public static void autoFillAnswer(AutoTabViewHolder viewHolder, Question question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey, String module) {
@@ -317,8 +304,8 @@ public class AutoTabLayoutUtils {
      */
     public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module) {
 
-        Question question = autoTabSelectedItem.getQuestion();
-        Option option = autoTabSelectedItem.getOption();
+        final Question question = autoTabSelectedItem.getQuestion();
+        final Option option = autoTabSelectedItem.getOption();
         Context context = autoTabSelectedItem.getContext();
         final AutoTabViewHolder viewHolder = autoTabSelectedItem.getViewHolder();
 
@@ -338,13 +325,60 @@ public class AutoTabLayoutUtils {
             return;
         }
 
-        //Children answers will be deleted -> Confirm -> Save, Expand|Collapse
+        processParentQuestionWithoutQuestion(autoTabSelectedItem, idSurvey, module, question, context);
+    }
+
+    /**
+     * Process the parent question with active childs
+     * @param
+     * @return
+     */
+    private static void processParentQuestionWithoutQuestion(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module, Question question, Context context) {
+        int maxActiveParentsForActiveChild=0;
+        for(Question childQuestion:question.getChildren()) {
+            if (childQuestion.isHiddenBySurvey(idSurvey) == false) {
+                if (childQuestion.getValueBySurveyId(idSurvey) != null) {
+                    int activeParents = childQuestion.numberOfActiveParents(idSurvey);
+                    if (maxActiveParentsForActiveChild < activeParents)
+                        maxActiveParentsForActiveChild = activeParents;
+                    break;
+                }
+            }
+        }
+        //The current question  not have relevant values to delete children (0 active or more than 1 or question without value)
+        if(maxActiveParentsForActiveChild!=1 || question.getOptionBySurveyId(idSurvey)==null) {
+            saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+            return;
+        }
+        //The current question  not have relevant values to delete children(1 active parent, clicked question not null but not relevant for active children)
+        else if(maxActiveParentsForActiveChild==1
+                && question.getOptionBySurveyId(idSurvey)!=null
+                && !question.getOptionBySurveyId(idSurvey).isActiveChildren(question)){
+            saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+            return;
+        }
+        //ask and delete the children questions
+        askDeleteChildrenQuestion(autoTabSelectedItem, idSurvey, module, question, context);
+    }
+
+    /**
+     * Children answers will be deleted -> Confirm -> Save, Expand|Collapse
+     * @param
+     * @return
+     */
+    private static void askDeleteChildrenQuestion(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module, final Question question, Context context) {
         new AlertDialog.Builder(context)
                 .setTitle(null)
                 .setMessage(context.getString(R.string.dialog_deleting_children))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
+                        //Remove the children when the option is the match option
+                        if (autoTabSelectedItem.getOption().isActiveChildren(question)) {
+                            AutoTabSelectedItem positiveAutoTabSelectedItem = autoTabSelectedItem;
+                            positiveAutoTabSelectedItem.setOption(new Option(Constants.DEFAULT_SELECT_OPTION));
+                            saveAndExpandChildren(positiveAutoTabSelectedItem, idSurvey, module);
+                        }
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -388,8 +422,8 @@ public class AutoTabLayoutUtils {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
-        viewHolder.setDenumText(PreferencesState.getInstance().getContext().getString(R.string.number_zero));
+        viewHolder.setNumText(ZERO);
+        viewHolder.setDenumText(ZERO);
         if(num!=null){
             viewHolder.setNumText(num.toString());
             viewHolder.setDenumText(denum.toString());
@@ -407,6 +441,8 @@ public class AutoTabLayoutUtils {
 
             Float num = ScoreRegister.calcNum(question, idSurvey);
             Float denum = ScoreRegister.calcDenum(question, idSurvey);
+            if(num==null)
+                denum=0f;
             ScoreRegister.addRecord(question, num, denum, idSurvey, module);
         }
     }

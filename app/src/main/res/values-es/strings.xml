@@ -26,6 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit Incorrecta"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione una org unit final"</string>
 <string name="dialog_content_logout_confirmation">"Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Lista para enviar"</string>
@@ -170,6 +171,7 @@ clínica"</string>
 <string name="progress_pull_questions">"Cargando preguntas (esto puede llevar algunos minutos) ..."</string>
 <string name="progress_pull_relationships">"Cargando relaciones entre preguntas ..."</string>
 <string name="progress_pull_surveys">"Cargando encuestas ..."</string>
+<string name="progress_pull_validating_composite_scores">"Validando puntuaciones compuestas ..."</string>
 <string name="progress_pull_done">"Hecho"</string>
 <string name="dialog_push_success">"Encuestra correctamente subida al servidor Dhis"</string>
 <string name="progress_push_preparing_survey">"Preparando datos para la subida ..."</string>
@@ -224,4 +226,14 @@ clínica"</string>
 <string name="number_8">8</string>
 <string name="number_9">9</string>
 <string name="clear">Limpiar</string>
+<string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
+<string name="developer_option_title">Mostrar opciones de desarrollador</string>
+<string name="export_data_option_title">Exportar base de datos</string>
+
+<string name="ask_account_permission">Esta app requiere acceso a tu cuenta Google (via Contactos)</string>
+<string name="google_play_required">Esta aplicación requiere los servicios de Play. Por favor, instale servicios de Google Play en el dispositivo reinicie esta aplicación.</string>
+<string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
+<string name="feedback_media_link" >Ver video</string>
+<string name="feedback_media">Ver video feedback</string>
+<string name="feedback_view_image">Abrir imagen con...</string>
 </resources>

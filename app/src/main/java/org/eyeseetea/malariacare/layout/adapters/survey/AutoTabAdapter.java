@@ -235,7 +235,11 @@ public class AutoTabAdapter extends ATabAdapter {
             setValues(viewHolder, question, idSurvey, module);
 
             //Disables component if survey has already been sent (except match spinner that are always disabled)
-            AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly(module));
+            if(question.getOutput()==Constants.DROPDOWN_LIST_DISABLED){
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, true);
+            }else{
+                AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly(module));
+            }
 
         } else if(item instanceof Header){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
@@ -566,7 +570,7 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.setDenumText(Float.toString(numdenumradiobutton.get(1)));
                 } else {
                     viewHolder.setNumText(getContext().getString(R.string.number_zero));
-                    viewHolder.setDenumText(Float.toString(ScoreRegister.calcDenum(question, idSurvey)));
+                    viewHolder.setDenumText(getContext().getString(R.string.number_zero));
                 }
                 break;
             case Constants.SWITCH_BUTTON:
@@ -667,6 +671,9 @@ public class AutoTabAdapter extends ATabAdapter {
             Option selectedOption=(Option) ((Spinner) viewHolder.component).getItemAtPosition(pos);
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
             AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
+            if(question.hasAMatchTrigger()) {
+                notifyDataSetChanged();
+            }
         }
 
         @Override
@@ -693,9 +700,14 @@ public class AutoTabAdapter extends ATabAdapter {
             if (checkedId != -1) {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 selectedOption = (Option) customRadioButton.getTag();
+                if(question.getOptionBySurveyId(idSurvey)!=null && question.getOptionBySurveyId(idSurvey).equals(selectedOption)){
+                    //if is already active ignore it( it is to ignore the first click of two)
+                    return;
+                }
             }
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
             AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
+            autoTabSelectedItemFactory.notifyDataSetChanged();
         }
     }
 

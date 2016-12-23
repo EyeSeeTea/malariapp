@@ -49,7 +49,7 @@ public class Program extends BaseModel{
     String stage_uid;
 
     /**
-     * List of tabs that belongs to this tabgroup
+     * List of tabs that belongs to this programstage
      */
     List<Tab> tabs;
 
@@ -125,6 +125,13 @@ public class Program extends BaseModel{
             }
         }
         return orgUnits;
+    }
+
+    //Used only in test
+    public void addTab(Tab tab){
+        if(tabs==null)
+            tabs=new ArrayList<>();
+        tabs.add(tab);
     }
 
     public List<Tab> getTabs(){

@@ -51,7 +51,6 @@ public class DashboardSettings {
      */
     @JsonDeserialize(using = DashboardListFilterDeserializer.class)
     DashboardListFilter listFilter;
-
     /**
      * Key that points to the layout id for the general dashboard layout (Ex: R.layout.vertical_main -> 'vertical_main')
      */
@@ -60,6 +59,11 @@ public class DashboardSettings {
      * The int value of the layout property under the generated R.layout class
      */
     int resLayout;
+
+    /**
+     * Boolean to hide or shown the developer options
+     */
+    boolean developerOptions;
 
     List<ModuleSettings> modules;
 
@@ -104,6 +108,14 @@ public class DashboardSettings {
         return resLayout;
     }
 
+    public boolean isDeveloperOptions(){
+        return developerOptions;
+    }
+
+    public void setDeveloperOptions(boolean developerOptions){
+        this.developerOptions =developerOptions;
+    }
+
     public List<ModuleSettings> getModules() {
         return modules;
     }
@@ -135,6 +147,7 @@ public class DashboardSettings {
                 ", modules=" + modules +
                 ", adapter=" + adapter +
                 ", list filter=" + listFilter +
+                ", developerOptions=" + developerOptions +
                 '}';
     }
 }
