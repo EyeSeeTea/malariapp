@@ -42,7 +42,6 @@ android {
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
-        useLibrary  'org.apache.http.legacy'
     }
     buildTypes {
         release {
