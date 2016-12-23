@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -323,14 +324,13 @@ public class ScoreRegister {
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram(), null);
+        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram(),null);
         ScoreRegister.registerCompositeScores(compositeScoreList, survey.getId_survey(), module);
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram(), null), survey, module);
+        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram(),null), survey, module);
         
         return compositeScoreList;
     }
-
     /**
      * Cleans, prepares, calculates and returns all the scores info for the given survey
      * @param survey
@@ -338,18 +338,19 @@ public class ScoreRegister {
      */
     public static List<CompositeScore> loadCompositeScoresFromMemory(Survey survey, List<Question> questions, String module){
         //Cleans score
-        ScoreRegister.clear(survey, module);
+        ScoreRegister.clear(Session.getSurveyByModule(module),module);
 
         //Register scores for tabs
         List<Tab> tabs=survey.getProgram().getTabs();
-        ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
+        ScoreRegister.registerTabScores(tabs,survey.getId_survey(),module);
 
         //Register scores for composites
         List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram(),questions);
-        ScoreRegister.registerCompositeScores(compositeScoreList, survey.getId_survey(), module);
+        ScoreRegister.registerCompositeScores(compositeScoreList,survey.getId_survey(),module);
 
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram(),questions),survey, module);
+        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram(),questions),survey,module);
+
 
         return compositeScoreList;
     }
@@ -370,7 +371,6 @@ public class ScoreRegister {
         }
         return sumScores/numParentScores;
     }
-
 
     public static float calculateMainScore(Survey survey, String module){
         //Prepare all scores

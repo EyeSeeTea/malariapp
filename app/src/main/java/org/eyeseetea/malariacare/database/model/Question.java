@@ -537,7 +537,7 @@ public class Question extends BaseModel {
                     .indexedBy("Value_id_survey")
                     .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
                     .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
-        }catch (InvalidDBConfiguration e){
+        } catch (InvalidDBConfiguration e) {
             //This is needed to prevent a test crash when the ScoreRegister search the ValuesBySurvey
             for(Value value:survey.getValues()){
                 if(getId_question().equals(value.getQuestion().getId_question())) {
@@ -547,10 +547,10 @@ public class Question extends BaseModel {
                     values.add(value);
                 }
             }
-            if(values==null){
+            if (values == null) {
                 return null;
             }
-            returnValues=values;
+            returnValues = values;
         }
 
 
@@ -952,7 +952,7 @@ public class Question extends BaseModel {
                     listedQuestion.add(question);
                 }
             }
-            if(listedQuestion!=null)
+            if (listedQuestion != null)
                 Collections.sort(listedQuestion, new Comparator() {
 
                     @Override
@@ -960,11 +960,11 @@ public class Question extends BaseModel {
 
                         Question cs1 = (Question) o1;
                         Question cs2 = (Question) o2;
-                        if(o2==null)
+                        if (o2 == null)
                             return 1;
-                        if(cs1==null)
+                        if (cs1 == null)
                             return -1;
-                        if(cs1==cs2)
+                        if (cs1 == cs2)
                             return 0;
 
                         return new Integer(cs1.getHeader().getTab().getOrder_pos().compareTo(new Integer(cs2.getHeader().getTab().getOrder_pos())));
@@ -978,19 +978,18 @@ public class Question extends BaseModel {
 
                     Question cs1 = (Question) o1;
                     Question cs2 = (Question) o2;
-                    if(o2==null)
+                    if (o2 == null)
                         return 1;
-                    if(cs1==null)
+                    if (cs1 == null)
                         return -1;
-                    if(cs1==cs2)
+                    if (cs1 == cs2)
                         return 0;
 
                     return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
                 }
             });
             return listedQuestion;
-        }
-        else {
+        } else {
             return new Select().all().from(Question.class).as("q")
                     .join(Header.class, Join.JoinType.LEFT).as("h")
                     .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
@@ -1003,10 +1002,7 @@ public class Question extends BaseModel {
                     .orderBy(Tab$Table.ORDER_POS)
                     .orderBy(Question$Table.ORDER_POS).queryList();
         }
-
     }
-
-
 
     public static List<Question> listAllByTabsWithoutCs(List<Tab> tabs) {
 

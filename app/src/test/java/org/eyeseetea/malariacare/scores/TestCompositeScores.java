@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,24 +74,18 @@ public class TestCompositeScores {
         //All the questions are Yes and the Scores are 100%.
         System.out.println("Test number " + count++);
         testSurveyAllYes();
-
         //All the questions are Yes and the Scores are 0%.
         System.out.println("Test number " + count++);
         testSurveyAllNo();
-
-
         //The 1.2.1 questions are Yes and the 1.1 Score 25% CS is 6.25%
         System.out.println("Test number " + count++);
         testSurveyOneTwoOneQuestion();
-
         //The 1.2.3 questions are Yes and the 1.1 Score 50% CS is  12.5%
         System.out.println("Test number " + count++);
         testSurveyOneTwoThreeQuestion();
-
         //The 1.2.3 questions are Yes  and 1.1.1 question too. the 1 Score is 50% CS is  12.5%
         System.out.println("Test number " + count++);
         testSurveyOneQuestions();
-
     }
 
     @Test
@@ -99,12 +94,16 @@ public class TestCompositeScores {
         //Test other CompositeScore tree with questions in the parents
         generateSecondCompositeScores();
         testSurveySecondCSTree();
+
         System.out.println("Test number " + count++);
         testSurveySecondCSTree2();
+
         System.out.println("Test number " + count++);
         testSurveySecondCSTree3();
+
         System.out.println("Test number " + count++);
         testSurveySecondCSTree4();
+
         System.out.println("Test number " + count++);
         testSurveySecondCSTree5();
     }
@@ -190,6 +189,7 @@ public class TestCompositeScores {
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(34));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(35));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(36));
+
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(100f);//cs0
@@ -211,7 +211,6 @@ public class TestCompositeScores {
         expected.add(100f);//CS 2.3.3
         then(expected);
     }
-
     private void testSurveyAllNo() {
         ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();

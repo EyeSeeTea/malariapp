@@ -24,19 +24,10 @@ import com.opencsv.CSVReader;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Match;
 import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.QuestionOption;
-import org.eyeseetea.malariacare.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -145,6 +136,8 @@ public class TestUtils {
                             compositeScores.put(Integer.valueOf(line[0]),compositeScore);
                             break;
                         case QUESTIONS_CSV:
+                            if(Integer.valueOf(line[0])>36)
+                                System.out.println("d");
                             Question question = new Question();
                             question.setId_question(Long.parseLong(line[0]));
                             question.setCode(line[1]);
@@ -164,8 +157,14 @@ public class TestUtils {
                                 question.setQuestion(questions.get(Integer.valueOf(line[12])));
                             else
                                 question.setParent(false);
-                            if (line.length == 14 && !line[13].equals("")) {
-                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
+
+                            question.setCompulsory(false);
+                            if (!line[13].equals(""))
+                                if(line[13].equals("1"))
+                                question.setCompulsory(true);
+
+                            if (line.length == 15 && !line[14].equals("")) {
+                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[14])));
                             }
                             question.setCompulsory(true);
                             question.setOutput(Constants.RADIO_GROUP_HORIZONTAL);
@@ -191,6 +190,10 @@ public class TestUtils {
             }
         }
 
+            for (int d = 1; d < tabs.size(); d++) {
+                    programs.get(1).addTab(tabs.get(d));
+
+        }
     }
 
 
@@ -256,8 +259,14 @@ public class TestUtils {
                                 question.setQuestion(questions.get(Integer.valueOf(line[12])));
                             else
                                 question.setParent(false);
-                            if (line.length == 14 && !line[13].equals("")) {
-                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
+
+                            question.setCompulsory(false);
+                            if (!line[13].equals(""))
+                                if(line[13].equals("1"))
+                                    question.setCompulsory(true);
+
+                            if (line.length == 15 && !line[14].equals("")) {
+                                question.setCompositeScore(compositeScores.get(Integer.valueOf(line[14])));
                             }
                             question.setOutput(Constants.RADIO_GROUP_HORIZONTAL);
                             questions.put(Integer.valueOf(line[0]), question);
@@ -284,6 +293,10 @@ public class TestUtils {
                     }
                 }
             }
+
+            for (int d = 1; d < tabs.size(); d++)
+                programs.get(1).addTab(tabs.get(d));
+
         }
     }
 }
