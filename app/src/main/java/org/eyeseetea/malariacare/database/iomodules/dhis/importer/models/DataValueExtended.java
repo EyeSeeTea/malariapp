@@ -21,12 +21,16 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
+import org.hisp.dhis.android.sdk.persistence.models.DataValue$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.ArrayList;
@@ -43,6 +47,8 @@ public class DataValueExtended implements VisitableFromSDK {
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
 
     DataValue dataValue;
+
+    String programUid;
 
     public DataValueExtended(){}
 
@@ -86,7 +92,7 @@ public class DataValueExtended implements VisitableFromSDK {
             }
         }
 
-        Log.w(TAG,String.format("Cannot find option '%s' in %s",dataValue.getValue(),optionCodes.toString()));
+        Log.w(TAG,String.format("Cannot find option '%s' in %s and dataElement %s event %s",dataValue.getValue(),optionCodes.toString(),dataValue.getDataElement(),dataValue.getEvent()));
         return null;
     }
 
@@ -145,5 +151,27 @@ public class DataValueExtended implements VisitableFromSDK {
         String factorStr=matcher.group(1);
 
         return Float.parseFloat(factorStr);
+    }
+
+    public static long count(){
+        return new Select().count()
+                .from(DataValue.class)
+                .count();
+    }
+
+    public static DataValue findByEventAndUID(String eventUid,String dataElementUID){
+        return new Select()
+                .from(DataValue.class)
+                .where(Condition.column(DataValue$Table.EVENT).eq(eventUid))
+                .and(Condition.column(DataValue$Table.DATAELEMENT).eq(dataElementUID))
+                .querySingle();
+    }
+
+    public String getProgramUid() {
+        return programUid;
+    }
+
+    public void setProgramUid(String programUid) {
+        this.programUid = programUid;
     }
 }

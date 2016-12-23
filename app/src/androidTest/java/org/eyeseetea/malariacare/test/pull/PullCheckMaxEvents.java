@@ -23,19 +23,22 @@ package org.eyeseetea.malariacare.test.pull;
         import android.support.test.runner.AndroidJUnit4;
 
         import org.eyeseetea.malariacare.LoginActivity;
-        import org.eyeseetea.malariacare.database.model.OrgUnit;
-        import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
-        import org.eyeseetea.malariacare.database.model.Program;
+        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
+        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
         import org.eyeseetea.malariacare.database.utils.PreferencesState;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
+
         import org.hisp.dhis.android.sdk.persistence.models.Event;
-        import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+        import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;
         import org.junit.Test;
         import org.junit.runner.RunWith;
-
+        import java.text.ParseException;
+        import java.util.Calendar;
+        import java.util.Date;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
@@ -83,6 +86,10 @@ public class PullCheckMaxEvents {
         //WHEN
         waitForPull(DEFAULT_WAIT_FOR_PULL);
 
+        Calendar month = Calendar.getInstance();
+        month.add(Calendar.MONTH, -PullController.NUMBER_OF_MONTHS);
+        TrackerController.setStartDate(EventExtended.format(month.getTime(), EventExtended.AMERICAN_DATE_FORMAT));
+
 
         //THEN: Each combination of program/orgunit has less events than the max
 
@@ -92,6 +99,13 @@ public class PullCheckMaxEvents {
 
         Map<String,Integer> mapNumEventsXPair= new HashMap<>();
         for(Event event:events){
+            try {
+                Date eventDate=EventExtended.parseDate(event.getEventDate(),EventExtended.DHIS2_GMT_DATE_FORMAT);
+                //Then event date is after than the start month date
+                assertTrue(eventDate.after(month.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String programId=event.getProgramId();
             String organisationUnitId=event.getOrganisationUnitId();
             String pairKey=programId+organisationUnitId;

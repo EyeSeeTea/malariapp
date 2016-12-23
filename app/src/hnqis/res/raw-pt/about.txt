@@ -1,34 +1,42 @@
-<p><b>The Health Network Quality Improvement System (HNQIS)</b></p>
+<p> <b> Sistema de PSI Qualidade da Rede de saúde Melhoria (HNQIS) </b> </p>
 
-<p>This app was developed by PSI for the African Health markets for Equity project (AHME). AHME is implemented by Marie Stopes International, with support from the Bill & Melinda Gates Foundation.</p>
+<p> <b> Build %s </b> </p>
 
-<p>This Application is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government. PSI acknowledges UNITAID for the support provided during the conceptual development of this Application by funding the first online prototype of the Application within the UNITAID Private Sector RDT Project.</p>
+<p> Este software ( "PDA") foi desenvolvido pela Population Services International (PSI) para sustentar a melhoria das redes privadas do sector de cuidados de saúde de qualidade. Este App foi desenvolvido com o apoio de: <br/>
+O Departamento para o Desenvolvimento Internacional (DFID) (Grã-Bretanha); e <br/>
+O ministro do Comércio Externo e Cooperação para o Desenvolvimento (Holanda) </p>
 
-<p>This software is released under the GNU General Public License. For more information about this license, please visit the ‘license’ section in the application’s settings menu.</p>
+<p> Este aplicativo também é possível graças ao generoso apoio do povo americano através da Agência dos Estados Unidos para o Desenvolvimento Internacional (USAID). Os conteúdos são da responsabilidade do PSI e não refletem necessariamente as opiniões da USAID ou do Governo dos Estados Unidos. </p>
 
-<p>For more information about this application, please write to <a href="mailto:mis@psi.org">mis@psi.org</a></p>
+<p> Além disso, este aplicativo contém algumas modificações para uma aplicação de software preparado em colaboração com o Programa para Tecnologia Apropriada em Saúde (PATH), e, portanto, as opiniões aqui expressas não refletem necessariamente as opiniões do PATH. </p>
 
-<p><b><u>Contributing Organizations</u></b></p>
+<p> Para mais informações sobre esta aplicação, por favor escreva para mis@psi.org </p>
 
-<p><b><i>Population Services International</i></b></p>
+<p> <b> <u> organizações que contribuem </u> </b> </p>
 
-<p><i>Conceptual development and implementation</i></p>
+<p> <b> <i> Population Services International </i> </b> </p>
 
-<p>PSI makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+<p> <i> desenvolvimento conceitual chumbo e implementação </i> </p>
 
-<p><a href="http://www.psi.org">www.psi.org</a></p>
+<p> PSI é uma organização mundial de saúde sem fins lucrativos que torna mais fácil para as pessoas no mundo em desenvolvimento para levar uma vida mais saudável e planejar as famílias que desejam por comercialização de produtos e serviços acessíveis </p>
 
-<p><b><i>EyeSeeTea LTD</i></b></p>
+<p> <a href="http://www.psi.org"> www.psi.org </a> </p>
 
-<p><i>Liderazgo del desarrollo técnico.</i></p>
+<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
 
-<p>EyeSeeTea LTD es una empresa establecida en Londres dedicada a:<br/>
-- El desarrollo de software para ONG<br/>
-- El desarrollo y despliegue de infraestructuras TIC<br/>
-- El análisis de datos y su representación<br/></p>
+<p> <i> desenvolvimento do Android </i> </p>
 
-<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+<p> EyeSeeTea LTD é uma empresa com sede em Londres dedicada à: <br/>
+- <br/> Desenvolvimento de software ONG
+- Desenvolvimento das TIC & <br/> implantação
+- A análise dos dados e representação <br/> </p>
 
-<p><b><i>KnowTechTure</i></b></p>
+<p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
 
-<p><i>Desarrollo conceptual y técnico</i></p>
+<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
+
+<p> <i> coordenação Desenvolvimento </i> </p>
+
+<p> KTT especializada em arquitetura DHIS, desenvolvimento personalizado e implantação. </p>
+
+<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>

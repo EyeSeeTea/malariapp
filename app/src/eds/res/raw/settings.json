@@ -1,0 +1,30 @@
+{
+  "database": {
+    "originType": "dhis",
+    "uri": "https://eds-dev.psi-mis.org",
+    "fullHierarchy": true,
+    "downloadOnlyLastEvents": true
+  },
+  "dashboard": {
+    "orientation": "vertical",
+    "adapter": "automatic",
+    "layout": "vertical_main",
+    "listFilter": "none",
+    "modules": [{
+      "title": "assess",
+      "icon": "tab_assess",
+      "backgroundColor": "tab_yellow_assess",
+      "layout": "dashboard_details_container",
+      "controller": "AssessModuleController"
+    },{
+      "title": "improve",
+      "icon": "tab_improve",
+      "backgroundColor": "tab_blue_improve",
+      "layout": "dashboard_completed_container",
+      "controller": "ImproveModuleController"
+    }
+    ]
+  }
+}
+
+

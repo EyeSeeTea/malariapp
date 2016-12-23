@@ -48,6 +48,8 @@ public class FilterOrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
         customTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         customTextView.setTextColor(getContext().getResources().getColor(R.color.white));
         customTextView.setBackgroundColor(getContext().getResources().getColor(R.color.assess_grey));
+        customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
+
         customTextView.setTypeface(null, Typeface.BOLD);
     }
 

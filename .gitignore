@@ -35,3 +35,9 @@ proguard/
 /.idea/libraries
 .DS_Store
 app/fabric.properties
+
+# last commit file
+app/src/main/res/raw/lastcommit.txt
+
+# local only private key for drive service account credentials
+app/src/hnqis/res/raw/driveserviceprivatekey.json

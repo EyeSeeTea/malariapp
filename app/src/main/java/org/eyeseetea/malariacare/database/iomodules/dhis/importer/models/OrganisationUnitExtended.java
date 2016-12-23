@@ -39,15 +39,18 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSD
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Question$Table;
 import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit$Table;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet$Table;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 
 import java.util.List;
@@ -99,7 +102,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      */
     public Integer getProductivity(Integer position){
         //No position -> no productivity
-        if(position==null || position<0){
+        if(position==null || position<=0){
             return 0;
         }
 
@@ -108,12 +111,12 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
             loadProductivityArray();
         }
         //Data is not configured properly
-        if(position>=productivityArray.length()){
+        if(position>productivityArray.length()){
             return 0;
         }
         //Get value from position
         try{
-            return Integer.parseInt(productivityArray.substring(position,position+1));
+            return Integer.parseInt(productivityArray.substring(position-1,position));
         }catch(Exception ex){
             Log.e(TAG, String.format("getProductivity(%d)-> %s", position, ex.getMessage()));
             return 0;
@@ -164,5 +167,48 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      */
     public OrgUnit getAppOrgUnit() {
         return appOrgUnit;
+    }
+
+    public static List<OrganisationUnit> getAllOrganisationUnits() {
+        return new Select().all().from(OrganisationUnit.class).queryList();
+    }
+
+    /**
+     * Get all the OU DataSets given a OU id
+     * @param id
+     * @return
+     */
+    public static List<OrganisationUnitDataSet> getOrganisationUnitDataSets(String id){
+        return new Select()
+                .from(OrganisationUnitDataSet.class)
+                .where(Condition.column(OrganisationUnitDataSet$Table.ORGANISATIONUNITID)
+                        .eq(id))
+                .queryList();
+    }
+
+    /**
+     * Get all the OU groups given a OU id
+     * @param id
+     * @return
+     */
+    public static List<OrganisationUnitGroup> getOrganisationUnitGroups(String id){
+        return new Select()
+                .from(OrganisationUnitGroup.class)
+                .where(Condition.column(OrganisationUnitGroup$Table.ORGANISATIONUNITID)
+                        .eq(id))
+                .queryList();
+    }
+
+    /**
+     * Get an OU given its id
+     * @param id
+     * @return
+     */
+    public static OrganisationUnit getOrganisationUnit(String id){
+        return new Select()
+                .from(OrganisationUnit.class)
+                .where(Condition.column(OrganisationUnit$Table.ID)
+                        .eq(id))
+                .querySingle();
     }
 }

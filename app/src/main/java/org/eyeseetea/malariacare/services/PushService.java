@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 
 import java.util.List;
 
@@ -87,28 +88,15 @@ public class PushService extends IntentService {
         Log.d(TAG, "pushAllPendingSurveys (Thread:" + Thread.currentThread().getId() + ")");
 
         //Select surveys from sql
-        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
+        List<Survey> surveys = Survey.getAllCompletedSurveys();
 
-        if(surveys!=null && !surveys.isEmpty()){
-            for(Survey survey : surveys){
-                if(survey.isCompleted()){
-                    sendPush(survey);
-                }
-            }
+        //No surveys -> done
+        if(surveys==null || surveys.isEmpty()){
+            AlarmPushReceiver.isDone();
+            return;
         }
-    }
-
-    private void sendPush (Survey survey) {
-        //Push in background with SDK
-        sendSDKPush(survey);
-        //Push in background with API
-        //sendAPIPush(survey);
-    }
-
-    private void sendSDKPush(Survey survey) {
-        Log.d(TAG,"sendSDKPush: "+survey);
-        PushClient pushClient = getPushClient(survey);
-        //Push  data
+        //All pending surveys are sent at once
+        PushClient pushClient = getPushClient(surveys);
         pushClient.pushSDK();
     }
 
@@ -134,6 +122,13 @@ public class PushService extends IntentService {
         String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
         String password=sharedPreferences.getString(getString(R.string.dhis_password), "");
         return new PushClient(survey, this.getApplicationContext(),user,password);
+    }
+
+    private PushClient getPushClient(List<Survey> surveys) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
+        String password=sharedPreferences.getString(getString(R.string.dhis_password), "");
+        return new PushClient(surveys, this.getApplicationContext(),user,password);
     }
 
 }

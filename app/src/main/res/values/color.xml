@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mainColor">#E0F8E0</color>
     <color name="green">#84b467</color>
     <color name="amber">#F1C232</color>
     <color name="red">#ff060D</color>
     <color name="black">#000000</color>
-    <color name="headerColor">#FF1D5288</color>
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
-    <color name="evenRows">#FFE5E5E5</color>
     <color name="navy_blue">#FF1F70C3</color>
     <color name="dark_navy_blue">#FF1D5288</color>
     <color name="light_grey">#FFE5E5E5</color>
-    <color name="parentColor">#EFF1D5</color>
+    <color name="parentColor">#d8dac1</color>
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
-    <color name="custom_blue_light">#1f70c3</color>
+    <color name="custom_blue_light">@color/navy_blue</color>
     <color name="custom_background_grey">#3e3e3f</color>
     <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
-    <color name="scoreRoot">#0b5394</color>
-    <color name="scoreChild">#3d85c6</color>
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="lightGreen">#adda19</color>
     <color name="darkRed">#d1213c</color>
@@ -34,12 +29,14 @@
     <color name="tab_yellow_assess">#dce442</color>
     <color name="tab_green_monitor">#799900</color>
     <color name="tab_blue_improve">#00b3e3</color>
-    <color name="appNameColor">#000000</color>
     <color name="gaudyYellow">#bcd200</color>
-    <color name="gaudyGreen">#4c5722</color>
-    <color name="gaudyRed">#7c0407</color>
-    <color name="gaudyBlue">#0b5394</color>
     <color name="light_red">#f8cdc6</color>
     <color name="planLightGreen">#dbf67c</color>
     <color name="planLighYellow">#f4f8ac</color>
+    <color name="appNameColor">@color/black</color>
+    <color name="headerColor">@color/dark_navy_blue</color>
+    <color name="evenRows">@color/light_grey</color>
+    <color name="planning_header_background">@color/custom_background_grey</color>
+    <color name="planning_header_text">@color/white</color>
+    <color name="planning_row_text">@color/black</color>
 </resources>
