@@ -33,7 +33,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -41,8 +40,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -125,12 +124,14 @@ public class ProgressActivity extends Activity {
     boolean pullAfterPushInProgress;
     static Handler handler;
     static Activity progressActivity;
+    boolean isOnPause=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         PULL_IS_ACTIVE = true;
+        isOnPause=false;
         prepareUI();
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -157,24 +158,26 @@ public class ProgressActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-        Dhis2Application.bus.register(this);
-        }catch(Exception e){
-            e.printStackTrace();
-            Dhis2Application.bus.unregister(this);
-            Dhis2Application.bus.register(this);
+        if(!isOnPause) {
+            try {
+                Dhis2Application.bus.register(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Dhis2Application.bus.unregister(this);
+                Dhis2Application.bus.register(this);
+            }
+            launchAction();
         }
-        launchAction();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        try {Dhis2Application.bus.unregister(this);}catch(Exception e){e.printStackTrace();}
         if(PULL_CANCEL==true)
             finishAndGo(LoginActivity.class);
-        else
+        else if(!hasAPullAfterPush())
             finishAndGo(DashboardActivity.class);
+        isOnPause=true;
     }
 
     private void prepareUI(){
@@ -185,20 +188,21 @@ public class ProgressActivity extends Activity {
 
     @Subscribe
     public void onProgressChange(final SyncProgressStatus syncProgressStatus) {
-        if(syncProgressStatus ==null){
+        //bad event or activity not in foreground -> show nothing
+        if(syncProgressStatus ==null || isOnPause){
             return;
         }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (syncProgressStatus.hasError()) {
-                    showException(syncProgressStatus.getException().getMessage());
+                    showException(syncProgressStatus.getException().getMessage()+" ");
                     return;
                 }
 
                 //Step
                 if (syncProgressStatus.hasProgress()) {
-                    step(syncProgressStatus.getMessage());
+                    step(syncProgressStatus.getMessage()+" ");
                     return;
                 }
 
@@ -230,30 +234,45 @@ public class ProgressActivity extends Activity {
      * Shows a dialog with the given message y move to login after showing error
      * @param msg
      */
-    private void showException(String msg){
+    private void showException(final String msg){
         final boolean isAPush=isAPush();
-        String title=getDialogTitle(isAPush);
+        Log.d(TAG,msg+" ");
 
-        this.alertDialog=new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(title)
-                .setMessage(msg)
-                .setNeutralButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        PULL_ERROR=true;
+        PULL_CANCEL=true;
+        PULL_IS_ACTIVE=false;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Run your task here
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //A crash during a push might be recoverable -> dashboard
-                        if (isAPush) {
-                            Log.d(TAG, "Push crashed, moving to dashboard...");
-                            finishAndGo(DashboardActivity.class);
-                        } else {
-                            //A crash during a pull requires to start from scratch -> logout
-                            Log.d(TAG, "Logging out from sdk...");
-                            DhisService.logOutUser(ProgressActivity.this);
-                        }
+                    public void run() {
+                        String dialogTitle="",dialogMessage="";
+                            dialogTitle=getDialogTitle(isAPush());
+                        if(msg!=null)
+                            dialogMessage=msg;
+                        new AlertDialog.Builder(progressActivity)
+                                .setCancelable(false)
+                                .setTitle(dialogTitle)
+                                .setMessage(dialogMessage)
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        //A crash during a push might be recoverable -> dashboard
+                                        if (isAPush) {
+                                            Log.d(TAG, "Push crashed, moving to dashboard...");
+                                            finishAndGo(DashboardActivity.class);
+                                        } else {
+                                            //A crash during a pull requires to start from scratch -> logout
+                                            Log.d(TAG, "Logging out from sdk...");
+                                            DhisService.logOutUser(ProgressActivity.this);
+                                        }
+                                    }
+                                }).create().show();
                     }
-                }).create();
-        alertDialog.show();
+                });
+            }
+        });
     }
 
     /**
@@ -428,6 +447,7 @@ public class ProgressActivity extends Activity {
         progressBar.setMax(MAX_PUSH_STEPS);
 
         List<Survey> surveys=findSurveysToPush();
+        Log.d(TAG,"surveys"+surveys.size());
         PushController.getInstance().push(this, surveys);
     }
 
@@ -437,11 +457,17 @@ public class ProgressActivity extends Activity {
      */
     private List<Survey> findSurveysToPush(){
         if(hasAPullAfterPush()){
-            return Survey.getAllUnsentUnplannedSurveys();
+            List <Survey> surveys= Survey.getAllUnsentUnplannedSurveys();
+            for(int i=0;i<surveys.size();i++) {
+                if(surveys.get(i).getCompletionDate()==null)
+                    surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
+            }
+            return surveys;
         }
 
         List<Survey> surveys=new ArrayList<>();
-        surveys.add(Session.getSurvey());
+        //Fixme it is not used anymore?.
+        //surveys.add(Session.getSurveyByModule(module));
         return surveys;
     }
 

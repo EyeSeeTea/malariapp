@@ -22,8 +22,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:gravity="center"
-    android:orientation="vertical"
-    tools:context="org.eyeseetea.malariacare.CreateSurveyActivity">
+    android:orientation="vertical">
 
     <!-- Login progress -->
     <ProgressBar android:id="@+id/create_progress" style="?android:attr/progressBarStyleLarge"
@@ -59,8 +58,6 @@
                 </LinearLayout>
 
                 <include layout="@layout/create_survey_fragment_program_options"/>
-
-                <include layout="@layout/create_survey_fragment_tab_options"/>
 
                 <Space
                     android:layout_width="20px"

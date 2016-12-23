@@ -179,7 +179,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsNever(Survey survey){
-        Date scheduledDate = survey.getScheduleDate();
+        Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
         //No Scheduled
@@ -198,7 +198,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsOverdue(Survey survey){
-        Date scheduledDate = survey.getScheduleDate();
+        Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
         //scheduledDate<today
@@ -217,7 +217,7 @@ public class PlannedItemBuilder {
      * @return
      */
     private boolean processAsNext30(Survey survey){
-        Date scheduledDate = survey.getScheduleDate();
+        Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
         Date today30 = getIn30Days(today);
 
@@ -236,12 +236,12 @@ public class PlannedItemBuilder {
      * @param survey
      */
     private void annotateSurvey(Survey survey){
-        if(survey.getTabGroup()!=null) {
-            String key= getSurveyKey(survey.getOrgUnit(), survey.getTabGroup().getProgram());
+        if(survey.getProgram()!=null) {
+            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
             surveyMap.put(key,survey);
         }
         else{
-            Log.d(TAG, "Error tabgroup null in surevy id: " + survey.getId_survey());
+            Log.d(TAG, "Error program null in survey id: " + survey.getId_survey());
         }
     }
 

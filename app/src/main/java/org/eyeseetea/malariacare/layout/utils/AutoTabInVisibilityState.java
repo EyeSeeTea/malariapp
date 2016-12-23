@@ -54,14 +54,14 @@ public class AutoTabInVisibilityState {
         return !invisible;
     }
 
-    public boolean initVisibility(Question question){
-        boolean hidden = isHidden(question);
+    public boolean initVisibility(Question question, float idSurvey){
+        boolean hidden = isHidden(question, idSurvey);
         elementInvisibility.put(question, hidden);
         return !hidden;
     }
 
-    public boolean initVisibility(QuestionRow questionRow){
-        boolean hidden = isHidden(questionRow);
+    public boolean initVisibility(QuestionRow questionRow, float idSurvey){
+        boolean hidden = isHidden(questionRow, idSurvey);
         elementInvisibility.put(questionRow,hidden);
         for(Question question:questionRow.getQuestions()){
             rowsMap.put(question.getId_question(),questionRow);
@@ -74,8 +74,8 @@ public class AutoTabInVisibilityState {
      * @param question
      * @return
      */
-    public boolean isHidden(Question question) {
-        return question.isHiddenBySurvey(Session.getSurvey());
+    public boolean isHidden(Question question, float idSurvey) {
+        return question.isHiddenBySurvey(idSurvey);
     }
 
     /**
@@ -83,14 +83,14 @@ public class AutoTabInVisibilityState {
      * @param questionRow
      * @return
      */
-    public boolean isHidden(QuestionRow questionRow){
+    public boolean isHidden(QuestionRow questionRow, float idSurvey){
         if(questionRow==null || questionRow.sizeColumns()==0){
             return true;
         }
 
         Question question = questionRow.getFirstQuestion();
 
-        return isHidden(question);
+        return isHidden(question,idSurvey);
     }
 
     public void setInvisible(Object key, Boolean invisible){
@@ -150,33 +150,36 @@ public class AutoTabInVisibilityState {
      * Given a question, make visible or invisible their children. In case all children in a header
      * became invisible, that header is also hidden
      */
-    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem) {
+    public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         Question question = autoTabSelectedItem.getQuestion();
+        if(question.hasChildren()) {
+            recursiveToggleChildrenVisibility(idSurvey, module, question);
+        }
+    }
 
-        List<Question> children = question.getChildren();
-        Survey survey= Session.getSurvey();
+    private void recursiveToggleChildrenVisibility(float idSurvey, String module, Question parentQuestion) {
         boolean visible;
-
-        for (Question childQuestion : children) {
+        for (Question childQuestion : parentQuestion.getChildren()) {
             Header childHeader = childQuestion.getHeader();
-            visible=!childQuestion.isHiddenBySurvey(survey);
+            visible=!childQuestion.isHiddenBySurvey(idSurvey);
             this.updateVisibility(childQuestion,visible);
 
             //Show child -> Show header, Update scores
             if(visible){
-                Float denum = ScoreRegister.calcDenum(childQuestion);
-                ScoreRegister.addRecord(childQuestion, 0F, denum);
+                Float num = ScoreRegister.calcNum(childQuestion, idSurvey);
+                Float denum = (num == null) ? 0f: ScoreRegister.calcDenum(childQuestion, idSurvey);
+                ScoreRegister.addRecord(childQuestion, 0f, denum, idSurvey, module);
                 this.setInvisible(childHeader,false);
                 continue;
             }
 
             //Hide child ...
             //-> Remove value
-            ReadWriteDB.deleteValue(childQuestion);
+            ReadWriteDB.deleteValue(childQuestion, module);
 
             //-> Remove score
-            if (ScoreRegister.getNumDenum(childQuestion) != null) {
-                ScoreRegister.deleteRecord(childQuestion);
+            if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
+                ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
             }
             //-> Check header visibility (no header,done)
             if(childHeader==null){
@@ -184,7 +187,36 @@ public class AutoTabInVisibilityState {
             }
             //-> Check header visibility
             this.updateHeaderVisibility(childHeader);
+            if(childQuestion.hasChildren())
+                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion);
         }
+    }
+
+    /**
+     * Remove recursively num and denums, and scores records
+     * @param question
+     * @param idSurvey
+     * @param module
+     */
+    public void removeScoreRecursively(Question question, float idSurvey, String module){
+        for(Question child: question.getChildren()){
+            removeScoreRecursively(child, idSurvey, module);
+        }
+        if (ScoreRegister.getNumDenum(question, idSurvey, module) != null) {
+            ScoreRegister.deleteRecord(question, idSurvey, module);
+        }
+    }
+
+    /**
+     * Remove recursively all children values from DB
+     * @param question
+     * @param module
+     */
+    public void deleteChildrenValueRecursively(Question question, String module){
+        for(Question child: question.getChildren()){
+            deleteChildrenValueRecursively(child, module);
+        }
+        ReadWriteDB.deleteValue(question, module);
     }
 
 

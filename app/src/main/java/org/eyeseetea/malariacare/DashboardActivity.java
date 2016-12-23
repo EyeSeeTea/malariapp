@@ -30,10 +30,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.ConvertToSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
@@ -43,14 +43,20 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.VariantSpecificUtils;
 import org.hisp.dhis.android.sdk.events.UiEvent;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+
+import java.util.Date;
+import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.eyeseetea.malariacare.database.model.Program;
 
 import java.util.Date;
 import java.util.List;
@@ -60,9 +66,9 @@ public class DashboardActivity extends BaseActivity{
 
     private final static String TAG=".DDetailsActivity";
     private boolean reloadOnResume=true;
-    DashboardController dashboardController;
+    public DashboardController dashboardController;
     static Handler handler;
-    public static Activity dashboardActivity;
+    public static DashboardActivity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +89,33 @@ public class DashboardActivity extends BaseActivity{
         //delegate modules initialization
         dashboardController.onCreate(this,savedInstanceState);
 
-        setAlarm();
+        //inits autopush alarm
+        AlarmPushReceiver.getInstance().setPushAlarm(this);
+
+        //Media: init drive credentials
+        DriveRestController.getInstance().init(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
+    }
+
+
+
+
+    /**
+     * Handles resolution callbacks.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        Log.d(TAG, String.format("onActivityResult(%d, %d)", requestCode, resultCode));
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Delegate activity result to media controller
+        DriveRestController.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -179,6 +205,7 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
+        DriveRestController.getInstance().syncMedia();
     }
 
     @Override
@@ -198,9 +225,13 @@ public class DashboardActivity extends BaseActivity{
             reloadOnResume=true;
             return;
         }
-        Intent surveysIntent=new Intent(this, SurveyService.class);
+        reloadDashboard();
+    }
+
+    public static void reloadDashboard(){
+        Intent surveysIntent=new Intent(dashboardActivity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        this.startService(surveysIntent);
+        dashboardActivity.startService(surveysIntent);
     }
 
     /**
@@ -214,9 +245,8 @@ public class DashboardActivity extends BaseActivity{
     /**
      * PUll data from DHIS server and turn into our model
      */
-    private void initDataIfRequired(){
-//            PullController.getInstance().pull(this);
-            initUserSessionIfRequired();
+    private void initDataIfRequired() {
+        initUserSessionIfRequired();
     }
 
     /**
@@ -255,6 +285,20 @@ public class DashboardActivity extends BaseActivity{
     }
 
     /**
+     * Handler that starts or edits a given survey
+     * @param orgUnit
+     */
+    public void onOrgUnitSelected(OrgUnit orgUnit){
+        dashboardController.onOrgUnitSelected(orgUnit);
+    }
+    /**
+     * Handler that starts or edits a given survey
+     * @param program
+     */
+    public void onProgramSelected(Program program){
+        dashboardController.onProgramSelected(program);
+    }
+    /**
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
      * @param survey
@@ -272,14 +316,6 @@ public class DashboardActivity extends BaseActivity{
     }
 
     /**
-     * A new survey starts to be edited
-     * @param survey
-     */
-    public void onCreateSurvey(Survey survey) {
-        dashboardController.onSurveySelected(survey);
-    }
-
-    /**
      * Moving into createSurvey fragment
      * @param view
      */
@@ -290,20 +326,27 @@ public class DashboardActivity extends BaseActivity{
      * Modify survey from CreateSurveyFragment
      * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, TabGroup tabGroup, PullClient.EventInfo eventInfo){
-        Survey survey = Survey.getLastSurvey(orgUnit, tabGroup);
+    public void modifySurvey(OrgUnit orgUnit, Program program, Event lastEventInServer, String module){
+        //Looking for that survey in local
+        Survey survey = Survey.findSurveyWith(orgUnit, program, lastEventInServer);
+        //Survey in server BUT not local
         if(survey==null){
-            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-            //if the event not is fake app event set the real event info in the survey:
+            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         }
-        if(!eventInfo.getEventUid().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.no_previous_event_fakeuid))){
-            survey.setCompletionDate(eventInfo.getEventDate());
+        if(lastEventInServer!=null){
+            survey.setEventUid(lastEventInServer.getEvent());
+            EventExtended lastEventExtended = new EventExtended(lastEventInServer);
+            survey.setCreationDate(lastEventExtended.getCreationDate());
+            survey.setCompletionDate(lastEventExtended.getEventDate());
+        }else{
+            //Mark the survey as a modify attempt for pushing accordingly
+            survey.setEventUid(PullClient.NO_EVENT_FOUND);
         }
-        survey.setEventUid(eventInfo.getEventUid());
+
         //Upgrade the uploaded date
         survey.setUploadDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,module);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }
@@ -311,26 +354,42 @@ public class DashboardActivity extends BaseActivity{
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit,final TabGroup tabGroup) {
-        VariantSpecificUtils variantSpecificUtils = new VariantSpecificUtils();
-        variantSpecificUtils.createNewSurvey(orgUnit, tabGroup);
+    public void onCreateSurvey(final OrgUnit orgUnit,final Program program) {
+        createNewSurvey(orgUnit,program);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup){
-        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,tabGroup);
-        Session.setSurvey(survey);
+    public void createNewSurvey(OrgUnit orgUnit, Program program){
+        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,program);
         prepareLocationListener(survey);
+        // Put new survey in session
+        Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);
     }
 
     /**
-     * The alarm is always set in applicatin init.
+     * Shows a quick toast message on screen
+     * @param message
      */
-    public void setAlarm() {
-        AlarmPushReceiver.getInstance().setPushAlarm(this);
+
+    public static void toast(String message) {
+        Toast.makeText(DashboardActivity.dashboardActivity, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastFromTask(final String message) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast(message);
+                    }
+                });
+            }
+        },1000);
     }
 
     //Show dialog exception from class without activity.
@@ -357,5 +416,20 @@ public class DashboardActivity extends BaseActivity{
                 });
             }
         }, 1000);
+    }
+
+    public void preparePlanningFilters(List<Program> programList, List<OrgUnit> orgUnitList) {
+        ((PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName())).prepareFilters(programList,orgUnitList);
+    }
+
+    @Override
+    public void clickOrgUnitSpinner(View v){
+        PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
+        planModuleController.clickOrgUnitSpinner();
+    }
+    @Override
+    public void clickProgramSpinner(View v){
+        PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
+        planModuleController.clickOrgProgramSpinner();
     }
 }

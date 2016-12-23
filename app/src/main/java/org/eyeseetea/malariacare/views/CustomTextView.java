@@ -67,8 +67,7 @@ public class CustomTextView extends TextView implements IEyeSeeView {
             try {
                 mfontName = a.getString(R.styleable.CustomTextView_tFontName);
                 if (mfontName != null) {
-                    font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
-                    setTypeface(font);
+                    setTypeface(TypefaceCache.getInstance().getTypeface(mfontName));
                 }
 
                 mDimension = a.getString(R.styleable.CustomTextView_tDimension);
@@ -109,8 +108,13 @@ public class CustomTextView extends TextView implements IEyeSeeView {
      */
     public void setmDimension(String mDimension) {
         this.mDimension = mDimension;
-        if (getmScale() != getContext().getString(R.string.font_size_system))
+        if(hasCustomTextSize()) {
             setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
+        }
+    }
+
+    private boolean hasCustomTextSize(){
+        return this.mScale!=null && !this.mScale.equals(getContext().getString(R.string.font_size_system));
     }
 
     /**

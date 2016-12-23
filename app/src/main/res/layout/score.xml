@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="0dip"
+    android:layout_height="wrap_content"
+    android:layout_weight="0.3">
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/num"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/question_padding_all"
+        android:text="@string/number_zero"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/den"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="@dimen/question_padding_all"
+        android:text="@string/number_zero"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
+</LinearLayout>

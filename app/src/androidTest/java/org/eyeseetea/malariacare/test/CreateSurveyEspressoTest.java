@@ -94,7 +94,7 @@ public class CreateSurveyEspressoTest extends MalariaEspressoTest{
 //
 //        //THEN
 //        intended(anyIntent());
-//        assertNotNull(Session.getSurvey());
+//        assertNotNull(Session.getSurveyByModule());
 //    }
 //
 //    @Test

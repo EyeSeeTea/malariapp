@@ -22,14 +22,18 @@ package org.eyeseetea.malariacare.database.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
+import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +65,11 @@ public class PreferencesState {
      * Flag that determines if data must be pulled from server
      */
     private Boolean pullFromServer;
+
+    /**
+     * Flag that determines if large text is show in preferences
+     */
+    private Boolean showLargeText;
 
     /**
      * Flag that determines if the planning tab must be hide or not
@@ -102,7 +111,7 @@ public class PreferencesState {
         locationRequired=initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents=initMaxEvents();
-        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d",scale,showNumDen,locationRequired,maxEvents));
+        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
     }
 
     /**
@@ -144,7 +153,14 @@ public class PreferencesState {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         return sharedPreferences.getBoolean(instance.getContext().getString(R.string.hide_planning_tab_key), false);
     }
-
+    /**
+     * Inits hidePlanningTab flag according to preferences
+     * @return
+     */
+    public boolean isDevelopOptionActive(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.developer_option), false);
+    }
     /**
      * Inits maxEvents settings
      * @return
@@ -225,7 +241,15 @@ public class PreferencesState {
         return showNumDen;
     }
 
+    public void setShowNumDen(boolean value){
+        this.showNumDen=value;
+    }
+
     public boolean isLocationRequired(){return locationRequired;}
+
+    public void setLocationRequired(boolean value){
+        this.locationRequired=value;
+    }
 
     public boolean isHidePlanningTab(){
         return this.hidePlanningTab;
@@ -235,7 +259,12 @@ public class PreferencesState {
         return this.maxEvents;
     }
 
+    public void setMaxEvents(int maxEvents){
+        this.maxEvents=maxEvents;
+    }
+
     public Float getFontSize(String scale,String dimension){
+        if (scaleDimensionsMap.get(scale)==null) return context.getResources().getDimension(R.dimen.small_large_text_size);
         return scaleDimensionsMap.get(scale).get(dimension);
     }
 
@@ -245,10 +274,7 @@ public class PreferencesState {
      * @return
      */
     public Boolean getPullFromServer() {
-        if(pullFromServer==null){
-            pullFromServer = context.getResources().getBoolean(R.bool.pullFromServer);
-        }
-        return pullFromServer;
+        return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
     }
 
     /**
@@ -259,6 +285,36 @@ public class PreferencesState {
         return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
     }
 
+    /**
+     * Tells if the application is filter for last org unit
+     * @return
+     */
+    public Boolean isLastForOrgUnit() {
+        return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application is none filter
+     * @return
+     */
+    public Boolean isNoneFilter() {
+        return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
+    }
+
+    /**
+     * Tells if the application use the Automatic  adapter
+     * @return
+     */
+    public Boolean isAutomaticAdapter() {
+        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
+    }
+    /**
+     * Tells if the application use the Dynamic adapter
+     * @return
+     */
+    public Boolean isDynamicAdapter() {
+        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
+    }
     public Class getMainActivity(){
         if(getPullFromServer()){
             return ProgressActivity.class;
@@ -275,4 +331,22 @@ public class PreferencesState {
         editor.putString(context.getResources().getString(R.string.default_orgUnit), "");
         editor.commit();
     }
+
+    /**
+     * it determines if large text is shown in preferences
+     * The screen size should be more bigger than the width and height constants to show the large text option.
+     */
+    public boolean isLargeTextShown(){
+        if(showLargeText==null) {
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            Log.d(TAG,metrics.widthPixels +" x "+ metrics.heightPixels);
+            if (metrics.widthPixels > Constants.MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT && metrics.heightPixels >= Constants.MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT) {
+                showLargeText= true;
+            } else {
+                showLargeText = false;
+            }
+        }
+        return  showLargeText;
+    }
+
 }

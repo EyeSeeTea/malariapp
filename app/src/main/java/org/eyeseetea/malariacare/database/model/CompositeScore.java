@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import java.util.List;
+
 import android.support.annotation.NonNull;
 
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -42,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -198,12 +199,12 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
 
     /**
      * Select all composite score that belongs to a program
-     * @param tabGroup Program whose composite scores are searched.
+     * @param program Program whose composite scores are searched.
      * @return
      */
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    public static List<CompositeScore> listByTabGroup(TabGroup tabGroup, List<Question> questions){
-        if(tabGroup==null || tabGroup.getId_tab_group()==null){
+    public static List<CompositeScore> listByProgram(Program program, List<Question> questions){
+        if(program==null || program.getId_program()==null){
             return new ArrayList<>();
         }
 
@@ -211,10 +212,10 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         //Composite score from question from header from tab from tabgorup from compositescore from tabgrouip
         List<CompositeScore> compositeScoresByProgram = new ArrayList<>();
         if(questions==null)
-            compositeScoresByProgram = getCompositeScoresByProgram(tabGroup);
+            compositeScoresByProgram = getCompositeScoresByProgram(program);
         else
         for(Question question:questions){
-            if(question.getHeader().getTab().getTabGroup().getId_tab_group()==(tabGroup.getId_tab_group())){
+            if(question.getHeader().getTab().getProgram().getId_program().equals(program.getId_program())){
                 if(!compositeScoresByProgram.contains(question.getCompositeScore()) && question.getCompositeScore()!=null)
                     compositeScoresByProgram.add(question.getCompositeScore());
             }
@@ -259,7 +260,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScore, so results are having Questions one, and should keep CompositeScore one. To solve it, we've introduced a last join with CompositeScore again and a HashSet to remove resulting duplicates
     //Take scores associated to questions of the program ('leaves')
     @NonNull
-    private static List<CompositeScore> getCompositeScoresByProgram(TabGroup tabGroup) {
+    private static List<CompositeScore> getCompositeScoresByProgram(Program program) {
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
@@ -270,17 +271,16 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 .join(Tab.class, Join.JoinType.LEFT).as("t")
                 .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
                         .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                .join(TabGroup.class, Join.JoinType.LEFT).as("g")
-                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB_GROUP))
-                        .eq(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP)))
+                .join(Program.class, Join.JoinType.LEFT).as("g")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("g", Program$Table.ID_PROGRAM)))
                 .join(CompositeScore.class, Join.JoinType.LEFT).as("cs2")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
                         .eq(ColumnAlias.columnWithTable("cs2", CompositeScore$Table.ID_COMPOSITE_SCORE)))
-                .where(Condition.column(ColumnAlias.columnWithTable("g", TabGroup$Table.ID_TAB_GROUP))
-                        .eq(tabGroup.getId_tab_group()))
+                .where(Condition.column(ColumnAlias.columnWithTable("g", Program$Table.ID_PROGRAM))
+                        .eq(program.getId_program()))
                 .orderBy(true, CompositeScore$Table.ORDER_POS)
                 .queryList();
-
 
         // remove duplicates
         Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();

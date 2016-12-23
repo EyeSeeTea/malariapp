@@ -26,14 +26,18 @@ import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Attribute;
-import org.hisp.dhis.android.sdk.persistence.models.Attribute$Table;
 import org.hisp.dhis.android.sdk.persistence.models.AttributeValue;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.Option;
 import org.hisp.dhis.android.sdk.persistence.models.OptionSet;
 import org.hisp.dhis.android.sdk.persistence.models.Program;
@@ -44,6 +48,8 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageSection$Table;
+
+import java.util.List;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -56,11 +62,6 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code of attribute dheader unique name
      */
     public static final String ATTRIBUTE_HEADER_NAME = "DEHeader";
-
-    /**
-     * Code of attribute dheader unique name
-     */
-    public static final String ATTRIBUTE_TABGROUP_NAME = "DETabGroup";
     /**
      * Code of attribute order int
      */
@@ -73,6 +74,14 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code of attribute denominator float
      */
     public static final String ATTRIBUTE_DENUMERATOR = "DEDenominator";
+    /**
+     * Code of attribute of parent options separated by token
+     */
+    public static final String ATTRIBUTE_PARENT_QUESTION_OPTIONS = "DEQuestionParentOptions";
+    /**
+     * Code of attribute of parents separated by token
+     */
+    public static final String ATTRIBUTE_PARENT_QUESTION = "DEQuestionParents";
     /**
      * Code of attribute of group of patern/child relation
      */
@@ -104,6 +113,16 @@ public class DataElementExtended implements VisitableFromSDK {
      * Code the attribute Column (for customTabs)
      */
     public static final String ATTRIBUTE_COLUMN = "DEColumn";
+
+    /**
+     * Code the attribute Video
+     */
+    public static final String ATTRIBUTE_VIDEO = "DEVideo";
+
+    /**
+     * Code the attribute Image
+     */
+    public static final String ATTRIBUTE_IMAGE = "DEImage";
 
     /**
      * Code of Question option for attribute DEType
@@ -149,6 +168,8 @@ public class DataElementExtended implements VisitableFromSDK {
     public static final String CHILD = "CHILD";
 
     DataElement dataElement;
+
+    String programUid;
 
     /**
      * Reloads the codes for the options Question, Control, Score
@@ -274,20 +295,14 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     public  String findAttributeValueByCode(String code){
-        Attribute attribute;
-        //TODO remove after server data solution
-        if("DEQuesType".equals(code)){
-            attribute = new Select().from(Attribute.class).where(Condition.column(Attribute$Table.ID).
-                    is("RkNBKHl7FcO")).querySingle();
-        }else{
-            //Find the right attribute
-            attribute = AttributeExtended.findAttributeByCode(code);
-            //No such attribute -> done
-            if(attribute==null){
-                return null;
-            }
-        }
 
+        //Find the right attribute
+        Attribute attribute = AttributeExtended.findAttributeByCode(code);
+        //No such attribute -> done
+        if(attribute==null){
+            Log.d("DataElementExtended", String.format("findAttributeByCode(): Attribute with %s not found", code));
+            return null;
+        }
 
         //Find its value for the given dataelement
         AttributeValue attributeValue=findAttributeValue(attribute);
@@ -304,8 +319,14 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return
      */
     public AttributeValue findAttributeValuefromDataElementCode(String code,DataElement dataElement){
+        if(code==null || dataElement==null){
+            return null;
+        }
         //select * from Attribute join AttributeValue on Attribute.id = attributeValue.attributeId join DataElementAttributeValue on attributeValue.id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue.dataElementId="vWgsPN1RPLl" and code="Order"
         for (AttributeValue attributeValue: dataElement.getAttributeValues()){
+            if(attributeValue.getAttribute().getCode()==null) {
+                throw new RuntimeException(String.format(PreferencesState.getInstance().getContext().getResources().getString(R.string.dialog_error_attribute_null), attributeValue.getAttributeId()));
+            }
             if (attributeValue.getAttribute().getCode().equals(code))
                 return attributeValue;
         }
@@ -313,7 +334,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated prgoramStage (tabgroup)
+     * Find the associated programStage (tabgroup)
      *
      * @return
      */
@@ -322,7 +343,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Find the associated program (tabgroup) given a dataelement UID
+     * Find the associated program given a dataelement UID
      *
      * @param dataElementUID
      * @return
@@ -364,6 +385,52 @@ public class DataElementExtended implements VisitableFromSDK {
         return programSS.getUid();
     }
 
+
+    /**
+     * Find the associated programStageSection (tab)UID given a dataelement UID
+     *
+     * @return
+     */
+    public String findProgramStageSection() {
+
+        List<ProgramStageSection> programStageSections = new Select().from(ProgramStageSection.class).as("pss")
+                .join(ProgramStageDataElement.class, Join.JoinType.LEFT).as("psde")
+                .on(Condition.column(ColumnAlias.columnWithTable("pss", ProgramStageSection$Table.ID))
+                        .eq(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.PROGRAMSTAGESECTION)))
+                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(getDataElement().getUid()))
+                .queryList();
+        if (programStageSections == null) {
+            return null;
+        }
+        for(ProgramStageSection programStageSection:programStageSections){
+            if(MetaDataController.getProgramStage(programStageSection.getProgramStage()).getProgram().getUid().equals(programUid))
+                return programStageSection.getUid();
+        }
+        return null;
+    }
+
+    /**
+     * Find the associated ProgramStageDataElement (tab) given a DataElementExtended
+     *
+     * @param dataElementExtended
+     * @return
+     */
+    public static ProgramStageDataElement findProgramStageDataElementByDataElementExtended(DataElementExtended dataElementExtended) {
+        String dataElementUID=dataElementExtended.getDataElement().getUid();
+        String programUID=dataElementExtended.getProgramUid();
+        //Find the right 'uid' of the dataelement program
+        List <ProgramStageDataElement> programDES = new Select().from(ProgramStageDataElement.class).as("psde")
+                .where(Condition.column(ColumnAlias.columnWithTable("psde", ProgramStageDataElement$Table.DATAELEMENT)).eq(dataElementUID))
+                .queryList();
+        if (programDES == null) {
+            return null;
+        }
+        for(ProgramStageDataElement programStageDataElement:programDES){
+            if(MetaDataController.getProgramStage(programStageDataElement.getProgramStage()).getProgram().getUid().equals(programUID))
+                return programStageDataElement;
+        }
+        return null;
+    }
 
     /**
      * Find the associated ProgramStageDataElement (tab) given a dataelement UID
@@ -415,17 +482,17 @@ public class DataElementExtended implements VisitableFromSDK {
 
     public Float findNumerator() {
         String value = getValue(ATTRIBUTE_NUMERATOR);
-        if (value != null) {
-            float numinator = Float.valueOf(value);
+        if (value != null && !value.equals("")) {
+            float numinator = AUtils.safeParseFloat(value);
             return numinator;
         } else
-            return 0.0f;
+            return findDenominator();
     }
 
     public Float findDenominator() {
         String value = getValue(ATTRIBUTE_DENUMERATOR);
-        if (value != null) {
-            float denominator = Float.valueOf(value);
+        if (value != null && !value.equals("")) {
+            float denominator = AUtils.safeParseFloat(value);
             return denominator;
         }
         return 0.0f;
@@ -455,11 +522,26 @@ public class DataElementExtended implements VisitableFromSDK {
         String value = findCompositeScoreId();
         if (value != null) {
             try {
-                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(getDataElement(), value);
+                compositeScore = CompositeScoreBuilder.getCompositeScoreFromDataElementAndHierarchicalCode(getDataElement(), getProgramUid(), value);
             } catch (Exception e) {
                 return compositeScore;
             }
         }
         return compositeScore;
+    }
+
+    public String getProgramUid() {
+        return programUid;
+    }
+
+    public void setProgramUid(String programUid) {
+        this.programUid = programUid;
+    }
+
+    public static boolean existsDataElementByUid(String uid){
+        int result = (int) new Select().count().from(DataElement.class)
+                .where(Condition.column(DataElement$Table.ID).is(uid)).count();
+        Log.d(TAG, "dataelement "+uid+" count: "+result);
+        return (result>0);
     }
 }

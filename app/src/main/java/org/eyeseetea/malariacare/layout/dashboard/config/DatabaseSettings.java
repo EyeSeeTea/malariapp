@@ -40,6 +40,15 @@ public class DatabaseSettings {
      */
     String uri;
 
+    /**
+     * Indicates if the sdk should retrieve the full hierarchy of orgUnits or only its leaves
+     */
+    boolean fullHierarchy;
+    /**
+     * Indicates if the sdk should retrieve the events limited by date and number or if should donwload only the last events
+     */
+    boolean downloadOnlyLastEvents;
+
     DatabaseSettings(){
 
     }
@@ -60,11 +69,29 @@ public class DatabaseSettings {
         this.uri = uri;
     }
 
+    public boolean isFullHierarchy(){
+        return fullHierarchy;
+    }
+
+    public void setFullHierarchy(boolean hierarchy){
+        this.fullHierarchy =hierarchy;
+    }
+
+    public void setDownloadOnlyLastEvents(boolean downloadOnlyLastEvents){
+        this.downloadOnlyLastEvents =downloadOnlyLastEvents;
+    }
+
+    public boolean isDownloadOnlyLastEvents(){
+        return downloadOnlyLastEvents;
+    }
+
     @Override
     public String toString() {
         return "DatabaseSettings{" +
                 "originType=" + originType +
                 ", uri='" + uri + '\'' +
+                ", fullHierarchy=" + fullHierarchy +
+                ", downloadOnlyLastEvents=" + downloadOnlyLastEvents +
                 '}';
     }
 }

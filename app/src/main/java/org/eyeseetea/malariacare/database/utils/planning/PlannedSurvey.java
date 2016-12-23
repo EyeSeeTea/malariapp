@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.database.utils.planning;
 
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
 
@@ -63,13 +63,10 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return null;
         }
-        if(survey.getTabGroup()==null){
+        if(survey.getProgram()==null){
             return null;
         }
-        if(survey.getTabGroup().getProgram()==null){
-            return null;
-        }
-        return survey.getTabGroup().getProgram().getName();
+        return survey.getProgram().getName();
     }
 
     /**
@@ -88,17 +85,17 @@ public class PlannedSurvey implements PlannedItem {
      * @return
      */
     public String getQualityOfCare(){
-        if(survey==null){
+        if(survey==null || !survey.hasMainScore()){
             return NO_QUALITY_OF_CARE;
         }
-        return Utils.round(survey.getMainScore());
+        return AUtils.round(survey.getMainScore());
     }
 
     public Date getNextAssesment(){
         if(survey==null){
             return null;
         }
-        return survey.getScheduleDate();
+        return survey.getScheduledDate();
     }
 
     public Survey getSurvey(){
@@ -125,7 +122,7 @@ public class PlannedSurvey implements PlannedItem {
             return true;
         }
 
-        Program surveyProgram=survey.getTabGroup().getProgram();
+        Program surveyProgram=survey.getProgram();
         //Returns if both match
         return filterProgram.getId_program().equals(surveyProgram.getId_program());
     }

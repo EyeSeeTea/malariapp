@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -28,6 +29,8 @@ import android.widget.TabWidget;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
@@ -252,7 +255,22 @@ public class DashboardController {
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
         assessModuleController.onSurveySelected(survey);
     }
-
+    /**
+     * Starts the org unit planning tab
+     * @param orgUnit
+     */
+    public void onOrgUnitSelected(OrgUnit orgUnit) {
+        PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
+        planModuleController.onOrgUnitSelected(orgUnit);
+    }
+    /**
+     * Starts the program planning tab
+     * @param program
+     */
+    public void onProgramSelected(Program program) {
+        PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
+        planModuleController.onProgramSelected(program);
+    }
     /**
      * Marks the given survey as selected
      * @param survey
@@ -295,6 +313,13 @@ public class DashboardController {
             hideAssessVerticalTitle();
             hideImproveVerticalTitle();
             hideAssess();
+        }
+        if(DashboardOrientation.HORIZONTAL.equals(getOrientation())) {
+            currentTab = getModuleByName(ImproveModuleController.getSimpleName()).getName();
+            if(!currentTab.equals(getModuleByName(ImproveModuleController.getSimpleName()))){
+                tabHost.setCurrentTabByTag(ImproveModuleController.getSimpleName());
+            }
+
         }
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());

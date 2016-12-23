@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.Date;
@@ -71,15 +71,16 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         if (sentDate != null){
             Date eventDate = survey.getCompletionDate();
-            sentDate.setText(Utils.formatDate(eventDate));
+            sentDate.setText(AUtils.formatDate(eventDate));
             if(survey.hasConflict() && sentScore!=null){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
             }
             else if(sentScore!=null){
                 // if(!PreferencesState.getInstance().isVerticalDashboard()){
-                sentScore.setText(String.format("%.1f %%",survey.getMainScore()));
-                int colorId=LayoutUtils.trafficColor(survey.getMainScore());
+                float mainScore=(!survey.hasMainScore())?0f:survey.getMainScore();
+                sentScore.setText(String.format("%.1f %%",mainScore));
+                int colorId=LayoutUtils.trafficColor(mainScore);
                 sentScore.setTextColor(getContext().getResources().getColor(colorId));
             }
         } else {
@@ -96,9 +97,9 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         String surveyDescription;
         if(survey.isCompleted())
-            surveyDescription = "* " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
+            surveyDescription = "* " + survey.getProgram().getName();
         else
-            surveyDescription = "- " + survey.getTabGroup().getProgram().getName()+":"+survey.getTabGroup().getName();
+            surveyDescription = "- " + survey.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related

@@ -56,7 +56,6 @@ public class TestUtils {
     public static final String TAG = ".PopulateDB";
 
     public static final String PROGRAMS_CSV = "Programs.csv";
-    public static final String TAB_GROUPS_CSV = "TabGroups.csv";
     public static final String TABS_CSV = "Tabs.csv";
     public static final String HEADERS_CSV = "Headers.csv";
     public static final String ANSWERS_CSV = "Answers.csv";
@@ -70,7 +69,6 @@ public class TestUtils {
     public static final String QUESTIONS2_CSV = "Questions2.csv";
 
     public static Map<Integer, Program> programs;
-    public static Map<Integer, TabGroup> tabGroups;
     public static Map<Integer, Tab> tabs;
     public static Map<Integer, Header> headers;
     public static Map<Integer, Question> questions;
@@ -80,7 +78,7 @@ public class TestUtils {
 
     public static void populateDBTest(String path) throws IOException {
         initMaps();
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TAB_GROUPS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
 
         CSVReader reader = null;
         for (String table : tables2populate) {
@@ -97,23 +95,16 @@ public class TestUtils {
                             program.setName(line[2]);
                             programs.put(Integer.valueOf(line[0]),program);
                             break;
-                        case TAB_GROUPS_CSV:
-                            TabGroup tabGroup = new TabGroup();
-                            tabGroup.setId_tab_group(Long.parseLong(line[0]));
-                            tabGroup.setName(line[1]);
-                            tabGroup.setProgram(programs.get(Integer.valueOf(line[2])));
-                            tabGroups.put(Integer.valueOf(line[0]),tabGroup);
-                            break;
                         case TABS_CSV:
                             Tab tab = new Tab();
                             tab.setId_tab(Long.parseLong(line[0]));
                             tab.setName(line[1]);
                             tab.setOrder_pos(Integer.valueOf(line[2]));
                             tab.setType(Integer.valueOf(line[4]));
-                            TabGroup tabgroup=tabGroups.get(Integer.valueOf(line[3]));
-                            tabgroup.addTab(tab);
-                            tabGroups.put(Integer.valueOf(line[3]),tabgroup);
-                            tab.setTabGroup(tabGroups.get(Integer.valueOf(line[3])));
+                            program=programs.get(Integer.valueOf(line[3]));
+                            program.addTab(tab);
+                            programs.put(Integer.valueOf(line[3]),program);
+                            tab.setProgram(programs.get(Integer.valueOf(line[3])));
                             tabs.put(Integer.valueOf(line[0]),tab);
                             break;
                         case HEADERS_CSV:
@@ -176,6 +167,7 @@ public class TestUtils {
                             if (line.length == 14 && !line[13].equals("")) {
                                 question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
                             }
+                            question.setCompulsory(true);
                             question.setOutput(Constants.RADIO_GROUP_HORIZONTAL);
                             questions.put(Integer.valueOf(line[0]),question);
                             break;
@@ -204,7 +196,6 @@ public class TestUtils {
 
     protected static void initMaps(){
         programs = new LinkedHashMap<>();
-        tabGroups = new LinkedHashMap<>();
         tabs = new LinkedHashMap<>();
         headers = new LinkedHashMap<>();
         questions = new LinkedHashMap<>();

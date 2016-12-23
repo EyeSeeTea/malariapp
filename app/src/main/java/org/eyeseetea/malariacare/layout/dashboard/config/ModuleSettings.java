@@ -19,9 +19,11 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.config;
 
-import android.util.Log;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.layout.dashboard.deserializers.MonitorFilterDeserializer;
 
 import java.lang.reflect.Field;
 
@@ -77,7 +79,17 @@ public class ModuleSettings {
      * R.strings.name value for the name (an int)
      */
     Class classController;
+    /**
+     * add filter by organisation unit
+     */
+    Boolean secondaryFilter;
 
+    /**
+     * Type of origin for the metadata
+     */
+    @JsonProperty("monitorFilter")
+    @JsonDeserialize(using = MonitorFilterDeserializer.class)
+    MonitorFilter monitorFilter;
     ModuleSettings(){
 
     }
@@ -147,6 +159,13 @@ public class ModuleSettings {
         return classController;
     }
 
+    public MonitorFilter getMonitorFilter() {
+        return monitorFilter;
+    }
+
+    public void setMonitorFilter(MonitorFilter monitorFilter) {
+        this.monitorFilter = monitorFilter;
+    }
     /**
      * Resolves the value of the given attribute in the given class
      * @param generatedAndroidClass

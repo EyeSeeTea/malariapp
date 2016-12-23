@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.scores;
 
 import android.support.annotation.NonNull;
+import android.test.mock.MockContext;
 
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Option;
@@ -42,12 +43,16 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.raizlabs.android.dbflow.config.FlowManager;
+
 /**
  * Created by idelcano on 19/04/2016.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TestCompositeScores {
 
+    public static final String TEST_MODULE="TEST_MODULE";
+    public static Survey survey;
     @Before
     public void createMockDB() {
         try {
@@ -62,6 +67,9 @@ public class TestCompositeScores {
     public void testCompositeScoresCalc() {
         int count = 1;
 
+        //The 1.1.1 questions are Yes and the 1 Score 50% CS is 25%
+        System.out.println("Test number " + count++);
+        testSurveyOneOneOneQuestion();
         //All the questions are Yes and the Scores are 100%.
         System.out.println("Test number " + count++);
         testSurveyAllYes();
@@ -70,9 +78,6 @@ public class TestCompositeScores {
         System.out.println("Test number " + count++);
         testSurveyAllNo();
 
-        //The 1.1.1 questions are Yes and the 1 Score 50% CS is 25%
-        System.out.println("Test number " + count++);
-        testSurveyOneOneOneQuestion();
 
         //The 1.2.1 questions are Yes and the 1.1 Score 25% CS is 6.25%
         System.out.println("Test number " + count++);
@@ -112,7 +117,7 @@ public class TestCompositeScores {
 
     public void readFirst() {
         for (int i = 1; i <= TestUtils.compositeScores.size(); i++) {
-            Float result = ScoreRegister.getCompositeScore(TestUtils.compositeScores.get(i));
+            Float result = ScoreRegister.getCompositeScore(TestUtils.compositeScores.get(i), survey.getId_survey(), TEST_MODULE);
             System.out.println("CompositeScore " + TestUtils.compositeScores.get(i).getId_composite_score() + " Hierarchicalcode" + TestUtils.compositeScores.get(i).getHierarchical_code() + " result:" + result + "CS0");
         }
     }
@@ -120,26 +125,26 @@ public class TestCompositeScores {
     private void then(List<Float> expected) {
         int count=0;
         for (int i = 1; i <= TestUtils.compositeScores.size(); i++) {
-            Float result = ScoreRegister.getCompositeScore(TestUtils.compositeScores.get(i));
+            Float result = ScoreRegister.getCompositeScore(TestUtils.compositeScores.get(i), survey.getId_survey(), TEST_MODULE);
             System.out.println("CompositeScore " + TestUtils.compositeScores.get(i).getId_composite_score() + " Hierarchicalcode" + TestUtils.compositeScores.get(i).getHierarchical_code() + " result:" + result + "Expected: "+expected.get(count));
             assertThat("Assert Composite score " + TestUtils.compositeScores.get(i).getHierarchical_code(), result.equals(expected.get(count++)));
         }
     }
 
-    private void loadScores(Survey survey, List<Question> questions) {
-        ScoreRegister.clear();
-        Session.setSurvey(survey);
-        List<CompositeScore> compositeScoresLoaded = ScoreRegister.loadCompositeScoresFromMemory(survey, questions);
-        System.out.println(ScoreRegister.calculateMainScore(compositeScoresLoaded));
+    private void loadScores(Survey survey, List<Question> questions, String module) {
+        ScoreRegister.clear(survey, module);
+        Session.setSurveyByModule(survey, module);
+        List<CompositeScore> compositeScoresLoaded = ScoreRegister.loadCompositeScoresFromMemory(survey, questions, module);
+        System.out.println(ScoreRegister.calculateMainScore(compositeScoresLoaded, survey.getId_survey(), module));
     }
 
     private void testSurveyAllYes() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
@@ -185,7 +190,7 @@ public class TestCompositeScores {
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(34));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(35));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(36));
-        loadScores(survey, questions);
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(100f);//cs0
         expected.add(100f);//cs1
@@ -208,12 +213,12 @@ public class TestCompositeScores {
     }
 
     private void testSurveyAllNo() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.1
         survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
@@ -259,7 +264,7 @@ public class TestCompositeScores {
         survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
         survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
         survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
-        loadScores(survey, questions);
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(0f);//cs0
         expected.add(0f);//cs1
@@ -282,18 +287,58 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneQuestions() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
-        loadScores(survey, questions);
+        //CS 1.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+        //CS 1.2.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        //CS 1.2.3
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(13));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(14));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(15));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(16));
+        //CS 2.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        //CS 2.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        //CS 2.3.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        //CS 2.3.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        //CS 2.3.3
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(25.0f);//cs0
         expected.add(50.0f);//cs1
@@ -316,14 +361,14 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         for (int i = 1; i <= TestUtils.questions.size(); i++) {
             if (TestUtils.questions.get(i) != null)
                 questions.add(TestUtils.questions.get(i));
         }
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
@@ -331,7 +376,7 @@ public class TestCompositeScores {
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
-        loadScores(survey, questions);
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(100f);//cs0
         expected.add(100f);//cs1
@@ -342,15 +387,20 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree2() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = resetQuestions();
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
-        loadScores(survey, questions);
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        //CS 1.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(50f);//cs0
         expected.add(50f);//cs1
@@ -361,17 +411,20 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree4() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = resetQuestions();
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.2
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
         //CS 1.1.2
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
-        loadScores(survey, questions);
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        loadScores(survey, questions, TEST_MODULE);
         readFirst();
         List<Float> expected = new ArrayList<>();
         expected.add(33.333336f);//cs0
@@ -383,14 +436,20 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree3() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = resetQuestions();
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
-        loadScores(survey, questions);
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        //CS 1.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(66.66667f);//cs0
         expected.add(66.66667f);//cs1
@@ -402,14 +461,20 @@ public class TestCompositeScores {
 
 
     private void testSurveySecondCSTree5() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = resetQuestions();
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
-        loadScores(survey, questions);
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        //CS 1.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(33.333336f);//cs0
         expected.add(33.333336f);//cs1
@@ -420,22 +485,61 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneOneOneQuestion() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.1.1 50% 1.1 50%
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        //CS 1.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+
+        //CS 1.2.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
 
         //CS 1.2.3 100% 1.2 50%
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(13));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(14));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(15));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(16));
-        loadScores(survey, questions);
+        //CS 2.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        //CS 2.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        //CS 2.3.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        //CS 2.3.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        //CS 2.3.3
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        loadScores(survey, questions, TEST_MODULE);
 
         List<Float> expected = new ArrayList<>();
         expected.add(25.0f);//cs0
@@ -459,18 +563,58 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneTwoOneQuestion() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.2.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(7));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(8));
-        loadScores(survey, questions);
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        //CS 1.2.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        //CS 1.2.3
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(13));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(14));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(15));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(16));
+        //CS 2.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        //CS 2.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        //CS 2.3.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        //CS 2.3.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        //CS 2.3.3
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(6.25f);//cs0
         expected.add(12.5f);//cs1
@@ -493,18 +637,58 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneTwoThreeQuestion() {
-        ScoreRegister.clear();
+        ScoreRegister.clear(survey, TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
-        Survey survey = new Survey();
-        survey.setTabGroup(TestUtils.tabGroups.get(1));
+        survey = new Survey();
+        survey.setProgram(TestUtils.programs.get(1));
         //CS 1.2.1
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(13));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(14));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(15));
         survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(16));
-        loadScores(survey, questions);
+        //CS 1.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        //CS 1.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+        //CS 1.2.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        //CS 2.1.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        //CS 2.2.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        //CS 2.3.1
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        //CS 2.3.2
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        //CS 2.3.3
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
+        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(12.5f);//cs0
         expected.add(25f);//cs1
