@@ -89,9 +89,8 @@ public class AssessmentSentAdapter extends ADashboardAdapter {
         } else {
             if (survey.hasMainScore()) {
                 scoreText = String.format(SCORE_FORMAT, survey.getMainScore());
-            }
-            else{
-                scoreText = "0%";
+            } else {
+                scoreText = "NaN";
             }
             colorId = getColorByScore(survey);
         }
@@ -112,7 +111,17 @@ public class AssessmentSentAdapter extends ADashboardAdapter {
     }
 
     private int getColorByScore(Survey survey) {
-        return LayoutUtils.trafficColor(survey.hasMainScore()?survey.getMainScore():0f);
+        return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScore() : 0f);
+    }
 
+
+    /**
+     * The orgunit background in DashboardSentFragment is always the same.
+     */
+    @Override
+    protected View decorateBackground(int position, View rowView) {
+        rowView.setBackgroundResource(R.drawable.background_odd_wo_border);
+
+        return rowView;
     }
 }

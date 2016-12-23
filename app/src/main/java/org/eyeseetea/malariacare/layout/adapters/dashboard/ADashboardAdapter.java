@@ -115,6 +115,19 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
      */
     protected abstract boolean hasToShowFacility(int position, Survey survey);
 
+
+    protected abstract void hideFacility(CustomTextView facilityName, CustomTextView surveyType);
+
+    protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
+            Survey survey);
+
+    /**
+     * Calculate proper background according to the following rule:
+     * -Same orgunit same background
+     */
+    protected abstract View decorateBackground(int position, View rowView);
+
+
     /**
      * Each specific adapter must program its differences using this method
      */
@@ -128,11 +141,6 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         return rowView;
     }
 
-    protected abstract void hideFacility(CustomTextView facilityName, CustomTextView surveyType);
-
-    protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            Survey survey);
-
     private CustomTextView decorateSurveyType(CustomTextView surveyType, Survey survey) {
         String surveyDescription;
         if (survey.isCompleted()) {
@@ -142,30 +150,6 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         }
         surveyType.setText(surveyDescription);
         return surveyType;
-    }
-
-    /**
-     * Calculate proper background according to the following rule:
-     * -Same orgunit same background
-     */
-    private View decorateBackground(int position, View rowView) {
-
-        //Last survey
-        if (position == (this.items.size() - 1)) {
-            return setBackgroundWithBorder(position, rowView);
-        }
-
-        //Same orgUnit -> No border
-        if (this.items.get(position + 1).getOrgUnit().equals(
-                (this.items.get(position)).getOrgUnit())) {
-            return setBackground(position + 1, rowView);
-        }
-
-        //Different orgUnit -> With border, next background switches
-        rowView = setBackgroundWithBorder(position + 1, rowView);
-        this.backIndex++;
-
-        return rowView;
     }
 
 

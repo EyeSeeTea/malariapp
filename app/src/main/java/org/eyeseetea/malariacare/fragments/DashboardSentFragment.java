@@ -81,7 +81,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     List<Survey> oneSurveyForOrgUnit;
     //orgUnitList contains the list of all orgUnits
     List<OrgUnit> orgUnitList;
-    //programList contains the list of all prgorams
+    //programList contains the list of all programs
     List<Program> programList;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;

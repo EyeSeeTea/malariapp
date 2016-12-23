@@ -76,4 +76,29 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
     }
 
+    /**
+     * Calculate proper background according to the following rule:
+     * -Same orgunit same background
+     */
+    @Override
+    protected View decorateBackground(int position, View rowView) {
+
+        //Last survey
+        if (position == (this.items.size() - 1)) {
+            return setBackgroundWithBorder(position, rowView);
+        }
+
+        //Same orgUnit -> No border
+        if (this.items.get(position + 1).getOrgUnit().equals(
+                (this.items.get(position)).getOrgUnit())) {
+            return setBackground(position + 1, rowView);
+        }
+
+        //Different orgUnit -> With border, next background switches
+        rowView = setBackgroundWithBorder(position + 1, rowView);
+        this.backIndex++;
+
+        return rowView;
+    }
+
 }
