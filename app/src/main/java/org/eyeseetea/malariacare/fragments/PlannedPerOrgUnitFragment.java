@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -186,7 +185,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         ListView listView = getListView();
         if(listView.getHeaderViewsCount()==0)
             listView.addHeaderView(header);
-        setListAdapter((BaseAdapter) adapter);
+        setListAdapter(adapter);
     }
 
     private void checkAll(boolean value) {

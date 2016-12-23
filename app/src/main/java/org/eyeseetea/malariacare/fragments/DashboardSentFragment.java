@@ -104,23 +104,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         oneSurveyForOrgUnit = new ArrayList<>();
     }
 
-    public static DashboardSentFragment newInstance(int index) {
-        DashboardSentFragment f = new DashboardSentFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
-
-    // Container Activity must implement this interface
-    public interface OnFeedbackSelectedListener {
-        public void onFeedbackSelected(Survey survey);
-    }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -478,19 +461,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         this.adapter.notifyDataSetChanged();
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        this.surveys.clear();
-        this.surveys.addAll(newListSurveys);
-        adapter.setItems(newListSurveys);
-        this.adapter.notifyDataSetChanged();
-        if(isAdded())
-            setListShown(true);
-        else{
-            reloadData();
-        }
-    }
-
     @Override
     public void reloadData(){
         //Reload data using service
@@ -506,8 +476,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         // To prevent from reloading too fast, before service has finished its job
         if (surveys == null) return;
 
-        HashMap<String, Survey> orgUnits;
-        orgUnits = new HashMap<>();
         ProgramOUSurveyDict programOUSurveyDict = new ProgramOUSurveyDict();
         oneSurveyForOrgUnit = new ArrayList<>();
         if(PreferencesState.getInstance().isLastForOrgUnit()) {
@@ -540,6 +508,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             Collections.sort(oneSurveyForOrgUnit, new Comparator<Survey>() {
                 public int compare(Survey survey1, Survey survey2) {
                     int compare;
+                    Float noScore=0f;
                     switch (orderBy) {
                         case FACILITY_ORDER:
                             String surveyA = survey1.getOrgUnit().getName();
@@ -550,10 +519,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                             compare = survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
                             break;
                         case SCORE_ORDER:
-                            compare = survey1.getMainScore().compareTo(survey2.getMainScore());
+                            compare = (survey1.hasMainScore()?survey1.getMainScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore():noScore));
                             break;
                         default:
-                            compare = survey1.getMainScore().compareTo(survey2.getMainScore());
+                            compare = (survey1.hasMainScore()?survey1.getMainScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore():noScore));
                             break;
                     }
 
@@ -617,7 +586,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 orgUnitList = (List<OrgUnit>) sentDashboardBundle.getModelList(OrgUnit.class.getName());
                 programList = (List<Program>) sentDashboardBundle.getModelList(Program.class.getName());
                 surveys = (List<Survey>) sentDashboardBundle.getModelList(Survey.class.getName());
-                reloadSentSurveys(surveys);
+
                 initFilters();
             }
         }

@@ -22,13 +22,11 @@ import java.util.List;
 /**
  * Created by idelcano on 09/08/2016.
  */
-public class PlanningPerOrgUnitAdapter extends ADashboardAdapter {
-    List<PlannedSurveyByOrgUnit> items;
+public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
-    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> items, Context context) {
+    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context) {
         super(context);
-        this.items= new ArrayList<>();
-        this.items = items;
+        items = newItems;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.assessment_planning_header;
@@ -50,9 +48,11 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter {
         final CheckBox surveyCheckBox = (CheckBox) rowView.findViewById(R.id.survey_type);
         surveyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                                       @Override
-                                                      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                      public void onCheckedChanged(CompoundButton
+                                                              buttonView, boolean isChecked) {
                                                           plannedSurvey.setChecked(isChecked);
-                                                          PlannedPerOrgUnitFragment.reloadButtonState(isChecked);
+                                                          PlannedPerOrgUnitFragment
+                                                                  .reloadButtonState(isChecked);
                                                       }
                                                   }
         );
@@ -80,13 +80,10 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter {
         surveyCheckBox.setText(surveyDescription);
 
         //set background color from header(type of planning survey)
-        rowView.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(plannedSurvey.getHeader().getBackgroundColor()));
+        rowView.setBackgroundColor(
+                PreferencesState.getInstance().getContext().getResources().getColor(
+                        plannedSurvey.getHeader().getBackgroundColor()));
         return rowView;
-    }
-
-    @Override
-    protected void decorateCustomColumns(Survey survey, View rowView) {
-
     }
 
     @Override

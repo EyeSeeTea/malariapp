@@ -20,15 +20,12 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -38,7 +35,7 @@ import java.util.List;
 /**
  * Adapter that represents a list of surveys in the dashboard.
  */
-public abstract class ADashboardAdapter extends BaseAdapter {
+public abstract class ADashboardAdapter extends ABaseAdapter {
 
     public static final String COMPLETED_SURVEY_MARK = "* ";
     public static final String SENT_SURVEY_MARK = "- ";
@@ -48,40 +45,12 @@ public abstract class ADashboardAdapter extends BaseAdapter {
     List<Survey> items;
 
     /**
-     * Reference to inflater (micro optimization)
-     */
-    protected LayoutInflater lInflater;
-
-    /**
-     * Context required to resolve strings
-     */
-    protected Context context;
-
-    /**
-     * The layout of the header
-     */
-    protected Integer headerLayout;
-
-    /**
-     * The layout of the footer
-     */
-    protected Integer footerLayout;
-
-    /**
-     * The layout of the record itself
-     */
-    protected Integer recordLayout;
-
-    public String title;
-
-    /**
      * Counter that helps with background calculation
      */
     protected int backIndex = 0;
 
     public ADashboardAdapter(Context context) {
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
+        super(context);
     }
 
     @Override
@@ -101,30 +70,6 @@ public abstract class ADashboardAdapter extends BaseAdapter {
 
     public void setItems(List items) {
         this.items = (List<Survey>) items;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getHeaderLayout() {
-        return this.headerLayout;
-    }
-
-    public Integer getFooterLayout() {
-        return footerLayout;
-    }
-
-    public Integer getRecordLayout() {
-        return this.recordLayout;
-    }
-
-    public Context getContext() {
-        return this.context;
     }
 
     @Override
@@ -168,16 +113,12 @@ public abstract class ADashboardAdapter extends BaseAdapter {
      * Determines whether to show facility or not according to:
      * - The previous survey belongs to the same one.
      */
-    private boolean hasToShowFacility(int position, Survey survey) {
-        if (position == 0) {
-            return true;
-        }
+    protected abstract boolean hasToShowFacility(int position, Survey survey);
 
-        Survey previousSurvey = this.items.get(position - 1);
-        return survey.getOrgUnit().getId_org_unit() != previousSurvey.getOrgUnit().getId_org_unit();
-    }
-
-    private View adjustRowPadding(ViewGroup parent) {
+    /**
+     * Each specific adapter must program its differences using this method
+     */
+    protected View adjustRowPadding(ViewGroup parent) {
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int) (5 * density);
 
@@ -187,27 +128,10 @@ public abstract class ADashboardAdapter extends BaseAdapter {
         return rowView;
     }
 
-    private void hideFacility(CustomTextView facilityName, CustomTextView surveyType) {
-        facilityName.setVisibility(View.GONE);
-        facilityName.setLayoutParams(
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
-        LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
-        int pixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                (float) getContext().getResources().getDimension(R.dimen.survey_row_marging),
-                getContext().getResources().getDisplayMetrics());
-        linearLayout.setMargins(0, pixels, 0, pixels);
-        surveyType.setLayoutParams(linearLayout);
-    }
+    protected abstract void hideFacility(CustomTextView facilityName, CustomTextView surveyType);
 
-    private void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            Survey survey) {
-        facilityName.setText(survey.getOrgUnit().getName());
-        facilityName.setLayoutParams(
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-        surveyType.setLayoutParams(
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
-    }
+    protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
+            Survey survey);
 
     private CustomTextView decorateSurveyType(CustomTextView surveyType, Survey survey) {
         String surveyDescription;
@@ -245,8 +169,9 @@ public abstract class ADashboardAdapter extends BaseAdapter {
     }
 
 
-    private View setBackgroundWithBorder(int position, View rowView) {
-        if (items.get(position).isCompleted() || items.get(position).isSent()) {
+    public View setBackgroundWithBorder(int position, View rowView) {
+        if (!PreferencesState.getInstance().isVerticalDashboard() && (items.get(
+                position).isCompleted() || items.get(position).isSent())) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
         } else {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
@@ -254,15 +179,15 @@ public abstract class ADashboardAdapter extends BaseAdapter {
         return rowView;
     }
 
-    private View setBackground(int position, View rowView) {
-        if (items.get(position).isCompleted() || items.get(position).isSent()) {
+    public View setBackground(int position, View rowView) {
+        if (!PreferencesState.getInstance().isVerticalDashboard() && (items.get(
+                position).isCompleted() || items.get(position).isSent())) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
         } else {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
         }
         return rowView;
     }
-
     /**
      * Returns the proper status value (% or ready to send) according to the level of completion of
      * the survey
@@ -278,13 +203,15 @@ public abstract class ADashboardAdapter extends BaseAdapter {
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
-            if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
-                int value = Float.valueOf(
-                        100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
-                if (value >= 100) {
-                    return getContext().getString(R.string.dashboard_info_ready_to_upload);
-                } else {
-                    return String.format("%d", value);
+            if (!PreferencesState.getInstance().isVerticalDashboard()) {
+                if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
+                    int value = Float.valueOf(
+                            100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+                    if (value >= 100) {
+                        return getContext().getString(R.string.dashboard_info_ready_to_upload);
+                    } else {
+                        return String.format("%d", value);
+                    }
                 }
             }
             return String.format("%d",
