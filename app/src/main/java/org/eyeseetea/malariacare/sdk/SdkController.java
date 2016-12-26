@@ -23,13 +23,13 @@ import android.content.Context;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.*;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
@@ -63,19 +63,21 @@ public abstract class SdkController {
 
     //from pull controller
     public static void register(Context context) {
-        try {
+        /*try {
             //Dhis2Application.bus.register(context);
         } catch (Exception e) {
             unregister(context);
             //Dhis2Application.bus.register(context);
         }
+        */
     }
 
     public static void unregister(Context context) {
-        try {
+        /*try {
             //Dhis2Application.bus.unregister(context);
         } catch (Exception e) {
         }
+        */
     }
 
 
@@ -90,11 +92,7 @@ public abstract class SdkController {
     public static void postFinish() {
         User user = User.getLoggedUser();
         Session.setUser(user);
-        try {
-            //Dhis2Application.getEventBus().post(new SyncProgressStatus());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ProgressActivity.postFinish();
     }
 
     public static boolean finishPullJob() {
