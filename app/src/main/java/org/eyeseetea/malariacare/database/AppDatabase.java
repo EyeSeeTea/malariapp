@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.database;
 
 import com.raizlabs.android.dbflow.annotation.Database;
+import com.raizlabs.android.dbflow.sql.language.NameAlias;
 
 /**
  * Created by nacho on 02/08/15.
@@ -31,4 +32,49 @@ import com.raizlabs.android.dbflow.annotation.Database;
 public class AppDatabase {
     public static final String NAME = "EyeSeeTeaDB";
     public static final int VERSION = 12;
+
+    // Aliases used for EyeSeeTea DB queries
+    public static final String matchName = "m";
+    public static final String valueName = "v";
+    public static final String questionName = "q";
+    public static final String questionRelationName = "qr";
+    public static final String questionOptionName = "qo";
+    public static final String headerName = "h";
+    public static final String tabName = "t";
+    public static final String compositeScoreName = "cs";
+    public static final String compositeScoreTwoName = "cs2";
+    public static final String programName = "pg";
+    public static final String orgUnitProgramRelationName = "oupr";
+
+    public static final NameAlias questionAlias = NameAlias.builder(questionName).build();
+    public static final NameAlias questionRelationAlias = NameAlias.builder(
+            questionRelationName).build();
+    public static final NameAlias questionOptionAlias = NameAlias.builder(
+            questionOptionName).build();
+    public static final NameAlias valueAlias = NameAlias.builder(valueName).build();
+    public static final NameAlias matchAlias = NameAlias.builder(matchName).build();
+    public static final NameAlias headerAlias = NameAlias.builder(headerName).build();
+    public static final NameAlias tabAlias = NameAlias.builder(tabName).build();
+    public static final NameAlias compositeScoreAlias = NameAlias.builder(
+            compositeScoreName).build();
+    public static final NameAlias compositeScoreTwoAlias = NameAlias.builder(
+            compositeScoreTwoName).build();
+    public static final NameAlias programAlias = NameAlias.builder(programName).build();
+    public static final NameAlias orgUnitProgramRelationAlias = NameAlias.builder(
+            orgUnitProgramRelationName).build();
+
+
+    // Aliases used in DHIS2 DB wrappers
+    public static final String programFlowName = "pgf";
+    public static final String programStageFlowName = "psf";
+    public static final String programStageSectionFlowName = "pssf";
+    public static final String programStageDataElementFlowName = "psdef";
+
+    public static final NameAlias programFlowAlias = NameAlias.builder(programFlowName).build();
+    public static final NameAlias programStageFlowAlias = NameAlias.builder(
+            programStageFlowName).build();
+    public static final NameAlias programStageSectionFlowAlias = NameAlias.builder(
+            programStageSectionFlowName).build();
+    public static final NameAlias programStageDataElementFlowAlias = NameAlias.builder(
+            programStageDataElementFlowName).build();
 }
