@@ -48,6 +48,8 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ImportSummaryFlow;
+import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
+import org.hisp.dhis.client.sdk.models.event.Event;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -529,11 +531,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     /**
      * Saves changes in the survey (supposedly after a successfull push)
      */
-    public void saveSurveyStatus(Map<Long,ImportSummaryFlow> importSummaryMap){
+    public void saveSurveyStatus(Map<Event,ImportSummary> importSummaryMap){
         for(int i=0;i<surveys.size();i++){
             Survey iSurvey=surveys.get(i);
             EventExtended iEvent=new EventExtended(events.get(iSurvey.getId_survey()));
-            ImportSummaryFlow importSummary=importSummaryMap.get(iEvent.getLocalId());
+            ImportSummary importSummary=importSummaryMap.get(iEvent);
             FailedItemFlow failedItem=  EventExtended.hasConflict(iEvent.getLocalId());
 
             //No errors -> Save and next
@@ -641,7 +643,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * @param importSummary
      * @return
      */
-    private boolean hasImportSummaryErrors(ImportSummaryFlow importSummary){
+    private boolean hasImportSummaryErrors(ImportSummary importSummary){
         if(importSummary==null){
             return true;
         }
