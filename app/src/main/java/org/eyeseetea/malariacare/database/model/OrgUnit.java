@@ -20,10 +20,10 @@
 package org.eyeseetea.malariacare.database.model;
 
 
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.orgUnitProgramRelationAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.orgUnitProgramRelationName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.programName;
+import static org.eyeseetea.malariacare.database.AppDatabase.orgUnitProgramRelationAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.orgUnitProgramRelationName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programName;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -287,9 +287,5 @@ public class OrgUnit extends BaseModel {
                 ", id_parent=" + id_parent +
                 ", id_org_unit_level=" + id_org_unit_level +
                 '}';
-    }
-
-    public void save() {
-        this.save();
     }
 }
