@@ -101,4 +101,10 @@
                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Run "git checkout". </p>]]>
     </string>
+    <string name="progress_push_preparing_program" translatable="false">"Downloading programs ..."</string>
+    <string name="progress_push_preparing_program_stages" translatable="false">"Downloading program stages ..."</string>
+    <string name="progress_push_preparing_program_stage_sections" translatable="false">"Downloading program stage sections ..."</string>
+    <string name="progress_push_preparing_program_stage_dataElements" translatable="false">"Downloading program stage data elements ..."</string>
+    <string name="progress_push_preparing_dataElements" translatable="false">"Downloading data elements ..."</string>
+    <string name="progress_push_preparing_events" translatable="false">"Downloading events ..."</string>
     </resources>

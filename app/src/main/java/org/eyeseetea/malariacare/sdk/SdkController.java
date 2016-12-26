@@ -82,11 +82,11 @@ public abstract class SdkController {
 
 
     public static void postProgress(String msg) {
-        //Dhis2Application.getEventBus().post(new SyncProgressStatus(msg));
+        ProgressActivity.step(msg);
     }
 
     public static void postException(Exception ex) {
-        //Dhis2Application.getEventBus().post(new SyncProgressStatus(ex));
+        ProgressActivity.cancellPull("error",ex.getMessage());
     }
 
     public static void postFinish() {
