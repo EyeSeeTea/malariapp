@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkLoginController;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -255,7 +256,7 @@ public class ProgressActivity extends Activity {
                                         } else {
                                             //A crash during a pull requires to start from scratch -> logout
                                             Log.d(TAG, "Logging out from sdk...");
-                                            SdkController.logOutUser(ProgressActivity.this);
+                                            SdkLoginController.logOutUser(ProgressActivity.this);
                                         }
                                     }
                                 }).create().show();

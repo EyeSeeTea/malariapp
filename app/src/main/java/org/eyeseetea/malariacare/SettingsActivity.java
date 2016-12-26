@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkLoginController;
 
 import java.util.List;
 
@@ -368,7 +369,7 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
                     public void onClick(DialogInterface arg0, int arg1) {
                         //finish activity and go to login
                         Log.i(TAG, "Logging out from sdk...");
-                        SdkController.logOutUser(activity);
+                        SdkLoginController.logOutUser(activity);
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

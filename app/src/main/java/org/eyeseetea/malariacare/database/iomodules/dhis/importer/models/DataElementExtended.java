@@ -41,8 +41,9 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromS
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
-import org.eyeseetea.malariacare.sdk.models.AttributeValueFlow;
+import org.eyeseetea.malariacare.sdk.SdkQueries;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
@@ -443,7 +444,7 @@ public class DataElementExtended implements VisitableFromSDK {
             return null;
         }
         for (ProgramStageSectionFlow programStageSection : programStageSections) {
-            if (SdkController.getProgramStage(
+            if (SdkQueries.getProgramStage(
                     programStageSection.getProgramStage()).getProgram().getUId().equals(
                     programUid)) {
                 return programStageSection.getUId();
@@ -469,7 +470,7 @@ public class DataElementExtended implements VisitableFromSDK {
             return null;
         }
         for (ProgramStageDataElementFlow programStageDataElement : programDES) {
-            if (SdkController.getProgramStage(
+            if (SdkQueries.getProgramStage(
                     programStageDataElement.getProgramStage()).getProgram().getUId().equals(
                     programUID)) {
                 return programStageDataElement;

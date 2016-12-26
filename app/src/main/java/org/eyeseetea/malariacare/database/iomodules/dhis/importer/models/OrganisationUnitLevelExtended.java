@@ -30,8 +30,7 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.models.OrganisationUnitLevelFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow;
 
 import java.util.ArrayList;
 import java.util.List;

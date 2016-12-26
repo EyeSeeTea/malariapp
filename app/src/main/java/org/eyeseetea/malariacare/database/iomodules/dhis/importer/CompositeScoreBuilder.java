@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionE
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
@@ -227,7 +228,7 @@ public class CompositeScoreBuilder {
                 .where(ProgramStageDataElementFlow_Table.dataElement.is(dataElementUID))
                 .orderBy(ProgramStageDataElementFlow_Table.sortOrder, true).queryList();
         for(ProgramStageDataElementFlow programStageDataElement:programStageDataElements){
-            ProgramStageFlow programStage= SdkController.getProgramStage(programStageDataElement.getProgramStage());
+            ProgramStageFlow programStage= SdkQueries.getProgramStage(programStageDataElement.getProgramStage());
             if(programStage!= null && programStage.getProgram().getUId().equals(progamUid))
                 return programStageDataElement.getProgramStage().getUId();
         }

@@ -21,10 +21,8 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.sdk.models.AttributeFlow;
-import org.eyeseetea.malariacare.sdk.models.AttributeFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;

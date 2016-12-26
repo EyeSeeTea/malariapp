@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramStag
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.sdk.SdkController;
+import org.eyeseetea.malariacare.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -110,7 +111,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     public void saveBatch(){
-        SdkController.saveBatch();
+        SdkQueries.saveBatch();
     }
 
     public List<Question> getQuestions() {
@@ -536,7 +537,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         OrgUnit appOrgUnit = sdkOrganisationUnitExtended.getAppOrgUnit();
         Log.d(TAG, "buildOrgUnitProgramRelation " + appOrgUnit.getName());
         //Each assigned program
-        for (ProgramExtended sdkProgramExtended : ProgramExtended.getProgramsExtendedList(SdkController.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION))) {
+        for (ProgramExtended sdkProgramExtended : ProgramExtended.getExtendedList(SdkQueries.getProgramsForOrganisationUnit(appOrgUnit.getUid(), ProgramType.WITHOUT_REGISTRATION))) {
             sdkProgramExtended.setAppProgram( programMapObjects.get(sdkProgramExtended.getUid()));
 
             addOrgUnitProgramRelation(sdkOrganisationUnitExtended,sdkProgramExtended);

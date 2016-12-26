@@ -33,7 +33,6 @@ import android.util.Log;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
@@ -46,11 +45,9 @@ import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
 import org.hamcrest.Matchers;
-import org.eyeseetea.malariacare.sdk.models.Event;
 import org.eyeseetea.malariacare.sdk.models.Event$Table;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.support.test.espresso.Espresso.onData;
