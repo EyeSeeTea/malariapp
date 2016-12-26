@@ -19,20 +19,20 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.headerAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.headerName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.matchAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.matchName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionOptionAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionOptionName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionRelationAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionRelationName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.tabAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.tabName;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.valueAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.valueName;
+import static org.eyeseetea.malariacare.database.AppDatabase.headerAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.headerName;
+import static org.eyeseetea.malariacare.database.AppDatabase.matchAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.matchName;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionName;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionOptionAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionOptionName;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionRelationAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionRelationName;
+import static org.eyeseetea.malariacare.database.AppDatabase.tabAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.tabName;
+import static org.eyeseetea.malariacare.database.AppDatabase.valueAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.valueName;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;

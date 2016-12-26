@@ -19,11 +19,11 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.matchAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionOptionAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.questionRelationAlias;
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.valueAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.matchAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionOptionAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.questionRelationAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.valueAlias;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
