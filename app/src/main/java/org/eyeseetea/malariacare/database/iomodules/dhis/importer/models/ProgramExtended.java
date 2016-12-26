@@ -19,7 +19,10 @@
 
 package org.eyeseetea.malariacare.database.iomodules.dhis.importer.models;
 
-import static org.eyeseetea.malariacare.database.utils.AliasConstants.*;
+import static org.eyeseetea.malariacare.database.AppDatabase.attributeFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.attributeFlowName;
+import static org.eyeseetea.malariacare.database.AppDatabase.programAttributeFlowAlias;
+import static org.eyeseetea.malariacare.database.AppDatabase.programAttributeFlowName;
 
 import android.util.Log;
 
@@ -28,7 +31,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.sdk.SdkController;
 import org.eyeseetea.malariacare.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
