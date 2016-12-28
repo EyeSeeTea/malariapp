@@ -23,7 +23,6 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.opencsv.CSVReader;
-import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.database.model.Answer;
@@ -34,12 +33,8 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.utils.Constants;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -50,7 +45,6 @@ import java.util.Map;
  * Created by idelcano on 20/04/2016.
  */
 public class PopulateDbTestUtils {
-
 
 
     public static final String TAG = ".PopulateDB";
@@ -74,9 +68,8 @@ public class PopulateDbTestUtils {
     public static Map<Integer, CompositeScore> compositeScores;
 
 
-
-    protected static void saveItem(Map items, BaseModel model, Integer pk){
-        items.put(pk,model);
+    protected static void saveItem(Map items, BaseModel model, Integer pk) {
+        items.put(pk, model);
         model.save();
     }
 
@@ -93,27 +86,31 @@ public class PopulateDbTestUtils {
 
     public static void populateDBListTestFolder(AssetManager assetManager) throws IOException {
 
-        Log.d(TAG,"Populating metaData from local csv files");
+        Log.d(TAG, "Populating metaData from local csv files");
 
         //Clear maps from previous populations (this might be called after logout)
         initMaps();
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV,
+                ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
         populateTestDb(assetManager, tables2populate);
 
     }
+
     public static void populateOtherCSV(AssetManager assetManager) throws Exception {
 
         Log.d(TAG, "Populating metaData from local csv files");
 
         //Clear maps from previous populations (this might be called after logout)
         initMaps();
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES2_CSV, QUESTIONS2_CSV);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV,
+                ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES2_CSV, QUESTIONS2_CSV);
         populateTestDb(assetManager, tables2populate);
 
 
     }
 
-    private static void populateTestDb(AssetManager assetManager, List<String> tables2populate) throws IOException {
+    private static void populateTestDb(AssetManager assetManager, List<String> tables2populate)
+            throws IOException {
         //Clear database
         PopulateDB.wipeDatabase();
         CSVReader reader;
@@ -162,11 +159,14 @@ public class PopulateDbTestUtils {
                         CompositeScore compositeScore = new CompositeScore();
                         compositeScore.setHierarchical_code(line[1]);
                         compositeScore.setLabel(line[2]);
-                        if (line.length > 3 && !line[3].equals(""))
-                            compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
+                        if (line.length > 3 && !line[3].equals("")) {
+                            compositeScore.setCompositeScore(
+                                    compositeScores.get(Integer.valueOf(line[3])));
+                        }
                         compositeScore.setUid(line[4]);
-                        if (line.length > 4 && !line[5].equals(""))
+                        if (line.length > 4 && !line[5].equals("")) {
                             compositeScore.setOrder_pos(Integer.valueOf(line[5]));
+                        }
                         saveItem(compositeScores, compositeScore, Integer.valueOf(line[0]));
                         break;
                     case QUESTIONS_CSV:
@@ -176,8 +176,9 @@ public class PopulateDbTestUtils {
                         question.setDe_name(line[2]);
                         question.setShort_name(line[3]);
                         question.setForm_name(line[4]);
-                        if (!line[5].equals(""))
+                        if (!line[5].equals("")) {
                             question.setFeedback(line[5]);
+                        }
                         question.setUid(line[6]);
                         question.setOrder_pos(Integer.valueOf(line[7]));
                         question.setNumerator_w(Float.valueOf(line[8]));
@@ -185,16 +186,21 @@ public class PopulateDbTestUtils {
                         question.setHeader(headers.get(Integer.valueOf(line[10])));
                         Log.d(TAG, "header" + Integer.valueOf(line[10]));
                         Log.d(TAG, headers.get(Integer.valueOf(line[10])).toString());
-                        if (!line[11].equals(""))
+                        if (!line[11].equals("")) {
                             question.setAnswer(answers.get(Integer.valueOf(line[11])));
-                        if (!line[12].equals(""))
+                        }
+                        if (!line[12].equals("")) {
                             question.setQuestion(questions.get(Integer.valueOf(line[12])));
+                        }
                         //set the output suvreillance
                         question.setCompulsory(false);
-                        if (!line[13].equals(""))
+                        if (!line[13].equals("")) {
                             question.setOutput(Integer.valueOf(line[13]));
-                        if (line.length >= 14 && !line[14].equals(""))
-                            question.setCompositeScore(compositeScores.get(Integer.valueOf(line[14])));
+                        }
+                        if (line.length >= 14 && !line[14].equals("")) {
+                            question.setCompositeScore(
+                                    compositeScores.get(Integer.valueOf(line[14])));
+                        }
                         saveItem(questions, question, Integer.valueOf(line[0]));
                         Log.d(TAG, question.toString());
                         break;
@@ -202,5 +208,5 @@ public class PopulateDbTestUtils {
             }
             reader.close();
         }
-        }
+    }
 }
