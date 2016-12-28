@@ -19,55 +19,31 @@
 
 package org.eyeseetea.malariacare.test.scoreRegister;
 
-import android.content.res.AssetManager;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 
-import com.google.api.client.googleapis.testing.TestUtils;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import junit.framework.Assert;
 
-import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.database.model.Answer;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.test.MalariaEspressoTest;
 import org.eyeseetea.malariacare.test.utils.PopulateDbTestUtils;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 
 /**
@@ -86,7 +62,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
     @Before
     public void populateDB() {
         try {
-            PopulateDbTestUtils.populateDBListTestFolder(InstrumentationRegistry.getTargetContext().getAssets());
+            PopulateDbTestUtils.populateDBListTestFolder(
+                    InstrumentationRegistry.getTargetContext().getAssets());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,12 +78,14 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         no = new Option("No", "No", 0f, answer);
         no.save();
     }
+
     @Test
     @MediumTest
     public void isDatabasePopulated() {
         Program.list();
         Assert.assertEquals(true, Program.getAllPrograms().size() >= 1);
-        List<Question> questions = Question.getQuestionsByProgram(Program.getAllPrograms().get(0).getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                Program.getAllPrograms().get(0).getId_program());
         Assert.assertEquals(true, questions.size() == 36);
     }
 
@@ -147,7 +126,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
 
         Survey survey = initSurvey();
 
-        List<Question> questions = Question.getQuestionsByProgram(survey.getProgram().getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                survey.getProgram().getId_program());
         //CS 1.1.1 1.1
         Log.d(TAG, yes.toString());
         Log.d(TAG, no.toString());
@@ -221,7 +201,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
 
         Survey survey = initSurvey();
 
-        List<Question> questions = Question.getQuestionsByProgram(survey.getProgram().getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                survey.getProgram().getId_program());
         //CS 1.1.1 1.1
         Log.d(TAG, yes.toString());
         Log.d(TAG, no.toString());
@@ -297,7 +278,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
 
         Survey survey = initSurvey();
 
-        List<Question> questions = Question.getQuestionsByProgram(survey.getProgram().getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                survey.getProgram().getId_program());
         //CS 1.1.1 1.1
         Log.d(TAG, yes.toString());
         Log.d(TAG, no.toString());
@@ -372,7 +354,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
 
         Survey survey = initSurvey();
 
-        List<Question> questions = Question.getQuestionsByProgram(survey.getProgram().getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                survey.getProgram().getId_program());
         //CS 1.1.1 1.1
         Log.d(TAG, yes.toString());
         Log.d(TAG, no.toString());
@@ -450,7 +433,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
     private void testSurveyAllNo() {
         Survey survey = initSurvey();
 
-        List<Question> questions = Question.getQuestionsByProgram(survey.getProgram().getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                survey.getProgram().getId_program());
         //CS 1.1.1 50% 1.1 50% 
         Log.d(TAG, yes.toString());
         Log.d(TAG, no.toString());
@@ -530,7 +514,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         Log.d(TAG, "testSurveyOneOneOneQuestion");
         Survey survey = initSurvey();
 
-        List<Question> questions = Question.getQuestionsByProgram(survey.getProgram().getId_program());
+        List<Question> questions = Question.getQuestionsByProgram(
+                survey.getProgram().getId_program());
         //CS 1.1.1 50% 1.1 50%
         Log.d(TAG, yes.toString());
         Log.d(TAG, no.toString());
@@ -599,5 +584,5 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         expected.put("2.3.2", 0f);//CS 2.3.2
         expected.put("2.3.3", 0f);//CS 2.3.3
         then(survey, compositeScores, expected);
-    } 
+    }
 }

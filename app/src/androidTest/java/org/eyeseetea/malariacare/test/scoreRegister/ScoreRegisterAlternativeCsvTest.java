@@ -31,11 +31,9 @@ import junit.framework.Assert;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.test.utils.PopulateDbTestUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -98,7 +96,7 @@ public class ScoreRegisterAlternativeCsvTest extends ScoreRegisterBase {
         Assert.assertEquals(true, Program.getAllPrograms().size() == 1);
         int count = 1;
         //Test other CompositeScore tree with questions in the parents
-//        testSurveySecondCSTree();
+        testSurveySecondCSTree();
 
         System.out.println("Test number " + count++);
         testSurveySecondCSTree2();

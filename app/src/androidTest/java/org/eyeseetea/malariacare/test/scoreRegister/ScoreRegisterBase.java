@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.test.scoreRegister;
 
-import static junit.framework.Assert.assertEquals;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import android.support.test.rule.ActivityTestRule;
@@ -89,7 +87,8 @@ public class ScoreRegisterBase {
     }
 
 
-    protected void then(Survey survey, List<CompositeScore> compositeScores, HashMap<String, Float> expected) {
+    protected void then(Survey survey, List<CompositeScore> compositeScores,
+            HashMap<String, Float> expected) {
         Log.d(TAG, "Num CompositeScore " + compositeScores.size());
 
 
@@ -137,7 +136,8 @@ public class ScoreRegisterBase {
         Log.d(TAG, "Registering scores...");
         ScoreRegister.clear(survey.getId_survey(), testModule);
         Session.setSurveyByModule(survey, TEST_MODULE);
-        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey, testModule);
+        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey,
+                testModule);
         return compositeScores;
     }
 
