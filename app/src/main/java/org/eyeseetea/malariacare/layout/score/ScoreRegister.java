@@ -26,7 +26,6 @@ import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -61,7 +60,7 @@ public class ScoreRegister {
     public static void initScoresForQuestions(List<Question> questions, Survey survey, String module){
         for(Question question : questions){
             if(!question.isHiddenBySurvey(survey.getId_survey())) {
-                question.initScore(survey, module);
+                question.initScore(survey.getId_survey(), module);
             }
         }
     }
@@ -200,51 +199,23 @@ public class ScoreRegister {
     /**
      * Clears every score in session
      */
-    public static void clear(Survey survey, String module){
-        if(survey==null)
-            return;
-        clearCompositeScoreByModuleAndSurvey(survey.getId_survey(), module);
-        clearTabMapsByModuleAndSurvey(survey.getId_survey(),module);
+    public static void clear(float idSurvey, String module){
+        clearCompositeScoreByModuleAndSurvey(idSurvey, module);
+        clearTabMapsByModuleAndSurvey(idSurvey,module);
     }
 
     /**
      * Calculates the numerator of the given question & survey
      * returns null is invalid question to the scoreregister and the question denominator will be ignored too.
      * @param question
-     * @param survey
+     * @param idSurvey
      * @return
      */
-    public static Float calcNum(Question question, Survey survey) {
-        if (survey==null || question == null) {
-            return null;
-        }
-        Value value = question.getValueBySurvey(survey);
-
-        //If a question value is null it should be ignored, the question isn't be scored if it have null num
-        //Note: In case of the compulsory questions, that questions always have not null value, it is controlled by the app workflow.
-        if(value == null){
-            return null;
-        }
-
-        Option option=question.getOptionBySurvey(survey);
-        if(option==null){
-            return 0f;
-        }
-        return question.getNumerator_w()*option.getFactor();
-    }
-
-    /**
-     * Calculates the numerator of the given question & survey
-     * returns null is invalid question to the scoreregister and the question denominator will be ignored too.
-     * @param question
-     * @param idsurvey
-     * @return
-     */
-    public static Float calcNum(Question question, float idsurvey) {
+    public static Float calcNum(Question question, float idSurvey) {
         if (question == null) {
             return null;
         }
-        Value value = question.getValueBySurveyId(idsurvey);
+        Value value = question.getValueBySurvey(idSurvey);
 
         //If a question value is null it should be ignored, the question isn't be scored if it have null num
         //Note: In case of the compulsory questions, that questions always have not null value, it is controlled by the app workflow.
@@ -252,12 +223,13 @@ public class ScoreRegister {
             return null;
         }
 
-        Option option=question.getOptionBySurveyId(idsurvey);
+        Option option=question.getOptionBySurvey(idSurvey);
         if(option==null){
             return 0f;
         }
         return question.getNumerator_w()*option.getFactor();
     }
+
     /**
      * Calculates the denominator of the given question & survey
      * @param question
@@ -271,26 +243,7 @@ public class ScoreRegister {
             return 0;
         }
 
-        Option option = question.getOptionBySurveyId(idSurvey);
-        if(option==null){
-            return calcDenum(0,question);
-        }
-        return calcDenum(option.getFactor(),question);
-    }
-    /**
-     * Calculates the denominator of the given question & survey
-     * @param question
-     * @param survey
-     * @return
-     */
-    public static float calcDenum(Question question,Survey survey) {
-        float result = 0;
-
-        if(!question.isScored()){
-            return 0;
-        }
-
-        Option option = question.getOptionBySurvey(survey);
+        Option option = question.getOptionBySurvey(idSurvey);
         if(option==null){
             return calcDenum(0,question);
         }
@@ -317,40 +270,17 @@ public class ScoreRegister {
      */
     public static List<CompositeScore> loadCompositeScores(Survey survey, String module){
         //Cleans score
-        ScoreRegister.clear(survey, module);
+        ScoreRegister.clear(survey.getId_survey(), module);
 
         //Register scores for tabs
         List<Tab> tabs=survey.getProgram().getTabs();
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram(),null);
+        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram());
         ScoreRegister.registerCompositeScores(compositeScoreList, survey.getId_survey(), module);
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram(),null), survey, module);
-        
-        return compositeScoreList;
-    }
-    /**
-     * Cleans, prepares, calculates and returns all the scores info for the given survey
-     * @param survey
-     * @return
-     */
-    public static List<CompositeScore> loadCompositeScoresFromMemory(Survey survey, List<Question> questions, String module){
-        //Cleans score
-        ScoreRegister.clear(Session.getSurveyByModule(module),module);
-
-        //Register scores for tabs
-        List<Tab> tabs=survey.getProgram().getTabs();
-        ScoreRegister.registerTabScores(tabs,survey.getId_survey(),module);
-
-        //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram(),questions);
-        ScoreRegister.registerCompositeScores(compositeScoreList,survey.getId_survey(),module);
-
-        //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram(),questions),survey,module);
-
+        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram()), survey, module);
 
         return compositeScoreList;
     }
@@ -371,6 +301,7 @@ public class ScoreRegister {
         }
         return sumScores/numParentScores;
     }
+
 
     public static float calculateMainScore(Survey survey, String module){
         //Prepare all scores

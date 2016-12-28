@@ -337,7 +337,7 @@ public class AutoTabLayoutUtils {
         int maxActiveParentsForActiveChild=0;
         for(Question childQuestion:question.getChildren()) {
             if (childQuestion.isHiddenBySurvey(idSurvey) == false) {
-                if (childQuestion.getValueBySurveyId(idSurvey) != null) {
+                if (childQuestion.getValueBySurvey(idSurvey) != null) {
                     int activeParents = childQuestion.numberOfActiveParents(idSurvey);
                     if (maxActiveParentsForActiveChild < activeParents)
                         maxActiveParentsForActiveChild = activeParents;
@@ -346,14 +346,14 @@ public class AutoTabLayoutUtils {
             }
         }
         //The current question  not have relevant values to delete children (0 active or more than 1 or question without value)
-        if(maxActiveParentsForActiveChild!=1 || question.getOptionBySurveyId(idSurvey)==null) {
+        if(maxActiveParentsForActiveChild!=1 || question.getOptionBySurvey(idSurvey)==null) {
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }
         //The current question  not have relevant values to delete children(1 active parent, clicked question not null but not relevant for active children)
         else if(maxActiveParentsForActiveChild==1
-                && question.getOptionBySurveyId(idSurvey)!=null
-                && !question.getOptionBySurveyId(idSurvey).isActiveChildren(question)){
+                && question.getOptionBySurvey(idSurvey)!=null
+                && !question.getOptionBySurvey(idSurvey).isActiveChildren(question)){
             saveAndExpandChildren(autoTabSelectedItem, idSurvey, module);
             return;
         }

@@ -19,9 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import java.util.List;
-
-import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -34,7 +32,6 @@ import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.raizlabs.android.dbflow.structure.InvalidDBConfiguration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
@@ -44,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -71,7 +69,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     /**
      * List of compositeScores that belongs to this one
      */
-    public List<CompositeScore> compositeScoreChildren;
+    List<CompositeScore> compositeScoreChildren;
 
     /**
      * List of questions associated to this compositeScore
@@ -157,33 +155,15 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         return getComposite_score() != null;
     }
 
-    public void addCompositeScoreChildren(CompositeScore cs){
-        if(compositeScoreChildren==null) {
-            compositeScoreChildren = new ArrayList<>();
-        }
-        compositeScoreChildren.add(cs);
-    }
-
     public List<CompositeScore> getCompositeScoreChildren() {
         if (this.compositeScoreChildren == null){
-            try {
-                compositeScoreChildren=new ArrayList<>();
-                this.compositeScoreChildren = new Select()
-                        .from(CompositeScore.class)
-                        .where(Condition.column(CompositeScore$Table.ID_PARENT).eq(this.getId_composite_score()))
-                        .orderBy(CompositeScore$Table.ORDER_POS)
-                        .queryList();
-            }catch (InvalidDBConfiguration e){
-                //This is needed to prevent a test crash when the composite Score don't have children. 
-            }
+            this.compositeScoreChildren = new Select()
+                    .from(CompositeScore.class)
+                    .where(Condition.column(CompositeScore$Table.ID_PARENT).eq(this.getId_composite_score()))
+                    .orderBy(CompositeScore$Table.ORDER_POS)
+                    .queryList();
         }
         return this.compositeScoreChildren;
-    }
-
-    public void addCompositeScoreChild(CompositeScore cs){
-        if(compositeScoreChildren==null)
-            compositeScoreChildren=new ArrayList<>();
-        compositeScoreChildren.add(cs);
     }
 
     public List<Question> getQuestions(){
@@ -203,64 +183,13 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
      * @return
      */
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    public static List<CompositeScore> listByProgram(Program program, List<Question> questions){
+    public static List<CompositeScore> listByProgram(Program program){
         if(program==null || program.getId_program()==null){
             return new ArrayList<>();
         }
 
-
-        //Composite score from question from header from tab from tabgorup from compositescore from tabgrouip
-        List<CompositeScore> compositeScoresByProgram = new ArrayList<>();
-        if(questions==null)
-            compositeScoresByProgram = getCompositeScoresByProgram(program);
-        else
-        for(Question question:questions){
-            if(question.getHeader().getTab().getProgram().getId_program().equals(program.getId_program())){
-                if(!compositeScoresByProgram.contains(question.getCompositeScore()) && question.getCompositeScore()!=null)
-                    compositeScoresByProgram.add(question.getCompositeScore());
-            }
-        }
-
-        Set<CompositeScore> parentCompositeScores = new HashSet<>();
-        for(CompositeScore compositeScore: compositeScoresByProgram){
-            parentCompositeScores.addAll(listParentCompositeScores(compositeScore));
-        }
-        compositeScoresByProgram.addAll(parentCompositeScores);
-
-        if(compositeScoresByProgram!=null)
-        Collections.sort(compositeScoresByProgram, new Comparator() {
-
-            @Override
-            public int compare(Object o1, Object o2) {
-
-                if(o2==null)
-                    return 1;
-                if(o1==null)
-                    return -1;
-                if(o1==o2)
-                    return 0;
-                CompositeScore cs1 = (CompositeScore) o1;
-                CompositeScore cs2 = (CompositeScore) o2;
-                if(cs2==null)
-                    return 1;
-                if(cs1==null)
-                    return -1;
-                if(cs1==cs2)
-                    return 0;
-
-                return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
-            }
-        });
-
-
-
-        //return all scores
-        return compositeScoresByProgram;
-    }
-    //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScore, so results are having Questions one, and should keep CompositeScore one. To solve it, we've introduced a last join with CompositeScore again and a HashSet to remove resulting duplicates
-    //Take scores associated to questions of the program ('leaves')
-    @NonNull
-    private static List<CompositeScore> getCompositeScoresByProgram(Program program) {
+        //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScore, so results are having Questions one, and should keep CompositeScore one. To solve it, we've introduced a last join with CompositeScore again and a HashSet to remove resulting duplicates
+        //Take scores associated to questions of the program ('leaves')
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as("cs")
                 .join(Question.class, Join.JoinType.LEFT).as("q")
                 .on(Condition.column(ColumnAlias.columnWithTable("cs", CompositeScore$Table.ID_COMPOSITE_SCORE))
@@ -295,6 +224,22 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         }
         compositeScoresByProgram.addAll(parentCompositeScores);
 
+
+        Collections.sort(compositeScoresByProgram, new Comparator() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+
+                CompositeScore cs1 = (CompositeScore) o1;
+                CompositeScore cs2 = (CompositeScore) o2;
+
+                return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
+            }
+        });
+
+
+
+        //return all scores
         return compositeScoresByProgram;
     }
 

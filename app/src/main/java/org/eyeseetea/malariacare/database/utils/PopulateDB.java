@@ -33,7 +33,9 @@ import org.hisp.dhis.android.sdk.persistence.models.Event;
 import org.hisp.dhis.android.sdk.persistence.models.FailedItem;
 import org.hisp.dhis.android.sdk.persistence.preferences.DateTimeManager;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -76,6 +78,10 @@ public class PopulateDB {
     static Map<Integer, OrgUnitProgramRelation> orgUnitProgramRelations;
 
     public static void populateDB(AssetManager assetManager) throws IOException {
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV, ORG_UNIT_PROGRAM_RELATIONS);
+        populateDBList(assetManager, tables2populate);
+    }
+    public static void populateDBList(AssetManager assetManager, List<String> tables2populate) throws IOException {
 
         Log.d(TAG,"Populating metaData from local csv files");
 
@@ -84,9 +90,6 @@ public class PopulateDB {
 
         //Clear database
         wipeDatabase();
-
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV, ORG_UNIT_PROGRAM_RELATIONS);
-
         CSVReader reader;
         for (String table : tables2populate) {
             reader = new CSVReader(new InputStreamReader(assetManager.open(table)), ';', '\'');
@@ -135,7 +138,7 @@ public class PopulateDB {
                         option.setName(line[2]);
                         option.setFactor(Float.valueOf(line[3]));
                         option.setAnswer(answers.get(Integer.valueOf(line[4])));
-                        if (!line[5].equals(""))
+                        if (line.length>5 && !line[5].equals(""))
                             option.setOptionAttribute(optionAttributes.get(Integer.valueOf(line[5])));
                         option.save();
                         saveItem(options, option, Integer.valueOf(line[0]));
@@ -144,9 +147,9 @@ public class PopulateDB {
                         CompositeScore compositeScore = new CompositeScore();
                         compositeScore.setHierarchical_code(line[1]);
                         compositeScore.setLabel(line[2]);
-                        if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
+                        if (line.length>3 && !line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
                         compositeScore.setUid(line[4]);
-                        if (!line[5].equals(""))
+                        if (line.length>4 && !line[5].equals(""))
                             compositeScore.setOrder_pos(Integer.valueOf(line[5]));
                         saveItem(compositeScores, compositeScore, Integer.valueOf(line[0]));
                         break;
@@ -201,9 +204,9 @@ public class PopulateDB {
                         OrgUnit orgUnit = new OrgUnit();
                         orgUnit.setUid(line[1]);
                         orgUnit.setName(line[2]);
-                        if (!line[3].equals(""))
+                        if (line.length>=3 && !line[3].equals(""))
                             orgUnit.setOrgUnit(orgUnits.get(Integer.valueOf(line[3])));
-                        if (!line[4].equals(""))
+                        if (line.length>=4 && !line[4].equals(""))
                             orgUnit.setOrgUnitLevel(orgUnitLevels.get(Integer.valueOf(line[4])));
                         saveItem(orgUnits, orgUnit, Integer.valueOf(line[0]));
                         break;

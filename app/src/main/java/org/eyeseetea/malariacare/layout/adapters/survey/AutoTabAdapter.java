@@ -700,7 +700,7 @@ public class AutoTabAdapter extends ATabAdapter {
             if (checkedId != -1) {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
                 selectedOption = (Option) customRadioButton.getTag();
-                if(question.getOptionBySurveyId(idSurvey)!=null && question.getOptionBySurveyId(idSurvey).equals(selectedOption)){
+                if(question.getOptionBySurvey(idSurvey)!=null && question.getOptionBySurvey(idSurvey).equals(selectedOption)){
                     //if is already active ignore it( it is to ignore the first click of two)
                     return;
                 }

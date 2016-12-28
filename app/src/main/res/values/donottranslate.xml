@@ -101,4 +101,6 @@
                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Run "git checkout". </p>]]>
     </string>
+    <string name="option" translatable="false">0</string>
+
     </resources>

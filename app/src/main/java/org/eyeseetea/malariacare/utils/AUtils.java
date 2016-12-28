@@ -100,7 +100,7 @@ public abstract class AUtils {
         List<? extends BaseModel> items;
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram(), null);
+            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram());
 
         else{
 
@@ -262,11 +262,11 @@ public abstract class AUtils {
         String stringCommit = getCommitHash(context);
         String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
         if(stringCommit.contains(context.getString(R.string.unavailable))){
-            stringCommit=String.format(""+context.getString(R.string.lastcommit),stringCommit);
+            stringCommit=String.format(context.getString(R.string.lastcommit),stringCommit);
             stringCommit=stringCommit+" "+context.getText(R.string.lastcommit_unavailable);
         }
         else {
-            stringCommit = String.format(""+context.getString(R.string.lastcommit), stringCommit);
+            stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
         }
         stringMessage=String.format(stringMessage,stringCommit);
         return stringMessage;

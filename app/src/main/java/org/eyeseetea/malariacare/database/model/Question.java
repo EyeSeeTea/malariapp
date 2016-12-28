@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.database.model;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -29,17 +31,15 @@ import com.raizlabs.android.dbflow.sql.language.ColumnAlias;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.raizlabs.android.dbflow.structure.InvalidDBConfiguration;
 
 import org.eyeseetea.malariacare.database.AppDatabase;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.android.sdk.persistence.models.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -345,9 +345,6 @@ public class Question extends BaseModel {
         this.question = null;
     }
 
-    public void setParent(boolean parent) {
-        this.parent=parent;
-    }
     public CompositeScore getCompositeScore() {
         if(compositeScore ==null){
             if(id_composite_score==null) return null;
@@ -421,19 +418,6 @@ public class Question extends BaseModel {
         return !this.getQuestionRelations().isEmpty();
     }
 
-    public List<QuestionOption> getQuestionOption() {
-        //if (this.children == null){
-        return new Select().from(QuestionOption.class)
-                .indexedBy("QuestionOption_id_question")
-                .where(Condition.column(QuestionOption$Table.ID_QUESTION).eq(this.getId_question()))
-                .queryList();
-        //}
-    }
-
-    public boolean hasQuestionOption() {
-        return !this.getQuestionOption().isEmpty();
-    }
-
     public List<Match> getMatches() {
         if (matches == null) {
             matches = new Select().from(Match.class).as("m")
@@ -463,7 +447,7 @@ public class Question extends BaseModel {
             }
 
             //Select question from questionrelation where operator=1 and id_match in (..)
-            this.children=new Select().from(Question.class).as("q")
+            this.children= new Select().from(Question.class).as("q")
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT).as("qr")
                     .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_QUESTION))
@@ -501,58 +485,20 @@ public class Question extends BaseModel {
      * @return
      */
     public Value getValueBySession(String module) {
-        return this.getValueBySurvey(Session.getSurveyByModule(module));
+        return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
+
     /**
-     * Gets the value of this question in the given Survey Id
+     * Gets the value of this question in the given Survey
      *
      * @param idSurvey
      * @return
      */
-    public Value getValueBySurveyId(float idSurvey) {
-        List<Value> returnValues= new ArrayList<>();
-            returnValues = new Select().from(Value.class)
-                    .indexedBy("Value_id_survey")
-                    .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
-                    .and(Condition.column(Value$Table.ID_SURVEY).eq(idSurvey)).queryList();
-        if (returnValues.size() == 0) {
-            return null;
-        } else {
-            return returnValues.get(0);
-        }
-    }
-    /**
-     * Gets the value of this question in the given Survey
-     *
-     * @param survey
-     * @return
-     */
-    public Value getValueBySurvey(Survey survey) {
-        if (survey == null) {
-            return null;
-        }
-        List<Value> returnValues= new ArrayList<>();
-        try {
-            returnValues = new Select().from(Value.class)
-                    .indexedBy("Value_id_survey")
-                    .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
-                    .and(Condition.column(Value$Table.ID_SURVEY).eq(survey.getId_survey())).queryList();
-        } catch (InvalidDBConfiguration e) {
-            //This is needed to prevent a test crash when the ScoreRegister search the ValuesBySurvey
-            for(Value value:survey.getValues()){
-                if(getId_question().equals(value.getQuestion().getId_question())) {
-                    if (values == null) {
-                        values = new ArrayList<>();
-                    }
-                    values.add(value);
-                }
-            }
-            if (values == null) {
-                return null;
-            }
-            returnValues = values;
-        }
-
+    public Value getValueBySurvey(float idSurvey) {
+        List<Value> returnValues = new Select().from(Value.class)
+                .indexedBy("Value_id_survey")
+                .where(Condition.column(Value$Table.ID_QUESTION).eq(this.getId_question()))
+                .and(Condition.column(Value$Table.ID_SURVEY).eq(idSurvey)).queryList();
 
         if (returnValues.size() == 0) {
             return null;
@@ -567,23 +513,7 @@ public class Question extends BaseModel {
      * @return
      */
     public Option getOptionBySession(String module) {
-        return this.getOptionBySurvey(Session.getSurveyByModule(module));
-    }
-
-    /**
-     * Gets the option of this question in the given survey
-     *
-     * @param survey
-     * @return
-     */
-    public Option getOptionBySurvey(Survey survey) {
-
-        Value value = this.getValueBySurvey(survey);
-        if (value == null) {
-            return null;
-        }
-
-        return value.getOption();
+        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**
@@ -592,15 +522,16 @@ public class Question extends BaseModel {
      * @param idSurvey
      * @return
      */
-    public Option getOptionBySurveyId(float idSurvey) {
+    public Option getOptionBySurvey(float idSurvey) {
 
-        Value value = this.getValueBySurveyId(idSurvey);
+        Value value = this.getValueBySurvey(idSurvey);
         if (value == null) {
             return null;
         }
 
         return value.getOption();
     }
+
 
     /**
      * Returns true if the question belongs to a Custom Tab
@@ -727,17 +658,17 @@ public class Question extends BaseModel {
      *
      * @return List</Float> {num, den}
      */
-    public List<Float> initScore(Survey survey, String module) {
+    public List<Float> initScore(float idSurvey, String module) {
         if (!this.isScored()) {
             return null;
         }
 
-        Float num = ScoreRegister.calcNum(this, survey);
+        Float num = ScoreRegister.calcNum(this, idSurvey);
         //If the num is null the question is ignored
         if(num==null)
             return null;
-        Float denum = ScoreRegister.calcDenum(this, survey);
-        ScoreRegister.addRecord(this, num, denum, survey.getId_survey(), module);
+        Float denum = ScoreRegister.calcDenum(this, idSurvey);
+        ScoreRegister.addRecord(this, num, denum, idSurvey, module);
         return Arrays.asList(num, denum);
     }
 
@@ -937,7 +868,7 @@ public class Question extends BaseModel {
      * @param program
      * @return
      */
-    public static List<Question> listByProgram(Program program, List<Question> questions) {
+    public static List<Question> listByProgram(Program program) {
         if (program == null || program.getId_program() == null) {
             return new ArrayList();
         }
@@ -945,63 +876,19 @@ public class Question extends BaseModel {
 
         //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
 
-        if(questions!=null) {
-            List<Question> listedQuestion = new ArrayList<>();
-            for (Question question : questions) {
-                if (question.getHeader().getTab().getProgram().getId_program().equals(program.getId_program())) {
-                    listedQuestion.add(question);
-                }
-            }
-            if (listedQuestion != null)
-                Collections.sort(listedQuestion, new Comparator() {
 
-                    @Override
-                    public int compare(Object o1, Object o2) {
+        return new Select().all().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(program.getId_program()))
+                .orderBy(Tab$Table.ORDER_POS)
+                .orderBy(Question$Table.ORDER_POS).queryList();
 
-                        Question cs1 = (Question) o1;
-                        Question cs2 = (Question) o2;
-                        if (o2 == null)
-                            return 1;
-                        if (cs1 == null)
-                            return -1;
-                        if (cs1 == cs2)
-                            return 0;
-
-                        return new Integer(cs1.getHeader().getTab().getOrder_pos().compareTo(new Integer(cs2.getHeader().getTab().getOrder_pos())));
-                    }
-                });
-
-            Collections.sort(listedQuestion, new Comparator() {
-
-                @Override
-                public int compare(Object o1, Object o2) {
-
-                    Question cs1 = (Question) o1;
-                    Question cs2 = (Question) o2;
-                    if (o2 == null)
-                        return 1;
-                    if (cs1 == null)
-                        return -1;
-                    if (cs1 == cs2)
-                        return 0;
-
-                    return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
-                }
-            });
-            return listedQuestion;
-        } else {
-            return new Select().all().from(Question.class).as("q")
-                    .join(Header.class, Join.JoinType.LEFT).as("h")
-                    .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
-                            .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
-                    .join(Tab.class, Join.JoinType.LEFT).as("t")
-                    .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
-                            .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
-                    .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
-                            .eq(program.getId_program()))
-                    .orderBy(Tab$Table.ORDER_POS)
-                    .orderBy(Question$Table.ORDER_POS).queryList();
-        }
     }
 
     public static List<Question> listAllByTabsWithoutCs(List<Tab> tabs) {
@@ -1053,6 +940,22 @@ public class Question extends BaseModel {
                 .orderBy(Question$Table.ORDER_POS).queryList();
     }
 
+
+    public static List<Question> getQuestionsByProgram(long idProgram) {
+        return new Select().from(Question.class).as("q")
+                .join(Header.class, Join.JoinType.LEFT).as("h")
+                .on(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.ID_HEADER))
+                        .eq(ColumnAlias.columnWithTable("h", Header$Table.ID_HEADER)))
+                .join(Tab.class, Join.JoinType.LEFT).as("t")
+                .on(Condition.column(ColumnAlias.columnWithTable("h", Header$Table.ID_TAB))
+                        .eq(ColumnAlias.columnWithTable("t", Tab$Table.ID_TAB)))
+                .join(Program.class, Join.JoinType.LEFT).as("p")
+                .on(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(ColumnAlias.columnWithTable("p", Program$Table.ID_PROGRAM)))
+                .where(Condition.column(ColumnAlias.columnWithTable("t", Tab$Table.ID_PROGRAM))
+                        .eq(idProgram))
+                .queryList();
+    }
 
     /**
      * Checks if this question is scored or not.
@@ -1146,9 +1049,5 @@ public class Question extends BaseModel {
                 ", id_parent=" + id_parent +
                 ", id_composite_score=" + id_composite_score +
                 '}';
-    }
-
-    public void resetValues() {
-        values=null;
     }
 }
