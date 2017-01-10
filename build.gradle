@@ -39,8 +39,8 @@ ext {
             package          : "org.hisp.dhis.android.skeleton",
             buildToolsVersion: "24.0.3",
             minSdkVersion    : 15,
-            compileSdkVersion: 23,
-            targetSdkVersion : 23,
+            compileSdkVersion: 24,
+            targetSdkVersion : 24,
             versionCode      : 31,
             versionName      : "QAApp"
     ]
@@ -49,7 +49,7 @@ ext {
             dhisCommonsVersion : "1.1",
 
             // android libs
-            supportVersion          : "23.4.0",
+            supportVersion          : "25.1.0",
             rxAndroidVersion        : "1.1.0",
             dbFlowVersion           : "3.0.1",
             progressBarVersion      : "1.2.0",
