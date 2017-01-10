@@ -387,10 +387,10 @@ public class ProgressActivity extends Activity {
         return R.string.dialog_push_success;
     }
 
-    private void annotateFirstPull(boolean value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    private static void annotateFirstPull(boolean value) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PreferencesState.getInstance().getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(getString(R.string.pull_metadata), value);
+        editor.putBoolean(PreferencesState.getInstance().getContext().getString(R.string.pull_metadata), value);
         editor.commit();
     }
 
@@ -529,6 +529,9 @@ public class ProgressActivity extends Activity {
     }
 
     public static void postFinish() {
+
+        ProgressActivity.annotateFirstPull(true);
+        finishAndGo(DashboardActivity.class);
         //// FIXME: 28/11/2016 
         //showAndMoveOn();
     }

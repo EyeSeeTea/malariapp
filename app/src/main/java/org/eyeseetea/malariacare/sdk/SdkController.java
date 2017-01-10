@@ -90,7 +90,12 @@ public abstract class SdkController {
     }
 
     public static void postFinish() {
+        //// FIXME: 11/01/17 I think this user should be get from the SDK user
         User user = User.getLoggedUser();
+        if(user==null) {
+            user = new User();
+            user.save();
+        }
         Session.setUser(user);
         ProgressActivity.postFinish();
     }

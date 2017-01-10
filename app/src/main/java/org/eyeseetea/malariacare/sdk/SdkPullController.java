@@ -1,8 +1,13 @@
 package org.eyeseetea.malariacare.sdk;
 
+import static org.eyeseetea.malariacare.database.iomodules.dhis.importer.models
+        .OrganisationUnitExtended.getOrganisationUnit;
+import static org.eyeseetea.malariacare.sdk.SdkQueries.getEvents;
+import static org.eyeseetea.malariacare.sdk.SdkQueries.getProgram;
 import static org.hisp.dhis.client.sdk.models.program.ProgramType.WITHOUT_REGISTRATION;
 
 import android.content.Context;
+import android.util.ArraySet;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.BaseActivity;
@@ -13,6 +18,8 @@ import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.ExceptionHandler;
 import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
@@ -48,7 +55,7 @@ public class SdkPullController extends SdkController {
      */
     public static int asyncDownloads=0;
     public static boolean pullData=false;
-    private static final String TAG = ".SdkPullController";
+    public static final String TAG = ".SdkPullController";
     static List<org.hisp.dhis.client.sdk.models.program.Program> sdkPrograms;
     static HashMap<org.hisp.dhis.client.sdk.models.program.Program, List<OrganisationUnit>>
             programsAndOrganisationUnits;
@@ -89,18 +96,18 @@ public class SdkPullController extends SdkController {
     }
 
     public static void loadLastData() {
-        //// FIXME: 16/11/2016  limit by last data
+        //// FIXME: 16/11/2016  limit the event to be pulled
         pullData=true;
         loadMetaData();
     }
 
 
-    private static void pullFail() {
+    public static void pullFail() {
         //// FIXME: 16/11/201
         ProgressActivity.showException("Unexpected error");
     }
 
-    private static void next(String msg){
+    public static void next(String msg){
         ProgressActivity.step(msg);
     }
 
@@ -109,24 +116,29 @@ public class SdkPullController extends SdkController {
         loadMetaData();
     }
 
-    private static void loadMetaData() {
+    public static void loadMetaData() {
         asyncDownloads++;
         //Pull metadata
         getPrograms();
     }
 
-    private static void loadDataValues() {
+    public static void loadDataValues() {
         asyncDownloads++;
         //Pull events
-        getEventsFromListByProgramAndOrganisationUnit();
+        //// FIXME: 11/01/17
+        Set<String> uids = new HashSet<String>();
+        uids.add("sfsHw30FfA0");
+        pullEvents(uids);
+        //getEventsFromListByProgramAndOrganisationUnit();
     }
 
 
 
-    private static void convertData() {
+    public static void convertData() { 
         if(asyncDownloads==0) {
             if (!errorOnPull) {
-                PullController.getInstance().startConversion();
+                //// FIXME: 10/01/17 Uncomment to start the conversion
+                //PullController.getInstance().startConversion();
                 postFinish();
             } else {
                 pullFail();
@@ -155,45 +167,63 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        throwable.printStackTrace();
-                        Log.e(TAG, "Error pulling programs: " + throwable.getLocalizedMessage());
-                        showException("Error pulling programs: ");
+                        showError("Error pulling programs: ", throwable);
                     }
                 });
     }
 
-    /**
+    public static void pullEvents(String organisationUnitUId, String programUId) {
+        ProgramFlow programFlow = getProgram(programUId);
+        OrganisationUnitFlow organisationUnitFlow = getOrganisationUnit(organisationUnitUId);
+        OrganisationUnit organisationUnit = OrganisationUnitFlow.MAPPER.mapToModel
+                (organisationUnitFlow);
+
+        org.hisp.dhis.client.sdk.models.program.Program program = ProgramFlow.MAPPER.mapToModel(programFlow);
+        Observable<List<Event>> eventListObservable = D2.events().pull(
+                organisationUnit,
+                program);
+        eventListObservable.
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Event>>() {
+                    @Override
+                    public void call(List<Event> events) {
+                        //// FIXME: 22/11/2016 return event
+                        System.out.println("eventos" + events.size());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        throwable.printStackTrace();
+                        System.out.println("eventos error");
+                    }
+                });
+    }
+    /*
      * Pull the OrganisationUnits (not work at this moment)
      */
     //// FIXME: 16/11/2016  this method is throwing a timeout exception in dev server.
     public static void getOrganisationUnits() {
-        Set<String> organisationUnitUid = new HashSet<String>();
-        for (org.hisp.dhis.client.sdk.models.program.Program program : sdkPrograms) {
-            for (OrganisationUnit organisationUnit : program.getOrganisationUnits()) {
-                organisationUnitUid.add(organisationUnit.getUId());
-            }
-        }
-        if (organisationUnitUid.size() == 0) {
-            return;
-        }
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_organisationUnits));
         Observable<List<OrganisationUnit>> organisationUnitObservable2 =
-                D2.organisationUnits().pull(organisationUnitUid);
+                D2.me().organisationUnits().pull();
         organisationUnitObservable2.
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<OrganisationUnit>>() {
                     @Override
                     public void call(List<OrganisationUnit> organisationUnits) {
-                        Log.e(TAG, "OrganisationUnit: Done");
+                        Log.e(TAG, "OrganisationUnit: Done"); 
+                        asyncDownloads--;
+                        if(pullData) {
+                            loadDataValues();
+                        }
+                        convertData();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        throwable.printStackTrace();
-                        Log.e(TAG, "OrganisationUnit: " + throwable.getLocalizedMessage());
-                        showException("Error pulling OrganisationUnit: ");
+                        showError("Error pulling OrganisationUnit: ", throwable);
                     }
                 });
     }
@@ -217,11 +247,7 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        throwable.printStackTrace();
-                        Log.e(TAG,
-                                "Error pulling ProgramStage: " + throwable.getLocalizedMessage());
-                        showException("Error pulling ProgramStageSection: ");
+                        showError("Error pulling ProgramStage: ", throwable);
                     }
                 });
     }
@@ -247,11 +273,7 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        throwable.printStackTrace();
-                        Log.e(TAG, "Error pulling ProgramStageSection: "
-                                + throwable.getLocalizedMessage());
-                        showException("Error pulling ProgramStageSection: ");
+                        showError("Error pulling ProgramStageSection: ", throwable);
                     }
                 });
     }
@@ -275,11 +297,7 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        throwable.printStackTrace();
-                        Log.e(TAG, "Error pullling ProgramStageDataElement: "
-                                + throwable.getLocalizedMessage());
-                        showException("Error pulling ProgramStageDataElement: ");
+                        showError("Error pulling ProgramStageDataElement: ", throwable);
                     }
                 });
     }
@@ -298,21 +316,12 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<DataElement> dataElement) {
                         Log.d(TAG, "Pull of DataElement finish");
-                        //getOrganisationUnits();
-                        //finish of metadata pull
-                        asyncDownloads--;
-                        if(pullData) {
-                            loadDataValues();
-                        }
-                        convertData();
+                        getOrganisationUnits();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        Log.d(TAG, "Error pulling DataElement");
-                        throwable.printStackTrace();
-                        showException("Error pulling DataElement");
+                        showError("Error pulling DataElement: ", throwable);
                     }
                 });
     }
@@ -320,7 +329,7 @@ public class SdkPullController extends SdkController {
      * This method gets a organisation unit and program for each program(with organisation units)
      * and removes it(it removes the organisation unit and the program without organisation units)
      */
-    private static ProgramAndOrganisationUnitDict getProgramAndOrganisationUnit() {
+    public static ProgramAndOrganisationUnitDict getProgramAndOrganisationUnit() {
         if (sdkPrograms == null || sdkPrograms.size() == 0 || programsAndOrganisationUnits==null || programsAndOrganisationUnits.size()==0) {
             return null;
         }
@@ -346,7 +355,7 @@ public class SdkPullController extends SdkController {
     /**
      * This class is a dictionary for program and organisationunits
      */
-    private static class ProgramAndOrganisationUnitDict {
+    public static class ProgramAndOrganisationUnitDict {
         org.hisp.dhis.client.sdk.models.program.Program program;
         OrganisationUnit organisationUnit;
 
@@ -366,37 +375,11 @@ public class SdkPullController extends SdkController {
     }
 
     /**
-     * list all of events
-     * is not working at this moment.
-     */
-    private static void listEvents() {
-        final Observable<List<Event>> eventObservable = D2.events().list().asObservable();
-        eventObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Event>>() {
-                    @Override
-                    public void call(List<Event> events) {
-                        Log.d(TAG, "listed events: " + events.size());
-                        //finish
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        Log.d(TAG, "Error listing events");
-                        throwable.printStackTrace();
-                        showException("Error listing events");
-                    }
-                });
-    }
-
-    /**
      * This method get a list of events by organisationUnit and program, and pull it.
      * Is called recursively to pull, is not working at this moment
      */
     //// FIXME: 16/11/2016  this method is return a timeout exception
-    private static void getEventsFromListByProgramAndOrganisationUnit() {
+    public static void getEventsFromListByProgramAndOrganisationUnit() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_events));
         final ProgramAndOrganisationUnitDict programAndOrganisationUnitDict =
                 getProgramAndOrganisationUnit();
@@ -426,11 +409,7 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        throwable.printStackTrace();
-                        Log.e(TAG, "Error pulling events by program and org: "
-                                + throwable.getLocalizedMessage());
-                        showException("Error pulling events");
+                        showError("Error pulling events  by program and org: : ", throwable);
                     }
                 });
     }
@@ -442,7 +421,7 @@ public class SdkPullController extends SdkController {
      *                      downloaded in the pull of the metadata
      *                      It is not working at this moment
      */
-    private static void pullEvents(Set<String> events, final boolean recursivePull) {
+    public static void pullEvents(Set<String> events, final boolean recursivePull) {
         Observable<List<Event>> eventObservable = D2.events().pull(SyncStrategy.DEFAULT,
                 events).asObservable();
         eventObservable.
@@ -459,37 +438,7 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        Log.d(TAG, "Error pulling events");
-                        throwable.printStackTrace();
-                        showException("Error pulling events");
-                    }
-                });
-    }
-
-
-    /**
-     * Pull a event uids
-     * It is not working at this moment
-     */
-    private void pullEvent(String uid) {
-        Set events = new HashSet();
-        events.add(uid);
-        D2.events().pull(events).asObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Event>>() {
-                    @Override
-                    public void call(List<Event> events) {
-                        Log.d(TAG, "Listed events: " + events.size());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        Log.d(TAG, "Error pulling events: ");
-                        throwable.printStackTrace();
-                        showException("Error pulling events");
+                        showError("Error pulling events : ", throwable);
                     }
                 });
     }
@@ -499,7 +448,7 @@ public class SdkPullController extends SdkController {
      *
      * @param eventUids list of event uid to be pull
      */
-    private void pullEvents(Set<String> eventUids) {
+    public static void pullEvents(Set<String> eventUids) {
         D2.events().pull(eventUids).asObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -507,19 +456,29 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<Event> events) {
                         Log.d(TAG, "Listed events: " + events.size());
+                        asyncDownloads--;
+                        convertData();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        errorOnPull = true;
-                        Log.d(TAG, "Error pulling events: ");
-                        throwable.printStackTrace();
-                        showException("Error pulling events");
+                        //// FIXME: 10/01/17 Uncomment the error and remove the asyncDownload-- and convertDate method.
+                        //showError("Error pulling events: ", throwable);
+                        asyncDownloads--;
+                        convertData();
                     }
                 });
     }
 
-    private static void showException(String message) {
+
+    private static void showError(String errorMessage, Throwable throwable) {
+        errorOnPull = true;
+        throwable.printStackTrace();
+        Log.e(TAG, errorMessage + throwable.getLocalizedMessage());
+        showException(errorMessage);
+    }
+
+    public static void showException(String message) {
         ProgressActivity.showException(message);
     }
 }
