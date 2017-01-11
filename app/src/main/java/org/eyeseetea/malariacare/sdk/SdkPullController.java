@@ -1,25 +1,15 @@
 package org.eyeseetea.malariacare.sdk;
 
-import static org.eyeseetea.malariacare.database.iomodules.dhis.importer.models
-        .OrganisationUnitExtended.getOrganisationUnit;
-import static org.eyeseetea.malariacare.sdk.SdkQueries.getEvents;
-import static org.eyeseetea.malariacare.sdk.SdkQueries.getProgram;
 import static org.hisp.dhis.client.sdk.models.program.ProgramType.WITHOUT_REGISTRATION;
 
 import android.content.Context;
-import android.util.ArraySet;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.ExceptionHandler;
 import org.hisp.dhis.client.sdk.android.api.D2;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
@@ -30,7 +20,6 @@ import org.hisp.dhis.client.sdk.models.program.ProgramStage;
 import org.hisp.dhis.client.sdk.models.program.ProgramStageDataElement;
 import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
-import org.hisp.dhis.client.sdk.ui.bindings.presenters.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +44,7 @@ public class SdkPullController extends SdkController {
      */
     public static int asyncDownloads=0;
     public static boolean pullData=false;
-    public static final String TAG = ".SdkPullController";
+    private static final String TAG = ".SdkPullController";
     static List<org.hisp.dhis.client.sdk.models.program.Program> sdkPrograms;
     static HashMap<org.hisp.dhis.client.sdk.models.program.Program, List<OrganisationUnit>>
             programsAndOrganisationUnits;
@@ -96,49 +85,44 @@ public class SdkPullController extends SdkController {
     }
 
     public static void loadLastData() {
-        //// FIXME: 16/11/2016  limit the event to be pulled
+        //// FIXME: 16/11/2016  we need limit the event to be pulled
         pullData=true;
         loadMetaData();
     }
 
-
-    public static void pullFail() {
-        //// FIXME: 16/11/201
-        ProgressActivity.showException("Unexpected error");
-    }
-
-    public static void next(String msg){
-        ProgressActivity.step(msg);
-    }
 
     public static void loadData() {
         pullData=true;
         loadMetaData();
     }
 
-    public static void loadMetaData() {
+    private static void pullFail() {
+        //// FIXME: 16/11/201
+        ProgressActivity.showException("Unexpected error");
+    }
+
+    private static void next(String msg){
+        ProgressActivity.step(msg);
+    }
+
+    private static void loadMetaData() {
         asyncDownloads++;
         //Pull metadata
-        getPrograms();
+        pullPrograms();
     }
 
-    public static void loadDataValues() {
+    private static void loadDataValues() {
         asyncDownloads++;
         //Pull events
-        //// FIXME: 11/01/17
-        Set<String> uids = new HashSet<String>();
-        uids.add("sfsHw30FfA0");
-        pullEvents(uids);
-        //getEventsFromListByProgramAndOrganisationUnit();
+        pullEventsByProgramAndOrganisationUnit();
     }
 
 
 
-    public static void convertData() { 
+    private static void convertData() {
         if(asyncDownloads==0) {
             if (!errorOnPull) {
-                //// FIXME: 10/01/17 Uncomment to start the conversion
-                //PullController.getInstance().startConversion();
+                PullController.getInstance().startConversion();
                 postFinish();
             } else {
                 pullFail();
@@ -149,7 +133,7 @@ public class SdkPullController extends SdkController {
     /**
      * Pull the programs and all the metadata
      */
-    public static void getPrograms() {
+    private static void pullPrograms() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program));
         Set<ProgramType> programType = new HashSet<ProgramType>();
         programType.add(WITHOUT_REGISTRATION);
@@ -161,7 +145,7 @@ public class SdkPullController extends SdkController {
                     public void call(
                             List<org.hisp.dhis.client.sdk.models.program.Program> programs) {
                         sdkPrograms = programs;
-                        getProgramStages();
+                        pullProgramStages();
                         Log.d(TAG, "Pull of programs finish");
                     }
                 }, new Action1<Throwable>() {
@@ -172,38 +156,10 @@ public class SdkPullController extends SdkController {
                 });
     }
 
-    public static void pullEvents(String organisationUnitUId, String programUId) {
-        ProgramFlow programFlow = getProgram(programUId);
-        OrganisationUnitFlow organisationUnitFlow = getOrganisationUnit(organisationUnitUId);
-        OrganisationUnit organisationUnit = OrganisationUnitFlow.MAPPER.mapToModel
-                (organisationUnitFlow);
-
-        org.hisp.dhis.client.sdk.models.program.Program program = ProgramFlow.MAPPER.mapToModel(programFlow);
-        Observable<List<Event>> eventListObservable = D2.events().list(
-                organisationUnit,
-                program);
-        eventListObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Event>>() {
-                    @Override
-                    public void call(List<Event> events) {
-                        //// FIXME: 22/11/2016 return event
-                        System.out.println("eventos" + events.size());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                        System.out.println("eventos error");
-                    }
-                });
-    }
     /*
      * Pull the OrganisationUnits (not work at this moment)
      */
-    //// FIXME: 16/11/2016  this method is throwing a timeout exception in dev server.
-    public static void getOrganisationUnits() {
+    private static void pullOrganisationUnits() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_organisationUnits));
         Observable<List<OrganisationUnit>> organisationUnitObservable2 =
                 D2.me().organisationUnits().pull();
@@ -231,7 +187,7 @@ public class SdkPullController extends SdkController {
     /**
      * Pull the ProgramStages and continues the pull with the ProgramStageSections
      */
-    public static void getProgramStages() {
+    private static void pullProgramStages() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program_stages));
         Observable<List<ProgramStage>> programStageObservable =
                 D2.programStages().pull();
@@ -241,7 +197,7 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<ProgramStage>>() {
                     @Override
                     public void call(List<ProgramStage> programStages) {
-                        getProgramStageSections();
+                        pullProgramStageSections();
                         Log.d(TAG, "Pull of ProgramStage finish");
                     }
                 }, new Action1<Throwable>() {
@@ -255,9 +211,9 @@ public class SdkPullController extends SdkController {
 
     /**
      * Pull the ProgramStageDataSections and continues the pull with the
-     * getProgramStageDataElements
+     * pullProgramStageDataElements
      */
-    public static void getProgramStageSections() {
+    private static void pullProgramStageSections() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program_stage_sections));
         Observable<List<ProgramStageSection>> programStageSectionObservable =
                 D2.programStageSections().pull();
@@ -267,7 +223,7 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<ProgramStageSection>>() {
                     @Override
                     public void call(List<ProgramStageSection> programStageSections) {
-                        getProgramStageDataElements();
+                        pullProgramStageDataElements();
                         Log.d(TAG, "Pull of ProgramStageSection finish");
                     }
                 }, new Action1<Throwable>() {
@@ -279,9 +235,9 @@ public class SdkPullController extends SdkController {
     }
 
     /**
-     * Pull the ProgramStageDataElements and continues the pull with the getDataElements
+     * Pull the ProgramStageDataElements and continues the pull with the pullDataElements
      */
-    public static void getProgramStageDataElements() {
+    private static void pullProgramStageDataElements() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_program_stage_dataElements));
         Observable<List<ProgramStageDataElement>> programStageDataElementObservable =
                 D2.programStageDataElements().pull();
@@ -292,7 +248,7 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<ProgramStageDataElement> programStageDataElement) {
                         Log.d(TAG, "Pull of ProgramStageDataElements finish");
-                        getDataElements();
+                        pullDataElements();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -305,7 +261,7 @@ public class SdkPullController extends SdkController {
     /**
      * Pull the dataElements and finish the pull of metadata
      */
-    public static void getDataElements() {
+    private static void pullDataElements() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_dataElements));
         Observable<List<DataElement>> dataElementObservable =
                 D2.dataElements().pull();
@@ -316,7 +272,7 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<DataElement> dataElement) {
                         Log.d(TAG, "Pull of DataElement finish");
-                        getOrganisationUnits();
+                        pullOrganisationUnits();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -329,7 +285,7 @@ public class SdkPullController extends SdkController {
      * This method gets a organisation unit and program for each program(with organisation units)
      * and removes it(it removes the organisation unit and the program without organisation units)
      */
-    public static ProgramAndOrganisationUnitDict getProgramAndOrganisationUnit() {
+    private static ProgramAndOrganisationUnitDict getProgramAndOrganisationUnit() {
         if (sdkPrograms == null || sdkPrograms.size() == 0 || programsAndOrganisationUnits==null || programsAndOrganisationUnits.size()==0) {
             return null;
         }
@@ -355,7 +311,7 @@ public class SdkPullController extends SdkController {
     /**
      * This class is a dictionary for program and organisationunits
      */
-    public static class ProgramAndOrganisationUnitDict {
+    private static class ProgramAndOrganisationUnitDict {
         org.hisp.dhis.client.sdk.models.program.Program program;
         OrganisationUnit organisationUnit;
 
@@ -378,8 +334,8 @@ public class SdkPullController extends SdkController {
      * This method get a list of events by organisationUnit and program, and pull it.
      * Is called recursively to pull, is not working at this moment
      */
-    //// FIXME: 16/11/2016  this method is return a timeout exception
-    public static void getEventsFromListByProgramAndOrganisationUnit() {
+    //// FIXME: 16/11/2016  this method is return a timeout exception in the pull of events
+    private static void pullEventsByProgramAndOrganisationUnit() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string.progress_push_preparing_events));
         final ProgramAndOrganisationUnitDict programAndOrganisationUnitDict =
                 getProgramAndOrganisationUnit();
@@ -421,7 +377,7 @@ public class SdkPullController extends SdkController {
      *                      downloaded in the pull of the metadata
      *                      It is not working at this moment
      */
-    public static void pullEvents(Set<String> events, final boolean recursivePull) {
+    private static void pullEvents(Set<String> events, final boolean recursivePull) {
         Observable<List<Event>> eventObservable = D2.events().pull(SyncStrategy.DEFAULT,
                 events).asObservable();
         eventObservable.
@@ -432,7 +388,7 @@ public class SdkPullController extends SdkController {
                     public void call(List<Event> events) {
                         Log.d(TAG, "Pulled events: " + events.size());
                         if (recursivePull) {
-                            getEventsFromListByProgramAndOrganisationUnit();
+                            pullEventsByProgramAndOrganisationUnit();
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -448,7 +404,7 @@ public class SdkPullController extends SdkController {
      *
      * @param eventUids list of event uid to be pull
      */
-    public static void pullEvents(Set<String> eventUids) {
+    private static void pullEvents(Set<String> eventUids) {
         D2.events().pull(eventUids).asObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -462,10 +418,7 @@ public class SdkPullController extends SdkController {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        //// FIXME: 10/01/17 Uncomment the error and remove the asyncDownload-- and convertDate method.
-                        //showError("Error pulling events: ", throwable);
-                        asyncDownloads--;
-                        convertData();
+                        showError("Error pulling events: ", throwable);
                     }
                 });
     }
@@ -478,7 +431,7 @@ public class SdkPullController extends SdkController {
         showException(errorMessage);
     }
 
-    public static void showException(String message) {
+    private static void showException(String message) {
         ProgressActivity.showException(message);
     }
 }
