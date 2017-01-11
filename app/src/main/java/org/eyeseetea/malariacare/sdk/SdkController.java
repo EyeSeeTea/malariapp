@@ -135,7 +135,7 @@ public abstract class SdkController {
     public static void wipeSDKData() {
         /*Delete.tables(
                 EventFlow.class,
-                DataValueFlow.class,
+                TrackedEntityDataValue.class,
                 FailedItemFlow.class
         );
         */
