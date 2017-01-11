@@ -179,7 +179,7 @@ public class SdkPullController extends SdkController {
                 (organisationUnitFlow);
 
         org.hisp.dhis.client.sdk.models.program.Program program = ProgramFlow.MAPPER.mapToModel(programFlow);
-        Observable<List<Event>> eventListObservable = D2.events().pull(
+        Observable<List<Event>> eventListObservable = D2.events().list(
                 organisationUnit,
                 program);
         eventListObservable.
