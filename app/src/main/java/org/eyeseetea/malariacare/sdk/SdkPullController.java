@@ -34,14 +34,6 @@ import rx.schedulers.Schedulers;
 
 public class SdkPullController extends SdkController {
 
-
-    /**
-     * This flag is used to control the async downloads before initialise the conversion from sdk
-     * to
-     * the app db
-     */
-    public static int asyncDownloads = 0;
-    public static boolean pullData = false;
     private static final String TAG = ".SdkPullController";
     static ProgramAndOrganisationUnitWrapper mProgramAndOrganisationUnitWrapper;
     static List<Program> sdkPrograms;
@@ -83,13 +75,11 @@ public class SdkPullController extends SdkController {
 
     public static void loadLastData() {
         //// FIXME: 16/11/2016  we need limit the event to be pulled
-        pullData = true;
         loadMetaData();
     }
 
 
     public static void loadData() {
-        pullData = true;
         loadMetaData();
     }
 
@@ -103,22 +93,18 @@ public class SdkPullController extends SdkController {
     }
 
     private static void loadMetaData() {
-        asyncDownloads++;
         //Pull metadata
         pullPrograms();
     }
 
     private static void loadDataValues() {
-        asyncDownloads++;
         //Pull events
         pullEventsByProgramAndOrganisationUnit();
     }
 
     private static void convertData() {
-        Log.d(TAG, "try to start conversion "+ asyncDownloads);
-        if(asyncDownloads==0) {
             if (!errorOnPull) {
-                Log.d(TAG, "start conversion "+ asyncDownloads);
+                Log.d(TAG, "start conversion ");
                 try {
                     PullController.getInstance().startConversion();
                     postFinish();
@@ -128,7 +114,6 @@ public class SdkPullController extends SdkController {
             } else {
                 pullFail();
             }
-        }
     }
 
     /**
@@ -260,13 +245,9 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<OrganisationUnit> organisationUnits) {
                         Log.d(TAG, "OrganisationUnit: Done");
-                        asyncDownloads--;
                         mProgramAndOrganisationUnitWrapper = new ProgramAndOrganisationUnitWrapper();
                         mProgramAndOrganisationUnitWrapper.buildProgramAndOrganisationUnit(organisationUnits, sdkPrograms);
-                        if(pullData) {
-                            loadDataValues();
-                        }
-                        convertData();
+                        loadDataValues();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -280,14 +261,12 @@ public class SdkPullController extends SdkController {
      * This method get a list of events by organisationUnit and program, and pull it.
      * Is called recursively to pull, is not working at this moment
      */
-    //// FIXME: 16/11/2016  this method is return a timeout exception in the pull of events
     private static void pullEventsByProgramAndOrganisationUnit() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
                 R.string.progress_push_preparing_events));
         final ProgramAndOrganisationUnitDict programAndOrganisationUnitDict =
                 mProgramAndOrganisationUnitWrapper.popNextProgramAndOrganisationUnit();
         if (programAndOrganisationUnitDict == null || programAndOrganisationUnitDict.getOrganisationUnit()==null || programAndOrganisationUnitDict.getProgram() ==null) {
-            asyncDownloads--;
             convertData();
             return;
         }
