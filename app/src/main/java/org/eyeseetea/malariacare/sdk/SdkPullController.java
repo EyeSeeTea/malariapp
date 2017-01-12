@@ -208,6 +208,8 @@ public class SdkPullController extends SdkController {
                                 SdkModelUtils.getProgramStageSectionDataElementUids(
                                         programStageSections));
                         Log.d(TAG, "Pull of ProgramStageSection finish");
+
+                        pullOrganisationUnits();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -233,7 +235,7 @@ public class SdkPullController extends SdkController {
                     public void call(List<ProgramStageDataElement> programStageDataElements) {
                         Log.d(TAG, "Pull of ProgramStageDataElements finish");
 
-                        pullOrganisationUnits();
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
