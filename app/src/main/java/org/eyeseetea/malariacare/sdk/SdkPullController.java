@@ -246,7 +246,7 @@ public class SdkPullController extends SdkController {
     }
 
     /*
-     * Pull the OrganisationUnits (not work at this moment)
+     * Pull the OrganisationUnits
      */
     private static void pullOrganisationUnits() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
