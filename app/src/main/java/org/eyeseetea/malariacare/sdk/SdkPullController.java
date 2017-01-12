@@ -12,8 +12,8 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
-import org.hisp.dhis.client.sdk.core.common.utils.ModelUtils;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
+import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -33,15 +33,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by idelcano on 15/11/2016.
- */
-
 public class SdkPullController extends SdkController {
 
 
     /**
-     * This flag is used to control the async downloads before initialise the conversion from sdk to
+     * This flag is used to control the async downloads before initialise the conversion from sdk
+     * to
      * the app db
      */
     public static int asyncDownloads = 0;
@@ -136,25 +133,20 @@ public class SdkPullController extends SdkController {
     private static void pullPrograms() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
                 R.string.progress_push_preparing_program));
+
         Set<ProgramType> programType = new HashSet<ProgramType>();
         programType.add(WITHOUT_REGISTRATION);
-        D2.me().programs().pull(ProgramFields.DESCENDANTS, programType).
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new Action1<List<org.hisp.dhis.client.sdk.models.program.Program>>() {
+
+        D2.me().programs().pull(ProgramFields.DESCENDANTS, programType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Program>>() {
                     @Override
                     public void call(
-                            List<org.hisp.dhis.client.sdk.models.program.Program> programs) {
+                            List<Program> programs) {
                         sdkPrograms = programs;
 
-                        Set<String> programStagesUids = new HashSet<>();
-
-                        for (Program program : programs) {
-                            programStagesUids.addAll(
-                                    ModelUtils.toUidSet(program.getProgramStages()));
-                        }
-
-                        pullProgramStages(programStagesUids);
+                        pullProgramStages(SdkModelUtils.getProgramStageUids(programs));
                         Log.d(TAG, "Pull of programs finish");
                     }
                 }, new Action1<Throwable>() {
@@ -164,6 +156,7 @@ public class SdkPullController extends SdkController {
                     }
                 });
     }
+
 
     /**
      * Pull the ProgramStages and continues the pull with the ProgramStageSections
@@ -180,25 +173,11 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(List<ProgramStage> programStages) {
 
-                        Set<String> programStagesDataElementsUids = new HashSet<>();
+                        pullProgramStageDataElements(SdkModelUtils.getProgramStageDataElementUids(
+                                programStages));
 
-                        for (ProgramStage programStage : programStages) {
-                            programStagesDataElementsUids.addAll(ModelUtils.toUidSet(
-                                    programStage.getProgramStageDataElements()));
-                        }
-
-                        pullProgramStageDataElements(programStagesDataElementsUids);
-
-
-                        Set<String> programStagesSectionUids = new HashSet<>();
-
-                        for (ProgramStage programStage : programStages) {
-                            programStagesSectionUids.addAll(
-                                    ModelUtils.toUidSet(programStage.getProgramStageSections()));
-                        }
-
-                        pullProgramStageSections(programStagesSectionUids);
-
+                        pullProgramStageSections(SdkModelUtils.getProgramStageSectionUids(
+                                programStages));
 
                         Log.d(TAG, "Pull of ProgramStage finish");
                     }
@@ -209,7 +188,6 @@ public class SdkPullController extends SdkController {
                     }
                 });
     }
-
 
     /**
      * Pull the ProgramStageDataSections and continues the pull with the
@@ -226,14 +204,9 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<ProgramStageSection>>() {
                     @Override
                     public void call(List<ProgramStageSection> programStageSections) {
-                        Set<String> programStagesDataElementsUids = new HashSet<>();
-
-                        for (ProgramStageSection programStageSection : programStageSections) {
-                            programStagesDataElementsUids.addAll(ModelUtils.toUidSet(
-                                    programStageSection.getProgramStageDataElements()));
-                        }
-
-                        pullProgramStageDataElements(programStagesDataElementsUids);
+                        pullProgramStageDataElements(
+                                SdkModelUtils.getProgramStageSectionDataElementUids(
+                                        programStageSections));
                         Log.d(TAG, "Pull of ProgramStageSection finish");
                     }
                 }, new Action1<Throwable>() {
@@ -260,7 +233,7 @@ public class SdkPullController extends SdkController {
                     public void call(List<ProgramStageDataElement> programStageDataElements) {
                         Log.d(TAG, "Pull of ProgramStageDataElements finish");
 
-                        //pullDataElements();
+                        pullOrganisationUnits();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -269,34 +242,6 @@ public class SdkPullController extends SdkController {
                     }
                 });
     }
-
-    //Not necessary? pulled from pullProgramStageDataElements?
-/*    */
-
-    /**
-     * Pull the dataElements and finish the pull of metadata
-     *//*
-    private static void pullDataElements() {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(R.string
-        .progress_push_preparing_dataElements));
-        Observable<List<DataElement>> dataElementObservable =
-                D2.dataElements().pull();
-        dataElementObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<DataElement>>() {
-                    @Override
-                    public void call(List<DataElement> dataElement) {
-                        Log.d(TAG, "Pull of DataElement finish");
-                        pullOrganisationUnits();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling DataElement: ", throwable);
-                    }
-                });
-    }*/
 
     /*
      * Pull the OrganisationUnits (not work at this moment)
