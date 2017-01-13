@@ -13,7 +13,7 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
-import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
+import org.hisp.dhis.client.sdk.models.attribute.Attribute;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -107,6 +107,7 @@ public class SdkPullController extends SdkController {
     private static void loadMetaData() {
         asyncDownloads++;
         //Pull metadata
+        pullAttributes();
         pullPrograms();
     }
 
@@ -127,6 +128,30 @@ public class SdkPullController extends SdkController {
         }
     }
 
+
+    /**
+     * Pull the programs and all the metadata
+     */
+    private static void pullAttributes() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
+                R.string.progress_push_preparing_program));
+
+        D2.attributes().pull()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Attribute>>() {
+                    @Override
+                    public void call(
+                            List<Attribute> attributes) {
+                        Log.d(TAG, "Pull of attributes finish"+ attributes.size());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        showError("Error pulling attributes: ", throwable);
+                    }
+                });
+    }
     /**
      * Pull the programs and all the metadata
      */
