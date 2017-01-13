@@ -30,9 +30,9 @@ import android.text.style.LeadingMarginSpan;
 import android.util.Log;
 import android.view.View;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.eyeseetea.malariacare.views.URLDrawable;
 import org.xml.sax.XMLReader;
 
@@ -273,10 +273,13 @@ public class CustomParser implements Html.ImageGetter, Html.TagHandler {
 
 
         private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpGet request = new HttpGet(urlString);
-            HttpResponse response = httpClient.execute(request);
-            return response.getEntity().getContent();
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(urlString)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().byteStream();
         }
     }
 }
