@@ -1,6 +1,5 @@
 package org.eyeseetea.malariacare.sdk;
 
-import static org.hisp.dhis.client.sdk.models.program.ProgramType.WITHOUT_REGISTRATION;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,13 +12,9 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
-import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
-import org.hisp.dhis.client.sdk.models.program.ProgramStage;
-import org.hisp.dhis.client.sdk.models.program.ProgramStageDataElement;
-import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -31,6 +26,7 @@ import java.util.Set;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class SdkPullController extends SdkController {
@@ -104,10 +100,37 @@ public class SdkPullController extends SdkController {
         ProgressActivity.step(msg);
     }
 
-    private static void loadMetaData() {
-        asyncDownloads++;
-        //Pull metadata
-        pullPrograms();
+    public static void loadMetaData() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
+                R.string.progress_push_preparing_program));
+
+        Set<ProgramType> programTypes = new HashSet<>();
+        programTypes.add(ProgramType.WITHOUT_REGISTRATION);
+
+        Observable.zip(D2.me().organisationUnits().pull(),
+                D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
+                new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
+                    @Override
+                    public List<Program> call(List<OrganisationUnit> units,
+                            List<Program> programs) {
+                        Log.d(TAG, "Pull of Programs and OrganisationUnits finished");
+                        return programs;
+                    }
+                })
+                .subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Program>>() {
+                    @Override
+                    public void call(List<Program> programs) {
+                        //TODO: uncommnent when merge with branch feature-new_sdk_update_pull_of_events
+                        //loadDataValues();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        showError("Error pulling Programs and OrganisationUnits: ", throwable);
+                    }
+                });
     }
 
     private static void loadDataValues() {
@@ -125,153 +148,6 @@ public class SdkPullController extends SdkController {
                 pullFail();
             }
         }
-    }
-
-    /**
-     * Pull the programs and all the metadata
-     */
-    private static void pullPrograms() {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_program));
-
-        Set<ProgramType> programType = new HashSet<ProgramType>();
-        programType.add(WITHOUT_REGISTRATION);
-
-        D2.me().programs().pull(ProgramFields.DESCENDANTS, programType)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Program>>() {
-                    @Override
-                    public void call(
-                            List<Program> programs) {
-                        sdkPrograms = programs;
-
-                        pullProgramStages(SdkModelUtils.getProgramStageUids(programs));
-                        Log.d(TAG, "Pull of programs finish");
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling programs: ", throwable);
-                    }
-                });
-    }
-
-
-    /**
-     * Pull the ProgramStages and continues the pull with the ProgramStageSections
-     */
-    private static void pullProgramStages(Set<String> programStagesUids) {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_program_stages));
-        Observable<List<ProgramStage>> programStageObservable =
-                D2.programStages().pull(programStagesUids);
-        programStageObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<ProgramStage>>() {
-                    @Override
-                    public void call(List<ProgramStage> programStages) {
-
-                        pullProgramStageDataElements(SdkModelUtils.getProgramStageDataElementUids(
-                                programStages));
-
-                        pullProgramStageSections(SdkModelUtils.getProgramStageSectionUids(
-                                programStages));
-
-                        Log.d(TAG, "Pull of ProgramStage finish");
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling ProgramStage: ", throwable);
-                    }
-                });
-    }
-
-    /**
-     * Pull the ProgramStageDataSections and continues the pull with the
-     * pullProgramStageDataElements
-     */
-    private static void pullProgramStageSections(Set<String> programStagesSectionUids) {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_program_stage_sections));
-        Observable<List<ProgramStageSection>> programStageSectionObservable =
-                D2.programStageSections().pull(programStagesSectionUids);
-        programStageSectionObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<ProgramStageSection>>() {
-                    @Override
-                    public void call(List<ProgramStageSection> programStageSections) {
-                        pullProgramStageDataElements(
-                                SdkModelUtils.getProgramStageSectionDataElementUids(
-                                        programStageSections));
-                        Log.d(TAG, "Pull of ProgramStageSection finish");
-
-                        pullOrganisationUnits();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling ProgramStageSection: ", throwable);
-                    }
-                });
-    }
-
-    /**
-     * Pull the ProgramStageDataElements and continues the pull with the pullDataElements
-     */
-    private static void pullProgramStageDataElements(Set<String> programStagesDataElementsUids) {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_program_stage_dataElements));
-        Observable<List<ProgramStageDataElement>> programStageDataElementObservable =
-                D2.programStageDataElements().pull(programStagesDataElementsUids);
-        programStageDataElementObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<ProgramStageDataElement>>() {
-                    @Override
-                    public void call(List<ProgramStageDataElement> programStageDataElements) {
-                        Log.d(TAG, "Pull of ProgramStageDataElements finish");
-
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling ProgramStageDataElement: ", throwable);
-                    }
-                });
-    }
-
-    /*
-     * Pull the OrganisationUnits
-     */
-    private static void pullOrganisationUnits() {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_organisationUnits));
-        Observable<List<OrganisationUnit>> organisationUnitObservable2 =
-                D2.me().organisationUnits().pull();
-        organisationUnitObservable2.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<OrganisationUnit>>() {
-                    @Override
-                    public void call(List<OrganisationUnit> organisationUnits) {
-                        Log.d(TAG, "OrganisationUnit: Done");
-                        asyncDownloads--;
-                        if (pullData) {
-                            loadDataValues();
-                        }
-                        convertData();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling OrganisationUnit: ", throwable);
-                    }
-                });
     }
 
     /**
