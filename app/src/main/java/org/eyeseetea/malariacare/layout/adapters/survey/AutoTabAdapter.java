@@ -30,7 +30,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -42,8 +41,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
-
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -73,7 +70,6 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -523,10 +519,13 @@ public class AutoTabAdapter extends ATabAdapter {
 
         switch (question.getOutput()) {
             case Constants.DATE:
+                //Validation
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate= EventExtended.parseShortDate(valueString);
+                Date valueDate= EventExtended.parseSimpleDate(valueString);
                 if(valueDate!=null) {
                     viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
+                } else {
+                    Log.e("AutoTabAdapter", "Date field stored in Database do not have the appropriate format. It won't show in the app.");
                 }
                 break;
             case Constants.SHORT_TEXT:
