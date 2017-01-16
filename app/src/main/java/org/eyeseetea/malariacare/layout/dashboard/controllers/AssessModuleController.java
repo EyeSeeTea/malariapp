@@ -149,9 +149,9 @@ public class AssessModuleController extends ModuleController {
         //This cannot be mark as completed
         if(!surveyAnsweredRatio.isCompulsoryCompleted()){
             alertCompulsoryQuestionIncompleted();
+        } else {
+            alertAreYouSureYouWantToComplete(survey);
         }
-
-        alertAreYouSureYouWantToComplete(survey);
     }
 
     public void onNewSurvey(){
