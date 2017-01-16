@@ -35,12 +35,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitDataSetFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitDataSetFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitGroupFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitGroupFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,33 +163,6 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
 
     public static List<OrganisationUnitFlow> getAllOrganisationUnits() {
         return new Select().from(OrganisationUnitFlow.class).queryList();
-    }
-
-    /**
-     * Get all the OU DataSets given a OU id
-     * @param id
-     * @return
-     */
-    public static List<OrganisationUnitDataSetFlow> getOrganisationUnitDataSets(String id){
-        //// FIXME: 11/11/2016
-        return new Select()
-                .from(OrganisationUnitDataSetFlow.class)
-                .where(OrganisationUnitDataSetFlow_Table.organisationUnitId
-                        .eq(id))
-                .queryList();
-    }
-
-    /**
-     * Get all the OU groups given a OU id
-     * @param id
-     * @return
-     */
-    public static List<OrganisationUnitGroupFlow> getOrganisationUnitGroups(String id){
-        return new Select()
-                .from(OrganisationUnitGroupFlow.class)
-                .where(OrganisationUnitGroupFlow_Table.organisationUnitId
-                        .eq(id))
-                .queryList();
     }
 
     /**
