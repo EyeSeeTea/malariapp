@@ -6,16 +6,13 @@ import android.support.test.runner.AndroidJUnit4;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnit;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitGroup;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Access;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit; 
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import org.junit.AfterClass;
@@ -252,28 +249,6 @@ public class PullOKTest {
         assertTrue(programType.getValue().equals(PROGRAM_PROGRAMTYPE));
     }
 
-    private void testOrganisationUnitDataSets(OrganisationUnit sdkOrganisationUnit) {
-        for(String organisationUnitDataSetUid: goldenDataSets) {
-            boolean isInSdk=false;
-            for (OrganisationUnitDataSet organisationUnitDataSetsSdk : OrganisationUnitExtended.getOrganisationUnitDataSets(sdkOrganisationUnit.getId())) {
-                if(organisationUnitDataSetsSdk.getDataSetId().equals(organisationUnitDataSetUid))
-                    isInSdk=true;
-            }
-            assertTrue(isInSdk);
-        }
-    }
-
-    private void testOrganisationUnitGroups(OrganisationUnit sdkOrganisationUnit) {
-        for(String organisationUnitGroupsUid: goldenOrganisationUnitGroups) {
-            boolean isInSdk=false;
-            for (OrganisationUnitGroup organisationUnitGroupsSdk : OrganisationUnitExtended.getOrganisationUnitGroups(sdkOrganisationUnit.getId())) {
-                if(organisationUnitGroupsSdk.getOrganisationUnitGroupId().equals(organisationUnitGroupsUid))
-                    isInSdk=true;
-            }
-            assertTrue(isInSdk);
-        }
-    }
-
     private void testSdkOrganisationUnit(OrganisationUnit sdkOrganisationUnit) {
         assertTrue(sdkOrganisationUnit.getLabel().equals(goldenOrganisationUnit.getLabel()));
         assertTrue(sdkOrganisationUnit.getUId().equals(goldenOrganisationUnit.getUId()));
@@ -291,10 +266,6 @@ public class PullOKTest {
         assertTrue(sdkOrganisationUnit.getFeatureType().equals(goldenOrganisationUnit.getFeatureType()));
         assertTrue(sdkOrganisationUnit.getOpeningDate().equals(goldenOrganisationUnit.getOpeningDate()));
         assertTrue(sdkOrganisationUnit.getDimensionItem().equals(goldenOrganisationUnit.getDimensionItem()));
-
-        testOrganisationUnitGroups(sdkOrganisationUnit);
-
-        testOrganisationUnitDataSets(sdkOrganisationUnit);
     }
 
     private boolean orgUnitProgramsIncludeGolden(List<Program> programs){
