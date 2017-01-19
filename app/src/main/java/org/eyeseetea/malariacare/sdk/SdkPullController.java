@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
@@ -93,8 +94,9 @@ public class SdkPullController extends SdkController {
         Set<ProgramType> programTypes = new HashSet<>();
         programTypes.add(ProgramType.WITHOUT_REGISTRATION);
 
-        Observable.zip(D2.me().organisationUnits().pull(),
-                D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
+        Observable.zip(D2.me().organisationUnits().pull(SyncStrategy.NO_DELETE),
+                D2.me().programs().pull(SyncStrategy.NO_DELETE, ProgramFields.DESCENDANTS,
+                        programTypes),
                 new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
                     @Override
                     public List<Program> call(List<OrganisationUnit> organisationUnits,
@@ -145,8 +147,9 @@ public class SdkPullController extends SdkController {
         Scheduler listThread = Schedulers.newThread();
         List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
                 .observeOn(listThread).toBlocking().single();
-        List<OrganisationUnit> sdkOrganisationUnits = D2.me().organisationUnits().list().subscribeOn(listThread)
-                .observeOn(listThread).toBlocking().single();
+        List<OrganisationUnit> sdkOrganisationUnits =
+                D2.me().organisationUnits().list().subscribeOn(listThread)
+                        .observeOn(listThread).toBlocking().single();
         for (Program program : sdkPrograms) {
             for (OrganisationUnit organisationUnit : sdkOrganisationUnits) {
                 for (Program orgunitProgram : organisationUnit.getPrograms()) {
