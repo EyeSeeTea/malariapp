@@ -11,7 +11,6 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
-import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
@@ -22,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func2;
@@ -30,8 +30,6 @@ import rx.schedulers.Schedulers;
 public class SdkPullController extends SdkController {
 
     private static final String TAG = ".SdkPullController";
-    static List<Program> sdkPrograms;
-    static List<OrganisationUnit> sdkOrganisationUnits;
 
     public static boolean errorOnPull = false;
 
@@ -99,9 +97,8 @@ public class SdkPullController extends SdkController {
                 D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
                 new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
                     @Override
-                    public List<Program> call(List<OrganisationUnit> units,
+                    public List<Program> call(List<OrganisationUnit> organisationUnits,
                             List<Program> programs) {
-                        Log.d(TAG, "Pull of Programs and OrganisationUnits finished");
                         return programs;
                     }
                 })
@@ -110,8 +107,7 @@ public class SdkPullController extends SdkController {
                 .subscribe(new Action1<List<Program>>() {
                     @Override
                     public void call(List<Program> programs) {
-                        //TODO: uncommnent when merge with branch feature-new_sdk_update_pull_of_events
-                        //loadDataValues();
+                        loadDataValues();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -122,8 +118,8 @@ public class SdkPullController extends SdkController {
     }
 
     private static void loadDataValues() {
-        //Pull events
         pullEvents();
+        convertData();
     }
 
     private static void convertData() {
@@ -146,45 +142,24 @@ public class SdkPullController extends SdkController {
     private static void pullEvents() {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
                 R.string.progress_push_preparing_events));
+        Scheduler listThread = Schedulers.newThread();
+        List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
+                .observeOn(listThread).toBlocking().single();
+        List<OrganisationUnit> sdkOrganisationUnits = D2.me().organisationUnits().list().subscribeOn(listThread)
+                .observeOn(listThread).toBlocking().single();
         for (Program program : sdkPrograms) {
             for (OrganisationUnit organisationUnit : sdkOrganisationUnits) {
-                if (organisationUnit.getPrograms() != null) {
-                    for (Program organisationUnitProgram : organisationUnit.getPrograms()) {
-                        if (organisationUnitProgram.getUId().equals(program.getUId())) {
-                            pullEventsByProgramAndOrganisationUnit(program, organisationUnit);
-                            continue;
-                        }
+                for (Program orgunitProgram : organisationUnit.getPrograms()) {
+                    if (orgunitProgram.getUId().equals(program.getUId())) {
+                        Scheduler pullEventsThread = Schedulers.newThread();
+                        D2.events().pull(
+                                organisationUnit.getUId(),
+                                program.getUId()).subscribeOn(pullEventsThread)
+                                .observeOn(pullEventsThread).toBlocking().single();
                     }
                 }
             }
         }
-        convertData();
-    }
-
-    private static void pullEventsByProgramAndOrganisationUnit(Program program,
-            OrganisationUnit organisationUnit) {
-        final String organisationUnitUid = organisationUnit.getUId();
-        final String programUId = program.getUId();
-        //// TODO: 13/01/17 do this call using toBlocking() or similar.
-        Observable<List<Event>> eventListObservable = D2.events().pull(
-                organisationUnit.getUId(),
-                program.getUId());
-        eventListObservable
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Event>>() {
-                    @Override
-                    public void call(List<Event> events) {
-                        Log.d(TAG, "Downloaded events with program uid= " + organisationUnitUid
-                                + " and orgunit uid:" + programUId + " events size: "
-                                + events.size());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        showError("Error pulling events  by program and org: ", throwable);
-                    }
-                });
     }
 
     private static void showError(String errorMessage, Throwable throwable) {
