@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.score;
 
-import org.eyeseetea.malariacare.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 
 import java.util.List;
 

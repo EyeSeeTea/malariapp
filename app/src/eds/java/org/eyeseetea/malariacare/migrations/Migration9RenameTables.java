@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.migrations;
+package org.eyeseetea.malariacare.data.database.migrations;
 
 
 import android.database.sqlite.SQLiteDatabase;
@@ -28,9 +28,9 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
-import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.ServerMetadata;
-import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 
 /**
  * Created by idelcano on 23/03/2016.

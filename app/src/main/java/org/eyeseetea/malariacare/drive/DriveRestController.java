@@ -17,7 +17,7 @@ import com.google.api.services.drive.DriveScopes;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.io.IOException;
 import java.io.InputStream;

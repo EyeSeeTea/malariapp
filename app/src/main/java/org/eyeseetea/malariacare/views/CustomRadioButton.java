@@ -29,8 +29,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 /**
  * Created by adrian on 30/05/15.
