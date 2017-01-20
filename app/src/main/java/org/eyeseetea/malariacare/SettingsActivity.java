@@ -35,11 +35,11 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.remote.SdkController;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.sdk.SdkController;
-import org.eyeseetea.malariacare.sdk.SdkLoginController;
 
 import java.util.List;
 
@@ -54,7 +54,8 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends PreferenceActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * Determines whether to always show the simplified settings UI, where
      * settings are presented in a single list. When false, settings are shown
@@ -63,7 +64,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
-    private static final String TAG=".SettingsActivity";
+    private static final String TAG = ".SettingsActivity";
 
     protected void onCreate(Bundle savedInstanceState) {
         //Register into sdk bug for listening to logout events
@@ -72,7 +73,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         SdkController.unregister(this);
         super.onStop();
     }
@@ -94,19 +95,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     /**
      @Subscribe
      //// FIXME: 09/11/2016
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        //No event or not a logout event -> done
-        if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
-            return;
-        }
-        Log.i(TAG, "Logging out from sdk...OK");
-        Session.logout();
-        Intent loginIntent = new Intent(this,LoginActivity.class);
-        finish();
-        startActivity(loginIntent);
-    }
-    */
+     @Subscribe public void onLogoutFinished(UiEvent uiEvent){
+     //No event or not a logout event -> done
+     if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
+     return;
+     }
+     Log.i(TAG, "Logging out from sdk...OK");
+     Session.logout();
+     Intent loginIntent = new Intent(this,LoginActivity.class);
+     finish();
+     startActivity(loginIntent);
+     }
+     */
 
     /**
      * Shows the simplified settings UI if the device configuration if the
@@ -125,28 +125,38 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         addPreferencesFromResource(R.xml.pref_general);
 
         // fitler the font options by screen size
-        filterTextSizeOptions(findPreference(getApplicationContext().getString(R.string.font_sizes)));
+        filterTextSizeOptions(
+                findPreference(getApplicationContext().getString(R.string.font_sizes)));
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(getApplicationContext().getString(R.string.font_sizes)));
+        bindPreferenceSummaryToValue(
+                findPreference(getApplicationContext().getString(R.string.font_sizes)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
 
-        Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
-        Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));
-        Preference passwordPreference = (Preference)findPreference(getResources().getString(R.string.dhis_password));
+        Preference serverUrlPreference = (Preference) findPreference(
+                getResources().getString(R.string.dhis_url));
+        Preference userPreference = (Preference) findPreference(
+                getResources().getString(R.string.dhis_user));
+        Preference passwordPreference = (Preference) findPreference(
+                getResources().getString(R.string.dhis_password));
 
         //Hide developer option if is not active in the json
-        if(!AppSettingsBuilder.isDeveloperOptionsActive())
-            getPreferenceScreen().removePreference(getPreferenceScreen().findPreference(getResources().getString(R.string.developer_option)));
+        if (!AppSettingsBuilder.isDeveloperOptionsActive()) {
+            getPreferenceScreen().removePreference(getPreferenceScreen().findPreference(
+                    getResources().getString(R.string.developer_option)));
+        }
 
         bindPreferenceSummaryToValue(serverUrlPreference);
         bindPreferenceSummaryToValue(userPreference);
 
-        serverUrlPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(this));
-        userPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(this));
-        passwordPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(this));
+        serverUrlPreference.setOnPreferenceClickListener(
+                new LoginRequiredOnPreferenceClickListener(this));
+        userPreference.setOnPreferenceClickListener(
+                new LoginRequiredOnPreferenceClickListener(this));
+        passwordPreference.setOnPreferenceClickListener(
+                new LoginRequiredOnPreferenceClickListener(this));
     }
 
     /**
@@ -168,7 +178,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     //Remove the last text size option if the screen size is small.
     private static void filterTextSizeOptions(Preference preference) {
-        if(!PreferencesState.getInstance().isLargeTextShown()) {
+        if (!PreferencesState.getInstance().isLargeTextShown()) {
             ListPreference listPreference = (ListPreference) preference;
             CharSequence[] entries = removeLastItem(listPreference.getEntries());
             CharSequence[] values = removeLastItem(listPreference.getEntryValues());
@@ -179,9 +189,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     //Returns the provided charSequence without the last position.
     private static CharSequence[] removeLastItem(CharSequence[] entries) {
-        CharSequence[] newEntries=new CharSequence[4];
-        for(int i=0;i<entries.length-1;i++){
-            newEntries[i]=entries[i];
+        CharSequence[] newEntries = new CharSequence[4];
+        for (int i = 0; i < entries.length - 1; i++) {
+            newEntries[i] = entries[i];
         }
         return newEntries;
     }
@@ -214,31 +224,32 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener =
+            new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object value) {
+                    String stringValue = value.toString();
 
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
+                    if (preference instanceof ListPreference) {
+                        // For list preferences, look up the correct display value in
+                        // the preference's 'entries' list.
+                        ListPreference listPreference = (ListPreference) preference;
+                        int index = listPreference.findIndexOfValue(stringValue);
 
-                // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
+                        // Set the summary to reflect the new value.
+                        preference.setSummary(
+                                index >= 0
+                                        ? listPreference.getEntries()[index]
+                                        : null);
 
-            } else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
-                preference.setSummary(stringValue);
-            }
-            return true;
-        }
-    };
+                    } else {
+                        // For all other preferences, set the summary to the value's
+                        // simple string representation.
+                        preference.setSummary(stringValue);
+                    }
+                    return true;
+                }
+            };
 
     /**
      * Binds a preference's summary to its value. More specifically, when the
@@ -251,7 +262,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      */
     private static void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
-         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
         // Trigger the listener immediately with the preference's
         // current value.
@@ -285,22 +296,28 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
 
-            Preference serverUrlPreference = (Preference)findPreference(getResources().getString(R.string.dhis_url));
-            Preference userPreference = (Preference)findPreference(getResources().getString(R.string.dhis_user));
-            Preference passwordPreference = (Preference)findPreference(getResources().getString(R.string.dhis_password));
+            Preference serverUrlPreference = (Preference) findPreference(
+                    getResources().getString(R.string.dhis_url));
+            Preference userPreference = (Preference) findPreference(
+                    getResources().getString(R.string.dhis_user));
+            Preference passwordPreference = (Preference) findPreference(
+                    getResources().getString(R.string.dhis_password));
 
             bindPreferenceSummaryToValue(serverUrlPreference);
             bindPreferenceSummaryToValue(userPreference);
 
-            SettingsActivity settingsActivity = (SettingsActivity)getActivity();
-            serverUrlPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(settingsActivity));
-            userPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(settingsActivity));
-            passwordPreference.setOnPreferenceClickListener(new LoginRequiredOnPreferenceClickListener(settingsActivity));
+            SettingsActivity settingsActivity = (SettingsActivity) getActivity();
+            serverUrlPreference.setOnPreferenceClickListener(
+                    new LoginRequiredOnPreferenceClickListener(settingsActivity));
+            userPreference.setOnPreferenceClickListener(
+                    new LoginRequiredOnPreferenceClickListener(settingsActivity));
+            passwordPreference.setOnPreferenceClickListener(
+                    new LoginRequiredOnPreferenceClickListener(settingsActivity));
         }
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public boolean isValidFragment(String fragment){
+    public boolean isValidFragment(String fragment) {
         return true;
     }
 
@@ -323,19 +340,20 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onBackPressed() {
-        Class callerActivityClass=getCallerActivity();
-        Intent returnIntent=new Intent(this,callerActivityClass);
+        Class callerActivityClass = getCallerActivity();
+        Intent returnIntent = new Intent(this, callerActivityClass);
         startActivity(returnIntent);
     }
 
-    private Class getCallerActivity(){
+    private Class getCallerActivity() {
         //FIXME Not working as it should the intent param is always null
-        Intent creationIntent=getIntent();
-        if(creationIntent==null){
+        Intent creationIntent = getIntent();
+        if (creationIntent == null) {
             return DashboardActivity.class;
         }
-        Class callerActivity=(Class)creationIntent.getSerializableExtra(BaseActivity.SETTINGS_CALLER_ACTIVITY);
-        if(callerActivity==null){
+        Class callerActivity = (Class) creationIntent.getSerializableExtra(
+                BaseActivity.SETTINGS_CALLER_ACTIVITY);
+        if (callerActivity == null) {
             return DashboardActivity.class;
         }
 
@@ -347,17 +365,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 /**
  * Listener that moves to the LoginActivity before changing DHIS config
  */
-class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceClickListener{
+class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceClickListener {
 
-    private static final String TAG="LoginPreferenceListener";
+    private static final String TAG = "LoginPreferenceListener";
 
     /**
      * Reference to the activity so you can use this from the activity or the fragment
      */
     SettingsActivity activity;
 
-    LoginRequiredOnPreferenceClickListener(SettingsActivity activity){
-        this.activity=activity;
+    LoginRequiredOnPreferenceClickListener(SettingsActivity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -367,9 +385,7 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
                 .setMessage(activity.getString(R.string.dialog_content_dhis_preference_login))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //finish activity and go to login
-                        Log.i(TAG, "Logging out from sdk...");
-                        SdkLoginController.logOutUser(activity);
+                        logout();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -379,5 +395,25 @@ class LoginRequiredOnPreferenceClickListener implements Preference.OnPreferenceC
                 }).create().show();
         Log.i(TAG, "Returning from dialog -> true");
         return true;
+    }
+
+    private void logout() {
+        Log.d(TAG, "Logging out...");
+        UserAccountRepository userAccountRepository = new UserAccountRepository(activity);
+        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+
+        logoutUseCase.execute(new LogoutUseCase.Callback() {
+            @Override
+            public void onLogoutSuccess() {
+                Intent loginIntent = new Intent(activity, LoginActivity.class);
+                activity.finish();
+                activity.startActivity(loginIntent);
+            }
+
+            @Override
+            public void onLogoutError(String message) {
+                Log.e(TAG, message);
+            }
+        });
     }
 }
