@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
-import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Question;
 
 import java.util.ArrayList;
 import java.util.List;

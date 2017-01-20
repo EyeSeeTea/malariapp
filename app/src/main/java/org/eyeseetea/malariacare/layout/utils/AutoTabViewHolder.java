@@ -25,7 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.Option;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;

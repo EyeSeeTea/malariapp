@@ -21,8 +21,8 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 
 /**

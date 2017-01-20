@@ -15,7 +15,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.Media;
 
 import java.io.FileOutputStream;
 import java.util.IllegalFormatException;

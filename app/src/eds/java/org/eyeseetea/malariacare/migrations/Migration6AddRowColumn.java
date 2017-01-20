@@ -17,17 +17,17 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.migrations;
+package org.eyeseetea.malariacare.data.database.migrations;
 
 import android.database.sqlite.SQLiteDatabase;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 
-import org.eyeseetea.malariacare.database.AppDatabase;
-import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.model.Question;
 
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
+import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.addColumn;
 
 /**
  * Created by idelcano on 23/02/2016.

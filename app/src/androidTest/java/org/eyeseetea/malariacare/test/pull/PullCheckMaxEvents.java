@@ -23,12 +23,12 @@ package org.eyeseetea.malariacare.test.pull;
         import android.support.test.runner.AndroidJUnit4;
 
         import org.eyeseetea.malariacare.LoginActivity;
-        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-        import org.eyeseetea.malariacare.database.utils.PreferencesState;
-        import org.eyeseetea.malariacare.sdk.SdkController;
+        import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
+        import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+        import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+        import org.eyeseetea.malariacare.data.remote.SdkController;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-        import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.Event;
+        import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Event;
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;

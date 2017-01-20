@@ -20,7 +20,7 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey.progress;
 
-import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Question;
 
 import java.util.Arrays;
 import java.util.List;
