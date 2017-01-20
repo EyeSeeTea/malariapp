@@ -38,12 +38,16 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.repositories.PullRepository;
+import org.eyeseetea.malariacare.domain.boundary.IPullRepository;
+import org.eyeseetea.malariacare.domain.usecase.PullUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.data.remote.SdkController;
-import org.eyeseetea.malariacare.data.remote.SdkPullController;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -63,10 +67,10 @@ public class PullController {
     private final String TAG = ".PullController";
     public static final int NUMBER_OF_MONTHS=6;
 
+    public IPullRepository mPullRepository = new PullRepository();
+    public PullUseCase mPullUseCase = new PullUseCase(mPullRepository);
 
     private static PullController instance;
-
-    private static Object job;
     /**
      * Context required to i18n error messages while pulling
      */
@@ -76,17 +80,6 @@ public class PullController {
      * Constructs and register this pull controller to the event bus
      */
     PullController() {
-    }
-
-    private void register() {
-        SdkController.register(PreferencesState.getInstance().getContext());
-    }
-
-    /**
-     * Unregister pull controller from bus events
-     */
-    public void unregister() {
-        SdkController.unregister(PreferencesState.getInstance().getContext());
     }
 
     /**
@@ -113,46 +106,104 @@ public class PullController {
         Log.d(TAG, "Starting PULL process...");
         context = ctx;
         try {
-
-            //Register for event bus
-            register();
-            //Enabling resources to pull
-            enableMetaDataFlags();
             //Delete previous metadata
-            SdkPullController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
+            mPullUseCase.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
             Calendar month = Calendar.getInstance();
             month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-            SdkPullController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
-            SdkPullController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
-            SdkPullController.clearMetaDataLoadedFlags();
-            SdkPullController.wipe();
+            mPullUseCase.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
+            mPullUseCase.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
             PopulateDB.wipeSDKData();
             PopulateDB.wipeDatabase();
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
+
+            mPullUseCase.setDownloadOnlyLastEvents(AppSettingsBuilder.isDownloadOnlyLastEvents());
             try {
-                if(AppSettingsBuilder.isDownloadOnlyLastEvents()){
-                    SdkPullController.loadLastData();
-                }
-                else{
-                    SdkPullController.loadData();
-                }
+                pull();
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
             }
         } catch (Exception ex) {
             Log.e(TAG, "pull: " + ex.getLocalizedMessage());
-            unregister();
             postException(ex);
         }
     }
 
-    /**
-     * Enables loading all metadata
-     */
-    private void enableMetaDataFlags() {
-        SdkPullController.enableMetaDataFlags(PreferencesState.getInstance().getContext());
+    private void pull() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
+                R.string.progress_push_preparing_program));
+        mPullUseCase.pullMetadata(new PullUseCase.Callback() {
+            @Override
+            public void onSuccess() {
+                pullData();
+            }
+
+            @Override
+            public void onPullError() {
+                showError(PreferencesState.getInstance().getContext().getText(R.string
+                                .dialog_pull_error).toString());
+            }
+
+            @Override
+            public void onServerURLNotValid() {
+                showError(PreferencesState.getInstance().getContext().getText(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .error_not_found).toString());
+            }
+
+            @Override
+            public void onInvalidCredentials() {
+                showError(PreferencesState.getInstance().getContext().getText(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
+                        .toString());
+            }
+
+            @Override
+            public void onNetworkError() {
+                showError(PreferencesState.getInstance().getContext().getString(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .title_error_unexpected));
+            }
+        });
+    }
+
+    private void pullData() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
+                R.string.progress_push_preparing_events));
+        mPullUseCase.pullData(new PullUseCase.Callback() {
+            @Override
+            public void onSuccess() {
+                startConversion();
+            }
+
+            @Override
+            public void onPullError() {
+                showError(PreferencesState.getInstance().getContext().getText(R.string
+                        .dialog_pull_error).toString());
+            }
+
+            @Override
+            public void onServerURLNotValid() {
+                showError(PreferencesState.getInstance().getContext().getText(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .error_not_found).toString());
+            }
+
+            @Override
+            public void onInvalidCredentials() {
+                showError(PreferencesState.getInstance().getContext().getText(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
+                        .toString());
+            }
+
+            @Override
+            public void onNetworkError() {
+                showError(PreferencesState.getInstance().getContext().getString(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .title_error_unexpected));
+            }
+        });
     }
 
     private void onPullException(Exception ex) {
@@ -164,7 +215,6 @@ public class PullController {
 
     private void onPullFinish() {
         postFinish();
-        unregister();
     }
 
     private void onPullError(String message) {
@@ -175,17 +225,21 @@ public class PullController {
     }
 
     public void startConversion() {
-        //Ok
-        wipeDatabase();
+        try {
+            wipeDatabase();
 
-        if(!mandatoryMetadataTablesNotEmpty())
-            ProgressActivity.cancellPull("Error", "Error downloading metadata");
+            if (!mandatoryMetadataTablesNotEmpty())
+                ProgressActivity.cancellPull("Error", "Error downloading metadata");
 
-        convertFromSDK();
+            convertFromSDK();
 
-        validateCS();
-        if (ProgressActivity.PULL_IS_ACTIVE) {
-            Log.d(TAG, "PULL process...OK");
+            validateCS();
+            if (ProgressActivity.PULL_IS_ACTIVE) {
+                Log.d(TAG, "PULL process...OK");
+            }
+            postFinish();
+        } catch (NullPointerException e) {
+                ProgressActivity.showException("Unexpected error");
         }
     }
 
@@ -499,9 +553,15 @@ public class PullController {
     /**
      * Notifies that the pull is over
      */
-    private void postFinish() {
-        //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
-        SdkController.postFinish();
+    public void postFinish() {
+        //// FIXME: 11/01/17 I think this user should be get from the SDK user
+        User user = User.getLoggedUser();
+        if(user==null) {
+            user = new User();
+            user.save();
+        }
+        Session.setUser(user);
+        ProgressActivity.postFinish();
     }
 
     //Returns true if the pull thead is finish
@@ -509,4 +569,7 @@ public class PullController {
        return SdkController.finishPullJob();
     }
 
+    private static void showError(String message) {
+        ProgressActivity.showException(message);
+    }
 }

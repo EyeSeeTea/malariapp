@@ -28,7 +28,8 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertF
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.Answer;
 import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.Question;import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.eyeseetea.malariacare.data.database.model.Question;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 
