@@ -61,7 +61,6 @@ public class LoginActivity extends AbsLoginActivity {
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
-    public LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -204,18 +203,6 @@ public class LoginActivity extends AbsLoginActivity {
         }
         //Go to dashboard Activity
         launchActivity(this, DashboardActivity.class);
-    }
-
-    /**
-     * Saves user credentials into preferences
-     */
-    private void saveUserDetails() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.dhis_url), getServerUrl().getText().toString());
-        editor.putString(getString(R.string.dhis_user), getUsername().getText().toString());
-        editor.putString(getString(R.string.dhis_password), getPassword().getText().toString());
-        editor.commit();
     }
 
     /**
