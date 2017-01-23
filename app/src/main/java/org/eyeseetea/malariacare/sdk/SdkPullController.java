@@ -14,6 +14,7 @@ import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
 import org.hisp.dhis.client.sdk.models.attribute.Attribute;
+import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -108,7 +109,6 @@ public class SdkPullController extends SdkController {
         asyncDownloads++;
         //Pull metadata
         pullAttributes();
-        pullPrograms();
     }
 
     private static void loadDataValues() {
@@ -144,6 +144,7 @@ public class SdkPullController extends SdkController {
                     public void call(
                             List<Attribute> attributes) {
                         Log.d(TAG, "Pull of attributes finish"+ attributes.size());
+                        pullDataElements();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -171,7 +172,6 @@ public class SdkPullController extends SdkController {
                             List<Program> programs) {
                         sdkPrograms = programs;
 
-                        pullProgramStages(SdkModelUtils.getProgramStageUids(programs));
                         Log.d(TAG, "Pull of programs finish");
                     }
                 }, new Action1<Throwable>() {
@@ -201,9 +201,6 @@ public class SdkPullController extends SdkController {
                         pullProgramStageDataElements(SdkModelUtils.getProgramStageDataElementUids(
                                 programStages));
 
-                        pullProgramStageSections(SdkModelUtils.getProgramStageSectionUids(
-                                programStages));
-
                         Log.d(TAG, "Pull of ProgramStage finish");
                     }
                 }, new Action1<Throwable>() {
@@ -218,23 +215,17 @@ public class SdkPullController extends SdkController {
      * Pull the ProgramStageDataSections and continues the pull with the
      * pullProgramStageDataElements
      */
-    private static void pullProgramStageSections(Set<String> programStagesSectionUids) {
+    private static void pullDataElements( ) {
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
                 R.string.progress_push_preparing_program_stage_sections));
-        Observable<List<ProgramStageSection>> programStageSectionObservable =
-                D2.programStageSections().pull(programStagesSectionUids);
+        Observable<List<DataElement>> programStageSectionObservable =
+                D2.dataElements().pull( );
         programStageSectionObservable.
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<ProgramStageSection>>() {
+                .subscribe(new Action1<List<DataElement>>() {
                     @Override
-                    public void call(List<ProgramStageSection> programStageSections) {
-                        pullProgramStageDataElements(
-                                SdkModelUtils.getProgramStageSectionDataElementUids(
-                                        programStageSections));
-                        Log.d(TAG, "Pull of ProgramStageSection finish");
-
-                        pullOrganisationUnits();
+                    public void call(List<DataElement> dataElements) {
                     }
                 }, new Action1<Throwable>() {
                     @Override

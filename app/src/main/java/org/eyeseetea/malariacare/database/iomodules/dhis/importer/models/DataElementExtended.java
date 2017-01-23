@@ -363,7 +363,7 @@ public class DataElementExtended implements VisitableFromSDK {
                 throw new RuntimeException(String.format(
                         PreferencesState.getInstance().getContext().getResources().getString(
                                 R.string.dialog_error_attribute_null),
-                        attributeValue.getAttributeId()));
+                        attributeValue.getAttributeUId()));
             }
             if (attributeValue.getAttribute().getCode().equals(code)) {
                 return attributeValue;
