@@ -23,21 +23,17 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
 import org.eyeseetea.malariacare.data.IPullDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.exception.PullException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
-import org.hisp.dhis.client.sdk.core.common.network.ApiException;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
-import java.net.HttpURLConnection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,13 +49,13 @@ import rx.schedulers.Schedulers;
 public class PullDhisSDKDataSource implements IPullDataSource {
 
     @Override
-    public void pullMetadata(final IDataSourceCallback<Void> callback) {
+    public void pullMetadata(final IDhisPullSourceCallback callback) {
 
         boolean isNetworkAvailable = isNetworkAvailable();
 
-        if (!isNetworkAvailable)
+        if (!isNetworkAvailable) {
             callback.onError(new NetworkException());
-        else {
+        } else {
             Set<ProgramType> programTypes = new HashSet<>();
             programTypes.add(ProgramType.WITHOUT_REGISTRATION);
 
@@ -78,14 +74,12 @@ public class PullDhisSDKDataSource implements IPullDataSource {
                     .subscribe(new Action1<List<Program>>() {
                         @Override
                         public void call(List<Program> programs) {
-                            callback.onSuccess(null);
+                            callback.onComplete();
                         }
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            Throwable throwableResult = mapThrowable(throwable);
-
-                            callback.onError(throwableResult);
+                            callback.onError(throwable);
                         }
                     });
         }
@@ -93,19 +87,17 @@ public class PullDhisSDKDataSource implements IPullDataSource {
     }
 
     @Override
-    public void pullData(IDataSourceCallback<Void> callback) {
+    public void pullData(IDhisPullSourceCallback callback) {
         boolean isNetworkAvailable = isNetworkAvailable();
 
-        if (!isNetworkAvailable)
+        if (!isNetworkAvailable) {
             callback.onError(new NetworkException());
-        else {
+        } else {
             try {
                 pullEvents();
-                callback.onSuccess(null);
-            }catch (Exception e){
-                Throwable throwableResult = mapThrowable(e);
-
-                callback.onError(throwableResult);
+                callback.onComplete();
+            } catch (Exception e) {
+                callback.onError(e);
             }
         }
     }
@@ -133,31 +125,11 @@ public class PullDhisSDKDataSource implements IPullDataSource {
     }
 
 
-    private boolean isNetworkAvailable(){
+    private boolean isNetworkAvailable() {
         ConnectivityManager cm =
-                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-    private Throwable mapThrowable(Throwable throwable) {
-        Throwable throwableResult = throwable;
-
-        if (throwable.getCause() != null) {
-            throwableResult = throwable.getCause();
-        } else if (throwable instanceof ApiException) {
-            ApiException apiException = (ApiException) throwable;
-
-            if (apiException.getResponse() != null
-                    && apiException.getResponse().getStatus()
-                    == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                throwableResult = new InvalidCredentialsException();
-            }
-        }
-        else{
-            throwableResult = new PullException();
-        }
-
-        return throwableResult;
     }
 }

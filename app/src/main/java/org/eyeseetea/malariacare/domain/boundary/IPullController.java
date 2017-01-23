@@ -19,8 +19,10 @@
 
 package org.eyeseetea.malariacare.domain.boundary;
 
-public interface IPullRepository {
-    void pullMetadata(IRepositoryCallback<Void> callback);
+import org.eyeseetea.malariacare.domain.entity.PullFilters;
 
-    void pullData(IRepositoryCallback<Void> callback);
+public interface IPullController {
+    void pull(PullFilters filters, IPullControllerCallback callback);
+
+    void cancel();
 }

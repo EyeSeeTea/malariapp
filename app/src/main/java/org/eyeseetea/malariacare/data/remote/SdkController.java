@@ -23,12 +23,11 @@ import android.content.Context;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.*;
+import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
@@ -82,22 +81,23 @@ public abstract class SdkController {
 
 
     public static void postProgress(String msg) {
-        ProgressActivity.step(msg);
+        //ProgressActivity.step(msg);
     }
 
     public static void postException(Exception ex) {
-        ProgressActivity.cancellPull("error",ex.getMessage());
+        //ProgressActivity.cancellPull("error",ex.getMessage());
     }
 
     public static void postFinish() {
         //// FIXME: 11/01/17 I think this user should be get from the SDK user
         User user = User.getLoggedUser();
-        if(user==null) {
+        if (user == null) {
             user = new User();
             user.save();
         }
         Session.setUser(user);
-        ProgressActivity.postFinish();
+        //// TODO: 23/01/2017 fix in push
+        //ProgressActivity.postFinish();
     }
 
     public static boolean finishPullJob() {

@@ -19,19 +19,19 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import org.eyeseetea.malariacare.ProgressActivity;
-import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
+import org.eyeseetea.malariacare.data.IPullDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
-
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
+        .OrganisationUnitExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
+        .OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
         .ProgramStageDataElementExtended;
@@ -40,19 +40,20 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Us
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.repositories.PullRepository;
-import org.eyeseetea.malariacare.domain.boundary.IPullRepository;
-import org.eyeseetea.malariacare.domain.usecase.PullUseCase;
-import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.SdkController;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
+import org.eyeseetea.malariacare.domain.entity.PullFilters;
+import org.eyeseetea.malariacare.domain.entity.PullStep;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.PullException;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -63,29 +64,28 @@ import java.util.Map;
  * A static controller that orchestrate the pull process
  * Created by arrizabalaga on 4/11/15.
  */
-public class PullController {
+public class PullController implements IPullController {
     private final String TAG = ".PullController";
-    public static final int NUMBER_OF_MONTHS=6;
-
-    public IPullRepository mPullRepository = new PullRepository();
-    public PullUseCase mPullUseCase = new PullUseCase(mPullRepository);
 
     private static PullController instance;
+
+    IPullDataSource pullRemoteDataSource;
+
+    IPullControllerCallback callback;
     /**
-     * Context required to i18n error messages while pulling
+     * Used for control new steps
      */
-    private Context context;
+    public static Boolean PULL_IS_ACTIVE = false;
 
     /**
      * Constructs and register this pull controller to the event bus
      */
-    PullController() {
+    public PullController() {
+        pullRemoteDataSource = new PullDhisSDKDataSource();
     }
 
     /**
      * Singleton constructor
-     *
-     * @return
      */
     public static PullController getInstance() {
         if (instance == null) {
@@ -94,182 +94,55 @@ public class PullController {
         return instance;
     }
 
-    /**
-     * Launches the pull process:
-     * - Loads metadata from dhis2 server
-     * - Wipes app database
-     * - Turns SDK into APP data
-     *
-     * @param ctx
-     */
-    public void pull(Context ctx) {
-        Log.d(TAG, "Starting PULL process...");
-        context = ctx;
-        try {
-            //Delete previous metadata
-            mPullUseCase.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
-            Calendar month = Calendar.getInstance();
-            month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-            mPullUseCase.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
-            mPullUseCase.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
-            PopulateDB.wipeSDKData();
-            PopulateDB.wipeDatabase();
-            //Pull new metadata
-            postProgress(context.getString(R.string.progress_pull_downloading));
+    public void startConversion() {
+        wipeDatabase();
 
-            mPullUseCase.setDownloadOnlyLastEvents(AppSettingsBuilder.isDownloadOnlyLastEvents());
-            try {
-                pull();
-            } catch (Exception ex) {
-                Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
-                ex.printStackTrace();
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, "pull: " + ex.getLocalizedMessage());
-            postException(ex);
+        if (!mandatoryMetadataTablesNotEmpty()) {
+            callback.onError(new ConversionException());
         }
-    }
 
-    private void pull() {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_program));
-        mPullUseCase.pullMetadata(new PullUseCase.Callback() {
-            @Override
-            public void onSuccess() {
-                pullData();
-            }
+        convertFromSDK();
 
-            @Override
-            public void onPullError() {
-                showError(PreferencesState.getInstance().getContext().getText(R.string
-                                .dialog_pull_error).toString());
-            }
-
-            @Override
-            public void onServerURLNotValid() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .error_not_found).toString());
-            }
-
-            @Override
-            public void onInvalidCredentials() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
-                        .toString());
-            }
-
-            @Override
-            public void onNetworkError() {
-                showError(PreferencesState.getInstance().getContext().getString(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .title_error_unexpected));
-            }
-        });
-    }
-
-    private void pullData() {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_events));
-        mPullUseCase.pullData(new PullUseCase.Callback() {
-            @Override
-            public void onSuccess() {
-                startConversion();
-            }
-
-            @Override
-            public void onPullError() {
-                showError(PreferencesState.getInstance().getContext().getText(R.string
-                        .dialog_pull_error).toString());
-            }
-
-            @Override
-            public void onServerURLNotValid() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .error_not_found).toString());
-            }
-
-            @Override
-            public void onInvalidCredentials() {
-                showError(PreferencesState.getInstance().getContext().getText(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
-                        .toString());
-            }
-
-            @Override
-            public void onNetworkError() {
-                showError(PreferencesState.getInstance().getContext().getString(
-                        org.hisp.dhis.client.sdk.ui.bindings.R.string
-                                .title_error_unexpected));
-            }
-        });
-    }
-
-    private void onPullException(Exception ex) {
-        ProgressActivity.PULL_ERROR=true;
-        Log.e(TAG, "onLoadMetadataFinished: " + ex.getLocalizedMessage());
-        ex.printStackTrace();
-        postException(ex);
-    }
-
-    private void onPullFinish() {
+        validateCS();
+        if (PULL_IS_ACTIVE) {
+            Log.d(TAG, "PULL process...OK");
+        }
         postFinish();
     }
 
-    private void onPullError(String message) {
-        ProgressActivity.cancellPull(message, message);
-        postException(new Exception(context.getString(R.string.dialog_pull_error)));
-        ProgressActivity.cancellPull(context.getString(R.string.dialog_pull_error),message);
-        postException(new Exception(context.getString(R.string.dialog_pull_error)));
-    }
-
-    public void startConversion() {
-        try {
-            wipeDatabase();
-
-            if (!mandatoryMetadataTablesNotEmpty())
-                ProgressActivity.cancellPull("Error", "Error downloading metadata");
-
-            convertFromSDK();
-
-            validateCS();
-            if (ProgressActivity.PULL_IS_ACTIVE) {
-                Log.d(TAG, "PULL process...OK");
-            }
-            postFinish();
-        } catch (NullPointerException e) {
-                ProgressActivity.showException("Unexpected error");
-        }
-    }
-
     private void validateCS() {
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         Log.d(TAG, "Validate Composite scores");
-        postProgress(context.getString(R.string.progress_pull_validating_composite_scores));
-        List<CompositeScore> compositeScores=CompositeScore.list();
-        for(CompositeScore compositeScore:compositeScores){
-            if(!compositeScore.hasChildren() && (compositeScore.getQuestions()==null || compositeScore.getQuestions().size()==0)){
-                Log.d(TAG, "CompositeScore without children and without questions will be removed: "+compositeScore.toString());
+        callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
+        List<CompositeScore> compositeScores = CompositeScore.list();
+        for (CompositeScore compositeScore : compositeScores) {
+            if (!compositeScore.hasChildren() && (compositeScore.getQuestions() == null
+                    || compositeScore.getQuestions().size() == 0)) {
+                Log.d(TAG, "CompositeScore without children and without questions will be removed: "
+                        + compositeScore.toString());
                 compositeScore.delete();
                 continue;
             }
-            if(compositeScore.getHierarchical_code()==null){
-                Log.d(TAG, "CompositeScore without hierarchical code will be removed: "+compositeScore.toString());
+            if (compositeScore.getHierarchical_code() == null) {
+                Log.d(TAG, "CompositeScore without hierarchical code will be removed: "
+                        + compositeScore.toString());
                 compositeScore.delete();
                 continue;
             }
-            if(compositeScore.getComposite_score()==null && !compositeScore.getHierarchical_code().equals(CompositeScoreBuilder.ROOT_NODE_CODE)){
-                Log.d(TAG, "CompositeScore not root and not parent should be fixed: "+compositeScore.toString());
+            if (compositeScore.getComposite_score() == null
+                    && !compositeScore.getHierarchical_code().equals(
+                    CompositeScoreBuilder.ROOT_NODE_CODE)) {
+                Log.d(TAG, "CompositeScore not root and not parent should be fixed: "
+                        + compositeScore.toString());
                 continue;
             }
         }
     }
 
-    private boolean mandatoryMetadataTablesNotEmpty(){
+    private boolean mandatoryMetadataTablesNotEmpty() {
 
         int elementsInTable = 0;
-        for(Class table: SdkController.MANDATORY_METADATA_TABLES) {
+        for (Class table : SdkController.MANDATORY_METADATA_TABLES) {
             elementsInTable = (int) new SQLite().selectCountOf()
                     .from(table).count();
             if (elementsInTable == 0) {
@@ -284,7 +157,7 @@ public class PullController {
      * Erase data from app database
      */
     public void wipeDatabase() {
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         Log.d(TAG, "Deleting app database...");
         PopulateDB.wipeDatabase();
     }
@@ -293,124 +166,139 @@ public class PullController {
      * Launches visitor that turns SDK data into APP data
      */
     private void convertFromSDK() {
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         Log.d(TAG, "Converting SDK into APP data");
 
         //One shared converter to match parents within the hierarchy
         ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
         convertMetaData(converter);
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         convertDataValues(converter);
 
     }
 
     /**
      * Turns sdk metadata into app metadata
-     *
-     * @param converter
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         //Convert Programs, Tabs
-        postProgress(context.getString(R.string.progress_pull_preparing_program));
+        callback.onStep(PullStep.PREPARING_PROGRAMS);
         Log.i(TAG, "Converting programs and tabs...");
         List<String> assignedProgramsIDs = SdkQueries.getAssignedPrograms();
         for (String assignedProgramID : assignedProgramsIDs) {
-            ProgramExtended programExtended = new ProgramExtended(SdkQueries.getProgram(assignedProgramID));
+            ProgramExtended programExtended = new ProgramExtended(
+                    SdkQueries.getProgram(assignedProgramID));
             programExtended.accept(converter);
         }
 
         //Convert Answers, Options
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        postProgress(context.getString(R.string.progress_pull_preparing_answers));
-        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(SdkQueries.getOptionSets());
+        if (!PULL_IS_ACTIVE) return;
+        callback.onStep(PullStep.PREPARING_ANSWERS);
+        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
+                SdkQueries.getOptionSets());
         Log.i(TAG, "Converting answers and options...");
         for (OptionSetExtended optionSet : optionSets) {
-            if (!ProgressActivity.PULL_IS_ACTIVE) return;
+            if (!PULL_IS_ACTIVE) return;
             optionSet.accept(converter);
         }
         //OrganisationUnits
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         if (!convertOrgUnits(converter)) return;
 
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         Log.i(TAG, "Converting user...");
-        UserAccountExtended userAccountExtended = new UserAccountExtended(SdkQueries.getUserAccount());
+        UserAccountExtended userAccountExtended = new UserAccountExtended(
+                SdkQueries.getUserAccount());
         userAccountExtended.accept(converter);
 
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         //Convert questions and compositeScores
-        postProgress(context.getString(R.string.progress_pull_questions));
+        callback.onStep(PullStep.PREPARING_QUESTIONS);
         Log.i(TAG, "Ordering questions and compositeScores...");
 
         int count;
         //Dataelements ordered by program.
         List<ProgramExtended> programs = ProgramExtended.getAllPrograms();
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {
-            converter.actualProgram=program;
-            Log.i(TAG,String.format("\t program '%s' ",program.getName()));
+            converter.actualProgram = program;
+            Log.i(TAG, String.format("\t program '%s' ", program.getName()));
             List<DataElementExtended> dataElements = new ArrayList<>();
             String programUid = program.getUid();
             List<ProgramStageExtended> programStages = program.getProgramStages();
             for (ProgramStageExtended programStage : programStages) {
-                Log.d(TAG, "programStage.getProgramStageDataElements size: "+programStage.getProgramStageDataElements().size());
-                Log.i(TAG,String.format("\t\t programStage '%s' ",program.getName()));
-                List<ProgramStageDataElementExtended> programStageDataElements = programStage.getProgramStageDataElements();
-                count=programStage.getProgramStageDataElements().size();
-                for (ProgramStageDataElementExtended programStageDataElement : programStageDataElements) {
-                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                Log.d(TAG, "programStage.getProgramStageDataElements size: "
+                        + programStage.getProgramStageDataElements().size());
+                Log.i(TAG, String.format("\t\t programStage '%s' ", program.getName()));
+                List<ProgramStageDataElementExtended> programStageDataElements =
+                        programStage.getProgramStageDataElements();
+                count = programStage.getProgramStageDataElements().size();
+                for (ProgramStageDataElementExtended programStageDataElement :
+                        programStageDataElements) {
+                    if (!PULL_IS_ACTIVE) return;
 
-                    //The ProgramStageDataElement without Dataelement uid is not correctly configured.
-                    if(programStageDataElement.getDataelement()==null || programStageDataElement.getDataelement().equals("")){
+                    //The ProgramStageDataElement without Dataelement uid is not correctly
+                    // configured.
+                    if (programStageDataElement.getDataelement() == null
+                            || programStageDataElement.getDataelement().equals("")) {
                         Log.d(TAG, "Ignoring ProgramStageDataElements without dataelement...");
                         continue;
                     }
 
-                    //Note: the sdk method getDataElement returns the dataElement object, and getDataelement returns the dataelement uid.
+                    //Note: the sdk method getDataElement returns the dataElement object, and
+                    // getDataelement returns the dataelement uid.
                     DataElementExtended dataElement = programStageDataElement.getDataElement();
-                    if (dataElement!=null && dataElement.getUid() != null) {
+                    if (dataElement != null && dataElement.getUid() != null) {
                         dataElements.add(dataElement);
-                    }
-                    else{
-                        DataElementExtended.existsDataElementByUid(programStageDataElement.getDataelement());
-                        dataElement = new DataElementExtended(SdkQueries.getDataElement(programStageDataElement.getDataelement()));
+                    } else {
+                        DataElementExtended.existsDataElementByUid(
+                                programStageDataElement.getDataelement());
+                        dataElement = new DataElementExtended(SdkQueries.getDataElement(
+                                programStageDataElement.getDataelement()));
 
-                        if (dataElement!=null) {
+                        if (dataElement != null) {
                             dataElements.add(dataElement);
-                        }
-                        else{
-                            //FIXME This query returns random null for some dataelements but those dataElements are stored in the database. It's a possible bug of dbflow and DataElement pojo conversion.
-                            Log.d(TAG,"Null dataelement on first query "+ programStageDataElement.getProgramStage());
-                            int times=0;
-                            while(dataElement==null){
+                        } else {
+                            //FIXME This query returns random null for some dataelements but
+                            // those dataElements are stored in the database. It's a possible bug
+                            // of dbflow and DataElement pojo conversion.
+                            Log.d(TAG, "Null dataelement on first query "
+                                    + programStageDataElement.getProgramStage());
+                            int times = 0;
+                            while (dataElement == null) {
                                 times++;
-                                Log.d(TAG, "running : "+times);
+                                Log.d(TAG, "running : " + times);
                                 try {
                                     Thread.sleep(100);
-                                    dataElement= new DataElementExtended(SdkQueries.getDataElement(programStageDataElement.getDataelement()));
-                                } catch (InterruptedException e) {//throw new RuntimeException("Null query");
+                                    dataElement = new DataElementExtended(SdkQueries.getDataElement(
+                                            programStageDataElement.getDataelement()));
+                                } catch (InterruptedException e) {//throw new RuntimeException
+                                    // ("Null query");
                                     e.printStackTrace();
                                 }
                             }
-                            Log.d(TAG, "needed : "+times);
+                            Log.d(TAG, "needed : " + times);
                             dataElements.add(dataElement);
                         }
                     }
                 }
 
-                if(count!=dataElements.size()){
-                    Log.d(TAG, "The programStageDataElements size ("+count+") is different than the saved dataelements size ("+dataElements.size()+")");
+                if (count != dataElements.size()) {
+                    Log.d(TAG, "The programStageDataElements size (" + count
+                            + ") is different than the saved dataelements size ("
+                            + dataElements.size() + ")");
                 }
             }
-            Log.i(TAG,String.format("\t program '%s' DONE ",program.getName()));
+            Log.i(TAG, String.format("\t program '%s' DONE ", program.getName()));
 
 
-            if (!ProgressActivity.PULL_IS_ACTIVE) return;
+            if (!PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElementExtended>() {
-                public int compare(DataElementExtended dataElementExtended1, DataElementExtended dataElementExtended2) {
+                public int compare(DataElementExtended dataElementExtended1,
+                        DataElementExtended dataElementExtended2) {
                     Integer dataelementOrder1 = -1, dataelementOrder2 = -1;
                     try {
                         dataelementOrder1 = dataElementExtended1.findOrder();
@@ -424,29 +312,35 @@ public class PullController {
                         e.printStackTrace();
                         dataelementOrder2 = null;
                     }
-                    if (dataelementOrder1 == dataelementOrder2)
+                    if (dataelementOrder1 == dataelementOrder2) {
                         return 0;
-                    else if (dataelementOrder1 == null)
+                    } else if (dataelementOrder1 == null) {
                         return 1;
-                    else if (dataelementOrder2 == null)
+                    } else if (dataelementOrder2 == null) {
                         return -1;
+                    }
                     return dataelementOrder1.compareTo(dataelementOrder2);
                 }
             });
             programsDataelements.put(programUid, dataElements);
         }
 
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building questions,compositescores,headers...");
-        int i=0;
+        int i = 0;
         for (ProgramExtended program : programs) {
-            converter.actualProgram=program;
+            converter.actualProgram = program;
             String programUid = program.getUid();
             List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
             for (DataElementExtended dataElement : sortDataElements) {
-                if (++i%50==0)
-                    postProgress(context.getString(R.string.progress_pull_questions) + String.format(" %s", i));
-                if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                /* // TODO: 23/01/2017
+                if (++i % 50 == 0) {
+                    postProgress(
+                            context.getString(R.string.progress_pull_questions) + String.format(
+                                    " %s", i));
+                }
+                */
+                if (!PULL_IS_ACTIVE) return;
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
                 dataElement.setProgramUid(programUid);
                 dataElement.accept(converter);
@@ -456,22 +350,22 @@ public class PullController {
         //Saves questions and media in batch mode
         converter.saveBatch();
 
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         Log.i(TAG, "Building relationships...");
-        postProgress(context.getString(R.string.progress_pull_relationships));
+        callback.onStep(PullStep.PREPARING_RELATIONSHIPS);
         for (ProgramExtended program : programs) {
-            converter.actualProgram=program;
+            converter.actualProgram = program;
             String programUid = program.getUid();
             List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
             for (DataElementExtended dataElement : sortDataElements) {
-                if (!ProgressActivity.PULL_IS_ACTIVE) return;
+                if (!PULL_IS_ACTIVE) return;
                 dataElement.setProgramUid(programUid);
                 converter.buildRelations(dataElement);
             }
         }
 
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        if (!PULL_IS_ACTIVE) return;
         //Fill order and parent scores
         Log.i(TAG, "Building compositeScore relationships...");
         converter.buildScores();
@@ -480,49 +374,56 @@ public class PullController {
 
     /**
      * Turns sdk organisationUnit and levels into app info
-     * @param converter
-     * @return
      */
     private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
-        postProgress(context.getString(R.string.progress_pull_preparing_orgs));
+        callback.onStep(PullStep.PREPARING_ORGANISATION_UNITS);
         Log.i(TAG, "Converting organisationUnitLevels...");
-        List<OrganisationUnitLevelExtended> organisationUnitLevels = OrganisationUnitLevelExtended.getExtendedList(SdkQueries.getOrganisationUnitLevels());
-        for(OrganisationUnitLevelExtended organisationUnitLevel:organisationUnitLevels){
-            if(!ProgressActivity.PULL_IS_ACTIVE) return false;
+        List<OrganisationUnitLevelExtended> organisationUnitLevels =
+                OrganisationUnitLevelExtended.getExtendedList(
+                        SdkQueries.getOrganisationUnitLevels());
+        for (OrganisationUnitLevelExtended organisationUnitLevel : organisationUnitLevels) {
+            if (!PULL_IS_ACTIVE) return false;
             organisationUnitLevel.accept(converter);
         }
 
         Log.i(TAG, "Converting organisationUnits...");
-        List<OrganisationUnitExtended> assignedOrganisationsUnits = OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
+        List<OrganisationUnitExtended> assignedOrganisationsUnits =
+                OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
         for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if (!ProgressActivity.PULL_IS_ACTIVE) return false;
+            if (!PULL_IS_ACTIVE) return false;
             assignedOrganisationsUnit.accept(converter);
         }
 
-        Log.i(TAG,"Building orgunit hierarchy...");
+        Log.i(TAG, "Building orgunit hierarchy...");
         return converter.buildOrgUnitHierarchy(assignedOrganisationsUnits);
     }
 
     /**
      * Turns events and datavalues into
-     *
-     * @param converter
      */
     private void convertDataValues(ConvertFromSDKVisitor converter) {
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        postProgress(context.getString(R.string.progress_pull_surveys));
-        //XXX This is the right place to apply additional filters to data conversion (only predefined orgunit for instance)
+        if (!PULL_IS_ACTIVE) return;
+        callback.onStep(PullStep.PREPARING_SURVEYS);
+        //XXX This is the right place to apply additional filters to data conversion (only
+        // predefined orgunit for instance)
         //For each unit
-        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits())) {
+        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(
+                SdkQueries.getAssignedOrganisationUnits())) {
             //Each assigned program
-            for (ProgramExtended program : ProgramExtended.getExtendedList(SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION))) {
-                converter.actualProgram=program;
-                List<EventExtended> events = EventExtended.getExtendedList(SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
-                Log.i(TAG, String.format("Converting surveys and values for orgUnit: %s | program: %s", organisationUnit.getLabel(), program.getDisplayName()));
+            for (ProgramExtended program : ProgramExtended.getExtendedList(
+                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
+                            ProgramType.WITHOUT_REGISTRATION))) {
+                converter.actualProgram = program;
+                List<EventExtended> events = EventExtended.getExtendedList(
+                        SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
+                Log.i(TAG,
+                        String.format("Converting surveys and values for orgUnit: %s | program: %s",
+                                organisationUnit.getLabel(), program.getDisplayName()));
                 for (EventExtended event : events) {
-                    if (!ProgressActivity.PULL_IS_ACTIVE) return;
-                    if(event.getEventDate()==null || event.getEventDate().equals(""))
+                    if (!PULL_IS_ACTIVE) return;
+                    if (event.getEventDate() == null || event.getEventDate().equals("")) {
                         break;
+                    }
                     event.accept(converter);
                 }
             }
@@ -533,43 +434,65 @@ public class PullController {
     }
 
     /**
-     * Notifies a progress into the bus (the caller activity will be listening)
-     *
-     * @param msg
-     */
-    private void postProgress(String msg) {
-        SdkController.postProgress(msg);
-    }
-
-    /**
-     * Notifies an exception while pulling
-     *
-     * @param ex
-     */
-    private void postException(Exception ex) {
-        SdkController.postException(ex);
-    }
-
-    /**
      * Notifies that the pull is over
      */
     public void postFinish() {
-        //// FIXME: 11/01/17 I think this user should be get from the SDK user
         User user = User.getLoggedUser();
-        if(user==null) {
+        if (user == null) {
             user = new User();
             user.save();
         }
         Session.setUser(user);
-        ProgressActivity.postFinish();
+        if (!PULL_IS_ACTIVE) {
+            callback.onError(new PullException());
+        } else {
+            callback.onComplete();
+        }
     }
 
-    //Returns true if the pull thead is finish
-    public boolean finishPullJob() {
-       return SdkController.finishPullJob();
+    @Override
+    public void pull(final PullFilters filters, final IPullControllerCallback callback) {
+        PULL_IS_ACTIVE = true;
+        this.callback = callback;
+        callback.onStep(PullStep.PROGRAMS);
+
+        pullRemoteDataSource.pullMetadata(new IDhisPullSourceCallback() {
+
+            @Override
+            public void onComplete() {
+                callback.onStep(PullStep.EVENTS);
+
+                pullRemoteDataSource.pullData(new IDhisPullSourceCallback() {
+                                                  @Override
+                                                  public void onComplete() {
+                                                      try {
+                                                          startConversion();
+                                                          callback.onComplete();
+                                                      } catch (NullPointerException e) {
+                                                          callback.onError(new
+                                                                  ConversionException(e));
+                                                      }
+                                                  }
+
+                                                  @Override
+                                                  public void onError(Throwable throwable) {
+                                                      throwable.printStackTrace();
+                                                      callback.onError(throwable);
+                                                  }
+                                              }
+                );
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+                callback.onError(throwable);
+            }
+        });
     }
 
-    private static void showError(String message) {
-        ProgressActivity.showException(message);
+    @Override
+    public void cancel() {
+        PULL_IS_ACTIVE = false;
     }
 }

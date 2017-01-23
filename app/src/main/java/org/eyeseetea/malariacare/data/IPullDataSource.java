@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.data;
 
 public interface IPullDataSource {
-    void pullMetadata(IDataSourceCallback<Void> callback);
+    void pullMetadata(IDhisPullSourceCallback callback);
 
-    void pullData(IDataSourceCallback<Void> callback);
+    void pullData(IDhisPullSourceCallback callback);
 }

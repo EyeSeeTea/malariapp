@@ -19,101 +19,61 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.domain.boundary.IPullRepository;
-import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
-import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
+import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
+import org.eyeseetea.malariacare.domain.entity.PullFilters;
+import org.eyeseetea.malariacare.domain.entity.PullStep;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.exception.PullException;
-
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 
 public class PullUseCase {
 
     public interface Callback {
-        void onSuccess();
+        void onComplete();
 
         void onPullError();
 
-        void onServerURLNotValid();
+        void onConversionError();
 
-        void onInvalidCredentials();
+        void onStep(PullStep pullStep);
 
         void onNetworkError();
     }
 
-    String mStartDate;
-    boolean fullHierarchy;
-    boolean downloadOnlyLastEvents;
-    int maxEvents;
+    private IPullController mPullController = new PullController();
 
-    private IPullRepository mPullRepository;
-
-    public PullUseCase(IPullRepository pullRepository) {
-        mPullRepository = pullRepository;
+    public PullUseCase() {
     }
 
-    public void setStartDate(String startDate) {
-        mStartDate = startDate;
-    }
+    public void execute(PullFilters pullFilters, final Callback callback) {
 
-    public void setFullOrganisationUnitHierarchy(boolean fullHierarchy) {
-        this.fullHierarchy = fullHierarchy;
-    }
+        mPullController.pull(pullFilters, new IPullControllerCallback() {
 
-    public void setMaxEvents(int maxEvents) {
-        this.maxEvents = maxEvents;
-    }
-
-    public void setDownloadOnlyLastEvents(boolean downloadOnlyLastEvents) {
-        this.downloadOnlyLastEvents = downloadOnlyLastEvents;
-    }
-
-    public void pullMetadata(final Callback callback) {
-        //// TODO: 20/01/17 include fullHierarchy functionality
-        mPullRepository.pullMetadata(new IRepositoryCallback<Void>() {
             @Override
-            public void onSuccess(Void result) {
-                callback.onSuccess();
+            public void onComplete() {
+                callback.onComplete();
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                callback.onStep(step);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                if (throwable instanceof MalformedURLException
-                        || throwable instanceof UnknownHostException) {
-                    callback.onServerURLNotValid();
-                } else if (throwable instanceof InvalidCredentialsException) {
-                    callback.onInvalidCredentials();
-                } else if (throwable instanceof NetworkException) {
+                if (throwable instanceof NetworkException) {
                     callback.onNetworkError();
-                } else if (throwable instanceof PullException) {
+                } else if (throwable instanceof ConversionException) {
+                    callback.onConversionError();
+                } else {
                     callback.onPullError();
                 }
             }
         });
     }
 
-    public void pullData(final Callback callback) {
-        //// TODO: 20/01/17 include downloadOnlyLastEvents, maxEvents and mStartDate functionality
-        mPullRepository.pullData(new IRepositoryCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                callback.onSuccess();
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                if (throwable instanceof MalformedURLException
-                        || throwable instanceof UnknownHostException) {
-                    callback.onServerURLNotValid();
-                } else if (throwable instanceof InvalidCredentialsException) {
-                    callback.onInvalidCredentials();
-                } else if (throwable instanceof NetworkException) {
-                    callback.onNetworkError();
-                } else if (throwable instanceof PullException) {
-                    callback.onPullError();
-                }
-            }
-        });
+    public void cancell() {
+        mPullController.cancel();
     }
 }

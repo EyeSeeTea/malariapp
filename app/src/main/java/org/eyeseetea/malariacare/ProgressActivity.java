@@ -35,21 +35,30 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.SyncProgressStatus;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.SdkController;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.PullFilters;
+import org.eyeseetea.malariacare.domain.entity.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.domain.usecase.PullUseCase;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ProgressActivity extends Activity {
 
     private static final String TAG = ".ProgressActivity";
+
+
+    public static final int NUMBER_OF_MONTHS = 6;
 
     /**
      * Intent param that tells what to do (push, pull or push before pull)
@@ -94,10 +103,6 @@ public class ProgressActivity extends Activity {
      * Num of expected steps while pushing
      */
     private static final int MAX_PUSH_STEPS = 4;
-    /**
-     * Used for control new steps
-     */
-    public static Boolean PULL_IS_ACTIVE = false;
 
     /**
      * Used for control autopull from login
@@ -128,12 +133,13 @@ public class ProgressActivity extends Activity {
     //Check intent params
     static Intent intent;
 
+    public PullUseCase mPullUseCase = new PullUseCase();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
-        PULL_IS_ACTIVE = true;
         isOnPause = false;
         prepareUI();
         final Button button = (Button) findViewById(R.id.cancelPullButton);
@@ -151,14 +157,7 @@ public class ProgressActivity extends Activity {
     }
 
     private void cancellPull() {
-        if (PULL_IS_ACTIVE) {
-            PULL_CANCEL = true;
-            PULL_IS_ACTIVE = false;
-            step(getBaseContext().getResources().getString(R.string.cancellingPull));
-            if (PullController.getInstance().finishPullJob()) {
-                finishAndGo(LoginActivity.class);
-            }
-        }
+        mPullUseCase.cancell();
     }
 
     @Override
@@ -239,7 +238,6 @@ public class ProgressActivity extends Activity {
 
         PULL_ERROR = true;
         PULL_CANCEL = true;
-        PULL_IS_ACTIVE = false;
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -316,6 +314,7 @@ public class ProgressActivity extends Activity {
         //Annotate pull is done
         if (!isAPush) {
             //If is not active, we need restart the process
+            /*
             if (!PULL_IS_ACTIVE) {
                 SdkController.unregister(this);
                 finishAndGo(LoginActivity.class);
@@ -323,6 +322,7 @@ public class ProgressActivity extends Activity {
             } else {
                 annotateFirstPull(true);
             }
+            */
         }
 
         //Show final step -> done
@@ -453,7 +453,85 @@ public class ProgressActivity extends Activity {
         annotateFirstPull(false);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PULL_STEPS);
-        PullController.getInstance().pull(this);
+        Calendar month = Calendar.getInstance();
+        month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
+        PullFilters pullFilters = new PullFilters(
+                EventExtended.format(month.getTime(), EventExtended.AMERICAN_DATE_FORMAT),
+                AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
+                PreferencesState.getInstance().getMaxEvents());
+        PopulateDB.wipeSDKData();
+        PopulateDB.wipeDatabase();
+
+        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+            @Override
+            public void onComplete() {
+                postFinish();
+            }
+
+            @Override
+            public void onPullError() {
+                cancellPull(getBaseContext().getString(R.string
+                        .dialog_title_pull_response), getBaseContext().getString(R.string
+                        .dialog_pull_error));
+            }
+
+            @Override
+            public void onConversionError() {
+                cancellPull(getBaseContext().getString(R.string
+                        .dialog_title_pull_response), getBaseContext().getString(R.string
+                        .error_message));
+            }
+
+            @Override
+            public void onStep(PullStep pullStep) {
+                switch (pullStep) {
+                    case PROGRAMS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_downloading));
+                        break;
+                    case EVENTS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_push_preparing_events));
+                        break;
+                    case PREPARING_PROGRAMS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_preparing_program));
+                        break;
+                    case PREPARING_ANSWERS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_preparing_answers));
+                        break;
+                    case PREPARING_ORGANISATION_UNITS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_preparing_orgs));
+                        break;
+                    case PREPARING_QUESTIONS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_questions));
+                        break;
+                    case PREPARING_RELATIONSHIPS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_relationships));
+                        break;
+                    case PREPARING_SURVEYS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_surveys));
+                        break;
+                    case VALIDATE_COMPOSITE_SCORES:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_validating_composite_scores));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNetworkError() {
+                showException(PreferencesState.getInstance().getContext().getString(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .title_error_unexpected));
+            }
+        });
     }
 
     /**
@@ -508,7 +586,6 @@ public class ProgressActivity extends Activity {
             public void run() {
                 // Run your task here
                 PULL_CANCEL = true;
-                PULL_IS_ACTIVE = false;
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -535,7 +612,7 @@ public class ProgressActivity extends Activity {
                                                     progressActivity.getApplicationContext()
                                                             .startActivity(
 
-                                                            targetActivityIntent);
+                                                                    targetActivityIntent);
                                                     return;
                                                 }
                                             }).create().show();
