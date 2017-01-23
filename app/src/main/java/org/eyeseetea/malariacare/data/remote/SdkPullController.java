@@ -12,6 +12,7 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
+import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -100,35 +101,62 @@ public class SdkPullController extends SdkController {
         ProgressActivity.step(msg);
     }
 
+    /**
+     * Pull the programs and all the metadata
+     */
+    private static void pullAttributes() {
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
+                R.string.progress_push_preparing_program));
+
+    }
     public static void loadMetaData() {
+        //// FIXME: 23/01/2017
+        pullAttributes();
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
                 R.string.progress_push_preparing_program));
 
         Set<ProgramType> programTypes = new HashSet<>();
         programTypes.add(ProgramType.WITHOUT_REGISTRATION);
 
-        Observable.zip(D2.me().organisationUnits().pull(),
-                D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
-                new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
+
+        D2.attributes().pull()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Attribute>>() {
                     @Override
-                    public List<Program> call(List<OrganisationUnit> units,
-                            List<Program> programs) {
-                        Log.d(TAG, "Pull of Programs and OrganisationUnits finished");
-                        return programs;
-                    }
-                })
-                .subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Program>>() {
-                    @Override
-                    public void call(List<Program> programs) {
-                        //TODO: uncommnent when merge with branch feature-new_sdk_update_pull_of_events
-                        //loadDataValues();
+                    public void call(
+                            List<Attribute> attributes) {
+                        Log.d(TAG, "Pull of attributes finish"+ attributes.size());
+
+                        Observable.zip(D2.me().organisationUnits().pull(),
+                                D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
+                                new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
+                                    @Override
+                                    public List<Program> call(List<OrganisationUnit> units,
+                                            List<Program> programs) {
+                                        Log.d(TAG, "Pull of Programs and OrganisationUnits finished");
+                                        return programs;
+                                    }
+                                })
+                                .subscribeOn(Schedulers.io()).
+                                observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<List<Program>>() {
+                                    @Override
+                                    public void call(List<Program> programs) {
+                                        //TODO: uncommnent when merge with branch feature-new_sdk_update_pull_of_events
+                                        //loadDataValues();
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        showError("Error pulling Programs and OrganisationUnits: ", throwable);
+                                    }
+                                });
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        showError("Error pulling Programs and OrganisationUnits: ", throwable);
+                        showError("Error pulling attributes: ", throwable);
                     }
                 });
     }
