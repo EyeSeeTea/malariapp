@@ -206,8 +206,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     private List<AttributeValueFlow> getAttributeValues() {
-        //// TODO: 15/11/2016
-        //dataElement.getAttributeValues();
+        dataElement.getAttributeValueFlow();
         return null;
     }
 
@@ -353,10 +352,6 @@ public class DataElementExtended implements VisitableFromSDK {
         if (code == null || dataElement == null) {
             return null;
         }
-        //select * from Attribute join AttributeValue on Attribute.id = attributeValue
-        // .attributeId join DataElementAttributeValue on attributeValue
-        // .id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue
-        // .dataElementId="vWgsPN1RPLl" and code="Order"
         for (AttributeValueFlow attributeValue : getAttributeValues()) {
             if (attributeValue.getAttribute().getCode() == null) {
                 throw new RuntimeException(String.format(

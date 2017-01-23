@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.remote;
 
 
 import android.content.Context;
+import android.util.ArraySet;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.ProgressActivity;
@@ -12,6 +13,7 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
+import org.hisp.dhis.client.sdk.models.attribute.Attribute;
 import org.hisp.dhis.client.sdk.models.dataelement.DataElement;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
@@ -101,24 +103,10 @@ public class SdkPullController extends SdkController {
         ProgressActivity.step(msg);
     }
 
-    /**
-     * Pull the programs and all the metadata
-     */
-    private static void pullAttributes() {
-        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
-                R.string.progress_push_preparing_program));
-
-    }
     public static void loadMetaData() {
-        //// FIXME: 23/01/2017
-        pullAttributes();
+        // // FIXME: 23/01/2017 string
         ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
                 R.string.progress_push_preparing_program));
-
-        Set<ProgramType> programTypes = new HashSet<>();
-        programTypes.add(ProgramType.WITHOUT_REGISTRATION);
-
-
         D2.attributes().pull()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -126,32 +114,71 @@ public class SdkPullController extends SdkController {
                     @Override
                     public void call(
                             List<Attribute> attributes) {
-                        Log.d(TAG, "Pull of attributes finish"+ attributes.size());
+                        pullProgramsAndOrganisationUnits(attributes);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        showError("Error pulling attributes: ", throwable);
+                    }
+                });
+    }
 
-                        Observable.zip(D2.me().organisationUnits().pull(),
-                                D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
-                                new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
-                                    @Override
-                                    public List<Program> call(List<OrganisationUnit> units,
-                                            List<Program> programs) {
-                                        Log.d(TAG, "Pull of Programs and OrganisationUnits finished");
-                                        return programs;
-                                    }
-                                })
-                                .subscribeOn(Schedulers.io()).
-                                observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Action1<List<Program>>() {
-                                    @Override
-                                    public void call(List<Program> programs) {
-                                        //TODO: uncommnent when merge with branch feature-new_sdk_update_pull_of_events
-                                        //loadDataValues();
-                                    }
-                                }, new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-                                        showError("Error pulling Programs and OrganisationUnits: ", throwable);
-                                    }
-                                });
+    private static void pullProgramsAndOrganisationUnits(List<Attribute> attributes) {
+        Log.d(TAG, "Pull of attributes finish" + attributes.size());
+
+        ProgressActivity.step(PreferencesState.getInstance().getContext().getString(
+                R.string.progress_push_preparing_program));
+
+        Set<ProgramType> programTypes = new HashSet<>();
+        programTypes.add(ProgramType.WITHOUT_REGISTRATION);
+
+        Observable.zip(D2.me().organisationUnits().pull(),
+                D2.me().programs().pull(ProgramFields.DESCENDANTS, programTypes),
+                new Func2<List<OrganisationUnit>, List<Program>, List<Program>>() {
+                    @Override
+                    public List<Program> call(List<OrganisationUnit> units,
+                            List<Program> programs) {
+                        pullAttributeValues(programs);
+                        Log.d(TAG,
+                                "Pull of Programs and OrganisationUnits finished");
+                        return programs;
+                    }
+                })
+                .subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Program>>() {
+                    @Override
+                    public void call(List<Program> programs) {
+                        //TODO: uncommnent when merge with branch
+                        // feature-new_sdk_update_pull_of_events
+                        //loadDataValues();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        showError("Error pulling Programs and OrganisationUnits: ",
+                                throwable);
+                    }
+                });
+    }
+
+    private static void pullAttributeValues(List<Program> programs) {
+        Set<String> uids = new HashSet<>();
+        for(Program program:programs)
+        {
+            for(OrganisationUnit organisationUnit:program.getOrganisationUnits()){
+                uids.add(organisationUnit.getUId());
+            }
+        }
+        D2.dataElements().pull(SyncStrategy.DEFAULT, uids)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<DataElement>>() {
+                    @Override
+                    public void call(
+                            List<DataElement> attributes) {
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
