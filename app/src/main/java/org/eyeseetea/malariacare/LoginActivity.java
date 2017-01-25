@@ -197,7 +197,7 @@ public class LoginActivity extends AbsLoginActivity {
 
         //Populate locally
         try {
-            PullController.getInstance().wipeDatabase();
+            PopulateDB.wipeDatabase();
             PopulateDB.populateDB(getAssets());
         } catch (Exception ex) {
         }

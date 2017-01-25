@@ -32,8 +32,11 @@ import java.net.UnknownHostException;
 public class LoginUseCase {
     public interface Callback {
         void onLoginSuccess();
+
         void onServerURLNotValid();
+
         void onInvalidCredentials();
+
         void onNetworkError();
     }
 

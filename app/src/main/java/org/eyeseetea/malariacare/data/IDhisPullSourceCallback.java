@@ -1,7 +1,7 @@
 package org.eyeseetea.malariacare.data;
 
-public interface IDataSourceCallback<T> {
-    void onSuccess(T result);
+public interface IDhisPullSourceCallback {
+    void onComplete();
 
     void onError(Throwable throwable);
 }

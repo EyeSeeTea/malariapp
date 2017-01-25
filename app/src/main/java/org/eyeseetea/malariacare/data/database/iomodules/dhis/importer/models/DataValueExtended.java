@@ -29,10 +29,9 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Visitable
 import org.eyeseetea.malariacare.data.database.model.Answer;
 import org.eyeseetea.malariacare.data.database.model.Option;
 import org.eyeseetea.malariacare.data.database.model.Question;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +46,13 @@ public class DataValueExtended implements VisitableFromSDK {
     private final static String TAG=".DataValueExtended";
     private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
 
-    DataValueFlow dataValue;
+    TrackedEntityDataValueFlow dataValue;
 
     String programUid;
 
-    public DataValueExtended(){dataValue=new DataValueFlow();}
+    public DataValueExtended(){dataValue=new TrackedEntityDataValueFlow();}
 
-    public DataValueExtended(DataValueFlow dataValue){
+    public DataValueExtended(TrackedEntityDataValueFlow dataValue){
         this.dataValue =dataValue;
     }
     public DataValueExtended(DataValueExtended dataValueExtended){
@@ -65,7 +64,7 @@ public class DataValueExtended implements VisitableFromSDK {
         visitor.visit(this);
     }
 
-    public DataValueFlow getDataValue() {
+    public TrackedEntityDataValueFlow getDataValue() {
         return dataValue;
     }
 
@@ -165,9 +164,9 @@ public class DataValueExtended implements VisitableFromSDK {
 
     public static DataValueExtended findByEventAndUID(EventFlow event, String dataElementUID){
         return new DataValueExtended(new Select()
-                .from(DataValueFlow.class)
-                .where(DataValueFlow_Table.event.eq(event.getUId()))
-                .and(DataValueFlow_Table.dataElement.eq(dataElementUID))
+                .from(TrackedEntityDataValueFlow.class)
+                .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
+                .and(TrackedEntityDataValueFlow_Table.dataElement.eq(dataElementUID))
                 .querySingle());
     }
 
@@ -199,15 +198,16 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public void setLocalEventId(long localId) {
-        dataValue.setLocalId(localId);
+        dataValue.setId(localId);
     }
 
     public void setEvent(EventFlow event) {
-        dataValue.setEvent(event.getUId());
+        dataValue.setEvent(event);
     }
 
     public void setProvidedElsewhere(boolean b) {
-        dataValue.setProvidedElsewhere(b);
+        //// FIXME: 11/01/17 this method not exist
+        //dataValue.setProvidedElsewhere(b);
     }
 
     public void setStoredBy(String safeUsername) {
@@ -222,9 +222,9 @@ public class DataValueExtended implements VisitableFromSDK {
         dataValue.save();
     }
 
-    public static List<DataValueExtended> getExtendedList(List<DataValueFlow> flowList){
+    public static List<DataValueExtended> getExtendedList(List<TrackedEntityDataValueFlow> flowList){
         List <DataValueExtended> extendedsList = new ArrayList<>();
-        for(DataValueFlow flowPojo:flowList){
+        for(TrackedEntityDataValueFlow flowPojo:flowList){
             extendedsList.add(new DataValueExtended(flowPojo));
         }
         return extendedsList;
