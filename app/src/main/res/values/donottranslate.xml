@@ -103,4 +103,6 @@
     </string>
     <string name="progress_push_preparing_program" translatable="false">"Downloading programs and organisationUnits..."</string>
     <string name="progress_push_preparing_events" translatable="false">"Downloading events ..."</string>
+    <string name="error_in_pull_conversion" translatable="false">"Pull error during the conversion"</string>
+    <string name="pull_cancelled" translatable="false">"Pull cancelled by the user"</string>
     </resources>

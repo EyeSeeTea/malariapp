@@ -46,19 +46,6 @@ import java.util.List;
 public abstract class SdkController {
 
     public final static String TAG = ".sdkController";
-    public final static Class[] MANDATORY_METADATA_TABLES = {
-            AttributeFlow.class,
-            DataElementFlow.class,
-            //DataElementAttributeValueFlow.class,
-            OptionFlow.class,
-            OptionSetFlow.class,
-            UserAccountFlow.class,
-            OrganisationUnitFlow.class,
-            //OrganisationUnitProgramRelationshipFlow.class,
-            ProgramStageFlow.class,
-            ProgramStageDataElementFlow.class,
-            ProgramStageSectionFlow.class
-    };
 
     //from pull controller
     public static void register(Context context) {

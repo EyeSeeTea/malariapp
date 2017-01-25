@@ -19,10 +19,12 @@
 
 package org.eyeseetea.malariacare.domain.boundary;
 
-import org.eyeseetea.malariacare.domain.entity.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 
 public interface IPullController {
     void pull(PullFilters filters, IPullControllerCallback callback);
 
     void cancel();
+
+    boolean isPullActive();
 }

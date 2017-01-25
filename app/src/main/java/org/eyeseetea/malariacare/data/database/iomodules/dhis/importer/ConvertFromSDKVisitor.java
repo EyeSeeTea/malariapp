@@ -91,7 +91,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     private final String ATTRIBUTE_PRODUCTIVITY_CODE = "OUProductivity";
     private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    ProgramExtended actualProgram;
+    public ProgramExtended actualProgram;
 
     public ConvertFromSDKVisitor() {
         programMapObjects = new HashMap();

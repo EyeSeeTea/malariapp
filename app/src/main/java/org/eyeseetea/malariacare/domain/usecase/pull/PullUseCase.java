@@ -17,13 +17,11 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.usecase;
+package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
-import org.eyeseetea.malariacare.domain.entity.PullFilters;
-import org.eyeseetea.malariacare.domain.entity.PullStep;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
@@ -33,6 +31,8 @@ public class PullUseCase {
         void onComplete();
 
         void onPullError();
+
+        void onCancel();
 
         void onConversionError();
 
@@ -70,10 +70,19 @@ public class PullUseCase {
                     callback.onPullError();
                 }
             }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
         });
     }
 
-    public void cancell() {
+    public void cancel() {
         mPullController.cancel();
+    }
+
+    public boolean isPullActive() {
+        return mPullController.isPullActive();
     }
 }

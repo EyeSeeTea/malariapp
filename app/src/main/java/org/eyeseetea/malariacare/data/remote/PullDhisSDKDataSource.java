@@ -22,12 +22,30 @@ package org.eyeseetea.malariacare.data.remote;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+
+import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
-import org.eyeseetea.malariacare.data.IPullDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitToProgramRelationFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
@@ -46,11 +64,19 @@ import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 
-public class PullDhisSDKDataSource implements IPullDataSource {
+public class PullDhisSDKDataSource {
+    private final String TAG = ".PullDhisSDKDataSource";
 
-    @Override
+    /**
+     * Used for control new steps
+     */
+    public static Boolean PULL_IS_ACTIVE = false;
+
+    public PullDhisSDKDataSource() {
+        PULL_IS_ACTIVE = true;
+    }
+
     public void pullMetadata(final IDhisPullSourceCallback callback) {
-
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (!isNetworkAvailable) {
@@ -58,7 +84,8 @@ public class PullDhisSDKDataSource implements IPullDataSource {
         } else {
             Set<ProgramType> programTypes = new HashSet<>();
             programTypes.add(ProgramType.WITHOUT_REGISTRATION);
-
+            if (!PULL_IS_ACTIVE) {
+                return;}
             Observable.zip(D2.me().organisationUnits().pull(SyncStrategy.NO_DELETE),
                     D2.me().programs().pull(SyncStrategy.NO_DELETE, ProgramFields.DESCENDANTS,
                             programTypes),
@@ -86,7 +113,6 @@ public class PullDhisSDKDataSource implements IPullDataSource {
 
     }
 
-    @Override
     public void pullData(IDhisPullSourceCallback callback) {
         boolean isNetworkAvailable = isNetworkAvailable();
 
@@ -94,7 +120,9 @@ public class PullDhisSDKDataSource implements IPullDataSource {
             callback.onError(new NetworkException());
         } else {
             try {
-                pullEvents();
+                if (!PULL_IS_ACTIVE) return;
+                pullEvents(callback);
+                if (!PULL_IS_ACTIVE) return;
                 callback.onComplete();
             } catch (Exception e) {
                 callback.onError(e);
@@ -102,17 +130,20 @@ public class PullDhisSDKDataSource implements IPullDataSource {
         }
     }
 
-    private static void pullEvents() {
+    private void pullEvents(IDhisPullSourceCallback callback) {
         Scheduler listThread = Schedulers.newThread();
         List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
                 .observeOn(listThread).toBlocking().single();
         List<OrganisationUnit> sdkOrganisationUnits =
                 D2.me().organisationUnits().list().subscribeOn(listThread)
                         .observeOn(listThread).toBlocking().single();
+
+        if (!PULL_IS_ACTIVE) return;
         for (Program program : sdkPrograms) {
             for (OrganisationUnit organisationUnit : sdkOrganisationUnits) {
                 for (Program orgunitProgram : organisationUnit.getPrograms()) {
                     if (orgunitProgram.getUId().equals(program.getUId())) {
+                        if (!PULL_IS_ACTIVE) return;
                         Scheduler pullEventsThread = Schedulers.newThread();
                         D2.events().pull(
                                 organisationUnit.getUId(),
@@ -131,5 +162,47 @@ public class PullDhisSDKDataSource implements IPullDataSource {
                         Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public void wipeDataBase() {
+        Delete.tables(
+                EventFlow.class,
+                TrackedEntityDataValueFlow.class,
+                FailedItemFlow.class
+        );
+    }
+
+
+    public final static Class[] MANDATORY_METADATA_TABLES = {
+            AttributeFlow.class,
+            DataElementFlow.class,
+            AttributeValueFlow.class,
+            OptionFlow.class,
+            OptionSetFlow.class,
+            UserAccountFlow.class,
+            OrganisationUnitFlow.class,
+            OrganisationUnitToProgramRelationFlow.class,
+            ProgramStageFlow.class,
+            ProgramStageDataElementFlow.class,
+            ProgramStageSectionFlow.class
+    };
+
+
+    public boolean mandatoryMetadataTablesNotEmpty() {
+
+        int elementsInTable = 0;
+        for (Class table : MANDATORY_METADATA_TABLES) {
+            elementsInTable = (int) new SQLite().selectCountOf()
+                    .from(table).count();
+            if (elementsInTable == 0) {
+                Log.d(TAG, "Error empty table: " + table.getName());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void cancel() {
+        PULL_IS_ACTIVE = false;
     }
 }

@@ -17,10 +17,9 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data;
+package org.eyeseetea.malariacare.domain.usecase.pull;
 
-public interface IPullDataSource {
-    void pullMetadata(IDhisPullSourceCallback callback);
-
-    void pullData(IDhisPullSourceCallback callback);
+public enum PullStep {
+    PROGRAMS, EVENTS, PREPARING_PROGRAMS, PREPARING_ANSWERS, PREPARING_QUESTIONS,
+    PREPARING_RELATIONSHIPS, PREPARING_ORGANISATION_UNITS, VALIDATE_COMPOSITE_SCORES, PREPARING_SURVEYS
 }
