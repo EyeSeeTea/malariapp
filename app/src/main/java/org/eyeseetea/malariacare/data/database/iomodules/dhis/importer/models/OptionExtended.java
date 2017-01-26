@@ -20,15 +20,26 @@
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowName;
+
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionAttributeValueFlow;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow_Table;
+import org.hisp.dhis.client.sdk.models.optionset.Option;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,25 +49,26 @@ import java.util.List;
  */
 public class OptionExtended implements VisitableFromSDK {
 
-    private static final String TAG=".OptionExtended";
+    private static final String TAG = ".OptionExtended";
 
     /**
      * Name of the attribute that holds the factor value for each option
      */
-    private static final String ATTRIBUTE_OPTION_FACTOR_NAME="OF";
+    private static final String ATTRIBUTE_OPTION_FACTOR_NAME = "OF";
 
     OptionFlow option;
 
-    public OptionExtended(){}
-
-    public OptionExtended(OptionFlow option){
-        this.option=option;
+    public OptionExtended() {
     }
 
-    public OptionExtended(OptionExtended option){
-        this.option=option.getOption();
+    public OptionExtended(OptionFlow option) {
+        this.option = option;
     }
-    
+
+    public OptionExtended(OptionExtended option) {
+        this.option = option.getOption();
+    }
+
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
@@ -67,22 +79,39 @@ public class OptionExtended implements VisitableFromSDK {
     }
 
     /**
-     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to recover the whole option with that name
-     * @param name
-     * @return
+     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to
+     * recover the whole option with that name
      */
-    public static OptionFlow findOptionByName(String name){
-        return new Select().from(OptionFlow.class).where(OptionFlow_Table.name.
-                is(name)).querySingle();
+    public static OptionFlow findOptionByName(String name) {
+        System.out.println(new Select().from(OptionFlow.class).as(optionFlowName)
+                .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        attributeValueFlowName)
+                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
+                        OptionFlow_Table.uId.withTable(optionFlowAlias)))
+                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        attributeFlowName)
+                .on(AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias).eq(
+                        AttributeFlow_Table.uId.withTable(attributeFlowAlias)))
+                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name))
+                .and(AttributeValueFlow_Table.itemType.is(Option.class.getName())).getQuery());
+        return new Select().from(OptionFlow.class).as(optionFlowName)
+                .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        attributeValueFlowName)
+                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
+                        OptionFlow_Table.uId.withTable(optionFlowAlias)))
+                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        attributeFlowName)
+                .on(AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias).eq(
+                        AttributeFlow_Table.uId.withTable(attributeFlowAlias)))
+                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name))
+                .and(AttributeValueFlow_Table.itemType.is(Option.class.getName())).querySingle();
     }
 
     /**
-     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to recover the whole option with that name belonging to a given optionSet
-     * @param optionSetUID
-     * @param name
-     * @return
+     * Some options have a 'hardcoded' name such as 'COMPOSITE_SCORE'. This method is a helper to
+     * recover the whole option with that name belonging to a given optionSet
      */
-    public static OptionFlow findOptionByOptionSetAndName(String optionSetUID, String name){
+    public static OptionFlow findOptionByOptionSetAndName(String optionSetUID, String name) {
         return new Select().from(OptionFlow.class).
                 where(OptionFlow_Table.name.is(name)).
                 and(OptionFlow_Table.optionSet.is(optionSetUID)).querySingle();
@@ -90,15 +119,14 @@ public class OptionExtended implements VisitableFromSDK {
 
     /**
      * Finds the factor for this option (via OptionFactor attribute)
-     * @return
      */
-    public Float getFactor(){
+    public Float getFactor() {
 
-        for(OptionAttributeValueFlow optionAttributeValue:this.getOptionAttributeValuesFlow()){
-            AttributeFlow attribute=optionAttributeValue.getAttribute();
+        for (AttributeValueFlow optionAttributeValue : this.getOptionAttributeValuesFlow()) {
+            String attributeCode = optionAttributeValue.getAttribute().getCode();
 
             //Not OptionFactor -> ignore
-            if(!ATTRIBUTE_OPTION_FACTOR_NAME.equals(attribute.getCode())){
+            if (!ATTRIBUTE_OPTION_FACTOR_NAME.equals(attributeCode)) {
                 continue;
             }
 
@@ -112,18 +140,19 @@ public class OptionExtended implements VisitableFromSDK {
 
 
     //// FIXME: 09/11/2016
-    public List<OptionAttributeValueFlow> getAttributeValues() {
+    public List<AttributeValueFlow> getAttributeValues() {
         //optionflow attributeValueFlow
         return  null;
     }
-    public OptionAttributeValueFlow getAttribute() {
-        //optionflow attributeFlow
-        return  null;
+    public AttributeValueFlow getAttribute() {
+        return null;
     }
 
-    public List<OptionAttributeValueFlow> getOptionAttributeValuesFlow() {
+    public List<AttributeValueFlow> getOptionAttributeValuesFlow() {
         //optionflow attributeFlow
-        return  null;
+        return new Select().from(AttributeValueFlow.class)
+                .where(AttributeValueFlow_Table.itemType.is(Option.class.getName()))
+                .queryList();
     }
 
     public String getUid() {
@@ -144,8 +173,8 @@ public class OptionExtended implements VisitableFromSDK {
 
 
     public static List<OptionExtended> getExtendedList(List<OptionFlow> flowList) {
-        List <OptionExtended> extendedsList = new ArrayList<>();
-        for(OptionFlow flowPojo:flowList){
+        List<OptionExtended> extendedsList = new ArrayList<>();
+        for (OptionFlow flowPojo : flowList) {
             extendedsList.add(new OptionExtended(flowPojo));
         }
         return extendedsList;

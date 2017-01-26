@@ -71,6 +71,8 @@ public class AppDatabase {
     public static final String programStageDataElementFlowName = "psdef";
     public static final String programAttributeFlowName = "paf";
     public static final String attributeFlowName = "af";
+    public static final String optionFlowName = "onf";
+    public static final String attributeValueFlowName = "avf";
 
     public static final NameAlias programFlowAlias = NameAlias.builder(programFlowName).build();
     public static final NameAlias programStageFlowAlias = NameAlias.builder(
@@ -82,4 +84,7 @@ public class AppDatabase {
     public static final NameAlias programAttributeFlowAlias = NameAlias.builder(
             programAttributeFlowName).build();
     public static final NameAlias attributeFlowAlias = NameAlias.builder(attributeFlowName).build();
+    public static final NameAlias optionFlowAlias = NameAlias.builder(optionFlowName).build();
+    public static final NameAlias attributeValueFlowAlias = NameAlias.builder(
+            attributeValueFlowName).build();
 }

@@ -34,8 +34,8 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Visitable
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramAttributeValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramAttributeValueFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.eyeseetea.malariacare.data.database.model.Program;
@@ -89,14 +89,15 @@ public class ProgramExtended implements VisitableFromSDK {
     }
 
     public Integer getProductivityPosition() {
-        //// FIXME: 11/11/2016
-        ProgramAttributeValueFlow programAttributeValue = new Select().from(ProgramAttributeValueFlow.class).as(programAttributeFlowName)
+        AttributeValueFlow programAttributeValue = new Select().from(AttributeValueFlow.class).as(programAttributeFlowName)
                 .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
-                .on(ProgramAttributeValueFlow_Table.attributeId.withTable(programAttributeFlowAlias)
+                .on(AttributeValueFlow_Table.attribute.withTable(programAttributeFlowAlias)
                         .eq(AttributeFlow_Table.id.withTable(attributeFlowAlias)))
-                .where(AttributeFlow_Table.code
+                .where(AttributeFlow_Table.code.withTable(attributeFlowAlias)
                         .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
-                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(getUid()))
+                .and(AttributeValueFlow_Table.reference.withTable(programAttributeFlowAlias).is(getUid()))
+                .and(AttributeValueFlow_Table.itemType.withTable(programAttributeFlowAlias).is(
+                        org.hisp.dhis.client.sdk.models.program.Program.class.getName()))
                 .querySingle();
 
         if(programAttributeValue==null){
