@@ -83,16 +83,6 @@ public class OptionExtended implements VisitableFromSDK {
      * recover the whole option with that name
      */
     public static OptionFlow findOptionByName(String name) {
-        System.out.println(new Select().from(OptionFlow.class).as(optionFlowName)
-                .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        attributeValueFlowName)
-                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
-                        OptionFlow_Table.uId.withTable(optionFlowAlias)))
-                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        attributeFlowName)
-                .on(AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias).eq(
-                        AttributeFlow_Table.uId.withTable(attributeFlowAlias)))
-                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name)).getQuery());
         return new Select().from(OptionFlow.class).as(optionFlowName)
                 .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(
                         attributeValueFlowName)

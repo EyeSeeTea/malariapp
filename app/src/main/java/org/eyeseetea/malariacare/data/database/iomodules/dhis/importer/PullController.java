@@ -77,7 +77,7 @@ public class PullController implements IPullController {
             Log.d(TAG, "PULL process...OK");
             postFinish();
         } else {
-            callback.onCancel();
+            this.callback.onCancel();
         }
     }
 
@@ -102,7 +102,7 @@ public class PullController implements IPullController {
     @Override
     public void pull(final PullFilters filters, final IPullControllerCallback callback) {
         PULL_IS_ACTIVE = true;
-        conversionLocalDataSource = new ConversionLocalDataSource();
+        conversionLocalDataSource = new ConversionLocalDataSource(callback);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
         conversionLocalDataSource.wipeDataBase();
@@ -128,6 +128,11 @@ public class PullController implements IPullController {
                 callback.onError(throwable);
             }
 
+            @Override
+            public void onStep(PullStep pullStep) {
+                callback.onStep(pullStep);
+            }
+
         });
     }
 
@@ -147,6 +152,7 @@ public class PullController implements IPullController {
                         return;
                     }
                     try {
+                        callback.onStep(PullStep.PREPARING_PROGRAMS);
                         conversions();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -168,6 +174,11 @@ public class PullController implements IPullController {
             public void onError(Throwable throwable) {
                 throwable.printStackTrace();
                 callback.onError(throwable);
+            }
+
+            @Override
+            public void onStep(PullStep pullStep) {
+
             }
 
         });

@@ -99,6 +99,8 @@ public class SdkQueries {
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
             if (programType != null) {
                 for (ProgramType kind : programType) {
+                    if(oupr.getProgram()==null)
+                        continue;
                     List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
                             ProgramFlow_Table.id.is(oupr.getProgram().getId()))
                             .and(

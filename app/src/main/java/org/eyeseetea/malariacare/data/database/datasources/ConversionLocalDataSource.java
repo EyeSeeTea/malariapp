@@ -79,7 +79,8 @@ public class ConversionLocalDataSource {
 
     IPullControllerCallback callback;
 
-    public ConversionLocalDataSource() {
+    public ConversionLocalDataSource(IPullControllerCallback callback) {
+        this.callback=callback;
         PULL_IS_ACTIVE = true;
     }
 
