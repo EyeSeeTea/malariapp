@@ -86,6 +86,9 @@ public class PullDhisSDKDataSource {
             programTypes.add(ProgramType.WITHOUT_REGISTRATION);
             if (!PULL_IS_ACTIVE) {
                 return;}
+            Scheduler attributesThread = Schedulers.newThread();
+            D2.attributes().pull().subscribeOn(attributesThread)
+                    .observeOn(attributesThread).toBlocking().single();
             Observable.zip(D2.me().organisationUnits().pull(SyncStrategy.NO_DELETE),
                     D2.me().programs().pull(SyncStrategy.NO_DELETE, ProgramFields.DESCENDANTS,
                             programTypes),
