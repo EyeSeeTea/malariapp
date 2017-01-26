@@ -29,7 +29,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
@@ -85,7 +84,11 @@ public class PullDhisSDKDataSource {
             Set<ProgramType> programTypes = new HashSet<>();
             programTypes.add(ProgramType.WITHOUT_REGISTRATION);
             if (!PULL_IS_ACTIVE) {
-                return;}
+                return;
+            }
+            Scheduler attributesThread = Schedulers.newThread();
+            D2.organisationUnitLevels().pull().subscribeOn(attributesThread)
+                    .observeOn(attributesThread).toBlocking().single();
             Observable.zip(D2.me().organisationUnits().pull(SyncStrategy.NO_DELETE),
                     D2.me().programs().pull(SyncStrategy.NO_DELETE, ProgramFields.DESCENDANTS,
                             programTypes),

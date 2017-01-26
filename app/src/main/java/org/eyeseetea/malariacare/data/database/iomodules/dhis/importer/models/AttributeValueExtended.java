@@ -37,11 +37,12 @@ public class AttributeValueExtended {
 
     AttributeValueFlow attributeValueFlow;
 
-    public AttributeValueExtended(AttributeValueFlow attributeValueFlow){
-        this.attributeValueFlow=attributeValueFlow;
+    public AttributeValueExtended(AttributeValueFlow attributeValueFlow) {
+        this.attributeValueFlow = attributeValueFlow;
     }
-    public AttributeValueExtended(AttributeValueExtended attributeValueFlow){
-        this.attributeValueFlow =attributeValueFlow.getAttribute();
+
+    public AttributeValueExtended(AttributeValueExtended attributeValueFlow) {
+        this.attributeValueFlow = attributeValueFlow.getAttribute();
     }
 
     public String getUid() {
@@ -49,29 +50,27 @@ public class AttributeValueExtended {
     }
 
 
-
     public AttributeValueFlow getAttribute() {
         return attributeValueFlow;
     }
 
-    public AttributeValueExtended(){}
+    public AttributeValueExtended() {
+    }
 
     /**
      * Find an attribute by its code
-     * @param code
-     * @return
      */
-    public static AttributeFlow findAttributeByCode(String code){
+    public static AttributeFlow findAttributeByCode(String code) {
         return new Select().from(AttributeFlow.class)
                 //// FIXME: 11/11/2016 code not exists
                 .where(AttributeFlow_Table.code.is(code))
-        .querySingle();
+                .querySingle();
     }
 
 
     public static List<AttributeValueExtended> getExtendedList(List<AttributeValueFlow> flowList) {
-        List <AttributeValueExtended> extendedsList = new ArrayList<>();
-        for(AttributeValueFlow flowPojo:flowList){
+        List<AttributeValueExtended> extendedsList = new ArrayList<>();
+        for (AttributeValueFlow flowPojo : flowList) {
             extendedsList.add(new AttributeValueExtended(flowPojo));
         }
         return extendedsList;
