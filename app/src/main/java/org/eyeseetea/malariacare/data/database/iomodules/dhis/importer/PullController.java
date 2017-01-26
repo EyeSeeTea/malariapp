@@ -149,6 +149,7 @@ public class PullController implements IPullController {
                     try {
                         conversions();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         callback.onError(e);
                         return;
                     }

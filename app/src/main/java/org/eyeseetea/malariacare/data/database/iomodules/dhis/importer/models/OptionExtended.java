@@ -92,8 +92,7 @@ public class OptionExtended implements VisitableFromSDK {
                         attributeFlowName)
                 .on(AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias).eq(
                         AttributeFlow_Table.uId.withTable(attributeFlowAlias)))
-                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name))
-                .and(AttributeValueFlow_Table.itemType.is(Option.class.getName())).getQuery());
+                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name)).getQuery());
         return new Select().from(OptionFlow.class).as(optionFlowName)
                 .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(
                         attributeValueFlowName)
@@ -103,8 +102,7 @@ public class OptionExtended implements VisitableFromSDK {
                         attributeFlowName)
                 .on(AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias).eq(
                         AttributeFlow_Table.uId.withTable(attributeFlowAlias)))
-                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name))
-                .and(AttributeValueFlow_Table.itemType.is(Option.class.getName())).querySingle();
+                .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name)).querySingle();
     }
 
     /**
