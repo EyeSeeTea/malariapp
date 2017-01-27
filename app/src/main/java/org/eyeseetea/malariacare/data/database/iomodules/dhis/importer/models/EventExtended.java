@@ -268,8 +268,8 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     public List<DataValueExtended> getDataValues() {
-        Event eventFlow = SdkQueries.getEvent(event.getUId());
-        List<TrackedEntityDataValue> trackedEntityDataValues = eventFlow.getDataValues();
+        Event eventModel = SdkQueries.getEvent(event.getUId());
+        List<TrackedEntityDataValue> trackedEntityDataValues = eventModel.getDataValues();
         List<DataValueExtended> dataValueExtendeds = new ArrayList<>();
         for (TrackedEntityDataValue trackedEntityDataValue : trackedEntityDataValues) {
             dataValueExtendeds.add(new DataValueExtended(
