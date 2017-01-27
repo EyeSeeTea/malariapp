@@ -208,15 +208,13 @@ public class SdkQueries {
     }
 
     public static List<ProgramStageSectionFlow> getProgramStageSectionFromProgramStage(String uId) {
+        System.out.println(new Select().from(
+                ProgramStageSectionFlow.class)
+                .where(ProgramStageSectionFlow_Table.programStage
+                        .eq(uId)).getQuery());
         List<ProgramStageSectionFlow> programStageSections = new Select().from(
-                ProgramStageSectionFlow.class).as(
-                programStageSectionFlowName)
-                .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageFlowName)
-                .on(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
-                        .eq(ProgramStageSectionFlow_Table.programStage.withTable(
-                                programStageSectionFlowAlias)))
-                .where(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
+                ProgramStageSectionFlow.class)
+                .where(ProgramStageSectionFlow_Table.programStage
                         .eq(uId))
                 .queryList();
         return programStageSections;
@@ -224,14 +222,8 @@ public class SdkQueries {
 
     public static List<ProgramStageDataElementFlow> getProgramStageDataElementFromProgramStage(String uId) {
         List<ProgramStageDataElementFlow> programStageDataElements = new Select().from(
-                ProgramStageDataElementFlow.class).as(
-                programStageDataElementFlowName)
-                .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageFlowName)
-                .on(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
-                        .eq(ProgramStageDataElementFlow_Table.programStage.withTable(
-                                programStageDataElementFlowAlias)))
-                .where(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
+                ProgramStageDataElementFlow.class)
+                .where(ProgramStageDataElementFlow_Table.programStage
                         .eq(uId))
                 .queryList();
         return programStageDataElements;

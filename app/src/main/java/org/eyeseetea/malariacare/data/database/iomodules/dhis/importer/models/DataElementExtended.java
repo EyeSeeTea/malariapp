@@ -31,14 +31,17 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSe
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -57,9 +60,12 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Ta
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.models.dataelement.ValueType;
+import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.internal.operators.OperatorGroupBy;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -363,21 +369,13 @@ public class DataElementExtended implements VisitableFromSDK {
      * Find the associated programStageSection (tab)UID given a dataelement UID
      */
     public String findProgramStageSection() {
-        List<ProgramStageSectionFlow> programStageSections = new Select().from(
-                ProgramStageSectionFlow.class).as(
-                programStageSectionFlowName)
-                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageDataElementFlowName)
-                .on(ProgramStageSectionFlow_Table.uId.withTable(programStageSectionFlowAlias)
-                        .eq(ProgramStageDataElementFlow_Table.programStageSection.withTable(
-                                programStageDataElementFlowAlias)))
-                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
-                        programStageDataElementFlowAlias).eq(getUid()))
-                .queryList();
-        if (programStageSections == null) {
-            return null;
-        }
-        for (ProgramStageSectionFlow programStageSection : programStageSections) {
+        List<ProgramStageDataElementFlow> programStageDataElementFlows =
+                new Select().distinct().from(ProgramStageDataElementFlow.class)
+                .where(ProgramStageDataElementFlow_Table.dataElement.eq(getUid())).queryList();
+//// FIXME: 27/01/2017  A single query retuns bad ProgramStageSection(with programStageDataElement uid name etc.. and i can't compile a groupBy programStageSection field
+        for(ProgramStageDataElementFlow programStageDataElementFlow:programStageDataElementFlows) {
+            ProgramStageSectionFlow programStageSection =
+                    programStageDataElementFlow.getProgramStageSection();
             if (SdkQueries.getProgramStage(
                     programStageSection.getProgramStage()).getProgram().getUId().equals(
                     programUid)) {
