@@ -179,10 +179,7 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public String getEvent() {
-        //// FIXME: 15/11/2016
-        //EventFlow event= dataValue.getEvent();
-        //return event;
-        return null;
+        return  dataValue.getEvent().getUId();
     }
 
     public String getDataElement() {
@@ -203,11 +200,6 @@ public class DataValueExtended implements VisitableFromSDK {
 
     public void setEvent(EventFlow event) {
         dataValue.setEvent(event);
-    }
-
-    public void setProvidedElsewhere(boolean b) {
-        //// FIXME: 11/01/17 this method not exist
-        //dataValue.setProvidedElsewhere(b);
     }
 
     public void setStoredBy(String safeUsername) {

@@ -195,9 +195,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     }
 
     public String getPath() {
-        //// TODO: 15/11/2016  create method in sdk
-        //return organisationUnit.getPath();
-        return null;
+        return organisationUnit.getPath();
     }
 
     public String getId() {
@@ -205,6 +203,8 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     }
 
     public String getParent() {
+        if(organisationUnit.getParent()==null)
+            return null;
         return organisationUnit.getParent().getUId();
     }
 
