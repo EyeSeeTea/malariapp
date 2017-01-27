@@ -475,8 +475,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
-
-        //// FIXME: 11/11/2016
         ProgramStageDataElementExtended programStageDataElement =
                 new ProgramStageDataElementExtended(
                         DataElementExtended.findProgramStageDataElementByDataElementExtended(

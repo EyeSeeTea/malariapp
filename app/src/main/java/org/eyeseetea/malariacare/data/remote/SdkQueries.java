@@ -130,7 +130,7 @@ public class SdkQueries {
                     if(oupr.getProgram()==null)
                         continue;
                     List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
-                            ProgramFlow_Table.id.is(oupr.getProgram().getId()))
+                            ProgramFlow_Table.uId.is(oupr.getProgram().getUId()))
                             .and(
                                     ProgramFlow_Table.programType.is(kind)).queryList();
                     programs.addAll(plist);
@@ -177,7 +177,7 @@ public class SdkQueries {
 
     public static ProgramStageFlow getProgramStage(ProgramStageFlow programStage) {
         return new Select().from(ProgramStageFlow.class).where(
-                ProgramStageFlow_Table.id.is(programStage.getId())).querySingle();
+                ProgramStageFlow_Table.uId.is(programStage.getUId())).querySingle();
         //return MetaDataController.getProgramStage(programStage);
     }
 

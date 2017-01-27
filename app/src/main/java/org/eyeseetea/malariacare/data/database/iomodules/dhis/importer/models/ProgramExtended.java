@@ -89,27 +89,37 @@ public class ProgramExtended implements VisitableFromSDK {
     }
 
     public Integer getProductivityPosition() {
-        AttributeValueFlow programAttributeValue = new Select().from(AttributeValueFlow.class).as(programAttributeFlowName)
-                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
-                .on(AttributeValueFlow_Table.attribute.withTable(programAttributeFlowAlias)
-                        .eq(AttributeFlow_Table.id.withTable(attributeFlowAlias)))
-                .where(AttributeFlow_Table.code.withTable(attributeFlowAlias)
-                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
-                .and(AttributeValueFlow_Table.reference.withTable(programAttributeFlowAlias).is(getUid()))
-                .and(AttributeValueFlow_Table.itemType.withTable(programAttributeFlowAlias).is(
-                        org.hisp.dhis.client.sdk.models.program.Program.class.getName()))
-                .querySingle();
+        String value = findOrganisationUnitAttributeValueByCode(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE);
 
-        if(programAttributeValue==null){
+        if(value==null){
             return null;
         }
 
         try {
-            return Integer.parseInt(programAttributeValue.getValue());
+            return Integer.parseInt(value);
         }catch(Exception ex){
             Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUId(), ex.getMessage()));
             return null;
         }
+    }
+
+
+    private List<AttributeValueFlow> getAttributeValues() {
+        return program.getAttributeValueFlow();
+    }
+
+    /**
+     * Finds the value of an attribute with the given code in a dataElement
+     * @param code
+     * @return
+     */
+    public  String findOrganisationUnitAttributeValueByCode(String code){
+        String value = AttributeValueExtended.findAttributeValueByCode(code, getAttributeValues());
+
+        if(value==null){
+            return "";
+        }
+        return value;
     }
 
     public static ProgramExtended getProgramByDataElement(String dataElementUid) {

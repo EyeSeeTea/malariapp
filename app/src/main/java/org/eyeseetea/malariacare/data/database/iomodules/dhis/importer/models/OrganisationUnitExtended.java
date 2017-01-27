@@ -35,8 +35,10 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
+import org.hisp.dhis.client.sdk.models.attribute.AttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,29 +122,22 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
         productivityArray=findOrganisationUnitAttributeValueByCode(ORGANISATION_UNIT_PRODUCTIVITY_VALUE_ATTRIBUTE_CODE);
     }
 
+    private List<AttributeValueFlow> getAttributeValues() {
+        return organisationUnit.getAttributeValueFlow();
+    }
+
     /**
      * Finds the value of an attribute with the given code in a dataElement
      * @param code
      * @return
      */
     public  String findOrganisationUnitAttributeValueByCode(String code){
-        /*
-        //// FIXME: 11/11/2016
-        OrganisationUnitAttributeValue organisationUnitAttributeValue = new Select().from(OrganisationUnitAttributeValue.class).as("o")
-                .join(Attribute.class, Join.JoinType.LEFT_OUTER).as("a")
-                .on(Condition.column(ColumnAlias.columnWithTable("o", OrganisationUnitAttributeValue$Table.ATTRIBUTEID))
-                        .eq(ColumnAlias.columnWithTable("a", Attribute$Table.ID)))
-                .where(Condition.column(ColumnAlias.columnWithTable("a", Attribute$Table.CODE))
-                        .eq(code))
-                .and(Condition.column(ColumnAlias.columnWithTable("o", OrganisationUnitAttributeValue$Table.ORGANISATIONUNIT)).is(this.getOrganisationUnit().getId()))
-                .querySingle();
+        String value = AttributeValueExtended.findAttributeValueByCode(code, getAttributeValues());
 
-        if(organisationUnitAttributeValue==null){
+        if(value==null){
             return "";
         }
-        return organisationUnitAttributeValue.getValue();
-        */
-        return null;
+        return value;
     }
 
     /**

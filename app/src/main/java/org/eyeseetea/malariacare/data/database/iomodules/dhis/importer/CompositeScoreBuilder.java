@@ -24,11 +24,14 @@ import android.util.Log;
 import com.google.common.base.Joiner;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
+        .AttributeValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.model.Answer;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
@@ -128,7 +131,7 @@ public class CompositeScoreBuilder {
      * @return
      */
     public int findAnswerOutput(DataElementExtended dataElementExtended){
-        String typeQuestion=dataElementExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE);
+        String typeQuestion= AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE, dataElementExtended.getDataElementFlow().getAttributeValueFlow());
 
         //Not found -> error type question
         if(typeQuestion==null  || typeQuestion.equals(COMPOSITE_SCORE_CODE)){
@@ -147,7 +150,7 @@ public class CompositeScoreBuilder {
         }
 
         //Find the value of the attribute 'DECompositiveScore' for this dataElement
-        return dataElementExtended.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE);
+        return AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElementExtended.getDataElementFlow().getAttributeValueFlow());
     }
 
     /**
