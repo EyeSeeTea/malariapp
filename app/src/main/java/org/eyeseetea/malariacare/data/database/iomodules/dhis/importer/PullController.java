@@ -128,11 +128,6 @@ public class PullController implements IPullController {
                 callback.onError(throwable);
             }
 
-            @Override
-            public void onStep(PullStep pullStep) {
-                callback.onStep(pullStep);
-            }
-
         });
     }
 
@@ -174,11 +169,6 @@ public class PullController implements IPullController {
             public void onError(Throwable throwable) {
                 throwable.printStackTrace();
                 callback.onError(throwable);
-            }
-
-            @Override
-            public void onStep(PullStep pullStep) {
-
             }
 
         });

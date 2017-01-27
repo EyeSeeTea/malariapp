@@ -87,7 +87,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
-    List<Question> questions;
+    public static List<Question> questions;
 
     private final String ATTRIBUTE_PRODUCTIVITY_CODE = "OUProductivity";
     private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -153,8 +153,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(ProgramStageExtended programStage) {
         //Build Program
         String sdkProgramUID = programStage.getProgramUid();
-        if(!programMapObjects.containsKey(sdkProgramUID))
-            return;
         org.eyeseetea.malariacare.data.database.model.Program appProgram = programMapObjects.get(
                 sdkProgramUID);
         appProgram.setStageUid(programStage.getUid());

@@ -6,6 +6,4 @@ public interface IDhisPullSourceCallback {
     void onComplete();
 
     void onError(Throwable throwable);
-
-    void onStep(PullStep pullStep);
 }

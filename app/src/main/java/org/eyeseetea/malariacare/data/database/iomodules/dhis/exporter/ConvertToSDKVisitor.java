@@ -267,7 +267,6 @@ public class ConvertToSDKVisitor implements
 
     private EventExtended setBasicEventProperties(EventExtended eventToUpdate) throws Exception{
         eventToUpdate.setStatus(EventExtended.STATUS_COMPLETED);
-        eventToUpdate.setFromServer(false);
         eventToUpdate.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         eventToUpdate.setProgramId(currentSurvey.getProgram().getUid());
         eventToUpdate.setProgramStageId(currentSurvey.getProgram().getUid());
@@ -290,7 +289,6 @@ public class ConvertToSDKVisitor implements
         dataValue.setDataElement(compositeScore.getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
-        dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY)));
         dataValue.save();
@@ -302,7 +300,6 @@ public class ConvertToSDKVisitor implements
         dataValue.setDataElement(value.getQuestion().getUid());
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
-        dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
         if(value.getOption()!=null){
             dataValue.setValue(value.getOption().getCode());
@@ -319,7 +316,6 @@ public class ConvertToSDKVisitor implements
     private EventExtended buildEvent() throws Exception{
         currentEvent=new EventExtended();
         currentEvent.setStatus(EventExtended.STATUS_COMPLETED);
-        currentEvent.setFromServer(false);
         currentEvent.setOrganisationUnitId(currentSurvey.getOrgUnit().getUid());
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
         currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
@@ -482,7 +478,6 @@ public class ConvertToSDKVisitor implements
         dataValue.setDataElement(uid);
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
-        dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(value);
         dataValue.save();

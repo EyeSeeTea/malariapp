@@ -29,7 +29,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
@@ -194,7 +193,8 @@ public class PullDhisSDKDataSource {
                 ProgramStageSectionFlow.class,
                 ProgramStageFlow.class,
                 FailedItemFlow.class,
-                StateFlow.class
+                StateFlow.class,
+                FailedItemFlow.class
         );
     }
 

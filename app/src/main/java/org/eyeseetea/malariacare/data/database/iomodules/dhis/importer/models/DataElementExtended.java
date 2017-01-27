@@ -206,8 +206,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     private List<AttributeValueFlow> getAttributeValues() {
-        dataElement.getAttributeValueFlow();
-        return null;
+        return dataElement.getAttributeValueFlow();
     }
 
     /**
@@ -617,6 +616,8 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public String getOptionSet() {
+        if(dataElement.getOptionSet()==null)
+            return null;
         return dataElement.getOptionSet().getUId();
     }
 
