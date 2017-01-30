@@ -46,7 +46,7 @@ public class AttributeValueExtended {
     }
 
     public String getUid() {
-        return attributeValueFlow.getUId();
+        return attributeValueFlow.getAttributeUId();
     }
 
 
