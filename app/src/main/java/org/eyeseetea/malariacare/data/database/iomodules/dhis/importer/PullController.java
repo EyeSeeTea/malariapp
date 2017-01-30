@@ -77,7 +77,7 @@ public class PullController implements IPullController {
             Log.d(TAG, "PULL process...OK");
             postFinish();
         } else {
-            this.callback.onCancel();
+            callback.onCancel();
         }
     }
 

@@ -26,6 +26,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.data.remote.SdkController;
 import org.eyeseetea.malariacare.data.remote.SdkPushController;
@@ -111,20 +112,12 @@ public class PushController {
             return false;
         }
 
-        //Register for event bus
-        try {
-            register();
-        }catch(Exception e){
-            unregister();
-            register();
-        }
-
         try {
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
 
-            PopulateDB.wipeSDKData();
+            PullDhisSDKDataSource.wipeDataBase();
             convertToSDK(surveys);
             isPushing =EventExtended.getAllEvents().size()>0;
             if(!isPushing)

@@ -211,7 +211,15 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public void save() {
-        dataValue.save();
+        try {
+            System.out.println(dataValue.getValue());;
+            String dataElement= dataValue.getDataElement();
+            String value = dataValue.getValue();
+            System.out.println(dataElement+ "val "+ value);
+            dataValue.save();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static List<DataValueExtended> getExtendedList(List<TrackedEntityDataValueFlow> flowList){

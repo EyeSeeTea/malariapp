@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
@@ -462,9 +463,14 @@ public class ConvertToSDKVisitor implements
     }
 
     private void addOrUpdateDataValue(String dataElementUID,String value){
-        DataValueExtended dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        DataValueExtended dataValue=null;
+        try {
+            dataValue = DataValueExtended.findByEventAndUID(
+                    currentEvent.getEvent(), dataElementUID);
+        }catch (Exception e){
+            e.printStackTrace();}
         //Already added, update its value
-        if(dataValue!=null){
+        if(dataValue.getDataValue()!=null){
             dataValue.setValue(value);
             dataValue.save();
             return;
@@ -525,11 +531,11 @@ public class ConvertToSDKVisitor implements
     /**
      * Saves changes in the survey (supposedly after a successfull push)
      */
-    public void saveSurveyStatus(Map<Event,ImportSummary> importSummaryMap){
+    public void saveSurveyStatus(Map<String,ImportSummary> importSummaryMap){
         for(int i=0;i<surveys.size();i++){
             Survey iSurvey=surveys.get(i);
             EventExtended iEvent=new EventExtended(events.get(iSurvey.getId_survey()));
-            ImportSummary importSummary=importSummaryMap.get(iEvent);
+            ImportSummary importSummary=importSummaryMap.get(iEvent.getEvent().getUId());
             FailedItemFlow failedItem=  EventExtended.hasConflict(iEvent.getLocalId());
 
             //No errors -> Save and next
@@ -540,6 +546,7 @@ public class ConvertToSDKVisitor implements
 
             if(importSummary==null){
                 rollbackSurvey(iSurvey);
+                return;
             }
 
             //Errors

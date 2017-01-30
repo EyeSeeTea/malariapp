@@ -175,7 +175,7 @@ public class PullDhisSDKDataSource {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void wipeDataBase() {
+    public static void wipeDataBase() {
 
         Delete.tables(
                 EventFlow.class,
