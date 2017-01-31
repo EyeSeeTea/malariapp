@@ -84,6 +84,8 @@ public class PullDhisSDKDataSource {
                 return;
             }
             Scheduler pullThread = Schedulers.newThread();
+            D2.organisationUnitLevels().pull().subscribeOn(pullThread)
+                    .observeOn(pullThread).toBlocking().single();
             D2.attributes().pull().subscribeOn(pullThread)
                     .observeOn(pullThread).toBlocking().single();
             Observable.zip(D2.me().organisationUnits().pull(SyncStrategy.NO_DELETE),
