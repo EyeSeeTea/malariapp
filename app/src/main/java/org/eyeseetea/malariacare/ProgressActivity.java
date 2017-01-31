@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -86,7 +85,7 @@ public class ProgressActivity extends Activity {
      * Num of expected steps while pulling
      */
     //// FIXME: 28/11/2016 revise the max num of pull steps
-    private static final int MAX_PULL_STEPS = 7;
+    private static final int MAX_PULL_STEPS = 10;
 
     /**
      * Num of expected steps while pushing
@@ -115,14 +114,42 @@ public class ProgressActivity extends Activity {
     //Check intent params
     static Intent intent;
     public PullUseCase mPullUseCase = new PullUseCase();
+    private Handler handler;
+    private ProgressActivity mProgressActivity;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_progress);
+        PULL_CANCEL = false;
+        isOnPause = false;
+        prepareUI();
+        final Button button = (Button) findViewById(R.id.cancelPullButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                cancelPull();
+            }
+        });
+        intent = getIntent();
+        handler = new Handler();
+        mProgressActivity = this;
+    }
     /**
      * Prints the step in the progress bar
      */
-    public static void step(final String msg) {
-        final int currentProgress = progressBar.getProgress();
-        progressBar.setProgress(currentProgress + 1);
-        textView.setText(msg);
+    public void step(final String msg) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                int currentProgress = progressBar.getProgress();
+                progressBar.setProgress(currentProgress + 1);
+                textView = (TextView) findViewById(R.id.pull_text);
+                textView.setText(msg);
+
+            }
+        });
     }
 
     private static void annotateFirstPull(boolean value) {
@@ -148,26 +175,17 @@ public class ProgressActivity extends Activity {
         return (intent != null && intent.getIntExtra(TYPE_OF_ACTION, ACTION_PULL) != ACTION_PULL);
     }
 
+    private static String getDialogMessage(String msg) {
+        if (msg != null) {
+            return msg;
+        }
+        return "";
+    }
+
     private static String getDialogTitle(boolean isAPush) {
         int stringId =
                 isAPush ? R.string.dialog_title_push_response : R.string.dialog_title_pull_response;
         return PreferencesState.getInstance().getContext().getString(stringId);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_progress);
-        PULL_CANCEL = false;
-        isOnPause = false;
-        prepareUI();
-        final Button button = (Button) findViewById(R.id.cancelPullButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                cancelPull();
-            }
-        });
-        intent = getIntent();
     }
 
     private void cancelPull() {
@@ -225,12 +243,15 @@ public class ProgressActivity extends Activity {
 
         PULL_ERROR = true;
         PULL_CANCEL = true;
-                        String dialogTitle = "", dialogMessage = "";
-                        dialogTitle = getDialogTitle(isAPush());
-                        if (msg != null) {
-                            dialogMessage = msg;
-                        }
-                        new AlertDialog.Builder(this)
+        final String dialogTitle = getDialogTitle(isAPush());
+        final String dialogMessage = getDialogMessage(msg);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() { // This thread runs in the UI
+                    @Override
+                    public void run() {
+                        new AlertDialog.Builder(mProgressActivity)
                                 .setCancelable(false)
                                 .setTitle(dialogTitle)
                                 .setMessage(dialogMessage)
@@ -248,6 +269,10 @@ public class ProgressActivity extends Activity {
                                                 }
                                             }
                                         }).create().show();
+                    }});
+                }
+            };
+            new Thread(runnable).start();
     }
 
     private void logout() {

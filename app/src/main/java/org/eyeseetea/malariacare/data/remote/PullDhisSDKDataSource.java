@@ -28,7 +28,9 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
@@ -66,13 +68,8 @@ import rx.schedulers.Schedulers;
 public class PullDhisSDKDataSource {
     private final String TAG = ".PullDhisSDKDataSource";
 
-    /**
-     * Used for control new steps
-     */
-    public static Boolean PULL_IS_ACTIVE = false;
 
     public PullDhisSDKDataSource() {
-        PULL_IS_ACTIVE = true;
     }
 
     public void pullMetadata(final IDhisPullSourceCallback callback) {
@@ -83,12 +80,12 @@ public class PullDhisSDKDataSource {
         } else {
             Set<ProgramType> programTypes = new HashSet<>();
             programTypes.add(ProgramType.WITHOUT_REGISTRATION);
-            if (!PULL_IS_ACTIVE) {
+            if (!PullController.PULL_IS_ACTIVE) {
                 return;
             }
-            Scheduler attributesThread = Schedulers.newThread();
-            D2.attributes().pull().subscribeOn(attributesThread)
-                    .observeOn(attributesThread).toBlocking().single();
+            Scheduler pullThread = Schedulers.newThread();
+            D2.attributes().pull().subscribeOn(pullThread)
+                    .observeOn(pullThread).toBlocking().single();
             Observable.zip(D2.me().organisationUnits().pull(SyncStrategy.NO_DELETE),
                     D2.me().programs().pull(SyncStrategy.NO_DELETE, ProgramFields.DESCENDANTS,
                             programTypes),
@@ -99,8 +96,8 @@ public class PullDhisSDKDataSource {
                             return programs;
                         }
                     })
-                    .subscribeOn(Schedulers.io()).
-                    observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(pullThread).
+                    observeOn(pullThread)
                     .subscribe(new Action1<List<Program>>() {
                         @Override
                         public void call(List<Program> programs) {
@@ -123,9 +120,9 @@ public class PullDhisSDKDataSource {
             callback.onError(new NetworkException());
         } else {
             try {
-                if (!PULL_IS_ACTIVE) return;
+                if (!PullController.PULL_IS_ACTIVE) return;
                 pullEvents(callback);
-                if (!PULL_IS_ACTIVE) return;
+                if (!PullController.PULL_IS_ACTIVE) return;
                 callback.onComplete();
             } catch (Exception e) {
                 callback.onError(e);
@@ -141,12 +138,12 @@ public class PullDhisSDKDataSource {
                 D2.me().organisationUnits().list().subscribeOn(listThread)
                         .observeOn(listThread).toBlocking().single();
 
-        if (!PULL_IS_ACTIVE) return;
+        if (!PullController.PULL_IS_ACTIVE) return;
         for (Program program : sdkPrograms) {
             for (OrganisationUnit organisationUnit : sdkOrganisationUnits) {
                 for (Program orgunitProgram : organisationUnit.getPrograms()) {
                     if (orgunitProgram.getUId().equals(program.getUId())) {
-                        if (!PULL_IS_ACTIVE) return;
+                        if (!PullController.PULL_IS_ACTIVE) return;
                         Scheduler pullEventsThread = Schedulers.newThread();
                         D2.events().pull(
                                 organisationUnit.getUId(),
@@ -204,9 +201,5 @@ public class PullDhisSDKDataSource {
             }
         }
         return true;
-    }
-
-    public void cancel() {
-        PULL_IS_ACTIVE = false;
     }
 }
