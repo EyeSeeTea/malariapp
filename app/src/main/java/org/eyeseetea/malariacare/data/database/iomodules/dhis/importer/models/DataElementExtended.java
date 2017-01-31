@@ -41,9 +41,9 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Visitable
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
@@ -257,6 +257,7 @@ public class DataElementExtended implements VisitableFromSDK {
     public DataElementFlow getDataElementFlow() {
         return dataElement;
     }
+
     /**
      * Gets value in the AttributeValue table
      *
@@ -293,7 +294,8 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Returns if this dataElement has an attribute with code 'DEType' whose value matches the given
+     * Returns if this dataElement has an attribute with code 'DEType' whose value matches the
+     * given
      * value
      */
     private boolean isOfType(String optionElementTypeCode) {
@@ -632,8 +634,8 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public static List<DataElementExtended> getExtendedList(List<DataElementFlow> flowList) {
-        List <DataElementExtended> extendedsList = new ArrayList<>();
-        for(DataElementFlow flowPojo:flowList){
+        List<DataElementExtended> extendedsList = new ArrayList<>();
+        for (DataElementFlow flowPojo : flowList) {
             extendedsList.add(new DataElementExtended(flowPojo));
         }
         return extendedsList;
