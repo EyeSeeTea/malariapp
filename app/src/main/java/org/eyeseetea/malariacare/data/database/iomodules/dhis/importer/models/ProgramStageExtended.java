@@ -66,7 +66,7 @@ public class ProgramStageExtended implements VisitableFromSDK {
     }
 
     public String getProgramUid() {
-        return programStage.getUId();
+        return programStage.getProgram().getUId();
     }
 
     public String getUid() {

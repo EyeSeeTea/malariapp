@@ -455,7 +455,7 @@ public class Question extends BaseModel {
             }
 
             Iterator<Match> matchesIterator = matches.iterator();
-            In in = Match_Table.id_match.as(matchName)
+            In in = Match_Table.id_match.withTable(matchAlias)
                     .in(matchesIterator.next().getId_match());
             while (matchesIterator.hasNext()){
                 in.and(Long.toString(matchesIterator.next().getId_match()));
@@ -470,7 +470,7 @@ public class Question extends BaseModel {
                             //+Match
                     .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
                     .on(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)
-                                    .eq(Match_Table.id_question_relation))
+                                    .eq(Match_Table.id_question_relation.withTable(matchAlias)))
                             //Parent child relationship
                     .where(in)
                             //In clause

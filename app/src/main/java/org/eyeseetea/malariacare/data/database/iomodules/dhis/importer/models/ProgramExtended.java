@@ -34,8 +34,8 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Visitable
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramAttributeValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramAttributeValueFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
 import org.eyeseetea.malariacare.data.database.model.Program;
@@ -89,26 +89,37 @@ public class ProgramExtended implements VisitableFromSDK {
     }
 
     public Integer getProductivityPosition() {
-        //// FIXME: 11/11/2016
-        ProgramAttributeValueFlow programAttributeValue = new Select().from(ProgramAttributeValueFlow.class).as(programAttributeFlowName)
-                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
-                .on(ProgramAttributeValueFlow_Table.attributeId.withTable(programAttributeFlowAlias)
-                        .eq(AttributeFlow_Table.id.withTable(attributeFlowAlias)))
-                .where(AttributeFlow_Table.code
-                        .eq(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE))
-                .and(ProgramAttributeValueFlow_Table.program.withTable(programAttributeFlowAlias).is(getUid()))
-                .querySingle();
+        String value = findOrganisationUnitAttributeValueByCode(PROGRAM_PRODUCTIVITY_POSITION_ATTRIBUTE_CODE);
 
-        if(programAttributeValue==null){
+        if(value==null){
             return null;
         }
 
         try {
-            return Integer.parseInt(programAttributeValue.getValue());
+            return Integer.parseInt(value);
         }catch(Exception ex){
             Log.e(TAG, String.format("getProductivityPosition(%s) -> %s", this.getProgram().getUId(), ex.getMessage()));
             return null;
         }
+    }
+
+
+    private List<AttributeValueFlow> getAttributeValues() {
+        return program.getAttributeValueFlow();
+    }
+
+    /**
+     * Finds the value of an attribute with the given code in a dataElement
+     * @param code
+     * @return
+     */
+    public  String findOrganisationUnitAttributeValueByCode(String code){
+        String value = AttributeValueExtended.findAttributeValueByCode(code, getAttributeValues());
+
+        if(value==null){
+            return "";
+        }
+        return value;
     }
 
     public static ProgramExtended getProgramByDataElement(String dataElementUid) {

@@ -269,10 +269,11 @@ public class ProgressActivity extends Activity {
                                                 }
                                             }
                                         }).create().show();
-                    }});
-                }
-            };
-            new Thread(runnable).start();
+                    }
+                });
+            }
+        };
+        new Thread(runnable).start();
     }
 
     private void logout() {
@@ -319,7 +320,7 @@ public class ProgressActivity extends Activity {
         //Show final step -> done
         step(getString(R.string.progress_pull_done));
 
-        String title = getDialogTitle(isAPush());
+        final String title = getDialogTitle(isAPush());
 
         final int msg = getDoneMessage();
 
@@ -331,53 +332,84 @@ public class ProgressActivity extends Activity {
          */
         if (intent != null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,
                 ProgressActivity.DONT_SHOW_FEEDBACK) == ProgressActivity.SHOW_FEEDBACK)) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setTitle(title)
-                    .setMessage(msg)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            //Pull or Push(single)
-                            if (!isAPush() || !hasAPullAfterPush()) {
-                                finishAndGo(DashboardActivity.class);
-                                return;
-                            } else {
-                                //Start pull after push
-                                pullAfterPushInProgress = true;
-                                launchPull();
-                                return;
-                            }
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() { // This thread runs in the UI
+                        @Override
+                        public void run() {
+                            AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
+                                    .setCancelable(false)
+                                    .setTitle(title)
+                                    .setMessage(msg)
+                                    .setPositiveButton(android.R.string.ok,
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    //Pull or Push(single)
+                                                    if (!isAPush() || !hasAPullAfterPush()) {
+                                                        finishAndGo(DashboardActivity.class);
+                                                        return;
+                                                    } else {
+                                                        //Start pull after push
+                                                        pullAfterPushInProgress = true;
+                                                        launchPull();
+                                                        return;
+                                                    }
+                                                }
+                                            })
+                                    .setNeutralButton(
+                                            getApplicationContext().getResources().getString(
+                                                    R.string.dialog_button_preview_feedback),
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    //I try using a intent to feedbackactivity
+                                                    // but the
+                                                    // dashboardsActivity was reloaded from the
+                                                    // service.
+                                                    finishAndGo(DashboardActivity.class);
+                                                }
+                                            }).create();
+                            alertDialog.show();
                         }
-                    })
-                    .setNeutralButton(getApplicationContext().getResources().getString(
-                            R.string.dialog_button_preview_feedback),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    //I try using a intent to feedbackactivity but the
-                                    // dashboardsActivity was reloaded from the service.
-                                    finishAndGo(DashboardActivity.class);
-                                }
-                            }).create();
-            alertDialog.show();
+                    });
+                }
+            };
+            new Thread(runnable).start();
         } else {
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setTitle(title)
-                    .setMessage(msg)
-                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            if (!isAPush() || !hasAPullAfterPush()) {
-                                finishAndGo(DashboardActivity.class);
-                                return;
-                            } else {
-                                //Start pull after push
-                                pullAfterPushInProgress = true;
-                                launchPull();
-                                return;
-                            }
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() { // This thread runs in the UI
+                        @Override
+                        public void run() {
+                            AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
+                                    .setCancelable(false)
+                                    .setTitle(title)
+                                    .setMessage(msg)
+                                    .setNeutralButton(android.R.string.ok,
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    if (!isAPush() || !hasAPullAfterPush()) {
+                                                        finishAndGo(DashboardActivity.class);
+                                                        return;
+                                                    } else {
+                                                        //Start pull after push
+                                                        pullAfterPushInProgress = true;
+                                                        launchPull();
+                                                        return;
+                                                    }
+                                                }
+                                            }).create();
+                            alertDialog.show();
                         }
-                    }).create();
-            alertDialog.show();
+                    });
+                }
+            };
+            new Thread(runnable).start();
         }
     }
 

@@ -31,14 +31,17 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSe
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Join;
+import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -57,9 +60,12 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Ta
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.models.dataelement.ValueType;
+import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.internal.operators.OperatorGroupBy;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -196,9 +202,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public String getCode() {
-        // TODO: 15/11/2016
-        //return dataElement.getCode()
-        return null;
+        return dataElement.getCode();
     }
 
     public String getUid() {
@@ -206,9 +210,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     private List<AttributeValueFlow> getAttributeValues() {
-        //// TODO: 15/11/2016
-        //dataElement.getAttributeValues();
-        return null;
+        return dataElement.getAttributeValueFlow();
     }
 
     /**
@@ -264,8 +266,7 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return value
      */
     public String getValue(String attributeCode) {
-        AttributeValueFlow attributeValue = findAttributeValuefromDataElementCode(attributeCode,
-                getDataElementFlow());
+        AttributeValueFlow attributeValue = AttributeValueExtended.findAttributeValuefromDataElementCode(attributeCode,getAttributeValues());
         if (attributeValue != null) {
             return attributeValue.getValue();
         }
@@ -299,7 +300,7 @@ public class DataElementExtended implements VisitableFromSDK {
      * value
      */
     private boolean isOfType(String optionElementTypeCode) {
-        String typeElement = findAttributeValueByCode(ATTRIBUTE_ELEMENT_TYPE_CODE);
+        String typeElement = AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_ELEMENT_TYPE_CODE, getAttributeValues());
 
         if (typeElement == null) {
             Log.w(TAG,
@@ -311,67 +312,6 @@ public class DataElementExtended implements VisitableFromSDK {
         return typeElement.equals(optionElementTypeCode);
     }
 
-    /**
-     * Find the attributevalue in a dataelement for the given attribute
-     */
-    public AttributeValueFlow findAttributeValue(AttributeFlow attribute) {
-
-        for (AttributeValueFlow attributeValue : getAttributeValues()) {
-            if (attributeValue.getAttribute().getUId().equals(attribute.getUId())) {
-                return attributeValue;
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     * Finds the value of an attribute with the given code in a dataElement
-     */
-    public String findAttributeValueByCode(String code) {
-
-        //Find the right attribute
-        AttributeFlow attribute = AttributeExtended.findAttributeByCode(code);
-        //No such attribute -> done
-        if (attribute == null) {
-            Log.d("DataElementExtended",
-                    String.format("findAttributeByCode(): Attribute with %s not found", code));
-            return null;
-        }
-
-        //Find its value for the given dataelement
-        AttributeValueFlow attributeValue = findAttributeValue(attribute);
-        if (attributeValue == null) {
-            return null;
-        }
-        return attributeValue.getValue();
-    }
-
-    /**
-     * Find the attribute in a dataelement for the given code
-     */
-    public AttributeValueFlow findAttributeValuefromDataElementCode(String code,
-            DataElementFlow dataElement) {
-        if (code == null || dataElement == null) {
-            return null;
-        }
-        //select * from Attribute join AttributeValue on Attribute.id = attributeValue
-        // .attributeId join DataElementAttributeValue on attributeValue
-        // .id=DataElementAttributeValue.attributeValueId where DataElementAttributeValue
-        // .dataElementId="vWgsPN1RPLl" and code="Order"
-        for (AttributeValueFlow attributeValue : getAttributeValues()) {
-            if (attributeValue.getAttribute().getCode() == null) {
-                throw new RuntimeException(String.format(
-                        PreferencesState.getInstance().getContext().getResources().getString(
-                                R.string.dialog_error_attribute_null),
-                        attributeValue.getAttributeUId()));
-            }
-            if (attributeValue.getAttribute().getCode().equals(code)) {
-                return attributeValue;
-            }
-        }
-        return null;
-    }
 
     /**
      * Find the associated programStage (tabgroup)
@@ -387,13 +327,13 @@ public class DataElementExtended implements VisitableFromSDK {
         //Find the right 'uid' of the dataelement program
         ProgramFlow program = new Select().from(ProgramFlow.class).as(programFlowName)
                 .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(programStageFlowName)
-                .on(ProgramFlow_Table.id.withTable(programFlowAlias)
+                .on(ProgramFlow_Table.uId.withTable(programFlowAlias)
                         .eq(ProgramStageFlow_Table.program.withTable(programStageFlowAlias)))
                 .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
                         programStageDataElementFlowName)
                 .on(ProgramStageDataElementFlow_Table.programStage.withTable(
                         programStageDataElementFlowAlias)
-                        .eq(ProgramStageFlow_Table.id.withTable(programStageFlowAlias)))
+                        .eq(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)))
                 .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
                         programStageDataElementFlowAlias).eq(dataElementUID))
                 .querySingle();
@@ -412,7 +352,7 @@ public class DataElementExtended implements VisitableFromSDK {
                 programStageSectionFlowName)
                 .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
                         programStageDataElementFlowName)
-                .on(ProgramStageSectionFlow_Table.id.withTable(programStageSectionFlowAlias)
+                .on(ProgramStageSectionFlow_Table.uId.withTable(programStageSectionFlowAlias)
                         .eq(ProgramStageDataElementFlow_Table.programStageSection.withTable(
                                 programStageDataElementFlowAlias)))
                 .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
@@ -429,22 +369,13 @@ public class DataElementExtended implements VisitableFromSDK {
      * Find the associated programStageSection (tab)UID given a dataelement UID
      */
     public String findProgramStageSection() {
-
-        List<ProgramStageSectionFlow> programStageSections = new Select().from(
-                ProgramStageSectionFlow.class).as(
-                programStageSectionFlowName)
-                .join(ProgramStageDataElementFlow.class, Join.JoinType.LEFT_OUTER).as(
-                        programStageDataElementFlowName)
-                .on(ProgramStageSectionFlow_Table.id.withTable(programStageSectionFlowAlias)
-                        .eq(ProgramStageDataElementFlow_Table.programStageSection.withTable(
-                                programStageDataElementFlowAlias)))
-                .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
-                        programStageDataElementFlowAlias).eq(getUid()))
-                .queryList();
-        if (programStageSections == null) {
-            return null;
-        }
-        for (ProgramStageSectionFlow programStageSection : programStageSections) {
+        List<ProgramStageDataElementFlow> programStageDataElementFlows =
+                new Select().distinct().from(ProgramStageDataElementFlow.class)
+                .where(ProgramStageDataElementFlow_Table.dataElement.eq(getUid())).queryList();
+//// FIXME: 27/01/2017  A single query retuns bad ProgramStageSection(with programStageDataElement uid name etc.. and i can't compile a groupBy programStageSection field
+        for(ProgramStageDataElementFlow programStageDataElementFlow:programStageDataElementFlows) {
+            ProgramStageSectionFlow programStageSection =
+                    programStageDataElementFlow.getProgramStageSection();
             if (SdkQueries.getProgramStage(
                     programStageSection.getProgramStage()).getProgram().getUId().equals(
                     programUid)) {
@@ -509,7 +440,7 @@ public class DataElementExtended implements VisitableFromSDK {
                         programStageDataElementFlowName)
                 .on(ProgramStageDataElementFlow_Table.programStageSection.withTable(
                         programStageDataElementFlowAlias)
-                        .eq(ProgramStageSectionFlow_Table.id
+                        .eq(ProgramStageSectionFlow_Table.uId
                                 .withTable(programStageSectionFlowAlias)))
                 .where(ProgramStageDataElementFlow_Table.dataElement.withTable(
                         programStageDataElementFlowAlias).eq(dataElementUID))
@@ -606,8 +537,6 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public String getShortName() {
-        //// TODO: 15/11/2016 revise this:
-        //return dataElement.getShortName;
         return dataElement.getDisplayName();
     }
 
@@ -616,12 +545,12 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public String getDescription() {
-        //// TODO: 15/11/2016 revise this:
-        //return dataElement.getDescription;
         return dataElement.getDisplayFormName();
     }
 
     public String getOptionSet() {
+        if(dataElement.getOptionSet()==null)
+            return null;
         return dataElement.getOptionSet().getUId();
     }
 

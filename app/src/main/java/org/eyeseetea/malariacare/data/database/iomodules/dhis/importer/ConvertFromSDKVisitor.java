@@ -87,7 +87,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
-    List<Question> questions;
+    public static List<Question> questions;
 
     private final String ATTRIBUTE_PRODUCTIVITY_CODE = "OUProductivity";
     private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -475,8 +475,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             appQuestion.setAnswer(buildAnswerLabel());
         }
 
-
-        //// FIXME: 11/11/2016
         ProgramStageDataElementExtended programStageDataElement =
                 new ProgramStageDataElementExtended(
                         DataElementExtended.findProgramStageDataElementByDataElementExtended(

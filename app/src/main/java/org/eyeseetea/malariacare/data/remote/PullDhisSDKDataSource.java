@@ -38,18 +38,24 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ModelLinkFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitLevelFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitToProgramRelationFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
+import org.hisp.dhis.client.sdk.models.attribute.AttributeValue;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
+import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -167,11 +173,26 @@ public class PullDhisSDKDataSource {
     }
 
     public void wipeDataBase() {
+
         Delete.tables(
                 EventFlow.class,
                 TrackedEntityDataValueFlow.class,
+                DataElementFlow.class,
+                ProgramFlow.class,
+                AttributeFlow.class,
+                AttributeValueFlow.class,
+                ModelLinkFlow.class,
+                OptionSetFlow.class,
+                OptionFlow.class,
+                OrganisationUnitFlow.class,
+                OrganisationUnitLevelFlow.class,
+                OrganisationUnitToProgramRelationFlow.class,
+                ProgramStageDataElementFlow.class,
+                ProgramStageSectionFlow.class,
+                ProgramStageFlow.class,
                 FailedItemFlow.class,
-                AttributeValueFlow.class
+                StateFlow.class,
+                FailedItemFlow.class
         );
     }
 
