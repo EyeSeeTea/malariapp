@@ -41,7 +41,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -49,7 +48,6 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
-import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
@@ -57,12 +55,7 @@ import java.io.InputStream;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
-/**
- * Login Screen.
- * It shows only when the user has an open session.
- */
 public class LoginActivity extends AbsLoginActivity {
-    private AlertDialog alertDialog;
     private static final String TAG = "LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
@@ -94,9 +87,6 @@ public class LoginActivity extends AbsLoginActivity {
         ActivityCompat.startActivity(LoginActivity.this, intent, null);
     }
 
-    /**
-     * Ask for EULA acceptance if this is the first time user login to the server, otherwise login
-     */
     @Override
     protected void onLoginButtonClicked(Editable server, Editable username, Editable password) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -186,39 +176,12 @@ public class LoginActivity extends AbsLoginActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * Populate from database or launch the pull in the progressActivity
-     */
     private void onSuccess() {
         hideProgress();
-        Log.d(TAG, "logged!");
 
         populateFromAssetsIfRequired();
 
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-        }
-        Log.d(TAG, "Pull of programs");
         launchActivity(LoginActivity.this, ProgressActivity.class);
-    }
-
-    /**
-     * Utility method to use while developing to avoid a real pull
-     */
-    private void populateFromAssetsIfRequired() {
-        //From server -> done
-        if (PreferencesState.getInstance().getPullFromServer()) {
-            return;
-        }
-
-        //Populate locally
-        try {
-            PopulateDB.wipeDatabase();
-            PopulateDB.populateDB(getAssets());
-        } catch (Exception ex) {
-        }
-        //Go to dashboard Activity
-        launchActivity(this, DashboardActivity.class);
     }
 
     public void showProgress() {
@@ -251,29 +214,23 @@ public class LoginActivity extends AbsLoginActivity {
         startActivity(intent);
     }
 
-    private void showErrorDialog(String title, String message) {
-        Log.d(TAG, "Login error title: " + title);
-        Log.d(TAG, "Login error message: " + message);
-
-        if (alertDialog == null) {
-            alertDialog = new AlertDialog.Builder(this)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create();
+    /**
+     * Utility method to use while developing to avoid a real pull
+     */
+    private void populateFromAssetsIfRequired() {
+        //From server -> done
+        if (PreferencesState.getInstance().getPullFromServer()) {
+            return;
         }
 
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // to avoid leaks on configuration changes:
-        if (alertDialog != null) {
-            alertDialog.dismiss();
+        //Populate locally
+        try {
+            PopulateDB.wipeDatabase();
+            PopulateDB.populateDB(getAssets());
+        } catch (Exception ex) {
         }
+        //Go to dashboard Activity
+        launchActivity(this, DashboardActivity.class);
     }
 }
 
