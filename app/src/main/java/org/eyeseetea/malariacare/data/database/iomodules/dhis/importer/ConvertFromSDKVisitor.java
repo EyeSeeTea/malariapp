@@ -382,7 +382,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //-> createdOn
         if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
-            survey.setCreationDate(EventExtended.parseShortDate(dataValue.getValue()));
+            survey.setCreationDate(EventExtended.parseLongDate(dataValue.getValue()));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
                     dataValue.getValue()));
@@ -391,7 +391,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
         //-> uploadedOn
         if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.upload_date_code)))){
-            survey.setUploadDate(EventExtended.parseShortDate(dataValue.getValue()));
+            survey.setUploadDate(EventExtended.parseLongDate(dataValue.getValue()));
             Log.i(TAG,String.format("Event %s uploaded on %s",survey.getEventUid(),dataValue
             .getValue()));
             return;
