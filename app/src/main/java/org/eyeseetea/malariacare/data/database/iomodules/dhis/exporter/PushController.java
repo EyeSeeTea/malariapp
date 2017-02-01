@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Delete;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
@@ -31,6 +33,9 @@ import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.data.remote.SdkController;
 import org.eyeseetea.malariacare.data.remote.SdkPushController;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 
 import java.util.List;
 
@@ -116,8 +121,13 @@ public class PushController {
             //Converts app data into sdk events
             postProgress(context.getString(R.string.progress_push_preparing_survey));
             Log.d(TAG, "Preparing survey for pushing...");
-
-            PullDhisSDKDataSource.wipeDataBase();
+            
+            //// FIXME: 01/02/2017 refactor with clean arquitecture
+            Delete.tables(
+                    EventFlow.class,
+                    TrackedEntityDataValueFlow.class, 
+                    StateFlow.class
+            );
             convertToSDK(surveys);
             isPushing =EventExtended.getAllEvents().size()>0;
             if(!isPushing)
