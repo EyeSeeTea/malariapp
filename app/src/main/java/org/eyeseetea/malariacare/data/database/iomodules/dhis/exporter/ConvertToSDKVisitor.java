@@ -368,7 +368,7 @@ public class ConvertToSDKVisitor implements
 
         //Overall score
         if(controlDataElementExistsInServer(overallScoreCode)  && survey.hasMainScore()){
-            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
@@ -394,7 +394,7 @@ public class ConvertToSDKVisitor implements
 
         //Overall score
         if(!overallScoreCode.equals("") && survey.hasMainScore())
-            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //Forward order
         if(controlDataElementExistsInServer(pushDeviceCode)) {
@@ -452,7 +452,7 @@ public class ConvertToSDKVisitor implements
         //Already added, update its value
         if(dataValue !=null && dataValue.getDataValue()!=null){
             dataValue.setValue(value);
-            dataValue.save();
+            dataValue.update();
             return;
         }
 
@@ -460,7 +460,7 @@ public class ConvertToSDKVisitor implements
     }
 
     private void buildAndSaveDataValue(String uid, String value){
-        DataValueExtended dataValue= new DataValueExtended();
+        DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(uid);
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
