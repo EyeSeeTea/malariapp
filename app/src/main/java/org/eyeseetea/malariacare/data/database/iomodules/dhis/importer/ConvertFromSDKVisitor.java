@@ -381,9 +381,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
         //-> createdOn
-        if (dataValue.getDataElement().equals(
-                PreferencesState.getInstance().getContext().getResources().getString(
-                        R.string.created_on_code))) {
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
             survey.setCreationDate(EventExtended.parseShortDate(dataValue.getValue()));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
@@ -392,18 +390,16 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
 
         //-> uploadedOn
-        /*if(dataValue.getDataElement().equals(PreferencesState.getInstance().getContext()
-        .getResources().getString(R.string.upload_on_code))){
-            survey.setUploadDate(EventExtended.parseShortDate(dataValue.getValue());
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.upload_date_code)))){
+            survey.setUploadDate(EventExtended.parseShortDate(dataValue.getValue()));
             Log.i(TAG,String.format("Event %s uploaded on %s",survey.getEventUid(),dataValue
             .getValue()));
             return;
-        }*/
+        }
 
         //-> uploadedBy (updatedBy is ignored)
-        if (dataValue.getDataElement().equals(
-                PreferencesState.getInstance().getContext().getResources().getString(
-                        R.string.uploaded_by_code))) {
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(
+                R.string.uploaded_by_code)))) {
             User user = User.getUser(dataValue.getValue());
             if (user == null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());

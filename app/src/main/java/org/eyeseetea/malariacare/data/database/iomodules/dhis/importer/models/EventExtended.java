@@ -249,7 +249,7 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     public void setDueDate(DateTime dateTime) {
-        event.setEventDate(dateTime);
+        event.setDueDate(dateTime);
     }
 
     public long getLocalId() {
