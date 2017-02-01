@@ -208,10 +208,6 @@ public class SdkQueries {
     }
 
     public static List<ProgramStageSectionFlow> getProgramStageSectionFromProgramStage(String uId) {
-        System.out.println(new Select().from(
-                ProgramStageSectionFlow.class)
-                .where(ProgramStageSectionFlow_Table.programStage
-                        .eq(uId)).getQuery());
         List<ProgramStageSectionFlow> programStageSections = new Select().from(
                 ProgramStageSectionFlow.class)
                 .where(ProgramStageSectionFlow_Table.programStage
