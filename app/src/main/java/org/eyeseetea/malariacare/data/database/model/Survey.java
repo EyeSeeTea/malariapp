@@ -20,10 +20,15 @@
 package org.eyeseetea.malariacare.data.database.model;
 
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.matchName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -544,18 +549,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Condition.column(ColumnAlias.columnWithTable("q", Question$Table.OUTPUT)).isNot(Constants.NO_ANSWER))
                 .count();
          */
-        long numOptionalQuestions = SQLite.selectCountOf().from(Question.class).as("q")
-                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as("qr")
+        long numOptionalQuestions = SQLite.selectCountOf().from(Question.class).as(questionName)
+                .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                 .on(Question_Table.id_question.withTable(questionAlias)
                         .eq(QuestionRelation_Table.id_question.withTable(questionRelationAlias)))
-                .join(Match.class, Join.JoinType.LEFT_OUTER).as("m")
+                .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
                 .on(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)
                                 .eq(Match_Table.id_question_relation.withTable(matchAlias)))
-                .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as("qo")
+                .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
                 .on(Match_Table.id_match.withTable(matchAlias)
                                 .eq(QuestionOption_Table.id_match.withTable(questionOptionAlias)))
-                .join(Value.class, Join.JoinType.LEFT_OUTER).as("v")
-                .on(Value_Table.id_question.withTable()
+                .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(Value_Table.id_question.withTable(valueAlias)
                                 .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias)),
                         Value_Table.id_option.withTable(valueAlias)
                                 .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))

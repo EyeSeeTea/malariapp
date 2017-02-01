@@ -19,11 +19,17 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
+import org.hisp.dhis.client.sdk.models.attribute.AttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,16 +63,64 @@ public class AttributeValueExtended {
     public AttributeValueExtended() {
     }
 
+
     /**
-     * Find an attribute by its code
+     * Finds the value of an attribute with the given code in a dataElement
      */
-    public static AttributeFlow findAttributeByCode(String code) {
-        return new Select().from(AttributeFlow.class)
-                //// FIXME: 11/11/2016 code not exists
-                .where(AttributeFlow_Table.code.is(code))
-                .querySingle();
+    public static String findAttributeValueByCode(String code, List<AttributeValueFlow> attributeValueList) {
+
+        //Find the right attribute
+        AttributeFlow attribute = AttributeExtended.findAttributeByCode(code);
+        //No such attribute -> done
+        if (attribute == null) {
+            Log.d("DataElementExtended",
+                    String.format("findAttributeByCode(): Attribute with %s not found", code));
+            return null;
+        }
+
+        //Find its value for the given dataelement
+        AttributeValueFlow attributeValue = findAttributeValue(attribute, attributeValueList);
+        if (attributeValue == null) {
+            return null;
+        }
+        return attributeValue.getValue();
     }
 
+
+    /**
+     * Find the attributevalue in a dataelement for the given attribute
+     */
+    public static AttributeValueFlow findAttributeValue(AttributeFlow attribute, List<AttributeValueFlow> attributeValueList) {
+        if(attributeValueList==null)
+            return  null;
+        for (AttributeValueFlow attributeValue : attributeValueList) {
+            if (attributeValue.getAttribute().getUId().equals(attribute.getUId())) {
+                return attributeValue;
+            }
+        }
+        return null;
+    }
+    /**
+     * Find the attribute in a dataelement for the given code
+     */
+    public static AttributeValueFlow findAttributeValuefromDataElementCode(String code,
+            List<AttributeValueFlow> attributeValueList) {
+        if (code == null ) {
+            return null;
+        }
+        for (AttributeValueFlow attributeValue : attributeValueList) {
+            if (attributeValue.getAttribute().getCode() == null) {
+                throw new RuntimeException(String.format(
+                        PreferencesState.getInstance().getContext().getResources().getString(
+                                R.string.dialog_error_attribute_null),
+                        attributeValue.getAttributeUId()));
+            }
+            if (attributeValue.getAttribute().getCode().equals(code)) {
+                return attributeValue;
+            }
+        }
+        return null;
+    }
 
     public static List<AttributeValueExtended> getExtendedList(List<AttributeValueFlow> flowList) {
         List<AttributeValueExtended> extendedsList = new ArrayList<>();

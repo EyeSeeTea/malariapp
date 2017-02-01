@@ -19,10 +19,15 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +40,12 @@ public class AttributeExtended {
 
     AttributeFlow attributeFlow;
 
-    public AttributeExtended(AttributeFlow attributeFlow){
-        this.attributeFlow =attributeFlow;
+    public AttributeExtended(AttributeFlow attributeFlow) {
+        this.attributeFlow = attributeFlow;
     }
-    public AttributeExtended(AttributeExtended attributeFlow){
-        this.attributeFlow =attributeFlow.getAttribute();
+
+    public AttributeExtended(AttributeExtended attributeFlow) {
+        this.attributeFlow = attributeFlow.getAttribute();
     }
 
     public String getCode() {
@@ -54,24 +60,66 @@ public class AttributeExtended {
         return attributeFlow;
     }
 
-    public AttributeExtended(){}
+    public AttributeExtended() {
+    }
 
     /**
      * Find an attribute by its code
-     * @param code
-     * @return
      */
-    public static AttributeFlow findAttributeByCode(String code){
+    public static AttributeFlow findAttributeByCode(String code) {
         return new Select().from(AttributeFlow.class)
-                //// FIXME: 11/11/2016 code not exists
                 .where(AttributeFlow_Table.code.is(code))
-        .querySingle();
+                .querySingle();
     }
 
 
+    /**
+     * Find the attribute in a dataelement for the given code
+     */
+    public static AttributeValueFlow findAttributeValuefromCode(String code,
+            List<AttributeValueFlow> attributeValueList) {
+        if (code == null) {
+            return null;
+        }
+        for (AttributeValueFlow attributeValue : attributeValueList) {
+            if (attributeValue.getAttribute().getCode() == null) {
+                throw new RuntimeException(String.format(
+                        PreferencesState.getInstance().getContext().getResources().getString(
+                                R.string.dialog_error_attribute_null),
+                        attributeValue.getAttributeUId()));
+            }
+            if (attributeValue.getAttribute().getCode().equals(code)) {
+                return attributeValue;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Finds the value of an attribute with the given code in a dataElement
+     */
+    public static  String findAttributeValueByCode(String code, List<AttributeValueFlow> attributeValueList) {
+
+        //Find the right attribute
+        AttributeFlow attribute = AttributeExtended.findAttributeByCode(code);
+        //No such attribute -> done
+        if (attribute == null) {
+            Log.d("AttributeValueExtended",
+                    String.format("findAttributeByCode(): Attribute with %s not found", code));
+            return null;
+        }
+
+        //Find its value for the given dataelement
+        AttributeValueFlow attributeValue = AttributeValueExtended.findAttributeValue(attribute, attributeValueList);
+        if (attributeValue == null) {
+            return null;
+        }
+        return attributeValue.getValue();
+    }
     public static List<AttributeExtended> getExtendedList(List<AttributeFlow> flowList) {
-        List <AttributeExtended> extendedsList = new ArrayList<>();
-        for(AttributeFlow flowPojo:flowList){
+        List<AttributeExtended> extendedsList = new ArrayList<>();
+        for (AttributeFlow flowPojo : flowList) {
             extendedsList.add(new AttributeExtended(flowPojo));
         }
         return extendedsList;
