@@ -23,8 +23,11 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +38,17 @@ import java.util.List;
 public class ProgramStageExtended implements VisitableFromSDK {
     ProgramStageFlow programStage;
 
-    public ProgramStageExtended(){}
+    public ProgramStageExtended() {
+    }
 
-    public ProgramStageExtended(ProgramStageFlow programStage){
-        this.programStage=programStage;
+    public ProgramStageExtended(ProgramStageFlow programStage) {
+        this.programStage = programStage;
     }
-    public ProgramStageExtended(ProgramStageExtended programStage){
-        this.programStage=programStage.getProgramStage();
+
+    public ProgramStageExtended(ProgramStageExtended programStage) {
+        this.programStage = programStage.getProgramStage();
     }
+
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
@@ -52,8 +58,8 @@ public class ProgramStageExtended implements VisitableFromSDK {
         return programStage;
     }
 
-    public static ProgramStageFlow getProgramStage(String programStageUID){
-        return  new Select().from(ProgramStageFlow.class)
+    public static ProgramStageFlow getProgramStage(String programStageUID) {
+        return new Select().from(ProgramStageFlow.class)
                 .where(ProgramStageFlow_Table.uId
                         .eq(programStageUID))
                 .querySingle();
@@ -68,21 +74,34 @@ public class ProgramStageExtended implements VisitableFromSDK {
     }
 
     public List<ProgramStageSectionExtended> getProgramStageSections() {
-        //// TODO: 15/11/2016
-        //return programStage.getProgramStageSections();
-        return null;
+        List<ProgramStageSectionFlow> programStageSections =
+                SdkQueries.getProgramStageSectionFromProgramStage(programStage.getUId());
+        List<ProgramStageSectionExtended> programStageSectionExtendedList = new ArrayList<>();
+        for (ProgramStageSectionFlow programStageSectionFlow : programStageSections) {
+            programStageSectionExtendedList.add(
+                    new ProgramStageSectionExtended(programStageSectionFlow));
+        }
+        return programStageSectionExtendedList;
     }
 
     public List<ProgramStageDataElementExtended> getProgramStageDataElements() {
-        //// TODO: 15/11/2016
-        return getProgramStageDataElements();
+        List<ProgramStageDataElementFlow> programStageDataElementFlows =
+                SdkQueries.getProgramStageDataElementFromProgramStage(programStage.getUId());
+        List<ProgramStageDataElementExtended> programStageDataElementExtendedList =
+                new ArrayList<>();
+        for (ProgramStageDataElementFlow programStageDataElementFlow :
+                programStageDataElementFlows) {
+            programStageDataElementExtendedList.add(
+                    new ProgramStageDataElementExtended(programStageDataElementFlow));
+        }
+        return programStageDataElementExtendedList;
     }
 
     public static List<ProgramStageExtended> getExtendedList(List<ProgramStageFlow> flowList) {
-            List <ProgramStageExtended> extendedsList = new ArrayList<>();
-            for(ProgramStageFlow flowPojo:flowList){
-                extendedsList.add(new ProgramStageExtended(flowPojo));
-            }
-            return extendedsList;
+        List<ProgramStageExtended> extendedsList = new ArrayList<>();
+        for (ProgramStageFlow flowPojo : flowList) {
+            extendedsList.add(new ProgramStageExtended(flowPojo));
+        }
+        return extendedsList;
     }
 }

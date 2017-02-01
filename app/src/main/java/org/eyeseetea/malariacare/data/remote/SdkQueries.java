@@ -1,8 +1,17 @@
 package org.eyeseetea.malariacare.data.remote;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageDataElementFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageDataElementFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSectionFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSectionFlowName;
+
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -17,9 +26,16 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow
         .OrganisationUnitToProgramRelationFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
+import org.hisp.dhis.client.sdk.models.event.Event;
+import org.hisp.dhis.client.sdk.models.program.ProgramStageDataElement;
+import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -172,5 +188,39 @@ public class SdkQueries {
         //Save media in batch
         new SaveModelTransaction<>(ProcessModelInfo.withModels(medias)).onExecute();
         */
+    }
+
+    public static Event getEvent(String uId) {
+        return D2.events().get(uId).toBlocking().first();
+    }
+
+    public static List<ProgramStageSectionFlow> getProgramStageSectionFromProgramStage(String uId) {
+        List<ProgramStageSectionFlow> programStageSections = new Select().from(
+                ProgramStageSectionFlow.class).as(
+                programStageSectionFlowName)
+                .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        programStageFlowName)
+                .on(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
+                        .eq(ProgramStageSectionFlow_Table.programStage.withTable(
+                                programStageSectionFlowAlias)))
+                .where(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
+                        .eq(uId))
+                .queryList();
+        return programStageSections;
+    }
+
+    public static List<ProgramStageDataElementFlow> getProgramStageDataElementFromProgramStage(String uId) {
+        List<ProgramStageDataElementFlow> programStageDataElements = new Select().from(
+                ProgramStageDataElementFlow.class).as(
+                programStageDataElementFlowName)
+                .join(ProgramStageFlow.class, Join.JoinType.LEFT_OUTER).as(
+                        programStageFlowName)
+                .on(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
+                        .eq(ProgramStageDataElementFlow_Table.programStage.withTable(
+                                programStageDataElementFlowAlias)))
+                .where(ProgramStageFlow_Table.uId.withTable(programStageFlowAlias)
+                        .eq(uId))
+                .queryList();
+        return programStageDataElements;
     }
 }

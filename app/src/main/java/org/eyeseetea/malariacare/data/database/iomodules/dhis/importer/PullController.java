@@ -102,7 +102,7 @@ public class PullController implements IPullController {
     @Override
     public void pull(final PullFilters filters, final IPullControllerCallback callback) {
         PULL_IS_ACTIVE = true;
-        conversionLocalDataSource = new ConversionLocalDataSource();
+        conversionLocalDataSource = new ConversionLocalDataSource(callback);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
         conversionLocalDataSource.wipeDataBase();
@@ -114,11 +114,11 @@ public class PullController implements IPullController {
 
             @Override
             public void onComplete() {
-                callback.onStep(PullStep.EVENTS);
                 if (!PULL_IS_ACTIVE) {
                     callback.onCancel();
                     return;
                 }
+                callback.onStep(PullStep.EVENTS);
                 pullData();
             }
 
@@ -147,9 +147,14 @@ public class PullController implements IPullController {
                         return;
                     }
                     try {
+                        if (!PULL_IS_ACTIVE) {
+                            callback.onCancel();
+                            return;
+                        }
                         conversions();
                     } catch (Exception e) {
-                        callback.onError(e);
+                        callback.onError(new
+                                ConversionException(e));
                         return;
                     }
                     if (!PULL_IS_ACTIVE) {
@@ -175,8 +180,6 @@ public class PullController implements IPullController {
     @Override
     public void cancel() {
         PULL_IS_ACTIVE = false;
-        pullRemoteDataSource.cancel();
-        conversionLocalDataSource.cancel();
     }
 
     @Override
