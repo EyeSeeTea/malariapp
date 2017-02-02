@@ -743,7 +743,7 @@ public class Question extends BaseModel {
         long totalAnswerableQuestions = SQLite.selectCountOf()
                 .from(Question.class).as(questionName)
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(headerAlias)
+                .on(Question_Table.id_header.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
                 .on(Header_Table.id_tab.withTable(headerAlias)
@@ -802,7 +802,7 @@ public class Question extends BaseModel {
                 //The child question requires an answer
                 .and(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(Question_Table.compulsory.withTable(questionAlias).eq(true)).queryList();
-        
+
         //checks if the children questions are active by UID
         // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
         for(Question question:questions) {
@@ -944,7 +944,7 @@ public class Question extends BaseModel {
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(in)
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
-                .orderBy(OrderBy.fromProperty(Question_Table.order_pos.withTable(questionAlias))).queryList();
+                .orderBy( Question_Table.order_pos.withTable(questionAlias),true).queryList();
     }
 
 
