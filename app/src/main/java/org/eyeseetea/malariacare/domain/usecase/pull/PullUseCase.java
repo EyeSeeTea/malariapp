@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
@@ -48,7 +47,7 @@ public class PullUseCase {
 
     public void execute(PullFilters pullFilters, final Callback callback) {
 
-        mPullController.pull(pullFilters, new IPullControllerCallback() {
+        mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
 
             @Override
             public void onComplete() {
