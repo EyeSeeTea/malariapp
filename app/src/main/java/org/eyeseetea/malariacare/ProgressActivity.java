@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -451,8 +452,7 @@ public class ProgressActivity extends Activity {
         progressBar.setMax(MAX_PULL_STEPS);
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-        PullFilters pullFilters = new PullFilters(
-                EventExtended.format(month.getTime(), EventExtended.AMERICAN_DATE_FORMAT),
+        PullFilters pullFilters = new PullFilters(month.getTime(),null,
                 AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
                 PreferencesState.getInstance().getMaxEvents());
 
