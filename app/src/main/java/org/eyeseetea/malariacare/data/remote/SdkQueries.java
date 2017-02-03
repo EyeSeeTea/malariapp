@@ -1,16 +1,7 @@
 package org.eyeseetea.malariacare.data.remote;
 
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageDataElementFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageDataElementFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageFlowName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSectionFlowAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSectionFlowName;
-import static org.hisp.dhis.client.sdk.android.api.persistence.DbFlowOperation.insert;
-
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
@@ -41,26 +32,16 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Ta
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
-import org.hisp.dhis.client.sdk.core.common.persistence.DbOperation;
-import org.hisp.dhis.client.sdk.core.common.persistence.DbOperationImpl;
-import org.hisp.dhis.client.sdk.core.common.persistence.TransactionManager;
 import org.hisp.dhis.client.sdk.models.event.Event;
-import org.hisp.dhis.client.sdk.models.program.ProgramStageDataElement;
-import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by idelcano on 15/11/2016.
- */
 
 public class SdkQueries {
 
     public static List<String> getAssignedPrograms() {
-        //return MetaDataController.getAssignedPrograms();
         List<String> uids = new ArrayList<>();
         List<ProgramFlow> programsFlow = new Select().from(ProgramFlow.class).queryList();
         for (ProgramFlow programFlow : programsFlow) {
@@ -77,23 +58,19 @@ public class SdkQueries {
     }
 
     public static ProgramFlow getProgram(String assignedProgramID) {
-        //return MetaDataController.getProgram(assignedProgramID);
         return new Select().from(ProgramFlow.class).where(
                 ProgramFlow_Table.uId.eq(assignedProgramID)).querySingle();
     }
 
     public static List<OptionSetFlow> getOptionSets() {
         return new Select().from(OptionSetFlow.class).queryList();
-        //MetaDataController.getOptionSets();
     }
 
     public static UserAccountFlow getUserAccount() {
         return new Select().from(UserAccountFlow.class).querySingle();
-        //return MetaDataController.getUserAccount();
     }
 
     public static DataElementFlow getDataElement(DataElementFlow dataElement) {
-        //return MetaDataController.getDataElement(dataElement.getId());
         return new Select().from(DataElementFlow.class).where(DataElementFlow_Table.uId.
                 is(dataElement.getUId())).querySingle();
     }
@@ -112,7 +89,6 @@ public class SdkQueries {
     public static List<OrganisationUnitFlow> getAssignedOrganisationUnits() {
         return new Select().from(OrganisationUnitFlow.class)
                 .queryList();
-        //return MetaDataController.getAssignedOrganisationUnits();
     }
 
     public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId,
@@ -127,8 +103,9 @@ public class SdkQueries {
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
             if (programType != null) {
                 for (ProgramType kind : programType) {
-                    if(oupr.getProgram()==null)
+                    if (oupr.getProgram() == null) {
                         continue;
+                    }
                     List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
                             ProgramFlow_Table.uId.is(oupr.getProgram().getUId()))
                             .and(
@@ -141,31 +118,6 @@ public class SdkQueries {
     }
 
     public static List<EventFlow> getEvents(String organisationUnitUId, String programUId) {
-        //Observer form server
-        /*
-        ProgramFlow programFlow=getProgram(programUId);
-        OrganisationUnitFlow organisationUnitFlow = getOrganisationUnit(organisationUnitUId);
-        OrganisationUnit organisationUnit = OrganisationUnitFlow.MAPPER.mapToModel
-        (organisationUnitFlow);
-
-        Program program = ProgramFlow.MAPPER.mapToModel(programFlow);
-        Observable<List<Event>> eventListObservable = D2.events().list(
-                organisationUnit,
-                program);
-        eventListObservable.
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Event>>() {
-                    @Override
-                    public void call(List<Event> events) {
-                        //// FIXME: 22/11/2016 return event
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                    }
-                });
-        */
         return new Select().from(EventFlow.class).where(
                 EventFlow_Table.orgUnit.eq(organisationUnitUId))
                 .and(EventFlow_Table.program.eq(programUId)).queryList();
@@ -178,7 +130,6 @@ public class SdkQueries {
     public static ProgramStageFlow getProgramStage(ProgramStageFlow programStage) {
         return new Select().from(ProgramStageFlow.class).where(
                 ProgramStageFlow_Table.uId.is(programStage.getUId())).querySingle();
-        //return MetaDataController.getProgramStage(programStage);
     }
 
     public static List<ProgramStageFlow> getProgramStages(ProgramFlow program) {
@@ -216,7 +167,8 @@ public class SdkQueries {
         return programStageSections;
     }
 
-    public static List<ProgramStageDataElementFlow> getProgramStageDataElementFromProgramStage(String uId) {
+    public static List<ProgramStageDataElementFlow> getProgramStageDataElementFromProgramStage(
+            String uId) {
         List<ProgramStageDataElementFlow> programStageDataElements = new Select().from(
                 ProgramStageDataElementFlow.class)
                 .where(ProgramStageDataElementFlow_Table.programStage
