@@ -50,6 +50,8 @@ public class ExportData {
      */
     private final static String SHAREDPREFERENCES_FOLDER="shared_prefs/";
 
+    private static String DHIS_DATABASE_NAME = "dhis";
+
     /**
      * This method create the dump and returns the intent
      */
@@ -59,7 +61,7 @@ public class ExportData {
         tempFolder.mkdir();
         //copy databases
         dumpDatabase(AppDatabase.NAME + ".db", tempFolder);
-        dumpDatabase(SdkController.getDhisDatabaseName() + ".db", tempFolder);
+        dumpDatabase(DHIS_DATABASE_NAME + ".db", tempFolder);
         //Copy the sharedPreferences
         dumpSharedPreferences(tempFolder);
 

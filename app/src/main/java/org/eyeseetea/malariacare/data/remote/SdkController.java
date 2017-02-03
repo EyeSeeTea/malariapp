@@ -47,64 +47,6 @@ public abstract class SdkController {
 
     public final static String TAG = ".sdkController";
 
-    //from pull controller
-    public static void register(Context context) {
-        /*try {
-            //Dhis2Application.bus.register(context);
-        } catch (Exception e) {
-            unregister(context);
-            //Dhis2Application.bus.register(context);
-        }
-        */
-    }
-
-    public static void unregister(Context context) {
-        /*try {
-            //Dhis2Application.bus.unregister(context);
-        } catch (Exception e) {
-        }
-        */
-    }
-
-
-    public static void postProgress(String msg) {
-        //ProgressActivity.step(msg);
-    }
-
-    public static void postException(Exception ex) {
-        //ProgressActivity.cancellPull("error",ex.getMessage());
-    }
-
-    public static void postFinish() {
-        //// FIXME: 11/01/17 I think this user should be get from the SDK user
-        User user = User.getLoggedUser();
-        if (user == null) {
-            user = new User();
-            user.save();
-        }
-        Session.setUser(user);
-        //// TODO: 23/01/2017 fix in push
-        //ProgressActivity.postFinish();
-    }
-
-    public static boolean finishPullJob() {
-        /*
-        if (JobExecutor.isJobRunning(PullController.job.getJobId())) {
-            Log.d(TAG, "Job " + PullController.job.getJobId() + " is running");
-            PullController.job.cancel(true);
-            try {
-                try {JobExecutor.getInstance().dequeueRunningJob(PullController.job);} catch
-                (Exception e) {e.printStackTrace();}
-                PullController.job.cancel(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                return true;
-            }
-        }
-        */
-        return false;
-    }
 
     public static List<EventExtended> getEventsFromEventsWrapper(JsonNode jsonNode) {
         /*
@@ -118,19 +60,5 @@ public abstract class SdkController {
         return null;
     }
 
-
-    public static void wipeSDKData() {
-        /*Delete.tables(
-                EventFlow.class,
-                TrackedEntityDataValue.class,
-                FailedItemFlow.class
-        );
-        */
-        //DateTimeManager.getInstance().delete();
-    }
-
-    public static String getDhisDatabaseName() {
-        return DbDhis.NAME;
-    }
 
 }

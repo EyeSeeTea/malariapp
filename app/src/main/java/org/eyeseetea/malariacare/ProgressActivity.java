@@ -536,30 +536,7 @@ public class ProgressActivity extends Activity {
      * Launches a push using the PushController according to the intent params
      */
     private void launchPush() {
-        annotateFirstPull(true);
-        progressBar.setProgress(0);
-        progressBar.setMax(MAX_PUSH_STEPS);
 
-        List<Survey> surveys = findSurveysToPush();
-        Log.d(TAG, "surveys" + surveys.size());
-        PushController.getInstance().push(this, surveys);
-    }
-
-    /**
-     * Find the surveys that are going to be pushed
-     */
-    private List<Survey> findSurveysToPush() {
-        List<Survey> surveys = new ArrayList<>();
-        if (hasAPullAfterPush()) {
-            surveys = Survey.getAllUnsentUnplannedSurveys();
-            for (int i = 0; i < surveys.size(); i++) {
-                if (surveys.get(i).getCompletionDate() == null) {
-                    surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
-                }
-            }
-            return surveys;
-        }
-        return surveys;
     }
 
     /**

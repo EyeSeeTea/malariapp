@@ -247,12 +247,6 @@ public class PopulateDB {
         );
     }
 
-    /**
-     * Deletes all data from the sdk database
-     */
-    public static void wipeSDKData() {
-        SdkController.wipeSDKData();
-    }
     protected static void saveItem(Map items, BaseModel model, Integer pk){
         items.put(pk,model);
         model.save();

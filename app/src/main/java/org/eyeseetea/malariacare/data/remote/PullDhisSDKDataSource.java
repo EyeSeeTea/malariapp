@@ -159,7 +159,6 @@ public class PullDhisSDKDataSource {
         }
     }
 
-
     private boolean isNetworkAvailable() {
         ConnectivityManager cm =
                 (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(
