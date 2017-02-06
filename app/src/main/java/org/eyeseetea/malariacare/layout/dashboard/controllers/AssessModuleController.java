@@ -149,6 +149,7 @@ public class AssessModuleController extends ModuleController {
         //This cannot be mark as completed
         if(!surveyAnsweredRatio.isCompulsoryCompleted()){
             alertCompulsoryQuestionIncompleted();
+            return;
         }
 
         alertAreYouSureYouWantToComplete(survey);
@@ -274,8 +275,10 @@ public class AssessModuleController extends ModuleController {
 
     private void closeSurveyFragment(){
         //Clear survey fragment
-        SurveyFragment surveyFragment =  getSurveyFragment();
-        surveyFragment.unregisterReceiver();
+        if(isFragmentActive(SurveyFragment.class)) {
+            SurveyFragment surveyFragment = getSurveyFragment();
+            surveyFragment.unregisterReceiver();
+        }
         //Reload Assess fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
