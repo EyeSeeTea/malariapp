@@ -31,21 +31,15 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.programStageSe
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Join;
-import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.property.Property;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
@@ -60,12 +54,9 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Ta
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
 import org.hisp.dhis.client.sdk.models.dataelement.ValueType;
-import org.hisp.dhis.client.sdk.models.program.ProgramStageSection;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.internal.operators.OperatorGroupBy;
 
 /**
  * Created by arrizabalaga on 5/11/15.
@@ -218,7 +209,6 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public static void reloadDataElementTypeCodes() {
         //Load code for each type
-        //// FIXME: 11/11/2016
         OptionSetFlow deTypeOptionSet = OptionSetExtended.findOptionSetForDataElementType();
         if (deTypeOptionSet == null) {
             Log.e(TAG,
@@ -240,7 +230,6 @@ public class DataElementExtended implements VisitableFromSDK {
      * Returns the option code for a given optionSet and option name
      */
     private static String loadDataElementTypeCode(String optionSetUID, String optionName) {
-        //// FIXME: 11/11/2016
         OptionFlow option = OptionExtended.findOptionByOptionSetAndName(optionSetUID, optionName);
         if (option == null) {
             Log.e(TAG,
@@ -266,7 +255,9 @@ public class DataElementExtended implements VisitableFromSDK {
      * @return value
      */
     public String getValue(String attributeCode) {
-        AttributeValueFlow attributeValue = AttributeValueExtended.findAttributeValuefromDataElementCode(attributeCode,getAttributeValues());
+        AttributeValueFlow attributeValue =
+                AttributeValueExtended.findAttributeValuefromDataElementCode(attributeCode,
+                        getAttributeValues());
         if (attributeValue != null) {
             return attributeValue.getValue();
         }
@@ -300,7 +291,8 @@ public class DataElementExtended implements VisitableFromSDK {
      * value
      */
     private boolean isOfType(String optionElementTypeCode) {
-        String typeElement = AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_ELEMENT_TYPE_CODE, getAttributeValues());
+        String typeElement = AttributeValueExtended.findAttributeValueByCode(
+                ATTRIBUTE_ELEMENT_TYPE_CODE, getAttributeValues());
 
         if (typeElement == null) {
             Log.w(TAG,
@@ -370,10 +362,12 @@ public class DataElementExtended implements VisitableFromSDK {
      */
     public String findProgramStageSection() {
         List<ProgramStageDataElementFlow> programStageDataElementFlows =
-                new Select().distinct().from(ProgramStageDataElementFlow.class)
-                .where(ProgramStageDataElementFlow_Table.dataElement.eq(getUid())).queryList();
-//// FIXME: 27/01/2017  A single query retuns bad ProgramStageSection(with programStageDataElement uid name etc.. and i can't compile a groupBy programStageSection field
-        for(ProgramStageDataElementFlow programStageDataElementFlow:programStageDataElementFlows) {
+                new Select().from(ProgramStageDataElementFlow.class)
+                        .where(ProgramStageDataElementFlow_Table.dataElement.eq(getUid()))
+                        .groupBy(ProgramStageDataElementFlow_Table.programStage).queryList();
+
+        for (ProgramStageDataElementFlow programStageDataElementFlow :
+                programStageDataElementFlows) {
             ProgramStageSectionFlow programStageSection =
                     programStageDataElementFlow.getProgramStageSection();
             if (SdkQueries.getProgramStage(
@@ -549,8 +543,9 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public String getOptionSet() {
-        if(dataElement.getOptionSet()==null)
+        if (dataElement.getOptionSet() == null) {
             return null;
+        }
         return dataElement.getOptionSet().getUId();
     }
 

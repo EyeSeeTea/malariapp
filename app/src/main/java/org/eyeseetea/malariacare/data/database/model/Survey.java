@@ -861,21 +861,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> listLastByOrgUnitProgram() {
-        //old
-        /**
-        return new Select()
-                .from(Survey.class)
-                .where()
-                .groupBy(new QueryBuilder().appendQuotedArray(Survey_Table.id_org_unit, Survey_Table.id_program))
-                .having(Condition.columnsWithFunction("max", "completion_date"))
-                .queryList();
-         **/
-        return SQLite.select(Method.max(Survey_Table.completion_date), Property.ALL_PROPERTY)
+        return SQLite.select()
                 .from(Survey.class)
                 .where()
                 .groupBy( Survey_Table.id_org_unit, Survey_Table.id_program)
-                //// FIXME: 11/11/2016 test this query with real data.
-                //.having(Method.ALL_PROPERTY,Method.max(Survey_Table.completion_date))
+                .having(Survey_Table.completion_date.eq(Method.max(Survey_Table.completion_date)))
                 .queryList();
     }
 
@@ -897,23 +887,12 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public static Survey getLastSurvey(Long id_org_unit, Long id_program) {
-        return  SQLite.select(Method.max(Survey_Table.completion_date), Property.ALL_PROPERTY)
+        return  SQLite.select()
                 .from(Survey.class)
                 .where(Survey_Table.id_program.eq(id_program))
                 .and(Survey_Table.id_org_unit.eq(id_org_unit))
                 .groupBy( Survey_Table.id_program , Survey_Table.id_org_unit)
-                //.having(Method.ALL_PROPERTY,Method.max(Survey_Table.completion_date))
-                .querySingle();
-    }
-
-
-    public static Survey getLastSurvey(Long id_org_unit, Program program){
-        return  SQLite.select(Method.max(Survey_Table.completion_date), Property.ALL_PROPERTY)
-                .from(Survey.class)
-                .where(Survey_Table.id_program.eq(program.getId_program()))
-                .and(Survey_Table.id_org_unit.eq(id_org_unit))
-                .groupBy( Survey_Table.id_program , Survey_Table.id_org_unit)
-                //.having(Method.ALL_PROPERTY,Method.max(Survey_Table.completion_date))
+                .having(Survey_Table.completion_date.eq(Method.max(Survey_Table.completion_date)))
                 .querySingle();
     }
 
