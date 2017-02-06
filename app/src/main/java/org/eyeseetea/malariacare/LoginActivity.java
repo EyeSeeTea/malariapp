@@ -28,12 +28,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,8 @@ import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
 
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+
 /**
  * Login Screen.
  * It shows only when the user has an open session.
@@ -61,6 +67,9 @@ public class LoginActivity extends AbsLoginActivity {
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+
+    private CircularProgressBar progressBar;
+    private ViewGroup loginViewsContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,10 @@ public class LoginActivity extends AbsLoginActivity {
         }
         ProgressActivity.PULL_CANCEL = false;
         getServerUrl().setText(R.string.login_info_dhis_default_server_url);
+
+        progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
+        loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
+
     }
 
     private void launchActivity(Activity activity, Class<?> activityClass) {
@@ -136,6 +149,8 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     public void login(String serverUrl, String username, String password) {
+        showProgress();
+
         Credentials credentials = new Credentials(serverUrl, username, password);
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
@@ -167,6 +182,7 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     public void showError(String message) {
+        hideProgress();
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
@@ -174,7 +190,7 @@ public class LoginActivity extends AbsLoginActivity {
      * Populate from database or launch the pull in the progressActivity
      */
     private void onSuccess() {
-
+        hideProgress();
         Log.d(TAG, "logged!");
 
         populateFromAssetsIfRequired();
@@ -203,6 +219,24 @@ public class LoginActivity extends AbsLoginActivity {
         }
         //Go to dashboard Activity
         launchActivity(this, DashboardActivity.class);
+    }
+
+    public void showProgress() {
+        hideSoftKeyboard();
+        loginViewsContainer.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        loginViewsContainer.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     /**
