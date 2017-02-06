@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow_Table;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
@@ -137,7 +138,7 @@ public class ConvertToSDKVisitor implements
         nextAssessmentCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.next_assessment_code));
 
         createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
-        updatedDateCode =ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
         updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
@@ -367,13 +368,13 @@ public class ConvertToSDKVisitor implements
 
         //Overall score
         if(controlDataElementExistsInServer(overallScoreCode)  && survey.hasMainScore()){
-            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(controlDataElementExistsInServer(createdOnCode)){
-            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addOrUpdateDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated date
@@ -393,7 +394,7 @@ public class ConvertToSDKVisitor implements
 
         //Overall score
         if(!overallScoreCode.equals("") && survey.hasMainScore())
-            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //Forward order
         if(controlDataElementExistsInServer(pushDeviceCode)) {
@@ -445,28 +446,13 @@ public class ConvertToSDKVisitor implements
         return controlDataElementUID!=null && !controlDataElementUID.equals("");
     }
 
-    /**
-     * Adds a new datavalue for the current event only if it does NOT already exist. To avoid duplication.
-     * @param dataElementUID
-     * @param value
-     */
-    private void addDataValue(String dataElementUID,String value){
-        DataValueExtended dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
-        //Already added
-        if(dataValue!=null){
-            return;
-        }
-
-        //Build a new value
-        buildAndSaveDataValue(dataElementUID, value);
-    }
-
     private void addOrUpdateDataValue(String dataElementUID,String value){
-        DataValueExtended dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
+        DataValueExtended dataValue = DataValueExtended.findByEventAndUID(
+                    currentEvent.getEvent(), dataElementUID);
         //Already added, update its value
-        if(dataValue!=null){
+        if(dataValue !=null && dataValue.getDataValue()!=null){
             dataValue.setValue(value);
-            dataValue.save();
+            dataValue.update();
             return;
         }
 
@@ -474,7 +460,7 @@ public class ConvertToSDKVisitor implements
     }
 
     private void buildAndSaveDataValue(String uid, String value){
-        DataValueExtended dataValue= new DataValueExtended();
+        DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(uid);
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
@@ -525,11 +511,11 @@ public class ConvertToSDKVisitor implements
     /**
      * Saves changes in the survey (supposedly after a successfull push)
      */
-    public void saveSurveyStatus(Map<Event,ImportSummary> importSummaryMap){
+    public void saveSurveyStatus(Map<String,ImportSummary> importSummaryMap){
         for(int i=0;i<surveys.size();i++){
             Survey iSurvey=surveys.get(i);
             EventExtended iEvent=new EventExtended(events.get(iSurvey.getId_survey()));
-            ImportSummary importSummary=importSummaryMap.get(iEvent);
+            ImportSummary importSummary=importSummaryMap.get(iEvent.getEvent().getUId());
             FailedItemFlow failedItem=  EventExtended.hasConflict(iEvent.getLocalId());
 
             //No errors -> Save and next
@@ -540,6 +526,7 @@ public class ConvertToSDKVisitor implements
 
             if(importSummary==null){
                 rollbackSurvey(iSurvey);
+                return;
             }
 
             //Errors

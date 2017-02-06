@@ -31,14 +31,14 @@ public class SdkPushController extends SdkController {
         for(EventFlow eventFlow:SdkQueries.getEvents()){
             eventUids.add(eventFlow.getUId());
         }
-        Observable<Map<Event,ImportSummary>> eventObserver =
+        Observable<Map<String,ImportSummary>> eventObserver =
                 D2.events().push(eventUids);
         eventObserver.
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Map<Event,ImportSummary>>() {
+                .subscribe(new Action1<Map<String,ImportSummary>>() {
                     @Override
-                    public void call(Map<Event,ImportSummary> mapEventsImportSummary) {
+                    public void call(Map<String,ImportSummary> mapEventsImportSummary) {
                         Log.d(TAG, "Push of events finish. Number of events: "+mapEventsImportSummary.size());
                         PushController.converter.saveSurveyStatus(mapEventsImportSummary);
                         PushController.postFinish(true);

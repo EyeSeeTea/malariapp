@@ -71,6 +71,7 @@ public class EventExtended implements VisitableFromSDK {
 
     public EventExtended() {
         event = new EventFlow();
+        event.generateUId();
     }
 
     @Override
@@ -139,12 +140,18 @@ public class EventExtended implements VisitableFromSDK {
         try {
             return parseDate(dateAsString, AMERICAN_DATE_FORMAT);
         } catch (ParseException ex) {
+            ex.printStackTrace();
             return null;
         }
     }
 
-    public static Date parseLongDate(String dateAsString) throws ParseException {
-        return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
+    public static Date parseLongDate(String dateAsString){
+        try {
+            return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            return parseShortDate(dateAsString);
+        }
     }
 
     public static String formatLong(Date date) {
@@ -236,7 +243,7 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     public void setDueDate(DateTime dateTime) {
-        event.setEventDate(dateTime);
+        event.setDueDate(dateTime);
     }
 
     public long getLocalId() {

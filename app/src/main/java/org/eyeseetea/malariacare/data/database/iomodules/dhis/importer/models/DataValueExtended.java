@@ -43,20 +43,23 @@ import java.util.regex.Pattern;
  */
 public class DataValueExtended implements VisitableFromSDK {
 
-    private final static String TAG=".DataValueExtended";
-    private final static String REGEXP_FACTOR=".*\\[([0-9]*)\\]";
+    private final static String TAG = ".DataValueExtended";
+    private final static String REGEXP_FACTOR = ".*\\[([0-9]*)\\]";
 
     TrackedEntityDataValueFlow dataValue;
 
     String programUid;
 
-    public DataValueExtended(){dataValue=new TrackedEntityDataValueFlow();}
-
-    public DataValueExtended(TrackedEntityDataValueFlow dataValue){
-        this.dataValue =dataValue;
+    public DataValueExtended() {
+        dataValue = new TrackedEntityDataValueFlow();
     }
-    public DataValueExtended(DataValueExtended dataValueExtended){
-        this.dataValue =dataValueExtended.getDataValue();
+
+    public DataValueExtended(TrackedEntityDataValueFlow dataValue) {
+        this.dataValue = dataValue;
+    }
+
+    public DataValueExtended(DataValueExtended dataValueExtended) {
+        this.dataValue = dataValueExtended.getDataValue();
     }
 
     @Override
@@ -69,44 +72,46 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public Option findOptionByQuestion(Question question) {
-        if(question==null){
+        if (question == null) {
             return null;
         }
 
-        Answer answer=question.getAnswer();
-        if(answer==null){
+        Answer answer = question.getAnswer();
+        if (answer == null) {
             return null;
         }
 
-        List<Option> options=answer.getOptions();
-        List<String> optionCodes=new ArrayList<>();
-        for(Option option:options){
+        List<Option> options = answer.getOptions();
+        List<String> optionCodes = new ArrayList<>();
+        for (Option option : options) {
             optionCodes.add(option.getCode());
-            if(option.getCode()==null){
+            if (option.getCode() == null) {
                 continue;
             }
-            String optionCleaned=extractValue(option.getCode());
-            String valueCleaned=extractValue(dataValue.getValue());
+            String optionCleaned = extractValue(option.getCode());
+            String valueCleaned = extractValue(dataValue.getValue());
             //Yes[1]==Yes || Yes==Yes || Yes==Yes[1]
-//            if(option.getCode().equals(dataValue.getValue()) || optionCleaned.equals(dataValue.getValue()) || option.getCode().equals(valueCleaned)){
+//            if(option.getCode().equals(dataValue.getValue()) || optionCleaned.equals(dataValue
+// .getValue()) || option.getCode().equals(valueCleaned)){
             //Option code no longer will be 'Yes[1]' but a real code for the option
-            if(option.getCode().equals(dataValue.getValue())){
+            if (option.getCode().equals(dataValue.getValue())) {
                 return option;
             }
         }
 
-        Log.w(TAG,String.format("Cannot find option '%s' in %s and dataElement %s event %s",dataValue.getValue(),optionCodes.toString(),dataValue.getDataElement(),dataValue.getEvent()));
+        Log.w(TAG, String.format("Cannot find option '%s' in %s and dataElement %s event %s",
+                dataValue.getValue(), optionCodes.toString(), dataValue.getDataElement(),
+                dataValue.getEvent()));
         return null;
     }
 
     /**
      * Turns a value with a code 'Yes[1]' into its proper aprox value 'Yes'.
-     * This might not be an exact translation when it comes to translated values such as 'Oui' but it better than nothing
-     * @param code
-     * @return
+     * This might not be an exact translation when it comes to translated values such as 'Oui' but
+     * it better than nothing
      */
     private String extractValue(String code) {
-        if(code==null || code.isEmpty()){
+        if (code == null || code.isEmpty()) {
             return code;
         }
 
@@ -114,31 +119,29 @@ public class DataValueExtended implements VisitableFromSDK {
         Matcher matcher = pattern.matcher(code);
 
         //No match
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             return code;
         }
 
         //Found a match
-        String factorStr="["+matcher.group(1)+"]";
+        String factorStr = "[" + matcher.group(1) + "]";
 
-        return code.replace(factorStr,"").trim();
+        return code.replace(factorStr, "").trim();
     }
 
     /**
      *
      * @return
      */
-    public String extractValue(){
-       return extractValue(dataValue.getValue());
+    public String extractValue() {
+        return extractValue(dataValue.getValue());
     }
 
     /**
      * The factor of an option is codified inside its code. Ex: Yes[1]
-     * @param code
-     * @return
      */
-    public static Float extractFactor(String code){
-        if(code==null || code.isEmpty()){
+    public static Float extractFactor(String code) {
+        if (code == null || code.isEmpty()) {
             return 0f;
         }
 
@@ -146,23 +149,23 @@ public class DataValueExtended implements VisitableFromSDK {
         Matcher matcher = pattern.matcher(code);
 
         //No match
-        if(!matcher.matches()){
+        if (!matcher.matches()) {
             return 0f;
         }
 
         //Found a match
-        String factorStr=matcher.group(1);
+        String factorStr = matcher.group(1);
 
         return Float.parseFloat(factorStr);
     }
 
-    public static long count(){
+    public static long count() {
         return new SQLite().selectCountOf()
                 .from(TrackedEntityDataValueFlow.class)
                 .count();
     }
 
-    public static DataValueExtended findByEventAndUID(EventFlow event, String dataElementUID){
+    public static DataValueExtended findByEventAndUID(EventFlow event, String dataElementUID) {
         return new DataValueExtended(new Select()
                 .from(TrackedEntityDataValueFlow.class)
                 .where(TrackedEntityDataValueFlow_Table.event.eq(event.getUId()))
@@ -179,7 +182,7 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public String getEvent() {
-        return  dataValue.getEvent().getUId();
+        return dataValue.getEvent().getUId();
     }
 
     public String getDataElement() {
@@ -211,12 +214,25 @@ public class DataValueExtended implements VisitableFromSDK {
     }
 
     public void save() {
+        System.out.println("Saving "+dataValue.getValue());
+        String dataElement = dataValue.getDataElement();
+        String value = dataValue.getValue();
+        System.out.println(dataElement + " val " + value);
         dataValue.save();
     }
 
-    public static List<DataValueExtended> getExtendedList(List<TrackedEntityDataValueFlow> flowList){
-        List <DataValueExtended> extendedsList = new ArrayList<>();
-        for(TrackedEntityDataValueFlow flowPojo:flowList){
+    public void update() {
+        System.out.println("Updating"+dataValue.getValue());
+        String dataElement = dataValue.getDataElement();
+        String value = dataValue.getValue();
+        System.out.println(dataElement + "val " + value);
+        dataValue.update();
+    }
+
+    public static List<DataValueExtended> getExtendedList(
+            List<TrackedEntityDataValueFlow> flowList) {
+        List<DataValueExtended> extendedsList = new ArrayList<>();
+        for (TrackedEntityDataValueFlow flowPojo : flowList) {
             extendedsList.add(new DataValueExtended(flowPojo));
         }
         return extendedsList;

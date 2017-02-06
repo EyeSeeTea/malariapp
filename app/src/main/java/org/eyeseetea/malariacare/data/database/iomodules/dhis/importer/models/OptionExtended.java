@@ -130,6 +130,7 @@ public class OptionExtended implements VisitableFromSDK {
         //optionflow attributeFlow
         return new Select().from(AttributeValueFlow.class)
                 .where(AttributeValueFlow_Table.itemType.is(Option.class.getName()))
+                .and(AttributeValueFlow_Table.reference.is(this.getUid()))
                 .queryList();
     }
 
