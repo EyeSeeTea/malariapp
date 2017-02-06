@@ -25,6 +25,7 @@ import android.util.Log;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -49,22 +50,12 @@ public class PushController implements IPushController {
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
     }
 
-    private boolean isPushing;
-
     public void push(final IPushControllerCallback callback) {
-
-        //TODO jsanchez not start push process if there is other in progress
-       /* if (isPushing) {
-            return false;
-        }*/
-
-        isPushing = true;
 
         List<Survey> surveys = findSurveysToPush();
 
         if (surveys == null || surveys.size() == 0) {
             callback.onError(new SurveysToPushNotFoundException());
-            isPushing = false;
         }
         else {
 
@@ -73,7 +64,6 @@ public class PushController implements IPushController {
             try {
                 convertToSDK(surveys);
             } catch (Exception ex) {
-                isPushing = false;
                 callback.onError(new ConversionException(ex));
             }
 
@@ -81,25 +71,37 @@ public class PushController implements IPushController {
                 callback.onError(new ConversionException());
             }
             else{
-                mPushDhisSDKDataSource.pushData(
-                        new IDataSourceCallback<Map<String, ImportSummary>>() {
-                            @Override
-                            public void onSuccess(
-                                    Map<String, ImportSummary> mapEventsImportSummary) {
-                                mConvertToSDKVisitor.saveSurveyStatus(mapEventsImportSummary);
-                                isPushing = false;
-                                callback.onComplete();
-                            }
-
-                            @Override
-                            public void onError(Throwable throwable) {
-                                isPushing = false;
-                                setSurveysAsQuarantine();
-                                callback.onError(throwable);
-                            }
-                        });
+                pushData(callback);
             }
         }
+    }
+
+    @Override
+    public boolean isPushInProgress() {
+        return PreferencesState.getInstance().isPushInProgress();
+    }
+
+    @Override
+    public void changePushInProgress(boolean inProgress) {
+        PreferencesState.getInstance().setPushInProgress(inProgress);
+    }
+
+    private void pushData(final IPushControllerCallback callback) {
+        mPushDhisSDKDataSource.pushData(
+                new IDataSourceCallback<Map<String, ImportSummary>>() {
+                    @Override
+                    public void onSuccess(
+                            Map<String, ImportSummary> mapEventsImportSummary) {
+                        mConvertToSDKVisitor.saveSurveyStatus(mapEventsImportSummary);
+                        callback.onComplete();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        setSurveysAsQuarantine();
+                        callback.onError(throwable);
+                    }
+                });
     }
 
     private List<Survey> findSurveysToPush() {

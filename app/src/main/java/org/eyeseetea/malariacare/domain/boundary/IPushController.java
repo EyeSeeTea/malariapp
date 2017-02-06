@@ -27,4 +27,7 @@ public interface IPushController {
     }
 
     void push(IPushControllerCallback callback);
+
+    boolean isPushInProgress();
+    void changePushInProgress(boolean inProgress);
 }

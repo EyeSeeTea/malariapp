@@ -42,10 +42,10 @@ public class PushService extends IntentService {
     public static final String PENDING_SURVEYS_ACTION =
             "org.eyeseetea.malariacare.services.PushService.PENDING_SURVEYS_ACTION";
 
-    /**
-     * Tag for logging
-     */
     public static final String TAG = ".PushService";
+
+    IPushController pushController;
+    PushUseCase pushUseCase;
 
     /**
      * Constructor required due to a error message in AndroidManifest.xml if it is not present
@@ -72,17 +72,28 @@ public class PushService extends IntentService {
         }
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        pushController = new PushController(getApplicationContext());
+        pushUseCase = new PushUseCase(pushController);
+    }
+
     private void pushAllPendingSurveys() {
         Log.d(TAG, "Starting push process...");
-
-        IPushController pushController = new PushController(getApplicationContext());
-        PushUseCase pushUseCase = new PushUseCase(pushController);
 
         pushUseCase.execute(new PushUseCase.Callback() {
             @Override
             public void onComplete() {
                 AlarmPushReceiver.isDoneSuccess();
                 Log.d(TAG,"push complete");
+            }
+
+            @Override
+            public void onPushInProgressError() {
+                AlarmPushReceiver.isDoneFail();
+                Log.e(TAG,"Push stopped, There is already a push in progress");
             }
 
             @Override
