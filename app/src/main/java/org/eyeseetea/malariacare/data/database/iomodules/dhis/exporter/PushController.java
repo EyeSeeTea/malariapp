@@ -64,17 +64,6 @@ public class PushController {
     PushController(){
     }
 
-    private void register(){
-        SdkController.register(context);
-    }
-
-    /**
-     * Unregister pull controller from bus events
-     */
-    private void unregister(){
-        SdkController.unregister(context);
-    }
-
     /**
      * Singleton constructor
      * @return
@@ -138,7 +127,6 @@ public class PushController {
             SdkPushController.sendEventChanges();
         }catch (Exception ex) {
             Log.e(TAG, "push: " + ex.getLocalizedMessage());
-            unregister();
             postException(ex);
             isPushing =false;
             return false;
