@@ -138,7 +138,7 @@ public class ConvertToSDKVisitor implements
         nextAssessmentCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.next_assessment_code));
 
         createdOnCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.created_on_code));
-        updatedDateCode =ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
+        updatedDateCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.upload_date_code));
         updatedUserCode = ServerMetadata.findControlDataElementUid(context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
@@ -368,13 +368,13 @@ public class ConvertToSDKVisitor implements
 
         //Overall score
         if(controlDataElementExistsInServer(overallScoreCode)  && survey.hasMainScore()){
-            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
         //Created date
         if(controlDataElementExistsInServer(createdOnCode)){
-            addDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+            addOrUpdateDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated date
@@ -394,7 +394,7 @@ public class ConvertToSDKVisitor implements
 
         //Overall score
         if(!overallScoreCode.equals("") && survey.hasMainScore())
-            buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //Forward order
         if(controlDataElementExistsInServer(pushDeviceCode)) {
@@ -446,33 +446,13 @@ public class ConvertToSDKVisitor implements
         return controlDataElementUID!=null && !controlDataElementUID.equals("");
     }
 
-    /**
-     * Adds a new datavalue for the current event only if it does NOT already exist. To avoid duplication.
-     * @param dataElementUID
-     * @param value
-     */
-    private void addDataValue(String dataElementUID,String value){
-        DataValueExtended dataValue= DataValueExtended.findByEventAndUID(currentEvent.getEvent(),dataElementUID);
-        //Already added
-        if(dataValue!=null){
-            return;
-        }
-
-        //Build a new value
-        buildAndSaveDataValue(dataElementUID, value);
-    }
-
     private void addOrUpdateDataValue(String dataElementUID,String value){
-        DataValueExtended dataValue=null;
-        try {
-            dataValue = DataValueExtended.findByEventAndUID(
+        DataValueExtended dataValue = DataValueExtended.findByEventAndUID(
                     currentEvent.getEvent(), dataElementUID);
-        }catch (Exception e){
-            e.printStackTrace();}
         //Already added, update its value
-        if(dataValue.getDataValue()!=null){
+        if(dataValue !=null && dataValue.getDataValue()!=null){
             dataValue.setValue(value);
-            dataValue.save();
+            dataValue.update();
             return;
         }
 
@@ -480,7 +460,7 @@ public class ConvertToSDKVisitor implements
     }
 
     private void buildAndSaveDataValue(String uid, String value){
-        DataValueExtended dataValue= new DataValueExtended();
+        DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(uid);
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
