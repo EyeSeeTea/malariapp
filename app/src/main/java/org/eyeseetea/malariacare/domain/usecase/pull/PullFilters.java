@@ -19,27 +19,32 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
+
+import java.util.Date;
+
 public class PullFilters {
 
-    String mStartDate;
+    Date startDate;
+    Date endDate;
     boolean fullHierarchy;
     boolean downloadOnlyLastEvents;
     int maxEvents;
 
-    public PullFilters(String startDate, boolean fullHierarchy, boolean downloadOnlyLastEvents,
+    public PullFilters(Date startDate, Date endDate, boolean fullHierarchy, boolean downloadOnlyLastEvents,
             int maxEvents) {
-        mStartDate = startDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.fullHierarchy = fullHierarchy;
         this.downloadOnlyLastEvents = downloadOnlyLastEvents;
         this.maxEvents = maxEvents;
     }
 
-    public String getStartDate() {
-        return mStartDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStartDate(String startDate) {
-        mStartDate = startDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public boolean isFullHierarchy() {
@@ -64,5 +69,13 @@ public class PullFilters {
 
     public void setMaxEvents(int maxEvents) {
         this.maxEvents = maxEvents;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
