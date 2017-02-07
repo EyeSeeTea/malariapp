@@ -205,18 +205,6 @@ public class EventExtended implements VisitableFromSDK {
         return event;
     }
 
-    public static EventFlow getLastEvent(String orgUid, String programUid, String dateField) {
-        return SQLite.select(Method.max(EventFlow_Table.getProperty(dateField)),
-                Property.ALL_PROPERTY)
-                .from(EventFlow.class)
-                .where(EventFlow_Table.program.eq(programUid))
-                .and(EventFlow_Table.orgUnit.eq(orgUid))
-                .groupBy(EventFlow_Table.program, EventFlow_Table.orgUnit)
-                //// FIXME: 11/11/2016
-                //.having(Condition.columnsWithFunction("max", dateField)).querySingle();
-                .querySingle();
-    }
-
     public static long count() {
         return SQLite.selectCountOf()
                 .from(EventFlow.class)

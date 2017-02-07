@@ -123,7 +123,7 @@ public class Header extends BaseModel{
         if (this.questions == null){
             this.questions = new Select().from(Question.class)
                     .where(Question_Table.id_header.eq(this.getId_header()))
-                    .orderBy(OrderBy.fromProperty(Question_Table.order_pos)).queryList();
+                    .orderBy( Question_Table.order_pos,true).queryList();
         }
         return questions;
     }
