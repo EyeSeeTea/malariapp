@@ -106,7 +106,7 @@ public class PushController implements IPushController {
 
     private List<Survey> findSurveysToPush() {
         List<Survey> surveys;
-        surveys = Survey.getAllUnsentUnplannedSurveys();
+        surveys = Survey.getAllCompletedSurveys();
         for (int i = 0; i < surveys.size(); i++) {
             if (surveys.get(i).getCompletionDate() == null) {
                 surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
