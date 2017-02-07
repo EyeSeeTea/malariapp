@@ -68,13 +68,11 @@ public class SettingsActivity extends PreferenceActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         //Register into sdk bug for listening to logout events
-        SdkController.register(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onStop() {
-        SdkController.unregister(this);
         super.onStop();
     }
 

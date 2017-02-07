@@ -71,6 +71,7 @@ public class EventExtended implements VisitableFromSDK {
 
     public EventExtended() {
         event = new EventFlow();
+        event.generateUId();
     }
 
     @Override
