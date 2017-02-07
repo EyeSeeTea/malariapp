@@ -47,25 +47,6 @@ public abstract class SdkController {
 
     public final static String TAG = ".sdkController";
 
-    //from pull controller
-    public static void register(Context context) {
-        /*try {
-            //Dhis2Application.bus.register(context);
-        } catch (Exception e) {
-            unregister(context);
-            //Dhis2Application.bus.register(context);
-        }
-        */
-    }
-
-    public static void unregister(Context context) {
-        /*try {
-            //Dhis2Application.bus.unregister(context);
-        } catch (Exception e) {
-        }
-        */
-    }
-
 
     public static void postProgress(String msg) {
         //ProgressActivity.step(msg);
