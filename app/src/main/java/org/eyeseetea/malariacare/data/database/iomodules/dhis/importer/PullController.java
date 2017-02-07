@@ -118,7 +118,7 @@ public class PullController implements IPullController {
                     return;
                 }
                 callback.onStep(PullStep.EVENTS);
-                pullData();
+                pullData(filters);
             }
 
             @Override
@@ -130,8 +130,8 @@ public class PullController implements IPullController {
         });
     }
 
-    private void pullData() {
-        pullRemoteDataSource.pullData(new IDhisPullSourceCallback() {
+    private void pullData(final PullFilters filters) {
+        pullRemoteDataSource.pullData(filters, new IDhisPullSourceCallback() {
             @Override
             public void onComplete() {
                 try {
