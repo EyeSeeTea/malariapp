@@ -524,7 +524,7 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
             case Constants.DATE:
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate= EventExtended.parseShortDate(valueString);
+                Date valueDate= EventExtended.parseLongDate(valueString);
                 if(valueDate!=null) {
                     viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
                 }
