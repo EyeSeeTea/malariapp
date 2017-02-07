@@ -28,16 +28,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -45,22 +48,21 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
-import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
 
-/**
- * Login Screen.
- * It shows only when the user has an open session.
- */
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+
 public class LoginActivity extends AbsLoginActivity {
-    private AlertDialog alertDialog;
     private static final String TAG = "LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+
+    private CircularProgressBar progressBar;
+    private ViewGroup loginViewsContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,10 @@ public class LoginActivity extends AbsLoginActivity {
         }
         ProgressActivity.PULL_CANCEL = false;
         getServerUrl().setText(R.string.login_info_dhis_default_server_url);
+
+        progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
+        loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
+
     }
 
     private void launchActivity(Activity activity, Class<?> activityClass) {
@@ -81,9 +87,6 @@ public class LoginActivity extends AbsLoginActivity {
         ActivityCompat.startActivity(LoginActivity.this, intent, null);
     }
 
-    /**
-     * Ask for EULA acceptance if this is the first time user login to the server, otherwise login
-     */
     @Override
     protected void onLoginButtonClicked(Editable server, Editable username, Editable password) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -136,6 +139,8 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     public void login(String serverUrl, String username, String password) {
+        showProgress();
+
         Credentials credentials = new Credentials(serverUrl, username, password);
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
@@ -167,23 +172,46 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     public void showError(String message) {
+        hideProgress();
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * Populate from database or launch the pull in the progressActivity
-     */
     private void onSuccess() {
-
-        Log.d(TAG, "logged!");
+        hideProgress();
 
         populateFromAssetsIfRequired();
 
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-        }
-        Log.d(TAG, "Pull of programs");
         launchActivity(LoginActivity.this, ProgressActivity.class);
+    }
+
+    public void showProgress() {
+        hideSoftKeyboard();
+        loginViewsContainer.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        loginViewsContainer.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * LoginActivity does NOT admin going backwads since it is always the first activity.
+     * Thus onBackPressed closes the app
+     */
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     /**
@@ -203,43 +231,6 @@ public class LoginActivity extends AbsLoginActivity {
         }
         //Go to dashboard Activity
         launchActivity(this, DashboardActivity.class);
-    }
-
-    /**
-     * LoginActivity does NOT admin going backwads since it is always the first activity.
-     * Thus onBackPressed closes the app
-     */
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    private void showErrorDialog(String title, String message) {
-        Log.d(TAG, "Login error title: " + title);
-        Log.d(TAG, "Login error message: " + message);
-
-        if (alertDialog == null) {
-            alertDialog = new AlertDialog.Builder(this)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create();
-        }
-
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // to avoid leaks on configuration changes:
-        if (alertDialog != null) {
-            alertDialog.dismiss();
-        }
     }
 }
 

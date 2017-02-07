@@ -125,7 +125,7 @@ public class Tab extends BaseModel {
         if(headers==null){
             headers =new Select().from(Header.class)
                     .where(Header_Table.id_tab.eq(this.getId_tab()))
-                    .orderBy(OrderBy.fromProperty(Header_Table.order_pos)).queryList();
+                    .orderBy(Header_Table.order_pos,true).queryList();
         }
         return headers;
     }
@@ -136,7 +136,7 @@ public class Tab extends BaseModel {
     public static List<Tab> getTabsBySession(String module){
         return new Select().from(Tab.class)
                 .where(Tab_Table.id_program.eq(Session.getSurveyByModule(module).getProgram().getId_program()))
-                .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
+                .orderBy(Tab_Table.order_pos,true).queryList();
     }
 
     /**
