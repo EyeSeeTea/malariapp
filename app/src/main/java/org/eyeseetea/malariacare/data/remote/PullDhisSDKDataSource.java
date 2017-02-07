@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullContr
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -121,7 +122,7 @@ public class PullDhisSDKDataSource {
 
     }
 
-    public void pullData(IDhisPullSourceCallback callback) {
+    public void pullData(PullFilters filters, IDhisPullSourceCallback callback) {
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (!isNetworkAvailable) {
@@ -129,7 +130,7 @@ public class PullDhisSDKDataSource {
         } else {
             try {
                 if (!PullController.PULL_IS_ACTIVE) return;
-                pullEvents(callback);
+                pullEvents(filters, callback);
                 if (!PullController.PULL_IS_ACTIVE) return;
                 callback.onComplete();
             } catch (Exception e) {
@@ -138,7 +139,7 @@ public class PullDhisSDKDataSource {
         }
     }
 
-    private void pullEvents(IDhisPullSourceCallback callback) {
+    private void pullEvents(PullFilters filters, IDhisPullSourceCallback callback) {
         Scheduler listThread = Schedulers.newThread();
         List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
                 .observeOn(listThread).toBlocking().single();
@@ -155,7 +156,7 @@ public class PullDhisSDKDataSource {
                         Scheduler pullEventsThread = Schedulers.newThread();
                         D2.events().pull(
                                 organisationUnit.getUId(),
-                                program.getUId()).subscribeOn(pullEventsThread)
+                                program.getUId(), filters.getStartDate(), filters.getEndDate(), filters.getMaxEvents()).subscribeOn(pullEventsThread)
                                 .observeOn(pullEventsThread).toBlocking().single();
                     }
                 }
