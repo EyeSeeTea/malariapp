@@ -52,7 +52,7 @@ public class PushController implements IPushController {
 
     public void push(final IPushControllerCallback callback) {
 
-        List<Survey> surveys = findSurveysToPush();
+        List<Survey> surveys = Survey.getAllCompletedSurveys();
 
         if (surveys == null || surveys.size() == 0) {
             callback.onError(new SurveysToPushNotFoundException());
@@ -102,17 +102,6 @@ public class PushController implements IPushController {
                         callback.onError(throwable);
                     }
                 });
-    }
-
-    private List<Survey> findSurveysToPush() {
-        List<Survey> surveys;
-        surveys = Survey.getAllCompletedSurveys();
-        for (int i = 0; i < surveys.size(); i++) {
-            if (surveys.get(i).getCompletionDate() == null) {
-                surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
-            }
-        }
-        return surveys;
     }
 
     private void convertToSDK(List<Survey> surveys) throws Exception {
