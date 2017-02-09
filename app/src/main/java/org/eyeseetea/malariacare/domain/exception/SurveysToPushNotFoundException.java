@@ -17,25 +17,10 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.boundary;
+package org.eyeseetea.malariacare.domain.exception;
 
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-
-public interface IPullController {
-    interface IPullControllerCallback {
-        void onComplete();
-
-        void onStep(PullStep step);
-
-        void onError(Throwable throwable);
-
-        void onCancel();
+public class SurveysToPushNotFoundException extends Exception{
+    public SurveysToPushNotFoundException() {
+        super("Surveys to push not found");
     }
-
-    void pull(PullFilters filters, IPullControllerCallback callback);
-
-    void cancel();
-
-    boolean isPullActive();
 }

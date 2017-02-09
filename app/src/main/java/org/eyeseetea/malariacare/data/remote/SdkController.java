@@ -48,45 +48,6 @@ public abstract class SdkController {
     public final static String TAG = ".sdkController";
 
 
-    public static void postProgress(String msg) {
-        //ProgressActivity.step(msg);
-    }
-
-    public static void postException(Exception ex) {
-        //ProgressActivity.cancellPull("error",ex.getMessage());
-    }
-
-    public static void postFinish() {
-        //// FIXME: 11/01/17 I think this user should be get from the SDK user
-        User user = User.getLoggedUser();
-        if (user == null) {
-            user = new User();
-            user.save();
-        }
-        Session.setUser(user);
-        //// TODO: 23/01/2017 fix in push
-        //ProgressActivity.postFinish();
-    }
-
-    public static boolean finishPullJob() {
-        /*
-        if (JobExecutor.isJobRunning(PullController.job.getJobId())) {
-            Log.d(TAG, "Job " + PullController.job.getJobId() + " is running");
-            PullController.job.cancel(true);
-            try {
-                try {JobExecutor.getInstance().dequeueRunningJob(PullController.job);} catch
-                (Exception e) {e.printStackTrace();}
-                PullController.job.cancel(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                return true;
-            }
-        }
-        */
-        return false;
-    }
-
     public static List<EventExtended> getEventsFromEventsWrapper(JsonNode jsonNode) {
         /*
         List<EventExtended> eventExtendeds = new ArrayList<>();
@@ -99,19 +60,5 @@ public abstract class SdkController {
         return null;
     }
 
-
-    public static void wipeSDKData() {
-        /*Delete.tables(
-                EventFlow.class,
-                TrackedEntityDataValue.class,
-                FailedItemFlow.class
-        );
-        */
-        //DateTimeManager.getInstance().delete();
-    }
-
-    public static String getDhisDatabaseName() {
-        return DbDhis.NAME;
-    }
 
 }

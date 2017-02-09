@@ -60,7 +60,6 @@ import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.model.Value;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
-import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -73,10 +72,10 @@ import java.util.Map;
 
 public class ConversionLocalDataSource {
 
-    IPullControllerCallback callback;
+    PullController.IPullControllerCallback callback;
 
-    public ConversionLocalDataSource(IPullControllerCallback callback) {
-        this.callback=callback;
+    public ConversionLocalDataSource(PullController.IPullControllerCallback callback) {
+        this.callback = callback;
     }
 
     private final String TAG = ".ConversionLocalData";

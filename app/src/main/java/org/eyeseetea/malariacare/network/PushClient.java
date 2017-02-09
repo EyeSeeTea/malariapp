@@ -66,14 +66,6 @@ public class PushClient {
         networkUtils.setPassword(password);
     }
 
-    private boolean launchPush(Survey survey) {
-        Session.setSurveyByModule(survey, Constants.PUSH_MODULE_KEY);
-        //Pushing selected survey via sdk
-        List<Survey> surveys = new ArrayList<>();
-        surveys.add(survey);
-        return PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
-    }
-
     public PushClient(List<Survey> surveys, Context applicationContext, String user, String password) {
         this(applicationContext,user,password);
         this.surveys = surveys;
@@ -84,15 +76,6 @@ public class PushClient {
         this.survey = survey;
     }
 
-    public void pushSDK() {
-        //No network -> Done
-        if (!AUtils.isNetworkAvailable() || PushController.getInstance().isPushing())
-            AlarmPushReceiver.isDone();
-        else {
-            //Push via sdk
-            PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
-        }
-    }
 
     public PushResult pushAPI() {
         if (AUtils.isNetworkAvailable()) {

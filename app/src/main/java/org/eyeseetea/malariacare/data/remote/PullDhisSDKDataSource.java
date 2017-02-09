@@ -30,7 +30,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.hisp.dhis.client.sdk.android.api.D2;
@@ -54,9 +53,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataVa
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
-import org.hisp.dhis.client.sdk.models.attribute.AttributeValue;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
-import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -66,7 +63,6 @@ import java.util.Set;
 
 import rx.Observable;
 import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
@@ -163,7 +159,6 @@ public class PullDhisSDKDataSource {
             }
         }
     }
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager cm =

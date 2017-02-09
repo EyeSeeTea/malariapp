@@ -17,71 +17,66 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.usecase.pull;
+package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 
-public class PullUseCase {
+public class PushUseCase {
 
     public interface Callback {
         void onComplete();
 
-        void onPullError();
+        void onPushError();
 
-        void onCancel();
+        void onPushInProgressError();
+
+        void onSurveysNotFoundError();
 
         void onConversionError();
-
-        void onStep(PullStep pullStep);
 
         void onNetworkError();
     }
 
-    private IPullController mPullController = new PullController();
+    private IPushController mPushController;
 
-    public PullUseCase() {
+    public PushUseCase(IPushController pushController) {
+        mPushController = pushController;
     }
 
-    public void execute(PullFilters pullFilters, final Callback callback) {
+    public void execute(final Callback callback) {
 
-        mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
+        if (mPushController.isPushInProgress()){
+            callback.onPushInProgressError();
+            return;
+        }
 
+        mPushController.changePushInProgress(true);
+
+        mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
             public void onComplete() {
+                mPushController.changePushInProgress(false);
+
                 callback.onComplete();
             }
 
             @Override
-            public void onStep(PullStep step) {
-                callback.onStep(step);
-            }
-
-            @Override
             public void onError(Throwable throwable) {
+                mPushController.changePushInProgress(false);
+
                 if (throwable instanceof NetworkException) {
                     callback.onNetworkError();
                 } else if (throwable instanceof ConversionException) {
                     callback.onConversionError();
+                } else if (throwable instanceof SurveysToPushNotFoundException) {
+                    callback.onSurveysNotFoundError();
                 } else {
-                    callback.onPullError();
+                    callback.onPushError();
                 }
             }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
-            }
         });
-    }
-
-    public void cancel() {
-        mPullController.cancel();
-    }
-
-    public boolean isPullActive() {
-        return mPullController.isPullActive();
     }
 }

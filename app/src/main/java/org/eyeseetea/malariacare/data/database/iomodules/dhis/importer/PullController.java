@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullControllerCallback;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.PullException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
