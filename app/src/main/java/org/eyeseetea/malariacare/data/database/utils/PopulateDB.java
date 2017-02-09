@@ -28,7 +28,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveySchedule;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.model.Value;
-import org.eyeseetea.malariacare.data.remote.SdkController;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +38,7 @@ import java.util.Map;
 
 public class PopulateDB {
 
-    public static final String TAG=".PopulateDB";
+    public static final String TAG = ".PopulateDB";
 
     public static final String PROGRAMS_CSV = "Programs.csv";
     public static final String TABS_CSV = "Tabs.csv";
@@ -74,7 +73,7 @@ public class PopulateDB {
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
-        Log.d(TAG,"Populating metaData from local csv files");
+        Log.d(TAG, "Populating metaData from local csv files");
 
         //Clear maps from previous populations (this might be called after logout)
         initMaps();
@@ -82,7 +81,10 @@ public class PopulateDB {
         //Clear database
         wipeDatabase();
 
-        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV, ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV, ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV, ORG_UNIT_PROGRAM_RELATIONS);
+        List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV,
+                ANSWERS_CSV, OPTION_ATTRIBUTES_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV,
+                QUESTIONS_CSV, QUESTION_RELATIONS_CSV, MATCHES_CSV, QUESTION_OPTIONS_CSV,
+                ORG_UNIT_LEVELS_CSV, ORG_UNITS_CSV, ORG_UNIT_PROGRAM_RELATIONS);
 
         CSVReader reader;
         for (String table : tables2populate) {
@@ -132,8 +134,10 @@ public class PopulateDB {
                         option.setName(line[2]);
                         option.setFactor(Float.valueOf(line[3]));
                         option.setAnswer(answers.get(Integer.valueOf(line[4])));
-                        if (!line[5].equals(""))
-                            option.setOptionAttribute(optionAttributes.get(Integer.valueOf(line[5])));
+                        if (!line[5].equals("")) {
+                            option.setOptionAttribute(
+                                    optionAttributes.get(Integer.valueOf(line[5])));
+                        }
                         option.save();
                         saveItem(options, option, Integer.valueOf(line[0]));
                         break;
@@ -141,10 +145,14 @@ public class PopulateDB {
                         CompositeScore compositeScore = new CompositeScore();
                         compositeScore.setHierarchical_code(line[1]);
                         compositeScore.setLabel(line[2]);
-                        if (!line[3].equals("")) compositeScore.setCompositeScore(compositeScores.get(Integer.valueOf(line[3])));
+                        if (!line[3].equals("")) {
+                            compositeScore.setCompositeScore(
+                                    compositeScores.get(Integer.valueOf(line[3])));
+                        }
                         compositeScore.setUid(line[4]);
-                        if (!line[5].equals(""))
+                        if (!line[5].equals("")) {
                             compositeScore.setOrder_pos(Integer.valueOf(line[5]));
+                        }
                         saveItem(compositeScores, compositeScore, Integer.valueOf(line[0]));
                         break;
                     case QUESTIONS_CSV:
@@ -153,22 +161,28 @@ public class PopulateDB {
                         question.setDe_name(line[2]);
                         question.setShort_name(line[3]);
                         question.setForm_name(line[4]);
-                        if (!line[5].equals(""))
+                        if (!line[5].equals("")) {
                             question.setFeedback(line[5]);
+                        }
                         question.setUid(line[6]);
                         question.setOrder_pos(Integer.valueOf(line[7]));
                         question.setNumerator_w(Float.valueOf(line[8]));
                         question.setDenominator_w(Float.valueOf(line[9]));
                         question.setHeader(headers.get(Integer.valueOf(line[10])));
-                        if (!line[11].equals(""))
+                        if (!line[11].equals("")) {
                             question.setAnswer(answers.get(Integer.valueOf(line[11])));
-                        if (!line[12].equals(""))
+                        }
+                        if (!line[12].equals("")) {
                             question.setQuestion(questions.get(Integer.valueOf(line[12])));
+                        }
                         //set the output suvreillance
-                        if (!line[13].equals(""))
+                        if (!line[13].equals("")) {
                             question.setOutput(Integer.valueOf(line[13]));
-                        if (line.length == 14 && !line[13].equals(""))
-                            question.setCompositeScore(compositeScores.get(Integer.valueOf(line[13])));
+                        }
+                        if (line.length == 14 && !line[13].equals("")) {
+                            question.setCompositeScore(
+                                    compositeScores.get(Integer.valueOf(line[13])));
+                        }
                         saveItem(questions, question, Integer.valueOf(line[0]));
                         break;
                     case QUESTION_RELATIONS_CSV:
@@ -198,18 +212,22 @@ public class PopulateDB {
                         OrgUnit orgUnit = new OrgUnit();
                         orgUnit.setUid(line[1]);
                         orgUnit.setName(line[2]);
-                        if (!line[3].equals(""))
+                        if (!line[3].equals("")) {
                             orgUnit.setOrgUnit(orgUnits.get(Integer.valueOf(line[3])));
-                        if (!line[4].equals(""))
+                        }
+                        if (!line[4].equals("")) {
                             orgUnit.setOrgUnitLevel(orgUnitLevels.get(Integer.valueOf(line[4])));
+                        }
                         saveItem(orgUnits, orgUnit, Integer.valueOf(line[0]));
                         break;
                     case ORG_UNIT_PROGRAM_RELATIONS:
-                        OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation();
+                        OrgUnitProgramRelation orgUnitProgramRelation =
+                                new OrgUnitProgramRelation();
                         orgUnitProgramRelation.setOrgUnit(orgUnits.get(Integer.valueOf(line[0])));
                         orgUnitProgramRelation.setProgram(programs.get(Integer.valueOf(line[1])));
                         orgUnitProgramRelation.setProductivity(Integer.valueOf(line[2]));
-                        saveItem(orgUnitProgramRelations, orgUnitProgramRelation, Integer.valueOf(line[0]));
+                        saveItem(orgUnitProgramRelations, orgUnitProgramRelation,
+                                Integer.valueOf(line[0]));
                         break;
                 }
             }
@@ -247,12 +265,12 @@ public class PopulateDB {
         );
     }
 
-    protected static void saveItem(Map items, BaseModel model, Integer pk){
-        items.put(pk,model);
+    protected static void saveItem(Map items, BaseModel model, Integer pk) {
+        items.put(pk, model);
         model.save();
     }
 
-    protected static void initMaps(){
+    protected static void initMaps() {
         programs = new LinkedHashMap<>();
         tabs = new LinkedHashMap<>();
         headers = new LinkedHashMap<>();

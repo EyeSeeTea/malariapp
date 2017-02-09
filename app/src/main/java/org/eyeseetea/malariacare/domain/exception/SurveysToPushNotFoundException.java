@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.domain.exception;
 
-public class SurveysToPushNotFoundException extends Exception{
+public class SurveysToPushNotFoundException extends Exception {
     public SurveysToPushNotFoundException() {
         super("Surveys to push not found");
     }

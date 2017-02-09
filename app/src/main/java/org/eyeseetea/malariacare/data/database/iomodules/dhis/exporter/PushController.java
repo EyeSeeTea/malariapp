@@ -56,8 +56,7 @@ public class PushController implements IPushController {
 
         if (surveys == null || surveys.size() == 0) {
             callback.onError(new SurveysToPushNotFoundException());
-        }
-        else {
+        } else {
 
             mPushDhisSDKDataSource.wipeEvents();
 
@@ -67,10 +66,9 @@ public class PushController implements IPushController {
                 callback.onError(new ConversionException(ex));
             }
 
-            if (EventExtended.getAllEvents().size() == 0){
+            if (EventExtended.getAllEvents().size() == 0) {
                 callback.onError(new ConversionException());
-            }
-            else{
+            } else {
                 pushData(callback);
             }
         }
