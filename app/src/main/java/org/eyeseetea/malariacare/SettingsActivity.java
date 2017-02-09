@@ -67,7 +67,6 @@ public class SettingsActivity extends PreferenceActivity implements
     private static final String TAG = ".SettingsActivity";
 
     protected void onCreate(Bundle savedInstanceState) {
-        //Register into sdk bug for listening to logout events
         super.onCreate(savedInstanceState);
     }
 
