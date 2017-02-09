@@ -237,4 +237,7 @@ evaluation"</string>
 
 <!-- from old SDK -->
 <string name="select_all">Select all</string>
+
+<string name="demo_login">Demo</string>
+
 </resources>

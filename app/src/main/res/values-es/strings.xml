@@ -236,4 +236,8 @@ clínica"</string>
 <string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
+<!-- from old SDK -->
+<string name="select_all">Seleccionar todos</string>
+
+<string name="demo_login">Demo</string>
 </resources>

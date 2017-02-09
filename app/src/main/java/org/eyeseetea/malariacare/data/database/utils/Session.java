@@ -28,6 +28,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.util.HashMap;
@@ -85,6 +86,8 @@ public class Session {
      */
     private static PhoneMetaData phoneMetaData;
 
+    private static Credentials credentials;
+
 
     public static Survey getSurveyByModule(String module) {
         return surveyMappedByModule.get(module);
@@ -103,6 +106,14 @@ public class Session {
     public static void setUser(User user) {
         Log.d(TAG,"setUser: "+user);
         Session.user = user;
+    }
+
+    public static Credentials getCredentials() {
+        return credentials;
+    }
+
+    public static void setCredentials(Credentials credentials) {
+        Session.credentials = credentials;
     }
 
     public static IDashboardAdapter getAdapterOrgUnit() {

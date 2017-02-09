@@ -19,10 +19,12 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import android.content.Context;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
+import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
+import org.eyeseetea.malariacare.data.database.local.PullLocalSDKDataSource;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
@@ -40,24 +42,16 @@ public class PullController implements IPullController {
     private static PullController instance;
     private final String TAG = ".PullController";
     ConversionLocalDataSource conversionLocalDataSource;
+    PullLocalSDKDataSource mPullLocalDataSource;
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullControllerCallback callback;
 
-    /**
-     * Constructs and register this pull controller to the event bus
-     */
-    public PullController() {
+    private Context mContext;
+
+    public PullController(Context context) {
+        mContext = context;
     }
 
-    /**
-     * Singleton constructor
-     */
-    public static PullController getInstance() {
-        if (instance == null) {
-            instance = new PullController();
-        }
-        return instance;
-    }
 
     public void conversions() {
 
@@ -93,16 +87,33 @@ public class PullController implements IPullController {
 
     @Override
     public void pull(final PullFilters filters, final IPullControllerCallback callback) {
+        conversionLocalDataSource.wipeDataBase();
+        if(filters.isDemo()){
+            mPullLocalDataSource = new PullLocalSDKDataSource();
+            mPullLocalDataSource.pull(new IPullSourceCallback() {
+
+                @Override
+                public void onComplete() {
+                    callback.onComplete();
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+            }, mContext);
+            return;
+        }
         PULL_IS_ACTIVE = true;
         conversionLocalDataSource = new ConversionLocalDataSource(callback);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
-        conversionLocalDataSource.wipeDataBase();
 
         this.callback = callback;
         callback.onStep(PullStep.PROGRAMS);
 
-        pullRemoteDataSource.pullMetadata(new IDhisPullSourceCallback() {
+        pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
 
             @Override
             public void onComplete() {
@@ -124,7 +135,7 @@ public class PullController implements IPullController {
     }
 
     private void pullData(final PullFilters filters) {
-        pullRemoteDataSource.pullData(filters, new IDhisPullSourceCallback() {
+        pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
                 try {

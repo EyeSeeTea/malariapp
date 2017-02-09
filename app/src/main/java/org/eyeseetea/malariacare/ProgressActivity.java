@@ -34,10 +34,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -100,7 +104,7 @@ public class ProgressActivity extends Activity {
     static boolean isOnPause = true;
     //Check intent params
     static Intent intent;
-    public PullUseCase mPullUseCase = new PullUseCase();
+    public PullUseCase mPullUseCase;
     private Handler handler;
     private ProgressActivity mProgressActivity;
 
@@ -108,6 +112,7 @@ public class ProgressActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeDependencies();
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         isOnPause = false;
@@ -121,6 +126,11 @@ public class ProgressActivity extends Activity {
         intent = getIntent();
         handler = new Handler();
         mProgressActivity = this;
+    }
+
+    private void initializeDependencies() {
+        IPullController pullController = new PullController(this);
+        mPullUseCase = new PullUseCase(pullController);
     }
 
     /**
@@ -350,7 +360,8 @@ public class ProgressActivity extends Activity {
         progressBar.setMax(MAX_PULL_STEPS);
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-        PullFilters pullFilters = new PullFilters(month.getTime(),null,
+        boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
+        PullFilters pullFilters = new PullFilters(month.getTime(),null, isDemo,
                 AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
                 PreferencesState.getInstance().getMaxEvents());
 

@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -37,10 +37,6 @@ public class ExportData {
      * Temporal file that contains phonemetadata and app version info
      */
     private final static String EXTRA_INFO = "extrainfo.txt";
-    /**
-     * Databases folder
-     */
-    private final static String DATABASE_FOLDER = "databases/";
     /**
      * Shared preferences folder
      */
@@ -150,9 +146,13 @@ public class ExportData {
     private static void dumpDatabase(String dbName, File tempFolder) {
         File backupDB = null;
         if (tempFolder.canWrite()) {
-            File currentDB = new File(getDatabasesFolder(), dbName);
+            File currentDB = new File(Utils.getDatabasesFolder(), dbName);
             backupDB = new File(tempFolder, dbName);
-            copyFile(currentDB, backupDB);
+            try {
+                Utils.copyFile(currentDB, backupDB);
+            } catch (IOException e) {
+                Log.d(TAG, "Error exporting file " + currentDB + " to " + backupDB);
+            }
         }
     }
 
@@ -164,27 +164,11 @@ public class ExportData {
         Log.d("Files", "Size: " + files.length);
         for (int i = 0; i < files.length; i++) {
             Log.d("Files", "FileName:" + files[i].getName());
-            copyFile(files[i], new File(tempFolder, files[i].getName()));
-        }
-    }
-
-    /**
-     * This method copy a file in other file
-     */
-    private static void copyFile(File current, File backup) {
-        if (current.exists()) {
-
+            File backupFile = new File(tempFolder, files[i].getName());
             try {
-                FileChannel src = new FileInputStream(current)
-                        .getChannel();
-                FileChannel dst = new FileOutputStream(backup)
-                        .getChannel();
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
+                Utils.copyFile(files[i], backupFile);
             } catch (IOException e) {
-                e.printStackTrace();
-                Log.d(TAG, "Error exporting file " + current + " to " + backup);
+                Log.d(TAG, "Error exporting file " + files[i] + " to " + backupFile);
             }
         }
     }
@@ -198,28 +182,11 @@ public class ExportData {
     }
 
     /**
-     * This method returns the app path
-     */
-    private static String getAppPath() {
-        return "/data/data/" + PreferencesState.getInstance().getContext().getPackageName() + "/";
-
-    }
-
-    /**
      * This method returns the sharedPreferences app folder
      */
     private static File getSharedPreferencesFolder() {
-        String sharedPreferencesPath = getAppPath() + SHAREDPREFERENCES_FOLDER;
+        String sharedPreferencesPath = Utils.getAppPath() + SHAREDPREFERENCES_FOLDER;
         File file = new File(sharedPreferencesPath);
-        return file;
-    }
-
-    /**
-     * This method returns the databases app folder
-     */
-    private static File getDatabasesFolder() {
-        String databasesPath = getAppPath() + DATABASE_FOLDER;
-        File file = new File(databasesPath);
         return file;
     }
 

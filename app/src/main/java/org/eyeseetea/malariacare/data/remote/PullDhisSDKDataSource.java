@@ -27,7 +27,7 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
+import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -87,7 +87,7 @@ public class PullDhisSDKDataSource {
     public PullDhisSDKDataSource() {
     }
 
-    public void pullMetadata(final IDhisPullSourceCallback callback) {
+    public void pullMetadata(final IPullSourceCallback callback) {
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (!isNetworkAvailable) {
@@ -130,7 +130,7 @@ public class PullDhisSDKDataSource {
 
     }
 
-    public void pullData(PullFilters filters, IDhisPullSourceCallback callback) {
+    public void pullData(PullFilters filters, IPullSourceCallback callback) {
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (!isNetworkAvailable) {
@@ -147,7 +147,7 @@ public class PullDhisSDKDataSource {
         }
     }
 
-    private void pullEvents(PullFilters filters, IDhisPullSourceCallback callback) {
+    private void pullEvents(PullFilters filters, IPullSourceCallback callback) {
         Scheduler listThread = Schedulers.newThread();
         List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
                 .observeOn(listThread).toBlocking().single();
