@@ -28,76 +28,70 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Singleton that holds info related to preferences
- * Created by arrizabalaga on 26/06/15.
- */
 public class PreferencesState {
 
-    private static String TAG=".PreferencesState";
-
+    static Context context;
+    private static String TAG = ".PreferencesState";
     /**
      * Singleton reference
      */
     private static PreferencesState instance;
-
     /**
      * Selected scale, one between [xsmall,small,medium,large,xlarge,system]
      */
     private String scale;
-
     /**
      * Flag that determines if numerator/denominator are shown in scores.
      */
     private boolean showNumDen;
-
     /**
      * Flag that determines if data must be pulled from server
      */
     private Boolean pullFromServer;
-
     /**
      * Flag that determines if large text is show in preferences
      */
     private Boolean showLargeText;
-
     /**
      * Flag that determines if the planning tab must be hide or not
      */
     private Boolean hidePlanningTab;
-
     /**
      * Map that holds the relationship between a scale and a set of dimensions
      */
     private Map<String, Map<String, Float>> scaleDimensionsMap;
-
     /**
      * Flag that determines if the location is required for push
      */
     private boolean locationRequired;
-
     /**
      * Sets the max number of events to download from dhis server
      */
     private int maxEvents;
 
-    static Context context;
+    private PreferencesState() {
+    }
 
-    private PreferencesState(){ }
+    public static PreferencesState getInstance() {
+        if (instance == null) {
+            instance = new PreferencesState();
+        }
+        return instance;
+    }
 
-    public void init(Context context){
-        this.context=context;
-        scaleDimensionsMap=initScaleDimensionsMap();
+    public void init(Context context) {
+        this.context = context;
+        scaleDimensionsMap = initScaleDimensionsMap();
         reloadPreferences();
     }
 
@@ -105,23 +99,28 @@ public class PreferencesState {
         return context;
     }
 
-    public void reloadPreferences(){
-        scale= initScale();
-        showNumDen=initShowNumDen();
-        locationRequired=initLocationRequired();
+    public void reloadPreferences() {
+        scale = initScale();
+        showNumDen = initShowNumDen();
+        locationRequired = initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
-        maxEvents=initMaxEvents();
-        Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
+        maxEvents = initMaxEvents();
+        Log.d(TAG, String.format(
+                "reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | "
+                        + "maxEvents: %d | largeTextOption: %b ",
+                scale, showNumDen, locationRequired, maxEvents, showLargeText));
     }
 
     /**
      * Inits scale according to preferences
-     * @return
      */
-    private String initScale(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        if (sharedPreferences.getBoolean(instance.getContext().getString(R.string.customize_fonts), false)) {
-            return sharedPreferences.getString(instance.getContext().getString(R.string.font_sizes), instance.getContext().getString(R.string.font_size_system));
+    private String initScale() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        if (sharedPreferences.getBoolean(instance.getContext().getString(R.string.customize_fonts),
+                false)) {
+            return sharedPreferences.getString(instance.getContext().getString(R.string.font_sizes),
+                    instance.getContext().getString(R.string.font_size_system));
         }
 
         return context.getString(R.string.font_size_system);
@@ -129,53 +128,60 @@ public class PreferencesState {
 
     /**
      * Inits flag according to preferences
-     * @return
      */
-    private boolean initShowNumDen(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems), false);
+    private boolean initShowNumDen() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems),
+                false);
     }
 
     /**
      * Inits location flag according to preferences
-     * @return
      */
-    private boolean initLocationRequired(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.location_required), false);
+    private boolean initLocationRequired() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getBoolean(
+                instance.getContext().getString(R.string.location_required), false);
     }
 
     /**
      * Inits hidePlanningTab flag according to preferences
-     * @return
      */
-    private boolean initHidePlanningTab(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.hide_planning_tab_key), false);
+    private boolean initHidePlanningTab() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getBoolean(
+                instance.getContext().getString(R.string.hide_planning_tab_key), false);
     }
+
     /**
      * Inits hidePlanningTab flag according to preferences
-     * @return
      */
-    public boolean isDevelopOptionActive(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.developer_option), false);
+    public boolean isDevelopOptionActive() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getBoolean(
+                instance.getContext().getString(R.string.developer_option), false);
     }
+
     /**
      * Inits maxEvents settings
-     * @return
      */
-    private int initMaxEvents(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        String maxValue=sharedPreferences.getString(instance.getContext().getString(R.string.dhis_max_items), instance.getContext().getString(R.string.dhis_default_max_items));
+    private int initMaxEvents() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        String maxValue = sharedPreferences.getString(
+                instance.getContext().getString(R.string.dhis_max_items),
+                instance.getContext().getString(R.string.dhis_default_max_items));
         return Integer.valueOf(maxValue);
     }
 
     /**
      * Inits maps of dimensions
-     * @return
      */
-    private Map<String, Map<String, Float>> initScaleDimensionsMap(){
+    private Map<String, Map<String, Float>> initScaleDimensionsMap() {
         Map<String, Float> xsmall = new HashMap<>();
         String xsmallKey = instance.getContext().getString(R.string.font_size_level0),
                 smallKey = context.getString(R.string.font_size_level1),
@@ -222,56 +228,53 @@ public class PreferencesState {
         return scaleDimensionsMap;
     }
 
-    public static PreferencesState getInstance(){
-        if(instance==null){
-            instance=new PreferencesState();
-        }
-        return instance;
-    }
-
     public String getScale() {
         return scale;
     }
 
-    public void setScale(String value){
-        this.scale=value;
+    public void setScale(String value) {
+        this.scale = value;
     }
 
     public boolean isShowNumDen() {
         return showNumDen;
     }
 
-    public void setShowNumDen(boolean value){
-        this.showNumDen=value;
+    public void setShowNumDen(boolean value) {
+        this.showNumDen = value;
     }
 
-    public boolean isLocationRequired(){return locationRequired;}
-
-    public void setLocationRequired(boolean value){
-        this.locationRequired=value;
+    public boolean isLocationRequired() {
+        return locationRequired;
     }
 
-    public boolean isHidePlanningTab(){
+    public void setLocationRequired(boolean value) {
+        this.locationRequired = value;
+    }
+
+    public boolean isHidePlanningTab() {
         return this.hidePlanningTab;
     }
 
-    public int getMaxEvents(){
+    public int getMaxEvents() {
         return this.maxEvents;
     }
 
-    public void setMaxEvents(int maxEvents){
-        this.maxEvents=maxEvents;
+    public void setMaxEvents(int maxEvents) {
+        this.maxEvents = maxEvents;
     }
 
-    public Float getFontSize(String scale,String dimension){
-        if (scaleDimensionsMap.get(scale)==null) return context.getResources().getDimension(R.dimen.small_large_text_size);
+    public Float getFontSize(String scale, String dimension) {
+        if (scaleDimensionsMap.get(scale) == null) {
+            return context.getResources().getDimension(
+                    R.dimen.small_large_text_size);
+        }
         return scaleDimensionsMap.get(scale).get(dimension);
     }
 
 
     /**
      * Tells if metaData is pulled from server or locally populated
-     * @return
      */
     public Boolean getPullFromServer() {
         return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
@@ -279,7 +282,6 @@ public class PreferencesState {
 
     /**
      * Tells if the application is Vertical or horizontall
-     * @return
      */
     public Boolean isVerticalDashboard() {
         return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
@@ -287,7 +289,6 @@ public class PreferencesState {
 
     /**
      * Tells if the application is filter for last org unit
-     * @return
      */
     public Boolean isLastForOrgUnit() {
         return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
@@ -295,7 +296,6 @@ public class PreferencesState {
 
     /**
      * Tells if the application is none filter
-     * @return
      */
     public Boolean isNoneFilter() {
         return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
@@ -303,20 +303,20 @@ public class PreferencesState {
 
     /**
      * Tells if the application use the Automatic  adapter
-     * @return
      */
     public Boolean isAutomaticAdapter() {
         return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
     }
+
     /**
      * Tells if the application use the Dynamic adapter
-     * @return
      */
     public Boolean isDynamicAdapter() {
         return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
     }
-    public Class getMainActivity(){
-        if(getPullFromServer()){
+
+    public Class getMainActivity() {
+        if (getPullFromServer()) {
             return ProgressActivity.class;
         }
 
@@ -325,8 +325,9 @@ public class PreferencesState {
 
 
     public void clearOrgUnitPreference() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor =sharedPreferences.edit();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(context.getResources().getString(R.string.default_orgUnits), "");
         editor.putString(context.getResources().getString(R.string.default_orgUnit), "");
         editor.commit();
@@ -334,29 +335,35 @@ public class PreferencesState {
 
     /**
      * it determines if large text is shown in preferences
-     * The screen size should be more bigger than the width and height constants to show the large text option.
+     * The screen size should be more bigger than the width and height constants to show the large
+     * text option.
      */
-    public boolean isLargeTextShown(){
-        if(showLargeText==null) {
+    public boolean isLargeTextShown() {
+        if (showLargeText == null) {
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-            Log.d(TAG,metrics.widthPixels +" x "+ metrics.heightPixels);
-            if (metrics.widthPixels > Constants.MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT && metrics.heightPixels >= Constants.MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT) {
-                showLargeText= true;
+            Log.d(TAG, metrics.widthPixels + " x " + metrics.heightPixels);
+            if (metrics.widthPixels > Constants.MINIMAL_WIDTH_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT
+                    && metrics.heightPixels
+                    >= Constants.MINIMAL_HEIGHT_PIXEL_RESOLUTION_TO_SHOW_LARGE_TEXT) {
+                showLargeText = true;
             } else {
                 showLargeText = false;
             }
         }
-        return  showLargeText;
+        return showLargeText;
     }
 
     public boolean isPushInProgress() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.push_in_progress), false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getBoolean(
+                instance.getContext().getString(R.string.push_in_progress), false);
     }
 
-    public void setPushInProgress(boolean inProgress){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor =sharedPreferences.edit();
+    public void setPushInProgress(boolean inProgress) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(context.getResources().getString(R.string.push_in_progress), inProgress);
         editor.commit();
     }

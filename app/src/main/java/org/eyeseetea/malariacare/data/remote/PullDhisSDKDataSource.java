@@ -69,8 +69,20 @@ import rx.schedulers.Schedulers;
 
 
 public class PullDhisSDKDataSource {
+    public final static Class[] MANDATORY_METADATA_TABLES = {
+            AttributeFlow.class,
+            DataElementFlow.class,
+            AttributeValueFlow.class,
+            OptionFlow.class,
+            OptionSetFlow.class,
+            UserAccountFlow.class,
+            OrganisationUnitFlow.class,
+            OrganisationUnitToProgramRelationFlow.class,
+            ProgramStageFlow.class,
+            ProgramStageDataElementFlow.class,
+            ProgramStageSectionFlow.class
+    };
     private final String TAG = ".PullDhisSDKDataSource";
-
 
     public PullDhisSDKDataSource() {
     }
@@ -152,7 +164,8 @@ public class PullDhisSDKDataSource {
                         Scheduler pullEventsThread = Schedulers.newThread();
                         D2.events().pull(
                                 organisationUnit.getUId(),
-                                program.getUId(), filters.getStartDate(), filters.getEndDate(), filters.getMaxEvents()).subscribeOn(pullEventsThread)
+                                program.getUId(), filters.getStartDate(), filters.getEndDate(),
+                                filters.getMaxEvents()).subscribeOn(pullEventsThread)
                                 .observeOn(pullEventsThread).toBlocking().single();
                     }
                 }
@@ -191,22 +204,6 @@ public class PullDhisSDKDataSource {
                 FailedItemFlow.class
         );
     }
-
-
-    public final static Class[] MANDATORY_METADATA_TABLES = {
-            AttributeFlow.class,
-            DataElementFlow.class,
-            AttributeValueFlow.class,
-            OptionFlow.class,
-            OptionSetFlow.class,
-            UserAccountFlow.class,
-            OrganisationUnitFlow.class,
-            OrganisationUnitToProgramRelationFlow.class,
-            ProgramStageFlow.class,
-            ProgramStageDataElementFlow.class,
-            ProgramStageSectionFlow.class
-    };
-
 
     public boolean mandatoryMetadataTablesNotEmpty() {
 

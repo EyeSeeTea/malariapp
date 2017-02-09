@@ -87,37 +87,37 @@ public class PushService extends IntentService {
             @Override
             public void onComplete() {
                 AlarmPushReceiver.isDoneSuccess();
-                Log.d(TAG,"push complete");
+                Log.d(TAG, "push complete");
             }
 
             @Override
             public void onPushInProgressError() {
                 AlarmPushReceiver.isDoneFail();
-                Log.e(TAG,"Push stopped, There is already a push in progress");
+                Log.e(TAG, "Push stopped, There is already a push in progress");
             }
 
             @Override
             public void onPushError() {
                 AlarmPushReceiver.isDoneFail();
-                Log.e(TAG,"Unexpected error has occurred in push process");
+                Log.e(TAG, "Unexpected error has occurred in push process");
             }
 
             @Override
             public void onSurveysNotFoundError() {
                 AlarmPushReceiver.isDoneFail();
-                Log.e(TAG,"Pending surveys not found");
+                Log.e(TAG, "Pending surveys not found");
             }
 
             @Override
             public void onConversionError() {
                 AlarmPushReceiver.isDoneFail();
-                Log.e(TAG,"An error has occurred to the conversion in push process");
+                Log.e(TAG, "An error has occurred to the conversion in push process");
             }
 
             @Override
             public void onNetworkError() {
                 AlarmPushReceiver.isDoneFail();
-                Log.e(TAG,"Network not available");
+                Log.e(TAG, "Network not available");
             }
         });
     }

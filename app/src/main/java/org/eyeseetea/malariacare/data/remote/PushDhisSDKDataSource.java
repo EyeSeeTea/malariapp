@@ -34,7 +34,6 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
-import org.hisp.dhis.client.sdk.models.event.Event;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -58,40 +57,42 @@ public class PushDhisSDKDataSource {
     }
 
     private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
-        final Set<String> eventUids= new HashSet<>();
+        final Set<String> eventUids = new HashSet<>();
 
-        for(EventFlow eventFlow:SdkQueries.getEvents()){
-                eventUids.add(eventFlow.getUId());
-           }
-        Observable<Map<String,ImportSummary>> eventObserver =
-                       D2.events().push(eventUids);
+        for (EventFlow eventFlow : SdkQueries.getEvents()) {
+            eventUids.add(eventFlow.getUId());
+        }
+        Observable<Map<String, ImportSummary>> eventObserver =
+                D2.events().push(eventUids);
 
         eventObserver
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Map<String, ImportSummary>>() {
-            @Override
-            public void call(Map<String, ImportSummary> mapEventsImportSummary) {
-                Log.d(this.getClass().getSimpleName(),
-                        "Push of events finish. Number of events: "
-                                + mapEventsImportSummary.size());
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Map<String, ImportSummary>>() {
+                    @Override
+                    public void call(Map<String, ImportSummary> mapEventsImportSummary) {
+                        Log.d(this.getClass().getSimpleName(),
+                                "Push of events finish. Number of events: "
+                                        + mapEventsImportSummary.size());
 
-                //TODO: from data source should comverto always from SDK object to domain object
-                // this class should not return sdk objects directly
-                //create a object similar to Map<String,ImportSummary> in domain and convert before
-                // to invoke callback.onSuccess
-                callback.onSuccess(mapEventsImportSummary);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
+                        //TODO: from data source should comverto always from SDK object to domain
+                        // object
+                        // this class should not return sdk objects directly
+                        //create a object similar to Map<String,ImportSummary> in domain and
+                        // convert before
+                        // to invoke callback.onSuccess
+                        callback.onSuccess(mapEventsImportSummary);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
 
-                callback.onError(throwable);
+                        callback.onError(throwable);
 
-                Log.e(this.getClass().getSimpleName(),
-                        "Error pushing Events: " + throwable.getLocalizedMessage());
-            }
-        });
+                        Log.e(this.getClass().getSimpleName(),
+                                "Error pushing Events: " + throwable.getLocalizedMessage());
+                    }
+                });
     }
 
     private boolean isNetworkAvailable() {

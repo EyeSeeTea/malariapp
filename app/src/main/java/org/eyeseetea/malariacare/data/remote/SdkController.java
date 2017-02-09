@@ -19,29 +19,12 @@
 
 package org.eyeseetea.malariacare.data.remote;
 
-import android.content.Context;
-
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OptionSetFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 
 import java.util.List;
 
-/**
- * Created by idelcano on 09/11/2016.
- */
 
 public abstract class SdkController {
 

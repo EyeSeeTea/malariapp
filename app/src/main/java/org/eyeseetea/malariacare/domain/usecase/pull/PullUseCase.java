@@ -26,20 +26,6 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
 public class PullUseCase {
 
-    public interface Callback {
-        void onComplete();
-
-        void onPullError();
-
-        void onCancel();
-
-        void onConversionError();
-
-        void onStep(PullStep pullStep);
-
-        void onNetworkError();
-    }
-
     private IPullController mPullController = new PullController();
 
     public PullUseCase() {
@@ -83,5 +69,19 @@ public class PullUseCase {
 
     public boolean isPullActive() {
         return mPullController.isPullActive();
+    }
+
+    public interface Callback {
+        void onComplete();
+
+        void onPullError();
+
+        void onCancel();
+
+        void onConversionError();
+
+        void onStep(PullStep pullStep);
+
+        void onNetworkError();
     }
 }

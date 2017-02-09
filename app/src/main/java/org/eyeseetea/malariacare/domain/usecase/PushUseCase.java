@@ -26,20 +26,6 @@ import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException
 
 public class PushUseCase {
 
-    public interface Callback {
-        void onComplete();
-
-        void onPushError();
-
-        void onPushInProgressError();
-
-        void onSurveysNotFoundError();
-
-        void onConversionError();
-
-        void onNetworkError();
-    }
-
     private IPushController mPushController;
 
     public PushUseCase(IPushController pushController) {
@@ -48,7 +34,7 @@ public class PushUseCase {
 
     public void execute(final Callback callback) {
 
-        if (mPushController.isPushInProgress()){
+        if (mPushController.isPushInProgress()) {
             callback.onPushInProgressError();
             return;
         }
@@ -78,5 +64,19 @@ public class PushUseCase {
                 }
             }
         });
+    }
+
+    public interface Callback {
+        void onComplete();
+
+        void onPushError();
+
+        void onPushInProgressError();
+
+        void onSurveysNotFoundError();
+
+        void onConversionError();
+
+        void onNetworkError();
     }
 }

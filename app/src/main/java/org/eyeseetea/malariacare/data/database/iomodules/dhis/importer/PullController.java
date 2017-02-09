@@ -32,23 +32,16 @@ import org.eyeseetea.malariacare.domain.exception.PullException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
-/**
- * A static controller that orchestrate the pull process
- * Created by arrizabalaga on 4/11/15.
- */
 public class PullController implements IPullController {
-    private final String TAG = ".PullController";
-
-    private static PullController instance;
-
-    ConversionLocalDataSource conversionLocalDataSource;
-    PullDhisSDKDataSource pullRemoteDataSource;
-
-    IPullControllerCallback callback;
     /**
      * Used for control new steps
      */
     public static Boolean PULL_IS_ACTIVE = false;
+    private static PullController instance;
+    private final String TAG = ".PullController";
+    ConversionLocalDataSource conversionLocalDataSource;
+    PullDhisSDKDataSource pullRemoteDataSource;
+    IPullControllerCallback callback;
 
     /**
      * Constructs and register this pull controller to the event bus
