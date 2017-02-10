@@ -1,0 +1,167 @@
+1~Apple Colour
+2~CI - Négatif / Positif
+3~CI - Nombre de thématique suivie (DoD)
+4~CI - Résultat final
+5~CI - Tranche D'age DoD
+6~CM FR - Disponibilité produits (unités)
+7~CM-Promoteur
+8~CM RH ProFam PF - Prestaire avec suivi documenté des clientes en service des SAA, DIU et avortement
+9~CORE - Channel type
+10~CORE - Costo al cliente
+11~CORE - Cost to client
+12~CORE - Employment Status
+13~CORE - Gender
+14~CORE - HIV Test Result
+15~CORE - Marital Status
+16~CORE - MD Adoption Ladder Position
+17~CORE - Monthly Reporting Periods
+18~CORE - Number of Living Children
+19~CORE - Positive / Negative
+20~CORE - Product Source
+21~CORE - Sex
+22~CORE - Test Result Pos/Neg
+23~CORE - Time (1 hour segments)
+24~CORE - Time (30 minute segments)
+25~CORE - Tipo de APA
+26~CORE - Tipo de evento adverso
+27~CORE - Tipo de Usuaria
+28~CORE - Yes/No
+29~DB - DE Type
+30~DB - Parent Child
+31~DB - Question Type
+32~DOB type
+33~DO - SSR Estado Civil
+34~DO - SSR Lista ETS
+35~DO - SSR - Metodo
+36~DO - SSR Razon para
+37~DO - SSR - Reporting Date
+38~DO - SSR Servicio
+39~DO - SSR Tipo Evento
+40~DO - SSR Tipo Visita
+41~GT - Channel
+42~GT VIH CIP - Actividad
+43~GT VIH CIP - Conducta
+44~GT VIH - Consejeros
+45~GT VIH - Donante
+46~GT VIH - Implementador
+47~GT VIH - Proyecto especial
+48~HNQIS - Diagnosis
+49~HNQIS - InvOuiNon
+50~HNQIS - InvYesNo
+51~HNQIS - Oui1Non0
+52~HNQIS - Post-op day
+53~HNQIS - RealSimulated
+54~HNQIS - ReelSimule
+55~HNQIS - Service Type
+56~HNQIS - Session Type
+57~HNQIS - Session Type (incl. couple)
+58~HNQIS - Site
+59~HNQIS - Site Model
+60~HNQIS - Treatment
+61~HNQIS - VMMC Surgical Method
+62~HNQIS - Yes1No0
+63~HNQIS - Yes1NoNA
+64~KE - BBC Topics
+65~KE - BBC Venue Types
+66~KE - BCC Activity Types
+67~KE - BCC Group Type
+68~KE - BCC Implementing Partners
+69~KE - BCC Target Age Groups
+70~KE - BCC Visit Type
+71~KE CCST - Facility Type Referred To
+72~KE CCST - How Trt info collected
+73~KE CCST - Screening Result
+74~KE CCST - Treatment Provided
+75~KE CCST - Treatment Referred For
+76~KE HT - YoB2
+77~KE - Implementing partners
+78~KE - Mode of contact
+79~KE - Tunza Implementing Partners
+80~KE - Tunza Supervisors
+81~KE - Why not contacted
+82~KE - Yes/No
+83~KH - IPC
+84~KH - Screening History
+85~KH - Server case for refer
+86~KH_SRV-ASMQ
+87~KH_SRV-DHA-PIP
+88~KH_SRV-Gender
+89~KH_SRV-Not-tested
+90~KH_SRV-Occupation
+91~KH_SRV-Referral
+92~KH_SRV-Risk Group
+93~KH_SRV-Species
+94~KH_SRV-Treatment
+95~KH_SRV-YesNo
+96~KH - Tested Result
+97~KH - Treatment
+98~LS BCC - Partner (community mobilization)
+99~LS - BCC Topics
+100~LS - Education Level
+101~LS HCT - Client Type
+102~LS HCT - Service Type
+103~LS HCT - Type of HTC service provision site
+104~LS IPC - DCLA codes
+105~LS - Previous HIV Test at
+106~LS - Project
+107~LS - Referral made to
+108~LS Training - Topic
+109~LS Training - Type
+110~ML_VIH Lieu test précédent
+111~ML_VIH Metier
+112~ML_VIH Rapports sexuels periode
+113~ML_VIH Résidence
+114~ML_VIH résultat du test
+115~ML_VIH Résultat test partenaire
+116~ML_VIH Résultat test précédent
+117~ML_VIH Statut du couple
+118~ML_VIH Statut matrimonial
+119~ML_VIH Stratégie
+120~ML_VIH Type de client
+121~ML_VIH Type de service
+122~NI- Motivo Referencia
+123~RH WHP - Misoprostol Type
+124~RH WHP - Occasion of FP
+125~RH WHP - Reason for contraceptive use
+126~RH WHP - Removals - IUD & Implant
+127~RH WHP - Type of service received
+128~SV - FP Methods
+129~SV - FP Reason
+130~SV - FP Service
+131~SV - Marital status
+132~SV - Occasion
+133~SV - Product origin (discontinuation)
+134~SV - Product source
+135~SV - Removal reason
+136~SV - Tipo de PF
+137~SV - Years of FP use
+138~Test
+139~VIH - Educación
+140~VIH - Estado Civil
+141~VIH - Población
+142~VIH - Resultado PVC
+143~VIH - Sexual Orientation
+144~VIH - SubPoblación
+145~VIH - Tipo de lugar
+146~VIH VS - Lugar de captación
+147~VIH VS - Medio de contacto
+148~VIH VS - Motivos de baja
+149~VIH VS - Origen de referencia
+150~VIH VS - Población
+151~VIH VS - Tiempo de conocer su diagnóstico
+152~ZW - HIV Test result
+153~ZW HTS - Client adviced to return
+154~ZW HTS - Client residence
+155~ZW HTS ST - HIV Test Result
+156~ZW HTS ST - Test mode
+157~ZW - Intervention
+158~ZW - Marital status
+159~ZW - NSCs
+160~ZW - Ocupation
+161~ZW - Partner HIV rest result
+162~ZW - Place of test
+163~ZW - Referral source
+164~ZW - Services
+165~ZW - Type of outreach site
+166~ZW - Yes, No, Not Sure
+167~Label

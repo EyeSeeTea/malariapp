@@ -24,6 +24,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.config.DHIS2GeneratedDatabaseHolder;
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -31,6 +32,7 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 
@@ -54,7 +56,7 @@ public class PullLocalSDKDataSource {
             Log.d(TAG, "Copy Database error");
         }
         try {
-            if (inputStream != null) {
+            if (inputStream == null) {
                 Log.d(TAG, "Copy Database from assets started");
                 FlowManager.destroy();
                 copyDBFromAssets(inputStream);
@@ -62,12 +64,10 @@ public class PullLocalSDKDataSource {
                 callback.onComplete();
                 Log.d(TAG, "Copy Database from assets finished");
             } else {
+                DatabaseDefinition databaseDefinition =
+                        FlowManager.getDatabase(AppDatabase.class);
+                databaseDefinition.reset(context);
                 Log.d(TAG, "Populate from csv start");
-                FlowConfig flowConfig = new FlowConfig
-                        .Builder(context)
-                        .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
-                        .build();
-                FlowManager.init(flowConfig);
                 populateFromDB(context);
                 Log.d(TAG, "Populate from csv finished");
                 callback.onComplete();
