@@ -44,11 +44,6 @@ import java.nio.channels.FileChannel;
  */
 public class Utils extends AUtils {
 
-    /**
-     * Databases folder
-     */
-    private final static String DATABASE_FOLDER = "databases/";
-
     public static void showAlert(int titleId, CharSequence text, Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
@@ -74,56 +69,5 @@ public class Utils extends AUtils {
         });
         //now that the dialog is set up, it's time to show it
         dialog.show();
-    }
-
-    /**
-     * This method copy a file in other file
-     */
-    public static void copyFile(File current, File backup) throws IOException {
-        if (current.exists()) {
-            FileChannel src = new FileInputStream(current)
-                    .getChannel();
-            FileChannel dst = new FileOutputStream(backup)
-                    .getChannel();
-            dst.transferFrom(src, 0, src.size());
-            src.close();
-            dst.close();
-        }
-    }
-
-    public static void copyInputStreamToFile(InputStream inputStream, File file)
-            throws IOException {
-        FileOutputStream outputStream = new FileOutputStream(file);
-        try {
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0) {
-                outputStream.write(buf, 0, len);
-            }
-        } finally {
-            outputStream.close();
-            inputStream.close();
-        }
-    }
-
-
-    /**
-     * This method returns the databases app folder
-     */
-    public static File getDatabasesFolder() {
-        String databasesPath = getAppPath() + DATABASE_FOLDER;
-        File file = new File(databasesPath);
-        return file;
-    }
-
-    /**
-     * This method returns the app path
-     */
-    public static String getAppPath() {
-        return "/data/data/" + PreferencesState.getInstance().getContext().getPackageName() + "/";
-
-    }
-    public static File getAppDatabaseFile(){
-        return new File(Utils.getDatabasesFolder(), AppDatabase.NAME + ".db");
     }
 }

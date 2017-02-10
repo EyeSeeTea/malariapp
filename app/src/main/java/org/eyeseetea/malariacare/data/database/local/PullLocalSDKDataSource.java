@@ -27,9 +27,9 @@ import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.IOException;
@@ -54,12 +54,18 @@ public class PullLocalSDKDataSource {
         try {
             if (inputStream != null) {
                 Log.d(TAG, "Copy Database from assets started");
+                FlowManager.destroy();
                 copyDBFromAssets(inputStream);
-                FlowManager.reset();
+                initDBFlow(context);
                 callback.onComplete();
                 Log.d(TAG, "Copy Database from assets finished");
             } else {
                 Log.d(TAG, "Populate from csv start");
+                FlowConfig flowConfig = new FlowConfig
+                        .Builder(context)
+                        .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
+                        .build();
+                FlowManager.init(flowConfig);
                 populateFromDB(context);
                 Log.d(TAG, "Populate from csv finished");
                 callback.onComplete();
@@ -72,10 +78,18 @@ public class PullLocalSDKDataSource {
 
     public void copyDBFromAssets(InputStream inputStream)
             throws IOException {
-        Utils.copyInputStreamToFile(inputStream, Utils.getAppDatabaseFile());
+        FileIOUtils.copyInputStreamToFile(inputStream, FileIOUtils.getAppDatabaseFile());
     }
 
     public void populateFromDB(Context context) throws IOException {
         PopulateDB.populateDB(context.getAssets());
+    }
+
+    public void initDBFlow(Context context){
+        FlowConfig flowConfig = new FlowConfig
+                .Builder(context)
+                .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
+                .build();
+        FlowManager.init(flowConfig);
     }
 }

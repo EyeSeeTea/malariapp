@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.BufferedWriter;
@@ -146,10 +147,10 @@ public class ExportData {
     private static void dumpDatabase(String dbName, File tempFolder) {
         File backupDB = null;
         if (tempFolder.canWrite()) {
-            File currentDB = new File(Utils.getDatabasesFolder(), dbName);
+            File currentDB = new File(FileIOUtils.getDatabasesFolder(), dbName);
             backupDB = new File(tempFolder, dbName);
             try {
-                Utils.copyFile(currentDB, backupDB);
+                FileIOUtils.copyFile(currentDB, backupDB);
             } catch (IOException e) {
                 Log.d(TAG, "Error exporting file " + currentDB + " to " + backupDB);
             }
@@ -166,7 +167,7 @@ public class ExportData {
             Log.d("Files", "FileName:" + files[i].getName());
             File backupFile = new File(tempFolder, files[i].getName());
             try {
-                Utils.copyFile(files[i], backupFile);
+                FileIOUtils.copyFile(files[i], backupFile);
             } catch (IOException e) {
                 Log.d(TAG, "Error exporting file " + files[i] + " to " + backupFile);
             }
@@ -185,7 +186,7 @@ public class ExportData {
      * This method returns the sharedPreferences app folder
      */
     private static File getSharedPreferencesFolder() {
-        String sharedPreferencesPath = Utils.getAppPath() + SHAREDPREFERENCES_FOLDER;
+        String sharedPreferencesPath = FileIOUtils.getAppPath() + SHAREDPREFERENCES_FOLDER;
         File file = new File(sharedPreferencesPath);
         return file;
     }

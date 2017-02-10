@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -144,7 +145,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void login(String serverUrl, String username, String password) {
         showProgress();
 
-        Credentials credentials = new Credentials(serverUrl, username, password);
+        final Credentials credentials = new Credentials(serverUrl, username, password);
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
             public void onLoginSuccess() {

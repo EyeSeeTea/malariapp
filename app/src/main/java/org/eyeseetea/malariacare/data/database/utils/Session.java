@@ -161,6 +161,10 @@ public class Session {
         if(serviceValues!=null){
             serviceValues.clear();
         }
+
+        Session.setUser(null);
+
+        Session.setCredentials(null);
     }
 
     /**

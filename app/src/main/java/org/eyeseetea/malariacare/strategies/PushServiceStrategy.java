@@ -21,7 +21,9 @@ package org.eyeseetea.malariacare.strategies;
 
 import android.util.Log;
 
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -41,8 +43,14 @@ public class PushServiceStrategy {
     public void push(PushUseCase pushUseCase) {
         this.pushUseCase = pushUseCase;
         if (Session.getCredentials() == null) {
-            Log.d(TAG, "Error, no credentials");
-            return;
+            LoadUserAndCredentialsUseCase loadUserAndCredentialsUseCase =
+                    new LoadUserAndCredentialsUseCase(
+                            PreferencesState.getInstance().getContext());
+            loadUserAndCredentialsUseCase.execute();
+            if (Session.getCredentials() == null) {
+                Log.d(TAG, "Error, no credentials");
+                return;
+            }
         }
         if (Session.getCredentials().isDemoCredentials()) {
             Log.d(TAG, "execute mocked push");
