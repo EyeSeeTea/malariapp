@@ -23,11 +23,13 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.config.DHIS2GeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.utils.Utils;
@@ -56,7 +58,7 @@ public class PullLocalSDKDataSource {
                 Log.d(TAG, "Copy Database from assets started");
                 FlowManager.destroy();
                 copyDBFromAssets(inputStream);
-                initDBFlow(context);
+                reinitializeDbFlowDatabases(context);
                 callback.onComplete();
                 Log.d(TAG, "Copy Database from assets finished");
             } else {
@@ -85,11 +87,16 @@ public class PullLocalSDKDataSource {
         PopulateDB.populateDB(context.getAssets());
     }
 
-    public void initDBFlow(Context context){
+    public void reinitializeDbFlowDatabases(Context context){
         FlowConfig flowConfig = new FlowConfig
                 .Builder(context)
                 .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfig);
+        FlowConfig flowConfigDhis = new FlowConfig
+                .Builder(context)
+                .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
+                .build();
+        FlowManager.init(flowConfigDhis);
     }
 }
