@@ -29,15 +29,10 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy extends ALoginActivityStrategy {
