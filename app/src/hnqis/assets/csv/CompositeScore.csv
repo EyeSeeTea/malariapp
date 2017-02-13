@@ -1,79 +1,22 @@
-1~1~FP all methods~uT26mZPsUN1~0~
-2~1.1~Contraceptive Counseling~OH7LbCmc3Ts~1~1
-3~1.2~Oral Contraceptive Pills~FAlofshwsAY~2~1
-4~1.3~Injectables~lZqjsvo3WAQ~3~1
-5~1.4~IUCD Insertion~v0OP0gV4Kdp~4~1
-6~1.5~IUCD Removal~Jn8YspI9Pq8~5~1
-7~1.6~Implant Insertion~CaKQOhMYgNP~6~1
-8~1.7~Implant Removal~CJ2XUOEdPmJ~7~1
-9~1~Newborn Resuscitation~sy0uNbXIdcP~0~
-10~1.1~Newborn Resuscitation~xSYYPf38dgJ~1~9
-11~1~Post Partum IUD~xKRB3fTkGDC~0~
-12~1.1~Pre-Insertion (Clinical)~EOtNuuEGbp2~1~11
-13~1.2~Insertion~zqyzr2PmdID~2~11
-14~1.3~Post-insertion~SOsdJTJOrAn~3~11
-15~1.4~Procedure/Follow-up~lJF0Z0QEEcF~4~11
-16~1.5~Work Environment~AcSuULSdRGC~5~11
-17~1~Work Environment~mspN9yDI3OB~0~
-18~1.1~Licenses~nhZ7vQeJjpL~1~17
-19~1.2~General Infrastructure and Equipment~JfWEmNj9Ztb~2~17
-20~1.3~Service delivery guidelines~VFOb1F33B55~3~17
-21~1.4~Commodities~PD1MMy1TKQw~4~17
-22~1.5~Documentation~QGJodwmLpJm~5~17
-23~1~Cervical Cancer~Jcud2A9c0Qr~0~
-24~1.1~Pre-Screening~GuE26829cyR~1~23
-25~1.2~Patient screening~V5yjBiHZ5YF~2~23
-26~1.3~Work Environment 1~xABGWtT895J~3~23
-27~1.4~Pre-Cryotherapy Counselling~geyYkU6WCv3~4~23
-28~1.5~Cryotherapy~Wl1uO077fIE~5~23
-29~1.6~Post Cryotherapy Procedures~bJF4LzEpGWp~6~23
-30~1.7~Work Environment 2~jX2kKgy64hv~7~23
-31~1~Labor and Delivery~xBIOLBqaIYv~0~
-32~1.1~Pre-delivery~g7wqE2CjTqQ~1~31
-33~1.2~Delivery~T9FMmRZxqAp~2~31
-34~1.3~Immediate Post-delivery~Z4wKNp392j8~3~31
-35~1.4~Work Environment~Cr8bMlhOiCL~4~31
-36~1~Pregnancy and delivery complications~NQxKgrN5aoR~0~
-37~1.1~Management of Pre-Eclampsia/Eclampsia~fKMG8PnaHVS~1~36
-38~1.2~Management of Antepartum Hemorrhage~pTIyfsPDhuR~2~36
-39~1.3~Management of Post Partum Hemorrhage~cc1C2zXpSi4~3~36
-40~1.4~Work Environment~X4PdHgG9jbJ~4~36
-41~1~Focused Antenatal Care~ImIBTJ8YfCp~0~
-42~1.1~Introduction~ztsoWo6RKwU~1~41
-43~1.2~Ask or Check~iIAQRgV8KDO~2~41
-44~1.3~Care~gvdY3GHTuYU~3~41
-45~1.4~Client Education and counseling~B87Q6Q3wY38~4~41
-46~1.5~Work Environment~ZOJXt4Mp3Dh~5~41
-47~0~Do you smoke?~hO2ddUaep7a~0~
-48~1~1 Do you smoke?~v2oe4w38LH5~1~47
-49~0~ICM~XgjACuQSvun~0~
-50~1~Inquiry and Physical Examination~mmfP19C6Qxm~1~49
-51~1.1~Introduction~YolOXfWtsRB~2~50
-52~1.2~Inquiry~mdZjidBIBa6~3~50
-53~1.3~Physical Examination~GICXKJjx1Sv~4~50
-54~1.4~RDT Procedure~F40zWrhpJL2~5~50
-55~2~Diagnosis, Treatment and Counseling~IGUwhEyNiKM~6~49
-56~2.1~Diagnosis, Treatment and Counseling obs 1~yr5TK8szPBY~7~55
-57~2.2~Diagnosis, Treatment and Counseling obs 2~jli1CcQOedz~8~55
-58~2.3~Diagnosis, Treatment and Counseling obs 3~HNYIKp5diCC~9~55
-59~3~Work Environment~QmOmc9E7DI0~10~49
-60~3.1~Workplace~B2cvpHlno94~11~59
-61~3.2~Equipment, Supplies and Consumables~bTDRpmirJXj~12~59
-62~3.3~Document and Reporting~yn8MVp0dziW~13~59
-63~1~Tuberculosis~zMXBCxvCvW5~0~
-64~1.1~Inquiry~WLSfdLthm4G~1~63
-65~1.2~Examination~kpUzEKS1A8J~2~63
-66~1.3~Treatment~elFopCsmoVl~3~63
-67~1.4~Counseling~DWQbOcUOuKp~4~63
-68~1.5~Work Environment~Wz9BmqsMJLc~5~63
-69~1.1~Test Comp Score 1.1~hNWeecL2sQm~0~
-70~1.2~Test Comp Score 1.2~alkrlfJGHuh~1~
-71~1~Hypertension~Nyichir8Xzl~0~
-72~1.1~HTN screening, classification and staging~sT6bVMvovIU~1~71
-73~1.2~History taking and assessment~aZ8OqgjaVtF~2~71
-74~1.3~Diagnosis and Management as per protocol~jOxpoisFEU3~3~71
-75~1.4~Work Environment~GGotolCk3i4~4~71
-76~1~HIV~PMNfHllbkDy~0~
-77~1.1~HIV Testing and Counseling~gZLPkawuht2~1~76
-78~1.2~HIV Care and Treatment~Ozg2PzNmKJO~2~76
-79~1.3~Work Environment~YHNyxjvpG3m~3~76
+1~0~ICM~XgjACuQSvun~0~
+2~1~Inquiry and Physical Examination~mmfP19C6Qxm~1~1
+3~1.1~Introduction~YolOXfWtsRB~2~2
+4~1.2~Inquiry~mdZjidBIBa6~3~2
+5~1.3~Physical Examination~GICXKJjx1Sv~4~2
+6~1.4~RDT Procedure~F40zWrhpJL2~5~2
+7~2~Diagnosis, Treatment and Counseling~IGUwhEyNiKM~6~1
+8~2.1~Diagnosis, Treatment and Counseling obs 1~yr5TK8szPBY~7~7
+9~2.2~Diagnosis, Treatment and Counseling obs 2~jli1CcQOedz~8~7
+10~2.3~Diagnosis, Treatment and Counseling obs 3~HNYIKp5diCC~9~7
+11~3~Work Environment~QmOmc9E7DI0~10~1
+12~3.1~Workplace~B2cvpHlno94~11~11
+13~3.2~Equipment, Supplies and Consumables~bTDRpmirJXj~12~11
+14~3.3~Document and Reporting~yn8MVp0dziW~13~11
+15~0~FP all methods~uT26mZPsUN1~0~
+16~1~Contraceptive Counseling~OH7LbCmc3Ts~1~15
+17~2~Oral Contraceptive Pills~FAlofshwsAY~2~15
+18~3~Injectables~lZqjsvo3WAQ~3~15
+19~4~IUCD Insertion~v0OP0gV4Kdp~4~15
+20~5~IUCD Removal~Jn8YspI9Pq8~5~15
+21~6~Implant Insertion~CaKQOhMYgNP~6~15
+22~7~Implant Removal~CJ2XUOEdPmJ~7~15

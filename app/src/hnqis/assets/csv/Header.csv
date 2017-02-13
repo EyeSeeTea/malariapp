@@ -1,83 +1,21 @@
-1~Contraceptive Counseling~Contraceptive Counseling~0~1
-2~Oral Contraceptive Pills~Oral Contraceptive Pills~1~1
-3~Injectables~Injectables~2~1
-4~IUCD Insertion~IUCD Insertion~3~1
-5~IUCD Removal~IUCD Removal~4~1
-6~Implant Insertion~Implant Insertion~5~1
-7~Implant Removal~Implant Removal~6~1
-8~END OF TAB~END OF TAB~7~1
-9~Newborn Resuscitation~Newborn Resuscitation~8~2
-10~END OF TAB~END OF TAB~9~2
-11~Pre-Insertion (Clinical)~Pre-Insertion (Clinical)~10~3
-12~Insertion~Insertion~11~3
-13~Post-insertion~Post-insertion~12~3
-14~Procedure/Follow-up~Procedure/Follow-up~13~3
-15~Work Environment~Work Environment~14~3
-16~END OF TAB~END OF TAB~15~3
-17~Licenses~Licenses~16~4
-18~General Infrastructure and Equipment~General Infrastructure and Equipment~17~4
-19~Service delivery guidelines (job aids, algorithms etc.)~Service delivery guidelines (job aids, algorithms etc.)~18~4
-20~Commodities~Commodities~19~4
-21~Documentation~Documentation~20~4
-22~END OF TAB~END OF TAB~21~4
-23~Pre-Screening~Pre-Screening~22~5
-24~Patient screening~Patient screening~23~5
-25~Work Environment 1~Work Environment 1~24~5
-26~Pre-Cryotherapy Counselling~Pre-Cryotherapy Counselling~25~5
-27~Cryotherapy~Cryotherapy~26~5
-28~Post Cryotherapy Procedures~Post Cryotherapy Procedures~27~5
-29~Work Environment 2~Work Environment 2~28~5
-30~END OF TAB~END OF TAB~29~5
-31~Pre-delivery~Pre-delivery~30~6
-32~Delivery~Delivery~31~6
-33~Immediate Post-delivery~Immediate Post-delivery~32~6
-34~Work Environment~Work Environment~33~6
-35~END OF TAB~END OF TAB~34~6
-36~Management of Pre-Eclampsia/Eclampsia~Management of Pre-Eclampsia/Eclampsia~35~7
-37~Management of Antepartum Hemorrhage~Management of Antepartum Hemorrhage~36~7
-38~Management of Post Partum Hemorrhage~Management of Post Partum Hemorrhage~37~7
-39~Work Environment~Work Environment~38~7
-40~END OF TAB~END OF TAB~39~7
-41~ACT 1~ACT 1~40~8
-42~ACT 2~ACT 2~41~8
-43~ORS~ORS~42~8
-44~Zinc~Zinc~43~8
-45~RDTs~RDTs~44~8
-46~Amoxicillin 250mg~Amoxicillin 250mg~45~8
-47~Amoxicillin syrup~Amoxicillin syrup~46~8
-48~Introduction~Introduction~47~9
-49~Ask or Check~Ask or Check~48~9
-50~Care~Care~49~9
-51~Client education and counseling~Client education and counseling~50~9
-52~Work Environment~Work Environment~51~9
-53~END OF TAB~END OF TAB~52~9
-54~Header 1~Header 1~53~10
-55~Diagnosis 1~Diagnosis 1~54~12
-56~Introduction~Introduction~55~11
-57~Workplace~Workplace~56~13
-58~Inquiry~Inquiry~57~11
-59~Equipment, Supplies and Consumables~Equipment, Supplies and Consumables~58~13
-60~Diagnosis 2~Diagnosis 2~59~12
-61~Physical Examination~Physical Examination~60~11
-62~Document and Reporting~Document and Reporting~61~13
-63~Diagnosis 3~Diagnosis 3~62~12
-64~END OF TAB~END OF TAB~63~13
-65~RDT Procedure~RDT Procedure~64~11
-66~END OF TAB~END OF TAB~65~12
-67~END OF TAB~END OF TAB~66~11
-68~Inquiry~Inquiry~67~14
-69~Examination~Examination~68~14
-70~Treatment~Treatment~69~14
-71~Counseling~Counseling~70~14
-72~Work Environment~Work Environment~71~14
-73~END OF TAB~END OF TAB~72~14
-74~Test~Test~73~15
-75~HTN screening , classification and staging~HTN screening , classification and staging~74~16
-76~History taking and assessment~History taking and assessment~75~16
-77~Diagnosis and Management as per protocol~Diagnosis and Management as per protocol~76~16
-78~Work Environment~Work Environment~77~16
-79~END OF TAB~END OF TAB~78~16
-80~HIV Testing and Counseling~HIV Testing and Counseling~79~17
-81~HIV Care and Treatment~HIV Care and Treatment~80~17
-82~Work Environment~Work Environment~81~17
-83~END OF TAB~END OF TAB~82~17
+1~Diagnosis 1~Diagnosis 1~0~2
+2~Introduction~Introduction~1~1
+3~Workplace~Workplace~2~3
+4~Inquiry~Inquiry~3~1
+5~Equipment, Supplies and Consumables~Equipment, Supplies and Consumables~4~3
+6~Diagnosis 2~Diagnosis 2~5~2
+7~Physical Examination~Physical Examination~6~1
+8~Document and Reporting~Document and Reporting~7~3
+9~Diagnosis 3~Diagnosis 3~8~2
+10~END OF TAB~END OF TAB~9~3
+11~RDT Procedure~RDT Procedure~10~1
+12~END OF TAB~END OF TAB~11~2
+13~END OF TAB~END OF TAB~12~1
+14~Contraceptive Counseling~Contraceptive Counseling~13~4
+15~Oral Contraceptive Pills~Oral Contraceptive Pills~14~4
+16~Injectables~Injectables~15~4
+17~IUCD Insertion~IUCD Insertion~16~4
+18~IUCD Removal~IUCD Removal~17~4
+19~Implant Insertion~Implant Insertion~18~4
+20~Implant Removal~Implant Removal~19~4
+21~END OF TAB~END OF TAB~20~4
