@@ -164,6 +164,8 @@ clínica"</string>
 <string name="dialog_pull_success">"Metadatos Dhis obtenidos del servidor con éxito"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
 <string name="progress_pull_connecting">"Conectando a servidor DHIS"</string>
+<string name="progress_demo_pull">"Cargando datos de demostración ..."</string>
+<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
 <string name="progress_pull_downloading">"Refrescando metadatos (esto puede llevar algunos minutos) ..."</string>
 <string name="progress_pull_preparing_program">"Cargando programas ..."</string>
 <string name="progress_pull_preparing_answers">"Cargando respuestas ..."</string>

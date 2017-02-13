@@ -42,16 +42,7 @@ public class PushServiceStrategy {
 
     public void push(PushUseCase pushUseCase) {
         this.pushUseCase = pushUseCase;
-        if (Session.getCredentials() == null) {
-            LoadUserAndCredentialsUseCase loadUserAndCredentialsUseCase =
-                    new LoadUserAndCredentialsUseCase(
-                            PreferencesState.getInstance().getContext());
-            loadUserAndCredentialsUseCase.execute();
-            if (Session.getCredentials() == null) {
-                Log.d(TAG, "Error, no credentials");
-                return;
-            }
-        }
+
         if (Session.getCredentials().isDemoCredentials()) {
             Log.d(TAG, "execute mocked push");
             executeMockedPush();

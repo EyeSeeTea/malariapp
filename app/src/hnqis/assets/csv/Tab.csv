@@ -1,73 +1,17 @@
-1~Cryotherapy~1~0~1
-2~Screening (VIA)~0~0~1
-3~Injectables Contraceptives~2~0~2
-4~Implant Insertion-Implanon NXT~6~0~2
-5~Implant Insertion-Jadelle~5~0~2
-6~IUCD Removal~4~0~2
-7~Facility Checklist for LARC Service Delivery~11~0~2
-8~PPIUD: Dedicated Insertor~10~0~2
-9~Implant Removal: Forceps Technique Removal for Implanon~8~0~2
-10~IUD Insertion~3~0~2
-11~Implant Removal: U Technique Removal for Jadelle/Sinoplant Rods~7~0~2
-12~Oral Contraceptives~1~0~2
-13~PPIUD: Forceps Insertion~9~0~2
-14~Contraceptive Counseling~0~0~2
-15~PMTCT-ANC & Postnatal~5~0~3
-16~HIV Testing Services (HTS)~0~0~3
-17~Point-of-Care Testing (POCT)~3~0~3
-18~Care and Treatment~4~0~3
-19~PMTCT Labor and Delivery~6~0~3
-20~Gender Based Violence (GBV)~8~0~3
-21~HTS/C&T Facility Management~1~0~3
-22~Laboratory~2~0~3
-23~HIV Exposed Infants (HEI)~7~0~3
-24~TB Treatment Service Point~9~0~3
-25~Hypertension~0~0~4
-26~Diagnosis, Treatment and Counseling~1~0~5
-27~Work Environment~2~0~5
-28~Inquiry and Physical Examination~0~0~5
-29~Postnatal Care (PNC)~1~0~6
-30~Pregnancy and delivery complications~3~0~6
-31~Normal Labor and Delivery~2~0~6
-32~Focused Antenatal Care (FANC)~0~0~6
-33~Maternal Health Facility Checklist~4~0~6
-34~Newborn Resuscitation~0~0~7
-35~Tuberculosis~0~0~8
-36~Work Environment~0~0~9
-37~Screening (VIA)~0~0~10
-38~Cryotherapy~1~0~10
-39~Oral Contraceptives~1~0~11
-40~Emergency Contraceptive Pills (ECPs)~3~0~11
-41~Implant Insertion: Implanon NXT~7~0~11
-42~IUD Removal~5~0~11
-43~IUD Insertion~4~0~11
-44~Implant Removal: Forceps Technique Removal for Implanon~9~0~11
-45~Contraceptive Counseling~0~0~11
-46~Injectables~2~0~11
-47~Implant Insertion: Jadelle~6~0~11
-48~Implant Removal: 'U' Technique removal for Jadelle/Sinoplant Rods~8~0~11
-49~Testing and Counselling Supervision Tool~7~0~12
-50~TB Treatment Service Point~6~0~12
-51~Laboratory Scientist/Nurse Counsellor Tool~9~0~12
-52~Testing and Counselling Site Assessment~12~0~12
-53~Laboratory~2~0~12
-54~Gender Based Violence (GBV)~5~0~12
-55~Care and Treatment~4~0~12
-56~Point-of-Care Testing (POCT)~3~0~12
-57~HIV Testing Services (HTS)~0~0~12
-58~New Start Receptionist/Driver Supervision Tool~10~0~12
-59~ART Nurse Counsellor Supervisory Tool~8~0~12
-60~New Start Office Assistant/Driver Supervision Tool~11~0~12
-61~HTS/C&T Facility Management~1~0~12
-62~Male Client~1~0~13
-63~Female Client~0~0~13
-64~Tool G: Communication to Clients~6~0~14
-65~Tool C: Client Record Review~2~0~14
-66~Tool H: PrePex Device Procedures~7~0~14
-67~Tool D: Emergency Management~3~0~14
-68~Tool A: SOPs, Guidelines, Policies and Job Aids~0~0~14
-69~Tool B: Facilities, Supplies & Equipment~1~0~14
-70~Tool F: Surgical Equipment and Procedures~5~0~14
-71~Tool E: Adequacy of Staffing~4~0~14
-72~General Facility Audit~0~0~15
-73~Equipment and Supplies~1~0~15
+1~FP all methods~0~0~1
+2~Newborn Resuscitation~0~0~2
+3~Post Partum IUD~0~0~3
+4~Work Environment~0~0~4
+5~Cervical Cancer~0~0~5
+6~Labor and Delivery~0~0~6
+7~Pregnancy and delivery complications~0~0~7
+8~NG PPMVs Sales and Stock Tracking~0~0~8
+9~Focused Antenatal Care~0~0~9
+10~Section 1~0~0~10
+11~Inquiry and Physical Examination~0~0~11
+12~Diagnosis, Treatment and Counseling~1~0~11
+13~Work Environment~2~0~11
+14~Tuberculosis~0~0~12
+15~XX HNQIS Test~0~0~13
+16~Hypertension~0~0~14
+17~HIV~0~0~15

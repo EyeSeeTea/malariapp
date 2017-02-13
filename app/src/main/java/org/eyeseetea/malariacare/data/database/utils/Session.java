@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.util.HashMap;
@@ -109,6 +110,15 @@ public class Session {
     }
 
     public static Credentials getCredentials() {
+        if (credentials == null) {
+            LoadUserAndCredentialsUseCase loadUserAndCredentialsUseCase =
+                    new LoadUserAndCredentialsUseCase(
+                            PreferencesState.getInstance().getContext());
+            loadUserAndCredentialsUseCase.execute();
+            if (credentials == null) {
+                return  null;
+            }
+        }
         return credentials;
     }
 

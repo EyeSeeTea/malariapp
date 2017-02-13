@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
@@ -89,7 +90,7 @@ public class LoginActivityStrategy extends ALoginActivityStrategy {
                         new LoginUseCase.Callback() {
                             @Override
                             public void onLoginSuccess() {
-                                executePullDemo();
+                                loginActivity.onSuccess();
                             }
 
                             @Override
@@ -107,45 +108,6 @@ public class LoginActivityStrategy extends ALoginActivityStrategy {
                                 Log.e(this.getClass().getSimpleName(), "Network Error");
                             }
                         });
-            }
-        });
-    }
-
-    private void executePullDemo() {
-        PullController pullController = new PullController(loginActivity);
-        PullUseCase pullUseCase = new PullUseCase(pullController);
-        PullFilters pullFilters = new PullFilters();
-        pullFilters.setDemo(true);
-
-        pullUseCase.execute(pullFilters, new PullUseCase.Callback() {
-            @Override
-            public void onComplete() {
-                finishAndGo(DashboardActivity.class);
-            }
-
-            @Override
-            public void onPullError() {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onConversionError() {
-
-            }
-
-            @Override
-            public void onStep(PullStep step) {
-                Log.d(this.getClass().getSimpleName(), step.toString());
-            }
-
-            @Override
-            public void onNetworkError() {
-                Log.e(this.getClass().getSimpleName(), "Network Error");
             }
         });
     }

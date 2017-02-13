@@ -58,7 +58,7 @@ import java.io.InputStream;
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class LoginActivity extends AbsLoginActivity {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
@@ -180,10 +180,8 @@ public class LoginActivity extends AbsLoginActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    private void onSuccess() {
+    public void onSuccess() {
         hideProgress();
-
-        populateFromAssetsIfRequired();
 
         launchActivity(LoginActivity.this, ProgressActivity.class);
     }
@@ -216,25 +214,6 @@ public class LoginActivity extends AbsLoginActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    /**
-     * Utility method to use while developing to avoid a real pull
-     */
-    private void populateFromAssetsIfRequired() {
-        //From server -> done
-        if (PreferencesState.getInstance().getPullFromServer()) {
-            return;
-        }
-
-        //Populate locally
-        try {
-            PopulateDB.wipeDatabase();
-            PopulateDB.populateDB(getAssets());
-        } catch (Exception ex) {
-        }
-        //Go to dashboard Activity
-        launchActivity(this, DashboardActivity.class);
     }
 }
 

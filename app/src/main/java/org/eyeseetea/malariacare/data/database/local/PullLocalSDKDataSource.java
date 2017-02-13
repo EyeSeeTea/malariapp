@@ -31,10 +31,9 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
-import org.eyeseetea.malariacare.utils.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,26 +55,33 @@ public class PullLocalSDKDataSource {
             Log.d(TAG, "Copy Database error");
         }
         try {
-            if (inputStream == null) {
-                Log.d(TAG, "Copy Database from assets started");
-                FlowManager.destroy();
-                copyDBFromAssets(inputStream);
-                reinitializeDbFlowDatabases(context);
-                callback.onComplete();
-                Log.d(TAG, "Copy Database from assets finished");
+            if (inputStream != null) {
+                pullFromDB(context, inputStream);
             } else {
-                DatabaseDefinition databaseDefinition =
-                        FlowManager.getDatabase(AppDatabase.class);
-                databaseDefinition.reset(context);
-                Log.d(TAG, "Populate from csv start");
-                populateFromDB(context);
-                Log.d(TAG, "Populate from csv finished");
-                callback.onComplete();
+                pullFromCsv(context);
             }
+            callback.onComplete();
         } catch (IOException e) {
             e.printStackTrace();
             callback.onError(e);
         }
+    }
+
+    private void pullFromCsv(Context context) throws IOException {
+        ConversionLocalDataSource.wipeDataBase();
+        deleteSQLiteMetadata();
+        Log.d(TAG, "Populate from csv start");
+        populateFromDB(context);
+        Log.d(TAG, "Populate from csv finished");
+    }
+
+    private void pullFromDB(Context context,
+            InputStream inputStream) throws IOException {
+        Log.d(TAG, "Copy Database from assets started");
+        FlowManager.destroy();
+        copyDBFromAssets(inputStream);
+        reinitializeDbFlowDatabases(context);
+        Log.d(TAG, "Copy Database from assets finished");
     }
 
     public void copyDBFromAssets(InputStream inputStream)
@@ -87,7 +93,23 @@ public class PullLocalSDKDataSource {
         PopulateDB.populateDB(context.getAssets());
     }
 
-    public void reinitializeDbFlowDatabases(Context context){
+    /**
+     * This method removes the sqlite_sequence table that contains the last autoincrement value for
+     * each table
+     */
+    private void deleteSQLiteMetadata() {
+        String sqlCopy = "Delete from sqlite_sequence";
+        DatabaseDefinition databaseDefinition =
+                FlowManager.getDatabase(AppDatabase.class);
+        databaseDefinition.getWritableDatabase().execSQL(sqlCopy);
+
+    }
+
+    /**
+     * This method reinitialize the DBFlow configurations to make DBFlow work in the appDB and in
+     * the SDK.
+     */
+    public void reinitializeDbFlowDatabases(Context context) {
         FlowConfig flowConfig = new FlowConfig
                 .Builder(context)
                 .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)

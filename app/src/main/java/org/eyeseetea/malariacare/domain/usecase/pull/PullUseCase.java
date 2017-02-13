@@ -45,6 +45,7 @@ public class PullUseCase {
     public PullUseCase(IPullController pullController) {
         mPullController = pullController;
     }
+
     public void execute(PullFilters pullFilters, final Callback callback) {
         mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
 

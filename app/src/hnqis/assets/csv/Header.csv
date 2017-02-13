@@ -1,482 +1,83 @@
-1~Provider Evaluation -Post-screening~Provider Evaluation - Post-screening~0~1
-2~Observation type~Observation type~1~2
-3~Equipment and Supplies~Equipment and Supplies~2~2
-4~Equipment and Supplies~Equipment and Supplies~3~1
-5~Physical Environment~Physical Environment~4~2
-6~Physical Environment~Physical Environment~5~1
-7~Provider Evaluation - Prescreening~Provider Evaluation - Prescreening~6~2
-8~Provider Evaluation - Prescreening for cryotherapy~Provider Evaluation - Prescreening for cryotherapy~7~1
-9~Provider Evaluation - Screening~Provider Evaluation - Screening~8~2
-10~Provider Evaluation - Visual Inspection to Identify Lesion~Provider Evaluation - Visual Inspection to Identify Lesion~9~1
-11~Provider Evaluation - Post-screening~Provider Evaluation - Post-screening~10~2
-12~Cryotherapy Procedure~Cryotherapy Procedure~11~1
-13~Post Cryotherapy Procedures~Post Cryotherapy Procedures~12~1
-14~Provider Evaluation - Post-cryotherapy~Provider Evaluation - Post-cryotherapy~13~1
-15~Facility Checklist for LARC Service Delivery~Facility Checklist for LARC Service Delivery~14~7
-16~Contraceptive Counseling~Contraceptive Counseling~15~14
-17~Implant Insertion-Jadelle~Implant Insertion-Jadelle~16~5
-18~Implant Insertion-Implanon NXT~Implant Insertion-Implanon NXT~17~4
-19~PPIUD: Dedicated Inserter~PPIUD: Dedicated Inserter~18~8
-20~Implant Removal: Forceps Technique Removal for Implanon~Implant Removal: Forceps Technique Removal for Implanon~19~9
-21~Injectables Contraceptives~Injectables Contraceptives~20~3
-22~Introduction~Introduction~21~10
-23~IUCD Removal~IUCD Removal~22~6
-24~Oral Contraceptives~Oral Contraceptives~23~12
-25~PPIUD: Forceps Insertion~PPIUD: Forceps Insertion~24~13
-26~Implant Removal: U Technique removal for Jadelle/Sinoplant Rods~Implant Removal: U Technique removal for Jadelle/Sinoplant Rods~25~11
-27~Clinic Infrastructure (LARC)~Clinic Infrastructure (LARC)~26~7
-28~Pre-removal Counseling (Jadelle/Sinoplant Rods)~Pre-removal Counseling (Jadelle/Sinoplant Rods)~27~11
-29~IUCD Pre-Removal Counseling~IUCD Pre-Removal Counseling~28~6
-30~IUD Pre-Insertion Screening and Counseling~IUD Pre-Insertion Screening and Counseling~29~10
-31~Pre-insertion Medical Assessment (PPIUD)~Pre-insertion Medical Assessment (PPIUD)~30~8
-32~Pre-insertion-Jadelle (Counseling and Screening)~Pre-insertion-Jadelle (Counseling and Screening)~31~5
-33~Pre-removal Counseling (Forceps)~Pre-removal Counseling (Forceps)~32~9
-34~Pre-insertion Forceps (Counseling and Screening)~Pre-insertion Forceps (Counseling and Screening)~33~13
-35~Pre-insertion Implanon NXT (Counseling and Screening)~Pre-insertion Implanon NXT (Counseling and Screening)~34~4
-36~Pre-Choice (CC)~Pre-Choice (CC)~35~14
-37~Pre-removal procedures (Jadelle/Sinoplant Rods)~Pre-removal procedures (Jadelle/Sinoplant Rods)~36~11
-38~Pre-removal procedures (Forceps)~Pre-removal procedures (Forceps)~37~9
-39~Removal: IUCD~Removal: IUCD~38~6
-40~Method Choice (CC)~Method Choice (CC)~39~14
-41~Equipment and Supplies (LARC)~Equipment and Supplies (LARC)~40~7
-42~Post-Choice (CC)~Post-Choice (CC)~41~14
-43~IUD Pre-insertion (Clinical)~IUD Pre-insertion (Clinical)~42~10
-44~Pre-insertion preparation (Implanon NXT)~Pre-insertion preparation (Implanon NXT)~43~4
-45~Pre-insertion preparation (Jadelle)~Pre-insertion preparation (Jadelle)~44~5
-46~Work Environment (CC)~Work Environment (CC)~45~14
-47~End of Tab~End of Tab~46~14
-48~Pre-insertion Tasks (Clinical)~Pre-insertion Tasks (Clinical)~47~13
-49~Post-removal: IUCD~Post-removal: IUCD~48~6
-50~Removal (Forceps)~Removal (Forceps)~49~9
-51~Removal (Jadelle/Sinoplant Rods)~Removal (Jadelle/Sinoplant Rods)~50~11
-52~IUDs (LARC)~IUDs (LARC)~51~7
-53~Infection Prevention: IUD Removal~Infection Prevention: IUD Removal~52~6
-54~Pre-insertion Tasks (PPIUD)~Pre-insertion Tasks (PPIUD)~53~8
-55~Insertion (Implanon NXT)~Insertion (Implanon NXT)~54~4
-56~Insertion (Jadelle)~Insertion (Jadelle)~55~5
-57~Post-removal (Forceps)~Post-removal (Forceps)~56~9
-58~IUD Insertion~IUD Insertion~57~10
-59~Key Indicators of Quality: IUDs~Key Indicators of Quality: IUDs~58~6
-60~End of Tab~End of Tab~59~6
-61~Post-removal (Jadelle/Sinoplant Rods)~Post-removal (Jadelle/Sinoplant Rods)~60~11
-62~Implants (LARC)~Implants (LARC)~61~7
-63~Pelvic Examination (PPIUD)~Pelvic Examination (PPIUD)~62~8
-64~Post-Partum Insertion (Postplacental or Immediate Postpartum)~Post-Partum Insertion (Postplacental or Immediate Postpartum)~63~13
-65~IUD Post-Insertion~IUD Post-Insertion~64~10
-66~Key Indicators of Quality: Implants (Forceps)~Key Indicators of Quality: Implants (Forceps)~65~9
-67~Infection Prevention (Jadelle/Sinoplant Rods)~Infection Prevention (Jadelle/Sinoplant Rods)~66~11
-68~Post-insertion (Implanon NXT)~Post-insertion (Implanon NXT)~67~4
-69~Infection Prevention: IUD Insertion~Infection Prevention: IUD Insertion~68~10
-70~Insertion Tasks (PPIUD)~Insertion Tasks (PPIUD)~69~8
-71~End of Tab~End of Tab~70~9
-72~Infection Prevention (Implanon NXT)~Infection Prevention (Implanon NXT)~71~4
-73~Key Indicators of Quality: Implants (Jadelle/Sinoplant Rods)~Key Indicators of Quality: Implants (Jadelle/Sinoplant Rods)~72~11
-74~Post-insertion (Jadelle)~Post-insertion (Jadelle)~73~5
-75~End of Tab~End of Tab~74~11
-76~Key Indicators of Quality: IUD Insertion~Key Indicators of Quality: IUD Insertion~75~10
-77~Key Indicators of Quality: Implants (Implanon NXT)~Key Indicators of Quality: Implants (Implanon NXT)~76~4
-78~Infection Prevention (Jadelle)~Infection Prevention (Jadelle)~77~5
-79~Supplies needed for processing instruments to prevent infection~Supplies needed for processing instruments to prevent infection~78~7
-80~End of Tab~End of Tab~79~10
-81~End of Tab~End of Tab~80~4
-82~Key Indicators of Quality: Implants (Jadelle)~Key Indicators of Quality: Implants (Jadelle)~81~5
-83~Record keeping~Record keeping~82~7
-84~End of Tab~End of Tab~83~5
-85~Key Indicators of Quality: LARC~Key Indicators of Quality: LARC~84~7
-86~Post-Insertion (Forceps)~Post-Insertion (Forceps)~85~13
-87~End of Tab~End of Tab~86~7
-88~Post-Insertion Tasks (PPIUD)~Post-Insertion Tasks (PPIUD)~87~8
-89~End of Tab~End of Tab~88~13
-90~Infection Prevention (PPIUD)~Infection Prevention (PPIUD)~89~8
-91~Key Indicators of Quality: PPIUD~Key Indicators of Quality: PPIUD~90~8
-92~End of Tab~End of Tab~91~8
-93~Instructions~Instructions~92~22
-94~ANC Register-Paper~ANC Register-Paper~93~15
-95~PITC for Maternity Patients~PITC for Maternity Patients~94~19
-96~ART Eligibility~ART Eligibility~95~18
-97~Pre-test counseling~Pre-test counseling~96~16
-98~Routine PITC for Adult TB patients~Routine PITC for Adult TB patients~97~24
-99~Instructions~Instructions~98~17
-100~Early Infant Diagnosis~Early Infant Diagnosis~99~23
-101~Capacity to Provide Post-Violence Care Services~Capacity to Provide Post-Violence Care Services~100~20
-102~Commodities Management~Commodities Management~101~21
-103~Testing Staff~Testing Staff~102~17
-104~Quality Management Systems (QMS)~Quality Management Systems (QMS)~103~22
-105~Procedures and Policies~Procedures and Policies~104~17
-106~Availability of Post-Violence Care Services~Availability of Post-Violence Care Services~105~20
-107~Laboratory Biosafety~Laboratory Biosafety~106~22
-108~ART Provision for HIV-Positive Adult TB Patients~ART Provision for HIV-Positive Adult TB Patients~107~24
-109~ANC Register-Electronic~ANC Register-Electronic~108~15
-110~ART Monitoring~ART Monitoring~109~18
-111~ARVs at Labor and Delivery~ARVs at Labor and Delivery~110~19
-112~Testing Process~Testing Process~111~16
-113~Quality Assurance~Quality Assurance~112~17
-114~Test SOPs~Test SOPs~113~22
-115~CTX for HIV-Exposed Infants~CTX for HIV-Exposed Infants~114~23
-116~C&T Counseling visit/routine check-up~C&T Counseling visit/routine check-up~115~18
-117~Labor & Delivery Registers-Paper~Labor & Delivery Registers-Paper~116~19
-118~Routine PITC for Pediatric TB Patients~Routine PITC for Pediatric TB Patients~117~24
-119~Post-Test Counseling~Post-Test Counseling~118~16
-120~Quality Testing Monitoring~Quality Testing Monitoring~119~22
-121~ART in PMTCT Facilities~ART in PMTCT Facilities~120~15
-122~Supplies, Reagents and Equipment~Supplies, Reagents and Equipment~121~17
-123~Post-Test Counseling -Positive Result~Post-Test Counseling -Positive Result~122~16
-124~Tracking HIV-Exposed Infants~Tracking HIV-Exposed Infants~123~23
-125~Routine HIV testing of Children of Adult Patients~Routine HIV testing of Children of Adult Patients~124~18
-126~HIV Test management~HIV Test management~125~21
-127~Results and Information Management~Results and Information Management~126~22
-128~CTX for HIV-infected Pregnant and Breastfeeding Women~CTX for HIV-infected Pregnant and Breastfeeding Women~127~15
-129~Labor & Delivery Register-Electronic~Labor & Delivery Register-Electronic~128~19
-130~ART Provision for HIV-Positive Pediatric TB Patients~ART Provision for HIV-Positive Pediatric TB Patients~129~24
-131~Enrollment of HIV-Infected Infants Identified through Early Infant Diagnosis (EID) Services into ART Services~Enrollment of HIV-Infected Infants Identified through Early Infant Diagnosis (EID) Services into ART Services~130~23
-132~Testing Interruptions~Testing Interruptions~131~22
-133~TB infection control~TB infection control~132~21
-134~Post-Test Counseling -Positive Result-TB screening~Post-Test Counseling -Positive Result-TB screening~133~16
-135~Nutrition~Nutrition~134~18
-136~Waste control~Waste control~135~21
-137~TB screening~TB screening~136~18
-138~HIV Exposed Infant/Early Infant Diagnosis Registers-Paper~HIV Exposed Infant/Early Infant Diagnosis Registers-Paper~137~23
-139~Policy Adherence~Policy Adherence~138~21
-140~Post-Test Counseling -Positive Result-STI screening~Post-Test Counseling -Positive Result-STI screening~139~16
-141~Post-Test Counseling -Positive Result-Referral Tracking~Post-Test Counseling -Positive Result-Referral Tracking~140~16
-142~Quality Management~Quality Management~141~21
-143~HIV Exposed Infant/Early Infant Diagnosis Register-Electronic~HIV Exposed Infant/Early Infant Diagnosis Register-Electronic~142~23
-144~Assessment & Utilization of Performance Data in QI Activities~Assessment & Utilization of Performance Data in QI Activities~143~21
-145~Isoniazid Preventive Therapy (IPT)~Isoniazid Preventive Therapy (IPT)~144~18
-146~Supply Chain Reliability (Early Infant Diagnosis) [HEI]~Supply Chain Reliability (Early Infant Diagnosis) [HEI]~145~23
-147~Pediatrics~Pediatrics~146~16
-148~Support and Assessment of Staff Performance~Support and Assessment of Staff Performance~147~21
-149~STI Screening & Management~STI Screening & Management~148~18
-150~Injection Safety~Injection Safety~149~16
-151~Adolescent friendly services~Adolescent friendly services~150~21
-152~Compliance with National Testing Algorithm and Strategy~Compliance with National Testing Algorithm and Strategy~151~16
-153~Medication dispensing~Medication dispensing~152~18
-154~Quality Assurance of HIV testing~Quality Assurance of HIV testing~153~16
-155~Cotrimoxazole~Cotrimoxazole~154~18
-156~Quality Assurance of HIV testing (part 2)~Quality Assurance of HIV testing (part 2)~155~16
-157~Supply Chain reliability ARV~Supply Chain reliability ARV~156~18
-158~Supply Chain Reliability-Cotrimoxazole~Supply Chain Reliability-Cotrimoxazole~157~18
-159~Client record keeping~Client record keeping~158~18
-160~Pre-ART register (paper or electronic)~Pre-ART register (paper or electronic)~159~18
-161~ART register (paper or electronic)~ART register (paper or electronic)~160~18
-162~Patient Tracking-Pre-ART Patients~Patient Tracking-Pre-ART Patients~161~18
-163~Adherence Support~Adherence Support~162~18
-164~Observation type~Observation type~163~25
-165~Work Environment -Equipment and Supplies~Work Environment -Equipment and Supplies~164~25
-166~Work Place - Physical Environment~Work Place - Physical Environment~165~25
-167~Provider Evaluation - Prescreening~Provider Evaluation - Prescreening~166~25
-168~Provider Evaluation - Screening~Provider Evaluation - Screening~167~25
-169~Provider Evaluation - Post-screening~Provider Evaluation - Post-screening~168~25
-170~Introduction~Introduction~169~28
-171~Workplace~Workplace~170~27
-172~Diagnosis, Treatment and Counseling~Diagnosis, Treatment and Counseling~171~26
-173~Inquiry~Inquiry~172~28
-174~Equipment, Supplies and Consumables~Equipment, Supplies and Consumables~173~27
-175~Physical Examination~Physical Examination~174~28
-176~Documentation and Reporting~Documentation and Reporting~175~27
-177~IMCI Work Environment~IMCI Work Environment~176~27
-178~RDT Procedure~RDT Procedure~177~28
-179~Clinic and Maternity: Hygiene and cleanliness~Clinic and Maternity: Hygiene and cleanliness~178~33
-180~Client Centered Counseling~Client Centered Counseling~179~29
-181~Client Centered Counseling~Client Centered Counseling~180~32
-182~Client Centered Counseling~Client Centered Counseling~181~31
-183~Management of Pre-Eclampsia/Eclampsia~Management of Pre-Eclampsia/Eclampsia~182~30
-184~Clinic and Maternity: Lighting and Ventilation~Clinic and Maternity: Lighting and Ventilation~183~33
-185~Bathrooms operational and available for clients~Bathrooms operational and available for clients~184~33
-186~Patient History~Patient History~185~29
-187~History Taking~History Taking~186~32
-188~Initial Client Assessment and Examination~Initial Client Assessment and Examination~187~31
-189~Postpartum Family Planning~Postpartum Family Planning~188~29
-190~Management of Antepartum Hemorrhage~Management of Antepartum Hemorrhage~189~30
-191~Management of Post Partum Hemorrhage~Management of Post Partum Hemorrhage~190~30
-192~Bathrooms operational and available for staff~Bathrooms operational and available for staff~191~33
-193~Clinical Assessment of Mother~Clinical Assessment of Mother~192~29
-194~Placenta disposal~Placenta disposal~193~33
-195~Record keeping is adequate~Record keeping is adequate~194~33
-196~Clinical Examination~Clinical Examination~195~32
-197~First Stage of Labor~First Stage of Labor~196~31
-198~Referral system in place~Referral system in place~197~33
-199~Clinic and maternity: Infection prevention equipment~Clinic and maternity: Infection prevention equipment~198~33
-200~Prior to Delivery~Prior to Delivery~199~31
-201~Clinical Assessment of Newborn~Clinical Assessment of Newborn~200~29
-202~Second and Third Stage of Labor~Second and Third Stage of Labor~201~31
-203~Medication and Routine Laboratory Testing~Medication and Routine Laboratory Testing~202~32
-204~Patient Education and Follow-up~Patient Education and Follow-up~203~29
-205~ANC and PNC clinic: instruments, equipment and supplies in adequate condition and quantity~ANC and PNC clinic: instruments, equipment and supplies in adequate condition and quantity~204~33
-206~Infection Prevention~Infection Prevention~205~29
-207~HIV Testing in Pregnancy~HIV Testing in Pregnancy~206~32
-208~Key Indicators of Quality~Key Indicators of Quality~207~29
-209~Immediate Newborn and Postpartum Care~Immediate Newborn and Postpartum Care~208~31
-210~Patient Education and Follow-up~Patient Education and Follow-up~209~32
-211~Delivery ward: instruments, equipment and supplies in adequate condition and quantity~Delivery ward: instruments, equipment and supplies in adequate condition and quantity~210~33
-212~Infection Prevention~Infection Prevention~211~32
-213~Key Indicators of Quality~Key Indicators of Quality~212~32
-214~Prior to Discharge~Prior to Discharge~213~31
-215~Infection Prevention~Infection Prevention~214~31
-216~Postpartum ward: instruments, equipment and supplies in adequate condition and quantity~Postpartum ward: instruments, equipment and supplies in adequate condition and quantity~215~33
-217~Essential medicines and supplies for ANC/PNC and delivery~Essential medicines and supplies for ANC/PNC and delivery~216~33
-218~Key Indicators of Quality~Key Indicators of Quality~217~31
-219~Protocols for the following are available and contain evidence based and appropriate for level of care:~Protocols for the following are available and contain evidence based and appropriate for level of care:~218~33
-220~Review 5 random partographs for following items~Review 5 random partographs for following items~219~33
-221~Observation type~Observation type~220~34
-222~Preparation~Preparation~221~34
-223~Resuscitation and clearing of airways~Resuscitation and clearing of airways~222~34
-224~Ventilation with bag and mask~Ventilation with bag and mask~223~34
-225~After Resuscitation~After Resuscitation~224~34
-226~Inquiry~Inquiry~225~35
-227~Examination~Examination~226~35
-228~Treatment~Treatment~227~35
-229~Counseling~Counseling~228~35
-230~Work Environment~Work Environment~229~35
-231~Licenses~Licenses~230~36
-232~General Infrastructure and Equipment~General Infrastructure and Equipment~231~36
-233~Service delivery guidelines (job aids, algorithms etc.)~Service delivery guidelines (job aids, algorithms etc.)~232~36
-234~Commodities~Commodities~233~36
-235~Documentation~Documentation~234~36
-236~Screening (VIA)~Screening (VIA)~235~37
-237~Provider Evaluation - Post-screening~Provider Evaluation - Post-screening~236~38
-238~Equipment and Supplies~Equipment and Supplies~237~37
-239~Provider Evaluation - Pre-cryotherapy~Provider Evaluation - Pre-cryotherapy~238~38
-240~Physical Environment~Physical Environment~239~37
-241~Equipment and Supplies~Equipment and Supplies~240~38
-242~Provider Evaluation - Preparation~Provider Evaluation - Preparation~241~38
-243~Provider Evaluation-Pre-screening~Provider Evaluation-Pre-screening~242~37
-244~Cryotherapy Procedure~Cryotherapy Procedure~243~38
-245~Post Cryotherapy Procedures~Post Cryotherapy Procedures~244~38
-246~Provider Evaluation - Post-cryotherapy~Provider Evaluation - Post-cryotherapy~245~38
-247~Provider Evaluation - Screening~Provider Evaluation - Screening~246~37
-248~Provider Evaluation - Post-screening~Provider Evaluation - Post-screening~247~37
-249~IUD Insertion~IUD Insertion~248~43
-250~Implant Insertion: Implanon NXT~Implant Insertion: Implanon NXT~249~41
-251~Oral Contraceptives~Oral Contraceptives~250~39
-252~Implant Removal: 'U' Technique removal for Jadelle/Sinoplant Rods~Implant Removal: 'U' Technique removal for Jadelle/Sinoplant Rods~251~48
-253~Implant Insertion: Jadelle~Implant Insertion: Jadelle~252~47
-254~Contraceptive Counseling~Contraceptive Counseling~253~45
-255~Emergency Contraceptive Pills (ECPs)~Emergency Contraceptive Pills (ECPs)~254~40
-256~Injectables~Injectables~255~46
-257~IUD Removal~IUD Removal~256~42
-258~Implant Removal: Forceps Technique Removal for Implanon~Implant Removal: Forceps Technique Removal for Implanon~257~44
-259~U Technique Pre-removal Counseling~U Technique Pre-removal Counseling~258~48
-260~Pre-insertion (Counseling and Screening) (Jadelle)~Pre-insertion (Counseling and Screening) (Jadelle)~259~47
-261~Pre-insertion (Counseling and Screening) (NXT)~Pre-insertion (Counseling and Screening) (NXT)~260~41
-262~Pre-Insertion Screening and Counseling~Pre-Insertion Screening and Counseling~261~43
-263~Pre-Removal Counseling (IUD)~Pre-Removal Counseling (IUD)~262~42
-264~Forceps Technique Pre-removal Counseling~Forceps Technique Pre-removal Counseling~263~44
-265~U Technique Pre-removal procedures~U Technique Pre-removal procedures~264~48
-266~Removal (IUD)~Removal (IUD)~265~42
-267~Work Place - Physical Environment (ORC)~Work Place - Physical Environment (ORC)~266~39
-268~Pre-insertion preparation (NXT)~Pre-insertion preparation (NXT)~267~41
-269~Pre-insertion preparation (Jadelle)~Pre-insertion preparation (Jadelle)~268~47
-270~Pre-insertion (Clinical)~Pre-insertion (Clinical)~269~43
-271~Work Place - Physical Environment (Injectables)~Work Place - Physical Environment (Injectables)~270~46
-272~Work Place - Physical Environment (ECP)~Work Place - Physical Environment (ECP)~271~40
-273~Forceps Technique Removal~Forceps Technique Removal~272~44
-274~Post-removal (IUD)~Post-removal (IUD)~273~42
-275~U Technique Removal~U Technique Removal~274~48
-276~Family Planning Information~Family Planning Information~275~45
-277~Insertion (Jadelle)~Insertion (Jadelle)~276~47
-278~Insertion (NXT)~Insertion (NXT)~277~41
-279~Infection Prevention: IUD Removal~Infection Prevention: IUD Removal~278~42
-280~Forceps Technique Post-removal~Forceps Technique Post-removal~279~44
-281~Insertion (IUD)~Insertion (IUD)~280~43
-282~Key Indicators of Quality: IUDs (Removal)~Key Indicators of Quality: IUDs (Removal)~281~42
-283~Medical Eligibility Criteria~Medical Eligibility Criteria~282~45
-284~U Technique removal Post-removal~U Technique removal Post-removal~283~48
-285~Post-insertion (NXT)~Post-insertion (NXT)~284~41
-286~Key Indicators of Quality: Implants (FTR)~Key Indicators of Quality: Implants (FTR)~285~44
-287~Post-Insertion (IUD)~Post-Insertion (IUD)~286~43
-288~Post-insertion (Jadelle)~Post-insertion (Jadelle)~287~47
-289~Infection Prevention: IUD Insertion~Infection Prevention: IUD Insertion~288~43
-290~Key Indicators of Quality: Implants (NXT)~Key Indicators of Quality: Implants (NXT)~289~41
-291~Key Indicators of Quality: Implants (UTR)~Key Indicators of Quality: Implants (UTR)~290~48
-292~Infection Prevention (Jadelle)~Infection Prevention (Jadelle)~291~47
-293~Key Indicators of Quality: IUDs (Insertion)~Key Indicators of Quality: IUDs (Insertion)~292~43
-294~Key Indicators of Quality: Implants (Jadelle)~Key Indicators of Quality: Implants (Jadelle)~293~47
-295~Commodities Management~Commodities Management~294~61
-296~Point-of-Care Testing (POCT)~Point-of-Care Testing (POCT)~295~56
-297~Testing and Counseling Site Assessment~Testing and Counseling Site Assessment~296~52
-298~Gender Based Violence (GBV)~Gender Based Violence (GBV)~297~54
-299~Punctuality- office opening hours~Punctuality- office opening hours~298~60
-300~Preparedness~Preparedness~299~51
-301~Care and Treatment~Care and Treatment~300~55
-302~Laboratory~Laboratory~301~53
-303~Initial Visit~Initial Visit~302~59
-304~Communication & welcoming skills~Communication & welcoming skills~303~58
-305~Pre-test Counseling~Pre-test Counseling~304~57
-306~Testing and Counseling Supervision Tool-Counselor Supervision~Testing and Counseling Supervision Tool-Counselor Supervision~305~49
-307~TB Treatment Service Point~TB Treatment Service Point~306~50
-308~ART Eligibility~ART Eligibility~307~55
-309~Routine PITC for Adult TB patients~Routine PITC for Adult TB patients~308~50
-310~Capacity to Provide Post-Violence Care Services~Capacity to Provide Post-Violence Care Services~309~54
-311~General condition of the site~General condition of the site~310~52
-312~Demographic data collection~Demographic data collection~311~49
-313~Joining~Joining~312~51
-314~Testing Staff~Testing Staff~313~56
-315~Manning reception & waiting area~Manning reception & waiting area~314~58
-316~Quality Management Systems (QMS)~Quality Management Systems (QMS)~315~53
-317~ART Monitoring~ART Monitoring~316~55
-318~Introducing client to laboratory~Introducing client to laboratory~317~51
-319~Current staffing levels~Current staffing levels~318~52
-320~Procedures and Policies~Procedures and Policies~319~56
-321~Verification of client identification~Verification of client identification~320~51
-322~Availability of Post-Violence Care Services~Availability of Post-Violence Care Services~321~54
-323~Screening management at site and outreach~Screening management at site and outreach~322~58
-324~Laboratory Biosafety~Laboratory Biosafety~323~53
-325~Adherence to Protocols and Schedules~Adherence to Protocols and Schedules~324~52
-326~Blood sample collection~Blood sample collection~325~51
-327~C&T Counseling visit/routine check-up~C&T Counseling visit/routine check-up~326~55
-328~ART Provision for HIV-Positive Adult TB Patients~ART Provision for HIV-Positive Adult TB Patients~327~50
-329~Post-Test Counseling~Post-Test Counseling~328~57
-330~Post test counseling~Post test counseling~329~49
-331~Statistics & Record keeping~Statistics & Record keeping~330~58
-332~Quality Assurance~Quality Assurance~331~56
-333~Management of consumables, refreshments &  staff meals~Management of consumables, refreshments &  staff meals~332~60
-334~Test SOPs~Test SOPs~333~53
-335~Routine HIV testing of Children of Adult Patients~Routine HIV testing of Children of Adult Patients~334~55
-336~Information and data management~Information and data management~335~52
-337~Risk Assessment and reduction~Risk Assessment and reduction~336~49
-338~Switchboard & fax-mail management~Switchboard & fax-mail management~337~58
-339~Test Results~Test Results~338~51
-340~Nutrition~Nutrition~339~55
-341~Routine PITC for Pediatric TB Patients~Routine PITC for Pediatric TB Patients~340~50
-342~TB screening~TB screening~341~55
-343~Stock management~Stock management~342~60
-344~Secretarial management~Secretarial management~343~58
-345~Quality Testing Monitoring~Quality Testing Monitoring~344~53
-346~Supplies, Reagents and Equipment~Supplies, Reagents and Equipment~345~56
-347~Stock management~Stock management~346~58
-348~Stock management~Stock management~347~52
-349~Internal Quality control~Internal Quality control~348~51
-350~Driver: Vehicle management & Driving~Driver: Vehicle management & Driving~349~60
-351~HIV Test management~HIV Test management~350~61
-352~Results and Information Management~Results and Information Management~351~53
-353~Isoniazid Preventive Therapy (IPT)~Isoniazid Preventive Therapy (IPT)~352~55
-354~ART Provision for HIV-Positive Pediatric TB Patients~ART Provision for HIV-Positive Pediatric TB Patients~353~50
-355~Records and data management~Records and data management~354~51
-356~Driver: Vehicle management~Driver: Vehicle management~355~58
-357~TB infection control~TB infection control~356~61
-358~Pre-ART and ART Initiation Visit~Pre-ART and ART Initiation Visit~357~59
-359~Testing Interruptions~Testing Interruptions~358~53
-360~Safety management~Safety management~359~52
-361~Positive result~Positive result~360~49
-362~STI Screening & Management~STI Screening & Management~361~55
-363~Waste control~Waste control~362~61
-364~ART Laboratory Section (CD4, Haematology, Chemistry, TB, VL, serology)~ART Laboratory Section (CD4, Haematology, Chemistry, TB, VL, serology)~363~51
-365~Medication dispensing~Medication dispensing~364~55
-366~Result Disclosure and Partner Referral~Result Disclosure and Partner Referral~365~49
-367~Quality Assurance~Quality Assurance~366~52
-368~Policy Adherence~Policy Adherence~367~61
-369~Cotrimoxazole~Cotrimoxazole~368~55
-370~Identifying Sources of Support and Referrals~Identifying Sources of Support and Referrals~369~49
-371~Yield and output monitoring~Yield and output monitoring~370~52
-372~Quality Management~Quality Management~371~61
-373~Counseling Skills~Counseling Skills~372~49
-374~Supply Chain reliability ARV~Supply Chain reliability ARV~373~55
-375~Linkage to care  and referral tracking (ART)~Linkage to care  and referral tracking (ART)~374~52
-376~Supply Chain reliability-ARV~Supply Chain reliability-ARV~375~55
-377~Assessment & Utilization of Performance Data in QI Activities~Assessment & Utilization of Performance Data in QI Activities~376~61
-378~Supply Chain Reliability-Cotrimoxazole~Supply Chain Reliability-Cotrimoxazole~377~55
-379~Contact tracing~Contact tracing~378~52
-380~Client record keeping~Client record keeping~379~55
-381~Pre-ART register (paper or electronic)~Pre-ART register (paper or electronic)~380~55
-382~Routine ART Visit~Routine ART Visit~381~59
-383~Pediatrics~Pediatrics~382~57
-384~Support and Assessment of Staff Performance~Support and Assessment of Staff Performance~383~61
-385~ART register (paper or electronic)~ART register (paper or electronic)~384~55
-386~Communication and feedback~Communication and feedback~385~52
-387~Injection Safety~Injection Safety~386~57
-388~Patient Tracking-Pre-ART and ART Patients~Patient Tracking-Pre-ART and ART Patients~387~55
-389~Site level training~Site level training~388~52
-390~Adolescent friendly services~Adolescent friendly services~389~61
-391~Compliance with National Testing Algorithm and Strategy~Compliance with National Testing Algorithm and Strategy~390~57
-392~Adherence Support~Adherence Support~391~55
-393~Quarterly support and assessment of all staff~Quarterly support and assessment of all staff~392~52
-394~Quality Assurance of HIV testing~Quality Assurance of HIV testing~393~57
-395~Report writing~Report writing~394~52
-396~Follow up on corrective action~Follow up on corrective action~395~52
-397~Male Client~Male Client~396~62
-398~Female Client~Female Client~397~63
-399~Inquiry~Inquiry~398~62
-400~Inquiry~Inquiry~399~63
-401~Physical Examination~Physical Examination~400~63
-402~Physical Examination~Physical Examination~401~62
-403~Post Examination~Post Examination~402~62
-404~Diagnosis, Treatment and Counseling~Diagnosis, Treatment and Counseling~403~62
-405~Post Examination~Post Examination~404~63
-406~Diagnosis, Treatment and Counseling~Diagnosis, Treatment and Counseling~405~63
-407~Supplies~Supplies~406~62
-408~Materials and Supplies~Materials and Supplies~407~63
-409~Pre-Op Group Education and Individual  Counseling Sessions~Pre-Op Group Education and Individual  Counseling Sessions~408~64
-410~Emergency Practices and Procedures~Emergency Practices and Procedures~409~67
-411~Human Resources~Human Resources~410~71
-412~Facilities, Supplies & Equipment~Facilities, Supplies & Equipment~411~69
-413~PrePex Device Procedures~PrePex Device Procedures~412~66
-414~Surgical Equipment and Procedures~Surgical Equipment and Procedures~413~70
-415~Introduction~Introduction~414~65
-416~SOPs, Guidelines, Policies and Job Aids~SOPs, Guidelines, Policies and Job Aids~415~68
-417~Medical History~Medical History~416~70
-418~Medical History~Medical History~417~66
-419~Patient and Client Flow~Patient and Client Flow~418~69
-420~Direct observation of items~Direct observation of items~419~68
-421~Guidelines, Reports, Procedures, Medicines and Training for Medical Emergencies~Guidelines, Reports, Procedures, Medicines and Training for Medical Emergencies~420~67
-422~Client Records~Client Records~421~65
-423~Physical Exam~Physical Exam~422~66
-424~Physical Exam~Physical Exam~423~70
-425~Adverse Event Prevention and Management:  (VMMC Emergency Medical Supplies, Equipment and Medicines)~Adverse Event Prevention and Management:  (VMMC Emergency Medical Supplies, Equipment and Medicines)~424~67
-426~Information~Information~425~64
-427~Medicines~Medicines~426~69
-428~Disinfection~Disinfection~427~66
-429~SIMS: Compliance with National Testing Algorithm and Strategy~SIMS: Compliance with National Testing Algorithm and Strategy~428~68
-430~Aseptic Technique~Aseptic Technique~429~70
-431~SIMS: HIV testing QA~SIMS: HIV testing QA~430~68
-432~Surgical Backup~Surgical Backup~431~66
-433~HIV Testing and Counseling~HIV Testing and Counseling~432~64
-434~Training~Training~433~66
-435~SIMS: HTS Documentation~SIMS: HTS Documentation~434~68
-436~Supplies and Equipment~Supplies and Equipment~435~69
-437~SIMS: Injection Safety~SIMS: Injection Safety~436~69
-438~Pre-Placement Steps~Pre-Placement Steps~437~66
-439~Anesthetic~Anesthetic~438~70
-440~Adverse Event Prevention and Management: (VMMC Emergency Medical Supplies, Equipment and Medicines)~Adverse Event Prevention and Management: (VMMC Emergency Medical Supplies, Equipment and Medicines)~439~67
-441~PrePex Device Placement Steps~PrePex Device Placement Steps~440~66
-442~SIMS: HTS Referrals to HIV Care and Treatment~SIMS: HTS Referrals to HIV Care and Treatment~441~68
-443~Retraction and Marking~Retraction and Marking~442~70
-444~PrePex Device Removal Steps~PrePex Device Removal Steps~443~66
-445~SIMS: Site Level HIV Proficiency Testing~SIMS: Site Level HIV Proficiency Testing~444~68
-446~Surgical Technique~Surgical Technique~445~70
-447~SIMS: Supply Chain Reliability (Rapid Test Kits)~SIMS: Supply Chain Reliability (Rapid Test Kits)~446~69
-448~Suture Technique~Suture Technique~447~70
-449~SIMS: HTC Safety Measures~SIMS: HTC Safety Measures~448~69
-450~SIMS: Service Referral and Linkage System~SIMS: Service Referral and Linkage System~449~68
-451~Dressing Material and Application~Dressing Material and Application~450~70
-452~SIMS: Medication Dispensing~SIMS: Medication Dispensing~451~69
-453~Disinfection~Disinfection~452~70
-454~SIMS: Condom Access and Availability at Point of Service~SIMS: Condom Access and Availability at Point of Service~453~69
-455~Prepex Device Male Circumcision~Prepex Device Male Circumcision~454~68
-456~Other Supplies~Other Supplies~455~69
-457~Post-Operative, Pre-discharge Client  Observation and Counseling Session~Post-Operative, Pre-discharge Client  Observation and Counseling Session~456~64
-458~Equipment Storage (Visually inspect the storage area)~Equipment Storage (Visually inspect the storage area)~457~69
-459~Surgical Kits~Surgical Kits~458~69
-460~Follow-up Clinic Visit: 2nd , 7th day, or later after VMMC~Follow-up Clinic Visit: 2nd , 7th day, or later after VMMC~459~64
-461~SIMS: Access to Safe Blood~SIMS: Access to Safe Blood~460~69
-462~5.1 SIMS: Voluntarism and Informed Consent~5.1 SIMS: Voluntarism and Informed Consent~461~65
-463~5.3 SIMS: VMMC Clinical Follow-Up~5.3 SIMS: VMMC Clinical Follow-Up~462~65
-464~HIV and MC Education and Counseling Materials~HIV and MC Education and Counseling Materials~463~64
-465~SIMS: Waste Management~SIMS: Waste Management~464~69
-466~Information on Materials~Information on Materials~465~64
-467~PrePex Device Male Circumcision~PrePex Device Male Circumcision~466~69
-468~FP Room~FP Room~467~73
-469~Technical Competence~Technical Competence~468~72
-470~VIAC Room (where applicable)~VIAC Room (where applicable)~469~73
-471~STI Room~STI Room~470~73
-472~Privacy and Confidentiality~Privacy and Confidentiality~471~72
-473~Informed Choice~Informed Choice~472~72
-474~Packs: Availability, FEFO practiced and packs not expired~Packs: Availability, FEFO practiced and packs not expired~473~73
-475~Consumables~Consumables~474~73
-476~Client Safety~Client Safety~475~72
-477~Contraceptives~Contraceptives~476~73
-478~Continuity of care~Continuity of care~477~72
-479~Antibiotics for STI treatment available~Antibiotics for STI treatment available~478~73
-480~Analgesics~Analgesics~479~73
-481~Infection prevention~Infection prevention~480~73
-482~Emergency Equipment~Emergency Equipment~481~73
+1~Contraceptive Counseling~Contraceptive Counseling~0~1
+2~Oral Contraceptive Pills~Oral Contraceptive Pills~1~1
+3~Injectables~Injectables~2~1
+4~IUCD Insertion~IUCD Insertion~3~1
+5~IUCD Removal~IUCD Removal~4~1
+6~Implant Insertion~Implant Insertion~5~1
+7~Implant Removal~Implant Removal~6~1
+8~END OF TAB~END OF TAB~7~1
+9~Newborn Resuscitation~Newborn Resuscitation~8~2
+10~END OF TAB~END OF TAB~9~2
+11~Pre-Insertion (Clinical)~Pre-Insertion (Clinical)~10~3
+12~Insertion~Insertion~11~3
+13~Post-insertion~Post-insertion~12~3
+14~Procedure/Follow-up~Procedure/Follow-up~13~3
+15~Work Environment~Work Environment~14~3
+16~END OF TAB~END OF TAB~15~3
+17~Licenses~Licenses~16~4
+18~General Infrastructure and Equipment~General Infrastructure and Equipment~17~4
+19~Service delivery guidelines (job aids, algorithms etc.)~Service delivery guidelines (job aids, algorithms etc.)~18~4
+20~Commodities~Commodities~19~4
+21~Documentation~Documentation~20~4
+22~END OF TAB~END OF TAB~21~4
+23~Pre-Screening~Pre-Screening~22~5
+24~Patient screening~Patient screening~23~5
+25~Work Environment 1~Work Environment 1~24~5
+26~Pre-Cryotherapy Counselling~Pre-Cryotherapy Counselling~25~5
+27~Cryotherapy~Cryotherapy~26~5
+28~Post Cryotherapy Procedures~Post Cryotherapy Procedures~27~5
+29~Work Environment 2~Work Environment 2~28~5
+30~END OF TAB~END OF TAB~29~5
+31~Pre-delivery~Pre-delivery~30~6
+32~Delivery~Delivery~31~6
+33~Immediate Post-delivery~Immediate Post-delivery~32~6
+34~Work Environment~Work Environment~33~6
+35~END OF TAB~END OF TAB~34~6
+36~Management of Pre-Eclampsia/Eclampsia~Management of Pre-Eclampsia/Eclampsia~35~7
+37~Management of Antepartum Hemorrhage~Management of Antepartum Hemorrhage~36~7
+38~Management of Post Partum Hemorrhage~Management of Post Partum Hemorrhage~37~7
+39~Work Environment~Work Environment~38~7
+40~END OF TAB~END OF TAB~39~7
+41~ACT 1~ACT 1~40~8
+42~ACT 2~ACT 2~41~8
+43~ORS~ORS~42~8
+44~Zinc~Zinc~43~8
+45~RDTs~RDTs~44~8
+46~Amoxicillin 250mg~Amoxicillin 250mg~45~8
+47~Amoxicillin syrup~Amoxicillin syrup~46~8
+48~Introduction~Introduction~47~9
+49~Ask or Check~Ask or Check~48~9
+50~Care~Care~49~9
+51~Client education and counseling~Client education and counseling~50~9
+52~Work Environment~Work Environment~51~9
+53~END OF TAB~END OF TAB~52~9
+54~Header 1~Header 1~53~10
+55~Diagnosis 1~Diagnosis 1~54~12
+56~Introduction~Introduction~55~11
+57~Workplace~Workplace~56~13
+58~Inquiry~Inquiry~57~11
+59~Equipment, Supplies and Consumables~Equipment, Supplies and Consumables~58~13
+60~Diagnosis 2~Diagnosis 2~59~12
+61~Physical Examination~Physical Examination~60~11
+62~Document and Reporting~Document and Reporting~61~13
+63~Diagnosis 3~Diagnosis 3~62~12
+64~END OF TAB~END OF TAB~63~13
+65~RDT Procedure~RDT Procedure~64~11
+66~END OF TAB~END OF TAB~65~12
+67~END OF TAB~END OF TAB~66~11
+68~Inquiry~Inquiry~67~14
+69~Examination~Examination~68~14
+70~Treatment~Treatment~69~14
+71~Counseling~Counseling~70~14
+72~Work Environment~Work Environment~71~14
+73~END OF TAB~END OF TAB~72~14
+74~Test~Test~73~15
+75~HTN screening , classification and staging~HTN screening , classification and staging~74~16
+76~History taking and assessment~History taking and assessment~75~16
+77~Diagnosis and Management as per protocol~Diagnosis and Management as per protocol~76~16
+78~Work Environment~Work Environment~77~16
+79~END OF TAB~END OF TAB~78~16
+80~HIV Testing and Counseling~HIV Testing and Counseling~79~17
+81~HIV Care and Treatment~HIV Care and Treatment~80~17
+82~Work Environment~Work Environment~81~17
+83~END OF TAB~END OF TAB~82~17

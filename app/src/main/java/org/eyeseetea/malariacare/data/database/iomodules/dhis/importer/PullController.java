@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
@@ -88,29 +89,19 @@ public class PullController implements IPullController {
     @Override
     public void pull(final PullFilters filters, final IPullControllerCallback callback) {
         conversionLocalDataSource.wipeDataBase();
-        if(filters.isDemo()){
-            mPullLocalDataSource = new PullLocalSDKDataSource();
-            mPullLocalDataSource.pull(new IPullSourceCallback() {
+        PULL_IS_ACTIVE = true;
+        this.callback = callback;
 
-                @Override
-                public void onComplete() {
-                    callback.onComplete();
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-
-            }, mContext);
+        if (filters.isDemo()) {
+            callback.onStep(PullStep.DEMO);
+            LocalAsyncPull localAsyncPull = new LocalAsyncPull();
+            localAsyncPull.execute();
             return;
         }
-        PULL_IS_ACTIVE = true;
         conversionLocalDataSource = new ConversionLocalDataSource(callback);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
 
-        this.callback = callback;
         callback.onStep(PullStep.PROGRAMS);
 
         pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
@@ -132,6 +123,23 @@ public class PullController implements IPullController {
             }
 
         });
+    }
+
+    private void demoPull(final IPullControllerCallback callback) {
+        mPullLocalDataSource = new PullLocalSDKDataSource();
+        mPullLocalDataSource.pull(new IPullSourceCallback() {
+
+            @Override
+            public void onComplete() {
+                callback.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+        }, mContext);
     }
 
     private void pullData(final PullFilters filters) {
@@ -188,5 +196,14 @@ public class PullController implements IPullController {
     @Override
     public boolean isPullActive() {
         return PULL_IS_ACTIVE;
+    }
+
+    public class LocalAsyncPull extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            demoPull(callback);
+            return null;
+        }
     }
 }

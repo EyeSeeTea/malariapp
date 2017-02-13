@@ -5,8 +5,6 @@ import android.util.Log;
 
 import com.opencsv.CSVReader;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
-import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
-import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.structure.Model;
@@ -21,7 +19,6 @@ import org.eyeseetea.malariacare.data.database.model.Header;
 import org.eyeseetea.malariacare.data.database.model.Match;
 import org.eyeseetea.malariacare.data.database.model.Media;
 import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.OptionAttribute;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
@@ -36,11 +33,13 @@ import org.eyeseetea.malariacare.data.database.model.SurveySchedule;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.model.Value;
+import org.hisp.dhis.client.sdk.core.common.persistence.DbOperation;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class PopulateDB {
@@ -70,26 +69,6 @@ public class PopulateDB {
     public static final String VALUE_CSV = "Value.csv";
 
     static ArrayList<Model> list;
-    static ArrayList<Program> programs;
-    static ArrayList<Tab> tabs;
-    static ArrayList<Header> headers;
-    static ArrayList<Question> questions;
-    static ArrayList<Option> options;
-    static ArrayList<Answer> answers;
-    static ArrayList<CompositeScore> compositeScores;
-    static ArrayList<QuestionRelation> questionRelations;
-    static ArrayList<Match> matches;
-    static ArrayList<QuestionOption> questionOptions;
-    static ArrayList<OrgUnitLevel> orgUnitLevels;
-    static ArrayList<OrgUnit> orgUnits;
-    static ArrayList<OptionAttribute> optionAttributes;
-    static ArrayList<OrgUnitProgramRelation> orgUnitProgramRelations;
-    static ArrayList<Score> scores;
-    static ArrayList<ServerMetadata> serverMetadatas;
-    static ArrayList<Survey> Surveys;
-    static ArrayList<SurveySchedule> SurveySchedule;
-    static ArrayList<User> users;
-    static ArrayList<Value> values;
 
     public static void populateDB(AssetManager assetManager) throws IOException {
 
@@ -130,7 +109,9 @@ public class PopulateDB {
                         tab.setId_tab(Long.parseLong(line[0]));
                         tab.setName(line[1]);
                         tab.setOrder_pos(Integer.valueOf(line[2]));
-                        tab.setType(Integer.valueOf(line[3]));
+                        if (!line[3].equals("")) {
+                            tab.setType(Integer.valueOf(line[3]));
+                        }
                         tab.setProgram(Long.parseLong(line[4]));
                         list.add(tab);
                         break;
@@ -155,7 +136,11 @@ public class PopulateDB {
                         option.setUid(line[1]);
                         option.setCode(line[2]);
                         option.setName(line[3]);
-                        option.setFactor(Float.valueOf(line[4]));
+                        if (!line[4].equals("")) {
+                            option.setFactor(Float.valueOf(line[4]));
+                        } else {
+                            option.setFactor(0f);
+                        }
                         option.setAnswer(Long.parseLong(line[5]));
                         list.add(option);
                         break;
@@ -180,17 +165,31 @@ public class PopulateDB {
                         question.setForm_name(line[4]);
                         question.setUid(line[5]);
                         question.setOrder_pos(Integer.valueOf(line[6]));
-                        question.setNumerator_w(Float.valueOf(line[7]));
-                        question.setDenominator_w(Float.valueOf(line[8]));
+                        if (!line[7].equals("")) {
+                            question.setNumerator_w(Float.valueOf(line[7]));
+                        } else {
+                            question.setNumerator_w(0f);
+                        }
+                        if (!line[8].equals("")) {
+                            question.setDenominator_w(Float.valueOf(line[8]));
+                        } else {
+                            question.setDenominator_w(0f);
+                        }
                         question.setFeedback(line[9]);
                         if (!line[10].equals("")) {
                             question.setHeader(Long.parseLong(line[10]));
                         }
-                        question.setAnswer(Long.parseLong(line[11]));
-                        question.setOutput(Integer.parseInt(line[12]));
-                        Integer compulsory = Integer.valueOf(line[13]);
-                        boolean compulsoryValue = (compulsory == 0) ? false : true;
-                        question.setCompulsory(compulsoryValue);
+                        if (!line[11].equals("")) {
+                            question.setAnswer(Long.parseLong(line[11]));
+                        }
+                        if (!line[12].equals("")) {
+                            question.setOutput(Integer.parseInt(line[12]));
+                        }
+                        if (!line[13].equals("")) {
+                            Integer compulsory = Integer.valueOf(line[13]);
+                            boolean compulsoryValue = (compulsory == 0) ? false : true;
+                            question.setCompulsory(compulsoryValue);
+                        }
                         //Line [14] is id_parent. Not used
                         if (!line[15].equals("")) {
                             question.setCompositeScore(Long.parseLong(line[15]));
@@ -251,22 +250,97 @@ public class PopulateDB {
                                 Integer.valueOf(line[0]));
                         orgUnitProgramRelation.setOrgUnit(Long.parseLong(line[1]));
                         orgUnitProgramRelation.setProgram(Long.parseLong(line[2]));
-                        orgUnitProgramRelation.setProductivity(Integer.valueOf(line[3]));
+                        if (!line[3].equals("")) {
+                            orgUnitProgramRelation.setProductivity(Integer.valueOf(line[3]));
+                        }
                         list.add(orgUnitProgramRelation);
+                        break;
+                    case SURVEY_SCHEDULE_CSV:
+                        SurveySchedule surveySchedule = new SurveySchedule();
+                        surveySchedule.setId_survey_schedule(
+                                Integer.valueOf(line[0]));
+                        surveySchedule.setSurvey(
+                                Long.parseLong(line[1]));
+                        surveySchedule.setComment(line[2]);
+                        if (!line[3].equals("")) {
+                            surveySchedule.setPrevious_date(new Date(Long.parseLong(line[3])));
+                        }
+                        list.add(surveySchedule);
                         break;
                     case SURVEY_CSV:
                         Survey survey = new Survey();
+                        survey.setId_survey(Long.parseLong(line[0]));
+
+                        survey.setProgram(Long.parseLong(line[1]));
+
+                        survey.setOrgUnit(Long.parseLong(line[2]));
+
+                        if (!line[3].equals("")) {
+                            survey.setUser(Long.parseLong(line[3]));
+                        }
+                        if (!line[4].equals("")) {
+                            survey.setCreationDate(new Date(Long.parseLong(line[4])));
+                        }
+                        if (!line[5].equals("")) {
+                            survey.setCompletionDate(new Date(Long.parseLong(line[5])));
+                        }
+                        if (!line[6].equals("")) {
+                            survey.setUploadDate(new Date(Long.parseLong(line[6])));
+                        }
+                        if (!line[7].equals("")) {
+                            survey.setScheduledDate(new Date(Long.parseLong(line[7])));
+                        }
+                        if (!line[8].equals("")) {
+                            survey.setStatus(Integer.parseInt(line[8]));
+                        }
+                        survey.setEventUid(line[9]);
+                        list.add(survey);
                         break;
                     case VALUE_CSV:
                         Value value = new Value();
+                        value.setId_value(Long.parseLong(line[0]));
+                        value.setValue(line[1]);
+                        if (!line[2].equals("")) {
+                            value.setQuestion(Long.parseLong(line[2]));
+                        }
+                        value.setSurvey(Long.parseLong(line[3]));
+                        if (!line[4].equals("")) {
+                            value.setOption(Long.parseLong(line[4]));
+                        }
+                        if (!line[5].equals("")) {
+                            Integer conflict = Integer.valueOf(line[5]);
+                            boolean isInConflict = (conflict == 0) ? false : true;
+                            value.setConflict(isInConflict);
+                        }
+                        if (!line[6].equals("")) {
+                            value.setUploadDate(new Date(Long.parseLong(line[6])));
+                        }
+                        list.add(value);
                         break;
                     case SCORE_CSV:
+                        Score score = new Score();
+                        score.setId_score(Long.parseLong(line[0]));
+                        score.setSurvey(Long.parseLong(line[1]));
+                        score.setUid(line[2]);
+                        score.setScore(Float.parseFloat(line[3]));
+                        list.add(score);
                         break;
                     case USER_CSV:
+                        User user = new User();
+                        user.setId_user(Long.parseLong(line[0]));
+                        user.setUid(line[1]);
+                        user.setName(line[2]);
+                        user.setUsername(line[3]);
+                        list.add(user);
                         break;
                     case SERVER_METADATA_CSV:
-                        break;
-                    case SURVEY_SCHEDULE_CSV:
+                        ServerMetadata serverMetadata = new ServerMetadata();
+                        serverMetadata.setId_control_dataelement(Long.parseLong(line[0]));
+                        serverMetadata.setName(line[1]);
+                        serverMetadata.setCode(line[2]);
+                        serverMetadata.setUid(line[3]);
+                        serverMetadata.setValueType(line[4]);
+                        list.add(serverMetadata);
                         break;
                 }
             }
@@ -307,17 +381,15 @@ public class PopulateDB {
 
     protected static void saveAllItems(final List<Model> models) {
         DatabaseDefinition databaseDefinition =
-                FlowManager.getDatabase(AppDatabase.class);
-        databaseDefinition.getTransactionManager().checkQueue();
-        Transaction transaction = databaseDefinition.beginTransactionAsync(new ITransaction() {
+                FlowManager.getDatabase(AppDatabase.class); // execute  transaction
+        databaseDefinition.executeTransaction(new ITransaction() {
             @Override
             public void execute(DatabaseWrapper databaseWrapper) {
                 for (Model model : models) {
                     model.insert();
                 }
             }
-        }).build();
-        transaction.execute(); // execute  transaction
+        });
     }
 
     protected static void initMaps() {
