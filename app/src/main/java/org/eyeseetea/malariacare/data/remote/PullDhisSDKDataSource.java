@@ -52,6 +52,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
+import org.hisp.dhis.client.sdk.core.event.EventFilters;
 import org.hisp.dhis.client.sdk.core.program.ProgramFields;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -69,19 +70,6 @@ import rx.schedulers.Schedulers;
 
 
 public class PullDhisSDKDataSource {
-    public final static Class[] MANDATORY_METADATA_TABLES = {
-            AttributeFlow.class,
-            DataElementFlow.class,
-            AttributeValueFlow.class,
-            OptionFlow.class,
-            OptionSetFlow.class,
-            UserAccountFlow.class,
-            OrganisationUnitFlow.class,
-            OrganisationUnitToProgramRelationFlow.class,
-            ProgramStageFlow.class,
-            ProgramStageDataElementFlow.class,
-            ProgramStageSectionFlow.class
-    };
     private final String TAG = ".PullDhisSDKDataSource";
 
     public PullDhisSDKDataSource() {
@@ -161,17 +149,24 @@ public class PullDhisSDKDataSource {
                 for (Program orgunitProgram : organisationUnit.getPrograms()) {
                     if (orgunitProgram.getUId().equals(program.getUId())) {
                         if (!PullController.PULL_IS_ACTIVE) return;
+
+                        EventFilters eventFilters = new EventFilters();
+                        eventFilters.setProgramUId(program.getUId());
+                        eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
+                        eventFilters.setStartDate(filters.getStartDate());
+                        eventFilters.setEndDate(filters.getEndDate());
+                        eventFilters.setMaxEvents(filters.getMaxEvents());
+
                         Scheduler pullEventsThread = Schedulers.newThread();
-                        D2.events().pull(
-                                organisationUnit.getUId(),
-                                program.getUId(), filters.getStartDate(), filters.getEndDate(),
-                                filters.getMaxEvents()).subscribeOn(pullEventsThread)
+                        D2.events().pull(eventFilters)
+                                .subscribeOn(pullEventsThread)
                                 .observeOn(pullEventsThread).toBlocking().single();
                     }
                 }
             }
         }
     }
+
 
     private boolean isNetworkAvailable() {
         ConnectivityManager cm =
@@ -204,6 +199,22 @@ public class PullDhisSDKDataSource {
                 FailedItemFlow.class
         );
     }
+
+
+    public final static Class[] MANDATORY_METADATA_TABLES = {
+            AttributeFlow.class,
+            DataElementFlow.class,
+            AttributeValueFlow.class,
+            OptionFlow.class,
+            OptionSetFlow.class,
+            UserAccountFlow.class,
+            OrganisationUnitFlow.class,
+            OrganisationUnitToProgramRelationFlow.class,
+            ProgramStageFlow.class,
+            ProgramStageDataElementFlow.class,
+            ProgramStageSectionFlow.class
+    };
+
 
     public boolean mandatoryMetadataTablesNotEmpty() {
 
