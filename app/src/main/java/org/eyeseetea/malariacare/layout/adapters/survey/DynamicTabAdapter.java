@@ -326,6 +326,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                         tableLayout.addView(tableRow);
                     }
                     ImageView imageButton = (ImageView) tableRow.getChildAt(mod);
+                    //imageButton.setBackgroundColor(Color.parseColor("#" + currentOption.getBackground_colour()));
 
                     initOptionButton(imageButton, currentOption, value, parent, i);
                 }
