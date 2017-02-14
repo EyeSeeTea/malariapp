@@ -13,7 +13,6 @@ import org.eyeseetea.malariacare.data.database.model.Header;
 import org.eyeseetea.malariacare.data.database.model.Match;
 import org.eyeseetea.malariacare.data.database.model.Media;
 import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.OptionAttribute;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
@@ -68,7 +67,6 @@ public class PopulateDB {
     static Map<Integer, QuestionOption> questionOptions;
     static Map<Integer, OrgUnitLevel> orgUnitLevels;
     static Map<Integer, OrgUnit> orgUnits;
-    static Map<Integer, OptionAttribute> optionAttributes;
     static Map<Integer, OrgUnitProgramRelation> orgUnitProgramRelations;
 
     public static void populateDB(AssetManager assetManager) throws IOException {
@@ -120,24 +118,12 @@ public class PopulateDB {
                         answer.setName(line[1]);
                         saveItem(answers, answer, Integer.valueOf(line[0]));
                         break;
-                    case OPTION_ATTRIBUTES_CSV:
-                        OptionAttribute optionAttribute = new OptionAttribute();
-                        optionAttribute.setBackground_colour(line[1]);
-                        optionAttribute.setPath(line[2]);
-                        optionAttribute.save();
-                        optionAttributes.put(Integer.valueOf(line[0]), optionAttribute);
-                        saveItem(optionAttributes, optionAttribute, Integer.valueOf(line[0]));
-                        break;
                     case OPTIONS_CSV:
                         Option option = new Option();
                         option.setCode(line[1]);
                         option.setName(line[2]);
                         option.setFactor(Float.valueOf(line[3]));
                         option.setAnswer(answers.get(Integer.valueOf(line[4])));
-                        if (!line[5].equals("")) {
-                            option.setOptionAttribute(
-                                    optionAttributes.get(Integer.valueOf(line[5])));
-                        }
                         option.save();
                         saveItem(options, option, Integer.valueOf(line[0]));
                         break;
@@ -171,9 +157,6 @@ public class PopulateDB {
                         question.setHeader(headers.get(Integer.valueOf(line[10])));
                         if (!line[11].equals("")) {
                             question.setAnswer(answers.get(Integer.valueOf(line[11])));
-                        }
-                        if (!line[12].equals("")) {
-                            question.setQuestion(questions.get(Integer.valueOf(line[12])));
                         }
                         //set the output suvreillance
                         if (!line[13].equals("")) {
@@ -283,7 +266,6 @@ public class PopulateDB {
         questionOptions = new LinkedHashMap<>();
         orgUnitLevels = new LinkedHashMap<>();
         orgUnits = new LinkedHashMap<>();
-        optionAttributes = new LinkedHashMap<>();
         orgUnitProgramRelations = new LinkedHashMap<>();
     }
 }

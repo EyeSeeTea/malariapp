@@ -326,7 +326,6 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                         tableLayout.addView(tableRow);
                     }
                     ImageView imageButton = (ImageView) tableRow.getChildAt(mod);
-                    imageButton.setBackgroundColor(Color.parseColor("#" + currentOption.getBackground_colour()));
 
                     initOptionButton(imageButton, currentOption, value, parent, i);
                 }
@@ -342,7 +341,7 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
                     ImageView imageButton = (ImageView) tableRow.getChildAt(0);
 
                     Option currentOption = opts.get(i);
-                    imageButton.setBackgroundColor(Color.parseColor("#" + currentOption.getBackground_colour()));
+                    //imageButton.setBackgroundColor(Color.parseColor("#" + currentOption.getBackground_colour()));
 
                     initOptionButton(imageButton, currentOption, value, parent,i);
                 }
@@ -610,15 +609,15 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         }
 
         //Put image
-        try {
-            InputStream inputStream = context.getAssets().open(option.getPath());
-            Bitmap bmp = BitmapFactory.decodeStream(inputStream);
-            button.setImageBitmap(bmp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //try {
+            //InputStream inputStream = context.getAssets().open(option.getPath());
+            //Bitmap bmp = BitmapFactory.decodeStream(inputStream);
+            //button.setImageBitmap(bmp);
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
         //Associate option
-        button.setTag(option);
+        //button.setTag(option);
 
         //button.setId(R.string.option + buttonPosition); // uses for Espresso testing
         //Readonly (not clickable, enabled)
@@ -645,8 +644,8 @@ public class DynamicTabAdapter extends BaseAdapter implements ITabAdapter {
         }
 
         GradientDrawable bgShape = (GradientDrawable)view.getBackground();
-        String backGColor = option.getOptionAttribute() != null ? option.getOptionAttribute().getBackground_colour() : option.getBackground_colour();
-        bgShape.setColor(Color.parseColor("#" + backGColor));
+        //String backGColor = option.getOptionAttribute() != null ? option.getOptionAttribute().getBackground_colour() : option.getBackground_colour();
+        //bgShape.setColor(Color.parseColor("#" + backGColor));
 
         bgShape.setStroke(3, Color.WHITE);
 
