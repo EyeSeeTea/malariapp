@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -33,6 +34,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -41,7 +43,9 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -68,6 +72,7 @@ public class SettingsActivity extends PreferenceActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferencesState.getInstance().loadsLanguageInActivity();
     }
 
     @Override
@@ -128,6 +133,14 @@ public class SettingsActivity extends PreferenceActivity implements
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
+        if (BuildConfig.translations) {
+            setLanguageOptions(
+                    findPreference(getApplicationContext().getString(R.string.language_code)));
+            bindPreferenceSummaryToValue(
+                    findPreference(getApplicationContext().getString(R.string.language_code)));
+        }
+
+
         bindPreferenceSummaryToValue(
                 findPreference(getApplicationContext().getString(R.string.font_sizes)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
@@ -157,12 +170,74 @@ public class SettingsActivity extends PreferenceActivity implements
     }
 
     /**
+     * Sets the application languages and populate the language in the preference
+     */
+    private static void setLanguageOptions(Preference preference) {
+        ListPreference listPreference = (ListPreference) preference;
+
+        HashMap<String, String> languages = getAppLanguages(R.string.system_defined);
+
+        CharSequence[] newEntries = new CharSequence[languages.size() + 1];
+        CharSequence[] newValues = new CharSequence[languages.size() + 1];
+        int i = 0;
+        newEntries[i] = PreferencesState.getInstance().getContext().getString(
+                R.string.system_defined);
+        newValues[i] = "";
+        for (String language : languages.keySet()) {
+            i++;
+            String languageCode = languages.get(language);
+            String firstLetter = language.substring(0, 1).toUpperCase();
+            language = firstLetter + language.substring(1, language.length());
+            newEntries[i] = language;
+            newValues[i] = languageCode;
+        }
+
+        listPreference.setEntries(newEntries);
+        listPreference.setEntryValues(newValues);
+    }
+
+    /**
+     * This method finds the existing app translations
+     * * @param stringId this string id should be different in all value-xx/string.xml files. Else
+     * the language can be ignored
+     */
+    public static HashMap<String, String> getAppLanguages(int stringId) {
+        HashMap<String, String> languages = new HashMap<>();
+        Context context = PreferencesState.getInstance().getContext();
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        Resources r = context.getResources();
+        Configuration c = r.getConfiguration();
+        String[] loc = r.getAssets().getLocales();
+        for (int i = 0; i < loc.length; i++) {
+            c.locale = new Locale(loc[i]);
+            Resources res = new Resources(context.getAssets(), metrics, c);
+            String s1 = res.getString(stringId);
+            String language = c.locale.getDisplayLanguage();
+            c.locale = new Locale("");
+            Resources res2 = new Resources(context.getAssets(), metrics, c);
+            String s2 = res2.getString(stringId);
+
+            //Compare with the default language
+            if (!s1.equals(s2)) {
+                languages.put(language, loc[i]);
+            }
+        }
+        return languages;
+    }
+    /**
      * {@inheritDoc}
      */
     @Override
     public boolean onIsMultiPane() {
         return isXLargeTablet(this) && !isSimplePreferences(this);
     }
+
+    private void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -271,6 +346,9 @@ public class SettingsActivity extends PreferenceActivity implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.language_code))) {
+            restartActivity();
+        }
 
     }
 
@@ -283,6 +361,7 @@ public class SettingsActivity extends PreferenceActivity implements
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            PreferencesState.getInstance().loadsLanguageInActivity();
             addPreferencesFromResource(R.xml.pref_general);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -292,6 +371,15 @@ public class SettingsActivity extends PreferenceActivity implements
             bindPreferenceSummaryToValue(findPreference(getString(R.string.font_sizes)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_url)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
+
+            //Hide translation option if is not active in gradle variable
+            if (BuildConfig.translations) {
+                setLanguageOptions(findPreference(
+                        PreferencesState.getInstance().getContext().getString(
+                                R.string.language_code)));
+                bindPreferenceSummaryToValue(
+                        findPreference(getResources().getString(R.string.language_code)));
+            }
 
             Preference serverUrlPreference = (Preference) findPreference(
                     getResources().getString(R.string.dhis_url));
