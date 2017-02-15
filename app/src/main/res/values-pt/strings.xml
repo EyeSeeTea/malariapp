@@ -249,4 +249,6 @@ Passo 2: Localize a identificação do paciente do passo 1) no Registo de Farmá
 <string name="developer_option_title">"Mostrar opções de desenvolvedor"</string>
 <string name="export_data_option_title">"Banco de dados de exportação"</string>
 <string name="progress_pull_validating_composite_scores">"Validação pontuações compostas ..."</string>
+<string name="admin_announcement">"Anúncio do Admin"</string>
+<string name="user_close">"Este usuário foi fechado pelo administrador."</string>
 </resources>

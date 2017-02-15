@@ -90,6 +90,10 @@ public class PreferencesState {
      * Sets the max number of events to download from dhis server
      */
     private int maxEvents;
+    /**
+     * Flag that determines if the user did accept the announcement
+     */
+    private boolean userAccept;
 
     static Context context;
 
@@ -111,6 +115,7 @@ public class PreferencesState {
         locationRequired=initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents=initMaxEvents();
+        userAccept=initUserAccept();
         Log.d(TAG,String.format("reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | maxEvents: %d | largeTextOption: %b ",scale,showNumDen,locationRequired,maxEvents,showLargeText));
     }
 
@@ -169,6 +174,14 @@ public class PreferencesState {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
         String maxValue=sharedPreferences.getString(instance.getContext().getString(R.string.dhis_max_items), instance.getContext().getString(R.string.dhis_default_max_items));
         return Integer.valueOf(maxValue);
+    }
+    /**
+     * Inits user accept flag according to preferences
+     * @return
+     */
+    private boolean initUserAccept(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.getContext());
+        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.user_accept_key), false);
     }
 
     /**
@@ -277,6 +290,26 @@ public class PreferencesState {
         return DatabaseOriginType.DHIS.equals(AppSettingsBuilder.getDatabaseOriginType());
     }
 
+    /**
+     * Tells if user accepted the announcement message
+     * @return
+     */
+    public Boolean isUserAccept() {
+        return userAccept;
+    }
+
+    /**
+     * Set userAccept in the preferences and local memory
+     * @return
+     */
+    public Boolean setUserAccept(boolean isAccepted) {
+        this.userAccept=isAccepted;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor =sharedPreferences.edit();
+        editor.putBoolean(context.getResources().getString(R.string.user_accept_key), isAccepted);
+        editor.commit();
+        return userAccept;
+    }
     /**
      * Tells if the application is Vertical or horizontall
      * @return

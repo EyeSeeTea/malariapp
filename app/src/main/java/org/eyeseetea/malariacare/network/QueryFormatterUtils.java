@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -56,10 +57,15 @@ public class QueryFormatterUtils {
     private static String TAG_COORDINATE_LAT = "latitude";
     private static String TAG_COORDINATE_LNG = "longitude";
     private static String TAG_EVENTDATE = "eventDate";
+    private static String TAG_USER = "users";
 
     private static String TAG_DATAVALUES = "dataValues";
     private static String TAG_DATAELEMENT = "dataElement";
     private static String TAG_VALUE = "value";
+
+    private static String QUERY_USER_LAST_UPDATED="/%s?fields=lastUpdated&paging=false";
+
+    private static String QUERY_USER_ATTRIBUTES="/%s?fields=attributeValues[value,attribute[code]]id&paging=false";
 
     private static String QUERY_LAST_EVENTS_FROM_DATE="?orgUnit=%s&program=%s&startDate=%s&fields=[event,eventDate,lastUpdated,created]&skipPaging=true";
 
@@ -242,6 +248,31 @@ public class QueryFormatterUtils {
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
         elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore,idSurvey, module)));
         return elementObject;
+    }
+
+    static String encodeBlanks(String endpoint) {
+        return endpoint.replace(" ", "%20");
+    }
+
+    /**
+     * Returns the right endpoint depending on the server version
+     */
+    static String getUserLastUpdatedApiCall(String userUid) {
+        String endpoint = TAG_USER+  String.format(QUERY_USER_LAST_UPDATED, userUid);
+
+        endpoint = encodeBlanks(endpoint);
+        Log.d(TAG, String.format("userLastUpdatedApiCall (%s) -> %s",TAG_USER, endpoint));
+        return endpoint;
+    }
+    /**
+     * Returns the right endpoint depending on the server version
+     */
+    static String getUserAttributesApiCall(String userUid) {
+        String endpoint = TAG_USER+ String.format(QUERY_USER_ATTRIBUTES, userUid);
+
+        endpoint = encodeBlanks(endpoint);
+        Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", TAG_USER, endpoint));
+        return endpoint;
     }
 
 }

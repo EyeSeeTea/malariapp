@@ -57,6 +57,7 @@ import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramStag
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.database.utils.multikeydictionaries.ProgramTabGroupDict;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -310,6 +311,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         User appUser = new User();
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
+        appUser.setLastUpdated(userAccount.getLastUpdated().toDate());
+        PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
+        appUser = pullClient.pullUserAttributes(appUser);
         appUser.save();
     }
 

@@ -234,4 +234,6 @@ evaluation"</string>
 <string name="feedback_media_link" >View video</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
+<string name="admin_announcement">"Admin announcement"</string>
+<string name="user_close">"This user has been closed by the administrator."</string>
 </resources>

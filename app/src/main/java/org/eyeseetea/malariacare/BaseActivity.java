@@ -250,7 +250,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     public void wipeData(){
         PopulateDB.wipeDatabase();
         PopulateDB.wipeSDKData();
-    };
+    }
 
     public void clickOrgUnitSpinner(View view){
     }

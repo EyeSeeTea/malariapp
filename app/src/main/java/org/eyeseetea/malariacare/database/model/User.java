@@ -58,6 +58,9 @@ public class User extends BaseModel {
      */
     List<Survey> surveys;
 
+    public static final String ATTRIBUTE_USER_CLOSE_DATE="USER_CLOSE_DATE";
+    public static final String ATTRIBUTE_USER_ANNOUNCEMENT="USER_ANNOUNCEMENT";
+
     public User() {
     }
 
