@@ -62,7 +62,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -280,7 +279,7 @@ public class DashboardActivity extends BaseActivity {
 
     /**
      * Logging out from sdk is an async method.
-     * Thus it is required a callback to finish logout gracefully.
+     * Thus it is required a callback to finish askIfLogout gracefully.
      *
      * XXX: So far this @subscribe annotation does not work with inheritance since relies on
      * 'getDeclaredMethods'
@@ -475,75 +474,11 @@ public class DashboardActivity extends BaseActivity {
             if (loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
                     && !PreferencesState.getInstance().isUserAccept()) {
                 Log.d(TAG, "show logged announcement");
-                showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(), DashboardActivity.this);
+                AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(), DashboardActivity.this);
                 //show model dialog
             } else {
-                checkUserClosed(loggedUser);
+                AUtils.checkUserClosed(loggedUser, getBaseContext());
             }
         }
-    }
-
-    /**
-     * Shows an alert dialog asking for acceptance of the announcement. If ok calls the accept the annoucement, do nothing otherwise
-     * @param titleId
-     * @param message
-     * @param context
-     */
-    public void showAnnouncement(int titleId, String message, final Context context){
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
-        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
-
-        final User loggedUser = User.getLoggedUser();
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(linkedMessage)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PreferencesState.getInstance().setUserAccept(true);
-                        checkUserClosed(loggedUser);
-                    }
-                })
-                .setNegativeButton(android.R.string.no,  new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        checkUserClosed(loggedUser);
-                    }
-                }).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    private void checkUserClosed(User user) {
-        if(user.getCloseDate()!=null && user.getCloseDate().before(new Date())){
-            Log.d(TAG, "User is closed");
-            //show model dialog
-            closeUser(R.string.admin_announcement, PreferencesState.getInstance().getContext().getString(R.string.user_close), DashboardActivity.this);
-            //logout
-        }
-    }
-
-    /**
-     * Shows an alert dialog asking for acceptance of the announcement. If ok calls the accept the annoucement, do nothing otherwise
-     * @param titleId
-     * @param message
-     * @param context
-     */
-    public void closeUser(int titleId, String message, final Context context){
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
-        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
-
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(linkedMessage)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PreferencesState.getInstance().setUserAccept(true);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null).create();
-        dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

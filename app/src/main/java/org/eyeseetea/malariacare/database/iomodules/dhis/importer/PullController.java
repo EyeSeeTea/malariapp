@@ -581,6 +581,7 @@ public class PullController {
      * Notifies that the pull is over
      */
     private void postFinish() {
+        Log.d(TAG, "pull finished");
         //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
         User user = User.getLoggedUser();
         Session.setUser(user);

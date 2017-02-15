@@ -19,7 +19,10 @@
 
 package org.eyeseetea.malariacare;
 
+import static org.eyeseetea.malariacare.database.utils.Session.logout;
+
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,9 +34,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,15 +46,10 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Utils;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
@@ -134,8 +129,8 @@ public abstract class BaseActivity extends ActionBarActivity {
                 AUtils.showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
                 break;
             case R.id.action_logout:
-                debugMessage("User asked for logout");
-                logout();
+                debugMessage("User asked for askIfLogout");
+                askIfLogout();
                 break;
             case android.R.id.home:
                 debugMessage("Go back");
@@ -232,25 +227,30 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Closes current session and goes back to loginactivity
      */
-    protected void logout(){
+    protected void askIfLogout(){
         new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
                 .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Start logout
-                        debugMessage("Logging out from sdk...");
-                        PreferencesState.getInstance().clearOrgUnitPreference();
-                        DhisService.logOutUser(BaseActivity.this);
+                        logout(getBaseContext());
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
     }
 
+    public static void logout(Context context) {
+        //Start askIfLogout
+        Log.d("logout","Logging out from sdk...");
+        PreferencesState.getInstance().clearOrgUnitPreference();
+        DhisService.logOutUser(context);
+    }
+
     public void wipeData(){
         PopulateDB.wipeDatabase();
         PopulateDB.wipeSDKData();
-    }
+    };
 
     public void clickOrgUnitSpinner(View view){
     }
@@ -286,7 +286,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     public void onLogoutFinished(UiEvent uiEvent){
-        //No event or not a logout event -> done
+        //No event or not a askIfLogout event -> done
         if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
             return;
         }

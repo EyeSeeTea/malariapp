@@ -175,11 +175,10 @@ public class PullClient {
                 appUser.setAnnouncement(newMessage);
                 PreferencesState.getInstance().setUserAccept(false);
             }
-            if (closeDate != null && !closeDate.equals("")) {
+            if (closeDate == null || closeDate.equals("")) {
                 appUser.setCloseDate(null);
-            }
-            else{
-                appUser.setCloseDate(EventExtended.parseLongDate(closeDate));
+            } else {
+                appUser.setCloseDate(EventExtended.parseShortDate(closeDate));
             }
 
         } catch (Exception ex) {
@@ -187,5 +186,32 @@ public class PullClient {
             ex.printStackTrace();
         }
         return appUser;
+    }
+
+    public boolean isUserClosed(String userUid) {
+        //Lets for a last event with that orgunit/program
+        String data = QueryFormatterUtils.getInstance().getUserAttributesApiCall(userUid);
+        Date closedDate = null;
+        try {
+            JSONObject response = networkUtils.getData(data);
+            JsonNode jsonNode = networkUtils.toJsonNode(response);
+            JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
+            String closeDateAsString = "";
+            for (int i = 0; i < jsonNodeArray.size(); i++) {
+                if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
+                        User.ATTRIBUTE_USER_CLOSE_DATE)) {
+                    closeDateAsString = jsonNodeArray.get(i).get(VALUE).textValue();
+                }
+            }
+            if (closeDateAsString == null || closeDateAsString.equals("")) {
+                return false;
+            }
+            closedDate = EventExtended.parseShortDate(closeDateAsString);
+        } catch (Exception ex) {
+            Log.e(TAG, "Cannot read user last updated from server with");
+            ex.printStackTrace();
+            return false;
+        }
+        return closedDate.before(new Date());
     }
 }
