@@ -19,10 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
@@ -113,7 +111,11 @@ public class EventExtended implements VisitableFromSDK {
      * Returns the survey.eventDate associated with this event (eventDate field)
      */
     public Date getEventDate() {
-        return event.getEventDate().toDate();
+        if (event.getEventDate() != null) {
+            return event.getEventDate().toDate();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -145,11 +147,10 @@ public class EventExtended implements VisitableFromSDK {
         }
     }
 
-    public static Date parseLongDate(String dateAsString){
+    public static Date parseLongDate(String dateAsString) {
         try {
             return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
         } catch (ParseException ex) {
-            ex.printStackTrace();
             return parseShortDate(dateAsString);
         }
     }
