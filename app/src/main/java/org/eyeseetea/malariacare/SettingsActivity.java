@@ -327,6 +327,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public void onBackPressed() {
         Class callerActivityClass=getCallerActivity();
         Intent returnIntent=new Intent(this,callerActivityClass);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
         startActivity(returnIntent);
     }
 

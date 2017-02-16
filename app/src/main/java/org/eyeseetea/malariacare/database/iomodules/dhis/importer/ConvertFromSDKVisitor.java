@@ -313,8 +313,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
         appUser.setLastUpdated(userAccount.getLastUpdated().toDate());
-        PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
-        appUser = pullClient.pullUserAttributes(appUser);
         appUser.save();
     }
 

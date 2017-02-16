@@ -21,22 +21,16 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -78,7 +72,10 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        new AsyncAnnouncement().execute();
+        //Check if the announcement should be display
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)) {
+            new AsyncAnnouncement().execute();
+        }
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
 
@@ -162,8 +159,9 @@ public class DashboardActivity extends BaseActivity {
         //Unsent data -> ask if pull || push before pulling
         new AlertDialog.Builder(this)
                 .setTitle("Push unsent surveys?")
-                .setMessage(String.format(
-                        getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata),
+                .setMessage(String.format("" +
+                                getResources().getString(R.string
+                                        .dialog_sent_survey_on_refresh_metadata),
                         unsentSurveys.size() + ""))
                 .setNeutralButton(android.R.string.no, null)
                 .setNegativeButton(activity.getString(R.string.no),
@@ -474,7 +472,8 @@ public class DashboardActivity extends BaseActivity {
             if (loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
                     && !PreferencesState.getInstance().isUserAccept()) {
                 Log.d(TAG, "show logged announcement");
-                AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(), DashboardActivity.this);
+                AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(),
+                        DashboardActivity.this);
                 //show model dialog
             } else {
                 AUtils.checkUserClosed(loggedUser, getBaseContext());
