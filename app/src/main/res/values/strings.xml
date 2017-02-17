@@ -237,4 +237,7 @@ evaluation"</string>
 
 <!-- from old SDK -->
 <string name="select_all">Select all</string>
+
+<string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
+<string name="toast_push_done">"Survey data pushed to server. Starting pull..."</string>
 </resources>
