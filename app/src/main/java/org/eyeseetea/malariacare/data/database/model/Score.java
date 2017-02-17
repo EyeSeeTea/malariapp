@@ -45,7 +45,7 @@ public class Score extends BaseModel {
     Survey survey;
 
     @Column
-    String uid;
+    String uid_score;
 
     @Column
     Float score;
@@ -54,7 +54,7 @@ public class Score extends BaseModel {
     }
 
     public Score(Survey survey, String uid, Float score) {
-        this.uid = uid;
+        this.uid_score = uid;
         this.score = score;
         this.setSurvey(survey);
     }
@@ -89,11 +89,11 @@ public class Score extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_score;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_score = uid;
     }
 
     public Float getScore() {
@@ -114,7 +114,7 @@ public class Score extends BaseModel {
         if (id_score != score1.id_score) return false;
         if (id_survey_fk != null ? !id_survey_fk.equals(score1.id_survey_fk) : score1.id_survey_fk != null)
             return false;
-        if (uid != null ? !uid.equals(score1.uid) : score1.uid != null) return false;
+        if (uid_score != null ? !uid_score.equals(score1.uid_score) : score1.uid_score != null) return false;
         return !(score != null ? !score.equals(score1.score) : score1.score != null);
 
     }
@@ -123,7 +123,7 @@ public class Score extends BaseModel {
     public int hashCode() {
         int result = (int) (id_score ^ (id_score >>> 32));
         result = 31 * result + (id_survey_fk != null ? id_survey_fk.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_score != null ? uid_score.hashCode() : 0);
         result = 31 * result + (score != null ? score.hashCode() : 0);
         return result;
     }
@@ -133,7 +133,7 @@ public class Score extends BaseModel {
         return "Score{" +
                 "id_score=" + id_score +
                 ", id_survey=" + id_survey_fk +
-                ", uid='" + uid + '\'' +
+                ", uid_score='" + uid_score + '\'' +
                 ", score=" + score +
                 '}';
     }

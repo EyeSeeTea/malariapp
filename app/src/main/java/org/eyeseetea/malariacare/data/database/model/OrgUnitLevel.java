@@ -40,7 +40,7 @@ public class OrgUnitLevel extends BaseModel {
     String name;
 
     @Column
-    String uid;
+    String uid_org_unit_level;
 
 
     List<OrgUnit> orgUnits;
@@ -74,11 +74,11 @@ public class OrgUnitLevel extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_org_unit_level;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_org_unit_level = uid;
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
@@ -97,7 +97,7 @@ public class OrgUnitLevel extends BaseModel {
 
         if (id_org_unit_level != that.id_org_unit_level) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
+        if (uid_org_unit_level != null ? !uid_org_unit_level.equals(that.uid_org_unit_level) : that.uid_org_unit_level != null) return false;
         return orgUnits != null ? orgUnits.equals(that.orgUnits) : that.orgUnits == null;
 
     }
@@ -106,7 +106,7 @@ public class OrgUnitLevel extends BaseModel {
     public int hashCode() {
         int result = (int) (id_org_unit_level ^ (id_org_unit_level >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_org_unit_level != null ? uid_org_unit_level.hashCode() : 0);
         result = 31 * result + (orgUnits != null ? orgUnits.hashCode() : 0);
         return result;
     }
@@ -116,7 +116,7 @@ public class OrgUnitLevel extends BaseModel {
         return "OrgUnitLevel{" +
                 "id_org_unit_level=" + id_org_unit_level +
                 ", name='" + name + '\'' +
-                ", uid='" + uid + '\'' +
+                ", uid='" + uid_org_unit_level + '\'' +
                 '}';
     }
 

@@ -38,7 +38,7 @@ public class Program extends BaseModel{
     @PrimaryKey(autoincrement = true)
     long id_program;
     @Column
-    String uid;
+    String uid_program;
     @Column
     String name;
     @Column
@@ -62,7 +62,7 @@ public class Program extends BaseModel{
     }
 
     public Program(String uid, String name) {
-        this.uid = uid;
+        this.uid_program = uid;
         this.name = name;
     }
 
@@ -75,11 +75,11 @@ public class Program extends BaseModel{
     }
 
     public String getUid() {
-        return uid;
+        return uid_program;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_program = uid;
     }
 
     public String getName() {
@@ -105,7 +105,7 @@ public class Program extends BaseModel{
     public static Program getProgram(String uid) {
         Program program = new Select()
                 .from(Program.class)
-                .where(Program_Table.uid
+                .where(Program_Table.uid_program
                         .is(uid)).querySingle();
         return program;
     }
@@ -163,7 +163,7 @@ public class Program extends BaseModel{
         Program program = (Program) o;
 
         if (id_program != program.id_program) return false;
-        if (uid != null ? !uid.equals(program.uid) : program.uid != null) return false;
+        if (uid_program != null ? !uid_program.equals(program.uid_program) : program.uid_program != null) return false;
         return name.equals(program.name);
 
     }
@@ -171,7 +171,7 @@ public class Program extends BaseModel{
     @Override
     public int hashCode() {
         int result = (int) (id_program ^ (id_program >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_program != null ? uid_program.hashCode() : 0);
         result = 31 * result + name.hashCode();
         result = 31 * result + (stage_uid != null ? stage_uid.hashCode() : 0);
         return result;
@@ -181,7 +181,7 @@ public class Program extends BaseModel{
     public String toString() {
         return "Program{" +
                 "id=" + id_program +
-                ", uid='" + uid + '\'' +
+                ", uid_program='" + uid_program + '\'' +
                 ", name='" + name + '\'' +
                 ", stage_uid='" + stage_uid + '\'' +
                 '}';

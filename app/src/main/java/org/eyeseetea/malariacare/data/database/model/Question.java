@@ -70,7 +70,7 @@ public class Question extends BaseModel {
     @Column
     String form_name;
     @Column
-    String uid;
+    String uid_question;
     @Column
     Integer order_pos;
     @Column
@@ -165,7 +165,7 @@ public class Question extends BaseModel {
         this.de_name = de_name;
         this.short_name = short_name;
         this.form_name = form_name;
-        this.uid = uid;
+        this.uid_question = uid;
         this.order_pos = order_pos;
         this.numerator_w = numerator_w;
         this.denominator_w = denominator_w;
@@ -224,11 +224,11 @@ public class Question extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_question;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_question = uid;
     }
 
     public Integer getOrder_pos() {
@@ -765,7 +765,7 @@ public class Question extends BaseModel {
                 .where(Question_Table.compulsory.withTable(questionAlias).is(true))
                 .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program()))
                 .and(QuestionRelation_Table.operation.withTable(questionRelationAlias)
-                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  Question_Table.uid.withTable(questionAlias)).queryList();
+                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  Question_Table.uid_question.withTable(questionAlias)).queryList();
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions-questionsChild.size());
     }
@@ -822,7 +822,7 @@ public class Question extends BaseModel {
      * @return
      */
     public static Question getQuestionByUid(String uid) {
-        return new Select().from(Question.class).where(Question_Table.uid.eq(uid)).querySingle();
+        return new Select().from(Question.class).where(Question_Table.uid_question.eq(uid)).querySingle();
     }
 
 
@@ -976,7 +976,7 @@ public class Question extends BaseModel {
             return false;
         if (form_name != null ? !form_name.equals(question.form_name) : question.form_name != null)
             return false;
-        if (uid != null ? !uid.equals(question.uid) : question.uid != null) return false;
+        if (uid_question != null ? !uid_question.equals(question.uid_question) : question.uid_question != null) return false;
         if (order_pos != null ? !order_pos.equals(question.order_pos) : question.order_pos != null)
             return false;
         if (numerator_w != null ? !numerator_w.equals(question.numerator_w) : question.numerator_w != null)
@@ -1006,7 +1006,7 @@ public class Question extends BaseModel {
         result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_question != null ? uid_question.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
         result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
@@ -1028,7 +1028,7 @@ public class Question extends BaseModel {
                 ", de_name='" + de_name + '\'' +
                 ", short_name='" + short_name + '\'' +
                 ", form_name='" + form_name + '\'' +
-                ", uid='" + uid + '\'' +
+                ", uid_question='" + uid_question + '\'' +
                 ", order_pos=" + order_pos +
                 ", numerator_w=" + numerator_w +
                 ", feedback='" + feedback + '\'' +

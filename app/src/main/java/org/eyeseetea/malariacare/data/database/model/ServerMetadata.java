@@ -34,7 +34,7 @@ public class ServerMetadata extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    long id_control_dataelement;
+    long id_server_metadata;
 
     @Column
     String name;
@@ -43,7 +43,7 @@ public class ServerMetadata extends BaseModel {
     String code;
 
     @Column
-    String uid;
+    String uid_server_metadata;
 
     @Column
     String value_type;
@@ -52,19 +52,19 @@ public class ServerMetadata extends BaseModel {
     }
 
     public ServerMetadata(long id_control_dataelement, String name, String code, String valueType, String uid) {
-        this.id_control_dataelement = id_control_dataelement;
+        this.id_server_metadata = id_control_dataelement;
         this.name = name;
         this.code = code;
-        this.uid = uid;
+        this.uid_server_metadata = uid;
         this.value_type = valueType;
     }
 
-    public long getId_control_dataelement() {
-        return id_control_dataelement;
+    public long getId_server_metadata() {
+        return id_server_metadata;
     }
 
-    public void setId_control_dataelement(long id_control_dataelement) {
-        this.id_control_dataelement = id_control_dataelement;
+    public void setId_server_metadata(long id_control_dataelement) {
+        this.id_server_metadata = id_control_dataelement;
     }
 
     public String getName() {
@@ -84,11 +84,11 @@ public class ServerMetadata extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_server_metadata;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_server_metadata = uid;
     }
 
     public String getValueType() {
@@ -126,31 +126,31 @@ public class ServerMetadata extends BaseModel {
 
         ServerMetadata that = (ServerMetadata) o;
 
-        if (id_control_dataelement != that.id_control_dataelement) return false;
+        if (id_server_metadata != that.id_server_metadata) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
-        if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
+        if (uid_server_metadata != null ? !uid_server_metadata.equals(that.uid_server_metadata) : that.uid_server_metadata != null) return false;
         return !(value_type != null ? !value_type.equals(that.value_type) : that.value_type != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id_control_dataelement ^ (id_control_dataelement >>> 32));
+        int result = (int) (id_server_metadata ^ (id_server_metadata >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (value_type != null ? value_type.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_server_metadata != null ? uid_server_metadata.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "ServerMetadata{" +
-                "id_control_dataelement=" + id_control_dataelement +
+                "id_control_dataelement=" + id_server_metadata +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
-                ", uid='" + uid + '\'' +
+                ", uid='" + uid_server_metadata + '\'' +
                 ", value_type=" + value_type +
                 '}';
     }

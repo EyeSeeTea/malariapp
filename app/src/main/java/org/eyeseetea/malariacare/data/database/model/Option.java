@@ -37,7 +37,7 @@ public class Option extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_option;
     @Column
-    String uid;
+    String uid_option;
     @Column
     String code;
     @Column
@@ -96,11 +96,11 @@ public class Option extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_option;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_option = uid;
     }
 
     public String getCode() {return code;}
@@ -234,7 +234,7 @@ public class Option extends BaseModel {
 
         if (id_option != option.id_option) return false;
         if (id_option_attribute != option.id_option_attribute) return false;
-        if (uid != null ? !uid.equals(option.uid) : option.uid != null) return false;
+        if (uid_option != null ? !uid_option.equals(option.uid_option) : option.uid_option != null) return false;
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
@@ -250,7 +250,7 @@ public class Option extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_option ^ (id_option >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_option != null ? uid_option.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
@@ -266,7 +266,7 @@ public class Option extends BaseModel {
     public String toString() {
         return "Option{" +
                 "id_option=" + id_option +
-                ", uid='" + uid + '\'' +
+                ", uid_option='" + uid_option + '\'' +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +

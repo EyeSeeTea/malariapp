@@ -44,7 +44,7 @@ public class OrgUnit extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_org_unit;
     @Column
-    String uid;
+    String uid_org_unit;
     @Column
     String name;
     @Column
@@ -89,7 +89,7 @@ public class OrgUnit extends BaseModel {
 
     public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
         this(name);
-        this.uid = uid;
+        this.uid_org_unit = uid;
         this.setOrgUnit(orgUnit);
         this.setOrgUnitLevel(orgUnitLevel);
     }
@@ -103,11 +103,11 @@ public class OrgUnit extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_org_unit;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_org_unit = uid;
     }
 
     public String getName() {
@@ -247,7 +247,7 @@ public class OrgUnit extends BaseModel {
     public static OrgUnit getOrgUnit(String uid) {
             OrgUnit orgUnit = new Select()
                     .from(OrgUnit.class)
-                    .where(OrgUnit_Table.uid
+                    .where(OrgUnit_Table.uid_org_unit
                             .is(uid)).querySingle();
         return orgUnit;
     }
@@ -260,7 +260,7 @@ public class OrgUnit extends BaseModel {
         OrgUnit orgUnit = (OrgUnit) o;
 
         if (id_org_unit != orgUnit.id_org_unit) return false;
-        if (uid != null ? !uid.equals(orgUnit.uid) : orgUnit.uid != null) return false;
+        if (uid_org_unit != null ? !uid_org_unit.equals(orgUnit.uid_org_unit) : orgUnit.uid_org_unit != null) return false;
         if (name != null ? !name.equals(orgUnit.name) : orgUnit.name != null) return false;
         if (id_parent != null ? !id_parent.equals(orgUnit.id_parent) : orgUnit.id_parent != null)
             return false;
@@ -271,7 +271,7 @@ public class OrgUnit extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_org_unit ^ (id_org_unit >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_org_unit != null ? uid_org_unit.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
         result = 31 * result + (id_org_unit_level_fk != null ? id_org_unit_level_fk.hashCode() : 0);
@@ -282,7 +282,7 @@ public class OrgUnit extends BaseModel {
     public String toString() {
         return "OrgUnit{" +
                 "id_org_unit=" + id_org_unit +
-                ", uid='" + uid + '\'' +
+                ", uid_org_unit='" + uid_org_unit + '\'' +
                 ", name='" + name + '\'' +
                 ", id_parent=" + id_parent +
                 ", id_org_unit_level_fk=" + id_org_unit_level_fk +

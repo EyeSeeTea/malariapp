@@ -36,7 +36,7 @@ public class User extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_user;
     @Column
-    String uid;
+    String uid_user;
     @Column
     String name;
     @Column
@@ -51,7 +51,7 @@ public class User extends BaseModel {
     }
 
     public User(String uid, String name) {
-        this.uid = uid;
+        this.uid_user = uid;
         this.name = name;
     }
 
@@ -64,11 +64,11 @@ public class User extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_user;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_user = uid;
     }
 
     public String getName() {
@@ -108,7 +108,7 @@ public class User extends BaseModel {
     public static User getUser(String value) {
         return new Select()
                 .from(User.class)
-                .where(Score_Table.uid.eq(value)).querySingle();
+                .where(User_Table.uid_user.eq(value)).querySingle();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class User extends BaseModel {
         User user = (User) o;
 
         if (id_user != user.id_user) return false;
-        if (uid != null ? !uid.equals(user.uid) : user.uid != null) return false;
+        if (uid_user != null ? !uid_user.equals(user.uid_user) : user.uid_user != null) return false;
         return !(name != null ? !name.equals(user.name) : user.name != null);
 
     }
@@ -127,7 +127,7 @@ public class User extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_user ^ (id_user >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_user != null ? uid_user.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
@@ -136,7 +136,7 @@ public class User extends BaseModel {
     public String toString() {
         return "User{" +
                 "id=" + id_user +
-                ", uid='" + uid + '\'' +
+                ", uid_user='" + uid_user + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
