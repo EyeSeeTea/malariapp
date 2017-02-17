@@ -38,7 +38,7 @@ public class Score extends BaseModel {
     long id_score;
 
     @Column
-    Long id_survey;
+    Long id_survey_fk;
     /**
      * Reference to the survey associated to this score (loaded lazily)
      */
@@ -69,22 +69,22 @@ public class Score extends BaseModel {
 
     public Survey getSurvey() {
         if(survey==null){
-            if(id_survey==null) return null;
+            if(id_survey_fk==null) return null;
             survey = new Select()
                     .from(Survey.class)
                     .where(Survey_Table.id_survey
-                            .is(id_survey)).querySingle();
+                            .is(id_survey_fk)).querySingle();
         }
         return survey;
     }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
-        this.id_survey = (survey!=null)?survey.getId_survey():null;
+        this.id_survey_fk = (survey!=null)?survey.getId_survey():null;
     }
 
     public void setSurvey(Long id_survey){
-        this.id_survey = id_survey;
+        this.id_survey_fk = id_survey;
         this.survey = null;
     }
 
@@ -112,7 +112,7 @@ public class Score extends BaseModel {
         Score score1 = (Score) o;
 
         if (id_score != score1.id_score) return false;
-        if (id_survey != null ? !id_survey.equals(score1.id_survey) : score1.id_survey != null)
+        if (id_survey_fk != null ? !id_survey_fk.equals(score1.id_survey_fk) : score1.id_survey_fk != null)
             return false;
         if (uid != null ? !uid.equals(score1.uid) : score1.uid != null) return false;
         return !(score != null ? !score.equals(score1.score) : score1.score != null);
@@ -122,7 +122,7 @@ public class Score extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_score ^ (id_score >>> 32));
-        result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
+        result = 31 * result + (id_survey_fk != null ? id_survey_fk.hashCode() : 0);
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (score != null ? score.hashCode() : 0);
         return result;
@@ -132,7 +132,7 @@ public class Score extends BaseModel {
     public String toString() {
         return "Score{" +
                 "id_score=" + id_score +
-                ", id_survey=" + id_survey +
+                ", id_survey=" + id_survey_fk +
                 ", uid='" + uid + '\'' +
                 ", score=" + score +
                 '}';

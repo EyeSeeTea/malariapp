@@ -83,7 +83,7 @@ public class User extends BaseModel {
         if(surveys==null){
             surveys = new Select()
                     .from(Survey.class)
-                    .where(Survey_Table.id_user
+                    .where(Survey_Table.id_user_fk
                             .eq(this.getId_user())).queryList();
         }
         return surveys;

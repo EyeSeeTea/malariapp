@@ -44,7 +44,7 @@ public class Header extends BaseModel{
     @Column
     Integer order_pos;
     @Column
-    Long id_tab;
+    Long id_tab_fk;
 
     /**
      * Reference to parent tab (loaded lazily)
@@ -100,29 +100,29 @@ public class Header extends BaseModel{
 
     public Tab getTab() {
         if(tab==null){
-            if(id_tab==null) return null;
+            if(id_tab_fk==null) return null;
             tab = new Select()
                     .from(Tab.class)
                     .where((Tab_Table.id_tab)
-                            .is(id_tab)).querySingle();
+                            .is(id_tab_fk)).querySingle();
         }
         return tab;
     }
 
     public void setTab(Tab tab) {
         this.tab = tab;
-        this.id_tab = (tab!=null)?tab.getId_tab():null;
+        this.id_tab_fk = (tab!=null)?tab.getId_tab():null;
     }
 
     public void setTab(Long id_tab){
-        this.id_tab = id_tab;
+        this.id_tab_fk = id_tab;
         this.tab = null;
     }
 
     public List<Question> getQuestions(){
         if (this.questions == null){
             this.questions = new Select().from(Question.class)
-                    .where(Question_Table.id_header.eq(this.getId_header()))
+                    .where(Question_Table.id_header_fk.eq(this.getId_header()))
                     .orderBy( Question_Table.order_pos,true).queryList();
         }
         return questions;
@@ -134,7 +134,7 @@ public class Header extends BaseModel{
      */
     public long getNumberOfQuestionParents() {
         return SQLite.selectCountOf().from(Question.class)
-                .where(Question_Table.id_header.eq(getId_header()))
+                .where(Question_Table.id_header_fk.eq(getId_header()))
                 .and(Question_Table.id_parent.isNull()).count();
     }
 
@@ -151,7 +151,7 @@ public class Header extends BaseModel{
         if (name != null ? !name.equals(header.name) : header.name != null) return false;
         if (order_pos != null ? !order_pos.equals(header.order_pos) : header.order_pos != null)
             return false;
-        return !(id_tab != null ? !id_tab.equals(header.id_tab) : header.id_tab != null);
+        return !(id_tab_fk != null ? !id_tab_fk.equals(header.id_tab_fk) : header.id_tab_fk != null);
 
     }
 
@@ -161,7 +161,7 @@ public class Header extends BaseModel{
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
-        result = 31 * result + (id_tab != null ? id_tab.hashCode() : 0);
+        result = 31 * result + (id_tab_fk != null ? id_tab_fk.hashCode() : 0);
         return result;
     }
 
@@ -173,7 +173,7 @@ public class Header extends BaseModel{
                 ", short_name='" + short_name + '\'' +
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
-                ", id_tab=" + id_tab +
+                ", id_tab_fk=" + id_tab_fk +
                 '}';
     }
 }

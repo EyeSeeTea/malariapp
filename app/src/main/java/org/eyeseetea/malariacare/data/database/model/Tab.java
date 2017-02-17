@@ -45,7 +45,7 @@ public class Tab extends BaseModel {
     @Column
     Integer type;
     @Column
-    Long id_program;
+    Long id_program_fk;
 
     /**
      * Reference to parent Program (loaded lazily)
@@ -101,30 +101,30 @@ public class Tab extends BaseModel {
 
     public Program getProgram() {
         if(program ==null){
-            if (id_program == null) return null;
+            if (id_program_fk == null) return null;
 
             program = new Select()
                     .from(Program.class)
                     .where(Program_Table.id_program
-                            .is(id_program)).querySingle();
+                            .is(id_program_fk)).querySingle();
         }
         return program;
     }
 
     public void setProgram(Long id_program){
-        this.id_program=id_program;
+        this.id_program_fk=id_program;
         this.program=null;
     }
 
     public void setProgram(Program program) {
         this.program = program;
-        this.id_program = (program!=null)?program.getId_program():null;
+        this.id_program_fk = (program!=null)?program.getId_program():null;
     }
 
     public List<Header> getHeaders(){
         if(headers==null){
             headers =new Select().from(Header.class)
-                    .where(Header_Table.id_tab.eq(this.getId_tab()))
+                    .where(Header_Table.id_tab_fk.eq(this.getId_tab()))
                     .orderBy(Header_Table.order_pos,true).queryList();
         }
         return headers;
@@ -135,7 +135,7 @@ public class Tab extends BaseModel {
      */
     public static List<Tab> getTabsBySession(String module){
         return new Select().from(Tab.class)
-                .where(Tab_Table.id_program.eq(Session.getSurveyByModule(module).getProgram().getId_program()))
+                .where(Tab_Table.id_program_fk.eq(Session.getSurveyByModule(module).getProgram().getId_program()))
                 .orderBy(Tab_Table.order_pos,true).queryList();
     }
 
@@ -193,7 +193,7 @@ public class Tab extends BaseModel {
         if (order_pos != null ? !order_pos.equals(tab.order_pos) : tab.order_pos != null)
             return false;
         if (type != null ? !type.equals(tab.type) : tab.type != null) return false;
-        return !(id_program != null ? !id_program.equals(tab.id_program) : tab.id_program != null);
+        return !(id_program_fk != null ? !id_program_fk.equals(tab.id_program_fk) : tab.id_program_fk != null);
 
     }
 
@@ -203,7 +203,7 @@ public class Tab extends BaseModel {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (id_program != null ? id_program.hashCode() : 0);
+        result = 31 * result + (id_program_fk != null ? id_program_fk.hashCode() : 0);
         return result;
     }
 
@@ -215,7 +215,7 @@ public class Tab extends BaseModel {
                 ", name='" + name + '\'' +
                 ", order_pos=" + order_pos +
                 ", type=" + type +
-                ", id_program=" + id_program +
+                ", id_program=" + id_program_fk +
                 '}';
     }
 

@@ -45,7 +45,7 @@ public class Option extends BaseModel {
     @Column
     Float factor;
     @Column
-    Long id_answer;
+    Long id_answer_fk;
 
     /**
      * Reference to parent answer (loaded lazily)
@@ -125,22 +125,22 @@ public class Option extends BaseModel {
 
     public Answer getAnswer() {
         if(answer==null){
-            if(id_answer==null) return null;
+            if(id_answer_fk==null) return null;
             answer = new Select()
                     .from(Answer.class)
                     .where(Answer_Table.id_answer
-                            .is(id_answer)).querySingle();
+                            .is(id_answer_fk)).querySingle();
         }
         return answer;
     }
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
-        this.id_answer = (answer!=null)?answer.getId_answer():null;
+        this.id_answer_fk = (answer!=null)?answer.getId_answer():null;
     }
 
     public void setAnswer(Long id_answer){
-        this.id_answer = id_answer;
+        this.id_answer_fk = id_answer;
         this.answer = null;
     }
 
@@ -193,7 +193,7 @@ public class Option extends BaseModel {
     public List<Value> getValues(){
         if(values==null){
             values = new Select().from(Value.class)
-                    .where(Value_Table.id_option.eq(this.getId_option())).queryList();
+                    .where(Value_Table.id_option_fk.eq(this.getId_option())).queryList();
         }
         return values;
     }
@@ -238,7 +238,7 @@ public class Option extends BaseModel {
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
-        if (id_answer != null ? !id_answer.equals(option.id_answer) : option.id_answer != null)
+        if (id_answer_fk != null ? !id_answer_fk.equals(option.id_answer_fk) : option.id_answer_fk != null)
             return false;
         if (answer != null ? !answer.equals(option.answer) : option.answer != null) return false;
         if (optionAttribute != null ? !optionAttribute.equals(option.optionAttribute) : option.optionAttribute != null)
@@ -254,7 +254,7 @@ public class Option extends BaseModel {
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
-        result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (id_answer_fk != null ? id_answer_fk.hashCode() : 0);
         result = 31 * result + (answer != null ? answer.hashCode() : 0);
         result = 31 * result + (int) (id_option_attribute ^ (id_option_attribute >>> 32));
         result = 31 * result + (optionAttribute != null ? optionAttribute.hashCode() : 0);
@@ -270,7 +270,7 @@ public class Option extends BaseModel {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
-                ", id_answer=" + id_answer +
+                ", id_answer_fk=" + id_answer_fk +
                 ", answer=" + answer +
                 ", id_option_attribute=" + id_option_attribute +
                 ", optionAttribute=" + optionAttribute +

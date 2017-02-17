@@ -177,7 +177,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         if(questions==null){
             questions = new Select()
                     .from(Question.class)
-                    .where(Question_Table.id_composite_score.eq(this.getId_composite_score()))
+                    .where(Question_Table.id_composite_score_fk.eq(this.getId_composite_score()))
                     .orderBy(Question_Table.order_pos ,true)
                     .queryList();
         }
@@ -200,15 +200,15 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         List<CompositeScore> compositeScoresByProgram = new Select().distinct().from(CompositeScore.class).as(compositeScoreName)
                 .join(Question.class, Join.JoinType.LEFT_OUTER).as(questionName)
                 .on(CompositeScore_Table.id_composite_score.withTable(compositeScoreAlias)
-                        .eq(Question_Table.id_composite_score.withTable(questionAlias)))
+                        .eq(Question_Table.id_composite_score_fk.withTable(questionAlias)))
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .join(Program.class, Join.JoinType.LEFT_OUTER).as(programName)
-                .on(Tab_Table.id_program.withTable(tabAlias)
+                .on(Tab_Table.id_program_fk.withTable(tabAlias)
                         .eq(Program_Table.id_program.withTable(programAlias)))
                 .join(CompositeScore.class, Join.JoinType.LEFT_OUTER).as(compositeScoreTwoName)
                 .on(CompositeScore_Table.id_composite_score.withTable(compositeScoreAlias)

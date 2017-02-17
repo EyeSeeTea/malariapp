@@ -122,7 +122,7 @@ public class TabGroup extends BaseModel {
     public List<Tab> getTabs(){
         if (tabs==null){
             tabs=new Select().from(Tab.class)
-                    .where(Tab_Table.id_program.eq(this.getId_tab_group()))
+                    .where(Tab_Table.id_program_fk.eq(this.getId_tab_group()))
                     .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
         }
         return tabs;
@@ -131,7 +131,7 @@ public class TabGroup extends BaseModel {
     public List<Survey> getSurveys(){
         if(surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Survey_Table.id_program.eq(this.getId_tab_group())).queryList();
+                    .where(Survey_Table.id_program_fk.eq(this.getId_tab_group())).queryList();
         }
         return this.surveys;
     }

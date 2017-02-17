@@ -113,7 +113,7 @@ public class Program extends BaseModel{
     public List<OrgUnit> getOrgUnits(){
         if(orgUnits==null){
             List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
-                    .where(OrgUnitProgramRelation_Table.id_program.eq(this.getId_program()))
+                    .where(OrgUnitProgramRelation_Table.id_program_fk.eq(this.getId_program()))
                     .queryList();
             this.orgUnits = new ArrayList<>();
             for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
@@ -126,7 +126,7 @@ public class Program extends BaseModel{
     public List<Tab> getTabs(){
         if (tabs==null){
             tabs=new Select().from(Tab.class)
-                    .where(Tab_Table.id_program.eq(this.getId_program()))
+                    .where(Tab_Table.id_program_fk.eq(this.getId_program()))
                     .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
         }
         return tabs;

@@ -50,7 +50,7 @@ public class Media extends BaseModel{
     String resource_url;
 
     @Column
-    Long id_question;
+    Long id_question_fk;
 
     @Column
     String filename;
@@ -73,11 +73,11 @@ public class Media extends BaseModel{
 
     public Question getQuestion(){
         if(question==null){
-            if(id_question==null) return null;
+            if(id_question_fk==null) return null;
             question = new Select()
                     .from(Question.class)
                     .where(Question_Table.id_question
-                        .is(id_question)).querySingle();
+                        .is(id_question_fk)).querySingle();
         }
         return question;
     }
@@ -122,18 +122,18 @@ public class Media extends BaseModel{
 
         return new Select().
                 from(Media.class).
-                where(Media_Table.id_question.eq(question.id_question)).
+                where(Media_Table.id_question_fk.eq(question.id_question)).
                 orderBy(Media_Table.id_media, true).
                 queryList();
     }
 
     public void setQuestion(Question question){
         this.question = question;
-        this.id_question = (question!=null)?question.getId_question():null;
+        this.id_question_fk = (question!=null)?question.getId_question():null;
     }
 
     public void setQuestion(Long id_question){
-        this.id_question = id_question;
+        this.id_question_fk = id_question;
         this.question = null;
     }
 
@@ -147,7 +147,7 @@ public class Media extends BaseModel{
             return;
         }
 
-        this.id_question = question.getId_question();
+        this.id_question_fk = question.getId_question();
     }
 
     /**
@@ -174,7 +174,7 @@ public class Media extends BaseModel{
         if (filename != media.filename) return false;
         if (resource_url != null ? !resource_url.equals(media.resource_url) : media.resource_url != null)
             return false;
-        return id_question != null ? id_question.equals(media.id_question) : media.id_question == null;
+        return id_question_fk != null ? id_question_fk.equals(media.id_question_fk) : media.id_question_fk == null;
 
     }
 
@@ -183,7 +183,7 @@ public class Media extends BaseModel{
         int result = (int) (id_media ^ (id_media >>> 32));
         result = 31 * result + media_type;
         result = 31 * result + (resource_url != null ? resource_url.hashCode() : 0);
-        result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
+        result = 31 * result + (id_question_fk != null ? id_question_fk.hashCode() : 0);
         result = 31 * result + (filename != null ? filename.hashCode() : 0);
         return result;
     }
@@ -194,7 +194,7 @@ public class Media extends BaseModel{
                 "id_media=" + id_media +
                 ", media_type=" + media_type +
                 ", resource_url='" + resource_url + '\'' +
-                ", id_question=" + id_question +
+                ", id_question=" + id_question_fk +
                 ", filename=" + filename +
                 '}';
     }
