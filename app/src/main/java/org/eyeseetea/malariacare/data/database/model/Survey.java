@@ -102,7 +102,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     Integer status;
 
     @Column
-    String eventuid;
+    String uid_event_fk;
 
     /**
      * List of values for this survey
@@ -164,15 +164,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public String getEventUid() {
-        return eventuid;
+        return uid_event_fk;
     }
 
     public void setEventUid(EventFlow event) {
-        this.eventuid = event.getUId();
+        this.uid_event_fk = event.getUId();
     }
 
     public void setEventUid(String eventuid) {
-        this.eventuid = eventuid;
+        this.uid_event_fk = eventuid;
     }
 
     public OrgUnit getOrgUnit() {
@@ -881,7 +881,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Survey_Table.status.isNot(Constants.SURVEY_HIDE))
                 .and( Survey_Table.id_program_fk.eq(program.getId_program()))
                 .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(Survey_Table.eventuid.eq(lastEventInServer.getUId()))
+                .and(Survey_Table.uid_event_fk.eq(lastEventInServer.getUId()))
                 .orderBy(Survey_Table.completion_date,false)
                 .querySingle();
     }
@@ -901,7 +901,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public boolean isAModification(){
-        return this.eventuid!=null && this.eventuid.length()>0;
+        return this.uid_event_fk!=null && this.uid_event_fk.length()>0;
     }
 
     /**
@@ -910,7 +910,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      */
     public EventFlow getEvent(){
         return new Select().from(EventFlow.class)
-                .where(EventFlow_Table.uId.eq(eventuid)).querySingle();
+                .where(EventFlow_Table.uId.eq(uid_event_fk)).querySingle();
     }
 
     /**
@@ -958,7 +958,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
             return false;
         if (upload_date != null ? !upload_date.equals(survey.upload_date) : survey.upload_date != null)
             return false;
-        if (eventuid != null ? !eventuid.equals(survey.eventuid) : survey.eventuid != null)
+        if (uid_event_fk != null ? !uid_event_fk.equals(survey.uid_event_fk) : survey.uid_event_fk != null)
             return false;
         if (scheduled_date != null ? !scheduled_date.equals(survey.scheduled_date) : survey.scheduled_date != null)
             return false;
@@ -975,7 +975,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         result = 31 * result + (creation_date != null ? creation_date.hashCode() : 0);
         result = 31 * result + (completion_date != null ? completion_date.hashCode() : 0);
                 result = 31 * result + (upload_date != null ? upload_date.hashCode() : 0);
-        result = 31 * result + (eventuid != null ? eventuid.hashCode() : 0);
+        result = 31 * result + (uid_event_fk != null ? uid_event_fk.hashCode() : 0);
         result = 31 * result + (scheduled_date != null ? scheduled_date.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
@@ -993,7 +993,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", upload_date=" + upload_date +
                 ", scheduled_date=" + scheduled_date +
                 ", status=" + status +
-                ", eventuid="+eventuid+
+                ", uid_event_fk="+uid_event_fk+
                 '}';
     }
 
