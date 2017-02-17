@@ -255,7 +255,6 @@
     <string name="number_8">៨</string>
     <string name="number_9">៩</string>
     <string name="assessment_title_rdt">អ.ឌី.ធី</string>
-    <string name="progress_demo_pull">កំពុងផ្ទុកទិន្នន័យមេតាការបង្ហាញ ...</string>
     <string name="dialog_demo_pull_success">"ទិន្នន័យមេតា Dhis បានផ្ទុកដោយជោគជ័យពីទិន្នន័យក្នុងស្រុក"</string>
     <string name="progress_pull_downloading" >ពន្លឿនទិន្នន័យមេតា (Metadata) (ប្រហែលជាចំណាយពេលពីរបីនាទី)</string>
     <string name="progress_pull_preparing_orgs">កំពុងទាញយកអង្គភាព...</string>

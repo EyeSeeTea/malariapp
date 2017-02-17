@@ -162,7 +162,6 @@ Mensuelle"</string>
 <string name="dialog_pull_success">"Téléchargement des métadonnées Dhis du serveur réussi"</string>
 <string name="dialog_title_pull_response">"Status du téléchargement"</string>
 <string name="progress_pull_connecting">"Connexion au serveur DHIS..."</string>
-<string name="progress_demo_pull">"Chargement des métadonnées de démonstration ..."</string>
 <string name="dialog_demo_pull_success">"Les métadonnées Dhis chargées avec succès à partir de données locales"</string>
 <string name="progress_pull_downloading">"Mise à jour des métadonnées (cela peut prendre quelques minutes)..."</string>
 <string name="progress_pull_preparing_program">"Chargement des programmes..."</string>

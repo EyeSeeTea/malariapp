@@ -29,10 +29,14 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy extends ALoginActivityStrategy {
@@ -85,7 +89,7 @@ public class LoginActivityStrategy extends ALoginActivityStrategy {
                         new LoginUseCase.Callback() {
                             @Override
                             public void onLoginSuccess() {
-                                loginActivity.onSuccess();
+                                executeDemo();
                             }
 
                             @Override
@@ -105,6 +109,46 @@ public class LoginActivityStrategy extends ALoginActivityStrategy {
                         });
             }
         });
+    }
+
+    private void executeDemo() {
+        LocalPullController pullController = new LocalPullController(loginActivity);
+        PullUseCase pullUseCase = new PullUseCase(pullController);
+
+        PullFilters pullFilters = new PullFilters();
+
+        pullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+            @Override
+            public void onComplete() {
+                finishAndGo(DashboardActivity.class);
+            }
+
+            @Override
+            public void onPullError() {
+                Log.d(this.getClass().getSimpleName(), "Pull error");
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                Log.d(this.getClass().getSimpleName(), step.toString());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.e(this.getClass().getSimpleName(), "Pull cancel");
+            }
+
+            @Override
+            public void onConversionError() {
+                Log.d(this.getClass().getSimpleName(), "Pull error");
+            }
+
+            @Override
+            public void onNetworkError() {
+                Log.e(this.getClass().getSimpleName(), "Network Error");
+            }
+        });
+
     }
 
     public void finishAndGo(Class<? extends Activity> activityClass) {

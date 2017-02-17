@@ -19,13 +19,10 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
-import org.eyeseetea.malariacare.data.database.local.PullLocalSDKDataSource;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
@@ -40,17 +37,12 @@ public class PullController implements IPullController {
      * Used for control new steps
      */
     public static Boolean PULL_IS_ACTIVE = false;
-    private static PullController instance;
     private final String TAG = ".PullController";
     ConversionLocalDataSource conversionLocalDataSource;
-    PullLocalSDKDataSource mPullLocalDataSource;
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullControllerCallback callback;
 
-    private Context mContext;
-
-    public PullController(Context context) {
-        mContext = context;
+    public PullController() {
     }
 
 
@@ -91,13 +83,6 @@ public class PullController implements IPullController {
         conversionLocalDataSource.wipeDataBase();
         PULL_IS_ACTIVE = true;
         this.callback = callback;
-
-        if (filters.isDemo()) {
-            callback.onStep(PullStep.DEMO);
-            LocalAsyncPull localAsyncPull = new LocalAsyncPull();
-            localAsyncPull.execute();
-            return;
-        }
         conversionLocalDataSource = new ConversionLocalDataSource(callback);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
@@ -123,23 +108,6 @@ public class PullController implements IPullController {
             }
 
         });
-    }
-
-    private void demoPull(final IPullControllerCallback callback) {
-        mPullLocalDataSource = new PullLocalSDKDataSource();
-        mPullLocalDataSource.pull(new IPullSourceCallback() {
-
-            @Override
-            public void onComplete() {
-                callback.onComplete();
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                throwable.printStackTrace();
-            }
-
-        }, mContext);
     }
 
     private void pullData(final PullFilters filters) {
@@ -196,14 +164,5 @@ public class PullController implements IPullController {
     @Override
     public boolean isPullActive() {
         return PULL_IS_ACTIVE;
-    }
-
-    public class LocalAsyncPull extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            demoPull(callback);
-            return null;
-        }
     }
 }

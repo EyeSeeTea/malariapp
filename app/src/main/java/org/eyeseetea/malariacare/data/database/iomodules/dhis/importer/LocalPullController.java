@@ -1,23 +1,4 @@
-/*
- * Copyright (c) 2017.
- *
- * This file is part of QA App.
- *
- *  Health Network QIS App is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  Health Network QIS App is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-package org.eyeseetea.malariacare.data.database.local;
+package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -29,22 +10,29 @@ import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class PullLocalSDKDataSource {
-    final String TAG = "PullLocalSDKDataSource";
+public class LocalPullController implements IPullController {
+    final String TAG = "PullLocalDataSource";
 
     final String DATABASE_FOLDER = "database/";
     final String DATABASE_FILE = "EyeSeeTeaDB.db";
+    Context context;
 
-    public void pull(IPullSourceCallback callback, Context context) {
+    public LocalPullController(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void pull(PullFilters filters, IPullControllerCallback callback) {
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
         Log.d(TAG, "pull from local source");
@@ -120,5 +108,15 @@ public class PullLocalSDKDataSource {
                 .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfigDhis);
+    }
+
+    @Override
+    public void cancel() {
+
+    }
+
+    @Override
+    public boolean isPullActive() {
+        return false;
     }
 }

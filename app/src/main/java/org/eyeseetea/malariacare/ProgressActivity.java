@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -123,7 +124,12 @@ public class ProgressActivity extends Activity {
     }
 
     private void initializeDependencies() {
-        IPullController pullController = new PullController(this);
+        IPullController pullController;
+        if (Session.getCredentials().isDemoCredentials()) {
+            pullController = new LocalPullController(this);
+        } else {
+            pullController = new PullController();
+        }
         mPullUseCase = new PullUseCase(pullController);
     }
 
@@ -347,7 +353,7 @@ public class ProgressActivity extends Activity {
     }
 
     private int getDoneMessage() {
-        if(Session.getCredentials().isDemoCredentials()){
+        if (Session.getCredentials().isDemoCredentials()) {
             return R.string.dialog_demo_pull_success;
         }
         return R.string.dialog_pull_success;
@@ -360,7 +366,7 @@ public class ProgressActivity extends Activity {
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        PullFilters pullFilters = new PullFilters(month.getTime(),null, isDemo,
+        PullFilters pullFilters = new PullFilters(month.getTime(), null, isDemo,
                 AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
                 PreferencesState.getInstance().getMaxEvents());
 
@@ -391,10 +397,6 @@ public class ProgressActivity extends Activity {
             @Override
             public void onStep(PullStep pullStep) {
                 switch (pullStep) {
-                    case DEMO:
-                        step(PreferencesState.getInstance().getContext().getString(
-                                R.string.progress_demo_pull));
-                        break;
                     case PROGRAMS:
                         step(PreferencesState.getInstance().getContext().getString(
                                 R.string.progress_pull_downloading));

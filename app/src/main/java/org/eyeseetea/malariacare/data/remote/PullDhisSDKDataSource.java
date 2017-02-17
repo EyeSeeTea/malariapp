@@ -69,7 +69,7 @@ import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 
-public class PullDhisSDKDataSource {
+public class PullDhisSDKDataSource implements IPullDataSource {
     private final String TAG = ".PullDhisSDKDataSource";
 
     public PullDhisSDKDataSource() {
