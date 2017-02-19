@@ -111,31 +111,18 @@ public class EventExtended implements VisitableFromSDK {
      * Returns the survey.eventDate associated with this event (eventDate field)
      */
     public Date getEventDate() {
-        if (event.getEventDate() != null) {
-            return event.getEventDate().toDate();
-        } else {
-            return null;
-        }
+        return (event.getEventDate() != null) ? event.getEventDate().toDate() : null;
     }
 
     /**
      * Returns the survey.eventDate associated with this event (dueDate field)
      */
     public Date getDueDate() {
-        if (event == null) {
-            return null;
-        }
-
-        return event.getDueDate().toDate();
+        return (event != null) ? event.getDueDate().toDate() : null;
     }
 
     public static Date parseDate(String dateAsString, String format) throws ParseException {
-        if (dateAsString == null) {
-            return null;
-        }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.parse(dateAsString);
+        return (dateAsString != null) ? new SimpleDateFormat(format).parse(dateAsString) : null;
     }
 
     public static Date parseShortDate(String dateAsString) {
@@ -167,11 +154,7 @@ public class EventExtended implements VisitableFromSDK {
      * Turns a given date into a parseable String according to sdk date format
      */
     public static String format(Date date, String format) {
-        if (date == null) {
-            return null;
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.format(date);
+        return (date != null) ? new SimpleDateFormat(format).format(date) : null;
     }
 
 
