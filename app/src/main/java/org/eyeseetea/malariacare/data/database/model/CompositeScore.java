@@ -218,11 +218,6 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 .orderBy(CompositeScore_Table.order_pos, true)
                 .queryList();
 
-        // remove duplicates
-        Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();
-        uniqueCompositeScoresByProgram.addAll(compositeScoresByProgram);
-        compositeScoresByProgram.clear();
-        compositeScoresByProgram.addAll(uniqueCompositeScoresByProgram);
 
         //Find parent scores from 'leaves'
         Set<CompositeScore> parentCompositeScores = new HashSet<>();
@@ -231,6 +226,11 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         }
         compositeScoresByProgram.addAll(parentCompositeScores);
 
+        // remove duplicates
+        Set<CompositeScore> uniqueCompositeScoresByProgram = new HashSet<>();
+        uniqueCompositeScoresByProgram.addAll(compositeScoresByProgram);
+        compositeScoresByProgram.clear();
+        compositeScoresByProgram.addAll(uniqueCompositeScoresByProgram);
 
         Collections.sort(compositeScoresByProgram, new Comparator() {
 
@@ -243,7 +243,6 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 return new Integer(cs1.getOrder_pos().compareTo(new Integer(cs2.getOrder_pos())));
             }
         });
-
 
 
         //return all scores
