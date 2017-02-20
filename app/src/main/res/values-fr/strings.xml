@@ -232,4 +232,7 @@ Mensuelle"</string>
 <string name="feedback_media_link" >"Voir la vidéo"</string>
 <string name="feedback_media">Voir la vidéo commentaires</string>
 <string name="feedback_view_image">"Ouvrir image avec ..."</string>
+
+<string name="system_defined">"Système défini"</string>
+<string name="settings_select_language">"La langue"</string>
 </resources>

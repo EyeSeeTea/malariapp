@@ -237,4 +237,7 @@ evaluation"</string>
 
 <!-- from old SDK -->
 <string name="select_all">Select all</string>
+
+<string name="system_defined">"System defined"</string>
+<string name="settings_select_language">"Language"</string>
 </resources>
