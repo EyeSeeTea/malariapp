@@ -154,15 +154,14 @@ public class ConvertToSDKVisitor implements
         Log.d(TAG, String.format("Creating event for survey (%d) ...", survey.getId_survey()));
         Log.d(TAG, String.format("Creating event for survey (%s) ...", survey.toString()));
 
+        String errorMessage = "Exception creating a new event from survey. Removing survey from DB";
         try {
             this.currentEvent = buildEvent();
             currentEvent.save();
         } catch (Exception e) {
-            showErrorConversionMessage(
-                    "Exception creating a new event from survey. Removing survey from DB");
+            showErrorConversionMessage(errorMessage);
             survey.delete();
         }
-        String errorMessage = "";
         try {
             Log.d(TAG, "Event created" + currentEvent.toString());
             //Calculates scores and update survey
