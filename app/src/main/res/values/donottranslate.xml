@@ -106,6 +106,7 @@
     <string name="error_in_pull_conversion" translatable="false">"Pull error during the conversion"</string>
     <string name="pull_cancelled" translatable="false">"Pull cancelled by the user"</string>
     <item name="push_in_progress" type="string" translatable="false">push_in_progress</item>
+    <item name="language_code" translatable="false" type="string">language_code</item>
     <string name="push_stopped" type="string">"Push stopped, There is already a push in progress"</string>
     <string name="push_error" type="string">"Unexpected error has occurred in push process"</string>
     <string name="push_surveys_not_found" type="string">"Pending surveys not found"</string>
