@@ -75,7 +75,7 @@ public class PullClient {
         try {
             JSONObject response = networkUtils.getData(data);
             JsonNode jsonNode=networkUtils.toJsonNode(response);
-            List<EventExtended> eventsFromThatDate= SdkController.getEventsFromEventsWrapper(jsonNode);
+            List<EventExtended> eventsFromThatDate= SurveyChecker.getEvents(jsonNode);
             for(EventExtended event:eventsFromThatDate){
                 //First event or events without date so far
                 if(lastEventInServer==null){

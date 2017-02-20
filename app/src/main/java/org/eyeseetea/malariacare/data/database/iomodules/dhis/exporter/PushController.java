@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
 import java.util.List;
@@ -52,9 +53,8 @@ public class PushController implements IPushController {
     }
 
     public void push(final IPushControllerCallback callback) {
-        boolean isNetworkAvailable = AUtils.isNetworkAvailable();
 
-        if (!isNetworkAvailable) {
+        if (!AUtils.isNetworkAvailable()) {
             callback.onError(new NetworkException());
         }
 
@@ -102,9 +102,6 @@ public class PushController implements IPushController {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        //// FIXME: 20/02/2017 All errors in the push callback this error, and
-                        // surveysAsQuareintine are not fixed
-
                         mConvertToSDKVisitor.setSurveysAsQuarantine();
                         callback.onError(throwable);
                     }
@@ -115,6 +112,8 @@ public class PushController implements IPushController {
         Log.d(TAG, "Converting APP survey into a SDK event");
 
         for (Survey survey : surveys) {
+            survey.setStatus(Constants.SURVEY_SENDING);
+            survey.save();
             survey.accept(mConvertToSDKVisitor);
         }
     }

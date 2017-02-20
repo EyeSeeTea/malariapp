@@ -41,6 +41,10 @@ public class PushClient {
 
     private static final String TAG = ".PushClient";
     /**
+     * Hardcoded UID for dataElement DATETIME CAPTURE
+     */
+    public static String DATETIME_CAPTURE_UID = "qWMb2UM2ikL";
+    /**
      * For pushing just 1 survey
      */
     Survey survey;

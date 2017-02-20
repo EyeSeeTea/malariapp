@@ -19,16 +19,12 @@
 
 package org.eyeseetea.malariacare.data.remote;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
@@ -54,10 +50,18 @@ public class PushDhisSDKDataSource {
 
     private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
         final Set<String> eventUids = new HashSet<>();
+        final Set<String> sendingEventUids = new HashSet<>();
+        List<Survey> surveys = Survey.getAllSendingSurveys();
+        for (Survey survey : surveys) {
+            sendingEventUids.add(survey.getEventUid());
+        }
         List<EventFlow> eventsFlow = SdkQueries.getEvents();
-        Log.d(TAG, "Size of events " + eventsFlow.size());
+        Log.d(TAG, "Size of events " + eventsFlow.size() + "size of surveys" + sendingEventUids.size());
+        if(sendingEventUids.size()!=eventsFlow.size())
+            Log.d(TAG, "Error in size of events");
         for (int i = eventsFlow.size() - 1; i >= 0; i--) {
-            if (eventsFlow.get(i).getEventDate() != null) {
+            if (eventsFlow.get(i).getEventDate() != null && sendingEventUids.contains(
+                    eventsFlow.get(i).getUId())) {
                 eventUids.add(eventsFlow.get(i).getUId());
             } else {
                 String eventUid = " No Uid";
@@ -65,7 +69,7 @@ public class PushDhisSDKDataSource {
                     eventUid = eventsFlow.get(i).getUId();
                 }
                 Log.d("Error",
-                        "Error pushing events. The event uid: " + eventUid + "haven't eventDate");
+                        "Error pushing events. The event uid: " + eventUid + "haven't eventDate or is not listed to send");
             }
         }
         Log.d(TAG, "Size of valid events " + eventsFlow.size());

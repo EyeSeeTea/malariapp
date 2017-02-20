@@ -105,11 +105,6 @@ public class ConvertToSDKVisitor implements
      */
     Date uploadedDate;
 
-    /**
-     * Used to control if the actual survey/event is new or update
-     */
-    boolean isAModification;
-
 
     ConvertToSDKVisitor(Context context) {
         this.context = context;
@@ -157,11 +152,14 @@ public class ConvertToSDKVisitor implements
         String errorMessage = "Exception creating a new event from survey. Removing survey from DB";
         try {
             this.currentEvent = buildEvent();
-            currentEvent.save();
+            currentSurvey.setEventUid(currentEvent.getUid());
         } catch (Exception e) {
             showErrorConversionMessage(errorMessage);
-            survey.delete();
+            currentSurvey.delete();
+            return;
         }
+        currentSurvey.save();
+        currentEvent.save();
         try {
             Log.d(TAG, "Event created" + currentEvent.toString());
             //Calculates scores and update survey
@@ -183,11 +181,6 @@ public class ConvertToSDKVisitor implements
             //Turn question values into dataValues
             Log.d(TAG, "Creating datavalues from questions... Values" + survey.getValues().size());
             for (Value value : currentSurvey.getValues()) {
-                //in a modification an old value is skipped
-                if (isAModification && value.getUploadDate().before(
-                        currentSurvey.getUploadDate())) {
-                    continue;
-                }
                 //value -> datavalue
                 value.accept(this);
             }
@@ -210,6 +203,7 @@ public class ConvertToSDKVisitor implements
             e.printStackTrace();
             showErrorConversionMessage(errorMessage);
             removeSurveyAndEvent(survey);
+            return;
         }
     }
 
@@ -478,24 +472,16 @@ public class ConvertToSDKVisitor implements
             ImportSummary importSummary = importSummaryMap.get(iEvent.getEvent().getUId());
             FailedItemFlow failedItem = EventExtended.hasConflict(iEvent.getLocalId());
 
-            //No errors -> Save and next
-            if (!hasImportSummaryErrors(importSummary) && failedItem == null) {
-                saveSurveyFromImportSummary(iSurvey);
-                continue;
-            }
+            //Sets the survey status as quarantine to prevent wrong importSummaries (F.E. in
+            // network failures).
+            //This survey will be checked again in the future push to prevent the duplicates
+            // in the server.
+            iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
+            iSurvey.save();
 
-            if (importSummary == null) {
-                rollbackSurvey(iSurvey);
-                return;
-            }
-
-            //Errors
-            if (importSummary != null) {
-                Log.d(TAG, importSummary.toString());
-            }
-            //Some error happened -> move back to completed
+            //If the importSummary has a failedItem the survey was saved in the server but
+            // never resend, the survey is saved as survey in conflict.
             if (failedItem != null) {
-                rollbackSurvey(iSurvey);
                 List<String> failedUids = getFailedUidQuestion(failedItem.getErrorMessage());
                 for (String uid : failedUids) {
                     Log.d(TAG, "PUSH process...Conflict in " + uid + " dataelement pushing survey: "
@@ -504,28 +490,32 @@ public class ConvertToSDKVisitor implements
                     iSurvey.setStatus(Constants.SURVEY_CONFLICT);
                 }
                 iSurvey.save();
+                continue;
             }
 
-            //Survey without error->set as sent
-            if (iSurvey.getStatus() != Constants.SURVEY_CONFLICT
-                    && org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary.Status
-                    .SUCCESS.equals(
-                            importSummary.getStatus())) {
+            if (importSummary == null) {
+                //Saved as quarantine
+                continue;
+            }
+
+            //No errors -> Save and next
+            if (!hasImportSummaryErrors(importSummary)) {
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
-                    //the event is invalid. The event will be pushed but we need inform to the user.
+                    //If eventdate is null the event is invalid. The event is sent but we need inform to the user.
                     DashboardActivity.showException(context.getString(R.string.error_message),
                             String.format(context.getString(R.string.error_message_push),
                                     iEvent.getEvent()));
                 }
                 saveSurveyFromImportSummary(iSurvey);
-                Log.d(TAG, "PUSH process...Survey uploaded: " + iSurvey.getId_survey());
+                continue;
+            }
+
+            //Errors
+            if (importSummary != null) {
+                Log.d(TAG, importSummary.toString());
             }
         }
-    }
-
-    private void rollbackSurvey(Survey survey) {
-        survey.setStatus(Constants.SURVEY_COMPLETED);
-        survey.save();
+        surveys.clear();
     }
 
     private void saveSurveyFromImportSummary(Survey iSurvey) {
@@ -579,6 +569,12 @@ public class ConvertToSDKVisitor implements
         if (importSummary.getImportCount() == null) {
             return true;
         }
+        if(importSummary.getStatus()==null){
+            return true;
+        }
+        if(!importSummary.getStatus().equals(ImportSummary.Status.SUCCESS)){
+            return true;
+        }
         return importSummary.getImportCount().getImported() == 0;
     }
 
@@ -595,10 +591,10 @@ public class ConvertToSDKVisitor implements
 
     public void setSurveysAsQuarantine() {
         for (Survey survey : surveys) {
-            Log.d(TAG, "Setting as QUARANTINE survey" + survey.getId_survey());
+            Log.d(TAG, "Set Survey status as QUARANTINE" + survey.getId_survey());
             survey.setStatus(Constants.SURVEY_QUARANTINE);
             survey.save();
         }
-        surveys = new ArrayList<>();
+        surveys.clear();
     }
 }
