@@ -36,6 +36,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataVa
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,25 +46,29 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class PushDhisSDKDataSource {
+    private final String TAG = ".PushController";
 
     public void pushData(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
-        boolean isNetworkAvailable = isNetworkAvailable();
-
-        if (!isNetworkAvailable) {
-            callback.onError(new NetworkException());
-        } else {
-            pushEvents(callback);
-        }
+        pushEvents(callback);
     }
 
     private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
         final Set<String> eventUids = new HashSet<>();
-
-        for (EventFlow eventFlow : SdkQueries.getEvents()) {
-            if(eventFlow.getEventDate()!=null) {
-                eventUids.add(eventFlow.getUId());
+        List<EventFlow> eventsFlow = SdkQueries.getEvents();
+        Log.d(TAG, "Size of events " + eventsFlow.size());
+        for (int i = eventsFlow.size() - 1; i >= 0; i--) {
+            if (eventsFlow.get(i).getEventDate() != null) {
+                eventUids.add(eventsFlow.get(i).getUId());
+            } else {
+                String eventUid = " No Uid";
+                if (eventsFlow.get(i).getUId() != null) {
+                    eventUid = eventsFlow.get(i).getUId();
+                }
+                Log.d("Error",
+                        "Error pushing events. The event uid: " + eventUid + "haven't eventDate");
             }
         }
+        Log.d(TAG, "Size of valid events " + eventsFlow.size());
         Observable<Map<String, ImportSummary>> eventObserver =
                 D2.events().push(eventUids);
 
@@ -88,21 +93,13 @@ public class PushDhisSDKDataSource {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        throwable.printStackTrace();
                         callback.onError(throwable);
 
                         Log.e(this.getClass().getSimpleName(),
                                 "Error pushing Events: " + throwable.getLocalizedMessage());
                     }
                 });
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm =
-                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     public void wipeEvents() {

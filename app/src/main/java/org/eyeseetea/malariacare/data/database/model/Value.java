@@ -294,13 +294,14 @@ public class Value extends BaseModel implements VisitableToSDK {
 
     @Override
     public String toString() {
+        String uploadDateAsString= (upload_date!=null)?upload_date.toString():"";
         return "Value{" +
                 "id_value=" + id_value +
                 ", value='" + value + '\'' +
                 ", id_question=" + id_question +
                 ", id_survey=" + id_survey +
                 ", id_option=" + id_option +
-                ", upload_date=" + upload_date.toString() +
+                ", upload_date=" + uploadDateAsString +
                 ", conflict=" + conflict +
                 '}';
     }
