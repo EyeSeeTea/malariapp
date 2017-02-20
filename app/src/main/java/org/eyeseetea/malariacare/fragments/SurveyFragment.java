@@ -52,9 +52,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
-import org.eyeseetea.malariacare.layout.adapters.survey.DynamicTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
-import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -351,9 +349,6 @@ public class SurveyFragment extends  Fragment {
                     tabAdapter.initializeSubscore();
                 }
                 ListView listView = (ListView) llLayout.findViewById(R.id.listView);
-                if (tabAdapter instanceof DynamicTabAdapter) {
-                    ((DynamicTabAdapter) tabAdapter).addOnSwipeListener(listView);
-                }
                 listView.setAdapter((BaseAdapter) tabAdapter);
                 listView.setOnScrollListener(new UnfocusScrollListener());
                 stopProgress();
@@ -565,11 +560,7 @@ public class SurveyFragment extends  Fragment {
 
         this.tabsList.clear();
         this.tabsList.addAll(tabs);
-        if(PreferencesState.getInstance().isAutomaticAdapter())
-            this.tabAdapter.notifyDataSetChanged();
-        else if(PreferencesState.getInstance().isDynamicAdapter()){
-            new AsyncChangeTab(tabs.get(0)).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,(Void) null);
-        }
+        this.tabAdapter.notifyDataSetChanged();
 
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
@@ -616,11 +607,9 @@ public class SurveyFragment extends  Fragment {
             tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
-            if(PreferencesState.getInstance().isAutomaticAdapter()) {
-                allTabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
-                // After loading first tab we start the individual services that preload the items for the rest of tabs
-                preLoadItems();
-            }
+            allTabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+            // After loading first tab we start the individual services that preload the items for the rest of tabs
+            preLoadItems();
         }
     }
 
@@ -685,10 +674,7 @@ public class SurveyFragment extends  Fragment {
         public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores){
             Tab firstTab=tabs.get(0);
             this.adapters.clear();
-            if (PreferencesState.getInstance().isDynamicAdapter())
-                this.adapters.put(firstTab, DynamicTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
-            if (PreferencesState.getInstance().isAutomaticAdapter())
-                this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
             this.compositeScores = compositeScores;
         }
 
@@ -722,15 +708,7 @@ public class SurveyFragment extends  Fragment {
          * @return
          */
         private ITabAdapter buildAdapter(Tab tab) {
-            if (PreferencesState.getInstance().isDynamicAdapter()) {
-                if (tab.isDynamicTab())
-                    return new DynamicTabAdapter(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
-                return null;
-            }
-            if (PreferencesState.getInstance().isAutomaticAdapter()) {
-                return AutoTabAdapter.build(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
-            }
-            return null;
+            return AutoTabAdapter.build(tab, getActivity(), Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
         }
     }
 }

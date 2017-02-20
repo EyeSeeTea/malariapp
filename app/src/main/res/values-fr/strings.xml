@@ -204,24 +204,6 @@ Mensuelle"</string>
 <string name="modify">Modifier</string>
 <string name="create_or_modify">"Voulez-vous créer une nouvelle évaluation ou de modifier la dernière évaluation, les dates[%s]?"</string>
 <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
-<string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
-<string name="dynamic_error_phone_format">"Le numéro de téléphone donné a un format incorrect ( 0NN NNN NNN{N} )"</string>
-<string name="dynamic_error_age">âge invalide</string>
-<string name="survey_title_completed">Enquête terminée</string>
-<string name="survey_info_completed">Le sondage a été effectué avec succès</string>
-<string name="review">Réviser</string>
-<string name="send">Envoyer</string>
-<string name="number_0">0</string>
-<string name="number_1">1</string>
-<string name="number_2">2</string>
-<string name="number_3">3</string>
-<string name="number_4">4</string>
-<string name="number_5">5</string>
-<string name="number_6">6</string>
-<string name="number_7">7</string>
-<string name="number_8">8</string>
-<string name="number_9">9</string>
-<string name="clear">Effacement</string>
 
 <string name="developer_option_summary">"Cette option active les options de développement"</string>
 <string name="developer_option_title">"Afficher les options développeur"</string>
