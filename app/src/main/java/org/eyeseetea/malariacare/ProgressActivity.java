@@ -108,6 +108,7 @@ public class ProgressActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         initializeDependencies();
+        PreferencesState.getInstance().loadsLanguageInActivity();
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         isOnPause = false;

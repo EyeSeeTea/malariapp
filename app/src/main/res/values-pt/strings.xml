@@ -229,8 +229,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_media_link" >"Exibição de vídeo"</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
-    <!-- from old SDK -->
-    <string name="select_all">Selecionar tudo</string>
+<string name="select_all">Selecionar tudo</string>
 
-    <string name="demo_login">Demonstração</string>
+<string name="demo_login">Demonstração</string>
+<string name="system_defined">"Sistema definido"</string>
+<string name="settings_select_language">"Língua"</string>
+>>>>>>> feature-new_sdk
 </resources>

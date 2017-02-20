@@ -312,8 +312,8 @@
     <string name="feedback_media_link">មើលវីដេអូ</string>
     <string name="google_play_required">នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។</string>
     <string name="feedback_view_image">ចែករំលែករូបភាពជាមួយ ...</string>
-    <!-- from old SDK -->
     <string name="select_all">ជ្រើស​យក​ទាំងអស់</string>
-
     <string name="demo_login">សាកល្បង</string>
+    <string name="system_defined">"ដែលបានកំណត់ប្រព័ន្ធ"</string>
+    <string name="settings_select_language">"ភាសា"</string>
 </resources>

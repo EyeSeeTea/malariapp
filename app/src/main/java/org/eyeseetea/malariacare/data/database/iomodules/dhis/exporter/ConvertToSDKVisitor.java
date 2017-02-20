@@ -159,40 +159,48 @@ public class ConvertToSDKVisitor implements
 
         this.currentEvent=buildEvent();
         Log.d(TAG,currentEvent.toString());
+        try {
+            //Calculates scores and update survey
+            Log.d(TAG, "Registering scores...");
+            List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey,
+                    Constants.PUSH_MODULE_KEY);
+            updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
 
-        //Calculates scores and update survey
-        Log.d(TAG,"Registering scores...");
-        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey, Constants.PUSH_MODULE_KEY);
-        updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
-
-        //Turn score values into dataValues
-        Log.d(TAG, "Creating datavalues from scores...");
-        for(CompositeScore compositeScore:compositeScores){
-            compositeScore.accept(this);
-        }
-
-        //Turn question values into dataValues
-        Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
-        for(Value value:currentSurvey.getValues()) {
-            //in a modification an old value is skipped
-            if(isAModification && value.getUploadDate().before(currentSurvey.getUploadDate())){
-                continue;
+            //Turn score values into dataValues
+            Log.d(TAG, "Creating datavalues from scores...");
+            for (CompositeScore compositeScore : compositeScores) {
+                compositeScore.accept(this);
             }
-            //value -> datavalue
-            value.accept(this);
+
+            //Turn question values into dataValues
+            Log.d(TAG, "Creating datavalues from questions... Values" + survey.getValues().size());
+            for (Value value : currentSurvey.getValues()) {
+                //in a modification an old value is skipped
+                if (isAModification && value.getUploadDate().before(
+                        currentSurvey.getUploadDate())) {
+                    continue;
+                }
+                //value -> datavalue
+                value.accept(this);
+            }
+
+
+            survey.setUploadDate(uploadedDate);
+
+            //Update all the dates after checks the new values
+            updateEventDates();
+
+            Log.d(TAG, "Creating datavalues from other stuff...");
+            buildControlDataElements(survey);
+            //Annotate both objects to update its state once the process is over
+            annotateSurveyAndEvent();
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.d(TAG, "Error converting the survey "+currentSurvey.getId_survey() +"with program " + currentSurvey.getProgram().getName() + "And org unit "+ currentSurvey.getOrgUnit().getName());
+            if(events.containsKey(currentSurvey.getId_survey()))
+                events.remove(currentSurvey.getId_survey());
+            currentEvent.getEvent().delete();
         }
-
-
-        survey.setUploadDate(uploadedDate);
-
-        //Update all the dates after checks the new values
-        updateEventDates();
-
-        Log.d(TAG, "Creating datavalues from other stuff...");
-        buildControlDataElements(survey);
-
-        //Annotate both objects to update its state once the process is over
-        annotateSurveyAndEvent();
     }
 
     /**

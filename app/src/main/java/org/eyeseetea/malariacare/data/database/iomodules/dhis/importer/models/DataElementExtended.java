@@ -539,7 +539,7 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     public String getDescription() {
-        return dataElement.getDisplayFormName();
+        return dataElement.getDescription();
     }
 
     public String getOptionSet() {
