@@ -106,4 +106,5 @@
     <string name="error_in_pull_conversion" translatable="false">"Pull error during the conversion"</string>
     <string name="pull_cancelled" translatable="false">"Pull cancelled by the user"</string>
     <item name="push_in_progress" type="string" translatable="false">push_in_progress</item>
+    <item name="language_code" translatable="false" type="string">language_code</item>
     </resources>
