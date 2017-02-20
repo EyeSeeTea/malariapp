@@ -39,15 +39,16 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
-public class LoginActivityStrategy extends ALoginActivityStrategy {
+public class LoginActivityStrategy {
+
+    protected LoginActivity loginActivity;
 
     private static final String TAG = ".LoginActivityStrategy";
 
     public LoginActivityStrategy(LoginActivity loginActivity) {
-        super(loginActivity);
+        this.loginActivity = loginActivity;
     }
 
-    @Override
     public void onCreate() {
         if (existsLoggedUser()) {
             LoadUserAndCredentialsUseCase loadUserAndCredentialsUseCase =
