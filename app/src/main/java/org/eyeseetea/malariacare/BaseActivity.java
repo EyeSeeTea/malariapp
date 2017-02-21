@@ -62,7 +62,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
@@ -142,6 +142,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             case android.R.id.home:
                 debugMessage("Go back");
                 onBackPressed();
+                break;
+            case R.id.downloaded_media:
+                debugMessage("Go downloaded media");
+                startActivity(new Intent(this, DownloadedMediaActivity.class));
                 break;
             case R.id.export_db:
                 debugMessage("Export db");

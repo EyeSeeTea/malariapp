@@ -164,7 +164,7 @@ public class SurveyFragment extends  Fragment {
          public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
 
     }
 

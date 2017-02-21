@@ -385,6 +385,9 @@ public class PreferencesState {
         editor.commit();
     }
 
+    public void initalizateActivityDependencies() {
+        loadsLanguageInActivity();
+    }
     public void loadsLanguageInActivity() {
         if (languageCode.equals("")) {
             return;

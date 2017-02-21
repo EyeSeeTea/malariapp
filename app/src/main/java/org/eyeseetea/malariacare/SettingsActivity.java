@@ -72,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
     }
 
     @Override
@@ -361,7 +361,7 @@ public class SettingsActivity extends PreferenceActivity implements
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            PreferencesState.getInstance().loadsLanguageInActivity();
+            PreferencesState.getInstance().initalizateActivityDependencies();
             addPreferencesFromResource(R.xml.pref_general);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences

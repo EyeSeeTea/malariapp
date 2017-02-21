@@ -19,17 +19,12 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,20 +32,16 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
-import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,7 +49,7 @@ import java.util.List;
  */
 public class PlannedAdapter extends BaseAdapter {
 
-    private final String TAG=".PlannedAdapter";
+    private final String TAG = ".PlannedAdapter";
 
     private List<PlannedItem> items;
 
@@ -84,21 +75,21 @@ public class PlannedAdapter extends BaseAdapter {
      */
     int itemOrder;
 
-    public PlannedAdapter(List<PlannedItem> items, Context context){
-        this.items=items;
-        this.context=context;
+    public PlannedAdapter(List<PlannedItem> items, Context context) {
+        this.items = items;
+        this.context = context;
     }
 
-    private void toggleSection(PlannedHeader header){
+    private void toggleSection(PlannedHeader header) {
 
         //An empty section cannot be open
-        if(header==null || header.getCounter()==0){
+        if (header == null || header.getCounter() == 0) {
             return;
         }
 
         //Annotate currentHeader
         Log.d(TAG, "toggleSection: " + header);
-        currentHeader = (currentHeader==header)  ? null : header;
+        currentHeader = (currentHeader == header) ? null : header;
         applyFilter(programFilter);
     }
 
@@ -107,18 +98,18 @@ public class PlannedAdapter extends BaseAdapter {
         return numShown;
     }
 
-    public void reloadItems(List<PlannedItem> newItems){
+    public void reloadItems(List<PlannedItem> newItems) {
         Log.d(TAG, "reloadItems: " + newItems.size());
         this.items.clear();
         this.items.addAll(newItems);
         applyFilter(null);
     }
 
-    public void applyFilter(Program program){
-        Log.d(TAG,"applyFilter:"+program);
+    public void applyFilter(Program program) {
+        Log.d(TAG, "applyFilter:" + program);
 
         //Annotate filter
-        programFilter=program;
+        programFilter = program;
 
         //Update header counters according to new program filter
         updateHeaderCounters();
@@ -129,43 +120,49 @@ public class PlannedAdapter extends BaseAdapter {
         //Refresh view
         notifyDataSetChanged();
     }
-    private void updateNumShown(){
+
+    private void updateNumShown() {
         Log.d(TAG, "updateNumShown");
         //No list -> nothing to update
-        if(items==null){
-            numShown=0;
+        if (items == null) {
+            numShown = 0;
             return;
         }
 
         //Loop over list annotating items that can be shown
-        int numItems=0;
-        for(PlannedItem plannedItem:items){
+        int numItems = 0;
+        for (PlannedItem plannedItem : items) {
             //Headers are always shown
-            if(plannedItem instanceof PlannedHeader){
+            if (plannedItem instanceof PlannedHeader) {
                 numItems++;
-            }else{
+            } else {
                 //Surveys are shown
-                if((plannedItem.isShownByProgram(programFilter)|| programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())) && plannedItem.isShownByHeader(currentHeader)){
+                if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
+                        PreferencesState.getInstance().getContext().getResources().getString(
+                                R.string.filter_all_org_assessments).toUpperCase()))
+                        && plannedItem.isShownByHeader(currentHeader)) {
                     numItems++;
                 }
             }
         }
         //Contar x filtro
         Log.d(TAG, "updateNumShown:" + numItems);
-        numShown=numItems;
+        numShown = numItems;
     }
 
-    private void updateHeaderCounters(){
+    private void updateHeaderCounters() {
         //Update counters in header
-        for(PlannedItem plannedItem:items){
+        for (PlannedItem plannedItem : items) {
             //Headers are always shown
-            if(plannedItem instanceof PlannedHeader){
+            if (plannedItem instanceof PlannedHeader) {
                 ((PlannedHeader) plannedItem).resetCounter();
                 continue;
             }
             //Check match survey/program -> update header.counter
-            PlannedSurvey plannedSurvey = (PlannedSurvey)plannedItem;
-            if(plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())){
+            PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
+            if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
+                    PreferencesState.getInstance().getContext().getResources().getString(
+                            R.string.filter_all_org_assessments).toUpperCase())) {
                 plannedSurvey.incHeaderCounter();
             }
         }
@@ -174,16 +171,19 @@ public class PlannedAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         //No filter
-        Log.d(TAG, "getItem: "+position);
+        Log.d(TAG, "getItem: " + position);
 
         //Loop and count
-        int numShownItems=0;
-        for(int i=0;i<items.size();i++){
-            PlannedItem plannedItem=items.get(i);
+        int numShownItems = 0;
+        for (int i = 0; i < items.size(); i++) {
+            PlannedItem plannedItem = items.get(i);
 
-            if((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase())) && plannedItem.isShownByHeader(currentHeader)){
+            if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
+                    PreferencesState.getInstance().getContext().getResources().getString(
+                            R.string.filter_all_org_assessments).toUpperCase()))
+                    && plannedItem.isShownByHeader(currentHeader)) {
                 numShownItems++;
-                if(position==(numShownItems-1)) {
+                if (position == (numShownItems - 1)) {
                     return plannedItem;
                 }
             }
@@ -199,35 +199,41 @@ public class PlannedAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d(TAG, "getView: " + position);
-        PlannedItem plannedItem=(PlannedItem)getItem(position);
-        if (plannedItem instanceof PlannedHeader){
-            itemOrder =0;
+        PlannedItem plannedItem = (PlannedItem) getItem(position);
+        if (plannedItem instanceof PlannedHeader) {
+            itemOrder = 0;
             return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
-        }else{
+        } else {
             return getViewByPlannedSurvey(position, (PlannedSurvey) plannedItem, parent);
         }
     }
 
-    private View getViewByPlannedHeader(PlannedHeader plannedHeader, ViewGroup parent){
-        LayoutInflater inflater=LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_header_row, parent, false);
+    private View getViewByPlannedHeader(PlannedHeader plannedHeader, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_header_row,
+                parent, false);
         rowLayout.setBackgroundResource(plannedHeader.getBackgroundColor());
 
         //Title
-        TextView textView=(TextView)rowLayout.findViewById(R.id.planning_title);
+        TextView textView = (TextView) rowLayout.findViewById(R.id.planning_title);
         textView.setText(plannedHeader.getTitleHeader());
-        ImageView img=(ImageView)rowLayout.findViewById(R.id.planning_image_cross);
+        ImageView img = (ImageView) rowLayout.findViewById(R.id.planning_image_cross);
 
         //Set image color
-        if(plannedHeader.equals(currentHeader)){
+        if (plannedHeader.equals(currentHeader)) {
             img.setImageResource(R.drawable.ic_media_arrow_up);
-            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
-        }
-        else{
-            if(plannedHeader.getCounter()==0)
-                img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(plannedHeader.getBackgroundColor()));
-            else
-                img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
+            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.white));
+        } else {
+            if (plannedHeader.getCounter() == 0) {
+                img.setColorFilter(
+                        PreferencesState.getInstance().getContext().getResources().getColor(
+                                plannedHeader.getBackgroundColor()));
+            } else {
+                img.setColorFilter(
+                        PreferencesState.getInstance().getContext().getResources().getColor(
+                                R.color.white));
+            }
         }
 /*
         //Productivity
@@ -247,54 +253,62 @@ public class PlannedAdapter extends BaseAdapter {
         return rowLayout;
     }
 
-    private View getViewByPlannedSurvey(int position,final PlannedSurvey plannedSurvey, ViewGroup parent){
+    private View getViewByPlannedSurvey(int position, final PlannedSurvey plannedSurvey,
+            ViewGroup parent) {
         itemOrder++;
-        LayoutInflater inflater=LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.planning_survey_row, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_survey_row,
+                parent, false);
 
         //OrgUnit
-        TextView textView=(TextView)rowLayout.findViewById(R.id.planning_org_unit);
+        TextView textView = (TextView) rowLayout.findViewById(R.id.planning_org_unit);
         textView.setText(plannedSurvey.getOrgUnit());
-        if(isSameOrgUnit(plannedSurvey,position)){
+        if (isSameOrgUnit(plannedSurvey, position)) {
             textView.setVisibility(View.GONE);
         }
 
         //Program
-        textView=(TextView)rowLayout.findViewById(R.id.planning_program);
+        textView = (TextView) rowLayout.findViewById(R.id.planning_program);
         textView.setText(String.format("   - %s", plannedSurvey.getProgram()));
 
         //Productivity
-        textView=(TextView)rowLayout.findViewById(R.id.planning_survey_prod);
+        textView = (TextView) rowLayout.findViewById(R.id.planning_survey_prod);
         textView.setText(plannedSurvey.getProductivity());
 
         //QualityOfCare
-        textView=(TextView)rowLayout.findViewById(R.id.planning_survey_qoc);
+        textView = (TextView) rowLayout.findViewById(R.id.planning_survey_qoc);
         textView.setText(plannedSurvey.getQualityOfCare());
 
         //ScheduledDate
-        textView=(TextView)rowLayout.findViewById(R.id.planning_survey_schedule_date);
+        textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);
         textView.setText(AUtils.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         //background color
-        int colorId=plannedSurvey.getPlannedHeader().getSecondaryColor();
-        int fixposition= itemOrder -1;
-        if(fixposition==0 || fixposition%2==0)
-            rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.white));
-        else
-            rowLayout.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
-        //Action
-        ImageButton actionButton = (ImageButton)rowLayout.findViewById(R.id.planning_survey_action);
-        colorId=plannedSurvey.getPlannedHeader().getBackgroundColor();
-        if(plannedSurvey.getSurvey().isInProgress()){
-            if(plannedSurvey.getSurvey().getStatus()!=Constants.SURVEY_PLANNED)
-                colorId=plannedSurvey.getPlannedHeader().getGaudyBackgroundColor();
-            actionButton.setImageResource(R.drawable.ic_edit);
+        int colorId = plannedSurvey.getPlannedHeader().getSecondaryColor();
+        int fixposition = itemOrder - 1;
+        if (fixposition == 0 || fixposition % 2 == 0) {
+            rowLayout.setBackgroundColor(
+                    PreferencesState.getInstance().getContext().getResources().getColor(
+                            R.color.white));
+        } else {
+            rowLayout.setBackgroundColor(
+                    PreferencesState.getInstance().getContext().getResources().getColor(colorId));
         }
-        else{
+        //Action
+        ImageButton actionButton = (ImageButton) rowLayout.findViewById(
+                R.id.planning_survey_action);
+        colorId = plannedSurvey.getPlannedHeader().getBackgroundColor();
+        if (plannedSurvey.getSurvey().isInProgress()) {
+            if (plannedSurvey.getSurvey().getStatus() != Constants.SURVEY_PLANNED) {
+                colorId = plannedSurvey.getPlannedHeader().getGaudyBackgroundColor();
+            }
+            actionButton.setImageResource(R.drawable.ic_edit);
+        } else {
             actionButton.setImageResource(R.drawable.red_circle_cross);
         }
-        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(colorId));
+        actionButton.setColorFilter(
+                PreferencesState.getInstance().getContext().getResources().getColor(colorId));
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
@@ -302,25 +316,26 @@ public class PlannedAdapter extends BaseAdapter {
         return rowLayout;
     }
 
-    private boolean isSameOrgUnit(PlannedSurvey plannedSurvey, int currentPosition){
-        PlannedItem plannedItem=(PlannedItem)getItem(currentPosition-1);
+    private boolean isSameOrgUnit(PlannedSurvey plannedSurvey, int currentPosition) {
+        PlannedItem plannedItem = (PlannedItem) getItem(currentPosition - 1);
 
-        if(plannedItem instanceof PlannedHeader){
+        if (plannedItem instanceof PlannedHeader) {
             return false;
         }
-        PlannedSurvey previousPlannedSurvey = (PlannedSurvey)plannedItem;
+        PlannedSurvey previousPlannedSurvey = (PlannedSurvey) plannedItem;
         return plannedSurvey.getOrgUnit().equals(previousPlannedSurvey.getOrgUnit());
     }
 
     /**
-     * Listener that starts the given planned survey and goes to surveyActivity to start with edition
+     * Listener that starts the given planned survey and goes to surveyActivity to start with
+     * edition
      */
     class CreateOrEditSurveyListener implements View.OnClickListener {
 
         Survey survey;
 
-        CreateOrEditSurveyListener(Survey survey){
-            this.survey=survey;
+        CreateOrEditSurveyListener(Survey survey) {
+            this.survey = survey;
         }
 
         @Override
@@ -356,8 +371,8 @@ public class PlannedAdapter extends BaseAdapter {
 
         PlannedHeader plannedHeader;
 
-        OpenHeaderListener(PlannedHeader plannedHeader){
-            this.plannedHeader=plannedHeader;
+        OpenHeaderListener(PlannedHeader plannedHeader) {
+            this.plannedHeader = plannedHeader;
         }
 
         @Override

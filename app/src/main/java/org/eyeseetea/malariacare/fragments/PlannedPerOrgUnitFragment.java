@@ -74,7 +74,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
 
         //get the org unit uid from dashboardactivity
         //filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));
