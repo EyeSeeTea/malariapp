@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.structure.Model;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
@@ -40,6 +42,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.Answer;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Media;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
@@ -59,6 +62,7 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.client.sdk.models.common.base.BaseModel;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -87,7 +91,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
-    public static List<Question> questions;
+    public static List<Model> questions;
 
     private final String ATTRIBUTE_PRODUCTIVITY_CODE = "OUProductivity";
     private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -113,15 +117,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     public void saveBatch() {
-        SdkQueries.saveBatch();
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+        List<Model> models = new ArrayList<>();
+        models.addAll(questions );
+        models.addAll(questionBuilder.listMedia );
+        for(Media media: questionBuilder.listMedia){
+            media.updateQuestion();
+        }
+        SdkQueries.saveBatch(models);
     }
 
     /**
