@@ -239,4 +239,7 @@ clínica"</string>
 
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
+<string name="downloaded_media_menu">"Medios descargados"</string>
+<string name="header_filename_title">"Nombre"</string>
+<string name="header_size_title">"Tamaño"</string>
 </resources>

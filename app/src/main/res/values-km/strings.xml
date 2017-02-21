@@ -314,4 +314,7 @@
 
     <string name="system_defined">"ដែលបានកំណត់ប្រព័ន្ធ"</string>
     <string name="settings_select_language">"ភាសា"</string>
+    <string name="downloaded_media_menu">"ជាមធ្យមដែលបានទាញយក"</string>
+    <string name="header_filename_title">"ឈ្មោះឯកសារ"</string>
+    <string name="header_size_title">"ទំហំ"</string>
 </resources>
