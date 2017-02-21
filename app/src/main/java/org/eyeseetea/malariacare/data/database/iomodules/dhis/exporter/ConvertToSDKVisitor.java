@@ -59,7 +59,7 @@ import java.util.Map;
 public class ConvertToSDKVisitor implements
         org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor {
 
-    private final static String TAG = ".ConvertToSDKVisitor";
+    private final static String TAG = ".ConvertToSDKVisitorB&D";
 
     /**
      * Context required to recover magic UID for mainScore dataElements
@@ -108,6 +108,7 @@ public class ConvertToSDKVisitor implements
 
     ConvertToSDKVisitor(Context context) {
         this.context = context;
+        Log.d(TAG, "new convertToSdkVisitor");
         // FIXME: We should create a visitor to translate the ControlDataElement class
         overallScoreCode = ServerMetadata.findControlDataElementUid(
                 context.getString(R.string.overall_score_code));
@@ -136,6 +137,8 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
+        surveys = new ArrayList<>();
+        events = new HashMap<>();
     }
 
     @Override
@@ -152,16 +155,16 @@ public class ConvertToSDKVisitor implements
         String errorMessage = "Exception creating a new event from survey. Removing survey from DB";
         try {
             this.currentEvent = buildEvent();
-            currentSurvey.setEventUid(currentEvent.getUid());
         } catch (Exception e) {
             showErrorConversionMessage(errorMessage);
-            currentSurvey.delete();
+            currentSurvey.delete();//invalid survey
             return;
         }
-        currentSurvey.save();
-        currentEvent.save();
         try {
-            Log.d(TAG, "Event created" + currentEvent.toString());
+            currentSurvey.setEventUid(currentEvent.getUid());
+            currentSurvey.save();
+            currentEvent.save();
+            Log.d(TAG, "Event created" + currentEvent.getUid());
             //Calculates scores and update survey
             Log.d(TAG, "Registering scores...");
             errorMessage = "Calculating compositeScores";
@@ -284,7 +287,7 @@ public class ConvertToSDKVisitor implements
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
         currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
         updateEventLocation();
-        Log.d(TAG, "Saving event " + currentEvent.toString());
+        Log.d(TAG, "Saving event " + currentEvent.getUid());
         return currentEvent;
     }
 
@@ -477,14 +480,16 @@ public class ConvertToSDKVisitor implements
             //This survey will be checked again in the future push to prevent the duplicates
             // in the server.
             iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
+            Log.d(TAG, "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE" + iSurvey.getId_survey() + " eventuid: "+ iSurvey.getEventUid());
             iSurvey.save();
 
             //If the importSummary has a failedItem the survey was saved in the server but
             // never resend, the survey is saved as survey in conflict.
             if (failedItem != null) {
+                Log.d(TAG, "saveSurveyStatus: Faileditem not null " + iSurvey.getId_survey());
                 List<String> failedUids = getFailedUidQuestion(failedItem.getErrorMessage());
                 for (String uid : failedUids) {
-                    Log.d(TAG, "PUSH process...Conflict in " + uid + " dataelement pushing survey: "
+                    Log.d(TAG, "saveSurveyStatus: PUSH process...Conflict in " + uid + " dataelement pushing survey: "
                             + iSurvey.getId_survey());
                     iSurvey.saveConflict(uid);
                     iSurvey.setStatus(Constants.SURVEY_CONFLICT);
@@ -494,12 +499,14 @@ public class ConvertToSDKVisitor implements
             }
 
             if (importSummary == null) {
+                Log.d(TAG, "saveSurveyStatus: importSummary null " + iSurvey.getId_survey());
                 //Saved as quarantine
                 continue;
             }
 
             //No errors -> Save and next
             if (!hasImportSummaryErrors(importSummary)) {
+                Log.d(TAG, "saveSurveyStatus: importSummary without errors and status ok " + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
                     //If eventdate is null the event is invalid. The event is sent but we need inform to the user.
                     DashboardActivity.showException(context.getString(R.string.error_message),
@@ -512,10 +519,9 @@ public class ConvertToSDKVisitor implements
 
             //Errors
             if (importSummary != null) {
-                Log.d(TAG, importSummary.toString());
+                Log.d(TAG, "saveSurveyStatus: " + importSummary.toString());
             }
         }
-        surveys.clear();
     }
 
     private void saveSurveyFromImportSummary(Survey iSurvey) {
@@ -592,9 +598,9 @@ public class ConvertToSDKVisitor implements
     public void setSurveysAsQuarantine() {
         for (Survey survey : surveys) {
             Log.d(TAG, "Set Survey status as QUARANTINE" + survey.getId_survey());
+            Log.d(TAG, "Set Survey status as QUARANTINE" + survey.toString());
             survey.setStatus(Constants.SURVEY_QUARANTINE);
             survey.save();
         }
-        surveys.clear();
     }
 }

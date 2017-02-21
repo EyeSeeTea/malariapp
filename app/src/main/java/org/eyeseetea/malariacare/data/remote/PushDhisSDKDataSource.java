@@ -42,7 +42,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class PushDhisSDKDataSource {
-    private final String TAG = ".PushController";
+    private final String TAG = ".PushControllerB&D";
 
     public void pushData(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
         pushEvents(callback);
@@ -68,7 +68,7 @@ public class PushDhisSDKDataSource {
                 if (eventsFlow.get(i).getUId() != null) {
                     eventUid = eventsFlow.get(i).getUId();
                 }
-                Log.d("Error",
+                Log.d(TAG,
                         "Error pushing events. The event uid: " + eventUid + "haven't eventDate or is not listed to send");
             }
         }
@@ -82,7 +82,7 @@ public class PushDhisSDKDataSource {
                 .subscribe(new Action1<Map<String, ImportSummary>>() {
                     @Override
                     public void call(Map<String, ImportSummary> mapEventsImportSummary) {
-                        Log.d(this.getClass().getSimpleName(),
+                        Log.d(TAG,
                                 "Push of events finish. Number of events: "
                                         + mapEventsImportSummary.size());
 
@@ -100,7 +100,7 @@ public class PushDhisSDKDataSource {
                         throwable.printStackTrace();
                         callback.onError(throwable);
 
-                        Log.e(this.getClass().getSimpleName(),
+                        Log.e(TAG,
                                 "Error pushing Events: " + throwable.getLocalizedMessage());
                     }
                 });

@@ -43,7 +43,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 import com.raizlabs.android.dbflow.sql.language.Where;
-import com.raizlabs.android.dbflow.sql.language.property.Property;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
@@ -276,7 +275,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public void setStatus(Integer status) {
-        Log.d(Survey.class.getName(),"Id: "+ getId_survey() + " actual status:"+ status +" set as:"+ status);
+        Log.d(Survey.class.getName()+"B&D","Id: "+ getId_survey() + " actual status:"+ status +" set as:"+ status);
         this.status = status;
     }
 

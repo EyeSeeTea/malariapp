@@ -32,9 +32,8 @@ public class SurveyChecker {
 
     private static final String DHIS_CHECK_EVENT_API =
             "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
-                    + "&fields=event,orgUnit,program,eventDate,"
-                    + "created,completedDate,lastUpdated,completedBy,dataValues";
-    private static String TAG = ".CheckSurveys";
+                    + "&fields=event,orgUnit,program,dataValues";
+    private static String TAG = ".CheckSurveysB&D";
 
     /**
      * Launch a new thread to checks all the quarantine surveys
@@ -169,7 +168,7 @@ public class SurveyChecker {
                     PreferencesState.getInstance().getContext().getString(
                             R.string.created_on_code));
             if (dataValue.getDataElement().equals(uid)
-                    && dataValue.getValue().equals(EventExtended.format(survey.getCompletionDate(),
+                    && dataValue.getValue().equals(EventExtended.format(survey.getCreationDate(),
                     EventExtended.DHIS2_GMT_DATE_FORMAT))) {
                 Log.d(TAG, "Found survey" + survey.getId_survey() + "date "
                         + survey.getCompletionDate() + "dateevent" + dataValue.getValue());

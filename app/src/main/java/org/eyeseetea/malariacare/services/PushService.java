@@ -42,7 +42,7 @@ public class PushService extends IntentService {
     public static final String PENDING_SURVEYS_ACTION =
             "org.eyeseetea.malariacare.services.PushService.PENDING_SURVEYS_ACTION";
 
-    public static final String TAG = ".PushService";
+    public static final String TAG = ".PushServiceB&D";
 
     IPushController pushController;
     PushUseCase pushUseCase;

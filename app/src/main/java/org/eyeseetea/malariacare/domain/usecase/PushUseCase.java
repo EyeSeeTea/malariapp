@@ -35,13 +35,12 @@ public class PushUseCase {
     }
 
     public void execute(final Callback callback) {
-        //Move to the same thread
-        SurveyChecker.launchQuarantineChecker();
-
         if (mPushController.isPushInProgress()) {
             callback.onPushInProgressError();
             return;
         }
+
+        SurveyChecker.launchQuarantineChecker();
 
         mPushController.changePushInProgress(true);
 

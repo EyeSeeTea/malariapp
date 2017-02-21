@@ -35,7 +35,7 @@ import org.eyeseetea.malariacare.utils.AUtils;
 
 public class AlarmPushReceiver extends BroadcastReceiver {
 
-    public static final String TAG = ".AlarmPushReceiver";
+    public static final String TAG = ".AlarmPushReceiverB&D";
     //TODO: period has to be parameterized
     private static final long SECONDS = 1000;
     private static final long PUSH_FAIL_PERIOD = 300L;
