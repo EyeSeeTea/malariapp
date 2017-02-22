@@ -29,8 +29,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
 import java.util.List;
@@ -51,6 +52,11 @@ public class PushController implements IPushController {
     }
 
     public void push(final IPushControllerCallback callback) {
+        boolean isNetworkAvailable = AUtils.isNetworkAvailable();
+
+        if (!isNetworkAvailable) {
+            callback.onError(new NetworkException());
+        }
 
         List<Survey> surveys = Survey.getAllCompletedSurveys();
 
@@ -96,7 +102,10 @@ public class PushController implements IPushController {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        setSurveysAsQuarantine();
+                        //// FIXME: 20/02/2017 All errors in the push callback this error, and
+                        // surveysAsQuareintine are not fixed
+
+                        mConvertToSDKVisitor.setSurveysAsQuarantine();
                         callback.onError(throwable);
                     }
                 });
@@ -107,12 +116,6 @@ public class PushController implements IPushController {
 
         for (Survey survey : surveys) {
             survey.accept(mConvertToSDKVisitor);
-        }
-    }
-
-    private void setSurveysAsQuarantine() {
-        for (Survey survey : mConvertToSDKVisitor.surveys) {
-            survey.setStatus(Constants.SURVEY_QUARANTINE);
         }
     }
 }

@@ -97,7 +97,6 @@ public class DashboardActivity extends BaseActivity {
         return true;
     }
 
-
     /**
      * Handles resolution callbacks.
      */
@@ -313,19 +312,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
     /**
-     * Logging out from sdk is an async method.
-     * Thus it is required a callback to finish logout gracefully.
-     *
-     * XXX: So far this @subscribe annotation does not work with inheritance since relies on
-     * 'getDeclaredMethods'
-     * @param uiEvent
-     */
-    /*@Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        super.onLogoutFinished(uiEvent);
-    }*/
-
-    /**
      * Handler that starts or edits a given survey
      */
     public void onSurveySelected(Survey survey) {
@@ -366,37 +352,6 @@ public class DashboardActivity extends BaseActivity {
      */
     public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
-    }
-
-    /**
-     * Modify survey from CreateSurveyFragment
-     * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake
-     * event will be created
-     */
-    public void modifySurvey(OrgUnit orgUnit, Program program, EventFlow lastEventInServer,
-            String module) {
-        //Looking for that survey in local
-        Survey survey = Survey.findSurveyWith(orgUnit, program, lastEventInServer);
-        //Survey in server BUT not local
-        if (survey == null) {
-            survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
-        }
-        if (lastEventInServer != null) {
-            survey.setEventUid(lastEventInServer.getUId());
-            EventExtended lastEventExtended = new EventExtended(lastEventInServer);
-            survey.setCreationDate(lastEventExtended.getCreationDate());
-            survey.setCompletionDate(lastEventExtended.getEventDate());
-        } else {
-            //Mark the survey as a modify attempt for pushing accordingly
-            survey.setEventUid(PullClient.NO_EVENT_FOUND);
-        }
-
-        //Upgrade the uploaded date
-        survey.setUploadDate(new Date());
-        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurveyByModule(survey, module);
-        prepareLocationListener(survey);
-        dashboardController.onSurveySelected(survey);
     }
 
     /**
