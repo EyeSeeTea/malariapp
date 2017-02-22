@@ -60,7 +60,9 @@ public class PushDhisSDKDataSource {
         final Set<String> eventUids = new HashSet<>();
 
         for (EventFlow eventFlow : SdkQueries.getEvents()) {
-            eventUids.add(eventFlow.getUId());
+            if(eventFlow.getEventDate()!=null) {
+                eventUids.add(eventFlow.getUId());
+            }
         }
         Observable<Map<String, ImportSummary>> eventObserver =
                 D2.events().push(eventUids);

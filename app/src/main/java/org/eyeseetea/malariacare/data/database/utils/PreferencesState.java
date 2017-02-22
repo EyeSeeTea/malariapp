@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,13 +30,13 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PreferencesState {
@@ -78,6 +79,10 @@ public class PreferencesState {
      * Sets the max number of events to download from dhis server
      */
     private int maxEvents;
+    /**
+     * Active language code;
+     */
+    private static String languageCode;
 
     private PreferencesState() {
     }
@@ -105,10 +110,21 @@ public class PreferencesState {
         locationRequired = initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents = initMaxEvents();
+        languageCode = initLanguageCode();
         Log.d(TAG, String.format(
                 "reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b ",
                 scale, showNumDen, locationRequired, maxEvents, showLargeText));
+    }
+
+    /**
+     * Returns 'language code' from sharedPreferences
+     */
+    private String initLanguageCode() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getString(instance.getContext().getString(R.string.language_code),
+                "");
     }
 
     /**
@@ -301,20 +317,6 @@ public class PreferencesState {
         return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
     }
 
-    /**
-     * Tells if the application use the Automatic  adapter
-     */
-    public Boolean isAutomaticAdapter() {
-        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
-    }
-
-    /**
-     * Tells if the application use the Dynamic adapter
-     */
-    public Boolean isDynamicAdapter() {
-        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
-    }
-
     public Class getMainActivity() {
         if (getPullFromServer()) {
             return ProgressActivity.class;
@@ -367,4 +369,17 @@ public class PreferencesState {
         editor.putBoolean(context.getResources().getString(R.string.push_in_progress), inProgress);
         editor.commit();
     }
+
+    public void loadsLanguageInActivity() {
+        if (languageCode.equals("")) {
+            return;
+        }
+        Resources res = context.getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(languageCode);
+        res.updateConfiguration(conf, dm);
+    }
+
 }

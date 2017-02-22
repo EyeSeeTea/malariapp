@@ -24,6 +24,7 @@ import android.content.Context;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.UserAccountDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
@@ -43,12 +44,24 @@ public class UserAccountRepository implements IUserAccountRepository {
     @Override
     public void login(final Credentials credentials,
             final IRepositoryCallback<UserAccount> callback) {
-        remoteLogin(credentials, callback);
+        if (credentials.isDemoCredentials()) {
+            localLogin(credentials, callback);
+        } else {
+            remoteLogin(credentials, callback);
+        }
     }
 
     @Override
     public void logout(final IRepositoryCallback<Void> callback) {
-        remoteLogout(callback);
+
+        //TODO: jsanchez fix find out IsDemo from current UserAccount getting from DataSource
+        Credentials credentials = Session.getCredentials();
+
+        if (credentials.isDemoCredentials()) {
+            localLogout(callback);
+        } else {
+            remoteLogout(callback);
+        }
     }
 
     private void remoteLogout(final IRepositoryCallback<Void> callback) {

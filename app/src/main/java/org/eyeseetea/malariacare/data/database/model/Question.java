@@ -104,14 +104,6 @@ public class Question extends BaseModel {
     Boolean compulsory;
 
     @Column
-    Long id_parent;
-
-    /**
-     * Reference to parent question (loaded lazily, DEPRECATED??)
-     */
-    Question question;
-
-    @Column
     Long id_composite_score_fk;
 
     @Column
@@ -156,11 +148,13 @@ public class Question extends BaseModel {
      * Reference to the question triggered with a match by this one
      */
     //Question questionTriggered;
-
     public Question() {
     }
 
-    public Question(String code, String de_name, String short_name, String form_name, String uid, Integer order_pos, Float numerator_w, Float denominator_w, String feedback, Integer output,Header header, Answer answer, Question question, CompositeScore compositeScore,Boolean compulsory,Integer row, Integer column) {
+    public Question(String code, String de_name, String short_name, String form_name, String uid,
+            Integer order_pos, Float numerator_w, Float denominator_w, String feedback,
+            Integer output, Header header, Answer answer, CompositeScore compositeScore,
+            Boolean compulsory, Integer row, Integer column) {
         this.code = code;
         this.de_name = de_name;
         this.short_name = short_name;
@@ -172,15 +166,14 @@ public class Question extends BaseModel {
         this.feedback = feedback;
         this.output = output;
         this.parent = null;
-        this.matchTrigger=null;
-        this.compulsory=compulsory;
+        this.matchTrigger = null;
+        this.compulsory = compulsory;
         this.row = row;
         this.column = column;
 
         this.setHeader(header);
         this.setAnswer(answer);
         this.setCompositeScore(compositeScore);
-        this.setQuestion(question);
     }
 
     public Long getId_question() {
@@ -271,19 +264,19 @@ public class Question extends BaseModel {
         return compulsory;
     }
 
-    public void setRow(Integer row){
+    public void setRow(Integer row) {
         this.row = row;
     }
 
-    public Integer getRow(){
+    public Integer getRow() {
         return this.row;
     }
 
-    public void setColumn(Integer column){
+    public void setColumn(Integer column) {
         this.column = column;
     }
 
-    public Integer getColumn(){
+    public Integer getColumn() {
         return this.column;
     }
 
@@ -308,11 +301,11 @@ public class Question extends BaseModel {
         this.header = null;
     }
 
-    public void setOutput(Integer output){
+    public void setOutput(Integer output) {
         this.output = output;
     }
 
-    public Integer getOutput(){
+    public Integer getOutput() {
         return output;
     }
 
@@ -335,26 +328,6 @@ public class Question extends BaseModel {
     public void setAnswer(Long id_answer){
         this.id_answer_fk = id_answer;
         this.answer = null;
-    }
-
-    public Question getQuestion() {
-        if(question ==null){
-            question = new Select()
-                    .from(Question.class)
-                    .where(Question_Table.id_question
-                            .is(id_parent)).querySingle();
-        }
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-        this.id_parent = (question!=null)?question.getId_question():null;
-    }
-
-    public void setQuestion(Long id_parent){
-        this.id_parent = id_parent;
-        this.question = null;
     }
 
     public CompositeScore getCompositeScore() {
@@ -393,33 +366,34 @@ public class Question extends BaseModel {
 
     /**
      * Tells if this questions triggers a match
-     * @return
      */
-    public boolean hasAMatchTrigger(){
-        if(this.output!= Constants.DROPDOWN_LIST){
+    public boolean hasAMatchTrigger() {
+        if (this.output != Constants.DROPDOWN_LIST) {
             return false;
         }
 
-        if(matchTrigger==null){
-            for(Match match:getMatches()){
+        if (matchTrigger == null) {
+            for (Match match : getMatches()) {
                 QuestionRelation questionRelation = match.getQuestionRelation();
-                if(questionRelation.getOperation()==QuestionRelation.MATCH){
+                if (questionRelation.getOperation() == QuestionRelation.MATCH) {
                     //questionTriggered=questionRelation.getQuestion();
-                    matchTrigger=true;
+                    matchTrigger = true;
                     return matchTrigger;
                 }
             }
-            matchTrigger=false;
+            matchTrigger = false;
         }
 
         return matchTrigger;
     }
 
     public List<QuestionRelation> getQuestionRelations() {
-        if(questionRelations ==null){
+        if (questionRelations == null) {
             this.questionRelations = new Select()
                     .from(QuestionRelation.class)
-                    //// FIXME: 11/11/2016 https://github.com/Raizlabs/DBFlow/blob/f0d9e1710205952815db027cb560dd8868f5af0b/usage2/Indexing.md
+                    //// FIXME: 11/11/2016 https://github
+                    // .com/Raizlabs/DBFlow/blob/f0d9e1710205952815db027cb560dd8868f5af0b/usage2
+                    // /Indexing.md
                     //.indexedBy("QuestionRelation_id_question")
                     .where(QuestionRelation_Table.id_question_fk
                             .eq(this.getId_question()))
@@ -457,12 +431,12 @@ public class Question extends BaseModel {
             Iterator<Match> matchesIterator = matches.iterator();
             In in = Match_Table.id_match.withTable(matchAlias)
                     .in(matchesIterator.next().getId_match());
-            while (matchesIterator.hasNext()){
+            while (matchesIterator.hasNext()) {
                 in.and(Long.toString(matchesIterator.next().getId_match()));
             }
 
             //Select question from questionrelation where operator=1 and id_match in (..)
-            this.children= new Select().from(Question.class).as(questionName)
+            this.children = new Select().from(Question.class).as(questionName)
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                     .on(Question_Table.id_question.withTable(questionAlias)
@@ -473,8 +447,9 @@ public class Question extends BaseModel {
                                     .eq(Match_Table.id_question_relation_fk.withTable(matchAlias)))
                             //Parent child relationship
                     .where(in)
-                            //In clause
-                    .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(QuestionRelation.PARENT_CHILD)).queryList();
+                    //In clause
+                    .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(
+                            QuestionRelation.PARENT_CHILD)).queryList();
         }
         return this.children;
     }
@@ -485,7 +460,7 @@ public class Question extends BaseModel {
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "values")
     public List<Value> getValues() {
-        if(values==null){
+        if (values == null) {
             values = new Select()
                     .from(Value.class)
                     .where(Value_Table.id_question_fk
@@ -496,8 +471,6 @@ public class Question extends BaseModel {
 
     /**
      * Gets the value of this question in the current survey in session
-     *
-     * @return
      */
     public Value getValueBySession(String module) {
         return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
@@ -505,9 +478,6 @@ public class Question extends BaseModel {
 
     /**
      * Gets the value of this question in the given Survey
-     *
-     * @param idSurvey
-     * @return
      */
     public Value getValueBySurvey(float idSurvey) {
         List<Value> returnValues = new Select().from(Value.class)
@@ -525,8 +495,6 @@ public class Question extends BaseModel {
 
     /**
      * Gets the option of this question in the current survey in session
-     *
-     * @return
      */
     public Option getOptionBySession(String module) {
         return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
@@ -534,9 +502,6 @@ public class Question extends BaseModel {
 
     /**
      * Gets the option of this question in the given survey
-     *
-     * @param idSurvey
-     * @return
      */
     public Option getOptionBySurvey(float idSurvey) {
 
@@ -551,32 +516,27 @@ public class Question extends BaseModel {
 
     /**
      * Returns true if the question belongs to a Custom Tab
-     * */
+     */
     public boolean belongsToCustomTab() {
-        return this.row!=null || this.column!=null;
+        return this.row != null || this.column != null;
     }
 
     /**
      * Returns true if this question is a title of a custom Tab table
-     * @return
      */
-    public boolean isCustomTabTableHeader(){
-        return this.row!=null && this.row==0;
+    public boolean isCustomTabTableHeader() {
+        return this.row != null && this.row == 0;
     }
 
     /**
      * Returns true if this question starts a new row
-     * @return
      */
-    public boolean isCustomTabNewRow(){
-        return this.column!=null && this.column==1;
+    public boolean isCustomTabNewRow() {
+        return this.column != null && this.column == 1;
     }
 
     /**
      * Checks if this question is shown according to the values of the given survey
-     *
-     * @param idSurvey
-     * @return
      */
     public boolean isHiddenBySurvey(float idSurvey) {
 
@@ -585,7 +545,7 @@ public class Question extends BaseModel {
             return false;
         }
 
-        int hasParentOptionActivated=numberOfActiveParents(idSurvey);
+        int hasParentOptionActivated = numberOfActiveParents(idSurvey);
 
         //Parent with the right value -> not hidden
         return hasParentOptionActivated > 0 ? false : true;
@@ -614,11 +574,9 @@ public class Question extends BaseModel {
                 .queryList();
         return values;
     }
+
     /**
      * Returns the number of parents that shown this questions
-     *
-     * @param idSurvey
-     * @return
      */
     public int numberOfActiveParents(float idSurvey) {
         //No question relations
@@ -647,21 +605,18 @@ public class Question extends BaseModel {
                 .and(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias)
                         .eq(this.getId_question()))
                 .count();
-        return  (int)numberOfParentOptionActivated;
+        return (int) numberOfParentOptionActivated;
     }
 
     /**
      * Checks if a unique question UID is shown according to the values of the given survey
-     *
-     * @param uid
-     * @param id_survey
-     * @return
      */
-    public static boolean isHiddenQuestionByUidAndSurvey(String uid, Long id_survey){
+    public static boolean isHiddenQuestionByUidAndSurvey(String uid, Long id_survey) {
         //get question by uid
-        Question question=getQuestionByUid(uid);
-        if(question==null)
+        Question question = getQuestionByUid(uid);
+        if (question == null) {
             return false;
+        }
 
         return question.isHiddenBySurvey(id_survey);
     }
@@ -678,8 +633,9 @@ public class Question extends BaseModel {
 
         Float num = ScoreRegister.calcNum(this, idSurvey);
         //If the num is null the question is ignored
-        if(num==null)
+        if (num == null) {
             return null;
+        }
         Float denum = ScoreRegister.calcDenum(this, idSurvey);
         ScoreRegister.addRecord(this, num, denum, idSurvey, module);
         return Arrays.asList(num, denum);
@@ -687,9 +643,6 @@ public class Question extends BaseModel {
 
     /**
      * Counts the number of required questions (without a parent question).
-     *
-     * @param program
-     * @return
      */
     public static int countRequiredByProgram(Program program) {
         if (program == null || program.getId_program() == null) {
@@ -725,14 +678,11 @@ public class Question extends BaseModel {
                 .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
-        return (int) (totalAnswerableQuestions-numChildrenQuestion);
+        return (int) (totalAnswerableQuestions - numChildrenQuestion);
     }
 
     /**
      * Counts the number of compulsory questions (without a parent question).
-     *
-     * @param program
-     * @return
      */
     public static int countCompulsoryByProgram(Program program) {
         if (program == null || program.getId_program() == null) {
@@ -767,14 +717,11 @@ public class Question extends BaseModel {
                 .and(QuestionRelation_Table.operation.withTable(questionRelationAlias)
                         .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  Question_Table.uid_question.withTable(questionAlias)).queryList();
         // Return number of parents (total - children)
-        return (int) (totalAnswerableQuestions-questionsChild.size());
+        return (int) (totalAnswerableQuestions - questionsChild.size());
     }
 
     /**
      * Gets all the children compulsory questions, and returns the  number of active children
-     *
-     * @param
-     * @return
      */
     public static int countChildrenCompulsoryBySurvey(Long id_survey) {
         int numActiveChildrens=0;
@@ -817,9 +764,6 @@ public class Question extends BaseModel {
 
     /**
      * Returns a Question by a UID
-     *
-     * @param uid
-     * @return
      */
     public static Question getQuestionByUid(String uid) {
         return new Select().from(Question.class).where(Question_Table.uid_question.eq(uid)).querySingle();
@@ -829,14 +773,11 @@ public class Question extends BaseModel {
     /**
      * Checks if this question is triggered according to the current values of the given survey.
      * Only applies to question with answers DROPDOWN_DISABLED
-     *
-     * @param idSurvey
-     * @return
      */
-    public boolean isTriggered(float idSurvey){
+    public boolean isTriggered(float idSurvey) {
 
         //Only disabled dropdowns
-        if(this.getOutput()!=Constants.DROPDOWN_LIST_DISABLED){
+        if (this.getOutput() != Constants.DROPDOWN_LIST_DISABLED) {
             return false;
         }
 
@@ -845,7 +786,7 @@ public class Question extends BaseModel {
                 .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
                 .on(QuestionOption_Table.id_match_fk.withTable(questionOptionAlias).eq(Match_Table.id_match.withTable(matchAlias)))
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(Match_Table.id_question_relation_fk.withTable(matchAlias).eq(QuestionRelation_Table.id_question_relation))
+                .on(Match_Table.id_question_relation_fk.withTable(matchAlias).eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
 
                 .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
                 .on(Value_Table.id_question_fk.withTable(valueAlias)
@@ -858,22 +799,19 @@ public class Question extends BaseModel {
                 .queryList();
 
         //No values no match
-        if(questionOptions.size()!=2){
+        if (questionOptions.size() != 2) {
             return false;
         }
 
         //Match is triggered if questionoptions have same matchid
-        long idmatchQ1=questionOptions.get(0).getMatch().getId_match();
-        long idmatchQ2=questionOptions.get(1).getMatch().getId_match();
-        return idmatchQ1==idmatchQ2;
+        long idmatchQ1 = questionOptions.get(0).getMatch().getId_match();
+        long idmatchQ2 = questionOptions.get(1).getMatch().getId_match();
+        return idmatchQ1 == idmatchQ2;
 
     }
 
     /**
      * Returns all the questions that belongs to a program
-     *
-     * @param program
-     * @return
      */
     public static List<Question> listByProgram(Program program) {
         if (program == null || program.getId_program() == null) {
@@ -881,7 +819,8 @@ public class Question extends BaseModel {
         }
 
 
-        //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId().toString());
+        //return Question.findWithQuery(Question.class, LIST_ALL_BY_PROGRAM, program.getId()
+        // .toString());
 
 
         return new Select().from(Question.class).as(questionName)
@@ -894,7 +833,8 @@ public class Question extends BaseModel {
                 .where(Tab_Table.id_program_fk.withTable(tabAlias)
                         .eq(program.getId_program()))
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
-                .orderBy(OrderBy.fromProperty(Question_Table.order_pos.withTable(questionAlias))).queryList();
+                .orderBy(OrderBy.fromProperty(
+                        Question_Table.order_pos.withTable(questionAlias))).queryList();
 
     }
 
@@ -920,7 +860,8 @@ public class Question extends BaseModel {
                 .where(in)
                 .and(Question_Table.id_composite_score_fk.withTable(questionAlias).isNull())
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
-                .orderBy(OrderBy.fromProperty(Question_Table.order_pos.withTable(questionAlias))).queryList();
+                .orderBy(OrderBy.fromProperty(
+                        Question_Table.order_pos.withTable(questionAlias))).queryList();
     }
 
     public static List<Question> listAllByTabs(List<Tab> tabs) {
@@ -930,7 +871,7 @@ public class Question extends BaseModel {
         }
 
         Iterator<Tab> iterator = tabs.iterator();
-        In in =  Tab_Table.id_tab.withTable(tabAlias).in(iterator.next().getId_tab());
+        In in = Tab_Table.id_tab.withTable(tabAlias).in(iterator.next().getId_tab());
         while (iterator.hasNext()) {
             in.and(Long.toString(iterator.next().getId_tab()));
         }
@@ -944,7 +885,7 @@ public class Question extends BaseModel {
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(in)
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
-                .orderBy( Question_Table.order_pos.withTable(questionAlias),true).queryList();
+                .orderBy(Question_Table.order_pos.withTable(questionAlias), true).queryList();
     }
 
 
@@ -970,11 +911,15 @@ public class Question extends BaseModel {
 
         if (id_question != question.id_question) return false;
         if (code != null ? !code.equals(question.code) : question.code != null) return false;
-        if (de_name != null ? !de_name.equals(question.de_name) : question.de_name != null)
+        if (de_name != null ? !de_name.equals(question.de_name) : question.de_name != null) {
             return false;
-        if (short_name != null ? !short_name.equals(question.short_name) : question.short_name != null)
+        }
+        if (short_name != null ? !short_name.equals(question.short_name)
+                : question.short_name != null) {
             return false;
-        if (form_name != null ? !form_name.equals(question.form_name) : question.form_name != null)
+        }
+        if (form_name != null ? !form_name.equals(question.form_name)
+                : question.form_name != null)
             return false;
         if (uid_question != null ? !uid_question.equals(question.uid_question) : question.uid_question != null) return false;
         if (order_pos != null ? !order_pos.equals(question.order_pos) : question.order_pos != null)
@@ -990,8 +935,6 @@ public class Question extends BaseModel {
         if (id_answer_fk != null ? !id_answer_fk.equals(question.id_answer_fk) : question.id_answer_fk != null)
             return false;
         if (output != null ? !output.equals(question.output) : question.output != null)
-            return false;
-        if (id_parent != null ? !id_parent.equals(question.id_parent) : question.id_parent != null)
             return false;
         if (compulsory != null ? !compulsory.equals(question.compulsory) : question.compulsory != null)
             return false;
@@ -1014,7 +957,6 @@ public class Question extends BaseModel {
         result = 31 * result + (id_header_fk != null ? id_header_fk.hashCode() : 0);
         result = 31 * result + (id_answer_fk != null ? id_answer_fk.hashCode() : 0);
         result = 31 * result + (output != null ? output.hashCode() : 0);
-        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
         result = 31 * result + (compulsory != null ? compulsory.hashCode() : 0);
         result = 31 * result + (id_composite_score_fk != null ? id_composite_score_fk.hashCode() : 0);
         return result;
@@ -1037,7 +979,6 @@ public class Question extends BaseModel {
                 ", id_answer=" + id_answer_fk +
                 ", output=" + output +
                 ", compulsory=" + compulsory +
-                ", id_parent=" + id_parent +
                 ", id_composite_score=" + id_composite_score_fk +
                 '}';
     }

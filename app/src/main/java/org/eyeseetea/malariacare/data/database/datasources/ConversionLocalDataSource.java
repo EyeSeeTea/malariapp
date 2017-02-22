@@ -368,8 +368,10 @@ public class ConversionLocalDataSource {
                         organisationUnit.getLabel(), program.getDisplayName());
                 for (EventExtended event : events) {
                     if (!PullController.PULL_IS_ACTIVE) return;
-                    if (event.getEventDate() == null || event.getEventDate().equals("")) {
-                        break;
+                    if (event.getEventDate() == null
+                            || event.getEventDate().equals("")) {
+                        Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"+event.getUid());
+                        continue;
                     }
                     event.accept(converter);
                 }

@@ -19,10 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
-import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
@@ -113,27 +111,18 @@ public class EventExtended implements VisitableFromSDK {
      * Returns the survey.eventDate associated with this event (eventDate field)
      */
     public Date getEventDate() {
-        return event.getEventDate().toDate();
+        return (event.getEventDate() != null) ? event.getEventDate().toDate() : null;
     }
 
     /**
      * Returns the survey.eventDate associated with this event (dueDate field)
      */
     public Date getDueDate() {
-        if (event == null) {
-            return null;
-        }
-
-        return event.getDueDate().toDate();
+        return (event != null) ? event.getDueDate().toDate() : null;
     }
 
     public static Date parseDate(String dateAsString, String format) throws ParseException {
-        if (dateAsString == null) {
-            return null;
-        }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.parse(dateAsString);
+        return (dateAsString != null) ? new SimpleDateFormat(format).parse(dateAsString) : null;
     }
 
     public static Date parseShortDate(String dateAsString) {
@@ -145,11 +134,10 @@ public class EventExtended implements VisitableFromSDK {
         }
     }
 
-    public static Date parseLongDate(String dateAsString){
+    public static Date parseLongDate(String dateAsString) {
         try {
             return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
         } catch (ParseException ex) {
-            ex.printStackTrace();
             return parseShortDate(dateAsString);
         }
     }
@@ -166,11 +154,7 @@ public class EventExtended implements VisitableFromSDK {
      * Turns a given date into a parseable String according to sdk date format
      */
     public static String format(Date date, String format) {
-        if (date == null) {
-            return null;
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.format(date);
+        return (date != null) ? new SimpleDateFormat(format).format(date) : null;
     }
 
 

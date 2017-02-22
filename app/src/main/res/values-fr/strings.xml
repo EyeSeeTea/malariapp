@@ -162,6 +162,7 @@ Mensuelle"</string>
 <string name="dialog_pull_success">"Téléchargement des métadonnées Dhis du serveur réussi"</string>
 <string name="dialog_title_pull_response">"Status du téléchargement"</string>
 <string name="progress_pull_connecting">"Connexion au serveur DHIS..."</string>
+<string name="dialog_demo_pull_success">"Les métadonnées Dhis chargées avec succès à partir de données locales"</string>
 <string name="progress_pull_downloading">"Mise à jour des métadonnées (cela peut prendre quelques minutes)..."</string>
 <string name="progress_pull_preparing_program">"Chargement des programmes..."</string>
 <string name="progress_pull_preparing_answers">"Chargement des réponses..."</string>
@@ -204,24 +205,6 @@ Mensuelle"</string>
 <string name="modify">Modifier</string>
 <string name="create_or_modify">"Voulez-vous créer une nouvelle évaluation ou de modifier la dernière évaluation, les dates[%s]?"</string>
 <string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
-<string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
-<string name="dynamic_error_phone_format">"Le numéro de téléphone donné a un format incorrect ( 0NN NNN NNN{N} )"</string>
-<string name="dynamic_error_age">âge invalide</string>
-<string name="survey_title_completed">Enquête terminée</string>
-<string name="survey_info_completed">Le sondage a été effectué avec succès</string>
-<string name="review">Réviser</string>
-<string name="send">Envoyer</string>
-<string name="number_0">0</string>
-<string name="number_1">1</string>
-<string name="number_2">2</string>
-<string name="number_3">3</string>
-<string name="number_4">4</string>
-<string name="number_5">5</string>
-<string name="number_6">6</string>
-<string name="number_7">7</string>
-<string name="number_8">8</string>
-<string name="number_9">9</string>
-<string name="clear">Effacement</string>
 
 <string name="developer_option_summary">"Cette option active les options de développement"</string>
 <string name="developer_option_title">"Afficher les options développeur"</string>
@@ -232,4 +215,8 @@ Mensuelle"</string>
 <string name="feedback_media_link" >"Voir la vidéo"</string>
 <string name="feedback_media">Voir la vidéo commentaires</string>
 <string name="feedback_view_image">"Ouvrir image avec ..."</string>
+<string name="select_all">"Tout sélectionner"</string>
+<string name="demo_login">Démo</string>
+<string name="system_defined">"Système défini"</string>
+<string name="settings_select_language">"La langue"</string>
 </resources>

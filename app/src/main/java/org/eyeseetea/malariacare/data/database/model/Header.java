@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.data.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.OrderBy;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -32,7 +30,7 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import java.util.List;
 
 @Table(database = AppDatabase.class)
-public class Header extends BaseModel{
+public class Header extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -119,23 +117,13 @@ public class Header extends BaseModel{
         this.tab = null;
     }
 
-    public List<Question> getQuestions(){
-        if (this.questions == null){
+    public List<Question> getQuestions() {
+        if (this.questions == null) {
             this.questions = new Select().from(Question.class)
                     .where(Question_Table.id_header_fk.eq(this.getId_header()))
                     .orderBy( Question_Table.order_pos,true).queryList();
         }
         return questions;
-    }
-
-    /**
-     * getNumber Of Question Parents Header
-     * @return
-     */
-    public long getNumberOfQuestionParents() {
-        return SQLite.selectCountOf().from(Question.class)
-                .where(Question_Table.id_header_fk.eq(getId_header()))
-                .and(Question_Table.id_parent.isNull()).count();
     }
 
     @Override
@@ -146,8 +134,10 @@ public class Header extends BaseModel{
         Header header = (Header) o;
 
         if (id_header != header.id_header) return false;
-        if (short_name != null ? !short_name.equals(header.short_name) : header.short_name != null)
+        if (short_name != null ? !short_name.equals(header.short_name)
+                : header.short_name != null) {
             return false;
+        }
         if (name != null ? !name.equals(header.name) : header.name != null) return false;
         if (order_pos != null ? !order_pos.equals(header.order_pos) : header.order_pos != null)
             return false;
