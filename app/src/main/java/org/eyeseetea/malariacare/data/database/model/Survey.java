@@ -660,6 +660,16 @@ public class Survey extends BaseModel implements VisitableToSDK {
         IConvertToSDKVisitor.visit(this);
     }
 
+    /* Returns the last surveys (by date) with status Completed or sent
+    * @return
+         */
+    public static List<Survey> getAllCompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Survey_Table.status.is(Constants.SURVEY_COMPLETED))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
+                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit)).queryList();
+    }
+
     /**
      * Returns the last surveys (by date) without status Completed or sent
      */
