@@ -10,7 +10,6 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
-import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.Answer;
@@ -33,7 +32,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveySchedule;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.model.Value;
-import org.hisp.dhis.client.sdk.core.common.persistence.DbOperation;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -219,4 +219,6 @@ Mensuelle"</string>
 <string name="demo_login">Démo</string>
 <string name="system_defined">"Système défini"</string>
 <string name="settings_select_language">"La langue"</string>
+<string name="toast_push_in_progress">"S'il vous plaît attendre, Il ya déjà une poussée en cours"</string>
+<string name="toast_push_done">"Données d'enquête envoyées au serveur. Démarrage de .."</string>
 </resources>

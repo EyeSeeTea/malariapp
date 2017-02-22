@@ -32,14 +32,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
@@ -48,18 +51,16 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
-
-import java.util.Date;
-import org.eyeseetea.malariacare.data.database.model.Program;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
+import java.util.Date;
 import java.util.List;
 
 
-public class DashboardActivity extends BaseActivity{
+public class DashboardActivity extends BaseActivity {
 
-    private final static String TAG=".DDetailsActivity";
-    private boolean reloadOnResume=true;
+    private final static String TAG = ".DDetailsActivity";
+    private boolean reloadOnResume = true;
     public DashboardController dashboardController;
     static Handler handler;
     public static DashboardActivity dashboardActivity;
@@ -69,7 +70,7 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
-        dashboardActivity=this;
+        dashboardActivity = this;
 
         //XXX to remove?
         initDataIfRequired();
@@ -81,7 +82,7 @@ public class DashboardActivity extends BaseActivity{
         setContentView(dashboardController.getLayout());
 
         //delegate modules initialization
-        dashboardController.onCreate(this,savedInstanceState);
+        dashboardController.onCreate(this, savedInstanceState);
 
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
@@ -97,14 +98,12 @@ public class DashboardActivity extends BaseActivity{
     }
 
 
-
-
     /**
      * Handles resolution callbacks.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
+            Intent data) {
         Log.d(TAG, String.format("onActivityResult(%d, %d)", requestCode, resultCode));
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -115,11 +114,11 @@ public class DashboardActivity extends BaseActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             getFragmentManager().popBackStack();
         }
         //Any common option
-        if(item.getItemId()!=R.id.action_pull){
+        if (item.getItemId() != R.id.action_pull) {
             return super.onOptionsItemSelected(item);
         }
 
@@ -127,19 +126,22 @@ public class DashboardActivity extends BaseActivity{
         final List<Survey> unsentSurveys = Survey.getAllUnsentUnplannedSurveys();
 
         //No unsent data -> pull (no confirmation)
-        if(unsentSurveys==null || unsentSurveys.size()==0){
+        if (unsentSurveys == null || unsentSurveys.size() == 0) {
             pullMetadata();
             return true;
         }
 
         final Activity activity = this;
         //check if exist a compulsory question without awnser before push and pull.
-        for(Survey survey:unsentSurveys){
+        for (Survey survey : unsentSurveys) {
             SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
-            if (surveyAnsweredRatio.getTotalCompulsory()>0 && surveyAnsweredRatio.getCompulsoryAnswered() != surveyAnsweredRatio.getTotalCompulsory() ) {
+            if (surveyAnsweredRatio.getTotalCompulsory() > 0
+                    && surveyAnsweredRatio.getCompulsoryAnswered()
+                    != surveyAnsweredRatio.getTotalCompulsory()) {
                 new AlertDialog.Builder(this)
                         .setTitle("Unsent surveys")
-                        .setMessage(getApplicationContext().getResources().getString(R.string.dialog_incompleted_compulsory_pulling))
+                        .setMessage(getApplicationContext().getResources().getString(
+                                R.string.dialog_incompleted_compulsory_pulling))
                         .setPositiveButton(android.R.string.ok, null)
                         .setCancelable(true)
                         .create().show();
@@ -149,18 +151,25 @@ public class DashboardActivity extends BaseActivity{
         //Unsent data -> ask if pull || push before pulling
         new AlertDialog.Builder(this)
                 .setTitle("Push unsent surveys?")
-                .setMessage(String.format(getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata), unsentSurveys.size() + ""))
+                .setMessage(String.format(
+                        getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata),
+                        unsentSurveys.size() + ""))
                 .setNeutralButton(android.R.string.no, null)
-                .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Pull directly
-                        pullMetadata();
-                    }
-                })
+                .setNegativeButton(activity.getString(R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Pull directly
+                                pullMetadata();
+                            }
+                        })
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Try to push before pull
+                        final List<Survey> inProgressSurveys = Survey.getAllInProgressSurveys();
+                        for (Survey survey : inProgressSurveys) {
+                            survey.setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
+                        }
                         pushUnsentBeforePull();
                     }
                 })
@@ -170,15 +179,58 @@ public class DashboardActivity extends BaseActivity{
     }
 
     private void pushUnsentBeforePull() {
+        if (PreferencesState.getInstance().isPushInProgress()) {
+            Toast.makeText(getBaseContext(), R.string.toast_push_in_progress, Toast.LENGTH_LONG).show();
+            return;
+        }
+        PushController pushController = new PushController(getApplicationContext());
+        PushUseCase pushUseCase = new PushUseCase(pushController);
 
-        //Launch Progress Push before pull
-        Intent progressActivityIntent = new Intent(this, ProgressActivity.class);
-        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION, ProgressActivity.ACTION_PUSH_BEFORE_PULL);
-        finish();
-        startActivity(progressActivityIntent);
+        pushUseCase.execute(new PushUseCase.Callback() {
+            @Override
+            public void onComplete() {
+                Toast.makeText(getBaseContext(), R.string.toast_push_done, Toast.LENGTH_LONG).show();
+
+                pullMetadata();
+            }
+
+            @Override
+            public void onPushInProgressError() {
+                Toast.makeText(getBaseContext(),
+                        R.string.push_stopped, Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_stopped));
+            }
+
+            @Override
+            public void onPushError() {
+                Toast.makeText(getBaseContext(), R.string.push_error,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_error));
+            }
+
+            @Override
+            public void onSurveysNotFoundError() {
+                Toast.makeText(getBaseContext(), R.string.push_surveys_not_found, Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_surveys_not_found));
+            }
+
+            @Override
+            public void onConversionError() {
+                Toast.makeText(getBaseContext(),
+                        R.string.push_conversion_error,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_conversion_error));
+            }
+
+            @Override
+            public void onNetworkError() {
+                Toast.makeText(getBaseContext(), R.string.network_no_available, Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.network_no_available));
+            }
+        });
     }
 
-    private void pullMetadata(){
+    private void pullMetadata() {
         PreferencesState.getInstance().clearOrgUnitPreference();
         finishAndGo(ProgressActivity.class);
     }
@@ -191,11 +243,12 @@ public class DashboardActivity extends BaseActivity{
 
     @Override
     protected void initTransition() {
-        this.overridePendingTransition(R.transition.anim_slide_in_right, R.transition.anim_slide_out_right);
+        this.overridePendingTransition(R.transition.anim_slide_in_right,
+                R.transition.anim_slide_out_right);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
@@ -203,27 +256,27 @@ public class DashboardActivity extends BaseActivity{
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.d(TAG, "onPause");
         super.onPause();
     }
 
-    public void setReloadOnResume(boolean doReload){
-        this.reloadOnResume=false;
+    public void setReloadOnResume(boolean doReload) {
+        this.reloadOnResume = false;
     }
 
-    public void getSurveysFromService(){
-        Log.d(TAG, "getSurveysFromService ("+reloadOnResume+")");
-        if(!reloadOnResume){
+    public void getSurveysFromService() {
+        Log.d(TAG, "getSurveysFromService (" + reloadOnResume + ")");
+        if (!reloadOnResume) {
             //Flag is readjusted
-            reloadOnResume=true;
+            reloadOnResume = true;
             return;
         }
         reloadDashboard();
     }
 
-    public static void reloadDashboard(){
-        Intent surveysIntent=new Intent(dashboardActivity, SurveyService.class);
+    public static void reloadDashboard() {
+        Intent surveysIntent = new Intent(dashboardActivity, SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
         dashboardActivity.startService(surveysIntent);
     }
@@ -246,14 +299,15 @@ public class DashboardActivity extends BaseActivity{
     /**
      * In case Session doesn't have the user set, here we set it to the first entry of User table
      */
-    private void initUserSessionIfRequired(){
+    private void initUserSessionIfRequired() {
         // already a user in session -> done
-        if(Session.getUser()!=null){
+        if (Session.getUser() != null) {
             return;
         }
 
         // If we're in dashboard and User is not yet in session we have to put it
-        // FIXME: for the moment there will be only one user in the User table, but in the future we will have to think about tagging the logged user in the DB
+        // FIXME: for the moment there will be only one user in the User table, but in the future
+        // we will have to think about tagging the logged user in the DB
         User user = User.getLoggedUser();
         Session.setUser(user);
     }
@@ -262,7 +316,8 @@ public class DashboardActivity extends BaseActivity{
      * Logging out from sdk is an async method.
      * Thus it is required a callback to finish logout gracefully.
      *
-     * XXX: So far this @subscribe annotation does not work with inheritance since relies on 'getDeclaredMethods'
+     * XXX: So far this @subscribe annotation does not work with inheritance since relies on
+     * 'getDeclaredMethods'
      * @param uiEvent
      */
     /*@Subscribe
@@ -272,38 +327,35 @@ public class DashboardActivity extends BaseActivity{
 
     /**
      * Handler that starts or edits a given survey
-     * @param survey
      */
-    public void onSurveySelected(Survey survey){
+    public void onSurveySelected(Survey survey) {
         dashboardController.onSurveySelected(survey);
     }
 
     /**
      * Handler that starts or edits a given survey
-     * @param orgUnit
      */
-    public void onOrgUnitSelected(OrgUnit orgUnit){
+    public void onOrgUnitSelected(OrgUnit orgUnit) {
         dashboardController.onOrgUnitSelected(orgUnit);
     }
+
     /**
      * Handler that starts or edits a given survey
-     * @param program
      */
-    public void onProgramSelected(Program program){
+    public void onProgramSelected(Program program) {
         dashboardController.onProgramSelected(program);
     }
+
     /**
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
-     * @param survey
      */
-    public void onMarkAsCompleted(Survey survey){
+    public void onMarkAsCompleted(Survey survey) {
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
-     * @param survey
      */
     public void onFeedbackSelected(Survey survey) {
         dashboardController.onFeedbackSelected(survey);
@@ -311,28 +363,30 @@ public class DashboardActivity extends BaseActivity{
 
     /**
      * Moving into createSurvey fragment
-     * @param view
      */
-    public void onNewSurvey(View view){
+    public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
     }
+
     /**
      * Modify survey from CreateSurveyFragment
-     * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake event will be created
+     * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake
+     * event will be created
      */
-    public void modifySurvey(OrgUnit orgUnit, Program program, EventFlow lastEventInServer, String module){
+    public void modifySurvey(OrgUnit orgUnit, Program program, EventFlow lastEventInServer,
+            String module) {
         //Looking for that survey in local
         Survey survey = Survey.findSurveyWith(orgUnit, program, lastEventInServer);
         //Survey in server BUT not local
-        if(survey==null){
-            survey= SurveyPlanner.getInstance().startSurvey(orgUnit,program);
+        if (survey == null) {
+            survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
         }
-        if(lastEventInServer!=null){
+        if (lastEventInServer != null) {
             survey.setEventUid(lastEventInServer.getUId());
             EventExtended lastEventExtended = new EventExtended(lastEventInServer);
             survey.setCreationDate(lastEventExtended.getCreationDate());
             survey.setCompletionDate(lastEventExtended.getEventDate());
-        }else{
+        } else {
             //Mark the survey as a modify attempt for pushing accordingly
             survey.setEventUid(PullClient.NO_EVENT_FOUND);
         }
@@ -340,7 +394,7 @@ public class DashboardActivity extends BaseActivity{
         //Upgrade the uploaded date
         survey.setUploadDate(new Date());
         survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurveyByModule(survey,module);
+        Session.setSurveyByModule(survey, module);
         prepareLocationListener(survey);
         dashboardController.onSurveySelected(survey);
     }
@@ -348,15 +402,15 @@ public class DashboardActivity extends BaseActivity{
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit,final Program program) {
-        createNewSurvey(orgUnit,program);
+    public void onCreateSurvey(final OrgUnit orgUnit, final Program program) {
+        createNewSurvey(orgUnit, program);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, Program program){
-        Survey survey=SurveyPlanner.getInstance().startSurvey(orgUnit,program);
+    public void createNewSurvey(OrgUnit orgUnit, Program program) {
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
         prepareLocationListener(survey);
         // Put new survey in session
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
@@ -365,7 +419,6 @@ public class DashboardActivity extends BaseActivity{
 
     /**
      * Shows a quick toast message on screen
-     * @param message
      */
 
     public static void toast(String message) {
@@ -383,7 +436,7 @@ public class DashboardActivity extends BaseActivity{
                     }
                 });
             }
-        },1000);
+        }, 1000);
     }
 
     //Show dialog exception from class without activity.
@@ -396,10 +449,12 @@ public class DashboardActivity extends BaseActivity{
                     @Override
                     public void run() {
                         String dialogTitle = "", dialogMessage = "";
-                        if (title != null)
+                        if (title != null) {
                             dialogTitle = title;
-                        if (errorMessage != null)
+                        }
+                        if (errorMessage != null) {
                             dialogMessage = errorMessage;
+                        }
                         new AlertDialog.Builder(dashboardActivity)
                                 .setCancelable(false)
                                 .setTitle(dialogTitle)
@@ -413,17 +468,23 @@ public class DashboardActivity extends BaseActivity{
     }
 
     public void preparePlanningFilters(List<Program> programList, List<OrgUnit> orgUnitList) {
-        ((PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName())).prepareFilters(programList,orgUnitList);
+        ((PlanModuleController) dashboardController.getModuleByName(
+                PlanModuleController.getSimpleName())).prepareFilters(programList, orgUnitList);
     }
 
     @Override
-    public void clickOrgUnitSpinner(View v){
-        PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
+    public void clickOrgUnitSpinner(View v) {
+        PlanModuleController planModuleController =
+                (PlanModuleController) dashboardController.getModuleByName(
+                        PlanModuleController.getSimpleName());
         planModuleController.clickOrgUnitSpinner();
     }
+
     @Override
-    public void clickProgramSpinner(View v){
-        PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
+    public void clickProgramSpinner(View v) {
+        PlanModuleController planModuleController =
+                (PlanModuleController) dashboardController.getModuleByName(
+                        PlanModuleController.getSimpleName());
         planModuleController.clickOrgProgramSpinner();
     }
 }
