@@ -164,6 +164,7 @@ clínica"</string>
 <string name="dialog_pull_success">"Metadatos Dhis obtenidos del servidor con éxito"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
 <string name="progress_pull_connecting">"Conectando a servidor DHIS"</string>
+<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
 <string name="progress_pull_downloading">"Refrescando metadatos (esto puede llevar algunos minutos) ..."</string>
 <string name="progress_pull_preparing_program">"Cargando programas ..."</string>
 <string name="progress_pull_preparing_answers">"Cargando respuestas ..."</string>
@@ -219,7 +220,8 @@ clínica"</string>
 <string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
-
+<string name="select_all">Seleccionar todos</string>
+<string name="demo_login">Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
 </resources>

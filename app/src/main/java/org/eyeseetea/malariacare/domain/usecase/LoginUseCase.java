@@ -47,7 +47,7 @@ public class LoginUseCase {
     }
 
     public void execute(Credentials credentials, final Callback callback) {
-
+        
         mUserAccountRepository.login(credentials,
                 new IRepositoryCallback<UserAccount>() {
                     @Override

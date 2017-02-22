@@ -164,6 +164,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_pull_success">"Dhis metadados puxado com êxito a partir do servidor"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
 <string name="progress_pull_connecting">"Conectando-se a servidor  DHIS ..."</string>
+<string name="dialog_demo_pull_success">"Metadados Dhis carregados com sucesso a partir de dados locais"</string>
 <string name="progress_pull_downloading">"Metadados actualização (isso pode levar alguns minutos) ..."</string>
 <string name="progress_pull_preparing_program">"Carregando programas ..."</string>
 <string name="progress_pull_preparing_answers">"Carregando respostas ..."</string>
@@ -217,6 +218,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_media_link" >"Exibição de vídeo"</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
+<string name="select_all">Selecionar tudo</string>
+
+<string name="demo_login">Demonstração</string>
 <string name="system_defined">"Sistema definido"</string>
 <string name="settings_select_language">"Língua"</string>
+>>>>>>> feature-new_sdk
 </resources>
