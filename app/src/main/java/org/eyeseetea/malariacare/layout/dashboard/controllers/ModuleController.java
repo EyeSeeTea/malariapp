@@ -26,17 +26,12 @@ import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -68,19 +63,19 @@ public abstract class ModuleController {
     Fragment fragment;
     boolean visible;
 
-    protected ModuleController(){
+    protected ModuleController() {
     }
 
-    public void setDashboardController(DashboardController dashboardController){
+    public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
     }
 
-    public ModuleController(ModuleSettings moduleSettings){
+    public ModuleController(ModuleSettings moduleSettings) {
         this.visible = true;
         this.moduleSettings = moduleSettings;
     }
 
-    public void init(DashboardActivity activity){
+    public void init(DashboardActivity activity) {
         this.dashboardActivity = activity;
     }
 
@@ -88,48 +83,21 @@ public abstract class ModuleController {
         return moduleSettings.getController();
     }
 
-    public String getCapitalizeName(){
-        StringBuilder tabtemp = new StringBuilder(getTitle());
-        tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
-        return tabtemp.toString();
-    }
-
-    public String getCurrentUsername(){
-        User user=Session.getUser();
-        if(user==null){
-            return "";
-        }
-        String userName=user.getName();
-        if(userName==null){
-            return "";
-        }
-        return userName;
-    }
-
-    public String getAppNameColorString() {
-        int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
-        return String.format("%X", appNameColor).substring(2);
-    }
-
-    public String getAppName(){
-        return dashboardActivity.getResources().getString(R.string.app_name);
-    }
-
-    public String getTitle(){
+    public String getTitle() {
         return dashboardActivity.getResources().getString(moduleSettings.getResTitle());
     }
 
-    public String getActionBarTitleBySurvey(Survey survey){
-        String title="";
-        if(survey.getOrgUnit().getName()!=null) {
+    public String getActionBarTitleBySurvey(Survey survey) {
+        String title = "";
+        if (survey.getOrgUnit().getName() != null) {
             title = survey.getOrgUnit().getName();
         }
         return title;
     }
 
-    public String getActionBarSubTitleBySurvey(Survey survey){
+    public String getActionBarSubTitleBySurvey(Survey survey) {
         Program program = survey.getProgram();
-        if(program.getName()!=null) {
+        if (program.getName() != null) {
             return program.getName();
         }
         return "";
@@ -164,19 +132,19 @@ public abstract class ModuleController {
         this.visible = visible;
     }
 
-    public void reloadData(){
-        if(fragment==null){
+    public void reloadData() {
+        if (fragment == null) {
             return;
         }
 
-        ((IModuleFragment)fragment).reloadData();
+        ((IModuleFragment) fragment).reloadData();
     }
 
     /**
      * Hides part of this module (useful for vertical orientation)
      */
     public void hideVerticalTitle() {
-        if(idVerticalTitle==0){
+        if (idVerticalTitle == 0) {
             return;
         }
         View activeAssessmentsLabel = dashboardActivity.findViewById(idVerticalTitle);
@@ -186,8 +154,8 @@ public abstract class ModuleController {
     /**
      * Show the vertical title for this module (only vertical orientation)
      */
-    public void showVerticalTitle(){
-        if(idVerticalTitle==0){
+    public void showVerticalTitle() {
+        if (idVerticalTitle == 0) {
             return;
         }
         View activeAssessmentsLabel = dashboardActivity.findViewById(idVerticalTitle);
@@ -195,11 +163,11 @@ public abstract class ModuleController {
     }
 
     /**
-     * Inits the module (inside a responsability chain (dashboardActivity.onCreate -> dashboardController.onCreate -> here))
-     * @param dashboardActivity
+     * Inits the module (inside a responsability chain (dashboardActivity.onCreate ->
+     * dashboardController.onCreate -> here))
      */
-    public void onCreate(DashboardActivity dashboardActivity){
-        if(!isVisible()){
+    public void onCreate(DashboardActivity dashboardActivity) {
+        if (!isVisible()) {
             return;
         }
         init(dashboardActivity);
@@ -209,14 +177,14 @@ public abstract class ModuleController {
     /**
      * Invoked whenever a tab loses its focus
      */
-    public void onExitTab(){
+    public void onExitTab() {
 
     }
 
     /**
      * Invoked whenever a tab gains focus
      */
-    public void onTabChanged(){
+    public void onTabChanged() {
         reloadData();
     }
 
@@ -224,7 +192,7 @@ public abstract class ModuleController {
      * Invoked whenever back is pressed.
      * Asks before leaving the app by default.
      */
-    public void onBackPressed(){
+    public void onBackPressed() {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle("Really Exit?")
                 .setMessage("Are you sure you want to exit the app?")
@@ -240,28 +208,18 @@ public abstract class ModuleController {
                 }).create().show();
     }
 
-    public void setActionBarDashboard(){
-        if(PreferencesState.getInstance().isVerticalDashboard()){
-            LayoutUtils.setActionbarAppName(dashboardActivity);
-        }
-        else {
-            //Get Tab + User
-            String title=getCapitalizeName();
-            String user=getCurrentUsername();
-            String appNameColorString = getAppNameColorString();
-            String appName=getAppName();
-            Spanned spannedTitle= Html.fromHtml(String.format("<font color=\"#%s\"><b>%s</b></font> | %s", appNameColorString,appName,title));
-            LayoutUtils.setActionbarTitle(dashboardActivity,spannedTitle, user);
-        }
+    public void setActionBarDashboard() {
+        LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
     }
 
     public void replaceFragment(int layout, Fragment fragment) {
-        if(fragment instanceof ListFragment){
-            try{
+        if (fragment instanceof ListFragment) {
+            try {
                 //fix some visual problems
                 View vg = dashboardActivity.findViewById(layout);
                 vg.invalidate();
-            }catch (Exception e){}
+            } catch (Exception e) {
+            }
         }
 
         FragmentTransaction ft = getFragmentTransaction();
@@ -271,9 +229,9 @@ public abstract class ModuleController {
 
     public FragmentTransaction getFragmentTransaction() {
         FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
-        if(dashboardController.isNavigatingBackwards()) {
+        if (dashboardController.isNavigatingBackwards()) {
             ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
-        }else {
+        } else {
             ft.setCustomAnimations(R.animator.anim_slide_in_left, R.animator.anim_slide_out_left);
         }
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -282,11 +240,10 @@ public abstract class ModuleController {
 
     /**
      * Checks if the given container contains a fragment of the given class
-     * @param fragmentClass
-     * @return
      */
-    protected boolean isFragmentActive(Class fragmentClass){
-        Fragment currentFragment = dashboardActivity.getFragmentManager ().findFragmentById(getLayout());
+    protected boolean isFragmentActive(Class fragmentClass) {
+        Fragment currentFragment = dashboardActivity.getFragmentManager().findFragmentById(
+                getLayout());
         if (fragmentClass.isInstance(currentFragment)) {
             return true;
         }
@@ -295,7 +252,7 @@ public abstract class ModuleController {
 
     protected void reloadFragment() {
         Fragment fragment = getFragment();
-        if(fragment==null){
+        if (fragment == null) {
             return;
         }
 
@@ -307,9 +264,9 @@ public abstract class ModuleController {
     /**
      * Hides this module (useful for vertical orientation)
      */
-    public void hide(){
+    public void hide() {
 
-        if(fragment==null){
+        if (fragment == null) {
             return;
         }
 
