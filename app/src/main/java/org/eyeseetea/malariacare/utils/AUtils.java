@@ -308,16 +308,4 @@ public abstract class AUtils {
         dialog.show();
     }
 
-    public static List<Object> convertTabToArray(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
-
-        for (Header header : tab.getHeaders()) {
-            result.add(header);
-            for (Question question : header.getQuestions())
-                result.add(question);
-
-        }
-        return result;
-    }
-
 }

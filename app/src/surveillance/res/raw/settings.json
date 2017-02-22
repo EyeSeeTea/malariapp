@@ -6,7 +6,6 @@
   },
   "dashboard": {
     "orientation": "vertical",
-    "adapter": "dynamic",
     "layout": "vertical_main",
     "listFilter": "lastForOU",
     "modules": [{
