@@ -66,7 +66,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
     @Column
     Integer order_pos;
     @Column
-    Long id_parent;
+    Long id_composite_score_parent;
 
     /**
      * Reference to parent compositeScore (loaded lazily)
@@ -123,22 +123,22 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
 
     public CompositeScore getComposite_score() {
         if(compositeScore==null){
-            if (id_parent==null) return null;
+            if (id_composite_score_parent==null) return null;
             compositeScore = new Select()
                     .from(CompositeScore.class)
                     .where(CompositeScore_Table.id_composite_score
-                            .is(id_parent)).querySingle();
+                            .is(id_composite_score_parent)).querySingle();
         }
         return compositeScore;
     }
 
     public void setCompositeScore(CompositeScore compositeScore) {
         this.compositeScore = compositeScore;
-        this.id_parent = (compositeScore!=null)?compositeScore.getId_composite_score():null;
+        this.id_composite_score_parent = (compositeScore!=null)?compositeScore.getId_composite_score():null;
     }
 
     public void setCompositeScore(Long id_parent){
-        this.id_parent = id_parent;
+        this.id_composite_score_parent = id_parent;
         this.compositeScore = null;
     }
 
@@ -166,7 +166,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         if (this.compositeScoreChildren == null){
             this.compositeScoreChildren = new Select()
                     .from(CompositeScore.class)
-                    .where(CompositeScore_Table.id_parent.eq(this.getId_composite_score()))
+                    .where(CompositeScore_Table.id_composite_score_parent.eq(this.getId_composite_score()))
                     .orderBy(OrderBy.fromProperty(CompositeScore_Table.order_pos))
                     .queryList();
         }
@@ -295,7 +295,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         if (uid_composite_score != null ? !uid_composite_score.equals(that.uid_composite_score) : that.uid_composite_score != null) return false;
         if (order_pos != null ? !order_pos.equals(that.order_pos) : that.order_pos != null)
             return false;
-        return !(id_parent != null ? !id_parent.equals(that.id_parent) : that.id_parent != null);
+        return !(id_composite_score_parent != null ? !id_composite_score_parent.equals(that.id_composite_score_parent) : that.id_composite_score_parent != null);
 
     }
 
@@ -306,7 +306,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         result = 31 * result + (label != null ? label.hashCode() : 0);
         result = 31 * result + (uid_composite_score != null ? uid_composite_score.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
-        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (id_composite_score_parent != null ? id_composite_score_parent.hashCode() : 0);
         return result;
     }
 
@@ -318,7 +318,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 ", label='" + label + '\'' +
                 ", uid_composite_score='" + uid_composite_score + '\'' +
                 ", order_pos=" + order_pos +
-                ", id_parent=" + id_parent +
+                ", id_composite_score_parent=" + id_composite_score_parent +
                 '}';
     }
 

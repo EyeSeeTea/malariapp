@@ -48,7 +48,7 @@ public class OrgUnit extends BaseModel {
     @Column
     String name;
     @Column
-    Long id_parent;
+    Long id_org_unit_parent;
 
     /**
      * Refernce to parent orgUnit (loaded lazily)
@@ -120,22 +120,22 @@ public class OrgUnit extends BaseModel {
 
     public OrgUnit getOrgUnit() {
         if(orgUnit==null){
-            if (this.id_parent == null) return null;
+            if (this.id_org_unit_parent == null) return null;
             orgUnit = new Select()
                     .from(OrgUnit.class)
                     .where(OrgUnit_Table.id_org_unit
-                            .is(id_parent)).querySingle();
+                            .is(id_org_unit_parent)).querySingle();
         }
         return orgUnit;
     }
 
     public void setOrgUnit(OrgUnit orgUnit) {
         this.orgUnit = orgUnit;
-        this.id_parent = (orgUnit!=null)?orgUnit.getId_org_unit():null;
+        this.id_org_unit_parent = (orgUnit!=null)?orgUnit.getId_org_unit():null;
     }
 
     public void setOrgUnit(Long id_parent){
-        this.id_parent = id_parent;
+        this.id_org_unit_parent = id_parent;
         this.orgUnit = null;
     }
 
@@ -163,7 +163,7 @@ public class OrgUnit extends BaseModel {
     public List<OrgUnit> getChildren(){
         if(this.children==null){
             this.children = new Select().from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit())).queryList();
+                    .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit())).queryList();
         }
         return children;
     }
@@ -171,7 +171,7 @@ public class OrgUnit extends BaseModel {
     public List<OrgUnit> getChildrenOrderedByName(){
         if(this.children==null){
             this.children = new Select().from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit())).orderBy(
+                    .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit())).orderBy(
                             OrderBy.fromProperty(OrgUnit_Table.name)).queryList();
         }
         return children;
@@ -262,7 +262,7 @@ public class OrgUnit extends BaseModel {
         if (id_org_unit != orgUnit.id_org_unit) return false;
         if (uid_org_unit != null ? !uid_org_unit.equals(orgUnit.uid_org_unit) : orgUnit.uid_org_unit != null) return false;
         if (name != null ? !name.equals(orgUnit.name) : orgUnit.name != null) return false;
-        if (id_parent != null ? !id_parent.equals(orgUnit.id_parent) : orgUnit.id_parent != null)
+        if (id_org_unit_parent != null ? !id_org_unit_parent.equals(orgUnit.id_org_unit_parent) : orgUnit.id_org_unit_parent != null)
             return false;
         return !(id_org_unit_level_fk != null ? !id_org_unit_level_fk.equals(orgUnit.id_org_unit_level_fk) : orgUnit.id_org_unit_level_fk != null);
 
@@ -273,7 +273,7 @@ public class OrgUnit extends BaseModel {
         int result = (int) (id_org_unit ^ (id_org_unit >>> 32));
         result = 31 * result + (uid_org_unit != null ? uid_org_unit.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
+        result = 31 * result + (id_org_unit_parent != null ? id_org_unit_parent.hashCode() : 0);
         result = 31 * result + (id_org_unit_level_fk != null ? id_org_unit_level_fk.hashCode() : 0);
         return result;
     }
@@ -284,7 +284,7 @@ public class OrgUnit extends BaseModel {
                 "id_org_unit=" + id_org_unit +
                 ", uid_org_unit='" + uid_org_unit + '\'' +
                 ", name='" + name + '\'' +
-                ", id_parent=" + id_parent +
+                ", id_org_unit_parent=" + id_org_unit_parent +
                 ", id_org_unit_level_fk=" + id_org_unit_level_fk +
                 '}';
     }

@@ -84,7 +84,7 @@ public class OrgUnitLevel extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
     public List<OrgUnit> getOrgUnits(){
         this.orgUnits = new Select().from(OrgUnit.class)
-                .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit_level())).queryList();
+                .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit_level())).queryList();
         return orgUnits;
     }
 
