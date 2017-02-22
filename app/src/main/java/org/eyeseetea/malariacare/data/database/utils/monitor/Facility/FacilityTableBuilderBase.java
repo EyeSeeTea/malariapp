@@ -26,7 +26,6 @@ import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.TabGroup;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.List;

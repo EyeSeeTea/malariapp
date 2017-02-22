@@ -7,7 +7,6 @@
   },
   "dashboard": {
     "orientation": "vertical",
-    "adapter": "automatic",
     "layout": "vertical_main",
     "listFilter": "none",
     "modules": [{

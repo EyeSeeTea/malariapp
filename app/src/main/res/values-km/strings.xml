@@ -181,8 +181,6 @@
     <string name="no">ទេ</string>
     <string name="ok">យល់ព្រម</string>
     <string name="cancel">បោះបង់</string>
-    <string name="review">ពិនិត្យឡើងវិញ</string>
-    <string name="send">ផ្ញើ</string>
 
     <string name="settings_menu_about">អំពី</string>
     <string name="settings_menu_configuration">ការ​កំណត់ </string>
@@ -202,16 +200,11 @@
 
     <string name="survey_info_exit">តើអ្នកពិតជាចង់ចាកចេញមែនទេ?</string>
     <string name="survey_info_exit_delete">ការស្ទង់មតិកំពុងដំណើរការ​ ហើយនឹងត្រូវលុបចោល</string>
-    <string name="survey_title_completed">ការស្ទង់មតិបានបញ្ចប់់</string>
-    <string name="survey_info_completed">ការស្ទង់មតិបានបញ្ចប់ដោយជោគជ័យ</string>
 
     <string name="exception_org_unit_not_valid">លេខកូដកន្លែងផ្តល់សេវាមិនត្រឹមត្រូវទេ។
 ទំនាក់ទំនងមក ភី អេស អាយ តាមរយៈលេខ១២៣៤៥៦៧៨៩</string>
     <string name="exception_org_unit_banned">កន្លែងផ្តល់សេវាត្រូវបានបិទ។
 ទំនាក់ទំនងមក ភី អេស អាយ តាមរយៈលេខ១២៣៤៥៦៧៨៩</string>
-
-    <string name="dynamic_error_phone_format">បញ្ចូលលេខទូរស័ព្ទមិនត្រឹមត្រូវ ( 0NN NNN NNN{N} )</string>
-    <string name="dynamic_error_age">អាយុមិនត្រឹមត្រូវ</string>
 
     <string name="title_activity_settings">ការកំនត់</string>
     <string name="settings_checkbox_customize_fonts">ប្តូរពុម្ពអក្សរ?</string>
@@ -243,18 +236,8 @@
 
     <string name="pref_server">Server</string>
     <string name="pref_visual">Visual</string>
-
-    <string name="number_0">០</string>
-    <string name="number_1">១</string>
-    <string name="number_2">២</string>
-    <string name="number_3">៣</string>
-    <string name="number_4">៤</string>
-    <string name="number_5">៥</string>
-    <string name="number_6">៦</string>
-    <string name="number_7">៧</string>
-    <string name="number_8">៨</string>
-    <string name="number_9">៩</string>
     <string name="assessment_title_rdt">អ.ឌី.ធី</string>
+    <string name="dialog_demo_pull_success">"ទិន្នន័យមេតា Dhis បានផ្ទុកដោយជោគជ័យពីទិន្នន័យក្នុងស្រុក"</string>
     <string name="progress_pull_downloading" >ពន្លឿនទិន្នន័យមេតា (Metadata) (ប្រហែលជាចំណាយពេលពីរបីនាទី)</string>
     <string name="progress_pull_preparing_orgs">កំពុងទាញយកអង្គភាព...</string>
     <string name="progress_pull_surveys">កំពុងទាញការស្ទង់មតិ...</string>
@@ -311,7 +294,11 @@
     <string name="feedback_media_link">មើលវីដេអូ</string>
     <string name="google_play_required">នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។</string>
     <string name="feedback_view_image">ចែករំលែករូបភាពជាមួយ ...</string>
-
+    <string name="select_all">ជ្រើស​យក​ទាំងអស់</string>
+    <string name="demo_login">សាកល្បង</string>
     <string name="system_defined">"ដែលបានកំណត់ប្រព័ន្ធ"</string>
     <string name="settings_select_language">"ភាសា"</string>
+
+    <string name="toast_push_in_progress">"សូមរង់ចាំ, វាមានការជំរុញក្នុងវឌ្ឍនភាពរួចទៅហើយ"</string>
+    <string name="toast_push_done">"ទិន្នន័យអ្កតបានជំរុញឱ្យទៅម៉ាស៊ីនបម្រើ។ ការចាប់ផ្តើមទាញ ..."</string>
 </resources>

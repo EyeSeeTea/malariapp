@@ -164,6 +164,7 @@ clínica"</string>
 <string name="dialog_pull_success">"Metadatos Dhis obtenidos del servidor con éxito"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
 <string name="progress_pull_connecting">"Conectando a servidor DHIS"</string>
+<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
 <string name="progress_pull_downloading">"Refrescando metadatos (esto puede llevar algunos minutos) ..."</string>
 <string name="progress_pull_preparing_program">"Cargando programas ..."</string>
 <string name="progress_pull_preparing_answers">"Cargando respuestas ..."</string>
@@ -209,23 +210,6 @@ clínica"</string>
 <string name="loading_last_surveys">Cargando última encuesta...</string>
 <string name="settings_checkbox_ask_modify_or_create">Pregunta para modificar o crear nueva encuesta?</string>
 <string name="settings_checkbox_description_ask_modify_or_create">Cuando se activa, el usuario deberá elegir entre modificar la última encuesta o crear una nueva</string>
-<string name="dynamic_error_phone_format">El télefono dado no esta bien formateado ( 0NN NNN NNN{N} )</string>
-<string name="dynamic_error_age">La edad no es válida</string>
-<string name="survey_title_completed">Evaluacion finalizada</string>
-<string name="survey_info_completed">La evaluacion ha sido completada correctamente</string>
-<string name="review">Revisar</string>
-<string name="send">Enviar</string>
-<string name="number_0">0</string>
-<string name="number_1">1</string>
-<string name="number_2">2</string>
-<string name="number_3">3</string>
-<string name="number_4">4</string>
-<string name="number_5">5</string>
-<string name="number_6">6</string>
-<string name="number_7">7</string>
-<string name="number_8">8</string>
-<string name="number_9">9</string>
-<string name="clear">Limpiar</string>
 <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
 <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 <string name="export_data_option_title">Exportar base de datos</string>
@@ -236,7 +220,10 @@ clínica"</string>
 <string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
-
+<string name="select_all">Seleccionar todos</string>
+<string name="demo_login">Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
+<string name="toast_push_in_progress">"Por favor, espere, ya hay una subida en curso"</string>
+<string name="toast_push_done">"Datos de la encuesta enviados al servidor. Comenzando a descargar ..."</string>
 </resources>
