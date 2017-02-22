@@ -157,6 +157,14 @@ public class OrgUnitProgramRelation extends BaseModel {
         return orgUnitProgramRelation.getProductivity();
     }
 
+    public long getId_orgunit_program_relation() {
+        return id_orgunit_program_relation;
+    }
+
+    public void setId_orgunit_program_relation(long id_orgunit_program_relation) {
+        this.id_orgunit_program_relation = id_orgunit_program_relation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
