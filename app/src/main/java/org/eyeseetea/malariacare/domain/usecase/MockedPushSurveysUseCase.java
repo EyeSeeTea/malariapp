@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.
+ * Copyright (c) 2017.
  *
  * This file is part of QA App.
  *
@@ -17,36 +17,30 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.dashboard.config;
+package org.eyeseetea.malariacare.domain.usecase;
 
-/**
- * Created by idelcano on 16/05/2016.
- */
-public enum DashboardAdapter {
-    DYNAMIC("dynamic"),
-    AUTOMATIC("automatic");
 
-    private final String id;
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
 
-    DashboardAdapter(final String id){
-        this.id=id;
-    }
+import org.eyeseetea.malariacare.data.database.model.Survey;
 
-    public String toString(){
-        return id;
-    }
+import java.util.List;
 
-    public static DashboardAdapter fromId(final String id){
-        if(id==null){
-            return null;
+public class MockedPushSurveysUseCase {
+    public void execute(Callback callback) {
+        List<Survey> surveys = Survey.getAllCompletedUnsentSurveys();
+
+        //Check surveys not in progress
+        for (Survey survey : surveys) {
+            survey.setStatus(SURVEY_SENT);
+            survey.save();
         }
 
-        for(DashboardAdapter dashboardAdapter:DashboardAdapter.values()){
-            if(id.equalsIgnoreCase(dashboardAdapter.id)){
-                return dashboardAdapter;
-            }
-        }
+        callback.onPushFinished();
+    }
 
-        return null;
+    public interface Callback {
+        void onPushFinished();
     }
 }
+

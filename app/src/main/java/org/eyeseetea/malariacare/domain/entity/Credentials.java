@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.domain.entity;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Credentials {
+    private static final String DEMO_USER = "demo";
+    private static final String DEMO_SERVER = "demo.server";
 
     private String username;
     private String password;
@@ -31,6 +33,12 @@ public class Credentials {
         this.serverURL = required(serverURL, "Server URL is required");
         this.username = required(username, "Username is required");
         this.password = required(password, "Password is required");
+    }
+
+    public static Credentials createDemoCredentials() {
+        Credentials credentials = new Credentials(DEMO_SERVER, DEMO_USER, DEMO_USER);
+
+        return credentials;
     }
 
     public String getServerURL() {
@@ -43,6 +51,10 @@ public class Credentials {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isDemoCredentials() {
+        return this.equals(Credentials.createDemoCredentials());
     }
 
     public boolean equals(Object o) {

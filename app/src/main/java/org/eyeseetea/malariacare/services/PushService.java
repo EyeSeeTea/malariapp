@@ -28,9 +28,9 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushContr
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
 
 public class PushService extends IntentService {
-
     /**
      * Constant added to the intent in order to reuse the service for different 'methods'
      */
@@ -46,6 +46,8 @@ public class PushService extends IntentService {
 
     IPushController pushController;
     PushUseCase pushUseCase;
+
+    PushServiceStrategy mPushServiceStrategy = new PushServiceStrategy(this);
 
     /**
      * Constructor required due to a error message in AndroidManifest.xml if it is not present
@@ -65,11 +67,12 @@ public class PushService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        switch (intent.getStringExtra(SERVICE_METHOD)) {
-            case PENDING_SURVEYS_ACTION:
-                pushAllPendingSurveys();
-                break;
+        //Ignore wrong actions
+        if (!PENDING_SURVEYS_ACTION.equals(intent.getStringExtra(SERVICE_METHOD))) {
+            return;
         }
+
+        mPushServiceStrategy.push(pushUseCase);
     }
 
     @Override
@@ -80,45 +83,6 @@ public class PushService extends IntentService {
         pushUseCase = new PushUseCase(pushController);
     }
 
-    private void pushAllPendingSurveys() {
-        Log.d(TAG, "Starting push process...");
-
-        pushUseCase.execute(new PushUseCase.Callback() {
-            @Override
-            public void onComplete() {
-                AlarmPushReceiver.isDoneSuccess();
-                Log.d(TAG, "push complete");
-            }
-
-            @Override
-            public void onPushInProgressError() {
-                AlarmPushReceiver.isDoneFail();
-                Log.e(TAG, "Push stopped, There is already a push in progress");
-            }
-
-            @Override
-            public void onPushError() {
-                AlarmPushReceiver.isDoneFail();
-                Log.e(TAG, "Unexpected error has occurred in push process");
-            }
-
-            @Override
-            public void onSurveysNotFoundError() {
-                AlarmPushReceiver.isDoneFail();
-                Log.e(TAG, "Pending surveys not found");
-            }
-
-            @Override
-            public void onConversionError() {
-                AlarmPushReceiver.isDoneFail();
-                Log.e(TAG, "An error has occurred to the conversion in push process");
-            }
-
-            @Override
-            public void onNetworkError() {
-                AlarmPushReceiver.isDoneFail();
-                Log.e(TAG, "Network not available");
-            }
-        });
+    public void onPushFinished() {
     }
 }

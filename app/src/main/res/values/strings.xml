@@ -163,6 +163,7 @@ evaluation"</string>
 <string name="settings_menu_pull">"Refresh metadata"</string>
 <string name="dialog_pull_success">"Dhis metadata successfully pulled from server"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
+<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
 <string name="progress_pull_connecting">"Connecting to DHIS server..."</string>
 <string name="progress_pull_downloading">"Refreshing metadata (this might take a few minutes) ..."</string>
 <string name="progress_pull_preparing_program">"Loading programs ..."</string>
@@ -207,23 +208,6 @@ evaluation"</string>
 <string name="create_or_modify">Do you want to create a new assessment or modify the latest assessment, dated [%s]?</string>
 <string name="loading_last_surveys">Loading last survey...</string>
 <string name="no_previous_event_info">No previous event available</string>
-<string name="dynamic_error_phone_format">Invalid format for phone number ( 0NN NNN NNN{N} )</string>
-<string name="dynamic_error_age">Invalid age</string>
-<string name="survey_title_completed">Survey completed</string>
-<string name="survey_info_completed">The survey has been successfully completed</string>
-<string name="review">Review</string>
-<string name="send">Send</string>
-<string name="number_0">0</string>
-<string name="number_1">1</string>
-<string name="number_2">2</string>
-<string name="number_3">3</string>
-<string name="number_4">4</string>
-<string name="number_5">5</string>
-<string name="number_6">6</string>
-<string name="number_7">7</string>
-<string name="number_8">8</string>
-<string name="number_9">9</string>
-<string name="clear">Clear</string>
 
 <string name="developer_option_summary">This feature activates the developer options</string>
 <string name="developer_option_title">Show developer options</string>
@@ -234,10 +218,11 @@ evaluation"</string>
 <string name="feedback_media_link" >View video</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-
-<!-- from old SDK -->
 <string name="select_all">Select all</string>
-
+<string name="demo_login">Demo</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
+
+<string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
+<string name="toast_push_done">"Survey data pushed to server. Starting pull..."</string>
 </resources>

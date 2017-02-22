@@ -54,16 +54,6 @@ public class LayoutUtils {
     public static int calculateBackgroundsImprove(int index) {
         return LayoutUtils.rowBackgroundsImprove[index % LayoutUtils.rowBackgroundsImprove.length];
     }
-
-    // Given an index, this method returns a background color but without a cell border
-    public static int calculateBackgroundsNoBorder(int index) {
-        return LayoutUtils.rowBackgroundsNoBorder[index % LayoutUtils.rowBackgroundsNoBorder.length];
-    }
-
-    // Given an index, this method returns a background color but without a cell border
-    public static int calculateBackgroundsNoBorderImprove(int index) {
-        return LayoutUtils.rowBackgroundsNoBorderImprove[index % LayoutUtils.rowBackgroundsNoBorderImprove.length];
-    }
     // Depending on a score sets the first view color (0<x<50:poor ; 50<x<80:fare ; 80<x<100:good)
     // If a second view is given, it also writes the text good, fare or given there
     public static void trafficLight(View view, float score, View textCard){

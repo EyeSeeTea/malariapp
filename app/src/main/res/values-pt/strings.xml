@@ -164,6 +164,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_pull_success">"Dhis metadados puxado com êxito a partir do servidor"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
 <string name="progress_pull_connecting">"Conectando-se a servidor  DHIS ..."</string>
+<string name="dialog_demo_pull_success">"Metadados Dhis carregados com sucesso a partir de dados locais"</string>
 <string name="progress_pull_downloading">"Metadados actualização (isso pode levar alguns minutos) ..."</string>
 <string name="progress_pull_preparing_program">"Carregando programas ..."</string>
 <string name="progress_pull_preparing_answers">"Carregando respostas ..."</string>
@@ -207,17 +208,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="create_or_modify">Você quer criar uma nova avaliação ou modificar a última avaliação, datas[%s]?</string>
 <string name="loading_last_surveys">Carregar a última pesquisa...</string>
 <string name="no_previous_event_info">No evento anterior disponíveis</string>
-<string name="number_0">0</string>
-<string name="number_1">1</string>
-<string name="number_2">2</string>
-<string name="number_3">3</string>
-<string name="number_4">4</string>
-<string name="number_5">5</string>
-<string name="number_6">6</string>
-<string name="number_7">7</string>
-<string name="number_8">8</string>
-<string name="number_9">9</string>
-<string name="clear">Limpar</string>
 
 <string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
 <string name="developer_option_title">Mostrar opções de desenvolvedor</string>
@@ -228,6 +218,11 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_media_link" >"Exibição de vídeo"</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
+<string name="select_all">Selecionar tudo</string>
+
+<string name="demo_login">Demonstração</string>
 <string name="system_defined">"Sistema definido"</string>
 <string name="settings_select_language">"Língua"</string>
+<string name="toast_push_in_progress">"Aguarde, Já existe um envio em andamento"</string>
+<string name="toast_push_done">"Dados de pesquisa empurrados para o servidor. Começando puxar ..."</string>
 </resources>

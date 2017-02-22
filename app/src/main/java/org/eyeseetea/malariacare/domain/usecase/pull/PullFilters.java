@@ -26,14 +26,19 @@ public class PullFilters {
 
     Date startDate;
     Date endDate;
+    boolean isDemo;
     boolean fullHierarchy;
     boolean downloadOnlyLastEvents;
     int maxEvents;
 
-    public PullFilters(Date startDate, Date endDate, boolean fullHierarchy, boolean downloadOnlyLastEvents,
+    public PullFilters() {
+    }
+
+    public PullFilters(Date startDate, Date endDate, boolean isDemo, boolean fullHierarchy, boolean downloadOnlyLastEvents,
             int maxEvents) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isDemo = isDemo;
         this.fullHierarchy = fullHierarchy;
         this.downloadOnlyLastEvents = downloadOnlyLastEvents;
         this.maxEvents = maxEvents;
@@ -77,5 +82,13 @@ public class PullFilters {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public boolean isDemo() {
+        return isDemo;
+    }
+
+    public void setDemo(boolean demo) {
+        isDemo = demo;
     }
 }
