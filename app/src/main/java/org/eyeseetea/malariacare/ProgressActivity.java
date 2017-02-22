@@ -268,6 +268,7 @@ public class ProgressActivity extends Activity {
 
         final int msg = getDoneMessage();
 
+        Log.d(TAG,"dialog: "+msg);
         Intent intent = getIntent();
 
         /**

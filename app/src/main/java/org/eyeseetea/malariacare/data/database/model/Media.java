@@ -124,6 +124,12 @@ public class Media extends BaseModel {
                 queryList();
     }
 
+    public static List<Media> getAllMedia() {
+        return new Select().
+                from(Media.class).
+                orderBy(Media_Table.id_media, true).
+                queryList();
+    }
     public static List<Media> findByQuestion(Question question) {
         if (question == null) {
             return new ArrayList<>();
