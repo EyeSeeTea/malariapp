@@ -162,6 +162,7 @@ Mensuelle"</string>
 <string name="dialog_pull_success">"Téléchargement des métadonnées Dhis du serveur réussi"</string>
 <string name="dialog_title_pull_response">"Status du téléchargement"</string>
 <string name="progress_pull_connecting">"Connexion au serveur DHIS..."</string>
+<string name="dialog_demo_pull_success">"Les métadonnées Dhis chargées avec succès à partir de données locales"</string>
 <string name="progress_pull_downloading">"Mise à jour des métadonnées (cela peut prendre quelques minutes)..."</string>
 <string name="progress_pull_preparing_program">"Chargement des programmes..."</string>
 <string name="progress_pull_preparing_answers">"Chargement des réponses..."</string>
@@ -232,7 +233,8 @@ Mensuelle"</string>
 <string name="feedback_media_link" >"Voir la vidéo"</string>
 <string name="feedback_media">Voir la vidéo commentaires</string>
 <string name="feedback_view_image">"Ouvrir image avec ..."</string>
-
+<string name="select_all">"Tout sélectionner"</string>
+<string name="demo_login">Démo</string>
 <string name="system_defined">"Système défini"</string>
 <string name="settings_select_language">"La langue"</string>
 </resources>

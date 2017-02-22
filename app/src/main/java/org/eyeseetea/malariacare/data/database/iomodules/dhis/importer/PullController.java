@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.IDhisPullSourceCallback;
+import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -37,27 +37,14 @@ public class PullController implements IPullController {
      * Used for control new steps
      */
     public static Boolean PULL_IS_ACTIVE = false;
-    private static PullController instance;
     private final String TAG = ".PullController";
     ConversionLocalDataSource conversionLocalDataSource;
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullControllerCallback callback;
 
-    /**
-     * Constructs and register this pull controller to the event bus
-     */
     public PullController() {
     }
 
-    /**
-     * Singleton constructor
-     */
-    public static PullController getInstance() {
-        if (instance == null) {
-            instance = new PullController();
-        }
-        return instance;
-    }
 
     public void conversions() {
 
@@ -93,16 +80,16 @@ public class PullController implements IPullController {
 
     @Override
     public void pull(final PullFilters filters, final IPullControllerCallback callback) {
+        conversionLocalDataSource.wipeDataBase();
         PULL_IS_ACTIVE = true;
+        this.callback = callback;
         conversionLocalDataSource = new ConversionLocalDataSource(callback);
         pullRemoteDataSource = new PullDhisSDKDataSource();
         pullRemoteDataSource.wipeDataBase();
-        conversionLocalDataSource.wipeDataBase();
 
-        this.callback = callback;
         callback.onStep(PullStep.PROGRAMS);
 
-        pullRemoteDataSource.pullMetadata(new IDhisPullSourceCallback() {
+        pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
 
             @Override
             public void onComplete() {
@@ -124,7 +111,7 @@ public class PullController implements IPullController {
     }
 
     private void pullData(final PullFilters filters) {
-        pullRemoteDataSource.pullData(filters, new IDhisPullSourceCallback() {
+        pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
                 try {

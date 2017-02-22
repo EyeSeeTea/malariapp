@@ -213,7 +213,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
 
     public void setProgram(Long id_program){
         this.id_program = id_program;
-        this.id_program= null;
+        this.program= null;
     }
 
     public User getUser() {

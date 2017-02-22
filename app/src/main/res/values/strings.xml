@@ -163,6 +163,7 @@ evaluation"</string>
 <string name="settings_menu_pull">"Refresh metadata"</string>
 <string name="dialog_pull_success">"Dhis metadata successfully pulled from server"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
+<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
 <string name="progress_pull_connecting">"Connecting to DHIS server..."</string>
 <string name="progress_pull_downloading">"Refreshing metadata (this might take a few minutes) ..."</string>
 <string name="progress_pull_preparing_program">"Loading programs ..."</string>
@@ -234,10 +235,8 @@ evaluation"</string>
 <string name="feedback_media_link" >View video</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-
-<!-- from old SDK -->
 <string name="select_all">Select all</string>
-
+<string name="demo_login">Demo</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
 </resources>

@@ -845,8 +845,8 @@ public class Question extends BaseModel {
                 .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
                 .on(QuestionOption_Table.id_match.withTable(questionOptionAlias).eq(Match_Table.id_match.withTable(matchAlias)))
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(Match_Table.id_question_relation.withTable(matchAlias).eq(QuestionRelation_Table.id_question_relation))
-
+                .on(Match_Table.id_question_relation.withTable(matchAlias)
+                        .eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
                 .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
                 .on(Value_Table.id_question.withTable(valueAlias)
                                 .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias)),

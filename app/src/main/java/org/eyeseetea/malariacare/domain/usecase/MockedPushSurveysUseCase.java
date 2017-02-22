@@ -17,11 +17,30 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.usecase.pull;
+package org.eyeseetea.malariacare.domain.usecase;
 
-public enum PullStep {
-    PROGRAMS, EVENTS, PREPARING_PROGRAMS, PREPARING_ANSWERS, PREPARING_QUESTIONS,
-    PREPARING_RELATIONSHIPS, PREPARING_ORGANISATION_UNITS, VALIDATE_COMPOSITE_SCORES,
-    PREPARING_SURVEYS,
-    DEMO
+
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
+
+import org.eyeseetea.malariacare.data.database.model.Survey;
+
+import java.util.List;
+
+public class MockedPushSurveysUseCase {
+    public void execute(Callback callback) {
+        List<Survey> surveys = Survey.getAllCompletedUnsentSurveys();
+
+        //Check surveys not in progress
+        for (Survey survey : surveys) {
+            survey.setStatus(SURVEY_SENT);
+            survey.save();
+        }
+
+        callback.onPushFinished();
+    }
+
+    public interface Callback {
+        void onPushFinished();
+    }
 }
+
