@@ -62,7 +62,6 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.Progra
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.models.common.base.BaseModel;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
@@ -118,11 +117,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
     public void saveBatch() {
         List<Model> models = new ArrayList<>();
-        models.addAll(questions );
-        models.addAll(questionBuilder.listMedia );
-        for(Media media: questionBuilder.listMedia){
+        models.addAll(questions);
+        SdkQueries.saveBatch(models);
+        for (Media media : questionBuilder.listMedia) {
             media.updateQuestion();
         }
+        models = new ArrayList<>();
+        models.addAll(questionBuilder.listMedia);
         SdkQueries.saveBatch(models);
     }
 
@@ -383,7 +384,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
         //-> createdOn
-        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
             survey.setCreationDate(EventExtended.parseLongDate(dataValue.getValue()));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
@@ -392,16 +394,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
 
         //-> uploadedOn
-        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.upload_date_code)))){
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.upload_date_code)))) {
             survey.setUploadDate(EventExtended.parseLongDate(dataValue.getValue()));
-            Log.i(TAG,String.format("Event %s uploaded on %s",survey.getEventUid(),dataValue
-            .getValue()));
+            Log.i(TAG, String.format("Event %s uploaded on %s", survey.getEventUid(), dataValue
+                    .getValue()));
             return;
         }
 
         //-> uploadedBy (updatedBy is ignored)
-        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(
-                R.string.uploaded_by_code)))) {
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.uploaded_by_code)))) {
             User user = User.getUser(dataValue.getValue());
             if (user == null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());
