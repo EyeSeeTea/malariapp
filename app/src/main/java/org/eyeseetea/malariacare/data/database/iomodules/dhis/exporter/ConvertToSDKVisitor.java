@@ -359,18 +359,12 @@ public class ConvertToSDKVisitor implements
             addOrUpdateDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
         }
 
-        //Overall score
-        if (!overallScoreCode.equals("") && survey.hasMainScore()) {
-            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
-        }
-
-        //Forward order
+        //Push Device
         if (controlDataElementExistsInServer(pushDeviceCode)) {
             addOrUpdateDataValue(pushDeviceCode,
                     Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(
                             context));
         }
-
         //MainScoreUID
         if (controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {
             addOrUpdateDataValue(mainScoreClassCode, survey.getType());
@@ -389,18 +383,6 @@ public class ConvertToSDKVisitor implements
         //MainScoreC
         if (controlDataElementExistsInServer(mainScoreCCode) && survey.hasMainScore()) {
             addOrUpdateDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
-        }
-
-        //Forward Order
-        if (controlDataElementExistsInServer(forwardOrderCode)) {
-            addOrUpdateDataValue(forwardOrderCode, context.getString(R.string.forward_order_value));
-        }
-
-        //Push Device
-        if (controlDataElementExistsInServer(pushDeviceCode)) {
-            addOrUpdateDataValue(pushDeviceCode,
-                    Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(
-                            context));
         }
 
         //Overall productivity
