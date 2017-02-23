@@ -56,13 +56,18 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
     @Override
     public void login(Credentials credentials, IDataSourceCallback<UserAccount> callback) {
-        User user = new User(credentials.getUsername(), credentials.getUsername());
 
-        Session.setUser(user);
+        saveUser(credentials);
 
         saveCredentials(credentials);
 
         callback.onSuccess(null);
+    }
+
+    private void saveUser(Credentials credentials) {
+        User user = new User(credentials.getUsername(), credentials.getUsername());
+
+        Session.setUser(user);
     }
 
     private void saveCredentials(Credentials credentials) {
@@ -72,6 +77,8 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         editor.putString(mContext.getString(R.string.dhis_user), credentials.getUsername());
         editor.putString(mContext.getString(R.string.dhis_password), credentials.getPassword());
         editor.commit();
+
+        Session.setCredentials(credentials);
     }
 
     private void clearCredentials() {

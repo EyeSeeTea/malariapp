@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
-import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
@@ -66,10 +65,6 @@ public class AppSettingsBuilder {
 
     public static DatabaseOriginType getDatabaseOriginType(){
         return getInstance().getSettings().getDatabaseSettings().getOriginType();
-    }
-
-    public static DashboardAdapter getDashboardAdapter(){
-        return getInstance().getSettings().getDashboardSettings().getAdapter();
     }
 
     public static DashboardOrientation getDashboardOrientation(){

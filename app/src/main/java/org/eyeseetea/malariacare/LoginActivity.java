@@ -47,7 +47,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
+import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
@@ -56,10 +58,11 @@ import java.io.InputStream;
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class LoginActivity extends AbsLoginActivity {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = ".LoginActivity";
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+    public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
@@ -70,6 +73,7 @@ public class LoginActivity extends AbsLoginActivity {
         super.onCreate(savedInstanceState);
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mLoginActivityStrategy.onCreate();
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
@@ -142,7 +146,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void login(String serverUrl, String username, String password) {
         showProgress();
 
-        Credentials credentials = new Credentials(serverUrl, username, password);
+        final Credentials credentials = new Credentials(serverUrl, username, password);
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
             public void onLoginSuccess() {
@@ -177,10 +181,8 @@ public class LoginActivity extends AbsLoginActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    private void onSuccess() {
+    public void onSuccess() {
         hideProgress();
-
-        populateFromAssetsIfRequired();
 
         launchActivity(LoginActivity.this, ProgressActivity.class);
     }
@@ -213,25 +215,6 @@ public class LoginActivity extends AbsLoginActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    /**
-     * Utility method to use while developing to avoid a real pull
-     */
-    private void populateFromAssetsIfRequired() {
-        //From server -> done
-        if (PreferencesState.getInstance().getPullFromServer()) {
-            return;
-        }
-
-        //Populate locally
-        try {
-            PopulateDB.wipeDatabase();
-            PopulateDB.populateDB(getAssets());
-        } catch (Exception ex) {
-        }
-        //Go to dashboard Activity
-        launchActivity(this, DashboardActivity.class);
     }
 }
 

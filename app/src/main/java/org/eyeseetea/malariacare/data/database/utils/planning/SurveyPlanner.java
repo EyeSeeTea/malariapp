@@ -122,7 +122,7 @@ public class SurveyPlanner {
      */
     public Survey startSurvey(OrgUnit orgUnit, Program program) {
         //Find planned survey
-        Survey survey = Survey.findByOrgUnitAndProgram(orgUnit, program);
+        Survey survey = Survey.findPlannedByOrgUnitAndProgram(orgUnit, program);
         if (survey == null) {
             survey = new Survey();
             survey.setProgram(program);

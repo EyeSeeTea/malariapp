@@ -30,7 +30,6 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
@@ -316,20 +315,6 @@ public class PreferencesState {
      */
     public Boolean isNoneFilter() {
         return DashboardListFilter.NONE.equals(AppSettingsBuilder.getDashboardListFilter());
-    }
-
-    /**
-     * Tells if the application use the Automatic  adapter
-     */
-    public Boolean isAutomaticAdapter() {
-        return DashboardAdapter.AUTOMATIC.equals(AppSettingsBuilder.getDashboardAdapter());
-    }
-
-    /**
-     * Tells if the application use the Dynamic adapter
-     */
-    public Boolean isDynamicAdapter() {
-        return DashboardAdapter.DYNAMIC.equals(AppSettingsBuilder.getDashboardAdapter());
     }
 
     public Class getMainActivity() {
