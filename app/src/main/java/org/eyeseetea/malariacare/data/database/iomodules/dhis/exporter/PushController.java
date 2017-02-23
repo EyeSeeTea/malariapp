@@ -31,14 +31,16 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.network.SurveyChecker;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
 import java.util.List;
 import java.util.Map;
 
 public class PushController implements IPushController {
-    private final String TAG = ".PushController";
+    private final String TAG = ".PushControllerB&D";
 
     private Context mContext;
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
@@ -52,30 +54,32 @@ public class PushController implements IPushController {
     }
 
     public void push(final IPushControllerCallback callback) {
-        boolean isNetworkAvailable = AUtils.isNetworkAvailable();
 
-        if (!isNetworkAvailable) {
+        if (!AUtils.isNetworkAvailable()) {
+            Log.d(TAG, "No network");
             callback.onError(new NetworkException());
-        }
-
-        List<Survey> surveys = Survey.getAllCompletedSurveys();
-
-        if (surveys == null || surveys.size() == 0) {
-            callback.onError(new SurveysToPushNotFoundException());
         } else {
 
-            mPushDhisSDKDataSource.wipeEvents();
+            Log.d(TAG, "Network connected");
 
-            try {
-                convertToSDK(surveys);
-            } catch (Exception ex) {
-                callback.onError(new ConversionException(ex));
-            }
+            List<Survey> surveys = Survey.getAllCompletedSurveys();
 
-            if (EventExtended.getAllEvents().size() == 0) {
-                callback.onError(new ConversionException());
+            if (surveys == null || surveys.size() == 0) {
+                callback.onError(new SurveysToPushNotFoundException());
             } else {
-                pushData(callback);
+
+                mPushDhisSDKDataSource.wipeEvents();
+                try {
+                    convertToSDK(surveys);
+                } catch (Exception ex) {
+                    callback.onError(new ConversionException(ex));
+                }
+
+                if (EventExtended.getAllEvents().size() == 0) {
+                    callback.onError(new ConversionException());
+                } else {
+                    pushData(callback);
+                }
             }
         }
     }
@@ -102,9 +106,6 @@ public class PushController implements IPushController {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        //// FIXME: 20/02/2017 All errors in the push callback this error, and
-                        // surveysAsQuareintine are not fixed
-
                         mConvertToSDKVisitor.setSurveysAsQuarantine();
                         callback.onError(throwable);
                     }
@@ -113,8 +114,9 @@ public class PushController implements IPushController {
 
     private void convertToSDK(List<Survey> surveys) throws Exception {
         Log.d(TAG, "Converting APP survey into a SDK event");
-
         for (Survey survey : surveys) {
+            survey.setStatus(Constants.SURVEY_SENDING);
+            survey.save();
             survey.accept(mConvertToSDKVisitor);
         }
     }

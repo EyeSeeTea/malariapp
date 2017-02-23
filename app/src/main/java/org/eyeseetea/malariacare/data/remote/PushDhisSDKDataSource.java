@@ -19,16 +19,12 @@
 
 package org.eyeseetea.malariacare.data.remote;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
@@ -46,7 +42,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class PushDhisSDKDataSource {
-    private final String TAG = ".PushController";
+    private final String TAG = ".PushControllerB&D";
 
     public void pushData(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
         pushEvents(callback);
@@ -54,18 +50,26 @@ public class PushDhisSDKDataSource {
 
     private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
         final Set<String> eventUids = new HashSet<>();
+        final Set<String> sendingEventUids = new HashSet<>();
+        List<Survey> surveys = Survey.getAllSendingSurveys();
+        for (Survey survey : surveys) {
+            sendingEventUids.add(survey.getEventUid());
+        }
         List<EventFlow> eventsFlow = SdkQueries.getEvents();
-        Log.d(TAG, "Size of events " + eventsFlow.size());
+        Log.d(TAG, "Size of events " + eventsFlow.size() + "size of surveys" + sendingEventUids.size());
+        if(sendingEventUids.size()!=eventsFlow.size())
+            Log.d(TAG, "Error in size of events");
         for (int i = eventsFlow.size() - 1; i >= 0; i--) {
-            if (eventsFlow.get(i).getEventDate() != null) {
+            if (eventsFlow.get(i).getEventDate() != null && sendingEventUids.contains(
+                    eventsFlow.get(i).getUId())) {
                 eventUids.add(eventsFlow.get(i).getUId());
             } else {
                 String eventUid = " No Uid";
                 if (eventsFlow.get(i).getUId() != null) {
                     eventUid = eventsFlow.get(i).getUId();
                 }
-                Log.d("Error",
-                        "Error pushing events. The event uid: " + eventUid + "haven't eventDate");
+                Log.d(TAG,
+                        "Error pushing events. The event uid: " + eventUid + "haven't eventDate or is not listed to send");
             }
         }
         Log.d(TAG, "Size of valid events " + eventsFlow.size());
@@ -78,7 +82,7 @@ public class PushDhisSDKDataSource {
                 .subscribe(new Action1<Map<String, ImportSummary>>() {
                     @Override
                     public void call(Map<String, ImportSummary> mapEventsImportSummary) {
-                        Log.d(this.getClass().getSimpleName(),
+                        Log.d(TAG,
                                 "Push of events finish. Number of events: "
                                         + mapEventsImportSummary.size());
 
@@ -96,7 +100,7 @@ public class PushDhisSDKDataSource {
                         throwable.printStackTrace();
                         callback.onError(throwable);
 
-                        Log.e(this.getClass().getSimpleName(),
+                        Log.e(TAG,
                                 "Error pushing Events: " + throwable.getLocalizedMessage());
                     }
                 });

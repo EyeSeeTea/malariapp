@@ -19,29 +19,20 @@
 
 package org.eyeseetea.malariacare.data.remote;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public abstract class SdkController {
 
     public final static String TAG = ".sdkController";
-
-
-    public static List<EventExtended> getEventsFromEventsWrapper(JsonNode jsonNode) {
-        /*
-        List<EventExtended> eventExtendeds = new ArrayList<>();
-        List<EventFlow> eventFlows = EventsWrapper.getEvents(jsonNode);
-        for (EventFlow eventFlow:eventFlows){
-            eventExtendeds.add(new EventExtended(eventFlow));
-        }
-        return eventExtendeds;
-        */
-        return null;
-    }
 
 
 }
