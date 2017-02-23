@@ -178,6 +178,10 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void pushUnsentBeforePull() {
+        if(Session.getCredentials().isDemoCredentials()){
+            pullMetadata();//Push is not necessary in demo mode.
+            return;
+        }
         if (PreferencesState.getInstance().isPushInProgress()) {
             Toast.makeText(getBaseContext(), R.string.toast_push_in_progress, Toast.LENGTH_LONG).show();
             return;
