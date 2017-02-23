@@ -301,4 +301,7 @@
 
     <string name="toast_push_in_progress">"សូមរង់ចាំ, វាមានការជំរុញក្នុងវឌ្ឍនភាពរួចទៅហើយ"</string>
     <string name="toast_push_done">"ទិន្នន័យអ្កតបានជំរុញឱ្យទៅម៉ាស៊ីនបម្រើ។ ការចាប់ផ្តើមទាញ ..."</string>
+    <string name="downloaded_media_menu">"ជាមធ្យមដែលបានទាញយក"</string>
+    <string name="header_filename_title">"ឈ្មោះឯកសារ"</string>
+    <string name="header_size_title">"ទំហំ"</string>
 </resources>

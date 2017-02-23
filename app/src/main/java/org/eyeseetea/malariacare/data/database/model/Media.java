@@ -32,12 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = AppDatabase.class)
-public class Media extends BaseModel{
+public class Media extends BaseModel {
 
     /**
      * Null media value to express that a question has NO media without using querys
      */
-    private static Media noMedia = new Media(Constants.NO_MEDIA_ID,null,null);
+    private static Media noMedia = new Media(Constants.NO_MEDIA_ID, null, null);
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -56,28 +56,28 @@ public class Media extends BaseModel{
     String filename;
 
 
-
     /**
      * Reference to the question
      */
     Question question;
 
-    public Media(){}
+    public Media() {
+    }
 
-    public Media(int media_type, String resource_url, Question question){
+    public Media(int media_type, String resource_url, Question question) {
         this.media_type = media_type;
         this.resource_url = resource_url;
         this.filename = null;
         this.setQuestion(question);
     }
 
-    public Question getQuestion(){
-        if(question==null){
-            if(id_question==null) return null;
+    public Question getQuestion() {
+        if (question == null) {
+            if (id_question == null) return null;
             question = new Select()
                     .from(Question.class)
                     .where(Question_Table.id_question
-                        .is(id_question)).querySingle();
+                            .is(id_question)).querySingle();
         }
         return question;
     }
@@ -102,21 +102,36 @@ public class Media extends BaseModel{
         return filename;
     }
 
-    public void setFilename(String filename){
-        this.filename=filename;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
-    public static List<Media> getAllNotInLocal(){
+    public static List<Media> getAllNotInLocal() {
         return new Select().
                 from(Media.class).
                 where(Media_Table.filename.isNull()).
                 and(Media_Table.resource_url.isNotNull()).
-                orderBy(Media_Table.id_media,true).
+                orderBy(Media_Table.id_media, true).
                 queryList();
     }
 
-    public static List<Media> findByQuestion(Question question){
-        if(question==null){
+    public static List<Media> getAllInLocal() {
+        return new Select().
+                from(Media.class).
+                where(Media_Table.filename.isNotNull()).
+                and(Media_Table.resource_url.isNotNull()).
+                orderBy(Media_Table.id_media, true).
+                queryList();
+    }
+
+    public static List<Media> getAllMedia() {
+        return new Select().
+                from(Media.class).
+                orderBy(Media_Table.id_media, true).
+                queryList();
+    }
+    public static List<Media> findByQuestion(Question question) {
+        if (question == null) {
             return new ArrayList<>();
         }
 
@@ -127,23 +142,25 @@ public class Media extends BaseModel{
                 queryList();
     }
 
-    public void setQuestion(Question question){
+    public void setQuestion(Question question) {
         this.question = question;
-        this.id_question = (question!=null)?question.getId_question():null;
+        this.id_question = (question != null) ? question.getId_question() : null;
     }
 
-    public void setQuestion(Long id_question){
+    public void setQuestion(Long id_question) {
         this.id_question = id_question;
         this.question = null;
     }
 
     /**
-     * Since questions are saved in batch the referenced question has no id_question when the setter is called.
-     * This method allows the media to refresh de id_question according to the question referenced once it is persisted.
+     * Since questions are saved in batch the referenced question has no id_question when the setter
+     * is called.
+     * This method allows the media to refresh de id_question according to the question referenced
+     * once it is persisted.
      */
-    public void updateQuestion(){
+    public void updateQuestion() {
         //No question nothing to update
-        if(this.question==null){
+        if (this.question == null) {
             return;
         }
 
@@ -151,15 +168,28 @@ public class Media extends BaseModel{
     }
 
     /**
-     * Returns a media that holds a reference to the same resource with an already downloaded copy of the file.
-     * @return
+     * Returns a media that holds a reference to the same resource with an already downloaded copy
+     * of the file.
      */
-    public Media findLocalCopy(){
+    public Media findLocalCopy() {
         return new Select().from(Media.class)
                 .where(Media_Table.filename.isNotNull())
                 .and(Media_Table.id_media.isNot(this.id_media))
                 .and(Media_Table.resource_url.is(this.resource_url))
                 .querySingle();
+    }
+
+    /**
+     * Returns if is a picture
+     */
+    public boolean isPicture() {
+        return (media_type == Constants.MEDIA_TYPE_IMAGE);
+    }
+    /**
+     * Returns if is video
+     */
+    public boolean isVideo() {
+        return (media_type == Constants.MEDIA_TYPE_VIDEO);
     }
 
     @Override
@@ -172,9 +202,12 @@ public class Media extends BaseModel{
         if (id_media != media.id_media) return false;
         if (media_type != media.media_type) return false;
         if (filename != media.filename) return false;
-        if (resource_url != null ? !resource_url.equals(media.resource_url) : media.resource_url != null)
+        if (resource_url != null ? !resource_url.equals(media.resource_url)
+                : media.resource_url != null) {
             return false;
-        return id_question != null ? id_question.equals(media.id_question) : media.id_question == null;
+        }
+        return id_question != null ? id_question.equals(media.id_question)
+                : media.id_question == null;
 
     }
 

@@ -107,8 +107,8 @@ public class ProgressActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+        PreferencesState.getInstance().initalizateActivityDependencies();
         initializeDependencies();
-        PreferencesState.getInstance().loadsLanguageInActivity();
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         isOnPause = false;
@@ -280,6 +280,7 @@ public class ProgressActivity extends Activity {
 
         final int msg = getDoneMessage();
 
+        Log.d(TAG,"dialog: "+msg);
         Intent intent = getIntent();
 
         /**

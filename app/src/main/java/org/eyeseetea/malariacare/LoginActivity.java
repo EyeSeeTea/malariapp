@@ -71,7 +71,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLoginActivityStrategy.onCreate();
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
