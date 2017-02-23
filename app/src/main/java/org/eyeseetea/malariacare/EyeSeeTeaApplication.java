@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
-import android.telephony.TelephonyManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
@@ -35,19 +34,17 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.utils.Permissions;
 import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.client.sdk.android.api.D2;
 
 import io.fabric.sdk.android.Fabric;
 
-/**
- * Created by nacho on 04/08/15.
- */
 public class EyeSeeTeaApplication extends Application {
+
+    public static Permissions permissions;
 
     @Override
     public void onCreate() {
@@ -58,10 +55,6 @@ public class EyeSeeTeaApplication extends Application {
         LocationMemory.getInstance().init(getApplicationContext());
         TypefaceCache.getInstance().init(getApplicationContext());
         AutoTabLayoutUtils.init();
-
-        //Set the Phone metadata
-        PhoneMetaData phoneMetaData=this.getPhoneMetadata();
-        Session.setPhoneMetaData(phoneMetaData);
 
         D2.init(this);
         FlowConfig flowConfig = new FlowConfig
@@ -83,49 +76,47 @@ public class EyeSeeTeaApplication extends Application {
 
     public Class<? extends Activity> getMainActivity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)){
+        if (User.getLoggedUser() != null && sharedPreferences.getBoolean(
+                getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
             return new DashboardActivity().getClass();
-        }else if(!ProgressActivity.PULL_CANCEL) {
+        } else if (!ProgressActivity.PULL_CANCEL) {
             return PreferencesState.getInstance().getMainActivity();
-        }
-        else{
+        } else {
             return LoginActivity.class;
         }
 
     }
 
-    PhoneMetaData getPhoneMetadata(){
-        PhoneMetaData phoneMetaData=new PhoneMetaData();
-        TelephonyManager phoneManagerMetaData=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String imei = phoneManagerMetaData.getDeviceId();
-        String phone = phoneManagerMetaData.getLine1Number();
-        String serial = phoneManagerMetaData.getSimSerialNumber();
-        phoneMetaData.setImei(imei);
-        phoneMetaData.setPhone_number(phone);
-        phoneMetaData.setPhone_serial(serial);
-        return phoneMetaData;
-    }
-
-    private void createDBIndexes(){
-        // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the DB on execution time
+    private void createDBIndexes() {
+        // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the
+        // DB on execution time
         /*
-        new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
-        new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStage").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
-        new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStageSection").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();
-        new Index<ProgramStage>("ProgramStage_Program").on(ProgramStage.class, ProgramStage$Table.PROGRAM).enable();
-        new Index<ProgramStage>("ProgramStage_Id").on(ProgramStage.class, ProgramStage$Table.ID).enable();
-        new Index<QuestionOption>("QuestionOption_id_question").on(QuestionOption.class, QuestionOption$Table.ID_QUESTION).enable();
-        new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class, QuestionRelation$Table.OPERATION).enable();
-        new Index<QuestionRelation>("QuestionRelation_id_question").on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
-        new Index<Match>("Match_id_question_relation").on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
+        new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on
+        (ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
+        new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStage").on
+        (ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGE).enable();
+        new Index<ProgramStageDataElement>("ProgramStageDataElement_ProgramStageSection").on
+        (ProgramStageDataElement.class, ProgramStageDataElement$Table.PROGRAMSTAGESECTION).enable();
+        new Index<ProgramStage>("ProgramStage_Program").on(ProgramStage.class, ProgramStage$Table
+        .PROGRAM).enable();
+        new Index<ProgramStage>("ProgramStage_Id").on(ProgramStage.class, ProgramStage$Table.ID)
+        .enable();
+        new Index<QuestionOption>("QuestionOption_id_question").on(QuestionOption.class,
+        QuestionOption$Table.ID_QUESTION).enable();
+        new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class,
+        QuestionRelation$Table.OPERATION).enable();
+        new Index<QuestionRelation>("QuestionRelation_id_question").on(QuestionRelation.class,
+        QuestionRelation$Table.ID_QUESTION).enable();
+        new Index<Match>("Match_id_question_relation").on(Match.class, Match$Table
+        .ID_QUESTION_RELATION).enable();
         new Index<Value>("Value_id_survey").on(Value.class, Value$Table.ID_SURVEY).enable();
-        new Index<DataElement>("DataElement_id").on(DataElement.class, DataElement$Table.ID).enable();
+        new Index<DataElement>("DataElement_id").on(DataElement.class, DataElement$Table.ID)
+        .enable();
         */
     }
 
     /**
      * Function used to make DBFlow compatible with multidex
-     * @param base
      */
     @Override
     protected void attachBaseContext(Context base) {
