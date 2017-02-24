@@ -39,7 +39,7 @@
             <Spinner
                 android:id="@+id/filter_program"
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:background="@color/assess_grey"
                 android:paddingTop="5dip"
@@ -54,7 +54,7 @@
             <Spinner
                 android:id="@+id/filter_orgunit"
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:background="@color/assess_grey"
                 android:paddingTop="5dip"

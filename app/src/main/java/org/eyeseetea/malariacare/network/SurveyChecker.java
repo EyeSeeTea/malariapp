@@ -107,10 +107,10 @@ public class SurveyChecker {
                 if (quarantineSurveys.size() == 0) {
                     continue;
                 }
-                Date minDate = Survey.getMinQuarantineEventDateByProgramAndOrgUnit(program,
-                        orgUnit);
-                Date maxDate = Survey.getMaxQuarantineEventDateByProgramAndOrgUnit(program,
-                        orgUnit);
+                Date minDate = Survey.getMinQuarantineCompletionDateByProgramAndOrgUnit(program,
+                        orgUnit);//The start date is the first ascending completion date of all the quarantine surveys
+                Date maxDate = Survey.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
+                        orgUnit);//The last date is the first descending updated date of all the quarantine surveys
                 List<EventExtended> events = getEvents(program.getUid(), orgUnit.getUid(), minDate,
                         maxDate);
                 if (events != null && events.size() > 0) {

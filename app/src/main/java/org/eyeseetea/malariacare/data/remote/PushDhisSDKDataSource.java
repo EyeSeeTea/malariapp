@@ -19,12 +19,14 @@
 
 package org.eyeseetea.malariacare.data.remote;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
@@ -49,30 +51,13 @@ public class PushDhisSDKDataSource {
     }
 
     private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
-        final Set<String> eventUids = new HashSet<>();
-        final Set<String> sendingEventUids = new HashSet<>();
-        List<Survey> surveys = Survey.getAllSendingSurveys();
-        for (Survey survey : surveys) {
-            sendingEventUids.add(survey.getEventUid());
+        final Set<String> eventUids = getEventUidToBePushed();
+
+        if(eventUids.isEmpty() || eventUids.size()==0){
+            callback.onError(new SurveysToPushNotFoundException());
+            return;
         }
-        List<EventFlow> eventsFlow = SdkQueries.getEvents();
-        Log.d(TAG, "Size of events " + eventsFlow.size() + "size of surveys" + sendingEventUids.size());
-        if(sendingEventUids.size()!=eventsFlow.size())
-            Log.d(TAG, "Error in size of events");
-        for (int i = eventsFlow.size() - 1; i >= 0; i--) {
-            if (eventsFlow.get(i).getEventDate() != null && sendingEventUids.contains(
-                    eventsFlow.get(i).getUId())) {
-                eventUids.add(eventsFlow.get(i).getUId());
-            } else {
-                String eventUid = " No Uid";
-                if (eventsFlow.get(i).getUId() != null) {
-                    eventUid = eventsFlow.get(i).getUId();
-                }
-                Log.d(TAG,
-                        "Error pushing events. The event uid: " + eventUid + "haven't eventDate or is not listed to send");
-            }
-        }
-        Log.d(TAG, "Size of valid events " + eventsFlow.size());
+
         Observable<Map<String, ImportSummary>> eventObserver =
                 D2.events().push(eventUids);
 
@@ -104,6 +89,30 @@ public class PushDhisSDKDataSource {
                                 "Error pushing Events: " + throwable.getLocalizedMessage());
                     }
                 });
+    }
+    @NonNull
+    private Set<String> getEventUidToBePushed() {
+        final Set<String> eventUids = new HashSet<>();
+        final Set<String> sendingEventUids = new HashSet<>();
+        List<Survey> surveys = Survey.getAllSendingSurveys();
+        for (Survey survey : surveys) {
+            sendingEventUids.add(survey.getEventUid());
+        }
+        List<EventFlow> eventsFlows = SdkQueries.getEvents();
+        Log.d(TAG, "Size of events " + eventsFlows.size() + "size of surveys" + sendingEventUids.size());
+        if(sendingEventUids.size()!=eventsFlows.size())
+            Log.d(TAG, "Error in size of events");
+        for(EventFlow eventFlow:eventsFlows){
+            if(eventFlow.getEventDate() !=null && sendingEventUids.contains(eventFlow.getUId())){
+                eventUids.add(eventFlow.getUId());
+            }
+            else {
+                Log.d(TAG,
+                        "Error pushing events. The event uid: " + eventFlow.getUId() + "haven't eventDate or is not listed to send");
+            }
+        }
+        Log.d(TAG, "Size of valid events " + eventsFlows.size());
+        return eventUids;
     }
 
     public void wipeEvents() {
