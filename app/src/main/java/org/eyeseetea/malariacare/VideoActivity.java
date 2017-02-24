@@ -17,7 +17,7 @@ public class VideoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
         setContentView(R.layout.video_activity);
 
         //Displays a video file.

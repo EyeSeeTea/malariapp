@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.structure.Model;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
@@ -40,6 +42,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.Answer;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Media;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
@@ -87,7 +90,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     CompositeScoreBuilder compositeScoreBuilder;
     QuestionBuilder questionBuilder;
-    public static List<Question> questions;
+    public static List<Model> questions;
 
     private final String ATTRIBUTE_PRODUCTIVITY_CODE = "OUProductivity";
     private final String SDKDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -113,15 +116,15 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     }
 
     public void saveBatch() {
-        SdkQueries.saveBatch();
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+        List<Model> models = new ArrayList<>();
+        models.addAll(questions);
+        SdkQueries.saveBatch(models);
+        for (Media media : questionBuilder.listMedia) {
+            media.updateQuestion();
+        }
+        models = new ArrayList<>();
+        models.addAll(questionBuilder.listMedia);
+        SdkQueries.saveBatch(models);
     }
 
     /**
@@ -381,7 +384,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
 
 
         //-> createdOn
-        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
             survey.setCreationDate(EventExtended.parseLongDate(dataValue.getValue()));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
@@ -390,16 +394,19 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
 
         //-> uploadedOn
-        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(R.string.upload_date_code)))){
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.upload_date_code)))) {
             survey.setUploadDate(EventExtended.parseLongDate(dataValue.getValue()));
-            Log.i(TAG,String.format("Event %s uploaded on %s",survey.getEventUid(),dataValue
-            .getValue()));
+            Log.i(TAG, String.format("Event %s uploaded on %s", survey.getEventUid(), dataValue
+                    .getValue()));
             return;
         }
 
         //-> uploadedBy (updatedBy is ignored)
-        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(PreferencesState.getInstance().getContext().getString(
-                R.string.uploaded_by_code)))) {
+        if (dataValue.getDataElement().equals(ServerMetadata.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.uploaded_by_code)))) {
             User user = User.getUser(dataValue.getValue());
             if (user == null) {
                 user = new User(dataValue.getValue(), dataValue.getValue());

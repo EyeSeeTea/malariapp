@@ -48,6 +48,9 @@ import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
+
+import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
     /**
@@ -55,6 +58,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
     private static final int DUMP_REQUEST_CODE = 0;
+    protected static String TAG = ".BaseActivity";
     private SurveyLocationListener locationListener;
 
     LogoutUseCase mLogoutUseCase;
@@ -62,7 +66,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesState.getInstance().loadsLanguageInActivity();
+        PreferencesState.getInstance().initalizateActivityDependencies();
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
@@ -71,6 +75,20 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         mUserAccountRepository = new UserAccountRepository(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+        checkQuarantineSurveys();
+    }
+
+    private void checkQuarantineSurveys() {
+        if (PreferencesState.getInstance().isPushInProgress()) {
+            List<Survey> surveys = Survey.getAllSendingSurveys();
+            Log.d(TAG+"B&D", "The app was closed in the middle of a push. Surveys sending: "
+                    + surveys.size());
+            for (Survey survey : surveys) {
+                survey.setStatus(Constants.SURVEY_QUARANTINE);
+                survey.save();
+            }
+            PreferencesState.getInstance().setPushInProgress(false);
+        }
     }
 
     /**
@@ -142,6 +160,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             case android.R.id.home:
                 debugMessage("Go back");
                 onBackPressed();
+                break;
+            case R.id.downloaded_media:
+                debugMessage("Go downloaded media");
+                startActivity(new Intent(this, DownloadedMediaActivity.class));
                 break;
             case R.id.export_db:
                 debugMessage("Export db");

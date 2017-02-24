@@ -23,6 +23,8 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.network.SurveyChecker;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 public class PushUseCase {
 
@@ -33,11 +35,12 @@ public class PushUseCase {
     }
 
     public void execute(final Callback callback) {
-
         if (mPushController.isPushInProgress()) {
             callback.onPushInProgressError();
             return;
         }
+
+        SurveyChecker.launchQuarantineChecker();
 
         mPushController.changePushInProgress(true);
 

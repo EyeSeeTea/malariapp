@@ -222,4 +222,10 @@ evaluation"</string>
 <string name="demo_login">Demo</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
+
+<string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
+<string name="toast_push_done">"Survey data pushed to server. Starting pull..."</string>
+<string name="downloaded_media_menu">"Downloaded media"</string>
+<string name="header_filename_title">"Filename"</string>
+<string name="header_size_title">"Size"</string>
 </resources>

@@ -57,6 +57,8 @@ public class EventExtended implements VisitableFromSDK {
     public static final Event.EventStatus STATUS_FUTURE_VISIT = Event.EventStatus.SCHEDULED;
     public static final Event.EventStatus STATUS_SKIPPED = Event.EventStatus.SKIPPED;
 
+    List<TrackedEntityDataValueFlow> dataValuesInMemory;
+
     EventFlow event;
 
     public EventExtended(EventFlow event) {
@@ -75,6 +77,15 @@ public class EventExtended implements VisitableFromSDK {
     @Override
     public void accept(IConvertFromSDKVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public List<TrackedEntityDataValueFlow> getDataValuesInMemory() {
+        return dataValuesInMemory;
+    }
+
+    public void setDataValuesInMemory(
+            List<TrackedEntityDataValueFlow> dataValuesInMemory) {
+        this.dataValuesInMemory = dataValuesInMemory;
     }
 
     public void setStatus(Event.EventStatus statusCompleted) {

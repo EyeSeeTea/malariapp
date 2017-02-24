@@ -220,7 +220,19 @@ public class OrgUnit extends BaseModel {
     public static List<OrgUnit> getAllOrgUnit() {
         return new Select().from(OrgUnit.class).queryList();
     }
-
+    /**
+     * Returns the UID of an orgUnit with the given name
+     *
+     * @param name Name of the orgunit
+     */
+    public static String findUIDByName(String name) {
+        OrgUnit orgUnit = new Select().from(OrgUnit.class)
+                .where(OrgUnit_Table.name.eq(name)).querySingle();
+        if (orgUnit == null) {
+            return null;
+        }
+        return orgUnit.getUid();
+    }
     public OrgUnitProgramRelation addProgram(Program program){
         //Null -> nothing
         if(program==null){

@@ -4,11 +4,14 @@ import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.QuestionBuilder;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
@@ -139,7 +142,7 @@ public class SdkQueries {
     }
 
     //ConvertFromSDKVisitor
-    public static void saveBatch() {
+    public static void saveBatch(final List<Model> insertModels) {
         //Save questions in batch
 
         DatabaseDefinition databaseDefinition =
@@ -147,8 +150,8 @@ public class SdkQueries {
         databaseDefinition.executeTransaction(new ITransaction() {
             @Override
             public void execute(DatabaseWrapper databaseWrapper) {
-                for (Question question : ConvertFromSDKVisitor.questions) {
-                    question.insert();
+                for (Model model : insertModels) {
+                    model.insert();
                 }
             }
         });

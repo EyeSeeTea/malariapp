@@ -30,6 +30,8 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelati
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -274,6 +276,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     public void setStatus(Integer status) {
+        Log.d(Survey.class.getName()+"B&D","Id: "+ getId_survey() + " actual status:"+ status +" set as:"+ status);
         this.status = status;
     }
 
@@ -300,8 +303,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
      *
      * @return true|false
      */
-    public boolean isInProgress() {
-        return Constants.SURVEY_IN_PROGRESS == this.status;
+    public boolean isInProgress(){
+        return Constants.SURVEY_IN_PROGRESS==this.status;
+    }    /**
+     * Checks if the survey is Quarantine
+     * @return true|false
+     */
+    public boolean isInQuarantine(){
+        return Constants.SURVEY_QUARANTINE==this.status;
     }
 
     /**
@@ -591,6 +600,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Survey_Table.status.isNot(Constants.SURVEY_SENT))
                 .and(Survey_Table.status.isNot(Constants.SURVEY_PLANNED))
+                .and(Survey_Table.status.isNot(Constants.SURVEY_SENDING))
+                .and(Survey_Table.status.isNot(Constants.SURVEY_QUARANTINE))
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
     }
@@ -637,32 +648,26 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
     }
 
-    /**
-     * Returns the last surveys (by date) with status put to "Completed"
-     */
-    public static List<Survey> getCompletedSurveys(int limit) {
-        return new Select().from(Survey.class)
-                .where(Survey_Table.status.eq(Constants.SURVEY_COMPLETED))
-                .limit(limit)
-                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
-    }
-
-
-    /**
-     * Returns the last surveys (by date) with status put to "In progress"
-     */
-    public static List<Survey> getUncompletedSurveys(int limit) {
-        return new Select().from(Survey.class)
-                .where(Survey_Table.status.eq(Constants.SURVEY_IN_PROGRESS))
-                .limit(limit)
-                .orderBy(OrderBy.fromProperty(Survey_Table.upload_date))
-                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
+    public static List<Survey> getAllSendingSurveys() {
+        return new Select()
+                .from(Survey.class)
+                .where(Survey_Table.status.eq(Constants.SURVEY_SENDING))
+                .queryList();
     }
 
     @Override
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception {
         IConvertToSDKVisitor.visit(this);
+    }
+
+    /* Returns the last surveys (by date) with status Completed or sent
+    * @return
+         */
+    public static List<Survey> getAllCompletedUnsentSurveys() {
+        return new Select().from(Survey.class)
+                .where(Survey_Table.status.is(Constants.SURVEY_COMPLETED))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
+                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
     }
 
     /**
@@ -671,16 +676,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
     public static List<Survey> getAllInProgressSurveys() {
         return new Select().from(Survey.class)
                 .where(Survey_Table.status.is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns the last surveys (by date) with status Completed or sent
-     */
-    public static List<Survey> getAllCompletedUnsentSurveys() {
-        return new Select().from(Survey.class)
-                .where(Survey_Table.status.is(Constants.SURVEY_COMPLETED))
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
     }
@@ -697,7 +692,48 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
     }
 
-    public static long count() {
+
+    public static List<Survey> getAllQuarantineSurveysByProgramAndOrgUnit(Program program, OrgUnit orgUnit) {
+        return new Select().from(Survey.class)
+                .where(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
+                .and(Survey_Table.id_program_fk.eq(program.getId_program()))
+                .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date).descending()).queryList();
+    }
+
+    public static Date getMinQuarantineEventDateByProgramAndOrgUnit(Program program,
+            OrgUnit orgUnit) {
+        Survey survey = new Select()
+                .from(Survey.class)
+                .where(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
+                .and(Survey_Table.id_program_fk.eq(program.getId_program()))
+                .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date).ascending())
+                .querySingle();
+        return survey.getUploadDate();
+    }
+
+    public static Date getMaxQuarantineEventDateByProgramAndOrgUnit(Program program,
+            OrgUnit orgUnit) {
+        Survey survey = new Select()
+                .from(Survey.class)
+                .where(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
+                .and(Survey_Table.id_program_fk.eq(program.getId_program()))
+                .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date).descending())
+                .querySingle();
+        return survey.getUploadDate();
+    }
+    /**
+     * Returns all the surveys with status put to "quarantine"
+     */
+    public static int countQuarantineSurveys() {
+        return (int) SQLite.selectCountOf()
+                .from(Survey.class)
+                .where(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
+                .count();
+    }
+    public static long count(){
         return SQLite.selectCountOf()
                 .from(Survey.class)
                 .count();
@@ -793,22 +829,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Returns survey which state is 'in progress' or 'sent'
-     */
-    public static List<Survey> findInProgressOrSent() {
-        return new Select()
-                .from(Survey.class)
-                .where(Survey_Table.status.eq(Constants.SURVEY_IN_PROGRESS))
-                .or(Survey_Table.status.eq(Constants.SURVEY_SENT))
-                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk))
-                .queryList();
-    }
-
-    /**
      * Finds a survey with a given orgunit and program
      */
-    public static Survey findByOrgUnitAndProgram(OrgUnit orgUnit, Program program) {
+    public static Survey findPlannedByOrgUnitAndProgram(OrgUnit orgUnit, Program program) {
         return new Select()
                 .from(Survey.class)
                 .where(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
@@ -829,24 +852,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .queryList();
     }
 
-
-    public static Survey findSurveyWith(OrgUnit orgUnit, Program program,
-            EventFlow lastEventInServer) {
-
-        if (lastEventInServer == null) {
-            return null;
-        }
-        return new Select().from(Survey.class)
-                .where(Survey_Table.status.isNot(Constants.SURVEY_PLANNED))
-                .and(Survey_Table.status.isNot(Constants.SURVEY_IN_PROGRESS))
-                .and(Survey_Table.status.isNot(Constants.SURVEY_HIDE))
-                .and( Survey_Table.id_program_fk.eq(program.getId_program()))
-                .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(Survey_Table.uid_event_fk.eq(lastEventInServer.getUId()))
-                .orderBy(Survey_Table.completion_date,false)
-                .querySingle();
-    }
-
     public static Survey getLastSurvey(Long id_org_unit, Long id_program) {
         return SQLite.select()
                 .from(Survey.class)
@@ -855,13 +860,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .groupBy( Survey_Table.id_program_fk , Survey_Table.id_org_unit_fk)
                 .having(Survey_Table.completion_date.eq(Method.max(Survey_Table.completion_date)))
                 .querySingle();
-    }
-
-    /**
-     * A survey in progress with a uid is a modification (patch) of a previously pushed survey
-     */
-    public boolean isAModification(){
-        return this.uid_event_fk!=null && this.uid_event_fk.length()>0;
     }
 
     /**
@@ -955,5 +953,4 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 ", uid_event_fk="+uid_event_fk+
                 '}';
     }
-
 }
