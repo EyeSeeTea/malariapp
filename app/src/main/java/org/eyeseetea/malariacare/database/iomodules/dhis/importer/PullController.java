@@ -330,6 +330,12 @@ public class PullController {
      */
     private void convertMetaData(ConvertFromSDKVisitor converter) {
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
+        //User (from UserAccount)
+        Log.i(TAG, "Converting user...");
+        UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
+        userAccountExtended.accept(converter);
+
+        if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Convert Programs, Tabs
         postProgress(context.getString(R.string.progress_pull_preparing_program));
         Log.i(TAG, "Converting programs and tabs...");
@@ -352,12 +358,6 @@ public class PullController {
         //OrganisationUnits
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         if (!convertOrgUnits(converter)) return;
-
-        if (!ProgressActivity.PULL_IS_ACTIVE) return;
-        //User (from UserAccount)
-        Log.i(TAG, "Converting user...");
-        UserAccountExtended userAccountExtended = new UserAccountExtended(MetaDataController.getUserAccount());
-        userAccountExtended.accept(converter);
 
         if (!ProgressActivity.PULL_IS_ACTIVE) return;
         //Convert questions and compositeScores
@@ -581,6 +581,7 @@ public class PullController {
      * Notifies that the pull is over
      */
     private void postFinish() {
+        Log.d(TAG, "pull finished");
         //Fixme maybe it is not the best place to reload the logged user.(Without reload the user after pull, the user had diferent id and application crash).
         User user = User.getLoggedUser();
         Session.setUser(user);

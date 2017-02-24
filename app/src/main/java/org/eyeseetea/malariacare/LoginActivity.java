@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -34,7 +36,11 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -44,10 +50,13 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
+import org.hisp.dhis.android.sdk.utils.UiUtils;
 
 import java.io.InputStream;
 
@@ -55,9 +64,10 @@ import java.io.InputStream;
  * Login Screen.
  * It shows only when the user has an open session.
  */
-public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.LoginActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.LoginActivity implements
+        LoaderCallbacks<Cursor> {
 
-    private static final String TAG="LoginActivity";
+    private static final String TAG = "LoginActivity";
     /**
      * DHIS server URL
      */
@@ -78,12 +88,14 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
+        if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
+                && sharedPreferences.getBoolean(
+                getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
             startActivity(new Intent(LoginActivity.this,
                     ((Dhis2Application) getApplication()).getMainActivity()));
             finish();
         }
-        ProgressActivity.PULL_CANCEL =false;
+        ProgressActivity.PULL_CANCEL = false;
         EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
         serverText.setText(R.string.login_info_dhis_default_server_url);
     }
@@ -104,12 +116,11 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     }
 
     /**
-     * Shows an alert dialog asking for acceptance of the EULA terms. If ok calls login function, do nothing otherwise
-     * @param titleId
-     * @param rawId
-     * @param context
+     * Shows an alert dialog asking for acceptance of the EULA terms. If ok calls login function,
+     * do
+     * nothing otherwise
      */
-    public void askEula(int titleId, int rawId, final Context context){
+    public void askEula(int titleId, int rawId, final Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
         String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
@@ -122,20 +133,21 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         rememberEulaAccepted(context);
-                        loginToDhis(serverUrl,username,password);
+                        loginToDhis(serverUrl, username, password);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create();
         dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
+                LinkMovementMethod.getInstance());
     }
 
     /**
      * Save a preference to remember that EULA was already accepted
-     * @param context
      */
-    public void rememberEulaAccepted(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    public void rememberEulaAccepted(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.eula_accepted), true);
         editor.commit();
@@ -143,27 +155,21 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
 
     /**
      * User SDK function to login
-     * @param serverUrl
-     * @param username
-     * @param password
      */
-    public void loginToDhis(String serverUrl, String username, String password){
+    public void loginToDhis(String serverUrl, String username, String password) {
         //Delegate real login attempt to parent in sdk
         super.login(serverUrl, username, password);
     }
 
     /**
      * Ask for EULA acceptance if this is the first time user login to the server, otherwise login
-     * @param serverUrl
-     * @param username
-     * @param password
      */
     @Override
     public void login(String serverUrl, String username, String password) {
         //This method is overriden to capture credentials data
-        this.serverUrl=serverUrl;
-        this.username=username;
-        this.password=password;
+        this.serverUrl = serverUrl;
+        this.username = username;
+        this.password = password;
 
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -176,17 +182,25 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
 
     @Subscribe
     public void onLoginFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
-        if(result!=null && result.getResourceType().equals(ResourceType.USERS)) {
-            if(result.getResponseHolder().getApiException() == null) {
+        if (result != null && result.getResourceType().equals(ResourceType.USERS)) {
+            if (result.getResponseHolder().getApiException() == null) {
+                //Save server in preferences
                 saveUserDetails();
-
-                populateFromAssetsIfRequired();
-
-                launchMainActivity();
+                AsyncPullAnnouncement
+                        asyncPullAnnouncement = new AsyncPullAnnouncement();
+                asyncPullAnnouncement.execute(this);
             } else {
                 onLoginFail(result.getResponseHolder().getApiException());
             }
         }
+    }
+
+    private void loginSuccess() {
+        saveUserDetails();
+
+        populateFromAssetsIfRequired();
+
+        launchMainActivity();
     }
 
     /**
@@ -194,25 +208,25 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private void populateFromAssetsIfRequired() {
         //From server -> done
-        if(PreferencesState.getInstance().getPullFromServer()) {
+        if (PreferencesState.getInstance().getPullFromServer()) {
             return;
         }
 
         //Populate locally
-        try{
+        try {
             PullController.getInstance().wipeDatabase();
             User user = new User();
             user.save();
             Session.setUser(user);
             PopulateDB.populateDB(getAssets());
-        }catch(Exception ex){
+        } catch (Exception ex) {
         }
     }
 
     /**
      * Saves user credentials into preferences
      */
-    private void saveUserDetails(){
+    private void saveUserDetails() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.dhis_url), this.serverUrl);
@@ -226,13 +240,63 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      * Thus onBackPressed closes the app
      */
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
+    public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {
+        //userCloseChecker is never saved, Only for check if the date is closed.
+        LoginActivity loginActivity;
+        boolean isUserClosed = false;
+
+        @Override
+        protected Void doInBackground(LoginActivity... params) {
+            loginActivity = params[0];
+            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
+            UserAccount dhisUser = UserAccount.getCurrentUserAccountFromDb();
+            isUserClosed = pullClient.isUserClosed(dhisUser.getUId());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            loginActivity.success(isUserClosed);
+        }
+    }
+
+    private void showLoginDialog() {
+        Animation anim = AnimationUtils.loadAnimation(this,
+                org.hisp.dhis.android.sdk.R.anim.in_down);
+        ((ProgressBar) findViewById(org.hisp.dhis.android.sdk.R.id.progress_bar)).setVisibility(
+                View.GONE);
+        findViewById(org.hisp.dhis.android.sdk.R.id.login_views_container).setVisibility(
+                View.VISIBLE);
+        findViewById(org.hisp.dhis.android.sdk.R.id.login_views_container).startAnimation(anim);
+    }
+
+    private void success(boolean isUserClosed) {
+        if (isUserClosed) {
+            Dialog.OnClickListener listener = new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PreferencesState.getInstance().setUserAccept(false);
+                    BaseActivity.logout(getBaseContext());
+                    showLoginDialog();
+                }
+            };
+            UiUtils.showErrorDialog(this, getString(R.string.admin_announcement),
+                    PreferencesState.getInstance().getContext().getString(
+                            R.string.user_close), listener);
+        } else
+
+        {
+            loginSuccess();
+        }
+    }
 }
 
 

@@ -244,5 +244,6 @@
 <string name="feedback_media_link" ></string>
 <string name="feedback_media"></string>
 <string name="feedback_view_image"></string>
-
+<string name="admin_announcement"></string>
+<string name="user_close"></string>
 </resources>

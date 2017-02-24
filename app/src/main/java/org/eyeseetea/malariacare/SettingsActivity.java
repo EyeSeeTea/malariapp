@@ -69,7 +69,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private static final String TAG=".SettingsActivity";
 
     protected void onCreate(Bundle savedInstanceState) {
-        //Register into sdk bug for listening to logout events
+        //Register into sdk bug for listening to askIfLogout events
         Dhis2Application.bus.register(this);
         super.onCreate(savedInstanceState);
     }
@@ -93,13 +93,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     /**
      * Logging out from sdk is an async method.
-     * Thus it is required a callback to finish logout gracefully.
+     * Thus it is required a callback to finish askIfLogout gracefully.
      *
      * @param uiEvent
      */
     @Subscribe
     public void onLogoutFinished(UiEvent uiEvent){
-        //No event or not a logout event -> done
+        //No event or not a askIfLogout event -> done
         if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
             return;
         }
@@ -327,6 +327,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public void onBackPressed() {
         Class callerActivityClass=getCallerActivity();
         Intent returnIntent=new Intent(this,callerActivityClass);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
         startActivity(returnIntent);
     }
 

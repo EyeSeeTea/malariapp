@@ -49,6 +49,7 @@ public class NetworkUtils {
     private Context applicationContext;
 
     private static String DHIS_PUSH_API="/api/events";
+    private static String DHIS_PULL_API="/api/";
 
     private static String DHIS_SERVER ="https://www.psi-mis.org";
 
@@ -108,7 +109,7 @@ public class NetworkUtils {
     public JSONObject getData(String data)throws Exception {
         Response response = null;
 
-        final String DHIS_URL = getDhisURL()+DHIS_PUSH_API+data;
+        final String DHIS_URL = getDhisURL()+DHIS_PULL_API+data;
 
         OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 

@@ -236,4 +236,6 @@ clínica"</string>
 <string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
+<string name="admin_announcement">"Anuncio del administrador"</string>
+<string name="user_close">"Este usuario ha sido cerrado por el administrador."</string>
 </resources>

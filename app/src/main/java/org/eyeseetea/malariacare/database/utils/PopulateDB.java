@@ -79,7 +79,7 @@ public class PopulateDB {
 
         Log.d(TAG,"Populating metaData from local csv files");
 
-        //Clear maps from previous populations (this might be called after logout)
+        //Clear maps from previous populations (this might be called after askIfLogout)
         initMaps();
 
         //Clear database
