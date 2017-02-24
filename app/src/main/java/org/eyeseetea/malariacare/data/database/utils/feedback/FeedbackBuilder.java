@@ -74,7 +74,9 @@ public class FeedbackBuilder {
         //For each score add proper items
         for(CompositeScore compositeScore:compositeScoreList){
             //add score
-            feedbackList.add(new CompositeScoreFeedback(compositeScore));
+            float score = ScoreRegister.getCompositeScore(compositeScore, survey.getId_survey(),
+                        module);
+            feedbackList.add(new CompositeScoreFeedback(compositeScore, score));
 
             //add its questions
             List<Question> questions=compositeScore.getQuestions();

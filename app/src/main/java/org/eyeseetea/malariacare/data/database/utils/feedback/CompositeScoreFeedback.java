@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.feedback;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 /**
@@ -28,10 +29,12 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
  */
 public class CompositeScoreFeedback implements Feedback {
 
+    private float score;
     private CompositeScore compositeScore;
 
-    public CompositeScoreFeedback(CompositeScore compositeScore){
+    public CompositeScoreFeedback(CompositeScore compositeScore, float score){
         this.compositeScore=compositeScore;
+        this.score=score;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class CompositeScoreFeedback implements Feedback {
      * @return
      */
     public float getScore(float idSurvey, String module) {
-        return ScoreRegister.getCompositeScore(this.compositeScore,  idSurvey, module);
+        return score;
     }
 
     /**

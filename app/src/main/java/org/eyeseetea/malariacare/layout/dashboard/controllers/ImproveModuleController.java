@@ -96,7 +96,7 @@ public class ImproveModuleController extends ModuleController {
         }catch(Exception e){
             e.printStackTrace();
         }
-        feedbackFragment = FeedbackFragment.newInstance(1);
+        feedbackFragment = new FeedbackFragment();
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());

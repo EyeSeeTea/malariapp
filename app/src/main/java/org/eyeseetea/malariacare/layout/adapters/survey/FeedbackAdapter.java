@@ -125,13 +125,13 @@ public class FeedbackAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Feedback feedback=(Feedback)getItem(position);
         if (feedback instanceof CompositeScoreFeedback){
-            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent, module);
+            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, parent, module);
         }else{
             return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
         }
     }
 
-    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent, String module){
+    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
@@ -408,5 +408,6 @@ public class FeedbackAdapter extends BaseAdapter {
         }
         return numHidden;
     }
+
 
 }
