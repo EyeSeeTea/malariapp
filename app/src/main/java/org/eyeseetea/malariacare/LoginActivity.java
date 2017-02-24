@@ -154,27 +154,10 @@ public class LoginActivity extends AbsLoginActivity {
             String permissions[], int[] grantResults) {
         if (Permissions.processAnswer(requestCode, permissions, grantResults)) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
-            if(EyeSeeTeaApplication.permissions.areAllPermissionsGranted()){
-                loadPhoneMetadata();
-            }
         }
         else if (EyeSeeTeaApplication.permissions.hasNextPermission()){
             EyeSeeTeaApplication.permissions.requestNextPermission();
         }
-    }
-
-    PhoneMetaData getPhoneMetadata() {
-        PhoneMetaData phoneMetaData = new PhoneMetaData();
-        TelephonyManager phoneManagerMetaData = (TelephonyManager) getSystemService(
-                Context.TELEPHONY_SERVICE);
-        String imei = phoneManagerMetaData.getDeviceId();
-        String phone = phoneManagerMetaData.getLine1Number();
-        String serial = phoneManagerMetaData.getSimSerialNumber();
-        phoneMetaData.setImei(imei);
-        phoneMetaData.setPhone_number(phone);
-        phoneMetaData.setPhone_serial(serial);
-
-        return phoneMetaData;
     }
 
     public void login(String serverUrl, String username, String password) {
@@ -208,11 +191,6 @@ public class LoginActivity extends AbsLoginActivity {
                                 .title_error_unexpected));
             }
         });
-    }
-
-    public void loadPhoneMetadata() {
-        PhoneMetaData phoneMetaData = getPhoneMetadata();
-        Session.setPhoneMetaData(phoneMetaData);
     }
 
     public void showError(String message) {
