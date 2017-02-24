@@ -701,7 +701,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date).descending()).queryList();
     }
 
-    public static Date getMinQuarantineEventDateByProgramAndOrgUnit(Program program,
+    public static Date getMinQuarantineCompletionDateByProgramAndOrgUnit(Program program,
             OrgUnit orgUnit) {
         Survey survey = new Select()
                 .from(Survey.class)
@@ -710,17 +710,17 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date).ascending())
                 .querySingle();
-        return survey.getUploadDate();
+        return survey.getCompletionDate();
     }
 
-    public static Date getMaxQuarantineEventDateByProgramAndOrgUnit(Program program,
+    public static Date getMaxQuarantineUpdatedDateByProgramAndOrgUnit(Program program,
             OrgUnit orgUnit) {
         Survey survey = new Select()
                 .from(Survey.class)
                 .where(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
                 .and(Survey_Table.id_program_fk.eq(program.getId_program()))
                 .and(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date).descending())
+                .orderBy(OrderBy.fromProperty(Survey_Table.upload_date).descending())
                 .querySingle();
         return survey.getUploadDate();
     }

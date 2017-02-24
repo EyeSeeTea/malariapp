@@ -86,7 +86,7 @@ public class ScoreRegister {
     }
 
     private static List<Float> getRecursiveScore(CompositeScore cScore, List<Float> result, float idSurvey, String module) {
-
+        Log.d(TAG, " mod "+ module +" idsurvey "+ idSurvey + " score "+ cScore);
         //Protect from wrong server data
         if (compositeScoreMapBySurvey.get(module).get(idSurvey).get(cScore)==null) {
             return Arrays.asList(0f,0f);
@@ -270,7 +270,9 @@ public class ScoreRegister {
      */
     public static List<CompositeScore> loadCompositeScores(Survey survey, String module){
         //Cleans score
+        Log.d(TAG, "clean composite score "+ survey.getId_survey() + " module " + module);
         ScoreRegister.clear(survey.getId_survey(), module);
+        Log.d(TAG, "load composite Score "+ survey.getId_survey() + " module " + module);
 
         //Register scores for tabs
         List<Tab> tabs=survey.getProgram().getTabs();
@@ -281,7 +283,8 @@ public class ScoreRegister {
         ScoreRegister.registerCompositeScores(compositeScoreList, survey.getId_survey(), module);
         //Initialize scores x question
         ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram()), survey, module);
-        
+
+        Log.d(TAG, "Composite Score loaded "+ survey.getId_survey() + " module " + module);
         return compositeScoreList;
     }
 

@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -325,9 +326,10 @@ public class SurveyService extends IntentService {
      * Action that calculates the 'feedback' items corresponding to the current survey in session
      */
     private void getFeedbackItems(String module){
-        //android.os.Debug.waitForDebugger();
-        //Mock some items
-        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyByModule(module), module);
+        List<Feedback> feedbackList= new ArrayList<>();
+        Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
+
+        feedbackList= FeedbackBuilder.build(Session.getSurveyByModule(module), module);
 
         //Return result to anyone listening
         Log.d(TAG, String.format("getFeedbackItems: %d", feedbackList.size()));

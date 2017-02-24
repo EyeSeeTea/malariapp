@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
@@ -42,15 +43,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
@@ -71,6 +73,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLoginActivityStrategy.onCreate();
@@ -142,6 +145,37 @@ public class LoginActivity extends AbsLoginActivity {
         editor.putBoolean(getString(R.string.eula_accepted), true);
         editor.commit();
     }
+    /**
+     * Its called on the requestPermission results, if the user accepts the permissions it request
+     * the Phone permission and gets the phoneMetadata
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+            String permissions[], int[] grantResults) {
+        if (Permissions.processAnswer(requestCode, permissions, grantResults)) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+            if(EyeSeeTeaApplication.permissions.areAllPermissionsGranted()){
+                loadPhoneMetadata();
+            }
+        }
+        else if (EyeSeeTeaApplication.permissions.hasNextPermission()){
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
+    }
+
+    PhoneMetaData getPhoneMetadata() {
+        PhoneMetaData phoneMetaData = new PhoneMetaData();
+        TelephonyManager phoneManagerMetaData = (TelephonyManager) getSystemService(
+                Context.TELEPHONY_SERVICE);
+        String imei = phoneManagerMetaData.getDeviceId();
+        String phone = phoneManagerMetaData.getLine1Number();
+        String serial = phoneManagerMetaData.getSimSerialNumber();
+        phoneMetaData.setImei(imei);
+        phoneMetaData.setPhone_number(phone);
+        phoneMetaData.setPhone_serial(serial);
+
+        return phoneMetaData;
+    }
 
     public void login(String serverUrl, String username, String password) {
         showProgress();
@@ -176,6 +210,11 @@ public class LoginActivity extends AbsLoginActivity {
         });
     }
 
+    public void loadPhoneMetadata() {
+        PhoneMetaData phoneMetaData = getPhoneMetadata();
+        Session.setPhoneMetaData(phoneMetaData);
+    }
+
     public void showError(String message) {
         hideProgress();
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -199,8 +238,9 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(
+                    INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
@@ -215,6 +255,15 @@ public class LoginActivity extends AbsLoginActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public void requestPermissions() {
+        if (EyeSeeTeaApplication.permissions == null) {
+            EyeSeeTeaApplication.permissions = Permissions.getInstance(this);
+        }
+        if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
     }
 }
 
