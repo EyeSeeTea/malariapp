@@ -76,7 +76,7 @@ android {
             buildConfigField "boolean", "translations", "false"
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqis_bb"
+            applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
             versionName "1.2.0"
             buildConfigField "boolean", "translations", "true"
         }
