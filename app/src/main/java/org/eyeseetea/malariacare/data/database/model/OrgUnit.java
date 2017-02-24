@@ -44,11 +44,11 @@ public class OrgUnit extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_org_unit;
     @Column
-    String uid;
+    String uid_org_unit;
     @Column
     String name;
     @Column
-    Long id_parent;
+    Long id_org_unit_parent;
 
     /**
      * Refernce to parent orgUnit (loaded lazily)
@@ -56,7 +56,7 @@ public class OrgUnit extends BaseModel {
     OrgUnit orgUnit;
 
     @Column
-    Long id_org_unit_level;
+    Long id_org_unit_level_fk;
 
     /**
      * Reference to the level of this orgUnit (loaded lazily)
@@ -89,7 +89,7 @@ public class OrgUnit extends BaseModel {
 
     public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
         this(name);
-        this.uid = uid;
+        this.uid_org_unit = uid;
         this.setOrgUnit(orgUnit);
         this.setOrgUnitLevel(orgUnitLevel);
     }
@@ -103,11 +103,11 @@ public class OrgUnit extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_org_unit;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_org_unit = uid;
     }
 
     public String getName() {
@@ -120,50 +120,50 @@ public class OrgUnit extends BaseModel {
 
     public OrgUnit getOrgUnit() {
         if(orgUnit==null){
-            if (this.id_parent == null) return null;
+            if (this.id_org_unit_parent == null) return null;
             orgUnit = new Select()
                     .from(OrgUnit.class)
                     .where(OrgUnit_Table.id_org_unit
-                            .is(id_parent)).querySingle();
+                            .is(id_org_unit_parent)).querySingle();
         }
         return orgUnit;
     }
 
     public void setOrgUnit(OrgUnit orgUnit) {
         this.orgUnit = orgUnit;
-        this.id_parent = (orgUnit!=null)?orgUnit.getId_org_unit():null;
+        this.id_org_unit_parent = (orgUnit!=null)?orgUnit.getId_org_unit():null;
     }
 
     public void setOrgUnit(Long id_parent){
-        this.id_parent = id_parent;
+        this.id_org_unit_parent = id_parent;
         this.orgUnit = null;
     }
 
     public OrgUnitLevel getOrgUnitLevel() {
         if(orgUnitLevel==null){
-            if (this.id_org_unit_level==null) return null;
+            if (this.id_org_unit_level_fk==null) return null;
             orgUnitLevel  = new Select()
                     .from(OrgUnitLevel.class)
                     .where(OrgUnitLevel_Table.id_org_unit_level
-                            .is(id_org_unit_level)).querySingle();
+                            .is(id_org_unit_level_fk)).querySingle();
         }
         return orgUnitLevel;
     }
 
     public void setOrgUnitLevel(OrgUnitLevel orgUnitLevel) {
         this.orgUnitLevel = orgUnitLevel;
-        this.id_org_unit_level = (orgUnitLevel!=null)?orgUnitLevel.getId_org_unit_level():null;
+        this.id_org_unit_level_fk = (orgUnitLevel!=null)?orgUnitLevel.getId_org_unit_level():null;
     }
 
     public void setOrgUnitLevel(Long id_org_unit_level){
-        this.id_org_unit_level = id_org_unit_level;
+        this.id_org_unit_level_fk = id_org_unit_level;
         this.orgUnitLevel = null;
     }
 
     public List<OrgUnit> getChildren(){
         if(this.children==null){
             this.children = new Select().from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit())).queryList();
+                    .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit())).queryList();
         }
         return children;
     }
@@ -171,7 +171,7 @@ public class OrgUnit extends BaseModel {
     public List<OrgUnit> getChildrenOrderedByName(){
         if(this.children==null){
             this.children = new Select().from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_parent.eq(this.getId_org_unit())).orderBy(
+                    .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit())).orderBy(
                             OrderBy.fromProperty(OrgUnit_Table.name)).queryList();
         }
         return children;
@@ -180,7 +180,7 @@ public class OrgUnit extends BaseModel {
     public List<Survey> getSurveys(){
         if(this.surveys==null){
             this.surveys = new Select().from(Survey.class)
-                    .where(Survey_Table.id_org_unit.eq(this.getId_org_unit())).queryList();
+                    .where(Survey_Table.id_org_unit_fk.eq(this.getId_org_unit())).queryList();
         }
         return surveys;
     }
@@ -194,8 +194,8 @@ public class OrgUnit extends BaseModel {
             this.programs=new Select().from(Program.class).as(programName)
                     .join(OrgUnitProgramRelation.class, Join.JoinType.LEFT_OUTER).as(orgUnitProgramRelationName)
                     .on(Program_Table.id_program.withTable(programAlias)
-                            .eq(OrgUnitProgramRelation_Table.id_program.withTable(orgUnitProgramRelationAlias))
-                    ).where(OrgUnitProgramRelation_Table.id_org_unit.withTable(orgUnitProgramRelationAlias).eq(this.getId_org_unit()))
+                            .eq(OrgUnitProgramRelation_Table.id_program_fk.withTable(orgUnitProgramRelationAlias))
+                    ).where(OrgUnitProgramRelation_Table.id_org_unit_fk.withTable(orgUnitProgramRelationAlias).eq(this.getId_org_unit()))
                     .orderBy(Program_Table.name.withTable(programAlias), true)
                     .queryList();
         }
@@ -204,8 +204,8 @@ public class OrgUnit extends BaseModel {
 
     public OrgUnitProgramRelation getRelation(Program program){
         return new Select().from(OrgUnitProgramRelation.class)
-                .where(OrgUnitProgramRelation_Table.id_org_unit.eq(this.getId_org_unit()))
-                .and(OrgUnitProgramRelation_Table.id_program.eq(program.getId_program())).querySingle();
+                .where(OrgUnitProgramRelation_Table.id_org_unit_fk.eq(this.getId_org_unit()))
+                .and(OrgUnitProgramRelation_Table.id_program_fk.eq(program.getId_program())).querySingle();
     }
 
     public Integer getProductivity(Program program){
@@ -253,13 +253,13 @@ public class OrgUnit extends BaseModel {
      * @return
      */
     public static List<OrgUnit> list(){
-        return new Select().from(OrgUnit.class).orderBy(OrgUnit_Table.id_org_unit_level,true).orderBy(OrgUnit_Table.name, true).queryList();
+        return new Select().from(OrgUnit.class).orderBy(OrgUnit_Table.id_org_unit_level_fk,true).orderBy(OrgUnit_Table.name, true).queryList();
     }
 
     public static OrgUnit getOrgUnit(String uid) {
             OrgUnit orgUnit = new Select()
                     .from(OrgUnit.class)
-                    .where(OrgUnit_Table.uid
+                    .where(OrgUnit_Table.uid_org_unit
                             .is(uid)).querySingle();
         return orgUnit;
     }
@@ -272,21 +272,21 @@ public class OrgUnit extends BaseModel {
         OrgUnit orgUnit = (OrgUnit) o;
 
         if (id_org_unit != orgUnit.id_org_unit) return false;
-        if (uid != null ? !uid.equals(orgUnit.uid) : orgUnit.uid != null) return false;
+        if (uid_org_unit != null ? !uid_org_unit.equals(orgUnit.uid_org_unit) : orgUnit.uid_org_unit != null) return false;
         if (name != null ? !name.equals(orgUnit.name) : orgUnit.name != null) return false;
-        if (id_parent != null ? !id_parent.equals(orgUnit.id_parent) : orgUnit.id_parent != null)
+        if (id_org_unit_parent != null ? !id_org_unit_parent.equals(orgUnit.id_org_unit_parent) : orgUnit.id_org_unit_parent != null)
             return false;
-        return !(id_org_unit_level != null ? !id_org_unit_level.equals(orgUnit.id_org_unit_level) : orgUnit.id_org_unit_level != null);
+        return !(id_org_unit_level_fk != null ? !id_org_unit_level_fk.equals(orgUnit.id_org_unit_level_fk) : orgUnit.id_org_unit_level_fk != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_org_unit ^ (id_org_unit >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_org_unit != null ? uid_org_unit.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (id_parent != null ? id_parent.hashCode() : 0);
-        result = 31 * result + (id_org_unit_level != null ? id_org_unit_level.hashCode() : 0);
+        result = 31 * result + (id_org_unit_parent != null ? id_org_unit_parent.hashCode() : 0);
+        result = 31 * result + (id_org_unit_level_fk != null ? id_org_unit_level_fk.hashCode() : 0);
         return result;
     }
 
@@ -294,10 +294,10 @@ public class OrgUnit extends BaseModel {
     public String toString() {
         return "OrgUnit{" +
                 "id_org_unit=" + id_org_unit +
-                ", uid='" + uid + '\'' +
+                ", uid_org_unit='" + uid_org_unit + '\'' +
                 ", name='" + name + '\'' +
-                ", id_parent=" + id_parent +
-                ", id_org_unit_level=" + id_org_unit_level +
+                ", id_org_unit_parent=" + id_org_unit_parent +
+                ", id_org_unit_level_fk=" + id_org_unit_level_fk +
                 '}';
     }
 }

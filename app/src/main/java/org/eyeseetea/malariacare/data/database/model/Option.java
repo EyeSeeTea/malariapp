@@ -37,7 +37,7 @@ public class Option extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_option;
     @Column
-    String uid;
+    String uid_option;
     @Column
     String code;
     @Column
@@ -45,7 +45,7 @@ public class Option extends BaseModel {
     @Column
     Float factor;
     @Column
-    Long id_answer;
+    Long id_answer_fk;
 
     /**
      * Reference to parent answer (loaded lazily)
@@ -87,11 +87,11 @@ public class Option extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_option;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_option = uid;
     }
 
     public String getCode() {
@@ -119,23 +119,23 @@ public class Option extends BaseModel {
     }
 
     public Answer getAnswer() {
-        if (answer == null) {
-            if (id_answer == null) return null;
+        if(answer==null){
+            if(id_answer_fk==null) return null;
             answer = new Select()
                     .from(Answer.class)
                     .where(Answer_Table.id_answer
-                            .is(id_answer)).querySingle();
+                            .is(id_answer_fk)).querySingle();
         }
         return answer;
     }
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
-        this.id_answer = (answer != null) ? answer.getId_answer() : null;
+        this.id_answer_fk = (answer!=null)?answer.getId_answer():null;
     }
 
-    public void setAnswer(Long id_answer) {
-        this.id_answer = id_answer;
+    public void setAnswer(Long id_answer){
+        this.id_answer_fk = id_answer;
         this.answer = null;
     }
 
@@ -176,7 +176,7 @@ public class Option extends BaseModel {
     public List<Value> getValues() {
         if (values == null) {
             values = new Select().from(Value.class)
-                    .where(Value_Table.id_option.eq(this.getId_option())).queryList();
+                    .where(Value_Table.id_option_fk.eq(this.getId_option())).queryList();
         }
         return values;
     }
@@ -189,13 +189,12 @@ public class Option extends BaseModel {
         Option option = (Option) o;
 
         if (id_option != option.id_option) return false;
-        if (uid != null ? !uid.equals(option.uid) : option.uid != null) return false;
+        if (uid_option != null ? !uid_option.equals(option.uid_option) : option.uid_option != null) return false;
         if (code != null ? !code.equals(option.code) : option.code != null) return false;
         if (name != null ? !name.equals(option.name) : option.name != null) return false;
         if (factor != null ? !factor.equals(option.factor) : option.factor != null) return false;
-        if (id_answer != null ? !id_answer.equals(option.id_answer) : option.id_answer != null) {
+        if (id_answer_fk != null ? !id_answer_fk.equals(option.id_answer_fk) : option.id_answer_fk != null)
             return false;
-        }
         if (answer != null ? !answer.equals(option.answer) : option.answer != null) return false;
         return values != null ? values.equals(option.values) : option.values == null;
 
@@ -204,11 +203,11 @@ public class Option extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_option ^ (id_option >>> 32));
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_option != null ? uid_option.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (factor != null ? factor.hashCode() : 0);
-        result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (id_answer_fk != null ? id_answer_fk.hashCode() : 0);
         result = 31 * result + (answer != null ? answer.hashCode() : 0);
         result = 31 * result + (values != null ? values.hashCode() : 0);
         return result;
@@ -218,11 +217,11 @@ public class Option extends BaseModel {
     public String toString() {
         return "Option{" +
                 "id_option=" + id_option +
-                ", uid='" + uid + '\'' +
+                ", uid_option='" + uid_option + '\'' +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", factor=" + factor +
-                ", id_answer=" + id_answer +
+                ", id_answer_fk=" + id_answer_fk +
                 ", answer=" + answer +
                 ", values=" + values +
                 '}';

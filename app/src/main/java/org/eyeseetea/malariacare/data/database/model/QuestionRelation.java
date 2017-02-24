@@ -52,7 +52,7 @@ public class QuestionRelation extends BaseModel {
     @PrimaryKey(autoincrement = true)
     long id_question_relation;
     @Column
-    Long id_question;
+    Long id_question_fk;
     /**
      * Reference to associated question (loaded lazily)
      */
@@ -83,22 +83,22 @@ public class QuestionRelation extends BaseModel {
 
     public Question getQuestion() {
         if(question==null){
-            if(id_question==null) return null;
+            if(id_question_fk==null) return null;
             question = new Select()
                     .from(Question.class)
                     .where( Question_Table.id_question
-                            .is(id_question)).querySingle();
+                            .is(id_question_fk)).querySingle();
         }
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
-        this.id_question = (question!=null)?question.getId_question():null;
+        this.id_question_fk = (question!=null)?question.getId_question():null;
     }
 
     public void setQuestion(Long id_question){
-        this.id_question = id_question;
+        this.id_question_fk = id_question;
         this.question = null;
     }
 
@@ -134,7 +134,7 @@ public class QuestionRelation extends BaseModel {
             this.matches = new Select().from(Match.class)
                     //// FIXME: 11/11/2016
                     //.indexedBy("Match_id_question_relation")
-                    .where( Match_Table.id_question_relation.eq(this.getId_question_relation()))
+                    .where( Match_Table.id_question_relation_fk.eq(this.getId_question_relation()))
                     .queryList();
         }
         return this.matches;
@@ -149,14 +149,14 @@ public class QuestionRelation extends BaseModel {
 
         if (id_question_relation != that.id_question_relation) return false;
         if (operation != that.operation) return false;
-        return !(id_question != null ? !id_question.equals(that.id_question) : that.id_question != null);
+        return !(id_question_fk != null ? !id_question_fk.equals(that.id_question_fk) : that.id_question_fk != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_question_relation ^ (id_question_relation >>> 32));
-        result = 31 * result + (id_question != null ? id_question.hashCode() : 0);
+        result = 31 * result + (id_question_fk != null ? id_question_fk.hashCode() : 0);
         result = 31 * result + operation;
         return result;
     }
@@ -165,7 +165,7 @@ public class QuestionRelation extends BaseModel {
     public String toString() {
         return "QuestionRelation{" +
                 "id_question_relation=" + id_question_relation +
-                ", id_question=" + id_question +
+                ", id_question=" + id_question_fk +
                 ", operation=" + operation +
                 '}';
     }

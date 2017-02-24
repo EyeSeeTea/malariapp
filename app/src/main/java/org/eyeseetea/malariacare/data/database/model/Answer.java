@@ -82,7 +82,7 @@ public class Answer extends BaseModel{
         if(options==null){
             options = new Select()
                     .from(Option.class)
-                    .where(Option_Table.id_answer
+                    .where(Option_Table.id_answer_fk
                             .eq(this.getId_answer())).queryList();
         }
         return options;
@@ -92,7 +92,7 @@ public class Answer extends BaseModel{
         if(questions==null){
             questions = new Select()
                     .from(Question.class)
-                    .where(Question_Table.id_answer
+                    .where(Question_Table.id_answer_fk
                             .eq(this.getId_answer())).queryList();
         }
         return questions;
