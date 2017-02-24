@@ -184,6 +184,8 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     public void onLoginFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
         if (result != null && result.getResourceType().equals(ResourceType.USERS)) {
             if (result.getResponseHolder().getApiException() == null) {
+                //Save server in preferences
+                saveUserDetails();
                 AsyncPullAnnouncement
                         asyncPullAnnouncement = new AsyncPullAnnouncement();
                 asyncPullAnnouncement.execute(this);
