@@ -137,8 +137,6 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
-        surveys = new ArrayList<>();
-        events = new HashMap<>();
     }
 
     @Override
