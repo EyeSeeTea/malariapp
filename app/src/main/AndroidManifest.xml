@@ -95,7 +95,7 @@
 
         <provider
             android:name="org.eyeseetea.malariacare.utils.DBProvider"
-            android:authorities="org.eyeseetea.malariacare.data.database.utils.ExportData"
+            android:authorities="${applicationId}.data.database.utils.ExportData"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -104,7 +104,7 @@
         </provider>
         <provider
             android:name="org.eyeseetea.malariacare.utils.VideoProvider"
-            android:authorities="org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter"
+            android:authorities="${applicationId}.layout.adapters.survey.FeedbackAdapter"
             android:exported="false"
             android:grantUriPermissions="true"
             android:readPermission="true"
