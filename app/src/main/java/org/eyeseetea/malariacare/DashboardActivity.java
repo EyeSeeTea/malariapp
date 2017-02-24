@@ -91,11 +91,6 @@ public class DashboardActivity extends BaseActivity {
         DriveRestController.getInstance().init(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
-    }
 
     /**
      * Handles resolution callbacks.
