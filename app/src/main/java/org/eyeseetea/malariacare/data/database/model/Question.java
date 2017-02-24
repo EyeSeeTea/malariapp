@@ -70,7 +70,7 @@ public class Question extends BaseModel {
     @Column
     String form_name;
     @Column
-    String uid;
+    String uid_question;
     @Column
     Integer order_pos;
     @Column
@@ -82,7 +82,7 @@ public class Question extends BaseModel {
     String feedback;
 
     @Column
-    Long id_header;
+    Long id_header_fk;
 
     /**
      * Reference to the parent header (loaded lazily)
@@ -90,7 +90,7 @@ public class Question extends BaseModel {
     Header header;
 
     @Column
-    Long id_answer;
+    Long id_answer_fk;
 
     /**
      * Reference to the associated answer (loaded lazily)
@@ -104,7 +104,7 @@ public class Question extends BaseModel {
     Boolean compulsory;
 
     @Column
-    Long id_composite_score;
+    Long id_composite_score_fk;
 
     @Column
     Integer row;
@@ -159,7 +159,7 @@ public class Question extends BaseModel {
         this.de_name = de_name;
         this.short_name = short_name;
         this.form_name = form_name;
-        this.uid = uid;
+        this.uid_question = uid;
         this.order_pos = order_pos;
         this.numerator_w = numerator_w;
         this.denominator_w = denominator_w;
@@ -217,11 +217,11 @@ public class Question extends BaseModel {
     }
 
     public String getUid() {
-        return uid;
+        return uid_question;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uid_question = uid;
     }
 
     public Integer getOrder_pos() {
@@ -281,23 +281,23 @@ public class Question extends BaseModel {
     }
 
     public Header getHeader() {
-        if (header == null) {
-            if (id_header == null) return null;
+        if(header==null){
+            if(id_header_fk==null) return null;
             header = new Select()
                     .from(Header.class)
                     .where(Header_Table.id_header
-                            .is(id_header)).querySingle();
+                            .is(id_header_fk)).querySingle();
         }
         return header;
     }
 
     public void setHeader(Header header) {
         this.header = header;
-        this.id_header = (header != null) ? header.getId_header() : null;
+        this.id_header_fk = (header!=null)?header.getId_header():null;
     }
 
-    public void setHeader(Long id_header) {
-        this.id_header = id_header;
+    public void setHeader(Long id_header){
+        this.id_header_fk = id_header;
         this.header = null;
     }
 
@@ -310,45 +310,44 @@ public class Question extends BaseModel {
     }
 
     public Answer getAnswer() {
-        if (answer == null) {
-            if (id_answer == null) return null;
+        if(answer==null){
+            if(id_answer_fk==null) return  null;
             answer = new Select()
                     .from(Answer.class)
                     .where(Answer_Table.id_answer
-                            .is(id_answer)).querySingle();
+                            .is(id_answer_fk)).querySingle();
         }
         return answer;
     }
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
-        this.id_answer = (answer != null) ? answer.getId_answer() : null;
+        this.id_answer_fk = (answer!=null)?answer.getId_answer():null;
     }
 
-    public void setAnswer(Long id_answer) {
-        this.id_answer = id_answer;
+    public void setAnswer(Long id_answer){
+        this.id_answer_fk = id_answer;
         this.answer = null;
     }
 
     public CompositeScore getCompositeScore() {
-        if (compositeScore == null) {
-            if (id_composite_score == null) return null;
+        if(compositeScore ==null){
+            if(id_composite_score_fk==null) return null;
             compositeScore = new Select()
                     .from(CompositeScore.class)
                     .where(CompositeScore_Table.id_composite_score
-                            .is(id_composite_score)).querySingle();
+                            .is(id_composite_score_fk)).querySingle();
         }
         return compositeScore;
     }
 
     public void setCompositeScore(CompositeScore compositeScore) {
         this.compositeScore = compositeScore;
-        this.id_composite_score =
-                (compositeScore != null) ? compositeScore.getId_composite_score() : null;
+        this.id_composite_score_fk = (compositeScore!=null)?compositeScore.getId_composite_score():null;
     }
 
-    public void setCompositeScore(Long id_composite_score) {
-        this.id_composite_score = id_composite_score;
+    public void setCompositeScore(Long id_composite_score){
+        this.id_composite_score_fk = id_composite_score;
         this.compositeScore = null;
     }
 
@@ -357,7 +356,7 @@ public class Question extends BaseModel {
             long countChildQuestionRelations = SQLite.selectCountOf().from(QuestionRelation.class)
                     //// FIXME: 11/11/2016
                     //.indexedBy("QuestionRelation_operation")
-                    .where(QuestionRelation_Table.id_question.eq(this.getId_question()))
+                    .where(QuestionRelation_Table.id_question_fk.eq(this.getId_question()))
                     .and(QuestionRelation_Table.operation.eq(QuestionRelation.PARENT_CHILD))
                     .count();
             parent = countChildQuestionRelations > 0;
@@ -396,7 +395,7 @@ public class Question extends BaseModel {
                     // .com/Raizlabs/DBFlow/blob/f0d9e1710205952815db027cb560dd8868f5af0b/usage2
                     // /Indexing.md
                     //.indexedBy("QuestionRelation_id_question")
-                    .where(QuestionRelation_Table.id_question
+                    .where(QuestionRelation_Table.id_question_fk
                             .eq(this.getId_question()))
                     .queryList();
         }
@@ -413,9 +412,8 @@ public class Question extends BaseModel {
             matches = new Select().from(Match.class).as(matchName)
                     .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
                     .on(Match_Table.id_match.withTable(matchAlias)
-                            .eq(QuestionOption_Table.id_match.withTable(questionOptionAlias)))
-                    .where(QuestionOption_Table.id_question.withTable(questionOptionAlias).eq(
-                            this.getId_question())).queryList();
+                                    .eq(QuestionOption_Table.id_match_fk.withTable(questionOptionAlias)))
+                    .where(QuestionOption_Table.id_question_fk.withTable(questionOptionAlias).eq(this.getId_question())).queryList();
         }
         return matches;
     }
@@ -442,13 +440,12 @@ public class Question extends BaseModel {
                     //Question + QuestioRelation
                     .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                     .on(Question_Table.id_question.withTable(questionAlias)
-                            .eq(QuestionRelation_Table.id_question.withTable(
-                                    questionRelationAlias)))
-                    //+Match
+                            .eq(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias)))
+                            //+Match
                     .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
                     .on(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)
-                            .eq(Match_Table.id_question_relation.withTable(matchAlias)))
-                    //Parent child relationship
+                                    .eq(Match_Table.id_question_relation_fk.withTable(matchAlias)))
+                            //Parent child relationship
                     .where(in)
                     //In clause
                     .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(
@@ -466,7 +463,7 @@ public class Question extends BaseModel {
         if (values == null) {
             values = new Select()
                     .from(Value.class)
-                    .where(Value_Table.id_question
+                    .where(Value_Table.id_question_fk
                             .eq(this.getId_question())).queryList();
         }
         return values;
@@ -486,8 +483,8 @@ public class Question extends BaseModel {
         List<Value> returnValues = new Select().from(Value.class)
                 //// FIXME: 11/11/2016
                 //.indexedBy("Value_id_survey")
-                .where(Value_Table.id_question.eq(this.getId_question()))
-                .and(Value_Table.id_survey.eq((long) idSurvey)).queryList();
+                .where(Value_Table.id_question_fk.eq(this.getId_question()))
+                .and(Value_Table.id_survey_fk.eq((long)idSurvey)).queryList();
 
         if (returnValues.size() == 0) {
             return null;
@@ -554,29 +551,26 @@ public class Question extends BaseModel {
         return hasParentOptionActivated > 0 ? false : true;
     }
 
-    public List<Value> parentSavedValues(Float idSurvey) {
+    public List<Value> parentSavedValues(Float idSurvey){
 
         List<Value> values = new Select().from(Value.class).as(valueName)
                 .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
-                .on(Value_Table.id_question.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_question.withTable
-                                        (questionOptionAlias)),
-                        Value_Table.id_option.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
+                .on(Value_Table.id_question_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question_fk.withTable(questionOptionAlias)),
+                        Value_Table.id_option_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option_fk.withTable(questionOptionAlias)))
                 .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
-                .on(QuestionOption_Table.id_match.withTable(questionOptionAlias)
-                        .eq(Match_Table.id_match.withTable(matchAlias)))
+                .on(QuestionOption_Table.id_match_fk.withTable(questionOptionAlias)
+                                .eq(Match_Table.id_match.withTable(matchAlias)))
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(Match_Table.id_question_relation.withTable(matchAlias)
-                        .eq(QuestionRelation_Table.id_question_relation.withTable(
-                                questionRelationAlias)))
+                .on(Match_Table.id_question_relation_fk.withTable(matchAlias)
+                                .eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
                 //Parent child relationship
                 .where(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(1))
                 //For the given survey
-                .and(Value_Table.id_survey.withTable(valueAlias).eq(idSurvey.longValue()))
+                .and(Value_Table.id_survey_fk.withTable(valueAlias).eq(idSurvey.longValue()))
                 //The child question in the relationship is 'this'
-                .and(QuestionRelation_Table.id_question.withTable(questionRelationAlias).eq(
-                        this.getId_question()))
+                .and(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias).eq(this.getId_question()))
                 .queryList();
         return values;
     }
@@ -591,25 +585,24 @@ public class Question extends BaseModel {
         }
         long numberOfParentOptionActivated = SQLite.selectCountOf().from(Value.class).as(valueName)
                 .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
-                .on(Value_Table.id_question.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_question.withTable(questionOptionAlias))
+                .on(Value_Table.id_question_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question_fk.withTable(questionOptionAlias))
 
-                        , Value_Table.id_option.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
+                        ,Value_Table.id_option_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option_fk.withTable(questionOptionAlias)))
                 .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
-                .on(QuestionOption_Table.id_match.withTable(questionOptionAlias)
-                        .eq(Match_Table.id_match.withTable(matchAlias)))
+                .on(QuestionOption_Table.id_match_fk.withTable(questionOptionAlias)
+                                .eq(Match_Table.id_match.withTable(matchAlias)))
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(Match_Table.id_question_relation.withTable(matchAlias)
-                        .eq(QuestionRelation_Table.id_question_relation.withTable(
-                                questionRelationAlias)))
+                .on(Match_Table.id_question_relation_fk.withTable(matchAlias)
+                                .eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
                 //Parent child relationship
                 .where(QuestionRelation_Table.operation.eq(1))
                 //For the given survey
-                .and(Value_Table.id_survey.withTable(valueAlias)
-                        .eq((long) idSurvey))
+                .and(Value_Table.id_survey_fk.withTable(valueAlias)
+                        .eq((long)idSurvey))
                 //The child question in the relationship is 'this'
-                .and(QuestionRelation_Table.id_question.withTable(questionRelationAlias)
+                .and(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias)
                         .eq(this.getId_question()))
                 .count();
         return (int) numberOfParentOptionActivated;
@@ -660,30 +653,29 @@ public class Question extends BaseModel {
         long totalAnswerableQuestions = SQLite.selectCountOf()
                 .from(Question.class).as(questionName)
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
-                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program())).count();
+                .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program())).count();
 
         // Count children questions from the given taggroup
         long numChildrenQuestion = SQLite.selectCountOf()
                 .from(QuestionRelation.class).as(questionRelationName)
                 .join(Question.class, Join.JoinType.LEFT_OUTER).as(questionName)
-                .on(QuestionRelation_Table.id_question.withTable(questionRelationAlias)
+                .on(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias)
                         .eq(Question_Table.id_question.withTable(questionAlias)))
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
-                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program()))
-                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(
-                        Constants.OPERATION_TYPE_PARENT)).count();
+                .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program()))
+                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_PARENT)).count();
 
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions - numChildrenQuestion);
@@ -701,30 +693,29 @@ public class Question extends BaseModel {
         long totalAnswerableQuestions = SQLite.selectCountOf()
                 .from(Question.class).as(questionName)
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(Question_Table.compulsory.withTable(questionAlias).is(true))
-                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program())).count();
+                .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program())).count();
 
         List<Question> questionsChild = new Select()
                 .from(Question.class).as(questionName)
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(QuestionRelation_Table.id_question.withTable(questionRelationAlias)
+                .on(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias)
                         .eq(Question_Table.id_question.withTable(questionAlias)))
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(Question_Table.compulsory.withTable(questionAlias).is(true))
-                .and(Tab_Table.id_program.withTable(tabAlias).eq(program.getId_program()))
+                .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program()))
                 .and(QuestionRelation_Table.operation.withTable(questionRelationAlias)
-                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(
-                        Question_Table.uid.withTable(questionAlias)).queryList();
+                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  Question_Table.uid_question.withTable(questionAlias)).queryList();
         // Return number of parents (total - children)
         return (int) (totalAnswerableQuestions - questionsChild.size());
     }
@@ -733,40 +724,36 @@ public class Question extends BaseModel {
      * Gets all the children compulsory questions, and returns the  number of active children
      */
     public static int countChildrenCompulsoryBySurvey(Long id_survey) {
-        int numActiveChildrens = 0;
+        int numActiveChildrens=0;
         //This query returns a list of children compulsory questions
-        // But the id_question is not correct, because is the the parent id_questions from the
-        // questionOption relation.
-        List<Question> questions = new Select().from(Question.class).as(questionName)
+        // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
+        List<Question> questions =new Select().from(Question.class).as(questionName)
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                 .on(Question_Table.id_question.withTable(questionAlias)
-                        .eq(QuestionRelation_Table.id_question.withTable(questionRelationAlias)))
+                                .eq(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias)))
                 .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
                 .on(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)
-                        .eq(Match_Table.id_question_relation.withTable(matchAlias)))
+                                .eq(Match_Table.id_question_relation_fk.withTable(matchAlias)))
                 .join(QuestionOption.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
                 .on(Match_Table.id_match.withTable(matchAlias)
-                        .eq(QuestionOption_Table.id_match.withTable(questionOptionAlias)))
+                                .eq(QuestionOption_Table.id_match_fk.withTable(questionOptionAlias)))
                 .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
-                .on(Value_Table.id_question.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_question.withTable
-                                        (questionOptionAlias)),
-                        Value_Table.id_option.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
+                .on(Value_Table.id_question_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question_fk.withTable(questionOptionAlias)),
+                        Value_Table.id_option_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option_fk.withTable(questionOptionAlias)))
                 //Parent Child relationship
                 .where(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(1))
                 //For the given survey
-                .and(Value_Table.id_survey.withTable(valueAlias).eq(id_survey.longValue()))
+                .and(Value_Table.id_survey_fk.withTable(valueAlias).eq(id_survey.longValue()))
                 //The child question requires an answer
                 .and(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(Question_Table.compulsory.withTable(questionAlias).eq(true)).queryList();
 
         //checks if the children questions are active by UID
-        // Note: the question id_question is wrong because dbflow query overwrites the children
-        // id_question with the parent id_question.
-        for (Question question : questions) {
-            if (question.getCompulsory() && !Question.isHiddenQuestionByUidAndSurvey(
-                    question.getUid(), id_survey)) {
+        // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
+        for(Question question:questions) {
+            if(question.getCompulsory() && !Question.isHiddenQuestionByUidAndSurvey(question.getUid(), id_survey)) {
                 numActiveChildrens++;
             }
         }
@@ -779,7 +766,7 @@ public class Question extends BaseModel {
      * Returns a Question by a UID
      */
     public static Question getQuestionByUid(String uid) {
-        return new Select().from(Question.class).where(Question_Table.uid.eq(uid)).querySingle();
+        return new Select().from(Question.class).where(Question_Table.uid_question.eq(uid)).querySingle();
     }
 
 
@@ -795,25 +782,20 @@ public class Question extends BaseModel {
         }
 
         //Find questionoptions for q1 and q2 and check same match
-        List<QuestionOption> questionOptions = new Select().from(QuestionOption.class).as(
-                questionOptionName)
+        List<QuestionOption> questionOptions = new Select().from(QuestionOption.class).as(questionOptionName)
                 .join(Match.class, Join.JoinType.LEFT_OUTER).as(matchName)
-                .on(QuestionOption_Table.id_match.withTable(questionOptionAlias).eq(
-                        Match_Table.id_match.withTable(matchAlias)))
+                .on(QuestionOption_Table.id_match_fk.withTable(questionOptionAlias).eq(Match_Table.id_match.withTable(matchAlias)))
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(Match_Table.id_question_relation.withTable(matchAlias)
-                        .eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
+                .on(Match_Table.id_question_relation_fk.withTable(matchAlias).eq(QuestionRelation_Table.id_question_relation.withTable(questionRelationAlias)))
+
                 .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
-                .on(Value_Table.id_question.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_question.withTable
-                                        (questionOptionAlias)),
-                        Value_Table.id_option.withTable(valueAlias)
-                                .eq(QuestionOption_Table.id_option.withTable(questionOptionAlias)))
-                .where(Value_Table.id_survey.withTable(valueAlias).eq((long) idSurvey))
-                .and(QuestionRelation_Table.id_question.withTable(questionRelationAlias).eq(
-                        this.getId_question()))
-                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(
-                        Constants.OPERATION_TYPE_MATCH))
+                .on(Value_Table.id_question_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_question_fk.withTable(questionOptionAlias)),
+                        Value_Table.id_option_fk.withTable(valueAlias)
+                                .eq(QuestionOption_Table.id_option_fk.withTable(questionOptionAlias)))
+                .where(Value_Table.id_survey_fk.withTable(valueAlias).eq((long) idSurvey))
+                .and(QuestionRelation_Table.id_question_fk.withTable(questionRelationAlias).eq(this.getId_question()))
+                .and(QuestionRelation_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_MATCH))
                 .queryList();
 
         //No values no match
@@ -843,12 +825,12 @@ public class Question extends BaseModel {
 
         return new Select().from(Question.class).as(questionName)
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
-                .where(Tab_Table.id_program.withTable(tabAlias)
+                .where(Tab_Table.id_program_fk.withTable(tabAlias)
                         .eq(program.getId_program()))
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
                 .orderBy(OrderBy.fromProperty(
@@ -870,13 +852,13 @@ public class Question extends BaseModel {
 
         return new Select().from(Question.class).as(questionName)
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(questionAlias)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(in)
-                .and(Question_Table.id_composite_score.withTable(questionAlias).isNull())
+                .and(Question_Table.id_composite_score_fk.withTable(questionAlias).isNull())
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
                 .orderBy(OrderBy.fromProperty(
                         Question_Table.order_pos.withTable(questionAlias))).queryList();
@@ -896,10 +878,10 @@ public class Question extends BaseModel {
 
         return new Select().from(Question.class).as(questionName)
                 .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
-                .on(Question_Table.id_header.withTable(headerAlias)
+                .on(Question_Table.id_header_fk.withTable(headerAlias)
                         .eq(Header_Table.id_header.withTable(headerAlias)))
                 .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
-                .on(Header_Table.id_tab.withTable(headerAlias)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(in)
                 .orderBy(OrderBy.fromProperty(Tab_Table.order_pos.withTable(tabAlias)))
@@ -937,42 +919,26 @@ public class Question extends BaseModel {
             return false;
         }
         if (form_name != null ? !form_name.equals(question.form_name)
-                : question.form_name != null) {
+                : question.form_name != null)
             return false;
-        }
-        if (uid != null ? !uid.equals(question.uid) : question.uid != null) return false;
-        if (order_pos != null ? !order_pos.equals(question.order_pos)
-                : question.order_pos != null) {
+        if (uid_question != null ? !uid_question.equals(question.uid_question) : question.uid_question != null) return false;
+        if (order_pos != null ? !order_pos.equals(question.order_pos) : question.order_pos != null)
             return false;
-        }
-        if (numerator_w != null ? !numerator_w.equals(question.numerator_w)
-                : question.numerator_w != null) {
+        if (numerator_w != null ? !numerator_w.equals(question.numerator_w) : question.numerator_w != null)
             return false;
-        }
-        if (denominator_w != null ? !denominator_w.equals(question.denominator_w)
-                : question.denominator_w != null) {
+        if (denominator_w != null ? !denominator_w.equals(question.denominator_w) : question.denominator_w != null)
             return false;
-        }
-        if (feedback != null ? !feedback.equals(question.feedback) : question.feedback != null) {
+        if (feedback != null ? !feedback.equals(question.feedback) : question.feedback != null)
             return false;
-        }
-        if (id_header != null ? !id_header.equals(question.id_header)
-                : question.id_header != null) {
+        if (id_header_fk != null ? !id_header_fk.equals(question.id_header_fk) : question.id_header_fk != null)
             return false;
-        }
-        if (id_answer != null ? !id_answer.equals(question.id_answer)
-                : question.id_answer != null) {
+        if (id_answer_fk != null ? !id_answer_fk.equals(question.id_answer_fk) : question.id_answer_fk != null)
             return false;
-        }
-        if (output != null ? !output.equals(question.output) : question.output != null) {
+        if (output != null ? !output.equals(question.output) : question.output != null)
             return false;
-        }
-        if (compulsory != null ? !compulsory.equals(question.compulsory)
-                : question.compulsory != null) {
+        if (compulsory != null ? !compulsory.equals(question.compulsory) : question.compulsory != null)
             return false;
-        }
-        return !(id_composite_score != null ? !id_composite_score.equals(
-                question.id_composite_score) : question.id_composite_score != null);
+        return !(id_composite_score_fk != null ? !id_composite_score_fk.equals(question.id_composite_score_fk) : question.id_composite_score_fk != null);
 
     }
 
@@ -983,16 +949,16 @@ public class Question extends BaseModel {
         result = 31 * result + (de_name != null ? de_name.hashCode() : 0);
         result = 31 * result + (short_name != null ? short_name.hashCode() : 0);
         result = 31 * result + (form_name != null ? form_name.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (uid_question != null ? uid_question.hashCode() : 0);
         result = 31 * result + (order_pos != null ? order_pos.hashCode() : 0);
         result = 31 * result + (numerator_w != null ? numerator_w.hashCode() : 0);
         result = 31 * result + (denominator_w != null ? denominator_w.hashCode() : 0);
         result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
-        result = 31 * result + (id_header != null ? id_header.hashCode() : 0);
-        result = 31 * result + (id_answer != null ? id_answer.hashCode() : 0);
+        result = 31 * result + (id_header_fk != null ? id_header_fk.hashCode() : 0);
+        result = 31 * result + (id_answer_fk != null ? id_answer_fk.hashCode() : 0);
         result = 31 * result + (output != null ? output.hashCode() : 0);
         result = 31 * result + (compulsory != null ? compulsory.hashCode() : 0);
-        result = 31 * result + (id_composite_score != null ? id_composite_score.hashCode() : 0);
+        result = 31 * result + (id_composite_score_fk != null ? id_composite_score_fk.hashCode() : 0);
         return result;
     }
 
@@ -1004,16 +970,16 @@ public class Question extends BaseModel {
                 ", de_name='" + de_name + '\'' +
                 ", short_name='" + short_name + '\'' +
                 ", form_name='" + form_name + '\'' +
-                ", uid='" + uid + '\'' +
+                ", uid_question='" + uid_question + '\'' +
                 ", order_pos=" + order_pos +
                 ", numerator_w=" + numerator_w +
                 ", feedback='" + feedback + '\'' +
                 ", denominator_w=" + denominator_w +
-                ", id_header=" + id_header +
-                ", id_answer=" + id_answer +
+                ", id_header=" + id_header_fk +
+                ", id_answer=" + id_answer_fk +
                 ", output=" + output +
                 ", compulsory=" + compulsory +
-                ", id_composite_score=" + id_composite_score +
+                ", id_composite_score=" + id_composite_score_fk +
                 '}';
     }
 }

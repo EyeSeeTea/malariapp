@@ -64,7 +64,7 @@ public class Migration11RemoveTabGroups extends BaseMigration {
     }
 
     private void addProgramToTab(DatabaseWrapper database) {
-        addColumn(database, Tab.class, Tab_Table.id_program.getDefinition(), "integer");
+        addColumn(database, Tab.class, Tab_Table.id_program_fk.getDefinition(), "integer");
         //move id_program into tab
         database.execSQL("update tab set id_program = (select id_program from tabgroup where id_tab_group=tab.id_tab_group)");
     }
@@ -72,7 +72,7 @@ public class Migration11RemoveTabGroups extends BaseMigration {
     private void addProgramToSurvey(DatabaseWrapper database) {
         try {
             //Is possible in some devices between versions the column id_program not exist and it will make a sqliteexception
-            addColumn(database, Survey.class, Survey_Table.id_program.getDefinition(), "integer");
+            addColumn(database, Survey.class, Survey_Table.id_program_fk.getDefinition(), "integer");
             database.execSQL("update survey set id_program = (select id_program from tabgroup where id_tab_group=survey.id_tab_group)");
         } catch (SQLiteException e){
             e.printStackTrace();

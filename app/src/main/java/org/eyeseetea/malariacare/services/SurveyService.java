@@ -373,7 +373,7 @@ public class SurveyService extends IntentService {
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession(module);
         //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<Tab> allTabs = new Select().from(Tab.class).where(Tab_Table.id_program.eq(survey.getProgram().getId_program())).queryList();
+        List<Tab> allTabs = new Select().from(Tab.class).where(Tab_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 

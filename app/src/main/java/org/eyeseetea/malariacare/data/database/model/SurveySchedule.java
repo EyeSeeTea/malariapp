@@ -40,7 +40,7 @@ public class SurveySchedule extends BaseModel {
     long id_survey_schedule;
 
     @Column
-    Long id_survey;
+    Long id_survey_fk;
     /**
      * Reference to the survey associated to this score (loaded lazily)
      */
@@ -87,22 +87,22 @@ public class SurveySchedule extends BaseModel {
 
     public Survey getSurvey() {
         if(survey==null){
-            if(id_survey==null) return null;
+            if(id_survey_fk==null) return null;
             survey = new Select()
                     .from(Survey.class)
                     .where(Survey_Table.id_survey
-                            .is(id_survey)).querySingle();
+                            .is(id_survey_fk)).querySingle();
         }
         return survey;
     }
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
-        this.id_survey = (survey!=null)?survey.getId_survey():null;
+        this.id_survey_fk = (survey!=null)?survey.getId_survey():null;
     }
 
     public void setSurvey(Long id_survey){
-        this.id_survey = id_survey;
+        this.id_survey_fk = id_survey;
         this.survey = null;
     }
 
@@ -114,7 +114,7 @@ public class SurveySchedule extends BaseModel {
         SurveySchedule that = (SurveySchedule) o;
 
         if (id_survey_schedule != that.id_survey_schedule) return false;
-        if (id_survey != null ? !id_survey.equals(that.id_survey) : that.id_survey != null)
+        if (id_survey_fk != null ? !id_survey_fk.equals(that.id_survey_fk) : that.id_survey_fk != null)
             return false;
         if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
         return !(previous_date != null ? !previous_date.equals(that.previous_date) : that.previous_date != null);
@@ -124,7 +124,7 @@ public class SurveySchedule extends BaseModel {
     @Override
     public int hashCode() {
         int result = (int) (id_survey_schedule ^ (id_survey_schedule >>> 32));
-        result = 31 * result + (id_survey != null ? id_survey.hashCode() : 0);
+        result = 31 * result + (id_survey_fk != null ? id_survey_fk.hashCode() : 0);
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + (previous_date != null ? previous_date.hashCode() : 0);
         return result;
@@ -134,7 +134,7 @@ public class SurveySchedule extends BaseModel {
     public String toString() {
         return "SurveySchedule{" +
                 "id_survey_schedule=" + id_survey_schedule +
-                ", id_survey=" + id_survey +
+                ", id_survey=" + id_survey_fk +
                 ", comment='" + comment + '\'' +
                 ", previous_date=" + previous_date +
                 '}';
