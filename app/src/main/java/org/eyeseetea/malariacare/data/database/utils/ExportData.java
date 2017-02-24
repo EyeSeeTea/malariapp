@@ -209,7 +209,7 @@ public class ExportData {
         data.setReadable(true, false);
         Log.d(TAG, data.toURI() + "");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(activity,
-                "org.eyeseetea.malariacare.data.database.utils.ExportData", data));
+                BuildConfig.APPLICATION_ID + ".data.database.utils.ExportData", data));
         Intent chooser = Intent.createChooser(
                 emailIntent,
                 activity.getResources().getString(R.string.export_data_option_title));

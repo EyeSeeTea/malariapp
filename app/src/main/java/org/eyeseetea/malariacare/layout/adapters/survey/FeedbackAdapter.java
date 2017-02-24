@@ -39,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.VideoActivity;
@@ -274,7 +275,7 @@ public class FeedbackAdapter extends BaseAdapter {
                     Intent implicitIntent = new Intent();
                     implicitIntent.setAction(Intent.ACTION_VIEW);
                     File file = new File(media.getFilename());
-                    Uri contentUri = FileProvider.getUriForFile(context, "org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter", file);
+                    Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID +".layout.adapters.survey.FeedbackAdapter", file);
 
                     implicitIntent.setDataAndType(contentUri, PreferencesState.getInstance().getContext().getContentResolver().getType(contentUri));
                     implicitIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
