@@ -1,567 +1,567 @@
-1~NVmFfOVZf4s~Lab Scientist~Lab Scientist~0.0~1~0
-2~pN1ObN5eLLu~Lab Tech~Lab Tech~0.0~1~0
-3~q1NnBAVxg6p~Lab Assistant~Lab Assistant~0.0~1~0
-4~uzUnd0G8yBv~Other~Other~0.0~1~0
-5~mpKSuMfkZV8~CHPS~CHPS~0.0~2~0
-6~uPNU6ZTYn2T~Clinic~Clinic~0.0~2~0
-7~os1DVy8ZH6C~Maternity Home~Maternity Home~0.0~2~0
-8~hcemyJ6RLZP~Health Centre~Health Centre~0.0~2~0
-9~X3TSSx82jvx~Polyclinic~Polyclinic~0.0~2~0
-10~OW6SpAFErpR~Hospital~Hospital~0.0~2~0
-11~GBXVRJ4FZWx~Malaria [1]~Malaria~1.0~3~0
-12~Zq3Wk0zkvdF~Pneumonia [2]~Pneumonia~2.0~3~0
-13~AKaQjjmalJL~Diarhoea [3]~Diarhoea~3.0~3~0
-14~vZSuGH5vyzH~Dysentery [4]~Dysentery~4.0~3~0
-15~BFuhLr4GcCl~Cough or Common Cold [5]~Cough or Common Cold~5.0~3~0
-16~Bfo158JuVAG~Danger sign illness [6]~Danger sign illness~6.0~3~0
-17~kN6fQe8XrQJ~Other illness [7]~Other illness~7.0~3~0
-18~mWA4xAvLFxE~Not addressed~Não resolvido~0.0~4~0
-19~botWSvXbxjf~Partially addressed~Parcialmente resolvido~0.0~4~0
-20~l1qkSIGNpmB~Completely Addressed~Completamente resolvido~0.0~4~0
-21~JlXzQ1Hme9t~Yes [0]~Sim~0.0~5~0
-22~u5oD44yP6xh~No [1]~Não~0.0~5~0
-23~J6UnTWL30bJ~Unknown [0]~Desconhecido~0.0~5~0
-24~ebuNxMsTsNV~Yes [1]~Yes [1]~1.0~6~0
-25~IHh4VDDkORL~No [2]~No [2]~2.0~6~0
-26~Fe9nEOnk6mk~Réel~Réel~0.0~7~0
-27~T14Jq84EgAC~Simulé~Simulé~0.0~7~0
-28~UHAgSeL28h7~Pharmacy~Farmácia~0.0~8~0
-29~aXil07ZdXOv~Clinical~Clínica~0.0~8~0
-30~i5a0WsdcPoF~Neither Pharmacy nor Clinical Records Available~Registos de Farmácia ou Clínicos não disponíveis~0.0~8~0
-31~tiisDwSG6s3~MD/Medical Officer/Physician~MD/Medical Officer/Physician~0.0~9~0
-32~nUtJOWnRs2U~Asst. Medical Officer~Asst. Medical Officer~0.0~9~0
-33~vHZ20GP7Els~Clinical Officer~Clinical Officer~0.0~9~0
-34~O2EkTRq5POq~Assistant Clinical Officer~Assistant Clinical Officer~0.0~9~0
-35~mgSwtAxkIaO~Nurse Officer~Nurse Officer~0.0~9~0
-36~tpKOLqB02DG~Assistant Nurse Officer~Assistant Nurse Officer~0.0~9~0
-37~w8vhDtuhcpS~Enrolled Nurse~Enrolled Nurse~0.0~9~0
-38~be1r7yFQj0p~Medical Attendant~Medical Attendant~0.0~9~0
-39~PPBFsBPjXue~Student~Student~0.0~9~0
-40~wrFL80mFG4k~Intern~Intern~0.0~9~0
-41~ofcYwq9ouOo~Other~Other~0.0~9~0
-42~ny67i1Sf37W~Positive~Positive~0.0~10~0
-43~pHJZir7xpg8~Negative~Negative~0.0~10~0
-44~tPe8JEculCb~Unknown~Unknown~0.0~10~0
-45~WyvyxTytr4g~Yes [0]~Sim~0.0~11~0
-46~IkIjYjI2FG9~No [1]~Não~0.0~11~0
-47~le2S0nwzeGi~N/A [1]~N/A~0.0~11~0
-48~RLRc5AaZQhz~No antimalarial prescribed~Antimalárico não receitado~0.0~12~0
-49~cHKgKPeeanN~ACT~ACT (AL/ASAQ)~0.0~12~0
-50~g2aBKxgPjH0~Artemether (intramuscular)~Artemetér (intramuscular)~0.0~12~0
-51~B9b9reS6dck~Artesunate (intramuscular monotherapy)~Artesunato (monoterapia intramuscular)~0.0~12~0
-52~SLDqyiA9Nxe~Artesunate (rectal)~Artesunato (rectal)~0.0~12~0
-53~bvrYur7JguK~Quinine (oral)~Quinina (oral)~0.0~12~0
-54~kbcxECWEIst~Quinine (intramuscular)~Quinina (intramuscular)~0.0~12~0
-55~T6b88wZgG3K~Quinine (intravenous)~Quinina (intravenoso)~0.0~12~0
-56~lb12DfmM079~Chloroquine~Chloroquina~0.0~12~0
-57~M5RbhR0xePW~SP~Sulfadoxina Piri~0.0~12~0
-58~kpxoR5mnmmj~Other~Outro~0.0~12~0
-59~WSfZ7LKnrIb~RDT + [1]~TDR +~0.0~13~0
-60~bQxY8ZRV6kz~RDT - [0]~TDR -~0.0~13~0
-61~pUh77K3VOxg~Microscopy + [1]~Microscopia +~0.0~13~0
-62~eapCJ0WdU6s~Microscopy - [0]~Microscopia -~0.0~13~0
-63~gs2KSPO4SqE~Not found [0]~Não encontrado~0.0~13~0
-64~uX3PJWHZc5H~Yes [1]~Sim~0.0~14~0
-65~EpbffOQAIAf~No [0]~Não~0.0~14~0
-66~HPPtacjPOUL~Not available [1]~Não disponível~0.0~14~0
-67~LXTwCzMslOE~Male~Male~0.0~15~0
-68~goTJcqvymov~Female~Female~0.0~15~0
-69~ibsoEfwa1qu~Lack of supplies/equipment~Lack of supplies/equipment~0.0~16~0
-70~XikUaWPuOcY~Lack of power~Lack of power~0.0~16~0
-71~tI3ch3pu8Pu~No malaria microscopy tests ordered~No malaria microscopy tests ordered~0.0~16~0
-72~cnGklGWrQgc~No lab staff who conduct malaria microscopy~No lab staff who conduct malaria microscopy~0.0~16~0
-73~pTEJvMYIdOv~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~16~0
-74~R5wjxBLeqcN~Not enough time during facility visit~Not enough time during facility visit~0.0~16~0
-75~wXSMyfz5Zq5~Other~Other~0.0~16~0
-76~ITPyilULPPz~Pf~1. Pf~0.0~17~0
-77~lFzhh4L4zAu~Pv~2. Pv~0.0~17~0
-78~hixVLr73sNr~Pm~3. Pm~0.0~17~0
-79~WNb6c9OyKWg~Po~4. Po~0.0~17~0
-80~GMdHWap378I~Mixed~5. Mixed~0.0~17~0
-81~pRl7FjvWc6d~N/A~N/A~0.0~17~0
-82~qXiJEDeiB6L~Yes~Yes~0.0~18~0
-83~OsA6cN5v2UR~No~No~0.0~18~0
-84~NgKwxHeX4IN~Yes [1]~Oui~1.0~19~0
-85~i4eL6Ab7QfG~No [0]~Non~0.0~19~0
-86~LmswHMcDqKr~Yes [1]~Sim~0.0~20~0
-87~rHSarOgt6Hp~No [0]~Não~0.0~20~0
-88~bTu5dDvuYjy~Malaria~Malaria~1.0~21~0
-89~axzP6ylxFgV~Pneumonia~Pneumonia~2.0~21~0
-90~vjjiO9m1lJZ~Diarhoea~Diarhoea~3.0~21~0
-91~xTOTyDWcqJI~Dysentery~Dysentery~4.0~21~0
-92~E4ZnLamNuPs~Cough or Common Cold~Cough or Common Cold~5.0~21~0
-93~jUMMktkl1QI~Danger sign illness~Danger sign illness~6.0~21~0
-94~FNKdjCftLbY~Other illness~Other illness~7.0~21~0
-95~GKxguJcU8lN~Present & Functional [1]~Present & Functional [1]~0.0~22~0
-96~WLhllRrizcN~Present & Non-functional [0.5]~Present & Non-functional [0.5]~0.0~22~0
-97~c7MDui4Idpf~Not present [0]~Not present [0]~0.0~22~0
-98~yaB3BSMf09c~RDT~RDT~0.0~23~0
-99~xo3YiCSSmdX~Microscopy~Microscopy~0.0~23~0
-100~LBnqYeZ7HSA~Test not available~Test not available~0.0~23~0
-101~rSQaBgxCZR7~Test not ordered~Test not ordered~0.0~23~0
-102~tPyHSI5J638~Yes [1]~Sim~0.0~24~0
-103~qJHlssMSDyf~No [0]~Não~0.0~24~0
-104~cPX5qYfO844~Antimalarial not prescribed [1]~Antimalárico não receitado~0.0~24~0
-105~DOeVyBzXemK~Trimethoprim-sulfamethoxazole (cotrimoxazole)~Trimethoprim-sulfamethoxazole (cotrimoxazole)~0.0~25~0
-106~To30U9zSB0x~Amoxicillin~Amoxicillin~0.0~25~0
-107~Z1EVdMdm19F~Other oral antibiotic~Other oral antibiotic~0.0~25~0
-108~CrsCh65AA34~Other IM/IV antibiotic~Other IM/IV antibiotic~0.0~25~0
-109~edag7rOlufR~No antibiotic prescribed~No antibiotic prescribed~0.0~25~0
-110~CksDcEKIXwa~No febrile patient available~No febrile patient available~0.0~26~0
-111~dmd9i24D4Rq~No clinician available~No clinician available~0.0~26~0
-112~DTYBvCZClrM~Patient sent to lab; did not return~Patient sent to lab; did not return~0.0~26~0
-113~bECBTuFmuFp~Patient referred out~Patient referred out~0.0~26~0
-114~xpnYVdZzftr~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~26~0
-115~Y8H6Ws0X7OI~Not enough time during facility visit~Not enough time during facility visit~0.0~26~0
-116~zE3pljIJD69~Other~Other~0.0~26~0
-117~kKmG8wOq1A8~Male~Masculino~0.0~27~0
-118~E5Io2cJ8XkF~Female~Feminino~0.0~27~0
-119~RxMb4p5oT0v~CHO/CHN~CHO/CHN~0.0~28~0
-120~EkDfHq5HxpZ~EN/RN/SRN~Clinical Nurse~0.0~28~0
-121~xkQJi6oehFe~PA/MA~Physician/Medical Assistant~0.0~28~0
-122~nQpzvtqqLTt~Medical Officer~Medical Officer~0.0~28~0
-123~POGkmnkcEsa~Mid Wife~Midwife~0.0~28~0
-124~LlUpS5hLVnB~Medical Intern~Medical Intern~0.0~28~0
-125~DSp0MSCKBpW~Pharmacist~Pharmacist~0.0~28~0
-126~HmAskWpMqwc~Pharmacy Assistant~Pharmacy Assistant~0.0~28~0
-127~WpD1Q2S93k6~Lab Tech~Lab Tech~0.0~28~0
-128~px6Qz93OrfJ~Other~Other~0.0~28~0
-129~GIsw6UXQLSm~Yes [1]~Yes [1]~0.0~29~0
-130~E7ItDf3Srh7~Apparent [1]~Apparent [1]~0.0~29~0
-131~zOIgQVW2Tlr~Not Asked [0]~Not Asked [0]~0.0~29~0
-132~SZicZMEQHE4~Done [1]~Realizado~0.0~30~0
-133~zVGnja5ZgHo~Not Done [0]~Não realizado~0.0~30~0
-134~vRcE5iJwxlH~MD/Medical Officer/Physician~MD/Medical Officer/Physician~0.0~31~0
-135~GFiwTOTirNS~Clinical Officer/Physician's Assistant~Clinical Officer/Physician's Assistant~0.0~31~0
-136~s1HEzR7dhVN~Nurse~Nurse~0.0~31~0
-137~JGmsnMXywiA~Midwife~Midwife~0.0~31~0
-138~dSsQOJ5v8J7~Other~Other~0.0~31~0
-139~KjAgQerxS1Z~Traditional treatment [1]~Tratamento tradicional~0.0~32~0
-140~MakzNk84IOQ~Antimalarial treatment [1]~Tratamento antimalárico~0.0~32~0
-141~t5mvrZjdsCR~Other / Unknown [1]~Outro / Desconhecido~0.0~32~0
-142~xReqnnSpO7l~Not Asked [0]~Não questionado~0.0~32~0
-143~sHW7u5cN7ZH~Yes~Yes~0.0~33~0
-144~t00yWf15FP7~No~No~0.0~33~0
-145~UrO4drPT2hR~No RDT tests ordered~No RDT tests ordered~0.0~34~0
-146~ZjPuI11HnSY~No health care workers who use RDTs~No health care workers who use RDTs~0.0~34~0
-147~DpBqwk6u0kt~No RDTs available~No RDTs available~0.0~34~0
-148~R90yAo2oRt1~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~34~0
-149~onGqchlCRMD~Not enough time during facility visit~Not enough time during facility visit~0.0~34~0
-150~kjgcJt6hdfq~Other~Other~0.0~34~0
-151~avbJCd62CiG~CHO/CHN~CHO/CHN~0.0~35~0
-152~z90bQzS5VOW~Clinical Nurse~Clinical Nurse~0.0~35~0
-153~PuH7F4qH9Qx~Physician/Medical Assistant~Physician/Medical Assistant~0.0~35~0
-154~gqzXuhZg6w3~Medical Officer~Medical Officer~0.0~35~0
-155~h2H9hLJGnCg~Midwife~Midwife~0.0~35~0
-156~CfUqpPaqM4F~Medical Intern~Medical Intern~0.0~35~0
-157~UnhUBMuRPgg~Other~Other~0.0~35~0
-158~IaNOQHdRnle~Normal~Normal~0.0~36~0
-159~skKpQihqcB7~Abnormal~Anormal~0.0~36~0
-160~tbqR9OLgVVi~Clinical Supervisor~Clinical Supervisor~0.0~37~0
-161~W07IdNLC8dW~Laboratory Supervisor~Laboratory Supervisor~0.0~37~0
-162~IiqYEagrA7T~Other~Other~0.0~37~0
-163~loClz2oZrLv~English~English~0.0~38~0
-164~SVoKFPbHo83~French~French~0.0~38~0
-165~hk2pr8kV60O~Spanish~Spanish~0.0~38~0
-166~h0Rxpj7fhEB~Yes [1]~Yes [1]~0.0~39~0
-167~me3xhV0P1xo~No [1]~No [1]~0.0~39~0
-168~WZ7yKn0BOEi~Not Asked [0]~Not Asked [0]~0.0~39~0
-169~yno128G99sN~Burning (incinerator or protected environment)~Burning (incinerator or protected environment)~0.0~40~0
-170~fySM6oiuHiA~Dump without burning (protected environment)~Dump without burning (protected environment)~0.0~40~0
-171~HkWnjmGovjK~Any disposal in unprotected environment~Any disposal in unprotected environment~0.0~40~0
-172~RrX3k1UnJEZ~Other~Other~0.0~40~0
-173~sGDhZbADUjB~Yes [1]~Yes [1]~0.0~41~0
-174~AY38wKpw5s9~No [0]~No [0]~0.0~41~0
-175~jBgcKF6ew6G~Antimalarial not prescribed [1]~Antimalarial not prescribed [1]~0.0~41~0
-176~z9PqjOskDgr~Present & Functional [1]~Presente & Functional~0.0~42~0
-177~WlY16Sr0lOq~Present & Non-functional [0]~Presente & Não-funcional~0.0~42~0
-178~FaR7skVoihT~Not present [0]~Não existe~0.0~42~0
-179~npoWEfWpvst~Yes [1]~Yes [1]~0.0~43~0
-180~UMiXFIZMqD5~No [1]~No [1]~0.0~43~0
-181~epC7tmRmuZ2~Not asked [0]~Not asked [0]~0.0~43~0
-182~ZEJPDye4C0t~Not applicable [1]~Not applicable [1]~0.0~43~0
-183~RYDbObSqvCn~Mixed~Mixed~0.0~44~0
-184~Ee1PzVYV8Ax~Plasmodium falciparum (Pf)~Plasmodium falciparum (Pf)~0.0~44~0
-185~Y4DNVWALkMy~Plasmodium vivax (Pv)~Plasmodium vivax (Pv)~0.0~44~0
-186~FRp3874gBk4~Yes [1]~Yes [1]~0.0~45~0
-187~A8XbKaPxjxd~No [1]~No [1]~0.0~45~0
-188~dP95s2U7mbo~Not Asked [0]~Not Asked [0]~0.0~45~0
-189~SmnQ4U56sy9~Medico~Medico~0.0~46~0
-190~nID0RxXY93h~Tec. Medicina/ Agente de Medicina~Tec. Medicina/ Agente de Medicina~0.0~46~0
-191~igzD6fVDdeY~Enfermeiro(a)~Enfermeiro(a)~0.0~46~0
-192~IT90J6ExZnH~Parteira~Parteira~0.0~46~0
-193~sBh7nvJs0gR~Outro~Outro~0.0~46~0
-194~OUuryREhgMK~92~QUESTION~0.0~47~0
-195~mznbSsWOOpk~93~COMPOSITE_SCORE~0.0~47~0
-196~NsYwR3slhXk~94~CONTROL_DATAELEMENT~0.0~47~0
-197~Jk80qYEUQv2~Pregnancies~Pregnancies~0.0~48~0
-198~p7RPuHvTbgw~Abortions~Abortions~0.0~48~0
-199~KK45CtWtmle~Births~Births~0.0~48~0
-200~p0fb78XT4vb~Running tap water [1]~Running tap water [1]~0.0~49~0
-201~ELP9WHlTfNW~Rain water [0.33]~Rain water [0.33]~0.0~49~0
-202~RqgvaFIbSCL~Well [1]~Well [1]~0.0~49~0
-203~OxYnF1EkxFg~Bore hole [1]~Bore hole [1]~0.0~49~0
-204~PGj4paN7s3O~Stream/ river [0.33]~Stream/ river [0.33]~0.0~49~0
-205~LLO6OwMn5Xa~Commercial Bottled water [1]~Commercial Bottled water [1]~0.0~49~0
-206~Xlz4WAamIY1~Externally filled water tank [1]~Externally filled water tank [1]~0.0~49~0
-207~SlLKyGLulWR~1~DROPDOWN_LIST~0.0~50~0
-208~Ua4SD7Mxd5G~8~RADIO_GROUP_HORIZONTAL~0.0~50~0
-209~QrXvcz7XwM8~5~DATE~0.0~50~0
-210~Fz5HrBuaAjV~7~NO_ANSWER (Label)~0.0~50~0
-211~dk6rD8CKDTW~2~INT~0.0~50~0
-212~EXWRrQkzPsk~6~POSITIVE_INT~0.0~50~0
-213~AQhRJEqpDyo~92~TAB_SCORE~0.0~50~0
-214~J0aiT7beP55~93~COMPOSITE_SCORE~0.0~50~0
-215~WaNi7e02jLi~4~SHORT_TEXT~0.0~50~0
-216~IdMwErCkxtS~3~LONG_TEXT~0.0~50~0
-217~p5YNHmu0xD9~91~FEEDBACK~0.0~50~0
-218~DLax570l7NA~9~RADIO_GROUP_VERTICAL~0.0~50~0
-219~hUaWHuTtpqg~94~CONTROL_DATAELEMENT~0.0~50~0
-220~IhCzRgcx5rE~10~DROPDOWN_LIST_DISABLED~0.0~50~0
-221~miv30rq2Q1w~11~IMAGES~0.0~50~0
-222~YWAyylTyJuC~Guideline review~Revisão de Linhas de Orientação~0.0~51~0
-223~leO3xDAeYiA~Lecture~Palestra~0.0~51~0
-224~hYdqXlaqNLC~Demonstration~Demonstração~0.0~51~0
-225~pnpu19OPo88~SOP Review~Revisão de POPs~0.0~51~0
-226~FThpQkjFKDY~Clinical mentoring~Tutoria Clínica~0.0~51~0
-227~kS4NmF8qwbX~Yes [1]~Yes [1]~0.0~52~0
-228~hCjL6drJhpK~No [1]~No [1]~0.0~52~0
-229~IpRoPHRDRfC~NotAsked [0]~NotAsked [0]~0.0~52~0
-230~LD2nAfDHSx8~Male [1]~Male [1]~0.0~52~0
-231~wUHnzecFwGh~Yes [1]~Yes [1]~0.0~53~0
-232~lO3C0tYMcyC~Not Available [1]~Not Available [1]~0.0~53~0
-233~KRyXwsuJOxF~No [0]~No [0]~0.0~53~0
-234~bsAJxgMKGBP~Xray~Xray~0.0~54~0
-235~gwHyDm4Gume~labo~labo~0.0~54~0
-236~n6WLxJbpkHq~Main Power Supply~Main Power Supply~0.0~55~0
-237~pj4oa5ZTFkm~Generator~Generator~0.0~55~0
-238~nWz19xQBlqN~Solar~Solar~0.0~55~0
-239~Nt76lfcxgEZ~RDT~TDR~0.0~56~0
-240~gPxx0i0wJ7o~Microscopy Thick smear~Microscopia Esfregaço Espesso~0.0~56~0
-241~JyzPuNLMS5q~Microscopy Thin smear~Microscopia Esfregaço Fino~0.0~56~0
-242~IGnDP897402~Microscopy Thick and Thin smear~Microscopia Esfregaço Espesso e Fino~0.0~56~0
-243~AXZzgugIxpA~Both RDT and Microscopy (any type)~Ambos TDR e Microscopia (qualquer tipo)~0.0~56~0
-244~BuwiNYg4Z6x~Yes [1]~Sim~0.0~57~0
-245~pLKdShU58eW~No [1]~Não~0.0~57~0
-246~vCAl7aclDgz~Not Asked [0]~Não Questionado~0.0~57~0
-247~NnyhSfFQz7s~Not applicable [1]~Não aplicável~0.0~57~0
-248~Zn1DBjUxQKl~Yes [1]~Yes [1]~0.0~58~0
-249~CyaXL2phwKt~N/A [1]~N/A [1]~0.0~58~0
-250~NFKMLNQ5ADw~No [0]~No [0]~0.0~58~0
-251~U2sW2ZsaXDr~Severe disease~Severe disease~0.0~59~0
-252~I3MCdCmy1Sn~Non-severe disease~Non-severe disease~0.0~59~0
-253~lbvFEOYKGNU~Yes [1]~Yes [1]~0.0~60~0
-254~U59BEqM1peS~No [0]~No [0]~0.0~60~0
-255~gXwnezfmlVG~Not available [1]~Not available [1]~0.0~60~0
-256~GhXFajvqmSS~N/A [1]~N/A [1]~0.0~61~0
-257~SdQM9DAjW2e~Yes [0]~Yes [0]~0.0~61~0
-258~FIOOj1hzVAK~No [1]~No [1]~0.0~61~0
-259~fJbCJIZ02cE~Normal~Normal~0.0~62~0
-260~YBX6YjBaPWu~Abnormal~Anormal~0.0~62~0
-261~CaCHsb2IIGx~Not Ordered~Não pedido~0.0~62~0
-262~kkOywHQwQWE~Yes [1]~Yes~1.0~63~0
-263~yVUHqeMvBJZ~No [0]~No~0.0~63~0
-264~zEYh7qnQq1P~RDT~RDT~0.0~64~0
-265~TzpCv1DdSdT~Microcopy Thick smear~Microcopy Thick smear~0.0~64~0
-266~CEXOAEZrPBC~Microscopy Thin smear~Microscopy Thin smear~0.0~64~0
-267~uloYxOZeDiR~Both~Both~0.0~64~0
-268~QbT7TxYSluz~QAACTs [1]~QAACTs~1.0~65~0
-269~NN1rindzd5u~Other antimalarials~Other antimalarials~0.0~65~0
-270~SlIMwnIrnH0~Antibiotics - Pneumonia [2]~Antibiotics - Pneumonia~2.0~65~0
-271~UmiVkA29pgN~ORS and Zinc [3]~ORS and Zinc~3.0~65~0
-272~NWrwsF0UxJ9~Antibiotics - Dysentery [4]~Antibiotics - Dysentery~4.0~65~0
-273~X7rLhbJ5KK5~Cough Syrup or tablets [5]~Cough Syrup or tablets~5.0~65~0
-274~k7C7uB1yfoU~Severe patient referred [6]~Severe patient referred~6.0~65~0
-275~akq0OvyB3hj~other treatment [7]~other treatment~7.0~65~0
-276~ryyOtqk9KUd~Thin smear~Thin smear~0.0~66~0
-277~YEIMkSgO7HR~Thick smear~Thick smear~0.0~66~0
-278~Jq8dvoQkZ1i~Both~Both~0.0~66~0
-279~vYKt3OSswEi~Técnico de Laboratório~Técnico de Laboratório~0.0~67~0
-280~x1iLwIcfoM2~Agente de Laboratório~Agente de Laboratório~0.0~67~0
-281~cnJVll9KtOR~Outro~Outro~0.0~67~0
-282~Hvr5MWp9hgC~RDT + [1]~RDT + [1]~0.0~68~0
-283~IInyldHorNu~RDT - [0]~RDT - [0]~0.0~68~0
-284~TvZPZ7DoKTz~Microscopy + [1]~Microscopy + [1]~0.0~68~0
-285~MYPSaRW1WR6~Microscopy - [0]~Microscopy - [0]~0.0~68~0
-286~sppxoAQw1c4~Not found [0]~Not found [0]~0.0~68~0
-287~uJLtQrGoKFA~Lab Tech~Lab Tech~0.0~69~0
-288~qcxhcLVdSvV~Microscopist~Microscopist~0.0~69~0
-289~EKRx0r1vgOb~Paper reports on designated tally sheets~Paper reports on designated tally sheets~0.0~70~0
-290~ZCh9g9Cc6CT~Paper reports without tally sheets~Paper reports without tally sheets~0.0~70~0
-291~eiaFTRozIW2~SMS-based reports~SMS-based reports~0.0~70~0
-292~GTt0X6OA1CN~Direct computer entry into designated form~Direct computer entry into designated form~0.0~70~0
-293~qjnHzEzcjdb~Email~Email~0.0~70~0
-294~GQYHlYIq3IX~Yes [1]~Yes [1]~0.0~71~0
-295~XuHRXyXmxka~No [1]~No [1]~0.0~71~0
-296~ReD1kfjDdji~Not asked [0]~Not asked [0]~0.0~71~0
-297~LsZ6Q3nn4QZ~Male [1]~Male [1]~0.0~71~0
-298~aPqBukA15rN~Positive~Positivo~0.0~72~0
-299~jJFz3AfLxvf~Negative~Negativo~0.0~72~0
-300~xAmcM2Pv1vg~Unknown/No Test Result~Desconhecido/Sem resultado do teste~0.0~72~0
-301~EYofzyIgd8P~Unofficial register~Registo não oficial~0.0~73~0
-302~ntflYbDtEMW~Loose paper sheets~Folhas de papel soltas~0.0~73~0
-303~uTfkrc4ZX4m~Computerized record~Registo informatizado~0.0~73~0
-304~S4IVZrtiw8f~Other~Outro~0.0~73~0
-305~n6Cs3wof3SN~Yes [1]~Yes [1]~0.0~74~0
-306~plpmSLQJeai~No [1]~No [1]~0.0~74~0
-307~jBKtyC93Nyn~NotAsked [0]~NotAsked [0]~0.0~74~0
-308~GXI1lGgUxJo~Applicable [1]~Applicable [1]~0.0~74~0
-309~E2W8vbkUum3~No febrile patient available~Nao houve pacientes com sindrome feril hoje~0.0~75~0
-310~W1rZTCGrVzt~No clinician available~Nao existem clinicos desponiveis hoje~0.0~75~0
-311~mnlSWKLmq4F~Patient referred out~O paciente foi transferido durante a observacao~0.0~75~0
-312~hlr97p0jgoY~Stopped due to potential patient harm~Interrompida a consulta devido o grande risco de lesao do paciente~0.0~75~0
-313~DwnfEoq6vYX~Not enough time during facility visit~Nao houve tempo suficiente durante a visita~0.0~75~0
-314~SeQSMlGmgy5~Other~Outros~0.0~75~0
-315~DPYq6jXH51O~Normal~Normal~0.0~76~0
-316~NfRIhjP8JnL~Abnormal~Abnormal~0.0~76~0
-317~lYeeRZqTI6R~Not Ordered~Not Ordered~0.0~76~0
-318~LxeEwTKpyVw~Running tap water [1]~Água de torneira/canalizada~0.0~77~0
-319~EQxNo2MAWmw~Rain water [0.33]~Água da Chuva~0.0~77~0
-320~ku8ok9TLqgv~Well [1]~Poço~0.0~77~0
-321~rjDujDm9SfI~Bore hole [1]~Furo~0.0~77~0
-322~tBegQ4oRe7y~Stream/ river [0.33]~Riacho/Rio~0.0~77~0
-323~GQOnNl1M5QX~Commercial Bottled water [1]~Água engarrafada comercial~0.0~77~0
-324~FXHBKjh9B8j~Externally filled water tank [1]~Tanque enchido no exterior~0.0~77~0
-325~hF397tsMl40~Plus System~Plus System~0.0~78~0
-326~XC0YHmIlKMY~Parasite uL~Parasite uL~0.0~78~0
-327~FPI97xigZog~% RBC infected with malaria parasites~% RBC infected with malaria parasites~0.0~78~0
-328~eq2vEeHBl8n~Yes [1]~Yes [1]~0.0~79~0
-329~NMHfcDcRXLx~No [0]~No [0]~0.0~79~0
-330~CuQlqsyS7Nx~Not Applicable [1]~Not Applicable [1]~0.0~79~0
-331~wfE0RpPg05e~Not addressed~Not addressed~0.0~80~0
-332~AJionMl1LN2~Partially addressed~Partially addressed~0.0~80~0
-333~sa30StjF7Qy~Completely Addressed~Completely Addressed~0.0~80~0
-334~lwUztTBKQIo~Traditional treatment [1]~Traditional treatment [1]~0.0~81~0
-335~tSZRMlI4yAc~Antimalarial treatment [1]~Antimalarial treatment [1]~0.0~81~0
-336~iAhowU9Jl8C~Other/  Unknown [1]~Other/  Unknown [1]~0.0~81~0
-337~W0KxcaGYX9G~Not Asked [0]~Not Asked [0]~0.0~81~0
-338~JrqOyrBukYi~Forest~Forest~0.0~82~0
-339~MDITj1V6Dxe~Plantation~Plantation~0.0~82~0
-340~aCqaaqDFyS3~Another Country~Another Country~0.0~82~0
-341~LIFjhAMyVp3~Other~Other~0.0~82~0
-342~qV0nl38e11L~Medical Officer~Medical Officer~0.0~83~0
-343~lHSxxFOCwnP~Medical Assistant~Medical Assistant~0.0~83~0
-344~Etchsq8Eewo~Clinical Officer~Clinical Officer~0.0~83~0
-345~z0mYOoBcTst~Medical Intern~Medical Intern~0.0~83~0
-346~JEMAyVEWJIr~Nurse~Nurse~0.0~83~0
-347~hEH8OAvsm6d~Students on Attachment~Students on Attachment~0.0~83~0
-348~g8UK7Mph1gi~Other~Other~0.0~83~0
-349~S0p7CBFDpg2~Yes [1]~Sim~0.0~84~0
-350~Qe459MpSRlE~Apparent [1]~Aparente~0.0~84~0
-351~LhOVxncmLrb~Not Asked [0]~Não Questionado~0.0~84~0
-352~hF9oXN9ULHx~OPD~OPD~0.0~85~0
-353~ODu1IyK5LnA~ANC~ANC~0.0~85~0
-354~IW6Pypzlqqu~Specialized obstetrics clinic~Specialized obstetrics clinic~0.0~85~0
-355~IjXqGxVrsHJ~Other~Other~0.0~85~0
-356~iMOWaBEfsxx~One day~Um dia~0.0~86~0
-357~jSG5XDkx77n~Greater than one day~Mais do que um dia~0.0~86~0
-358~L49PhWAIdzY~Not asked~Não questionado~0.0~86~0
-359~odyU6Z58NtA~RDT~TDR~0.0~87~0
-360~L7WTJkHRgz9~Microscopy~Microscopia~0.0~87~0
-361~BX0uJKflsRr~Test not available~Teste não disponível~0.0~87~0
-362~PFYwPvOzqjO~Test not ordered~Teste não pedido~0.0~87~0
-363~jLthnuOuhgr~No treatments prescribed~No treatments prescribed~0.0~88~0
-364~uaOcgkRVVI2~No health care workers who dispense treatments~No health care workers who dispense treatments~0.0~88~0
-365~akCobpMvsVb~No treatments available~No treatments available~0.0~88~0
-366~KTTSOeLs0ZP~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~88~0
-367~iGuMyJ0v7wV~Not enough time during facility visit~Not enough time during facility visit~0.0~88~0
-368~SCb8zQmRZ6d~Other~Other~0.0~88~0
-369~Wx9cAKvRdOA~Child~Child~0.0~89~0
-370~H3uRm27Qhom~Adolescent~Adolescent~0.0~89~0
-371~TW19jz65xrW~Adult~Adult~0.0~89~0
-372~ohIamFf0qbm~Referral~Referral~0.0~89~0
-373~b26Q2yYlao5~Lab Scientist~Laboratory Scientist~0.0~90~0
-374~xk95uxfJfLf~Lab Technologist~Lab Technologist~0.0~90~0
-375~wGy5NJFjzcK~Assistant Lab Technologist~Assistant Laboratory Technologist~0.0~90~0
-376~p6I31J8OW7D~Other~Other~0.0~90~0
-377~WdbsGbRZnfB~Yes~Yes~1.0~91~0
-378~qVhzmiL1UnM~No~No~0.0~91~0
-379~mJUGP9w1eLk~Lab Tech~Lab Tech~0.0~92~0
-380~rItZsxOBDiO~Lab Assistant~Lab Assistant~0.0~92~0
-381~nAEvwcwgUAY~Other~Other~0.0~92~0
-382~JC3KZ1z6XyG~Yes~Yes~0.0~93~0
-383~hAl72KM9IgI~Not~Not~0.0~93~0
-384~sj2WrLlflGK~Unknown~Unknown~0.0~93~0
-385~Ey1QYnZ8JgF~Yes [0]~Sim~0.0~94~0
-386~Iaqn5pneudL~No [1]~Não~0.0~94~0
-387~g56Qvm6CY6I~Computer~Computer~0.0~95~0
-388~hINjtYKUGir~Tablets~Tablets~0.0~95~0
-389~QbyIhrg0C8P~Facility doesn’t enter data directly into DHIS2~Facility doesn’t enter data directly into DHIS2~0.0~95~0
-390~kdbBceS6uB8~Thick smear~Gota espessa~0.0~96~0
-391~rMVmYtYmv1E~Thin smear~Gota estendida~0.0~96~0
-392~uY2ywXD1nxB~Both~Ambos~0.0~96~0
-393~PM9d0y75iyI~Facility-based data validation~Facility-based data validation~0.0~97~0
-394~vOTJhPNpYf0~Sub-district data validation~Sub-district data validation~0.0~97~0
-395~VsYrjzXdlKW~Data sent without validation~Data sent without validation~0.0~97~0
-396~lPx5glz3szd~1~Yes~0.0~98~0
-397~x7o75Agvm37~0~No~0.0~98~0
-398~xNCHj3uEAre~Lab Technichian~1. Lab Technichian~0.0~99~0
-399~uR47VfjOunh~Lab Assistant~2. Lab Assistant~0.0~99~0
-400~vqgiCG66aHs~Clinical Officer/Physicians Assistant~3. Clinical Officer/Physicians Assistant~0.0~99~0
-401~dvGVbrLgPCx~Nurse~4. Nurse~0.0~99~0
-402~DZPidP5IWGq~MD~5. MD~0.0~99~0
-403~SmaJXg4Q9Ox~Midwife~6. Midwife~0.0~99~0
-404~OBXvcqLDs3E~Other~7. Other~0.0~99~0
-405~x8AKhnaXSM5~Enters directly into DHIS2~Enters directly into DHIS2~0.0~100~0
-406~MIWll3pxd3E~Sends paper-based summary sheets to DHIS2~Sends paper-based summary sheets to DHIS2~0.0~100~0
-407~ZwqOmcirLON~Other~Other~0.0~100~0
-408~L59tGSJKL22~Male~1. Male~0.0~102~0
-409~D0sSYy4brtj~Female~2. Female~0.0~102~0
-410~nsklmxgnm5m~Contagem absoluta~Contagem absoluta~0.0~103~0
-411~EVBy5M3uy6M~Contagem percentual~Contagem percentual~0.0~103~0
-412~z4rnkz1iaSQ~Real~Real~0.0~104~0
-413~g3CRm2xLez7~Simulated~Simulated~0.0~104~0
-414~JLus6J4KNFr~Referred to higher level facility~Referred to higher level facility~0.0~105~0
-415~Ttuujm56CI2~Admitted to inpatient unit~Admitted to inpatient unit~0.0~105~0
-416~BOoSy47Xf8h~No~No~0.0~106~0
-417~MO3dT67DAmj~Yes~Yes~0.0~106~0
-418~FzZpD5AIgos~Guideline review~1. Guideline review~0.0~107~0
-419~qiRXaSdGiNO~Lecture~2. Lecture~0.0~107~0
-420~JiPW0k3B3qV~Demonstration~3. Demonstration~0.0~107~0
-421~mKD3DE51Lz8~SOP Review~4. SOP Review~0.0~107~0
-422~WPBgPwsz3yp~Clinical mentoring~5. Clinical mentoring~0.0~107~0
-423~xCppHcHsjx8~Done [1]~Done [1]~0.0~108~0
-424~twykveRMz0r~Not Done [0]~Not Done [0]~0.0~108~0
-425~GsOClhqoxae~Paper reports on designated tally sheets~Relatórios em papel e em folhas de controlo designadas~0.0~109~0
-426~xmatIBmQzqj~Paper reports without tally sheets~Relatórios em papel sem folhas de controlo~0.0~109~0
-427~KkIoCboVhrE~SMS-based reports~Relatórios com base em SMS~0.0~109~0
-428~SxkgDuNZZ9g~Direct computer entry into designated form~Entradas directas no computador em formulários designados~0.0~109~0
-429~INj2G7GveOu~Email~Email~0.0~109~0
-430~ifx11JCClNX~PARENT~Parent~0.0~110~0
-431~WqShW2v6G6R~CHILD~Child~0.0~110~0
-432~XHLSKXnS70G~IUD~IUD~0.0~111~0
-433~Ekapi1LueQy~Implant~Implant~0.0~111~0
-434~vlup27lx9SC~Inyectable~Inyectable~0.0~111~0
-435~CEDkfNSq0ja~Oral pills~Oral pills~0.0~111~0
-436~aPkqP8vBQ7B~Condom~Condom~0.0~111~0
-437~PPNN46EvftN~Yes~Yes~0.0~112~0
-438~RBuWDxSseC9~No~No~0.0~112~0
-439~daK8ZCoexeL~NA~NA~0.0~112~0
-440~E6v0S0bvhH6~Yes [1]~Sim~0.0~113~0
-441~qjctrscPv2D~No [1]~Não~0.0~113~0
-442~KOrgJexuL10~Unknown [1]~Desconhecido~0.0~113~0
-443~XRWWLGFuFBi~Not Asked [0]~Não Questionado~0.0~113~0
-444~xlaxT2F0qIe~Plus System~1. Plus System~0.0~114~0
-445~blU3YnbHWpC~Parasite uL~2. Parasite uL~0.0~114~0
-446~cOJyyh2vBnL~Against WBC~3. % RBC infected with malaria parasites~0.0~114~0
-447~pCLCENk1M3g~One day~One day~0.0~115~0
-448~tmBEtemqLej~Greater than one day~Greater than one day~0.0~115~0
-449~kHDbtE2eVQE~Not asked~Not asked~0.0~115~0
-450~kS3nxgKji7Q~Oui [1]~Oui~1.0~116~0
-451~SpEFrvKdDWn~Non [0]~Non~0.0~116~0
-452~WtFFVFgnAwe~OPD~CE~0.0~117~0
-453~uNZ9sTLeKvD~ANC~CPN~0.0~117~0
-454~EwFn8kmP9Vq~Specialized obstetrics clinic~Clínica especializada em obstetrícia~0.0~117~0
-455~FDSIzKtXOya~Other~Outro~0.0~117~0
-456~vr5iNGFyND8~1. Health Center~1. Health Center~0.0~118~0
-457~APUqjC4HCsp~2. District Hospital~2. District Hospital~0.0~118~0
-458~EuK7m0QkGuL~3. Regional hospital~3. Regional hospital~0.0~118~0
-459~q7vYfZ6xdHO~Other~4. Other~0.0~118~0
-460~CQ0xNuwSEZ3~Quasi-Govt~Quasi-Govt~0.0~119~0
-461~VOyUbAC8tU6~Govt~Govt~0.0~119~0
-462~XqS67BRQ0Ys~Mission (CHAG)~Mission (CHAG)~0.0~119~0
-463~AQjryRUIN4p~Private~Private~0.0~119~0
-464~FlaRsDmSdjb~Other~Other~0.0~119~0
-465~yFOd3sMEUmY~No antimalarial prescribed~No antimalarial prescribed~0.0~120~0
-466~FwVYMiVLL2L~ACT~ACT (AL, ASAQ, DHAP)~0.0~120~0
-467~eqwAcrHl4Xt~Artemisinin (oral monotherapy)~Artemisinin (oral monotherapy)~0.0~120~0
-468~ZQekAkvpTQC~Artemether (intramuscular)~Artemether (intramuscular)~0.0~120~0
-469~EONlpY2yaBF~Artesunate (intramuscular monotherapy)~Artesunate (intramuscular monotherapy)~0.0~120~0
-470~rn2GC50sUsq~Artesunate (rectal)~Artesunate (rectal)~0.0~120~0
-471~ILY3pF5rWfH~Quinine (oral)~Quinine (oral)~0.0~120~0
-472~XinjmOAQLNG~Quinine (intramuscular)~Quinine (intramuscular)~0.0~120~0
-473~adDwNTOgdcB~Quinine (intravenous)~Quinine (intravenous)~0.0~120~0
-474~ZY9EdaGkfq7~Chloroquine~Chloroquine~0.0~120~0
-475~bkPwAwfoomN~SP~SP~0.0~120~0
-476~HsVIURtSnsJ~Other~Other~0.0~120~0
-477~aK5ogDFzSIK~Yes [1]~Yes [1]~0.0~121~0
-478~YEzjhepSxm4~No [1]~No [1]~0.0~121~0
-479~tBgMzYs93bW~Unknown [1]~Unknown [1]~0.0~121~0
-480~gvAxOQaBulc~Not Asked [0]~Not Asked [0]~0.0~121~0
-481~j3JgS93Lf5J~Yes [1]~Yes~0.0~122~0
-482~lCPIvGfJbF4~Antimalarial Not Prescribed [1]~Antimalarial Not Prescribed~0.0~122~0
-483~Awjd8Sn7HH5~No [0]~No~0.0~122~0
-484~royjmr03yMD~Pf~Pf~0.0~123~0
-485~cipuMPpLn5R~Pv~Pv~0.0~123~0
-486~J12gHjVbHNO~Pm~Pm~0.0~123~0
-487~lnAGhwbp8dT~Po~Po~0.0~123~0
-488~ThLbYKhnNgK~Mixed~Misto~0.0~123~0
-489~WS4X9ZTUat3~Oui [0]~Oui~0.0~124~0
-490~N69KRwWyRDf~Non [1]~Non~1.0~124~0
-491~Xl9tWy8x3HP~Less than one week ago~Less than one week ago~0.0~125~0
-492~LVh9nEgu8JY~1 week to 1 month ago~1 week to 1 month ago~0.0~125~0
-493~uyotitK4CK4~1-3 months ago~1-3 months ago~0.0~125~0
-494~GREON6jZckg~Greater than 3 months ago~Greater than 3 months ago~0.0~125~0
-495~ajaeMFBnqu2~Facility head has never access DHIS2~Facility head has never access DHIS2~0.0~125~0
-496~hSRKsRzeFSa~Facility head does not have access to DHIS2~Facility head does not have access to DHIS2~0.0~125~0
-497~PiTYqazydxV~MD/Medical Officer/Physician~MD/Medical Officer/Physician~0.0~126~0
-498~RAl8Ndc1Pgj~Clinical Officer/Physician's Assistant~Clinical Officer/Physician's Assistant~0.0~126~0
-499~WrSKtoGqfhA~Scientist / Lab Tech~Scientist / Lab Tech~0.0~126~0
-500~meRGZmYRZNC~Microscopist~Microscopist~0.0~126~0
-501~XzMBbhb13hE~Nurse~Nurse~0.0~126~0
-502~DDiwe4sDdJ7~Midwife~Midwife~0.0~126~0
-503~WjYtgGxa7Wk~Other~Other~0.0~126~0
-504~kdqq02AtmRN~Never~Nunca~0.0~127~0
-505~ej2qTl8zsMX~Less than half of the time~Menos do que metade do tempo~0.0~127~0
-506~dfwE9XRxOZU~About half of the time~Cerca de metade do tempo~0.0~127~0
-507~CjybwxpWLnp~More than half of the time~Mais do que metade do tempo~0.0~127~0
-508~Fy1uUkFU9t6~Always~Sempre~0.0~127~0
-509~ASjMC3pDbBp~Injectable Artesunate~Injectable Artesunate~0.0~128~0
-510~rwqIsFniswF~Injectable Quinine~Injectable Quinine~0.0~128~0
-511~oDNBWvlSbVE~Other~Other~0.0~128~0
-512~ePy6zSbfn5j~Positive~Positive~0.0~129~0
-513~TNt7uNqtYNy~Negative~Negative~0.0~129~0
-514~jlkhGQDTSPo~Unknown~Unknown/No Test Result~0.0~129~0
-515~PFu7nMMYCWX~Yes [1]~Sim~0.0~130~0
-516~f2UHrlTlAIu~No [0]~Não~0.0~130~0
-517~NHFyWKn7MXA~N/A [1]~N/A~0.0~130~0
-518~Uyfj983L2M9~Main~Principal~0.0~131~0
-519~GYSL1qV8DIy~Generator~Gerador~0.0~131~0
-520~Dc7FVzuensy~Solar~Solar~0.0~131~0
-521~F0Fw44ddUYr~None~Nenhum~0.0~131~0
-522~LvllqeVcOFV~0~Unsatisfactory~0.0~132~0
-523~jZzKggFnxTp~1~Fair~0.0~132~0
-524~eP5tU7yrRj6~2~Satifactory~0.0~132~0
-525~hekUOQDlogB~3~Excellent~0.0~132~0
-526~GKryfjCSLfG~Never~Never~0.0~133~0
-527~Ontewi6MWaE~Less than half of the time~Less than half of the time~0.0~133~0
-528~sLN7E0YInsl~About half of the time~About half of the time~0.0~133~0
-529~cop4LBAZ3bQ~More than half of the time~More than half of the time~0.0~133~0
-530~ZOR4EsUX2Zj~Always~Always~0.0~133~0
-531~gcTQCnftgWd~Yes [0]~Yes [0]~0.0~134~0
-532~GfRgWpl93qe~No [1]~No [1]~0.0~134~0
-533~kO7K6xWQ99g~Unk [0]~Unknown [0]~0.0~134~0
-534~tnwMP5BIrtQ~Yes [1]~Sim~0.0~135~0
-535~dgvw4N7Uvsh~No [0]~Não~0.0~135~0
-536~uTx2xnCPBoV~Not Applicable [1]~Não aplicável~0.0~135~0
-537~F7tLq8C9mNs~Normal~Normal~0.0~136~0
-538~w35srylek6w~Abnormal~Abnormal~0.0~136~0
-539~cCsbDxuaWDg~Yes [1]~Sim~0.0~137~0
-540~WuPDvwN1grN~No [1]~Não~0.0~137~0
-541~bBePVTPaJEn~Not Asked [0]~Não Questionado~0.0~137~0
-542~nXvdx3DKCWL~Positive~Positive~0.0~138~0
-543~gQ2JdfsXRHw~Negative~Negative~0.0~138~0
-544~kGV280SIRwF~Not Tested~Not Tested~0.0~138~0
-545~dQUoxOZCdZ7~Paludisme [1]~Paludisme~1.0~139~0
-546~ziZr5WmcMLA~Pneumonie [2]~Pneumonie~2.0~139~0
-547~J0D1QfOPz8U~Diarrhée [3]~Diarrhée~3.0~139~0
-548~X69AyxIBoqL~Dysenterie [4]~Dysenterie~4.0~139~0
-549~RNsl3fCc4nD~Toux ou rhume classique [5]~Toux ou rhume classique~5.0~139~0
-550~iyCNJ2lvK0x~Signes de maladie inquiétants [6]~Signes de maladie inquiétants~6.0~139~0
-551~s3Bp0Dz5Ahn~Autres maladies [7]~Autres maladies~7.0~139~0
-552~crr9lWzpjbr~Unofficial register~Unofficial register~0.0~140~0
-553~pwyi2WPumeM~Loose paper sheets~Loose paper sheets~0.0~140~0
-554~riYrUCXslDh~Computerized record~Computerized record~0.0~140~0
-555~z8XZHHD184E~Other~Other~0.0~140~0
-556~r1VHEMiu4It~CTAQ [1]~CTAQ~1.0~141~0
-557~FOMI6DCmWZn~Antibiotiques - Pneumonie [2]~Antibiotiques - Pneumonie~2.0~141~0
-558~rIWgAIvPLvr~SRO et zinc [3]~SRO et zinc~3.0~141~0
-559~CYGgguK9y0N~Antibiotiques - Dysenterie [4]~Antibiotiques - Dysenterie~4.0~141~0
-560~Jp74tSAKiXV~Sirop ou comprimés pour la toux [5]~Sirop ou comprimés pour la toux~5.0~141~0
-561~fEgUrMpurUa~Orientation des patients sévèrement atteints vers d'autres services [6]~Orientation des patients sévèrement atteints vers d~6.0~141~0
-562~Kx4warMhueL~Autres traitements [7]~Autres traitements~7.0~141~0
-563~uh7TXtIdNOn~Pharmacy~Pharmacy~0.0~142~0
-564~WRfJQEvCwzH~Clinical~Clinical~0.0~142~0
-565~I7R9IglqYZ2~Neither Pharmacy nor Clinical Records Available~Neither Pharmacy nor Clinical Records Available~0.0~142~0
-566~OdFds7WlbZT~Severe disease~Doença grave~0.0~143~0
-567~cbdHUHU6xHM~Non-severe disease~Doença não grave~0.0~143~0
+1~NVmFfOVZf4s~Lab Scientist~Lab Scientist~0.0~1
+2~pN1ObN5eLLu~Lab Tech~Lab Tech~0.0~1
+3~q1NnBAVxg6p~Lab Assistant~Lab Assistant~0.0~1
+4~uzUnd0G8yBv~Other~Other~0.0~1
+5~mpKSuMfkZV8~CHPS~CHPS~0.0~2
+6~uPNU6ZTYn2T~Clinic~Clinic~0.0~2
+7~os1DVy8ZH6C~Maternity Home~Maternity Home~0.0~2
+8~hcemyJ6RLZP~Health Centre~Health Centre~0.0~2
+9~X3TSSx82jvx~Polyclinic~Polyclinic~0.0~2
+10~OW6SpAFErpR~Hospital~Hospital~0.0~2
+11~GBXVRJ4FZWx~Malaria [1]~Malaria~1.0~3
+12~Zq3Wk0zkvdF~Pneumonia [2]~Pneumonia~2.0~3
+13~AKaQjjmalJL~Diarhoea [3]~Diarhoea~3.0~3
+14~vZSuGH5vyzH~Dysentery [4]~Dysentery~4.0~3
+15~BFuhLr4GcCl~Cough or Common Cold [5]~Cough or Common Cold~5.0~3
+16~Bfo158JuVAG~Danger sign illness [6]~Danger sign illness~6.0~3
+17~kN6fQe8XrQJ~Other illness [7]~Other illness~7.0~3
+18~mWA4xAvLFxE~Not addressed~Não resolvido~0.0~4
+19~botWSvXbxjf~Partially addressed~Parcialmente resolvido~0.0~4
+20~l1qkSIGNpmB~Completely Addressed~Completamente resolvido~0.0~4
+21~JlXzQ1Hme9t~Yes [0]~Sim~0.0~5
+22~u5oD44yP6xh~No [1]~Não~0.0~5
+23~J6UnTWL30bJ~Unknown [0]~Desconhecido~0.0~5
+24~ebuNxMsTsNV~Yes [1]~Yes [1]~1.0~6
+25~IHh4VDDkORL~No [2]~No [2]~2.0~6
+26~Fe9nEOnk6mk~Réel~Réel~0.0~7
+27~T14Jq84EgAC~Simulé~Simulé~0.0~7
+28~UHAgSeL28h7~Pharmacy~Farmácia~0.0~8
+29~aXil07ZdXOv~Clinical~Clínica~0.0~8
+30~i5a0WsdcPoF~Neither Pharmacy nor Clinical Records Available~Registos de Farmácia ou Clínicos não disponíveis~0.0~8
+31~tiisDwSG6s3~MD/Medical Officer/Physician~MD/Medical Officer/Physician~0.0~9
+32~nUtJOWnRs2U~Asst. Medical Officer~Asst. Medical Officer~0.0~9
+33~vHZ20GP7Els~Clinical Officer~Clinical Officer~0.0~9
+34~O2EkTRq5POq~Assistant Clinical Officer~Assistant Clinical Officer~0.0~9
+35~mgSwtAxkIaO~Nurse Officer~Nurse Officer~0.0~9
+36~tpKOLqB02DG~Assistant Nurse Officer~Assistant Nurse Officer~0.0~9
+37~w8vhDtuhcpS~Enrolled Nurse~Enrolled Nurse~0.0~9
+38~be1r7yFQj0p~Medical Attendant~Medical Attendant~0.0~9
+39~PPBFsBPjXue~Student~Student~0.0~9
+40~wrFL80mFG4k~Intern~Intern~0.0~9
+41~ofcYwq9ouOo~Other~Other~0.0~9
+42~ny67i1Sf37W~Positive~Positive~0.0~10
+43~pHJZir7xpg8~Negative~Negative~0.0~10
+44~tPe8JEculCb~Unknown~Unknown~0.0~10
+45~WyvyxTytr4g~Yes [0]~Sim~0.0~11
+46~IkIjYjI2FG9~No [1]~Não~0.0~11
+47~le2S0nwzeGi~N/A [1]~N/A~0.0~11
+48~RLRc5AaZQhz~No antimalarial prescribed~Antimalárico não receitado~0.0~12
+49~cHKgKPeeanN~ACT~ACT (AL/ASAQ)~0.0~12
+50~g2aBKxgPjH0~Artemether (intramuscular)~Artemetér (intramuscular)~0.0~12
+51~B9b9reS6dck~Artesunate (intramuscular monotherapy)~Artesunato (monoterapia intramuscular)~0.0~12
+52~SLDqyiA9Nxe~Artesunate (rectal)~Artesunato (rectal)~0.0~12
+53~bvrYur7JguK~Quinine (oral)~Quinina (oral)~0.0~12
+54~kbcxECWEIst~Quinine (intramuscular)~Quinina (intramuscular)~0.0~12
+55~T6b88wZgG3K~Quinine (intravenous)~Quinina (intravenoso)~0.0~12
+56~lb12DfmM079~Chloroquine~Chloroquina~0.0~12
+57~M5RbhR0xePW~SP~Sulfadoxina Piri~0.0~12
+58~kpxoR5mnmmj~Other~Outro~0.0~12
+59~WSfZ7LKnrIb~RDT + [1]~TDR +~0.0~13
+60~bQxY8ZRV6kz~RDT - [0]~TDR -~0.0~13
+61~pUh77K3VOxg~Microscopy + [1]~Microscopia +~0.0~13
+62~eapCJ0WdU6s~Microscopy - [0]~Microscopia -~0.0~13
+63~gs2KSPO4SqE~Not found [0]~Não encontrado~0.0~13
+64~uX3PJWHZc5H~Yes [1]~Sim~0.0~14
+65~EpbffOQAIAf~No [0]~Não~0.0~14
+66~HPPtacjPOUL~Not available [1]~Não disponível~0.0~14
+67~LXTwCzMslOE~Male~Male~0.0~15
+68~goTJcqvymov~Female~Female~0.0~15
+69~ibsoEfwa1qu~Lack of supplies/equipment~Lack of supplies/equipment~0.0~16
+70~XikUaWPuOcY~Lack of power~Lack of power~0.0~16
+71~tI3ch3pu8Pu~No malaria microscopy tests ordered~No malaria microscopy tests ordered~0.0~16
+72~cnGklGWrQgc~No lab staff who conduct malaria microscopy~No lab staff who conduct malaria microscopy~0.0~16
+73~pTEJvMYIdOv~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~16
+74~R5wjxBLeqcN~Not enough time during facility visit~Not enough time during facility visit~0.0~16
+75~wXSMyfz5Zq5~Other~Other~0.0~16
+76~ITPyilULPPz~Pf~1. Pf~0.0~17
+77~lFzhh4L4zAu~Pv~2. Pv~0.0~17
+78~hixVLr73sNr~Pm~3. Pm~0.0~17
+79~WNb6c9OyKWg~Po~4. Po~0.0~17
+80~GMdHWap378I~Mixed~5. Mixed~0.0~17
+81~pRl7FjvWc6d~N/A~N/A~0.0~17
+82~qXiJEDeiB6L~Yes~Yes~0.0~18
+83~OsA6cN5v2UR~No~No~0.0~18
+84~NgKwxHeX4IN~Yes [1]~Oui~1.0~19
+85~i4eL6Ab7QfG~No [0]~Non~0.0~19
+86~LmswHMcDqKr~Yes [1]~Sim~0.0~20
+87~rHSarOgt6Hp~No [0]~Não~0.0~20
+88~bTu5dDvuYjy~Malaria~Malaria~1.0~21
+89~axzP6ylxFgV~Pneumonia~Pneumonia~2.0~21
+90~vjjiO9m1lJZ~Diarhoea~Diarhoea~3.0~21
+91~xTOTyDWcqJI~Dysentery~Dysentery~4.0~21
+92~E4ZnLamNuPs~Cough or Common Cold~Cough or Common Cold~5.0~21
+93~jUMMktkl1QI~Danger sign illness~Danger sign illness~6.0~21
+94~FNKdjCftLbY~Other illness~Other illness~7.0~21
+95~GKxguJcU8lN~Present & Functional [1]~Present & Functional [1]~0.0~22
+96~WLhllRrizcN~Present & Non-functional [0.5]~Present & Non-functional [0.5]~0.0~22
+97~c7MDui4Idpf~Not present [0]~Not present [0]~0.0~22
+98~yaB3BSMf09c~RDT~RDT~0.0~23
+99~xo3YiCSSmdX~Microscopy~Microscopy~0.0~23
+100~LBnqYeZ7HSA~Test not available~Test not available~0.0~23
+101~rSQaBgxCZR7~Test not ordered~Test not ordered~0.0~23
+102~tPyHSI5J638~Yes [1]~Sim~0.0~24
+103~qJHlssMSDyf~No [0]~Não~0.0~24
+104~cPX5qYfO844~Antimalarial not prescribed [1]~Antimalárico não receitado~0.0~24
+105~DOeVyBzXemK~Trimethoprim-sulfamethoxazole (cotrimoxazole)~Trimethoprim-sulfamethoxazole (cotrimoxazole)~0.0~25
+106~To30U9zSB0x~Amoxicillin~Amoxicillin~0.0~25
+107~Z1EVdMdm19F~Other oral antibiotic~Other oral antibiotic~0.0~25
+108~CrsCh65AA34~Other IM/IV antibiotic~Other IM/IV antibiotic~0.0~25
+109~edag7rOlufR~No antibiotic prescribed~No antibiotic prescribed~0.0~25
+110~CksDcEKIXwa~No febrile patient available~No febrile patient available~0.0~26
+111~dmd9i24D4Rq~No clinician available~No clinician available~0.0~26
+112~DTYBvCZClrM~Patient sent to lab; did not return~Patient sent to lab; did not return~0.0~26
+113~bECBTuFmuFp~Patient referred out~Patient referred out~0.0~26
+114~xpnYVdZzftr~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~26
+115~Y8H6Ws0X7OI~Not enough time during facility visit~Not enough time during facility visit~0.0~26
+116~zE3pljIJD69~Other~Other~0.0~26
+117~kKmG8wOq1A8~Male~Masculino~0.0~27
+118~E5Io2cJ8XkF~Female~Feminino~0.0~27
+119~RxMb4p5oT0v~CHO/CHN~CHO/CHN~0.0~28
+120~EkDfHq5HxpZ~EN/RN/SRN~Clinical Nurse~0.0~28
+121~xkQJi6oehFe~PA/MA~Physician/Medical Assistant~0.0~28
+122~nQpzvtqqLTt~Medical Officer~Medical Officer~0.0~28
+123~POGkmnkcEsa~Mid Wife~Midwife~0.0~28
+124~LlUpS5hLVnB~Medical Intern~Medical Intern~0.0~28
+125~DSp0MSCKBpW~Pharmacist~Pharmacist~0.0~28
+126~HmAskWpMqwc~Pharmacy Assistant~Pharmacy Assistant~0.0~28
+127~WpD1Q2S93k6~Lab Tech~Lab Tech~0.0~28
+128~px6Qz93OrfJ~Other~Other~0.0~28
+129~GIsw6UXQLSm~Yes [1]~Yes [1]~0.0~29
+130~E7ItDf3Srh7~Apparent [1]~Apparent [1]~0.0~29
+131~zOIgQVW2Tlr~Not Asked [0]~Not Asked [0]~0.0~29
+132~SZicZMEQHE4~Done [1]~Realizado~0.0~30
+133~zVGnja5ZgHo~Not Done [0]~Não realizado~0.0~30
+134~vRcE5iJwxlH~MD/Medical Officer/Physician~MD/Medical Officer/Physician~0.0~31
+135~GFiwTOTirNS~Clinical Officer/Physician's Assistant~Clinical Officer/Physician's Assistant~0.0~31
+136~s1HEzR7dhVN~Nurse~Nurse~0.0~31
+137~JGmsnMXywiA~Midwife~Midwife~0.0~31
+138~dSsQOJ5v8J7~Other~Other~0.0~31
+139~KjAgQerxS1Z~Traditional treatment [1]~Tratamento tradicional~0.0~32
+140~MakzNk84IOQ~Antimalarial treatment [1]~Tratamento antimalárico~0.0~32
+141~t5mvrZjdsCR~Other / Unknown [1]~Outro / Desconhecido~0.0~32
+142~xReqnnSpO7l~Not Asked [0]~Não questionado~0.0~32
+143~sHW7u5cN7ZH~Yes~Yes~0.0~33
+144~t00yWf15FP7~No~No~0.0~33
+145~UrO4drPT2hR~No RDT tests ordered~No RDT tests ordered~0.0~34
+146~ZjPuI11HnSY~No health care workers who use RDTs~No health care workers who use RDTs~0.0~34
+147~DpBqwk6u0kt~No RDTs available~No RDTs available~0.0~34
+148~R90yAo2oRt1~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~34
+149~onGqchlCRMD~Not enough time during facility visit~Not enough time during facility visit~0.0~34
+150~kjgcJt6hdfq~Other~Other~0.0~34
+151~avbJCd62CiG~CHO/CHN~CHO/CHN~0.0~35
+152~z90bQzS5VOW~Clinical Nurse~Clinical Nurse~0.0~35
+153~PuH7F4qH9Qx~Physician/Medical Assistant~Physician/Medical Assistant~0.0~35
+154~gqzXuhZg6w3~Medical Officer~Medical Officer~0.0~35
+155~h2H9hLJGnCg~Midwife~Midwife~0.0~35
+156~CfUqpPaqM4F~Medical Intern~Medical Intern~0.0~35
+157~UnhUBMuRPgg~Other~Other~0.0~35
+158~IaNOQHdRnle~Normal~Normal~0.0~36
+159~skKpQihqcB7~Abnormal~Anormal~0.0~36
+160~tbqR9OLgVVi~Clinical Supervisor~Clinical Supervisor~0.0~37
+161~W07IdNLC8dW~Laboratory Supervisor~Laboratory Supervisor~0.0~37
+162~IiqYEagrA7T~Other~Other~0.0~37
+163~loClz2oZrLv~English~English~0.0~38
+164~SVoKFPbHo83~French~French~0.0~38
+165~hk2pr8kV60O~Spanish~Spanish~0.0~38
+166~h0Rxpj7fhEB~Yes [1]~Yes [1]~0.0~39
+167~me3xhV0P1xo~No [1]~No [1]~0.0~39
+168~WZ7yKn0BOEi~Not Asked [0]~Not Asked [0]~0.0~39
+169~yno128G99sN~Burning (incinerator or protected environment)~Burning (incinerator or protected environment)~0.0~40
+170~fySM6oiuHiA~Dump without burning (protected environment)~Dump without burning (protected environment)~0.0~40
+171~HkWnjmGovjK~Any disposal in unprotected environment~Any disposal in unprotected environment~0.0~40
+172~RrX3k1UnJEZ~Other~Other~0.0~40
+173~sGDhZbADUjB~Yes [1]~Yes [1]~0.0~41
+174~AY38wKpw5s9~No [0]~No [0]~0.0~41
+175~jBgcKF6ew6G~Antimalarial not prescribed [1]~Antimalarial not prescribed [1]~0.0~41
+176~z9PqjOskDgr~Present & Functional [1]~Presente & Functional~0.0~42
+177~WlY16Sr0lOq~Present & Non-functional [0]~Presente & Não-funcional~0.0~42
+178~FaR7skVoihT~Not present [0]~Não existe~0.0~42
+179~npoWEfWpvst~Yes [1]~Yes [1]~0.0~43
+180~UMiXFIZMqD5~No [1]~No [1]~0.0~43
+181~epC7tmRmuZ2~Not asked [0]~Not asked [0]~0.0~43
+182~ZEJPDye4C0t~Not applicable [1]~Not applicable [1]~0.0~43
+183~RYDbObSqvCn~Mixed~Mixed~0.0~44
+184~Ee1PzVYV8Ax~Plasmodium falciparum (Pf)~Plasmodium falciparum (Pf)~0.0~44
+185~Y4DNVWALkMy~Plasmodium vivax (Pv)~Plasmodium vivax (Pv)~0.0~44
+186~FRp3874gBk4~Yes [1]~Yes [1]~0.0~45
+187~A8XbKaPxjxd~No [1]~No [1]~0.0~45
+188~dP95s2U7mbo~Not Asked [0]~Not Asked [0]~0.0~45
+189~SmnQ4U56sy9~Medico~Medico~0.0~46
+190~nID0RxXY93h~Tec. Medicina/ Agente de Medicina~Tec. Medicina/ Agente de Medicina~0.0~46
+191~igzD6fVDdeY~Enfermeiro(a)~Enfermeiro(a)~0.0~46
+192~IT90J6ExZnH~Parteira~Parteira~0.0~46
+193~sBh7nvJs0gR~Outro~Outro~0.0~46
+194~OUuryREhgMK~92~QUESTION~0.0~47
+195~mznbSsWOOpk~93~COMPOSITE_SCORE~0.0~47
+196~NsYwR3slhXk~94~CONTROL_DATAELEMENT~0.0~47
+197~Jk80qYEUQv2~Pregnancies~Pregnancies~0.0~48
+198~p7RPuHvTbgw~Abortions~Abortions~0.0~48
+199~KK45CtWtmle~Births~Births~0.0~48
+200~p0fb78XT4vb~Running tap water [1]~Running tap water [1]~0.0~49
+201~ELP9WHlTfNW~Rain water [0.33]~Rain water [0.33]~0.0~49
+202~RqgvaFIbSCL~Well [1]~Well [1]~0.0~49
+203~OxYnF1EkxFg~Bore hole [1]~Bore hole [1]~0.0~49
+204~PGj4paN7s3O~Stream/ river [0.33]~Stream/ river [0.33]~0.0~49
+205~LLO6OwMn5Xa~Commercial Bottled water [1]~Commercial Bottled water [1]~0.0~49
+206~Xlz4WAamIY1~Externally filled water tank [1]~Externally filled water tank [1]~0.0~49
+207~SlLKyGLulWR~1~DROPDOWN_LIST~0.0~50
+208~Ua4SD7Mxd5G~8~RADIO_GROUP_HORIZONTAL~0.0~50
+209~QrXvcz7XwM8~5~DATE~0.0~50
+210~Fz5HrBuaAjV~7~NO_ANSWER (Label)~0.0~50
+211~dk6rD8CKDTW~2~INT~0.0~50
+212~EXWRrQkzPsk~6~POSITIVE_INT~0.0~50
+213~AQhRJEqpDyo~92~TAB_SCORE~0.0~50
+214~J0aiT7beP55~93~COMPOSITE_SCORE~0.0~50
+215~WaNi7e02jLi~4~SHORT_TEXT~0.0~50
+216~IdMwErCkxtS~3~LONG_TEXT~0.0~50
+217~p5YNHmu0xD9~91~FEEDBACK~0.0~50
+218~DLax570l7NA~9~RADIO_GROUP_VERTICAL~0.0~50
+219~hUaWHuTtpqg~94~CONTROL_DATAELEMENT~0.0~50
+220~IhCzRgcx5rE~10~DROPDOWN_LIST_DISABLED~0.0~50
+221~miv30rq2Q1w~11~IMAGES~0.0~50
+222~YWAyylTyJuC~Guideline review~Revisão de Linhas de Orientação~0.0~51
+223~leO3xDAeYiA~Lecture~Palestra~0.0~51
+224~hYdqXlaqNLC~Demonstration~Demonstração~0.0~51
+225~pnpu19OPo88~SOP Review~Revisão de POPs~0.0~51
+226~FThpQkjFKDY~Clinical mentoring~Tutoria Clínica~0.0~51
+227~kS4NmF8qwbX~Yes [1]~Yes [1]~0.0~52
+228~hCjL6drJhpK~No [1]~No [1]~0.0~52
+229~IpRoPHRDRfC~NotAsked [0]~NotAsked [0]~0.0~52
+230~LD2nAfDHSx8~Male [1]~Male [1]~0.0~52
+231~wUHnzecFwGh~Yes [1]~Yes [1]~0.0~53
+232~lO3C0tYMcyC~Not Available [1]~Not Available [1]~0.0~53
+233~KRyXwsuJOxF~No [0]~No [0]~0.0~53
+234~bsAJxgMKGBP~Xray~Xray~0.0~54
+235~gwHyDm4Gume~labo~labo~0.0~54
+236~n6WLxJbpkHq~Main Power Supply~Main Power Supply~0.0~55
+237~pj4oa5ZTFkm~Generator~Generator~0.0~55
+238~nWz19xQBlqN~Solar~Solar~0.0~55
+239~Nt76lfcxgEZ~RDT~TDR~0.0~56
+240~gPxx0i0wJ7o~Microscopy Thick smear~Microscopia Esfregaço Espesso~0.0~56
+241~JyzPuNLMS5q~Microscopy Thin smear~Microscopia Esfregaço Fino~0.0~56
+242~IGnDP897402~Microscopy Thick and Thin smear~Microscopia Esfregaço Espesso e Fino~0.0~56
+243~AXZzgugIxpA~Both RDT and Microscopy (any type)~Ambos TDR e Microscopia (qualquer tipo)~0.0~56
+244~BuwiNYg4Z6x~Yes [1]~Sim~0.0~57
+245~pLKdShU58eW~No [1]~Não~0.0~57
+246~vCAl7aclDgz~Not Asked [0]~Não Questionado~0.0~57
+247~NnyhSfFQz7s~Not applicable [1]~Não aplicável~0.0~57
+248~Zn1DBjUxQKl~Yes [1]~Yes [1]~0.0~58
+249~CyaXL2phwKt~N/A [1]~N/A [1]~0.0~58
+250~NFKMLNQ5ADw~No [0]~No [0]~0.0~58
+251~U2sW2ZsaXDr~Severe disease~Severe disease~0.0~59
+252~I3MCdCmy1Sn~Non-severe disease~Non-severe disease~0.0~59
+253~lbvFEOYKGNU~Yes [1]~Yes [1]~0.0~60
+254~U59BEqM1peS~No [0]~No [0]~0.0~60
+255~gXwnezfmlVG~Not available [1]~Not available [1]~0.0~60
+256~GhXFajvqmSS~N/A [1]~N/A [1]~0.0~61
+257~SdQM9DAjW2e~Yes [0]~Yes [0]~0.0~61
+258~FIOOj1hzVAK~No [1]~No [1]~0.0~61
+259~fJbCJIZ02cE~Normal~Normal~0.0~62
+260~YBX6YjBaPWu~Abnormal~Anormal~0.0~62
+261~CaCHsb2IIGx~Not Ordered~Não pedido~0.0~62
+262~kkOywHQwQWE~Yes [1]~Yes~1.0~63
+263~yVUHqeMvBJZ~No [0]~No~0.0~63
+264~zEYh7qnQq1P~RDT~RDT~0.0~64
+265~TzpCv1DdSdT~Microcopy Thick smear~Microcopy Thick smear~0.0~64
+266~CEXOAEZrPBC~Microscopy Thin smear~Microscopy Thin smear~0.0~64
+267~uloYxOZeDiR~Both~Both~0.0~64
+268~QbT7TxYSluz~QAACTs [1]~QAACTs~1.0~65
+269~NN1rindzd5u~Other antimalarials~Other antimalarials~0.0~65
+270~SlIMwnIrnH0~Antibiotics - Pneumonia [2]~Antibiotics - Pneumonia~2.0~65
+271~UmiVkA29pgN~ORS and Zinc [3]~ORS and Zinc~3.0~65
+272~NWrwsF0UxJ9~Antibiotics - Dysentery [4]~Antibiotics - Dysentery~4.0~65
+273~X7rLhbJ5KK5~Cough Syrup or tablets [5]~Cough Syrup or tablets~5.0~65
+274~k7C7uB1yfoU~Severe patient referred [6]~Severe patient referred~6.0~65
+275~akq0OvyB3hj~other treatment [7]~other treatment~7.0~65
+276~ryyOtqk9KUd~Thin smear~Thin smear~0.0~66
+277~YEIMkSgO7HR~Thick smear~Thick smear~0.0~66
+278~Jq8dvoQkZ1i~Both~Both~0.0~66
+279~vYKt3OSswEi~Técnico de Laboratório~Técnico de Laboratório~0.0~67
+280~x1iLwIcfoM2~Agente de Laboratório~Agente de Laboratório~0.0~67
+281~cnJVll9KtOR~Outro~Outro~0.0~67
+282~Hvr5MWp9hgC~RDT + [1]~RDT + [1]~0.0~68
+283~IInyldHorNu~RDT - [0]~RDT - [0]~0.0~68
+284~TvZPZ7DoKTz~Microscopy + [1]~Microscopy + [1]~0.0~68
+285~MYPSaRW1WR6~Microscopy - [0]~Microscopy - [0]~0.0~68
+286~sppxoAQw1c4~Not found [0]~Not found [0]~0.0~68
+287~uJLtQrGoKFA~Lab Tech~Lab Tech~0.0~69
+288~qcxhcLVdSvV~Microscopist~Microscopist~0.0~69
+289~EKRx0r1vgOb~Paper reports on designated tally sheets~Paper reports on designated tally sheets~0.0~70
+290~ZCh9g9Cc6CT~Paper reports without tally sheets~Paper reports without tally sheets~0.0~70
+291~eiaFTRozIW2~SMS-based reports~SMS-based reports~0.0~70
+292~GTt0X6OA1CN~Direct computer entry into designated form~Direct computer entry into designated form~0.0~70
+293~qjnHzEzcjdb~Email~Email~0.0~70
+294~GQYHlYIq3IX~Yes [1]~Yes [1]~0.0~71
+295~XuHRXyXmxka~No [1]~No [1]~0.0~71
+296~ReD1kfjDdji~Not asked [0]~Not asked [0]~0.0~71
+297~LsZ6Q3nn4QZ~Male [1]~Male [1]~0.0~71
+298~aPqBukA15rN~Positive~Positivo~0.0~72
+299~jJFz3AfLxvf~Negative~Negativo~0.0~72
+300~xAmcM2Pv1vg~Unknown/No Test Result~Desconhecido/Sem resultado do teste~0.0~72
+301~EYofzyIgd8P~Unofficial register~Registo não oficial~0.0~73
+302~ntflYbDtEMW~Loose paper sheets~Folhas de papel soltas~0.0~73
+303~uTfkrc4ZX4m~Computerized record~Registo informatizado~0.0~73
+304~S4IVZrtiw8f~Other~Outro~0.0~73
+305~n6Cs3wof3SN~Yes [1]~Yes [1]~0.0~74
+306~plpmSLQJeai~No [1]~No [1]~0.0~74
+307~jBKtyC93Nyn~NotAsked [0]~NotAsked [0]~0.0~74
+308~GXI1lGgUxJo~Applicable [1]~Applicable [1]~0.0~74
+309~E2W8vbkUum3~No febrile patient available~Nao houve pacientes com sindrome feril hoje~0.0~75
+310~W1rZTCGrVzt~No clinician available~Nao existem clinicos desponiveis hoje~0.0~75
+311~mnlSWKLmq4F~Patient referred out~O paciente foi transferido durante a observacao~0.0~75
+312~hlr97p0jgoY~Stopped due to potential patient harm~Interrompida a consulta devido o grande risco de lesao do paciente~0.0~75
+313~DwnfEoq6vYX~Not enough time during facility visit~Nao houve tempo suficiente durante a visita~0.0~75
+314~SeQSMlGmgy5~Other~Outros~0.0~75
+315~DPYq6jXH51O~Normal~Normal~0.0~76
+316~NfRIhjP8JnL~Abnormal~Abnormal~0.0~76
+317~lYeeRZqTI6R~Not Ordered~Not Ordered~0.0~76
+318~LxeEwTKpyVw~Running tap water [1]~Água de torneira/canalizada~0.0~77
+319~EQxNo2MAWmw~Rain water [0.33]~Água da Chuva~0.0~77
+320~ku8ok9TLqgv~Well [1]~Poço~0.0~77
+321~rjDujDm9SfI~Bore hole [1]~Furo~0.0~77
+322~tBegQ4oRe7y~Stream/ river [0.33]~Riacho/Rio~0.0~77
+323~GQOnNl1M5QX~Commercial Bottled water [1]~Água engarrafada comercial~0.0~77
+324~FXHBKjh9B8j~Externally filled water tank [1]~Tanque enchido no exterior~0.0~77
+325~hF397tsMl40~Plus System~Plus System~0.0~78
+326~XC0YHmIlKMY~Parasite uL~Parasite uL~0.0~78
+327~FPI97xigZog~% RBC infected with malaria parasites~% RBC infected with malaria parasites~0.0~78
+328~eq2vEeHBl8n~Yes [1]~Yes [1]~0.0~79
+329~NMHfcDcRXLx~No [0]~No [0]~0.0~79
+330~CuQlqsyS7Nx~Not Applicable [1]~Not Applicable [1]~0.0~79
+331~wfE0RpPg05e~Not addressed~Not addressed~0.0~80
+332~AJionMl1LN2~Partially addressed~Partially addressed~0.0~80
+333~sa30StjF7Qy~Completely Addressed~Completely Addressed~0.0~80
+334~lwUztTBKQIo~Traditional treatment [1]~Traditional treatment [1]~0.0~81
+335~tSZRMlI4yAc~Antimalarial treatment [1]~Antimalarial treatment [1]~0.0~81
+336~iAhowU9Jl8C~Other/  Unknown [1]~Other/  Unknown [1]~0.0~81
+337~W0KxcaGYX9G~Not Asked [0]~Not Asked [0]~0.0~81
+338~JrqOyrBukYi~Forest~Forest~0.0~82
+339~MDITj1V6Dxe~Plantation~Plantation~0.0~82
+340~aCqaaqDFyS3~Another Country~Another Country~0.0~82
+341~LIFjhAMyVp3~Other~Other~0.0~82
+342~qV0nl38e11L~Medical Officer~Medical Officer~0.0~83
+343~lHSxxFOCwnP~Medical Assistant~Medical Assistant~0.0~83
+344~Etchsq8Eewo~Clinical Officer~Clinical Officer~0.0~83
+345~z0mYOoBcTst~Medical Intern~Medical Intern~0.0~83
+346~JEMAyVEWJIr~Nurse~Nurse~0.0~83
+347~hEH8OAvsm6d~Students on Attachment~Students on Attachment~0.0~83
+348~g8UK7Mph1gi~Other~Other~0.0~83
+349~S0p7CBFDpg2~Yes [1]~Sim~0.0~84
+350~Qe459MpSRlE~Apparent [1]~Aparente~0.0~84
+351~LhOVxncmLrb~Not Asked [0]~Não Questionado~0.0~84
+352~hF9oXN9ULHx~OPD~OPD~0.0~85
+353~ODu1IyK5LnA~ANC~ANC~0.0~85
+354~IW6Pypzlqqu~Specialized obstetrics clinic~Specialized obstetrics clinic~0.0~85
+355~IjXqGxVrsHJ~Other~Other~0.0~85
+356~iMOWaBEfsxx~One day~Um dia~0.0~86
+357~jSG5XDkx77n~Greater than one day~Mais do que um dia~0.0~86
+358~L49PhWAIdzY~Not asked~Não questionado~0.0~86
+359~odyU6Z58NtA~RDT~TDR~0.0~87
+360~L7WTJkHRgz9~Microscopy~Microscopia~0.0~87
+361~BX0uJKflsRr~Test not available~Teste não disponível~0.0~87
+362~PFYwPvOzqjO~Test not ordered~Teste não pedido~0.0~87
+363~jLthnuOuhgr~No treatments prescribed~No treatments prescribed~0.0~88
+364~uaOcgkRVVI2~No health care workers who dispense treatments~No health care workers who dispense treatments~0.0~88
+365~akCobpMvsVb~No treatments available~No treatments available~0.0~88
+366~KTTSOeLs0ZP~Stopped due to potential patient harm~Stopped due to potential patient harm~0.0~88
+367~iGuMyJ0v7wV~Not enough time during facility visit~Not enough time during facility visit~0.0~88
+368~SCb8zQmRZ6d~Other~Other~0.0~88
+369~Wx9cAKvRdOA~Child~Child~0.0~89
+370~H3uRm27Qhom~Adolescent~Adolescent~0.0~89
+371~TW19jz65xrW~Adult~Adult~0.0~89
+372~ohIamFf0qbm~Referral~Referral~0.0~89
+373~b26Q2yYlao5~Lab Scientist~Laboratory Scientist~0.0~90
+374~xk95uxfJfLf~Lab Technologist~Lab Technologist~0.0~90
+375~wGy5NJFjzcK~Assistant Lab Technologist~Assistant Laboratory Technologist~0.0~90
+376~p6I31J8OW7D~Other~Other~0.0~90
+377~WdbsGbRZnfB~Yes~Yes~1.0~91
+378~qVhzmiL1UnM~No~No~0.0~91
+379~mJUGP9w1eLk~Lab Tech~Lab Tech~0.0~92
+380~rItZsxOBDiO~Lab Assistant~Lab Assistant~0.0~92
+381~nAEvwcwgUAY~Other~Other~0.0~92
+382~JC3KZ1z6XyG~Yes~Yes~0.0~93
+383~hAl72KM9IgI~Not~Not~0.0~93
+384~sj2WrLlflGK~Unknown~Unknown~0.0~93
+385~Ey1QYnZ8JgF~Yes [0]~Sim~0.0~94
+386~Iaqn5pneudL~No [1]~Não~0.0~94
+387~g56Qvm6CY6I~Computer~Computer~0.0~95
+388~hINjtYKUGir~Tablets~Tablets~0.0~95
+389~QbyIhrg0C8P~Facility doesn’t enter data directly into DHIS2~Facility doesn’t enter data directly into DHIS2~0.0~95
+390~kdbBceS6uB8~Thick smear~Gota espessa~0.0~96
+391~rMVmYtYmv1E~Thin smear~Gota estendida~0.0~96
+392~uY2ywXD1nxB~Both~Ambos~0.0~96
+393~PM9d0y75iyI~Facility-based data validation~Facility-based data validation~0.0~97
+394~vOTJhPNpYf0~Sub-district data validation~Sub-district data validation~0.0~97
+395~VsYrjzXdlKW~Data sent without validation~Data sent without validation~0.0~97
+396~lPx5glz3szd~1~Yes~0.0~98
+397~x7o75Agvm37~0~No~0.0~98
+398~xNCHj3uEAre~Lab Technichian~1. Lab Technichian~0.0~99
+399~uR47VfjOunh~Lab Assistant~2. Lab Assistant~0.0~99
+400~vqgiCG66aHs~Clinical Officer/Physicians Assistant~3. Clinical Officer/Physicians Assistant~0.0~99
+401~dvGVbrLgPCx~Nurse~4. Nurse~0.0~99
+402~DZPidP5IWGq~MD~5. MD~0.0~99
+403~SmaJXg4Q9Ox~Midwife~6. Midwife~0.0~99
+404~OBXvcqLDs3E~Other~7. Other~0.0~99
+405~x8AKhnaXSM5~Enters directly into DHIS2~Enters directly into DHIS2~0.0~100
+406~MIWll3pxd3E~Sends paper-based summary sheets to DHIS2~Sends paper-based summary sheets to DHIS2~0.0~100
+407~ZwqOmcirLON~Other~Other~0.0~100
+408~L59tGSJKL22~Male~1. Male~0.0~102
+409~D0sSYy4brtj~Female~2. Female~0.0~102
+410~nsklmxgnm5m~Contagem absoluta~Contagem absoluta~0.0~103
+411~EVBy5M3uy6M~Contagem percentual~Contagem percentual~0.0~103
+412~z4rnkz1iaSQ~Real~Real~0.0~104
+413~g3CRm2xLez7~Simulated~Simulated~0.0~104
+414~JLus6J4KNFr~Referred to higher level facility~Referred to higher level facility~0.0~105
+415~Ttuujm56CI2~Admitted to inpatient unit~Admitted to inpatient unit~0.0~105
+416~BOoSy47Xf8h~No~No~0.0~106
+417~MO3dT67DAmj~Yes~Yes~0.0~106
+418~FzZpD5AIgos~Guideline review~1. Guideline review~0.0~107
+419~qiRXaSdGiNO~Lecture~2. Lecture~0.0~107
+420~JiPW0k3B3qV~Demonstration~3. Demonstration~0.0~107
+421~mKD3DE51Lz8~SOP Review~4. SOP Review~0.0~107
+422~WPBgPwsz3yp~Clinical mentoring~5. Clinical mentoring~0.0~107
+423~xCppHcHsjx8~Done [1]~Done [1]~0.0~108
+424~twykveRMz0r~Not Done [0]~Not Done [0]~0.0~108
+425~GsOClhqoxae~Paper reports on designated tally sheets~Relatórios em papel e em folhas de controlo designadas~0.0~109
+426~xmatIBmQzqj~Paper reports without tally sheets~Relatórios em papel sem folhas de controlo~0.0~109
+427~KkIoCboVhrE~SMS-based reports~Relatórios com base em SMS~0.0~109
+428~SxkgDuNZZ9g~Direct computer entry into designated form~Entradas directas no computador em formulários designados~0.0~109
+429~INj2G7GveOu~Email~Email~0.0~109
+430~ifx11JCClNX~PARENT~Parent~0.0~110
+431~WqShW2v6G6R~CHILD~Child~0.0~110
+432~XHLSKXnS70G~IUD~IUD~0.0~111
+433~Ekapi1LueQy~Implant~Implant~0.0~111
+434~vlup27lx9SC~Inyectable~Inyectable~0.0~111
+435~CEDkfNSq0ja~Oral pills~Oral pills~0.0~111
+436~aPkqP8vBQ7B~Condom~Condom~0.0~111
+437~PPNN46EvftN~Yes~Yes~0.0~112
+438~RBuWDxSseC9~No~No~0.0~112
+439~daK8ZCoexeL~NA~NA~0.0~112
+440~E6v0S0bvhH6~Yes [1]~Sim~0.0~113
+441~qjctrscPv2D~No [1]~Não~0.0~113
+442~KOrgJexuL10~Unknown [1]~Desconhecido~0.0~113
+443~XRWWLGFuFBi~Not Asked [0]~Não Questionado~0.0~113
+444~xlaxT2F0qIe~Plus System~1. Plus System~0.0~114
+445~blU3YnbHWpC~Parasite uL~2. Parasite uL~0.0~114
+446~cOJyyh2vBnL~Against WBC~3. % RBC infected with malaria parasites~0.0~114
+447~pCLCENk1M3g~One day~One day~0.0~115
+448~tmBEtemqLej~Greater than one day~Greater than one day~0.0~115
+449~kHDbtE2eVQE~Not asked~Not asked~0.0~115
+450~kS3nxgKji7Q~Oui [1]~Oui~1.0~116
+451~SpEFrvKdDWn~Non [0]~Non~0.0~116
+452~WtFFVFgnAwe~OPD~CE~0.0~117
+453~uNZ9sTLeKvD~ANC~CPN~0.0~117
+454~EwFn8kmP9Vq~Specialized obstetrics clinic~Clínica especializada em obstetrícia~0.0~117
+455~FDSIzKtXOya~Other~Outro~0.0~117
+456~vr5iNGFyND8~1. Health Center~1. Health Center~0.0~118
+457~APUqjC4HCsp~2. District Hospital~2. District Hospital~0.0~118
+458~EuK7m0QkGuL~3. Regional hospital~3. Regional hospital~0.0~118
+459~q7vYfZ6xdHO~Other~4. Other~0.0~118
+460~CQ0xNuwSEZ3~Quasi-Govt~Quasi-Govt~0.0~119
+461~VOyUbAC8tU6~Govt~Govt~0.0~119
+462~XqS67BRQ0Ys~Mission (CHAG)~Mission (CHAG)~0.0~119
+463~AQjryRUIN4p~Private~Private~0.0~119
+464~FlaRsDmSdjb~Other~Other~0.0~119
+465~yFOd3sMEUmY~No antimalarial prescribed~No antimalarial prescribed~0.0~120
+466~FwVYMiVLL2L~ACT~ACT (AL, ASAQ, DHAP)~0.0~120
+467~eqwAcrHl4Xt~Artemisinin (oral monotherapy)~Artemisinin (oral monotherapy)~0.0~120
+468~ZQekAkvpTQC~Artemether (intramuscular)~Artemether (intramuscular)~0.0~120
+469~EONlpY2yaBF~Artesunate (intramuscular monotherapy)~Artesunate (intramuscular monotherapy)~0.0~120
+470~rn2GC50sUsq~Artesunate (rectal)~Artesunate (rectal)~0.0~120
+471~ILY3pF5rWfH~Quinine (oral)~Quinine (oral)~0.0~120
+472~XinjmOAQLNG~Quinine (intramuscular)~Quinine (intramuscular)~0.0~120
+473~adDwNTOgdcB~Quinine (intravenous)~Quinine (intravenous)~0.0~120
+474~ZY9EdaGkfq7~Chloroquine~Chloroquine~0.0~120
+475~bkPwAwfoomN~SP~SP~0.0~120
+476~HsVIURtSnsJ~Other~Other~0.0~120
+477~aK5ogDFzSIK~Yes [1]~Yes [1]~0.0~121
+478~YEzjhepSxm4~No [1]~No [1]~0.0~121
+479~tBgMzYs93bW~Unknown [1]~Unknown [1]~0.0~121
+480~gvAxOQaBulc~Not Asked [0]~Not Asked [0]~0.0~121
+481~j3JgS93Lf5J~Yes [1]~Yes~0.0~122
+482~lCPIvGfJbF4~Antimalarial Not Prescribed [1]~Antimalarial Not Prescribed~0.0~122
+483~Awjd8Sn7HH5~No [0]~No~0.0~122
+484~royjmr03yMD~Pf~Pf~0.0~123
+485~cipuMPpLn5R~Pv~Pv~0.0~123
+486~J12gHjVbHNO~Pm~Pm~0.0~123
+487~lnAGhwbp8dT~Po~Po~0.0~123
+488~ThLbYKhnNgK~Mixed~Misto~0.0~123
+489~WS4X9ZTUat3~Oui [0]~Oui~0.0~124
+490~N69KRwWyRDf~Non [1]~Non~1.0~124
+491~Xl9tWy8x3HP~Less than one week ago~Less than one week ago~0.0~125
+492~LVh9nEgu8JY~1 week to 1 month ago~1 week to 1 month ago~0.0~125
+493~uyotitK4CK4~1-3 months ago~1-3 months ago~0.0~125
+494~GREON6jZckg~Greater than 3 months ago~Greater than 3 months ago~0.0~125
+495~ajaeMFBnqu2~Facility head has never access DHIS2~Facility head has never access DHIS2~0.0~125
+496~hSRKsRzeFSa~Facility head does not have access to DHIS2~Facility head does not have access to DHIS2~0.0~125
+497~PiTYqazydxV~MD/Medical Officer/Physician~MD/Medical Officer/Physician~0.0~126
+498~RAl8Ndc1Pgj~Clinical Officer/Physician's Assistant~Clinical Officer/Physician's Assistant~0.0~126
+499~WrSKtoGqfhA~Scientist / Lab Tech~Scientist / Lab Tech~0.0~126
+500~meRGZmYRZNC~Microscopist~Microscopist~0.0~126
+501~XzMBbhb13hE~Nurse~Nurse~0.0~126
+502~DDiwe4sDdJ7~Midwife~Midwife~0.0~126
+503~WjYtgGxa7Wk~Other~Other~0.0~126
+504~kdqq02AtmRN~Never~Nunca~0.0~127
+505~ej2qTl8zsMX~Less than half of the time~Menos do que metade do tempo~0.0~127
+506~dfwE9XRxOZU~About half of the time~Cerca de metade do tempo~0.0~127
+507~CjybwxpWLnp~More than half of the time~Mais do que metade do tempo~0.0~127
+508~Fy1uUkFU9t6~Always~Sempre~0.0~127
+509~ASjMC3pDbBp~Injectable Artesunate~Injectable Artesunate~0.0~128
+510~rwqIsFniswF~Injectable Quinine~Injectable Quinine~0.0~128
+511~oDNBWvlSbVE~Other~Other~0.0~128
+512~ePy6zSbfn5j~Positive~Positive~0.0~129
+513~TNt7uNqtYNy~Negative~Negative~0.0~129
+514~jlkhGQDTSPo~Unknown~Unknown/No Test Result~0.0~129
+515~PFu7nMMYCWX~Yes [1]~Sim~0.0~130
+516~f2UHrlTlAIu~No [0]~Não~0.0~130
+517~NHFyWKn7MXA~N/A [1]~N/A~0.0~130
+518~Uyfj983L2M9~Main~Principal~0.0~131
+519~GYSL1qV8DIy~Generator~Gerador~0.0~131
+520~Dc7FVzuensy~Solar~Solar~0.0~131
+521~F0Fw44ddUYr~None~Nenhum~0.0~131
+522~LvllqeVcOFV~0~Unsatisfactory~0.0~132
+523~jZzKggFnxTp~1~Fair~0.0~132
+524~eP5tU7yrRj6~2~Satifactory~0.0~132
+525~hekUOQDlogB~3~Excellent~0.0~132
+526~GKryfjCSLfG~Never~Never~0.0~133
+527~Ontewi6MWaE~Less than half of the time~Less than half of the time~0.0~133
+528~sLN7E0YInsl~About half of the time~About half of the time~0.0~133
+529~cop4LBAZ3bQ~More than half of the time~More than half of the time~0.0~133
+530~ZOR4EsUX2Zj~Always~Always~0.0~133
+531~gcTQCnftgWd~Yes [0]~Yes [0]~0.0~134
+532~GfRgWpl93qe~No [1]~No [1]~0.0~134
+533~kO7K6xWQ99g~Unk [0]~Unknown [0]~0.0~134
+534~tnwMP5BIrtQ~Yes [1]~Sim~0.0~135
+535~dgvw4N7Uvsh~No [0]~Não~0.0~135
+536~uTx2xnCPBoV~Not Applicable [1]~Não aplicável~0.0~135
+537~F7tLq8C9mNs~Normal~Normal~0.0~136
+538~w35srylek6w~Abnormal~Abnormal~0.0~136
+539~cCsbDxuaWDg~Yes [1]~Sim~0.0~137
+540~WuPDvwN1grN~No [1]~Não~0.0~137
+541~bBePVTPaJEn~Not Asked [0]~Não Questionado~0.0~137
+542~nXvdx3DKCWL~Positive~Positive~0.0~138
+543~gQ2JdfsXRHw~Negative~Negative~0.0~138
+544~kGV280SIRwF~Not Tested~Not Tested~0.0~138
+545~dQUoxOZCdZ7~Paludisme [1]~Paludisme~1.0~139
+546~ziZr5WmcMLA~Pneumonie [2]~Pneumonie~2.0~139
+547~J0D1QfOPz8U~Diarrhée [3]~Diarrhée~3.0~139
+548~X69AyxIBoqL~Dysenterie [4]~Dysenterie~4.0~139
+549~RNsl3fCc4nD~Toux ou rhume classique [5]~Toux ou rhume classique~5.0~139
+550~iyCNJ2lvK0x~Signes de maladie inquiétants [6]~Signes de maladie inquiétants~6.0~139
+551~s3Bp0Dz5Ahn~Autres maladies [7]~Autres maladies~7.0~139
+552~crr9lWzpjbr~Unofficial register~Unofficial register~0.0~140
+553~pwyi2WPumeM~Loose paper sheets~Loose paper sheets~0.0~140
+554~riYrUCXslDh~Computerized record~Computerized record~0.0~140
+555~z8XZHHD184E~Other~Other~0.0~140
+556~r1VHEMiu4It~CTAQ [1]~CTAQ~1.0~141
+557~FOMI6DCmWZn~Antibiotiques - Pneumonie [2]~Antibiotiques - Pneumonie~2.0~141
+558~rIWgAIvPLvr~SRO et zinc [3]~SRO et zinc~3.0~141
+559~CYGgguK9y0N~Antibiotiques - Dysenterie [4]~Antibiotiques - Dysenterie~4.0~141
+560~Jp74tSAKiXV~Sirop ou comprimés pour la toux [5]~Sirop ou comprimés pour la toux~5.0~141
+561~fEgUrMpurUa~Orientation des patients sévèrement atteints vers d'autres services [6]~Orientation des patients sévèrement atteints vers d~6.0~141
+562~Kx4warMhueL~Autres traitements [7]~Autres traitements~7.0~141
+563~uh7TXtIdNOn~Pharmacy~Pharmacy~0.0~142
+564~WRfJQEvCwzH~Clinical~Clinical~0.0~142
+565~I7R9IglqYZ2~Neither Pharmacy nor Clinical Records Available~Neither Pharmacy nor Clinical Records Available~0.0~142
+566~OdFds7WlbZT~Severe disease~Doença grave~0.0~143
+567~cbdHUHU6xHM~Non-severe disease~Doença não grave~0.0~143

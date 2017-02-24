@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.model.Value;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -88,8 +89,19 @@ public class PopulateDB {
         CSVReader reader;
         for (String table : tables2populate) {
             Log.d(TAG, "Populating " + table);
-            reader = new CSVReader(new InputStreamReader(assetManager.open(CSV_DIRECTORY + table)),
-                    '~', '\"');
+            InputStreamReader inputStreamReader = null;
+            try {
+                inputStreamReader = new InputStreamReader(
+                        assetManager.open(CSV_DIRECTORY + table));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();//some .csv could be not necessary
+            }
+            if (inputStreamReader == null) {
+                continue;
+            } else {
+                reader = new CSVReader(inputStreamReader,
+                        '~', '\"');
+            }
 
             String[] line;
             while ((line = reader.readNext()) != null) {
@@ -188,15 +200,14 @@ public class PopulateDB {
                             boolean compulsoryValue = (compulsory == 0) ? false : true;
                             question.setCompulsory(compulsoryValue);
                         }
-                        //Line [14] is id_parent. Not used
+                        if (!line[14].equals("")) {
+                            question.setCompositeScore(Long.parseLong(line[14]));
+                        }
                         if (!line[15].equals("")) {
-                            question.setCompositeScore(Long.parseLong(line[15]));
+                            question.setRow(Integer.parseInt(line[15]));
                         }
                         if (!line[16].equals("")) {
-                            question.setRow(Integer.parseInt(line[16]));
-                        }
-                        if (!line[17].equals("")) {
-                            question.setColumn(Integer.parseInt(line[17]));
+                            question.setColumn(Integer.parseInt(line[16]));
                         }
                         list.add(question);
                         break;
@@ -333,7 +344,7 @@ public class PopulateDB {
                         break;
                     case SERVER_METADATA_CSV:
                         ServerMetadata serverMetadata = new ServerMetadata();
-                        serverMetadata.setId_control_dataelement(Long.parseLong(line[0]));
+                        serverMetadata.setId_server_metadata(Long.parseLong(line[0]));
                         serverMetadata.setName(line[1]);
                         serverMetadata.setCode(line[2]);
                         serverMetadata.setUid(line[3]);
