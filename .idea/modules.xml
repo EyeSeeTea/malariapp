@@ -7,9 +7,17 @@
       <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlow-Core/DBFlow-Core.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlow-Core/DBFlow-Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBFlowORM/DBFlowORM.iml" filepath="$PROJECT_DIR$/DBFlowORM/DBFlowORM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/core/core.iml" filepath="$PROJECT_DIR$/sdk/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/core-android/core-android.iml" filepath="$PROJECT_DIR$/sdk/core-android/core-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/core-rules/core-rules.iml" filepath="$PROJECT_DIR$/sdk/core-rules/core-rules.iml" />
       <module fileurl="file://$PROJECT_DIR$/malariapp.iml" filepath="$PROJECT_DIR$/malariapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/malariapp_new_sdk.iml" filepath="$PROJECT_DIR$/malariapp_new_sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/models/models.iml" filepath="$PROJECT_DIR$/sdk/models/models.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdk/sdk.iml" filepath="$PROJECT_DIR$/sdk/sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdk/app/sdk-app.iml" filepath="$PROJECT_DIR$/sdk/app/sdk-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/ui/ui.iml" filepath="$PROJECT_DIR$/sdk/ui/ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/ui-bindings/ui-bindings.iml" filepath="$PROJECT_DIR$/sdk/ui-bindings/ui-bindings.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/utils/utils.iml" filepath="$PROJECT_DIR$/sdk/utils/utils.iml" />
     </modules>
   </component>
 </project>

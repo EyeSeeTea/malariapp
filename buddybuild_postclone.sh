@@ -11,6 +11,5 @@ sh ${gitPath}/generate_last_commit.sh
 cd sdk
 git checkout 2.25_EyeSeeTea
 cd -
-cp -a DBFlowORM sdk
 cp ${BUDDYBUILD_SECURE_FILES}/driveserviceprivatekey.json app/src/hnqis/res/raw/driveserviceprivatekey.json
 
