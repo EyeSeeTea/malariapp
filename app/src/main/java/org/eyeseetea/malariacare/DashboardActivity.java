@@ -484,10 +484,12 @@ public class DashboardActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
             loggedUser = User.getLoggedUser();
+            /* Ignoring the update date
             boolean isUpdated = pullClient.isUserUpdated(loggedUser);
             if (isUpdated) {
                 pullClient.pullUserAttributes(loggedUser);
-            }
+            }*/
+            loggedUser = pullClient.pullUserAttributes(loggedUser);
             loggedUser.save();//save the lastUpdated info and attributes
             return null;
         }

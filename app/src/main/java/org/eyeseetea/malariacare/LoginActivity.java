@@ -217,24 +217,18 @@ public class LoginActivity extends AbsLoginActivity {
     }
 
     private void closeUser(int titleId, String message, LoginActivity context) {
-        SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
-        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(context.getString(titleId))
-                .setMessage(linkedMessage)
-                .setCancelable(false)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PreferencesState.getInstance().setUserAccept(false);
-                        LoginActivity.mLoginActivity.executeLogout();
-                    }
-                }).show();
-        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
-                LinkMovementMethod.getInstance());
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PreferencesState.getInstance().setUserAccept(false);
+                LoginActivity.mLoginActivity.executeLogout();
+            }
+        };
+        AUtils.closeUser(titleId, message, context, listener);
     }
 
+    //Todo: This code is repeated in DashboardActivity
     public void executeLogout() {
         mLogoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override

@@ -359,9 +359,16 @@ public abstract class AUtils {
 
     public static void checkUserClosed(User user, Context context) {
         if (user.getCloseDate() != null && user.getCloseDate().before(new Date())) {
+            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PreferencesState.getInstance().setUserAccept(false);
+                    DashboardActivity.dashboardActivity.executeLogout();
+                }
+            };
             closeUser(R.string.admin_announcement,
                     PreferencesState.getInstance().getContext().getString(R.string.user_close),
-                    context);
+                    context, listener);
         }
     }
 
@@ -369,7 +376,8 @@ public abstract class AUtils {
      * Shows an alert dialog asking for acceptance of the announcement. If ok calls the accept the
      * annoucement, do nothing otherwise
      */
-    public static void closeUser(int titleId, String message, final Context context) {
+    public static void closeUser(int titleId, String message, final Context context,
+            DialogInterface.OnClickListener listener) {
         SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
@@ -377,13 +385,7 @@ public abstract class AUtils {
                 .setTitle(context.getString(titleId))
                 .setMessage(linkedMessage)
                 .setCancelable(false)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PreferencesState.getInstance().setUserAccept(false);
-                        DashboardActivity.dashboardActivity.executeLogout();
-                    }
-                }).show();
+                .setNeutralButton(android.R.string.ok, listener).show();
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
                 LinkMovementMethod.getInstance());
     }
