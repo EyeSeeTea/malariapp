@@ -227,4 +227,5 @@ clínica"</string>
 <string name="downloaded_media_menu">"Medios descargados"</string>
 <string name="header_filename_title">"Nombre"</string>
 <string name="header_size_title">"Tamaño"</string>
+<string name="clear">"Limpiar"</string>
 </resources>

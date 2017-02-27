@@ -228,4 +228,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="downloaded_media_menu">"Média baixado"</string>
 <string name="header_filename_title">"Nome"</string>
 <string name="header_size_title">"Tamanho"</string>
+<string name="clear">"Clarear"</string>
 </resources>
