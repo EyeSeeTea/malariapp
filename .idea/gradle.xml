@@ -10,15 +10,17 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/DBFlowORM" />
-            <option value="$PROJECT_DIR$/DBFlowORM/DBFlow" />
-            <option value="$PROJECT_DIR$/DBFlowORM/DBFlow-Compiler" />
-            <option value="$PROJECT_DIR$/DBFlowORM/DBFlow-Core" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/sdk" />
-            <option value="$PROJECT_DIR$/sdk/app" />
+            <option value="$PROJECT_DIR$/sdk/core" />
+            <option value="$PROJECT_DIR$/sdk/core-android" />
+            <option value="$PROJECT_DIR$/sdk/core-rules" />
+            <option value="$PROJECT_DIR$/sdk/models" />
+            <option value="$PROJECT_DIR$/sdk/ui" />
+            <option value="$PROJECT_DIR$/sdk/ui-bindings" />
+            <option value="$PROJECT_DIR$/sdk/utils" />
           </set>
         </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
