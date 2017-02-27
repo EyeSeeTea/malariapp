@@ -19,6 +19,10 @@
 
 package org.eyeseetea.malariacare.utils;
 
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.net.Uri;
+
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
@@ -84,7 +88,38 @@ public class FileIOUtils {
         return "/data/data/" + PreferencesState.getInstance().getContext().getPackageName() + "/";
 
     }
-    public static File getAppDatabaseFile(){
+
+    public static File getAppDatabaseFile() {
         return new File(getDatabasesFolder(), AppDatabase.NAME + ".db");
     }
+
+    public static String getRawPath(String filename) {
+        return String.format("android.resource://%s/raw/%s",
+                removeExtension(PreferencesState.getInstance().getContext().getPackageName()), filename);
+    }
+
+    public static Uri getRawUri(String filename) {
+        Uri url = Uri.parse(String.format("android.resource://%s/raw/%s",
+                PreferencesState.getInstance().getContext().getPackageName(), removeExtension(filename)));
+        return url;
+    }
+
+    public static AssetFileDescriptor getAssetFileDescriptorFromRaw(String filename) {
+        Context context = PreferencesState.getInstance().getContext();
+        AssetFileDescriptor afd = context.getResources().openRawResourceFd(
+                getRawIdentifier(filename, context));
+        return afd;
+    }
+
+    public static int getRawIdentifier(String filename, Context context) {
+        if(filename.contains("."))
+            filename=FileIOUtils.removeExtension(filename);
+        return context.getResources().getIdentifier(filename, "raw",
+                context.getPackageName());
+    }
+
+    public static String removeExtension(String filename) {
+        return filename.substring(0, filename.lastIndexOf("."));
+    }
+
 }

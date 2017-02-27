@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.File;
@@ -61,8 +62,13 @@ public class DownloadedMediaAdapter extends
         String size = "0";
         try {
             File file = new File(filename);
+            double fileSizeInBytes;
+            if (file.exists()) {
+                fileSizeInBytes = file.length();
+            } else {
+                fileSizeInBytes = FileIOUtils.getAssetFileDescriptorFromRaw(filename).getLength();
+            }
             // Get length of file in bytes
-            double fileSizeInBytes = file.length();
             // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
             double fileSizeInKB = fileSizeInBytes / 1024.0;
             // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
