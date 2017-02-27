@@ -224,4 +224,5 @@ Mensuelle"</string>
 <string name="downloaded_media_menu">"Moyenne téléchargé"</string>
 <string name="header_filename_title">"Filename"</string>
 <string name="header_size_title">"Taille"</string>
+<string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
 </resources>

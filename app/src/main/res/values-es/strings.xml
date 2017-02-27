@@ -208,8 +208,6 @@ clínica"</string>
 <string name="modify">Modificar</string>
 <string name="create_or_modify">¿Desea crear una encuesta o modificar la última con fecha [%s]?</string>
 <string name="loading_last_surveys">Cargando última encuesta...</string>
-<string name="settings_checkbox_ask_modify_or_create">Pregunta para modificar o crear nueva encuesta?</string>
-<string name="settings_checkbox_description_ask_modify_or_create">Cuando se activa, el usuario deberá elegir entre modificar la última encuesta o crear una nueva</string>
 <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
 <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 <string name="export_data_option_title">Exportar base de datos</string>
