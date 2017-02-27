@@ -74,7 +74,7 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)) {
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
             new AsyncAnnouncement().execute();
         }
 
