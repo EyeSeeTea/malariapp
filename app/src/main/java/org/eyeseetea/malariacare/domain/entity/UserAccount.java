@@ -22,12 +22,22 @@ package org.eyeseetea.malariacare.domain.entity;
 
 public class UserAccount {
     private String userName;
+    private String userUid;
 
-    public UserAccount(String userName) {
+    public UserAccount(String userName, String userUid) {
         this.userName = userName;
+        this.userUid = userUid;
     }
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
     }
 }

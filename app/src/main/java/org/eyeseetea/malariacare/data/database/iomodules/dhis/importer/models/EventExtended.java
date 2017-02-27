@@ -47,7 +47,8 @@ import java.util.List;
 public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG = ".EventExtended";
-    public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String DHIS2_GMT_NEW_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    public final static String DHIS2_GMT_OLD_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public final static String DHIS2_LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
 
@@ -147,15 +148,19 @@ public class EventExtended implements VisitableFromSDK {
 
     public static Date parseLongDate(String dateAsString) {
         try {
-            return parseDate(dateAsString, DHIS2_GMT_DATE_FORMAT);
+            return parseDate(dateAsString, DHIS2_GMT_NEW_DATE_FORMAT);
+        } catch (ParseException ex) {
+            return parseOldLongDate(dateAsString);
+        }
+    }
+    public static Date parseOldLongDate(String dateAsString) {
+        try {
+            return parseDate(dateAsString, DHIS2_GMT_OLD_DATE_FORMAT);
         } catch (ParseException ex) {
             return parseShortDate(dateAsString);
         }
     }
 
-    public static String formatLong(Date date) {
-        return format(date, DHIS2_GMT_DATE_FORMAT);
-    }
 
     public static String formatShort(Date date) {
         return format(date, AMERICAN_DATE_FORMAT);

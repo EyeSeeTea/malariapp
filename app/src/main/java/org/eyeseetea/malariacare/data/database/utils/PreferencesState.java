@@ -84,6 +84,11 @@ public class PreferencesState {
      */
     private static String languageCode;
 
+    /**
+     * Flag that determines if the user did accept the announcement
+     */
+    private boolean userAccept;
+
     private PreferencesState() {
     }
 
@@ -111,6 +116,7 @@ public class PreferencesState {
         hidePlanningTab = initHidePlanningTab();
         maxEvents = initMaxEvents();
         languageCode = initLanguageCode();
+        userAccept = initUserAccept();
         Log.d(TAG, String.format(
                 "reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b ",
@@ -125,6 +131,16 @@ public class PreferencesState {
                 instance.getContext());
         return sharedPreferences.getString(instance.getContext().getString(R.string.language_code),
                 "");
+    }
+
+    /**
+     * Inits user accept flag according to preferences
+     */
+    private boolean initUserAccept() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getBoolean(
+                instance.getContext().getString(R.string.user_accept_key), false);
     }
 
     /**
@@ -370,9 +386,30 @@ public class PreferencesState {
         editor.commit();
     }
 
+    /**
+     * Tells if user accepted the announcement message
+     */
+    public Boolean isUserAccept() {
+        return userAccept;
+    }
+
+    /**
+     * Set userAccept in the preferences and local memory
+     */
+    public Boolean setUserAccept(boolean isAccepted) {
+        this.userAccept = isAccepted;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(context.getResources().getString(R.string.user_accept_key), isAccepted);
+        editor.commit();
+        return userAccept;
+    }
+
     public void initalizateActivityDependencies() {
         loadsLanguageInActivity();
     }
+
     public void loadsLanguageInActivity() {
         if (languageCode.equals("")) {
             return;

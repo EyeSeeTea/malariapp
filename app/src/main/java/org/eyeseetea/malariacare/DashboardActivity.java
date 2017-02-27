@@ -24,6 +24,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -48,8 +49,10 @@ import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
@@ -67,8 +70,13 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)) {
+            new AsyncAnnouncement().execute();
+        }
 
         //XXX to remove?
         initDataIfRequired();
@@ -466,5 +474,37 @@ public class DashboardActivity extends BaseActivity {
                 (PlanModuleController) dashboardController.getModuleByName(
                         PlanModuleController.getSimpleName());
         planModuleController.clickOrgProgramSpinner();
+    }
+
+
+    public class AsyncAnnouncement extends AsyncTask<Void, Void, Void> {
+        User loggedUser;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
+            loggedUser = User.getLoggedUser();
+            boolean isUpdated = pullClient.isUserUpdated(loggedUser);
+            if (isUpdated) {
+                pullClient.pullUserAttributes(loggedUser);
+            }
+            loggedUser.save();//save the lastUpdated info and attributes
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
+                    && !PreferencesState.getInstance().isUserAccept()) {
+                Log.d(TAG, "show logged announcement");
+                AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(),
+                        DashboardActivity.this);
+                //show model dialog
+            } else {
+                AUtils.checkUserClosed(loggedUser, DashboardActivity.this);
+            }
+        }
     }
 }

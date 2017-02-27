@@ -140,7 +140,7 @@ public class SurveyChecker {
         if (isSent) {
             Log.d(TAG, "Set quarantine survey as sent" + survey.getId_survey() + " date "
                     + EventExtended.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+                    EventExtended.DHIS2_GMT_OLD_DATE_FORMAT));
             survey.setStatus(Constants.SURVEY_SENT);
         } else {
             //When the completion date for a survey is not present in the server, this survey is
@@ -148,7 +148,7 @@ public class SurveyChecker {
             //This survey is set as "completed" and will be send in the future.
             Log.d(TAG, "Set quarantine survey as completed" + survey.getId_survey() + " date "
                     + EventExtended.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+                    EventExtended.DHIS2_GMT_OLD_DATE_FORMAT));
             if (survey.isInQuarantine()) {
                 survey.setStatus(Constants.SURVEY_COMPLETED);
             }
@@ -169,7 +169,7 @@ public class SurveyChecker {
                             R.string.created_on_code));
             if (dataValue.getDataElement().equals(uid)
                     && dataValue.getValue().equals(EventExtended.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT))) {
+                    EventExtended.DHIS2_GMT_OLD_DATE_FORMAT))) {
                 Log.d(TAG, "Found survey" + survey.getId_survey() + "date "
                         + survey.getCreationDate() + "dateevent" + dataValue.getValue());
                 return true;
