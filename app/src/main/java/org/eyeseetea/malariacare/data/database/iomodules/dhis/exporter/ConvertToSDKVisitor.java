@@ -338,13 +338,13 @@ public class ConvertToSDKVisitor implements
         //Created date
         if (controlDataElementExistsInServer(createdOnCode)) {
             addOrUpdateDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_OLD_DATE_FORMAT));
+                    EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated date
         if (controlDataElementExistsInServer(updatedDateCode)) {
             addOrUpdateDataValue(updatedDateCode, EventExtended.format(survey.getUploadDate(),
-                    EventExtended.DHIS2_GMT_OLD_DATE_FORMAT));
+                    EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
         //Updated by user

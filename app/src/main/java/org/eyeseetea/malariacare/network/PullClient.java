@@ -134,7 +134,7 @@ public class PullClient {
             JSONObject response = networkUtils.getData(data);
             JsonNode jsonNode = networkUtils.toJsonNode(response);
             String dateAsString = jsonNode.get(LAST_UPDATED).textValue();
-            dhisLastUpdated = EventExtended.parseLongDate(dateAsString);
+            dhisLastUpdated = EventExtended.parseNewLongDate(dateAsString);
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
@@ -175,7 +175,7 @@ public class PullClient {
             if (closeDate == null || closeDate.equals("")) {
                 appUser.setCloseDate(null);
             } else {
-                appUser.setCloseDate(EventExtended.parseShortDate(closeDate));
+                appUser.setCloseDate(EventExtended.parseNewLongDate(closeDate));
             }
 
         } catch (Exception ex) {
@@ -206,7 +206,7 @@ public class PullClient {
             if (closeDateAsString == null || closeDateAsString.equals("")) {
                 return false;
             }
-            closedDate = EventExtended.parseShortDate(closeDateAsString);
+            closedDate = EventExtended.parseNewLongDate(closeDateAsString);
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
