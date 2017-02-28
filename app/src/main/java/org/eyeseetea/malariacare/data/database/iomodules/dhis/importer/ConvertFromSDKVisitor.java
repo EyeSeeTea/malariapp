@@ -281,9 +281,13 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(UserAccountExtended userAccount) {
-        User appUser = new User();
+        User appUser = User.getUserByUId(userAccount.getUid());
+        if(appUser == null ) {
+            appUser = new User();
+        }
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
+        appUser.setLastUpdated(null);
         appUser.save();
     }
 

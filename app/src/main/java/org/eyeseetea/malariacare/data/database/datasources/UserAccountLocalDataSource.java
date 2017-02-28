@@ -65,7 +65,9 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
     }
 
     private void saveUser(Credentials credentials) {
-        User user = new User(credentials.getUsername(), credentials.getUsername());
+        User user = new User(credentials.getUserUid(), credentials.getUsername());
+        user.setUsername(credentials.getUsername());
+        user.save();
 
         Session.setUser(user);
     }

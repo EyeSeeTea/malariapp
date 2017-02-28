@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -51,6 +52,16 @@ public class VideoActivity extends Activity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mVideoView.seekTo(savedInstanceState.getInt("video", 0));
+    }
+
+    /**
+     * Go back
+     */
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent=new Intent(this, DashboardActivity.class);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
+        startActivity(returnIntent);
     }
 }
 

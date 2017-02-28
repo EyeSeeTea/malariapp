@@ -44,7 +44,7 @@ import rx.schedulers.Schedulers;
 public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
     private Context mContext;
 
-    public UserAccountDhisSDKDataSource(Context context){
+    public UserAccountDhisSDKDataSource(Context context) {
         mContext = context;
     }
 
@@ -72,9 +72,9 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
 
         boolean isNetworkAvailable = isNetworkAvailable();
 
-        if (!isNetworkAvailable)
+        if (!isNetworkAvailable) {
             callback.onError(new NetworkException());
-        else {
+        } else {
 
             Configuration configuration = new Configuration(credentials.getServerURL());
 
@@ -96,7 +96,8 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
                         @Override
                         public void call(
                                 org.hisp.dhis.client.sdk.models.user.UserAccount dhisUserAccount) {
-                            UserAccount userAccount = new UserAccount(credentials.getUsername());
+                            UserAccount userAccount = new UserAccount(credentials.getUsername(),
+                                    dhisUserAccount.getUId());
                             callback.onSuccess(userAccount);
                         }
                     }, new Action1<Throwable>() {
@@ -110,7 +111,7 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
         }
     }
 
-    private boolean isNetworkAvailable(){
+    private boolean isNetworkAvailable() {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

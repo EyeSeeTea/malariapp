@@ -426,7 +426,9 @@ public class SettingsActivity extends PreferenceActivity implements
     @Override
     public void onBackPressed() {
         Class callerActivityClass = getCallerActivity();
-        Intent returnIntent = new Intent(this, callerActivityClass);
+        Intent returnIntent=new Intent(this,callerActivityClass);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
+        startActivity(returnIntent);
         startActivity(returnIntent);
     }
 

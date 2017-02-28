@@ -83,6 +83,7 @@ public class UserAccountRepository implements IUserAccountRepository {
         userAccountRemoteDataSource.login(credentials, new IDataSourceCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount result) {
+                credentials.setUserUid(result.getUserUid());
                 localLogin(credentials, callback);
             }
 

@@ -25,11 +25,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
@@ -45,11 +45,12 @@ import android.widget.Toast;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
+import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -64,15 +65,18 @@ public class LoginActivity extends AbsLoginActivity {
 
     public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
     public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
     public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
+    private static LoginActivity mLoginActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        mLoginActivity = this;
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -145,6 +149,7 @@ public class LoginActivity extends AbsLoginActivity {
         editor.putBoolean(getString(R.string.eula_accepted), true);
         editor.commit();
     }
+
     /**
      * Its called on the requestPermission results, if the user accepts the permissions it request
      * the Phone permission and gets the phoneMetadata
@@ -154,8 +159,7 @@ public class LoginActivity extends AbsLoginActivity {
             String permissions[], int[] grantResults) {
         if (Permissions.processAnswer(requestCode, permissions, grantResults)) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
-        }
-        else if (EyeSeeTeaApplication.permissions.hasNextPermission()){
+        } else if (EyeSeeTeaApplication.permissions.hasNextPermission()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
         }
     }
@@ -167,7 +171,11 @@ public class LoginActivity extends AbsLoginActivity {
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
             public void onLoginSuccess() {
-                onSuccess();
+                PreferencesState.getInstance().setUserAccept(false);
+                hideProgress();
+                AsyncPullAnnouncement
+                        asyncPullAnnouncement = new AsyncPullAnnouncement();
+                asyncPullAnnouncement.execute(mLoginActivity);
             }
 
             @Override
@@ -198,10 +206,41 @@ public class LoginActivity extends AbsLoginActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    public void onSuccess() {
-        hideProgress();
+    public void onSuccess(boolean isClosed) {
+        if (isClosed) {
+            closeUser(R.string.admin_announcement,
+                    PreferencesState.getInstance().getContext().getString(R.string.user_close),
+                    mLoginActivity);
+        } else {
+            launchActivity(LoginActivity.this, ProgressActivity.class);
+        }
+    }
 
-        launchActivity(LoginActivity.this, ProgressActivity.class);
+    private void closeUser(int titleId, String message, LoginActivity context) {
+
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PreferencesState.getInstance().setUserAccept(false);
+                LoginActivity.mLoginActivity.executeLogout();
+            }
+        };
+        AUtils.closeUser(titleId, message, context, listener);
+    }
+
+    //Todo: This code is repeated in DashboardActivity
+    public void executeLogout() {
+        mLogoutUseCase.execute(new LogoutUseCase.Callback() {
+            @Override
+            public void onLogoutSuccess() {
+                Log.e("." + this.getClass().getSimpleName(), "Logout success");
+            }
+
+            @Override
+            public void onLogoutError(String message) {
+                Log.e("." + this.getClass().getSimpleName(), message);
+            }
+        });
     }
 
     public void showProgress() {
@@ -241,6 +280,26 @@ public class LoginActivity extends AbsLoginActivity {
         }
         if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
+    }
+
+    public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {
+        //userCloseChecker is never saved, Only for check if the date is closed.
+        LoginActivity loginActivity;
+        boolean isUserClosed = false;
+
+        @Override
+        protected Void doInBackground(LoginActivity... params) {
+            loginActivity = params[0];
+            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
+            isUserClosed = pullClient.isUserClosed(Session.getUser().getUid());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            onSuccess(isUserClosed);
         }
     }
 }

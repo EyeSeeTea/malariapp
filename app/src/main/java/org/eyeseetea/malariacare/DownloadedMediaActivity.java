@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -60,5 +61,15 @@ public class DownloadedMediaActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Go back
+     */
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent=new Intent(this, DashboardActivity.class);
+        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
+        startActivity(returnIntent);
     }
 }

@@ -229,4 +229,6 @@ evaluation"</string>
 <string name="header_filename_title">"Filename"</string>
 <string name="header_size_title">"Size"</string>
 <string name="clear">"Clear"</string>
+<string name="admin_announcement">"Admin announcement"</string>
+<string name="user_close">"This user has been closed by the administrator."</string>
 </resources>

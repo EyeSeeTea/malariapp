@@ -37,10 +37,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -81,7 +83,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void checkQuarantineSurveys() {
         if (PreferencesState.getInstance().isPushInProgress()) {
             List<Survey> surveys = Survey.getAllSendingSurveys();
-            Log.d(TAG+"B&D", "The app was closed in the middle of a push. Surveys sending: "
+            Log.d(TAG + "B&D", "The app was closed in the middle of a push. Surveys sending: "
                     + surveys.size());
             for (Survey survey : surveys) {
                 survey.setStatus(Constants.SURVEY_QUARANTINE);
@@ -177,6 +179,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -236,7 +239,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Closes current session and goes back to loginactivity
      */
-    protected void logout() {
+    public void logout() {
         new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
                 .setMessage(getApplicationContext().getString(
@@ -251,7 +254,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 .setNegativeButton(android.R.string.no, null).create().show();
     }
 
-    private void executeLogout() {
+    public void executeLogout() {
         mLogoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
             public void onLogoutSuccess() {
@@ -305,21 +308,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             locationListener.saveLocation(lastLocation);
         }
     }
-
-    /**
-     //// FIXME: 09/11/2016
-     * Called from DashboardActivity Subscribe
-     public void onLogoutFinished(UiEvent uiEvent){
-     //No event or not a logout event -> done
-     if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
-     return;
-     }
-     debugMessage("Logging out from sdk...OK");
-     wipeData();
-     Session.logout();
-     finishAndGo(LoginActivity.class);
-     }
-     */
 
     /**
      * Finish current activity and launches an activity with the given class

@@ -256,4 +256,6 @@
     <string name="monitor_js_quality_of_care">\"គុណភាពនៃការថែទាំ: មុន \"</string>
     <string name="monitor_js_target">\"គោលដៅ\"</string>
     <string name="clear">"ច្បាស់ណាស់"</string>
+    <string name="admin_announcement">"សេចក្តីប្រកាស admin"</string>
+    <string name="user_close">"អ្នកប្រើប្រាស់នេះត្រូវបានបិទដោយអ្នកគ្រប់គ្រង។"</string>
 </resources>
