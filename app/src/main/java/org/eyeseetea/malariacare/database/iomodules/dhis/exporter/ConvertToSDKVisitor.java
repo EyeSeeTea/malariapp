@@ -282,7 +282,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     public void visit(CompositeScore compositeScore) {
         List<Float> result=ScoreRegister.getCompositeScoreResult(compositeScore,currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
         //Checks if the result have at least one valid denominator.
-        if(result!=null && result.get(1)==0)
+        if(result!=null && result.get(1)==0 && !compositeScore.getHierarchical_code().equals("0"))
             return;
         DataValue dataValue=new DataValue();
         dataValue.setDataElement(compositeScore.getUid());

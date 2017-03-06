@@ -19,12 +19,7 @@
 
 package org.eyeseetea.malariacare.database.model;
 
-import android.util.Log;
-
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -272,6 +267,10 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
      */
     public static List<CompositeScore> list() {
         return new Select().all().from(CompositeScore.class).queryList();
+    }
+
+    public boolean isEmptyCS(){
+        return !hasChildren() && (getQuestions()==null || getQuestions().size()==0);
     }
 
     @Override
