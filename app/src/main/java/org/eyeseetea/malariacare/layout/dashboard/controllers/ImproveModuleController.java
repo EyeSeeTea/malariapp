@@ -30,7 +30,6 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 /**
@@ -96,7 +95,7 @@ public class ImproveModuleController extends ModuleController {
         }catch(Exception e){
             e.printStackTrace();
         }
-        feedbackFragment = FeedbackFragment.newInstance(1);
+        feedbackFragment = new FeedbackFragment();
         // Add the fragment to the activity, pushing this transaction
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());

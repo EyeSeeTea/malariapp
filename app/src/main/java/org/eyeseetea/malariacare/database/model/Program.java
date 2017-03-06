@@ -159,6 +159,10 @@ public class Program extends BaseModel{
         return new Select().all().from(Program.class).orderBy(true, Program$Table.NAME).queryList();
     }
 
+    public static long count(){
+        return new Select().count().from(Program.class).count();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

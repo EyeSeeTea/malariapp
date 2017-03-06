@@ -85,8 +85,10 @@ public class PushOKTest {
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+
         long numberOfEvents = 1;
         long eventCount = EventExtended.count();
+
         fillSurvey(7, "No");
         Long idSurvey=markInProgressAsCompleted();
 

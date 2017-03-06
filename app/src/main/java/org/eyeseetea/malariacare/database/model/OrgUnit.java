@@ -244,6 +244,10 @@ public class OrgUnit extends BaseModel {
         return new Select().all().from(OrgUnit.class).orderBy(true, OrgUnit$Table.ID_ORG_UNIT_LEVEL, OrgUnit$Table.NAME).queryList();
     }
 
+    public static long count(){
+        return new Select().count().from(OrgUnit.class).count();
+    }
+
     public static OrgUnit getOrgUnit(String uid) {
             OrgUnit orgUnit = new Select()
                     .from(OrgUnit.class)

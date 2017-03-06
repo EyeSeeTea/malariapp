@@ -17,14 +17,15 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.push;
+package org.eyeseetea.malariacare.test.adapters;
 
+import android.support.test.espresso.DataInteraction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
@@ -33,30 +34,38 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.exitSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.markInProgressAsCompleted;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.selectRow;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
+import static org.eyeseetea.malariacare.test.utils.SizeListMatcher.withListSize;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by arrizabalaga on 3/02/16.
  */
 @RunWith(AndroidJUnit4.class)
-public class PushErrorTest {
+public class DashboardAdaptersOrgUnitTest {
 
-    private static final String TAG="TestingPushError";
-    public static final String NON_EXISTANT_PROGRAM_UID = "d6PHrjjljS1XX";
-    //private LoginActivity mReceiptCaptureActivity;
+    private static final String TAG="DashboardAdaptersOrgUnitTest";
+    public static final String KE_HNQIS_SF_PILOT_TEST_FACILITY_1 = "KE - HNQIS SF pilot test facility 1";
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
@@ -76,38 +85,35 @@ public class PushErrorTest {
     }
 
     @Test
-    public void pushWithOutPermissionsDoesNOTPush(){
+    public void startNSurveysSameOrgUnitShowOnly1OrgUnit(){
         //GIVEN
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
-        fillSurvey(7, "No");
-
-        //Change program id so that pushing is not allowed
-        Survey surveyInProgress=SDKTestUtils.getSurveyInProgress();
-        mockFalseProgramForSurvey(surveyInProgress);
 
         //WHEN
-        Long idSurvey=markInProgressAsCompleted();
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+        exitSurvey();
 
-        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_IMCI);
+        exitSurvey();
 
-        //THEN
-        //then: Survey is NOT pushed (no UID)
-        assertTrue("Survey not pushed"+survey.toString(),!survey.isSent());
-        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadDate()==null);
-        assertTrue("Survey not pushed"+survey.toString(),survey.isConflict());
+        startSurvey(SDKTestUtils.TEST_FACILITY_2_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+        exitSurvey();
 
-        //then: Survey is NOT pushed (no UID)
-        assertTrue(survey.getEventUid() == null);
-        //then: Row is gone
-        onView(withId(R.id.score)).check(doesNotExist());
-    }
 
-    private void mockFalseProgramForSurvey(Survey surveyInProgress) {
-        Program program = surveyInProgress.getProgram();
-        program.setUid(NON_EXISTANT_PROGRAM_UID);
-        program.save();
+        //THEN: Second survey does NOT have facility row
+        selectRow(0)
+            .onChildView(withId(R.id.facility))
+            .check(matches(isDisplayed()));
+
+        selectRow(1)
+            .onChildView(withId(R.id.facility))
+            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+
+        //THEN: But the last one (different orgunit) shows it
+        selectRow(2)
+            .onChildView(withId(R.id.facility))
+            .check(matches(isDisplayed()));
     }
 
 }

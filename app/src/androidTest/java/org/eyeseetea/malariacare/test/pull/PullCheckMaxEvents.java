@@ -27,14 +27,15 @@ package org.eyeseetea.malariacare.test.pull;
         import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
         import org.eyeseetea.malariacare.database.utils.PreferencesState;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-        import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+
         import org.hisp.dhis.android.sdk.persistence.models.Event;
+        import org.hisp.dhis.android.sdk.controllers.tracker.TrackerController;
+
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;
         import org.junit.Test;
         import org.junit.runner.RunWith;
-
         import java.text.ParseException;
         import java.util.Calendar;
         import java.util.Date;
@@ -82,17 +83,19 @@ public class PullCheckMaxEvents {
         int maxEvents= PreferencesState.getInstance().getMaxEvents();
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
 
+        //WHEN
+        waitForPull(DEFAULT_WAIT_FOR_PULL);
+
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -PullController.NUMBER_OF_MONTHS);
         TrackerController.setStartDate(EventExtended.format(month.getTime(), EventExtended.AMERICAN_DATE_FORMAT));
 
-        //WHEN
-        waitForPull(DEFAULT_WAIT_FOR_PULL);
-
 
         //THEN: Each combination of program/orgunit has less events than the max
 
-        List<org.hisp.dhis.android.sdk.persistence.models.Event> events = EventExtended.getAllEvents();
+        List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> organisationUnits=SDKTestUtils.getAllSDKOrganisationUnits();
+        List<org.hisp.dhis.android.sdk.persistence.models.Program> programs=SDKTestUtils.getAllSDKPrograms();
+        List<org.hisp.dhis.android.sdk.persistence.models.Event> events=SDKTestUtils.getAllSDKEvents();
 
         Map<String,Integer> mapNumEventsXPair= new HashMap<>();
         for(Event event:events){

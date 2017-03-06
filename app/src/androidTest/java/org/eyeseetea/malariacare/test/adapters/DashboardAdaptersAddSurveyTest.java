@@ -17,15 +17,14 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.push;
+package org.eyeseetea.malariacare.test.adapters;
 
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -34,29 +33,28 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static junit.framework.Assert.assertTrue;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.exitSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.markInProgressAsCompleted;
+import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.selectRow;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
 
 /**
  * Created by arrizabalaga on 3/02/16.
  */
 @RunWith(AndroidJUnit4.class)
-public class PushErrorTest {
+public class DashboardAdaptersAddSurveyTest {
 
-    private static final String TAG="TestingPushError";
-    public static final String NON_EXISTANT_PROGRAM_UID = "d6PHrjjljS1XX";
-    //private LoginActivity mReceiptCaptureActivity;
+    public static final String KE_HNQIS_SF_PILOT_TEST_FACILITY_1 = "KE - HNQIS SF pilot test facility 1";
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
@@ -76,38 +74,17 @@ public class PushErrorTest {
     }
 
     @Test
-    public void pushWithOutPermissionsDoesNOTPush(){
+    public void startASurveyAddsSurveyToUnSent(){
         //GIVEN
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
-        fillSurvey(7, "No");
-
-        //Change program id so that pushing is not allowed
-        Survey surveyInProgress=SDKTestUtils.getSurveyInProgress();
-        mockFalseProgramForSurvey(surveyInProgress);
 
         //WHEN
-        Long idSurvey=markInProgressAsCompleted();
-
-        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+        exitSurvey();
 
         //THEN
-        //then: Survey is NOT pushed (no UID)
-        assertTrue("Survey not pushed"+survey.toString(),!survey.isSent());
-        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadDate()==null);
-        assertTrue("Survey not pushed"+survey.toString(),survey.isConflict());
-
-        //then: Survey is NOT pushed (no UID)
-        assertTrue(survey.getEventUid() == null);
-        //then: Row is gone
-        onView(withId(R.id.score)).check(doesNotExist());
-    }
-
-    private void mockFalseProgramForSurvey(Survey surveyInProgress) {
-        Program program = surveyInProgress.getProgram();
-        program.setUid(NON_EXISTANT_PROGRAM_UID);
-        program.save();
+        onView(withText(KE_HNQIS_SF_PILOT_TEST_FACILITY_1)).check(matches(isDisplayed()));
     }
 
 }

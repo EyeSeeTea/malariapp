@@ -28,7 +28,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +52,6 @@ public class Session {
     */
     private static Survey surveyFeedback;
     /**
-    /**
      * The current user
      */
     private static User user;
@@ -67,13 +65,6 @@ public class Session {
      * Map that holds non serializable results from services
      */
     private static Map<String,Object> serviceValues = new HashMap<>();
-
-    /**
-     * Adapters that hold dashboard sent and unset surveys adapters
-     */
-    private static IDashboardAdapter adapterUnsent, adapterSent, adapterOrgUnit;
-
-    public static ListView listViewUnsent, listViewSent;
 
     /**
      * Cache containing the list of ordered items that compounds each tab
@@ -105,30 +96,6 @@ public class Session {
         Session.user = user;
     }
 
-    public static IDashboardAdapter getAdapterOrgUnit() {
-        return adapterOrgUnit;
-    }
-
-    public static void setAdapterOrgUnit(IDashboardAdapter adapterOrgUnit) {
-        Session.adapterOrgUnit = adapterOrgUnit;
-    }
-
-    public static IDashboardAdapter getAdapterUnsent() {
-        return adapterUnsent;
-    }
-
-    public static void setAdapterUnsent(IDashboardAdapter adapterUnsent) {
-        Session.adapterUnsent = adapterUnsent;
-    }
-
-    public static IDashboardAdapter getAdapterSent() {
-        return adapterSent;
-    }
-
-    public static void setAdapterSent(IDashboardAdapter adapterSent) {
-        Session.adapterSent = adapterSent;
-    }
-
     public static Map<Long, List<? extends BaseModel>> getTabsCache() {
         return tabsCache;
     }
@@ -145,8 +112,7 @@ public class Session {
             user.delete();
             user=null;
         }
-        surveyMappedByModule=new HashMap<>();
-        adapterUnsent=null;
+        surveyMappedByModule=null;
         if(serviceValues!=null){
             serviceValues.clear();
         }
