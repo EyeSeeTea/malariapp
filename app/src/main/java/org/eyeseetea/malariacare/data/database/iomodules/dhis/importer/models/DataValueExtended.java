@@ -197,10 +197,6 @@ public class DataValueExtended implements VisitableFromSDK {
         dataValue.setDataElement(uid);
     }
 
-    public void setLocalEventId(long localId) {
-        dataValue.setId(localId);
-    }
-
     public void setEvent(EventFlow event) {
         dataValue.setEvent(event);
     }

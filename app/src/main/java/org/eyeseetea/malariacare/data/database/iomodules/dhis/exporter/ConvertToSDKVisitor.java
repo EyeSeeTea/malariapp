@@ -251,7 +251,6 @@ public class ConvertToSDKVisitor implements
         }
         DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(compositeScore.getUid());
-        dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(AUtils.round(
@@ -264,7 +263,6 @@ public class ConvertToSDKVisitor implements
     public void visit(Value value) {
         DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(value.getQuestion().getUid());
-        dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setStoredBy(getSafeUsername());
         if (value.getOption() != null) {
@@ -417,7 +415,6 @@ public class ConvertToSDKVisitor implements
     private void buildAndSaveDataValue(String uid, String value) {
         DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(uid);
-        dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setStoredBy(getSafeUsername());
         dataValue.setValue(value);
