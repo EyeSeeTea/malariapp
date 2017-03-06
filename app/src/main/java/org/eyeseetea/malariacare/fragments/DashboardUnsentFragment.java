@@ -42,16 +42,12 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -65,46 +61,29 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardUnsentFragment extends ListFragment implements IModuleFragment{
-
+public class DashboardUnsentFragment extends ListFragment implements IModuleFragment {
 
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
-    protected IDashboardAdapter adapter;
-    private static int selectedPosition=0;
+    protected AssessmentUnsentAdapter adapter;
+    private static int selectedPosition = 0;
     DashboardActivity dashboardActivity;
 
 
-    public DashboardUnsentFragment(){
-        this.adapter = Session.getAdapterUnsent();
+    public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
     }
 
-    public static DashboardUnsentFragment newInstance(int index) {
-        DashboardUnsentFragment f = new DashboardUnsentFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
-
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         if (container == null) {
             return null;
@@ -135,25 +114,19 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     /**
      * Inits adapter.
      * Most of times is just an AssessmentAdapter.
-     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
+     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the
+     * one in session is created.
      */
-    private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUnsent();
-        if(adapterInSession == null){
-            adapterInSession = new AssessmentUnsentAdapter(this.surveys,getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterUnsent(this.adapter);
+    private void initAdapter() {
+        this.adapter = new AssessmentUnsentAdapter(this.surveys, getActivity());
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        if(isPositionASurvey(selectedPosition)) {
-            MenuInflater inflater=getActivity().getMenuInflater();
-            inflater.inflate(R.menu.unsent_options,menu);
+            ContextMenu.ContextMenuInfo menuInfo) {
+        if (isPositionASurvey(selectedPosition)) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.unsent_options, menu);
         }
     }
 
@@ -165,9 +138,10 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Log.d(TAG, "id" + item.getItemId());
-        final Survey survey=(Survey)adapter.getItem(selectedPosition-1);
+        final Survey survey = (Survey) adapter.getItem(selectedPosition - 1);
         switch (item.getItemId()) {
             case R.id.option_edit:
                 dashboardActivity.onSurveySelected(survey);
@@ -179,7 +153,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 Log.d(TAG, "removing item pos=" + selectedPosition);
                 new AlertDialog.Builder(getActivity())
                         .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                        .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
+                        .setMessage(String.format(""+getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
@@ -265,7 +239,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
-        setListAdapter((BaseAdapter) adapter);
+        setListAdapter(adapter);
     }
 
     @Override
@@ -285,12 +259,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             surveyReceiver=new SurveyReceiver();
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         }
-    }
-
-    public void manageSurveysAlarm(List<Survey> newListSurveys){
-        Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        //Fixme think other way to cancel the setPushAlarm in Malariaapp
-        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
 
     /**

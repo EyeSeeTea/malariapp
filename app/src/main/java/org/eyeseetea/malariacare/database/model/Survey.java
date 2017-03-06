@@ -293,6 +293,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return Constants.SURVEY_COMPLETED==this.status;
     }
 
+    /**
+     * Checks if the survey is completed but has has some conflicts
+     * @return
+     */
     public boolean isConflict() {
         return Constants.SURVEY_CONFLICT==this.status;
     }

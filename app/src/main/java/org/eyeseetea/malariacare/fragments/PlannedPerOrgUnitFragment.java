@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -45,7 +44,6 @@ import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomCheckBox;
@@ -60,7 +58,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
     private PlannedItemsReceiver plannedItemsReceiver;
-    protected IDashboardAdapter adapter;
+    protected PlanningPerOrgUnitAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
     static Button scheduleButton;
     CustomCheckBox selectAllCheckbox;
@@ -74,10 +72,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
-        //get the org unit uid from dashboardactivity
-        //filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));
-        this.adapter = Session.getAdapterSent();
         this.plannedSurveys = new ArrayList();
     }
 
@@ -191,8 +185,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         ListView listView = getListView();
         if(listView.getHeaderViewsCount()==0)
             listView.addHeaderView(header);
-        setListAdapter((BaseAdapter) adapter);
-        Session.listViewSent = listView;
+        setListAdapter(adapter);
     }
 
     private void checkAll(boolean value) {
@@ -216,14 +209,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      * @param plannedItems
      */
     private void initAdapter(List<PlannedSurveyByOrgUnit> plannedItems){
-        IDashboardAdapter adapterInSession = Session.getAdapterOrgUnit();
-        if(adapterInSession == null){
-            adapterInSession = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(plannedItems, getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterOrgUnit(this.adapter);
+        this.adapter  = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
     }
 
     @Override

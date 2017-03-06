@@ -136,7 +136,7 @@ public class AssessModuleController extends ModuleController {
             dashboardActivity.prepareLocationListener(survey);
         }
         //Prepare survey fragment
-        surveyFragment = SurveyFragment.newInstance(1);
+        surveyFragment = new SurveyFragment();
 
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
@@ -162,7 +162,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         if(createSurveyFragment==null) {
-            createSurveyFragment = CreateSurveyFragment.newInstance(1);
+            createSurveyFragment = new CreateSurveyFragment();
         }
         replaceFragment(getLayout(), createSurveyFragment);
     }
@@ -300,7 +300,7 @@ public class AssessModuleController extends ModuleController {
     private void alertAreYouSureYouWantToComplete(final Survey survey){
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
-                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
+                .setMessage(String.format(""+dashboardActivity.getResources().getString(R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Change state
@@ -322,7 +322,7 @@ public class AssessModuleController extends ModuleController {
     private void alertOnComplete(Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
-                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
+                .setMessage(String.format(""+dashboardActivity.getResources().getString(R.string.dialog_info_on_complete),survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, null)
                 .setCancelable(true)
                 .create().show();
@@ -331,7 +331,7 @@ public class AssessModuleController extends ModuleController {
     public void alertOnCompleteGoToFeedback(final Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
-                .setMessage(String.format(dashboardActivity.getResources().getString(R.string.dialog_info_on_complete), survey.getProgram().getName()))
+                .setMessage(String.format(""+dashboardActivity.getResources().getString(R.string.dialog_info_on_complete), survey.getProgram().getName()))
                 .setNeutralButton(android.R.string.ok, null)
                 .setPositiveButton((R.string.go_to_feedback), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
