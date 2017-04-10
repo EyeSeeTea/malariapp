@@ -494,21 +494,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(SurveyFragment surveyFragment) {
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(SurveyFragment.Callback callback) {
         //TODO Review
         SurveyAnsweredRatio surveyAnsweredRatio=null;
             Program surveyProgram = this.getProgram();
             int numRequired = Question.countRequiredByProgram(surveyProgram);
             int numCompulsory = Question.countCompulsoryByProgram(surveyProgram);
             int numOptional = (int) countNumOptionalQuestionsToAnswer();
-            if(surveyFragment!=null) {
-                surveyFragment.nextProgressMessage();
+            if(callback!=null) {
+                callback.nextProgressMessage();
             }
             int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(
-                    this.id_survey, surveyFragment);
-            if(surveyFragment!=null) {
-                surveyFragment.nextProgressMessage();
-            }
+                    this.id_survey, callback); 
             int numAnswered = Value.countBySurvey(this);
             int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
             surveyAnsweredRatio = new SurveyAnsweredRatio(

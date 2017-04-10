@@ -76,7 +76,10 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends Fragment  {
+    public interface Callback{
+        void nextProgressMessage();
+    }
     private String TAG = ".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;

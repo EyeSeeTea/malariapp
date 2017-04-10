@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.Action;
+import org.eyeseetea.malariacare.domain.utils.Action;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
@@ -381,7 +381,13 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected SurveyAnsweredRatio doInBackground(Void... voids) {
-            return survey.reloadSurveyAnsweredRatio(surveyFragment);
+            return survey.reloadSurveyAnsweredRatio(new SurveyFragment.Callback(){
+
+                @Override
+                public void nextProgressMessage() {
+                    surveyFragment.nextProgressMessage();
+                }
+            });
         }
 
         @Override
