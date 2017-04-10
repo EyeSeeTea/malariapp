@@ -156,10 +156,7 @@ public class LayoutUtils {
         actionBar.setDisplayHomeAsUpEnabled(true);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             actionBar.setCustomView(R.layout.dev_custom_action_bar);
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                    PreferencesState.getInstance().getContext());
-            String server = sharedPreferences.getString(
-                    PreferencesState.getInstance().getContext().getResources().getString(R.string.dhis_url), "");
+            String server = PreferencesState.getInstance().getServerUrl();
             ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
         }else {
             actionBar.setCustomView(R.layout.custom_action_bar);
