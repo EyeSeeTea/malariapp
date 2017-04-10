@@ -19,8 +19,10 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -152,9 +154,18 @@ public class LayoutUtils {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setCustomView(R.layout.custom_action_bar);
-        ((TextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
-        ((TextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
+        if(PreferencesState.getInstance().isDevelopOptionActive()) {
+            actionBar.setCustomView(R.layout.dev_custom_action_bar);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                    PreferencesState.getInstance().getContext());
+            String server = sharedPreferences.getString(
+                    PreferencesState.getInstance().getContext().getResources().getString(R.string.dhis_url), "");
+            ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
+        }else {
+            actionBar.setCustomView(R.layout.custom_action_bar);
+        }
+        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
 
