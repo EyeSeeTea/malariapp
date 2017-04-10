@@ -88,6 +88,7 @@ public class PreferencesState {
      * Flag that determines if the user did accept the announcement
      */
     private boolean userAccept;
+    private String serverUrl;
 
     private PreferencesState() {
     }
@@ -422,4 +423,23 @@ public class PreferencesState {
         res.updateConfiguration(conf, dm);
     }
 
+    public String getServerUrl(){
+        if(serverUrl == null || serverUrl.equals("")) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                    context);
+            serverUrl = sharedPreferences.getString(
+                    PreferencesState.getInstance().getContext().getResources().getString(
+                            R.string.dhis_url), "");
+        }
+        return serverUrl;
+
+    }
+
+    public void reloadServerUrl() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        serverUrl = sharedPreferences.getString(
+                PreferencesState.getInstance().getContext().getResources().getString(
+                        R.string.dhis_url), "");
+    }
 }

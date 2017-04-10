@@ -25,6 +25,8 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Option;
 import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Value;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
@@ -237,6 +238,26 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+        if(PreferencesState.getInstance().isDevelopOptionActive()) {
+            viewHolder.uidLink = (CustomTextView) rowView.findViewById(R.id.uid_link);
+            String uidLinkHtml = "<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+question.getUid()+"\">("+question.getUid()+")</a>";
+            viewHolder.uidLink.setText(Html.fromHtml(uidLinkHtml));
+            viewHolder.uidLink.setMovementMethod(LinkMovementMethod.getInstance());
+            viewHolder.uidLink.setVisibility(View.VISIBLE);
+            if(question.getOutput().equals(Constants.NO_ANSWER)) {
+                viewHolder.uidLink.setBackgroundColor(
+                        PreferencesState.getInstance().getContext().getResources().getColor(
+                                R.color.assess_yellow));
+            }
+            else{
+                viewHolder.uidLink.setBackgroundColor(
+                        PreferencesState.getInstance().getContext().getResources().getColor(
+                                R.color.transparent));}
+        }
+        else{
+            viewHolder.uidLink = (CustomTextView) rowView.findViewById(R.id.uid_link);
+            viewHolder.uidLink.setVisibility(View.GONE);
+        }
 
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);

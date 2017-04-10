@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/uid_link"
+        android:layout_width="0dp"
+        android:layout_weight="0.1"
+        android:layout_height="match_parent"
+        android:fontFamily="@string/normal_font"
+        android:paddingLeft="@dimen/question_padding_left"
+        android:text="@string/empty_string"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:background="@color/transparent"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
+</merge>
