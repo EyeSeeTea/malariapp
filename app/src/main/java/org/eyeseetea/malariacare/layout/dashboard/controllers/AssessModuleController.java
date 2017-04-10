@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -31,6 +32,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.Action;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
@@ -82,12 +84,8 @@ public class AssessModuleController extends ModuleController {
             closeSurveyFragment();
             return;
         }
-        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
-        if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory()
-                && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            askToSendCompulsoryCompletedSurvey();
-        }
-        closeSurveyFragment();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.CHANGETAB).execute();
+
     }
 
     public void onBackPressed() {
@@ -109,15 +107,11 @@ public class AssessModuleController extends ModuleController {
             return;
         }
 
-
-        Survey survey = Session.getSurveyByModule(getSimpleName());
-        //In a survey -> update status before leaving
-        onSurveyBackPressed(survey);
-        if (survey.isCompleted() || survey.isSent()) {
-            dashboardController.setNavigatingBackwards(false);
-            closeSurveyFragment();
-            return;
-        }
+        surveyFragment.showProgress();
+        surveyFragment.nextProgressMessage();
+        final Survey survey = Session.getSurveyByModule(getSimpleName());
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.PRESSBACKBUTTON).execute();
+        //if the survey is opened in review mode exit.
     }
 
     public void onSurveySelected(Survey survey) {
@@ -173,18 +167,14 @@ public class AssessModuleController extends ModuleController {
     /**
      * It is called when the user press back in a surveyFragment
      */
-    private void onSurveyBackPressed(Survey survey) {
-        //if the survey is opened in review mode exit.
-        SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio) {
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory()
                 && surveyAnsweredRatio.getTotalCompulsory() != 0) {
             askToSendCompulsoryCompletedSurvey();
-            return;
+            return true;
         }
-
-        //Confirm closing
-        askToCloseSurvey();
+        return false;
     }
 
     public void setActionBarDashboard() {
@@ -287,6 +277,7 @@ public class AssessModuleController extends ModuleController {
     private void closeSurveyFragment() {
         //Clear survey fragment
         if (isFragmentActive(SurveyFragment.class)) {
+            surveyFragment.hideProgress();
             SurveyFragment surveyFragment = getSurveyFragment();
             surveyFragment.unregisterReceiver();
         }
@@ -367,5 +358,61 @@ public class AssessModuleController extends ModuleController {
                 R.id.dashboard_details_container);
     }
 
+    public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatio> {
+
+        SurveyFragment surveyFragment;
+        Survey survey;
+        Action action;
+
+        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, Survey survey, Action action) {
+            this.surveyFragment = surveyFragment;
+            this.survey = survey;
+            this.action = action;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //spinner
+            surveyFragment.showProgress();
+            surveyFragment.nextProgressMessage();
+        }
+
+
+        @Override
+        protected SurveyAnsweredRatio doInBackground(Void... voids) {
+            return survey.reloadSurveyAnsweredRatio(surveyFragment);
+        }
+
+        @Override
+        protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
+            if(action.equals(Action.PRESSBACKBUTTON)) {
+                surveyFragment.hideProgress();
+                boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
+                if(!isDialogShown){
+                    //Confirm closing
+                    if (survey.isCompleted() || survey.isSent()) {
+                        dashboardController.setNavigatingBackwards(false);
+                        surveyFragment.hideProgress();
+                        closeSurveyFragment();
+                        return;
+                    }else{
+                        askToCloseSurvey();
+                    }
+                }
+            }
+            else if (action.equals(Action.CHANGETAB)){
+                super.onPostExecute(surveyAnsweredRatio);
+                if (surveyAnsweredRatio.getCompulsoryAnswered()
+                        == surveyAnsweredRatio.getTotalCompulsory()
+                        && surveyAnsweredRatio.getTotalCompulsory() != 0) {
+                    askToSendCompulsoryCompletedSurvey();
+                }
+                surveyFragment.hideProgress();
+                closeSurveyFragment();
+
+            }
+        }
+    }
 
 }

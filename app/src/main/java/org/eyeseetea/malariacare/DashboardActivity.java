@@ -158,7 +158,7 @@ public class DashboardActivity extends BaseActivity {
         final Activity activity = this;
         //check if exist a compulsory question without awnser before push and pull.
         for (Survey survey : unsentSurveys) {
-            SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+            SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio(null);
             if (surveyAnsweredRatio.getTotalCompulsory() > 0
                     && surveyAnsweredRatio.getCompulsoryAnswered()
                     != surveyAnsweredRatio.getTotalCompulsory()) {

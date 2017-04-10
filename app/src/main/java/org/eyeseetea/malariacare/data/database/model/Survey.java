@@ -52,6 +52,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.Visitable
 import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -482,7 +483,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         if (answeredQuestionRatio == null) {
             answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId_survey());
             if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio();
+                answeredQuestionRatio = reloadSurveyAnsweredRatio(null);
             }
         }
         return answeredQuestionRatio;
@@ -493,18 +494,28 @@ public class Survey extends BaseModel implements VisitableToSDK {
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio() {
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(SurveyFragment surveyFragment) {
         //TODO Review
-        Program surveyProgram = this.getProgram();
-        int numRequired = Question.countRequiredByProgram(surveyProgram);
-        int numCompulsory = Question.countCompulsoryByProgram(surveyProgram);
-        int numOptional = (int) countNumOptionalQuestionsToAnswer();
-        int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(this.id_survey);
-        int numAnswered = Value.countBySurvey(this);
-        int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio = new SurveyAnsweredRatio(numRequired + numOptional,
-                numAnswered, numCompulsory + numActiveChildrenCompulsory, numCompulsoryAnswered);
-        SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
+        SurveyAnsweredRatio surveyAnsweredRatio=null;
+            Program surveyProgram = this.getProgram();
+            int numRequired = Question.countRequiredByProgram(surveyProgram);
+            int numCompulsory = Question.countCompulsoryByProgram(surveyProgram);
+            int numOptional = (int) countNumOptionalQuestionsToAnswer();
+            if(surveyFragment!=null) {
+                surveyFragment.nextProgressMessage();
+            }
+            int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(
+                    this.id_survey, surveyFragment);
+            if(surveyFragment!=null) {
+                surveyFragment.nextProgressMessage();
+            }
+            int numAnswered = Value.countBySurvey(this);
+            int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
+            surveyAnsweredRatio = new SurveyAnsweredRatio(
+                    numRequired + numOptional,
+                    numAnswered, numCompulsory + numActiveChildrenCompulsory,
+                    numCompulsoryAnswered);
+            SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
 
@@ -551,7 +562,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         }
 
 
-        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio();
+        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio(null);
 
         SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
         if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
