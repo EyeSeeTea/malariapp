@@ -184,8 +184,6 @@ public class FeedbackAdapter extends BaseAdapter {
             uidLink.setText(Html.fromHtml(uidLinkHtml));
             uidLink.setMovementMethod(LinkMovementMethod.getInstance());
             uidLink.setVisibility(View.VISIBLE);
-        }else{
-            uidLink.setVisibility(View.VISIBLE);
         }
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);

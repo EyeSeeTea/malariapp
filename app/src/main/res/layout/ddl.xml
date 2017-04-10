@@ -37,6 +37,7 @@
         app:tFontName="@string/medium_font_name" />
 
     <include layout="@layout/question_uid"></include>
+
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"

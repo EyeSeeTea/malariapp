@@ -254,10 +254,6 @@ public class AutoTabLayoutUtils {
                         PreferencesState.getInstance().getContext().getResources().getColor(
                                 R.color.transparent));}
         }
-        else{
-            viewHolder.uidLink = (CustomTextView) rowView.findViewById(R.id.uid_link);
-            viewHolder.uidLink.setVisibility(View.GONE);
-        }
 
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
