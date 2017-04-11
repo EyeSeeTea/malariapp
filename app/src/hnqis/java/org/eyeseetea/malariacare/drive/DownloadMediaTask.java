@@ -18,7 +18,6 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.database.model.Media;
 
 import java.io.FileOutputStream;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -84,13 +83,13 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         if (mLastError instanceof UserRecoverableAuthIOException) {
             DashboardActivity.dashboardActivity.startActivityForResult(
                     ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                    DriveRestController.REQUEST_AUTHORIZATION);
+                    DriveRestControllerStrategy.REQUEST_AUTHORIZATION);
             return;
         }
 
         //Real connection google error
         if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-            DriveRestController.getInstance().showGooglePlayServicesAvailabilityErrorDialog(
+            DriveRestControllerStrategy.getInstance().showGooglePlayServicesAvailabilityErrorDialog(
                     ((GooglePlayServicesAvailabilityIOException) mLastError)
                             .getConnectionStatusCode());
             return;

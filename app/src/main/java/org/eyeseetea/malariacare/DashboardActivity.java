@@ -21,12 +21,14 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,8 +45,9 @@ import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.drive.DriveRestController;
+import org.eyeseetea.malariacare.drive.DriveRestControllerStrategy;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
@@ -82,6 +85,7 @@ public class DashboardActivity extends BaseActivity {
         //XXX to remove?
         initDataIfRequired();
 
+        loadPhoneMetadata();
         //get dashboardcontroller from settings.json
         dashboardController = AppSettingsBuilder.getInstance().getDashboardController();
 
@@ -96,7 +100,7 @@ public class DashboardActivity extends BaseActivity {
 
 
         //Media: init drive credentials
-        DriveRestController.getInstance().init(this);
+        DriveRestControllerStrategy.getInstance().init(this);
     }
 
     @Override
@@ -116,7 +120,7 @@ public class DashboardActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Delegate activity result to media controller
-        DriveRestController.getInstance().onActivityResult(requestCode, resultCode, data);
+        DriveRestControllerStrategy.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -215,7 +219,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        DriveRestController.getInstance().syncMedia();
+        DriveRestControllerStrategy.getInstance().syncMedia();
     }
 
     @Override
@@ -479,5 +483,9 @@ public class DashboardActivity extends BaseActivity {
                 AUtils.checkUserClosed(loggedUser, getBaseContext());
             }
         }
+    }
+
+    public void loadPhoneMetadata() {
+        Session.setPhoneMetaData(new PhoneMetaData((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)));
     }
 }
