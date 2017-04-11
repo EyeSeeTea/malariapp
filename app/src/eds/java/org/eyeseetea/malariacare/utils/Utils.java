@@ -19,24 +19,8 @@
 
 package org.eyeseetea.malariacare.utils;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.text.method.LinkMovementMethod;
-import android.widget.TextView;
-
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.TabGroup;
-
-
 /**
  * Created by nacho on 28/03/16.
  */
 public class Utils extends AUtils {
-
-    @Override
-    public void createNewSurvey(OrgUnit orgUnit, TabGroup tabGroup) {
-        ComboOrgUnitTabGroup comboOrgUnitTabGroup=new ComboOrgUnitTabGroup(orgUnit,tabGroup);
-        LoadLastEvent loadLastEvent= new LoadLastEvent();
-        loadLastEvent.execute(comboOrgUnitTabGroup);
-    }
 }
