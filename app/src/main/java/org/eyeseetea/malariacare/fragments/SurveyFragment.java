@@ -43,11 +43,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.common.collect.Iterables;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.Question;
@@ -55,7 +53,7 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -77,9 +75,6 @@ import java.util.Set;
  * Created by ignac on 05/01/2016.
  */
 public class SurveyFragment extends Fragment  {
-    public interface Callback{
-        void nextProgressMessage();
-    }
     private String TAG = ".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
@@ -243,7 +238,7 @@ public class SurveyFragment extends Fragment  {
     public void onPause() {
         Survey survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            survey.updateSurveyStatus();
+            survey.updateSurveyStatus(GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE);
         }
         unregisterReceiver();
         super.onPause();

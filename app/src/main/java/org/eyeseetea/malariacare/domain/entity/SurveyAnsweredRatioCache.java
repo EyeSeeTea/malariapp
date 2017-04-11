@@ -17,7 +17,9 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils;
+package org.eyeseetea.malariacare.domain.entity;
+
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,5 +38,9 @@ public class SurveyAnsweredRatioCache {
 
     public static SurveyAnsweredRatio get(Long surveyId){
         return surveyAnsweredRatioMap.get(surveyId);
+    }
+
+    public static SurveyAnsweredRatio remove(Long surveyId){
+        return surveyAnsweredRatioMap.remove(surveyId);
     }
 }

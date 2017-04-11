@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -32,10 +31,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -30,8 +30,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.utils.Action;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -138,16 +139,27 @@ public class AssessModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
-    public void onMarkAsCompleted(Survey survey) {
-        SurveyAnsweredRatio surveyAnsweredRatio = survey.getAnsweredQuestionRatio();
+    public void onMarkAsCompleted(final Survey survey) {
+        survey.getAnsweredQuestionRatio(
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
 
-        //This cannot be mark as completed
-        if (!surveyAnsweredRatio.isCompulsoryCompleted()) {
-            alertCompulsoryQuestionIncompleted();
-            return;
-        }
+                    }
 
-        alertAreYouSureYouWantToComplete(survey);
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+
+                        //This cannot be mark as completed
+                        if (!surveyAnsweredRatio.isCompulsoryCompleted()) {
+                            alertCompulsoryQuestionIncompleted();
+                            return;
+                        }
+
+                        alertAreYouSureYouWantToComplete(survey);
+
+                    }
+                });
     }
 
     public void onNewSurvey() {
@@ -237,7 +249,8 @@ public class AssessModuleController extends ModuleController {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         Survey survey = Session.getSurveyByModule(getSimpleName());
-                        survey.updateSurveyStatus();
+                        survey.updateSurveyStatus(
+                                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST);
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         dashboardController.setNavigatingBackwards(false);
@@ -359,7 +372,7 @@ public class AssessModuleController extends ModuleController {
     }
 
     public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatio> {
-
+        SurveyAnsweredRatio mSurveyAnsweredRatio;
         SurveyFragment surveyFragment;
         Survey survey;
         Action action;
@@ -381,13 +394,21 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected SurveyAnsweredRatio doInBackground(Void... voids) {
-            return survey.reloadSurveyAnsweredRatio(new SurveyFragment.Callback(){
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            surveyFragment.nextProgressMessage();
+                        }
 
-                @Override
-                public void nextProgressMessage() {
-                    surveyFragment.nextProgressMessage();
-                }
-            });
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            mSurveyAnsweredRatio = surveyAnsweredRatio;
+                        }
+                    });
+            return mSurveyAnsweredRatio;
         }
 
         @Override

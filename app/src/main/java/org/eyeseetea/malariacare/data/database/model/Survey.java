@@ -37,22 +37,20 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
-import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 import com.raizlabs.android.dbflow.sql.language.Where;
-import com.raizlabs.android.dbflow.sql.language.property.Property;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -479,11 +477,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio() {
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
         if (answeredQuestionRatio == null) {
             answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId_survey());
             if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio(null);
+                answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
             }
         }
         return answeredQuestionRatio;
@@ -494,7 +492,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(SurveyFragment.Callback callback) {
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
         //TODO Review
         SurveyAnsweredRatio surveyAnsweredRatio=null;
             Program surveyProgram = this.getProgram();
@@ -551,30 +549,39 @@ public class Survey extends BaseModel implements VisitableToSDK {
     /**
      * Updates ratios, status and completion date depending on the question and answer (text)
      */
-    public void updateSurveyStatus() {
+    public void updateSurveyStatus(GetSurveyAnsweredRatioUseCase.RecoveryFrom recoveryFrom) {
 
         //Exit if the survey was sent or completed
         if (isReadOnly()) {
             return;
         }
 
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+        getSurveyAnsweredRatioUseCase.execute(getId_survey(),
+                recoveryFrom,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
 
-        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio(null);
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
+                            //Update status
+                            if (!surveyAnsweredRatio.isCompleted()) {
+                                setStatus(Constants.SURVEY_IN_PROGRESS);
+                            }
 
-        SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
-        if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
-            //Update status
-            if (!answeredRatio.isCompleted()) {
-                this.setStatus(Constants.SURVEY_IN_PROGRESS);
-            }
-
-        } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
-            this.setStatus(Constants.SURVEY_IN_PROGRESS);
-        }
+                        } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
+                            setStatus(Constants.SURVEY_IN_PROGRESS);
+                        }
 
 
-        //Saves new status & completion_date
-        this.save();
+                        //Saves new status & completion_date
+                        save();
+                    }
+                });
     }
 
     private void saveScore(String module) {        //Prepare scores info
