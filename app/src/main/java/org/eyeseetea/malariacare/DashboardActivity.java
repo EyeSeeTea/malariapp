@@ -44,7 +44,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.drive.DriveRestController;
+import org.eyeseetea.malariacare.drive.DriveRestControllerStrategy;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
@@ -96,7 +96,7 @@ public class DashboardActivity extends BaseActivity {
 
 
         //Media: init drive credentials
-        DriveRestController.getInstance().init(this);
+        DriveRestControllerStrategy.getInstance().init(this);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class DashboardActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Delegate activity result to media controller
-        DriveRestController.getInstance().onActivityResult(requestCode, resultCode, data);
+        DriveRestControllerStrategy.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        DriveRestController.getInstance().syncMedia();
+        DriveRestControllerStrategy.getInstance().syncMedia();
     }
 
     @Override
