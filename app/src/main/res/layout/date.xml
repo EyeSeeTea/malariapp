@@ -11,7 +11,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.5"
+            android:layout_weight="0.45"
             android:paddingRight="@dimen/question_padding_all"
             android:paddingLeft="@dimen/question_padding_left"
             android:text="@string/widget_info_empty_statement"
@@ -20,12 +20,14 @@
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 
+        <include layout="@layout/question_uid"></include>
+
         <org.eyeseetea.malariacare.views.CustomEditText
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.5"
+            android:layout_weight="0.45"
             android:paddingRight="@dimen/question_padding_all"
             android:paddingLeft="@dimen/question_padding_all"
             android:textAppearance="?android:attr/textAppearanceSmall"

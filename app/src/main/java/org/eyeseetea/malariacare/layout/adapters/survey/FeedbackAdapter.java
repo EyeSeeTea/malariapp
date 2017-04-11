@@ -53,6 +53,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -177,7 +178,13 @@ public class FeedbackAdapter extends BaseAdapter {
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
-
+        CustomTextView uidLink = (CustomTextView)rowLayout.findViewById(R.id.uid_link);
+        if(PreferencesState.getInstance().isDevelopOptionActive()){
+            String uidLinkHtml = "<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>";
+            uidLink.setText(Html.fromHtml(uidLinkHtml));
+            uidLink.setMovementMethod(LinkMovementMethod.getInstance());
+            uidLink.setVisibility(View.VISIBLE);
+        }
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()){

@@ -80,6 +80,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         editor.putString(mContext.getString(R.string.dhis_password), credentials.getPassword());
         editor.commit();
 
+        PreferencesState.getInstance().reloadServerUrl();
         Session.setCredentials(credentials);
     }
 
@@ -90,5 +91,6 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
         editor.putString(mContext.getString(R.string.dhis_user), "");
         editor.putString(mContext.getString(R.string.dhis_password), "");
         editor.commit();
+        PreferencesState.getInstance().reloadServerUrl();
     }
 }
