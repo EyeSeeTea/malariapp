@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.utils.Permissions;
 import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.DataElement;
@@ -61,6 +62,8 @@ import io.fabric.sdk.android.Fabric;
  */
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
+    public static Permissions permissions;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -71,9 +74,6 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         TypefaceCache.getInstance().init(getApplicationContext());
         AutoTabLayoutUtils.init();
 
-        //Set the Phone metadata
-        PhoneMetaData phoneMetaData=this.getPhoneMetadata();
-        Session.setPhoneMetaData(phoneMetaData);
 
         FlowManager.init(this, "_EyeSeeTeaDB");
         // Create indexes to accelerate the DB selects and avoid SQlite errors
@@ -98,18 +98,6 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
             return LoginActivity.class;
         }
 
-    }
-
-    PhoneMetaData getPhoneMetadata(){
-        PhoneMetaData phoneMetaData=new PhoneMetaData();
-        TelephonyManager phoneManagerMetaData=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String imei = phoneManagerMetaData.getDeviceId();
-        String phone = phoneManagerMetaData.getLine1Number();
-        String serial = phoneManagerMetaData.getSimSerialNumber();
-        phoneMetaData.setImei(imei);
-        phoneMetaData.setPhone_number(phone);
-        phoneMetaData.setPhone_serial(serial);
-        return phoneMetaData;
     }
 
     private void createDBIndexes(){

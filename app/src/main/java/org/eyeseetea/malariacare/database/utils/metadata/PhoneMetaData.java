@@ -19,6 +19,9 @@
 
 package org.eyeseetea.malariacare.database.utils.metadata;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
+
 /**
  * Created by nacho on 03/05/16.
  */
@@ -27,8 +30,10 @@ public class PhoneMetaData {
     private String phone_number;
     private String phone_serial;
 
-    public PhoneMetaData() {
-
+    public PhoneMetaData(TelephonyManager phoneManagerMetaData) {
+        imei = phoneManagerMetaData.getDeviceId();
+        phone_number = phoneManagerMetaData.getLine1Number();
+        phone_serial = phoneManagerMetaData.getSimSerialNumber();
     }
 
     public PhoneMetaData(String phone_serial, String imei, String phone_number) {
