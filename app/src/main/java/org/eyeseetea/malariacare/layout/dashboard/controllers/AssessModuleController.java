@@ -85,7 +85,7 @@ public class AssessModuleController extends ModuleController {
             closeSurveyFragment();
             return;
         }
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.CHANGETAB).execute();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.CHANGE_TAB).execute();
 
     }
 
@@ -111,7 +111,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.showProgress();
         surveyFragment.nextProgressMessage();
         final Survey survey = Session.getSurveyByModule(getSimpleName());
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.PRESSBACKBUTTON).execute();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.PRESS_BACK_BUTTON).execute();
         //if the survey is opened in review mode exit.
     }
 
@@ -413,7 +413,7 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
-            if(action.equals(Action.PRESSBACKBUTTON)) {
+            if(action.equals(Action.PRESS_BACK_BUTTON)) {
                 surveyFragment.hideProgress();
                 boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
                 if(!isDialogShown){
@@ -428,7 +428,7 @@ public class AssessModuleController extends ModuleController {
                     }
                 }
             }
-            else if (action.equals(Action.CHANGETAB)){
+            else if (action.equals(Action.CHANGE_TAB)){
                 super.onPostExecute(surveyAnsweredRatio);
                 if (surveyAnsweredRatio.getCompulsoryAnswered()
                         == surveyAnsweredRatio.getTotalCompulsory()
