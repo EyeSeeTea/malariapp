@@ -26,11 +26,11 @@ import java.util.Arrays;
 /**
  * Created by arrizabalaga on 28/05/16.
  */
-public class DriveRestController {
+public class DriveRestControllerStrategy {
 
 
-    private static final String TAG = "DriveRestController";
-    private static DriveRestController instance;
+    private static final String TAG = "DriveRestControllerStrategy";
+    private static DriveRestControllerStrategy instance;
 
     private GoogleCredential serviceCredential;
     private static final String[] SCOPES = {DriveScopes.DRIVE};
@@ -40,13 +40,13 @@ public class DriveRestController {
 
     private DashboardActivity dashboardActivity;
 
-    DriveRestController() {
+    DriveRestControllerStrategy() {
 
     }
 
-    public static DriveRestController getInstance() {
+    public static DriveRestControllerStrategy getInstance() {
         if (instance == null) {
-            instance = new DriveRestController();
+            instance = new DriveRestControllerStrategy();
         }
         return instance;
     }
