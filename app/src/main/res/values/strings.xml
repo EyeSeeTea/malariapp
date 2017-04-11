@@ -65,15 +65,6 @@ ID"</string>
 <string name="adherence_info_prescribed">"ACT
 Prescribed?"</string>
 <string name="adherence_info_rdt_positive">"RDT Positive"</string>
-<string name="adherence_info_rdt_negative">"RDT Negative"</string>
-<string name="adherence_info_microscopy_positive">"Microscopy Positive"</string>
-<string name="adherence_info_microscopy_negative">"Microscopy Negative"</string>
-
-<string name="iqatab_info_supervisor">"Supervisor"</string>
-<string name="iqatab_info_parasites">"Parasites/uL"</string>
-<string name="iqatab_info_species">"Species"</string>
-<string name="iqatab_info_labstaff">"Lab Staff"</string>
-<string name="iqatab_info_note">"Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose."</string>
 
 <string name="reporting_info_reporting">"Reporting"</string>
 <string name="reporting_info_results">"Results"</string>
@@ -105,7 +96,6 @@ evaluation"</string>
 <string name="settings_text_dhis_server_url">"DHIS Server URL"</string>
 <string name="settings_text_dhis_user">"DHIS user"</string>
 <string name="pref_header_general">"General"</string>
-<string name="dialog_title_push_response">"Push response"</string>
 <string name="dialog_info_push_bad_credentials">"Bad credentials for pushing"</string>
 <string name="dialog_info_push_empty_survey">"Empty surveys cannot be pushed"</string>
 <string name="settings_menu_legal">"Legal"</string>
@@ -175,11 +165,6 @@ evaluation"</string>
 <string name="progress_pull_validating_composite_scores">"Validating composite scores ..."</string>
 <string name="progress_pull_done">"Done"</string>
 <string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
-<string name="progress_push_preparing_survey">"Preparing survey for pushing ..."</string>
-<string name="progress_push_posting_survey">"Pushing survey data to server..."</string>
-<string name="progress_push_updating_survey">"Updating pushed survey data..."</string>
-<string name="progress_push_no_survey">"No survey found for pushing"</string>
-<string name="dialog_push_before_pull_success">"Surveys successfully pushed to dhis server, starting to pull metadata"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
 <string name="planning_label_comment">"* Comment"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
@@ -192,6 +177,7 @@ evaluation"</string>
 <string name="assess">"Assess - active surveys"</string>
 <string name="improve">"Improve"</string>
 <string name="monitor">"Monitor"</string>
+
 <string name="filter_all_org_units">"all org units"</string>
 <string name="filter_all_org_assessments">"all assessments"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
@@ -205,17 +191,12 @@ evaluation"</string>
 
 <string name="create">Create</string>
 <string name="modify">Modify</string>
-<string name="create_or_modify">Do you want to create a new assessment or modify the latest assessment, dated [%s]?</string>
-<string name="loading_last_surveys">Loading last survey...</string>
-<string name="no_previous_event_info">No previous event available</string>
 
 <string name="developer_option_summary">This feature activates the developer options</string>
 <string name="developer_option_title">Show developer options</string>
 <string name="export_data_option_title">Export database</string>
-<string name="ask_account_permission">This app needs to access your Google account (via Contacts).</string>
 <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
-<string name="feedback_media_link" >View video</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
 <string name="select_all">Select all</string>
