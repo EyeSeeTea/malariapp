@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +36,5 @@ public class SurveyAnsweredRatioCache {
 
     public static SurveyAnsweredRatio get(Long surveyId){
         return surveyAnsweredRatioMap.get(surveyId);
-    }
-
-    public static SurveyAnsweredRatio remove(Long surveyId){
-        return surveyAnsweredRatioMap.remove(surveyId);
     }
 }

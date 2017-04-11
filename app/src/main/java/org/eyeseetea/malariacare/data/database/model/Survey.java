@@ -549,39 +549,26 @@ public class Survey extends BaseModel implements VisitableToSDK {
     /**
      * Updates ratios, status and completion date depending on the question and answer (text)
      */
-    public void updateSurveyStatus(GetSurveyAnsweredRatioUseCase.RecoveryFrom recoveryFrom) {
+    public void updateSurveyStatus(SurveyAnsweredRatio surveyAnsweredRatio) {
 
         //Exit if the survey was sent or completed
         if (isReadOnly()) {
             return;
         }
 
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-        getSurveyAnsweredRatioUseCase.execute(getId_survey(),
-                recoveryFrom,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
+        if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
+            //Update status
+            if (!surveyAnsweredRatio.isCompleted()) {
+                setStatus(Constants.SURVEY_IN_PROGRESS);
+            }
 
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
-                            //Update status
-                            if (!surveyAnsweredRatio.isCompleted()) {
-                                setStatus(Constants.SURVEY_IN_PROGRESS);
-                            }
-
-                        } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
-                            setStatus(Constants.SURVEY_IN_PROGRESS);
-                        }
+        } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
+            setStatus(Constants.SURVEY_IN_PROGRESS);
+        }
 
 
-                        //Saves new status & completion_date
-                        save();
-                    }
-                });
+        //Saves new status & completion_date
+        save();
     }
 
     private void saveScore(String module) {        //Prepare scores info

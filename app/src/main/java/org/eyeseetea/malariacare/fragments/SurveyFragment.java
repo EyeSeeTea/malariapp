@@ -53,6 +53,7 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -236,9 +237,23 @@ public class SurveyFragment extends Fragment  {
 
     @Override
     public void onPause() {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        final Survey survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            survey.updateSurveyStatus(GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE);
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Survey dbSurvey = Survey.findById(survey.getId_survey());
+                            dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
+                        }
+                    });
         }
         unregisterReceiver();
         super.onPause();

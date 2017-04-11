@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -248,9 +249,23 @@ public class AssessModuleController extends ModuleController {
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurveyByModule(getSimpleName());
-                        survey.updateSurveyStatus(
-                                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST);
+                        final Survey survey = Session.getSurveyByModule(getSimpleName());
+
+                        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+                        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                                new GetSurveyAnsweredRatioUseCase.Callback() {
+                                    @Override
+                                    public void nextProgressMessage() {
+                                        Log.d(getClass().getName(), "nextProgressMessage");
+                                    }
+
+                                    @Override
+                                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                        Survey dbSurvey = Survey.findById(survey.getId_survey());
+                                        dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
+                                    }
+                                });
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         dashboardController.setNavigatingBackwards(false);
