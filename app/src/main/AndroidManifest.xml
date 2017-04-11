@@ -94,7 +94,7 @@
             android:value="0ff574d40926a9541f1c04cdd0a1ce3c03140d51" />
         <provider
             android:name="org.eyeseetea.malariacare.utils.DBProvider"
-            android:authorities="${applicationId}.database.utils.ExportData"
+            android:authorities="org.eyeseetea.malariacare.database.utils.ExportData"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
