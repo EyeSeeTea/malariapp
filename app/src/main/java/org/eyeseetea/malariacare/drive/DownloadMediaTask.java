@@ -74,7 +74,9 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer numSyncedFiles) {
-        DashboardActivity.toast(String.format("%d files synced", numSyncedFiles));
+        if(numSyncedFiles>0) {
+            DashboardActivity.toast(String.format("%d files synced", numSyncedFiles));
+        }
     }
 
     @Override
