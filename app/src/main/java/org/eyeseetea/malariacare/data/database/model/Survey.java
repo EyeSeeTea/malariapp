@@ -116,11 +116,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
     List<SurveySchedule> surveySchedules;
 
     /**
-     * Calculated answered ratio for this survey according to its values
-     */
-    SurveyAnsweredRatio answeredQuestionRatio;
-
-    /**
      * Calculated main Score for this survey, is not persisted, just calculated on runtime
      */
     Float mainScore;
@@ -475,50 +470,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
-     */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
-        if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId_survey());
-            if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
-            }
-        }
-        return answeredQuestionRatio;
-    }
-
-    /**
-     * Calculates the current ratio of completion for this survey
-     *
-     * @return SurveyAnsweredRatio that hold the total & answered questions.
-     */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
-        //TODO Review
-        SurveyAnsweredRatio surveyAnsweredRatio=null;
-            Program surveyProgram = this.getProgram();
-            int numRequired = Question.countRequiredByProgram(surveyProgram);
-            int numCompulsory = Question.countCompulsoryByProgram(surveyProgram);
-            int numOptional = (int) countNumOptionalQuestionsToAnswer();
-            if(callback!=null) {
-                callback.nextProgressMessage();
-            }
-            int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(
-                    this.id_survey, callback); 
-            int numAnswered = Value.countBySurvey(this);
-            int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
-            surveyAnsweredRatio = new SurveyAnsweredRatio(
-                    numRequired + numOptional,
-                    numAnswered, numCompulsory + numActiveChildrenCompulsory,
-                    numCompulsoryAnswered);
-            SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
-        return surveyAnsweredRatio;
-    }
-
-    /**
      * Return the number of child questions that should be answered according to the values of the
      * parent questions.
      */
-    private long countNumOptionalQuestionsToAnswer() {
+    public long countNumOptionalQuestionsToAnswer() {
         long numOptionalQuestions = SQLite.selectCountOf().from(Question.class).as(questionName)
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                 .on(Question_Table.id_question.withTable(questionAlias)

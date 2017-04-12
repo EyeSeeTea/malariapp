@@ -141,16 +141,15 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onMarkAsCompleted(final Survey survey) {
-        survey.getAnsweredQuestionRatio(
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
-
                     }
-
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-
                         //This cannot be mark as completed
                         if (!surveyAnsweredRatio.isCompulsoryCompleted()) {
                             alertCompulsoryQuestionIncompleted();
@@ -158,7 +157,6 @@ public class AssessModuleController extends ModuleController {
                         }
 
                         alertAreYouSureYouWantToComplete(survey);
-
                     }
                 });
     }
