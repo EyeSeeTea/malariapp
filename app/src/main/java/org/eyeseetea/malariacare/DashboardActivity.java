@@ -21,11 +21,13 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,11 +38,13 @@ import com.squareup.otto.Subscribe;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
+import org.eyeseetea.malariacare.database.model.Program;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.drive.DriveRestControllerStrategy;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -54,9 +58,6 @@ import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.Date;
-
-import org.eyeseetea.malariacare.database.model.Program;
-
 import java.util.List;
 
 
@@ -78,6 +79,7 @@ public class DashboardActivity extends BaseActivity{
         //XXX to remove?
         initDataIfRequired();
 
+        loadPhoneMetadata();
         //get dashboardcontroller from settings.json
         dashboardController = AppSettingsBuilder.getInstance().getDashboardController();
 
@@ -429,5 +431,10 @@ public class DashboardActivity extends BaseActivity{
     public void clickProgramSpinner(View v){
         PlanModuleController planModuleController = (PlanModuleController)dashboardController.getModuleByName(PlanModuleController.getSimpleName());
         planModuleController.clickOrgProgramSpinner();
+    }
+
+    public void loadPhoneMetadata() {
+        Session.setPhoneMetaData(
+                new PhoneMetaData((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)));
     }
 }

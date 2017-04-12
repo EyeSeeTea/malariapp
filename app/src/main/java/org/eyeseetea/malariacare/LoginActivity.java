@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
@@ -77,6 +78,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        requestPermissions();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL &&  sharedPreferences.getBoolean(getApplicationContext().getResources().getString(R.string.pull_metadata),false)) {
             startActivity(new Intent(LoginActivity.this,
@@ -233,6 +235,28 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         startActivity(intent);
     }
 
+    public void requestPermissions() {
+        if (EyeSeeTeaApplication.permissions == null) {
+            EyeSeeTeaApplication.permissions = Permissions.getInstance(this);
+        }
+        if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
+    }
+
+    /**
+     * Its called on the requestPermission results, if the user accepts the permissions it request
+     * the Phone permission and gets the phoneMetadata
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+            String permissions[], int[] grantResults) {
+        if (Permissions.processAnswer(requestCode, permissions, grantResults)) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        } else if (EyeSeeTeaApplication.permissions.hasNextPermission()) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
+    }
 }
 
 
