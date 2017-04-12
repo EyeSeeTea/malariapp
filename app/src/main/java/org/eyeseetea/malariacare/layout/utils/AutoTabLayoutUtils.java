@@ -238,31 +238,23 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+        String uidLinkHtml = "<span>"+question.getForm_name()+"</span>";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            viewHolder.uidLink = (CustomTextView) rowView.findViewById(R.id.uid_link);
-            String uidLinkHtml = "<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+question.getUid()+"\">("+question.getUid()+")</a>";
-            viewHolder.uidLink.setText(Html.fromHtml(uidLinkHtml));
-            viewHolder.uidLink.setMovementMethod(LinkMovementMethod.getInstance());
-            viewHolder.uidLink.setVisibility(View.VISIBLE);
-            if(question.getOutput().equals(Constants.NO_ANSWER)) {
-                viewHolder.uidLink.setBackgroundColor(
-                        PreferencesState.getInstance().getContext().getResources().getColor(
-                                R.color.assess_yellow));
-            }
-            else{
-                viewHolder.uidLink.setBackgroundColor(
-                        PreferencesState.getInstance().getContext().getResources().getColor(
-                                R.color.transparent));}
+            uidLinkHtml = "<a href=\"" + PreferencesState.getInstance().getServerUrl()
+                    + PreferencesState.getInstance().getContext().getString(
+                    R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
+                    + ")</a>";
         }
-
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
-            Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + question.getForm_name());
+            Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + question.getForm_name() + uidLinkHtml);
             viewHolder.statement.setText(spannedQuestion);
         }else{
-            viewHolder.statement.setText(question.getForm_name());
+            viewHolder.statement.setText(Html.fromHtml("<span>"+question.getForm_name()+"</span>"+uidLinkHtml));
         }
+        viewHolder.statement.setMovementMethod(LinkMovementMethod.getInstance());
+
 
         return rowView;
     }

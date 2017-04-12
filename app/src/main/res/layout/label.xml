@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/assess_yellow"
+    android:background="@drawable/background_textfield"
     android:orientation="horizontal">
 
     <org.eyeseetea.malariacare.views.CustomTextView
@@ -11,12 +11,11 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.45"
+        android:layout_weight="0.5"
         android:paddingLeft="@dimen/question_padding_left"
         android:text="@string/widget_info_empty_statement"
         android:background="@color/assess_yellow"
         android:textColor="@color/black"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
-    <include layout="@layout/question_uid"></include>
 </LinearLayout>

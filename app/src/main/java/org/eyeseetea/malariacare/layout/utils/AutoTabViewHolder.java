@@ -41,8 +41,6 @@ import java.util.List;
 public class AutoTabViewHolder {
     //Label
     public CustomTextView statement;
-    //Label
-    public CustomTextView uidLink;
 
     // Main component in the row: Spinner, EditText or RadioGroup
     public View component;
