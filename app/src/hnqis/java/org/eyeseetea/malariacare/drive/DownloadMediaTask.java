@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
@@ -18,7 +17,6 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.database.model.Media;
 
 import java.io.FileOutputStream;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -84,13 +82,13 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         if (mLastError instanceof UserRecoverableAuthIOException) {
             DashboardActivity.dashboardActivity.startActivityForResult(
                     ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                    DriveRestController.REQUEST_AUTHORIZATION);
+                    DriveRestControllerStrategy.REQUEST_AUTHORIZATION);
             return;
         }
 
         //Real connection google error
         if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-            DriveRestController.getInstance().showGooglePlayServicesAvailabilityErrorDialog(
+            DriveRestControllerStrategy.getInstance().showGooglePlayServicesAvailabilityErrorDialog(
                     ((GooglePlayServicesAvailabilityIOException) mLastError)
                             .getConnectionStatusCode());
             return;
