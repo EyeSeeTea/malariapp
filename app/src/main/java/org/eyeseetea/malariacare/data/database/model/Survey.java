@@ -37,21 +37,20 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
-import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 import com.raizlabs.android.dbflow.sql.language.Where;
-import com.raizlabs.android.dbflow.sql.language.property.Property;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.data.database.utils.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -115,11 +114,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * List of historic previous schedules
      */
     List<SurveySchedule> surveySchedules;
-
-    /**
-     * Calculated answered ratio for this survey according to its values
-     */
-    SurveyAnsweredRatio answeredQuestionRatio;
 
     /**
      * Calculated main Score for this survey, is not persisted, just calculated on runtime
@@ -476,43 +470,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
-     * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
-     */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio() {
-        if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = SurveyAnsweredRatioCache.get(this.getId_survey());
-            if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio();
-            }
-        }
-        return answeredQuestionRatio;
-    }
-
-    /**
-     * Calculates the current ratio of completion for this survey
-     *
-     * @return SurveyAnsweredRatio that hold the total & answered questions.
-     */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio() {
-        //TODO Review
-        Program surveyProgram = this.getProgram();
-        int numRequired = Question.countRequiredByProgram(surveyProgram);
-        int numCompulsory = Question.countCompulsoryByProgram(surveyProgram);
-        int numOptional = (int) countNumOptionalQuestionsToAnswer();
-        int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(this.id_survey);
-        int numAnswered = Value.countBySurvey(this);
-        int numCompulsoryAnswered = Value.countCompulsoryBySurvey(this);
-        SurveyAnsweredRatio surveyAnsweredRatio = new SurveyAnsweredRatio(numRequired + numOptional,
-                numAnswered, numCompulsory + numActiveChildrenCompulsory, numCompulsoryAnswered);
-        SurveyAnsweredRatioCache.put(this.id_survey, surveyAnsweredRatio);
-        return surveyAnsweredRatio;
-    }
-
-    /**
      * Return the number of child questions that should be answered according to the values of the
      * parent questions.
      */
-    private long countNumOptionalQuestionsToAnswer() {
+    public long countNumOptionalQuestionsToAnswer() {
         long numOptionalQuestions = SQLite.selectCountOf().from(Question.class).as(questionName)
                 .join(QuestionRelation.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                 .on(Question_Table.id_question.withTable(questionAlias)
@@ -543,30 +504,26 @@ public class Survey extends BaseModel implements VisitableToSDK {
     /**
      * Updates ratios, status and completion date depending on the question and answer (text)
      */
-    public void updateSurveyStatus() {
+    public void updateSurveyStatus(SurveyAnsweredRatio surveyAnsweredRatio) {
 
         //Exit if the survey was sent or completed
         if (isReadOnly()) {
             return;
         }
 
-
-        SurveyAnsweredRatio answeredRatio = this.reloadSurveyAnsweredRatio();
-
-        SurveyAnsweredRatio surveyAnsweredRatio = this.getAnsweredQuestionRatio();
         if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
             //Update status
-            if (!answeredRatio.isCompleted()) {
-                this.setStatus(Constants.SURVEY_IN_PROGRESS);
+            if (!surveyAnsweredRatio.isCompleted()) {
+                setStatus(Constants.SURVEY_IN_PROGRESS);
             }
 
         } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
-            this.setStatus(Constants.SURVEY_IN_PROGRESS);
+            setStatus(Constants.SURVEY_IN_PROGRESS);
         }
 
 
         //Saves new status & completion_date
-        this.save();
+        save();
     }
 
     private void saveScore(String module) {        //Prepare scores info

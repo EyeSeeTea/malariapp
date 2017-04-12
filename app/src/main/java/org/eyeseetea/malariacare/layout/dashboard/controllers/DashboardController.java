@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;

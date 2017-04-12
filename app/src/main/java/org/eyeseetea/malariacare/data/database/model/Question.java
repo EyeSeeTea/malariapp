@@ -47,6 +47,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -699,6 +701,7 @@ public class Question extends BaseModel {
                 .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(Question_Table.compulsory.withTable(questionAlias).is(true))
+                .and(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program())).count();
 
         List<Question> questionsChild = new Select()
@@ -713,6 +716,7 @@ public class Question extends BaseModel {
                 .on(Header_Table.id_tab_fk.withTable(headerAlias)
                         .eq(Tab_Table.id_tab.withTable(tabAlias)))
                 .where(Question_Table.compulsory.withTable(questionAlias).is(true))
+                .and(Question_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(Tab_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program()))
                 .and(QuestionRelation_Table.operation.withTable(questionRelationAlias)
                         .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  Question_Table.uid_question.withTable(questionAlias)).queryList();
@@ -723,7 +727,7 @@ public class Question extends BaseModel {
     /**
      * Gets all the children compulsory questions, and returns the  number of active children
      */
-    public static int countChildrenCompulsoryBySurvey(Long id_survey) {
+    public static int countChildrenCompulsoryBySurvey(Long id_survey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         int numActiveChildrens=0;
         //This query returns a list of children compulsory questions
         // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
@@ -752,9 +756,16 @@ public class Question extends BaseModel {
 
         //checks if the children questions are active by UID
         // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
-        for(Question question:questions) {
-            if(question.getCompulsory() && !Question.isHiddenQuestionByUidAndSurvey(question.getUid(), id_survey)) {
+        for(int i=0; i<questions.size();i++) {
+            if(questions.get(i).getCompulsory() && !Question.isHiddenQuestionByUidAndSurvey(questions.get(i).getUid(), id_survey)) {
                 numActiveChildrens++;
+            }
+            if(i == (Math.round((Float.parseFloat(questions.size()+"")*0.25)))
+                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.5)))
+                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.75)))){
+                if (callback != null) {
+                    callback.nextProgressMessage();
+                }
             }
         }
         // Return number of active compulsory children

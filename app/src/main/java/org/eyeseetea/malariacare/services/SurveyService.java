@@ -39,6 +39,8 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -294,7 +296,20 @@ public class SurveyService extends IntentService {
 
         //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
         for(Survey survey:surveys){
-            survey.getAnsweredQuestionRatio();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Log.d(getClass().getName(), "onComplete");
+                        }
+                    });
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
@@ -347,7 +362,20 @@ public class SurveyService extends IntentService {
 
         //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
         for(Survey survey:surveys){
-            survey.getAnsweredQuestionRatio();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Log.d(getClass().getName(), "onComplete");
+                        }
+                    });
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
