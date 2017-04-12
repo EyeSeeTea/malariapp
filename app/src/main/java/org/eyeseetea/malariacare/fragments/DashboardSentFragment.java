@@ -191,6 +191,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private void initProgramFilters() {
         initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
+        if(filterSpinnerProgram == null)
+            return;
         List<Program> filterProgramList= programList;
         Program defaultAllProgramFilter=new Program();
         defaultAllProgramFilter.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
@@ -233,7 +235,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private void initOrgUnitFilters(){
         initiatingFilters=true;
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
-
+        if(filterSpinnerOrgUnit == null)
+            return;
         //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
         filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
         if(orgUnitFilter==null)

@@ -37,13 +37,12 @@ import com.squareup.otto.Subscribe;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.OrgUnit;
 import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.TabGroup;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.drive.DriveRestController;
+import org.eyeseetea.malariacare.drive.DriveRestControllerStrategy;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
@@ -55,10 +54,9 @@ import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.Date;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
+
 import org.eyeseetea.malariacare.database.model.Program;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -93,7 +91,7 @@ public class DashboardActivity extends BaseActivity{
         AlarmPushReceiver.getInstance().setPushAlarm(this);
 
         //Media: init drive credentials
-        DriveRestController.getInstance().init(this);
+        DriveRestControllerStrategy.getInstance().init(this);
     }
 
     @Override
@@ -115,7 +113,7 @@ public class DashboardActivity extends BaseActivity{
         super.onActivityResult(requestCode, resultCode, data);
 
         //Delegate activity result to media controller
-        DriveRestController.getInstance().onActivityResult(requestCode, resultCode, data);
+        DriveRestControllerStrategy.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -205,7 +203,7 @@ public class DashboardActivity extends BaseActivity{
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        DriveRestController.getInstance().syncMedia();
+        DriveRestControllerStrategy.getInstance().syncMedia();
     }
 
     @Override

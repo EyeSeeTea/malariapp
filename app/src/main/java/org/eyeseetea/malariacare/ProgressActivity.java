@@ -196,6 +196,7 @@ public class ProgressActivity extends Activity {
             @Override
             public void run() {
                 if (syncProgressStatus.hasError()) {
+                    syncProgressStatus.getException().printStackTrace();
                     showException(syncProgressStatus.getException().getMessage()+" ");
                     return;
                 }
