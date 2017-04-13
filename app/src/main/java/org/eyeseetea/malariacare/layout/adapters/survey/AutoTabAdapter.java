@@ -313,7 +313,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey, module);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
-                if(PreferencesState.getInstance().isShowNumDen()) {
+                if(PreferencesState.getInstance().isDevelopOptionActive()) {
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                 }else{
@@ -324,7 +324,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                 break;
             case Constants.RADIO_GROUP_VERTICAL:
-                if(PreferencesState.getInstance().isShowNumDen()) {
+                if(PreferencesState.getInstance().isDevelopOptionActive()) {
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                 }else{

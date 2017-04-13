@@ -52,10 +52,6 @@ public class PreferencesState {
      */
     private String scale;
     /**
-     * Flag that determines if numerator/denominator are shown in scores.
-     */
-    private boolean showNumDen;
-    /**
      * Flag that determines if data must be pulled from server
      */
     private Boolean pullFromServer;
@@ -112,16 +108,15 @@ public class PreferencesState {
 
     public void reloadPreferences() {
         scale = initScale();
-        showNumDen = initShowNumDen();
         locationRequired = initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents = initMaxEvents();
         languageCode = initLanguageCode();
         userAccept = initUserAccept();
         Log.d(TAG, String.format(
-                "reloadPreferences: scale: %s | showNumDen: %b | locationRequired: %b | "
+                "reloadPreferences: scale: %s | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b ",
-                scale, showNumDen, locationRequired, maxEvents, showLargeText));
+                scale, locationRequired, maxEvents, showLargeText));
     }
 
     /**
@@ -157,16 +152,6 @@ public class PreferencesState {
         }
 
         return context.getString(R.string.font_size_system);
-    }
-
-    /**
-     * Inits flag according to preferences
-     */
-    private boolean initShowNumDen() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                instance.getContext());
-        return sharedPreferences.getBoolean(instance.getContext().getString(R.string.show_num_dems),
-                false);
     }
 
     /**
@@ -267,14 +252,6 @@ public class PreferencesState {
 
     public void setScale(String value) {
         this.scale = value;
-    }
-
-    public boolean isShowNumDen() {
-        return showNumDen;
-    }
-
-    public void setShowNumDen(boolean value) {
-        this.showNumDen = value;
     }
 
     public boolean isLocationRequired() {

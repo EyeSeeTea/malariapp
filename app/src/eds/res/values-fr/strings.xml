@@ -86,8 +86,6 @@ Mensuelle"</string>
 <string name="compscore_title_score_percentage">"Score (%)"</string>
 
 <string name="title_activity_settings">"Paramètres"</string>
-<string name="settings_checkbox_show_num_dems">"Montrer num/dens"</string>
-<string name="settings_checkbox_description_show_num_dems">"Si cette option est activée, les questions du formulaire montrent ses numerateurs et denominateurs, utilisés pour calculer le score du rapport"</string>
 <string name="settings_checkbox_customize_fonts">"Personaliser les fonts ?"</string>
 <string name="settings_list_font_sizes">"Taille des fonts"</string>
 <string name="settings_text_dhis_server_url">"URL du serveur DHIS"</string>

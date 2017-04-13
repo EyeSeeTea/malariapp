@@ -89,8 +89,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="compscore_title_score_percentage">"Ponto (%)"</string>
 
 <string name="title_activity_settings">"Definições"</string>
-<string name="settings_checkbox_show_num_dems">"Mostrar numerador/denominador"</string>
-<string name="settings_checkbox_description_show_num_dems">"Quando activadas, as questões do inquérito mostram os seus numeradores e denominadores, usados para calcular resultados do inquérito"</string>
 <string name="settings_checkbox_customize_fonts">"Personalizar tipos de letra?"</string>
 <string name="settings_list_font_sizes">"Tamanho dos tipos de letra"</string>
 <string name="settings_text_dhis_server_url">"URL do servidor SISD"</string>
