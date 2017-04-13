@@ -79,15 +79,6 @@
     <string name="adherence_info_patient_id">Patient\nID</string>
     <string name="adherence_info_prescribed">ACT\nPrescribed?</string>
     <string name="adherence_info_rdt_positive">RDT Positive</string>
-    <string name="adherence_info_rdt_negative">RDT Negative</string>
-    <string name="adherence_info_microscopy_positive">Microscopy Positive</string>
-    <string name="adherence_info_microscopy_negative">Microscopy Negative</string>
-
-    <string name="iqatab_info_supervisor">Supervisor</string>
-    <string name="iqatab_info_parasites">Parasites/uL</string>
-    <string name="iqatab_info_species">Species</string>
-    <string name="iqatab_info_labstaff">Lab Staff</string>
-    <string name="iqatab_info_note">Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose.</string>
 
     <string name="reporting_info_reporting">Reporting</string>
     <string name="reporting_info_results">Results</string>
@@ -148,7 +139,6 @@
     <string name="assess">Assess - active surveys</string>
     <string name="improve">Improve</string>
     <string name="monitor">Monitor</string>
-
     <string name="filter_all_org_units">all org units</string>
     <string name="filter_all_org_assessments">all assessments</string>
     <string name="dialog_content_dhis_preference_login">Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?</string>
@@ -158,11 +148,6 @@
 
     <string name="create">Create</string>
     <string name="modify">Modify</string>
-    <string name="create_or_modify">Do you want to create a new assessment or modify the latest assessment, dated [%s]?</string>
-    <string name="loading_last_surveys">Loading last survey...</string>
-
-    <string name="no_previous_event_info">No previous event available</string>
-
     <string name="yes">បាទ/ចាស</string>
     <string name="no">ទេ</string>
     <string name="cancel">បោះបង់</string>
@@ -220,14 +205,9 @@
     <string name="progress_pull_relationships">កសាងទំនាក់ទំនងសំណួរ ...</string>
     <string name="progress_pull_validating_composite_scores">"សុពលភាពពិន្ទុសមាសធាតុ ..."</string>
     <string name="progress_pull_done">រួចរាល់</string>
-    <string name="progress_push_no_survey">មិនមានការស្ទង់មតិត្រូវបានរកឃើញ ដើម្បីធ្វើការបញ្ជូន</string>
-    <string name="progress_push_posting_survey">កំពុងបញ្ជូនទិន្នន័យការស្ទង់មតិទៅកាន់ម៉ាស៊ីនបម្រើ...</string>
-    <string name="progress_push_preparing_survey">កំពុងរៀបចំការស្ទង់មតិ ដើម្បីធ្វើការបញ្ជូន...</string>
-    <string name="progress_push_updating_survey">កំពុងធ្វើបច្ចុប្បន្នភាពទិន្នន័យការស្ទង់មតិដែលបានបញ្ជូនហើយ...</string>
     <string name="cancellingPull">ដំណើរការនេះនឹងត្រូវបញ្ឈប់នៅក្នុងពីរបីវិនាទីី</string>
     <string name="dialog_title_pull_response">ស្ថានភាពទាញទិន្នន័យ</string>
     <string name="dialog_pull_success">ទិន្នន័យមេតា (Metadata) របស់ DHIS បានទាញដោយជោគជ័យពីម៉ាស៊ីនបម្រើ​ (Server)</string>
-    <string name="dialog_push_before_pull_success">ការស្ទង់មតិបានបញ្ជូនដោយជោគជ័យទៅកាន់ម៉ាស៊ីនបម្រើរបស់ DHIS (DHIS Server) កំពុងតែចាប់ផ្តើមទាញយក ទិន្នន័យមេតា (Metadata)</string>
     <string name="dialog_push_success">ការស្ទង់មតិបានបញ្ជូនចូលទៅកាន់ម៉ាស៊ីនបម្រើ DHIS ដោយជោគជ័យ</string>
     <string name="dialog_pull_error">មានកំហុសខណៈពេលព្យាយាមទាញទិន្នន័យមេតា​ (Metadata) ពីប្រព័ន្ធ Dhis (DHIS Server)</string>
 
@@ -235,10 +215,8 @@
     <string name="developer_option_title">អភិវឌ្ឍន៍បង្ហាញជម្រើស</string>
     <string name="export_data_option_title">មូលដ្ឋានទិន្នន័យដែលបាននាំចេញ</string>
     <string name="account_permission_denied">សិទ្ធិអនុញ្ញាតទំនាក់ទំនងបដិសេធ។ ប្រព័ន្ធផ្សព្វផ្សាយនឹងមិនត្រូវបានធ្វើសមកាលកម្ម</string>
-    <string name="ask_account_permission">កម្មវិធីនេះត្រូវការដើម្បីចូលដំណើរការគណនី Google របស់អ្នក (តាមរយៈការទំនាក់ទំនង) ។</string>
     <string name="error_message_push">ព្រឹត្តិការណ៍នេះជាមួយនឹងលេខសម្គាល់អ្នកប្រើ %s ។ ត្រូវបានផ្ទុកឡើងដោយគ្មានកាលបរិច្ឆេទ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។</string>
     <string name="feedback_media">មតិអ្នកមើលវីដេអូ</string>
-    <string name="feedback_media_link">មើលវីដេអូ</string>
     <string name="google_play_required">នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។</string>
     <string name="feedback_view_image">ចែករំលែករូបភាពជាមួយ ...</string>
     <string name="select_all">ជ្រើស​យក​ទាំងអស់</string>

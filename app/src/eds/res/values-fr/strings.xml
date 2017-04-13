@@ -65,16 +65,6 @@ patient"</string>
 <string name="adherence_info_prescribed">"ACT
 Prescrit?"</string>
 <string name="adherence_info_rdt_positive">"RDT Positif"</string>
-<string name="adherence_info_rdt_negative">"RDT Négatif"</string>
-<string name="adherence_info_microscopy_positive">"Microscopie Positive"</string>
-<string name="adherence_info_microscopy_negative">"Microscopie Négative"</string>
-
-<string name="iqatab_info_supervisor">"Superviseur"</string>
-<string name="iqatab_info_parasites">"Parasites/uL"</string>
-<string name="iqatab_info_species">"Espèce"</string>
-<string name="iqatab_info_labstaff">"Personnel du Laboratoire"</string>
-<string name="iqatab_info_note">"Note: La revérification de la lame doit être réalisée dans le cabinet pendant OTSS avec la présence du personnel du laboratoire du cabinet. Pour faire ceci les lames doivent rester impérativement dans le cabinet."</string>
-
 <string name="reporting_info_reporting">"Notification"</string>
 <string name="reporting_info_results">"Résultats"</string>
 <string name="reporting_info_register">"Enregistrement"</string>
@@ -103,7 +93,6 @@ Mensuelle"</string>
 <string name="settings_text_dhis_server_url">"URL du serveur DHIS"</string>
 <string name="settings_text_dhis_user">"Utilisateur DHIS"</string>
 <string name="pref_header_general">"Général"</string>
-<string name="dialog_title_push_response">"Réponse à l'envoi"</string>
 <string name="dialog_info_push_bad_credentials">"Identification incorrecte pour l'envoi"</string>
 <string name="dialog_info_push_empty_survey">"Les rapports vides ne peuvent pas être envoyes"</string>
 <string name="settings_menu_legal">"Légal"</string>
@@ -173,11 +162,6 @@ Mensuelle"</string>
 <string name="progress_pull_validating_composite_scores">"Validation scores composites ..."</string>
 <string name="progress_pull_done">"Terminé"</string>
 <string name="dialog_push_success">"Téléchargement du rapport dans le serveur dhis réussi"</string>
-<string name="progress_push_preparing_survey">"Préparation du rapport pour envoi..."</string>
-<string name="progress_push_posting_survey">"Télécharger les donées du rapport dans le serveur..."</string>
-<string name="progress_push_updating_survey">"Mise à jour des données du rapport..."</string>
-<string name="progress_push_no_survey">"Aucun rapport trouvé pour envoi"</string>
-<string name="dialog_push_before_pull_success">"Envoi des rapports vers dhis réussi, démarrage du téléchargement des métadonnées"</string>
 <string name="planning_title_dialog">"Programmer un rapport"</string>
 <string name="planning_label_comment">"* Commentaire"</string>
 <string name="planning_label_schedule_date">"* Date programmée"</string>
@@ -203,16 +187,11 @@ Mensuelle"</string>
 
 <string name="create">"Créer"</string>
 <string name="modify">Modifier</string>
-<string name="create_or_modify">"Voulez-vous créer une nouvelle évaluation ou de modifier la dernière évaluation, les dates[%s]?"</string>
-<string name="loading_last_surveys">"Dernière enquête de chargement..."</string>
-
 <string name="developer_option_summary">"Cette option active les options de développement"</string>
 <string name="developer_option_title">"Afficher les options développeur"</string>
 <string name="export_data_option_title">"Base de données à l'exportation"</string>
-<string name="ask_account_permission">Cette application a besoin d\'accéder à votre compte Google (via les contacts).</string>
 <string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
 <string name="account_permission_denied"> Contacts permission refusée. Médias ne sera pas synchronisé</string>
-<string name="feedback_media_link" >"Voir la vidéo"</string>
 <string name="feedback_media">Voir la vidéo commentaires</string>
 <string name="feedback_view_image">"Ouvrir image avec ..."</string>
 <string name="select_all">"Tout sélectionner"</string>
@@ -224,7 +203,6 @@ Mensuelle"</string>
 <string name="downloaded_media_menu">"Moyenne téléchargé"</string>
 <string name="header_filename_title">"Filename"</string>
 <string name="header_size_title">"Taille"</string>
-<string name="no_previous_event_info">"Aucun événement précédent disponible"</string>
 <string name="clear">"Effacer"</string>
 <string name="admin_announcement">"Annonce Admin"</string>
 <string name="user_close">"Cet utilisateur a été fermé par l'administrateur."</string>

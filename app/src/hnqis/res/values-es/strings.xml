@@ -65,16 +65,6 @@ paciente"</string>
 <string name="adherence_info_prescribed">"¿ACT
 Prescrito?"</string>
 <string name="adherence_info_rdt_positive">"RDT Positivo"</string>
-<string name="adherence_info_rdt_negative">"RDT Negativo"</string>
-<string name="adherence_info_microscopy_positive">"Microscopía Positiva"</string>
-<string name="adherence_info_microscopy_negative">"Microscopía Negativa"</string>
-
-<string name="iqatab_info_supervisor">"Supervisor"</string>
-<string name="iqatab_info_parasites">"Parásitos/uL"</string>
-<string name="iqatab_info_species">"Especímenes"</string>
-<string name="iqatab_info_labstaff">"Personal de laboratorio"</string>
-<string name="iqatab_info_note">"Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose."</string>
-
 <string name="reporting_info_reporting">"Informes"</string>
 <string name="reporting_info_results">"Resultados"</string>
 <string name="reporting_info_register">"Registro"</string>
@@ -105,7 +95,6 @@ clínica"</string>
 <string name="settings_text_dhis_server_url">"URL de servidor DHIS"</string>
 <string name="settings_text_dhis_user">"Usuario DHIS"</string>
 <string name="pref_header_general">"General"</string>
-<string name="dialog_title_push_response">"Respuesta carga"</string>
 <string name="dialog_info_push_bad_credentials">"Credenciales incorrectas para el push"</string>
 <string name="dialog_info_push_empty_survey">"Una evaluación vacia no pueden ser enviadas"</string>
 <string name="settings_menu_legal">"Legal"</string>
@@ -175,11 +164,6 @@ clínica"</string>
 <string name="progress_pull_validating_composite_scores">"Validando puntuaciones compuestas ..."</string>
 <string name="progress_pull_done">"Hecho"</string>
 <string name="dialog_push_success">"Encuestra correctamente subida al servidor Dhis"</string>
-<string name="progress_push_preparing_survey">"Preparando datos para la subida ..."</string>
-<string name="progress_push_posting_survey">"Subiendo datos al servidor..."</string>
-<string name="progress_push_updating_survey">"Actualizando datos encuesta subida ..."</string>
-<string name="progress_push_no_survey">"No hay encuesta para subir"</string>
-<string name="dialog_push_before_pull_success">"Encuestas correctamente subidas al servidor Dhis, inicializando actualización de metadatos"</string>
 <string name="planning_title_dialog">"Planificar evaluación"</string>
 <string name="planning_label_comment">"* Comentario"</string>
 <string name="planning_label_schedule_date">"* Fecha planificada"</string>
@@ -197,25 +181,23 @@ clínica"</string>
 <string name="dialog_content_dhis_preference_login">"Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?"</string>
 <string name="lastcommit">"Versión %s"</string>
 <string name="unavailable">"No disponible"</string>
-<string name="no_previous_event_info">"Ningún evento previo disponible"</string>
+
 <string name="error_message_push">"El evento con UID: %s. fue subido sin fecha. Por favor, póngase en contacto con el administrador. "</string>
 <string name="monitor_js_assessments" >Encuestas realizadas</string>
 <string name="monitor_js_target" >"Objetivo"</string>
 <string name="monitor_js_quality_of_care" >"Calidad de cuidados: Últimos "</string>
 <string name="monitor_js_months" >" meses"</string>
 
+
+
 <string name="create">Crear</string>
 <string name="modify">Modificar</string>
-<string name="create_or_modify">¿Desea crear una encuesta o modificar la última con fecha [%s]?</string>
-<string name="loading_last_surveys">Cargando última encuesta...</string>
+
 <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
 <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 <string name="export_data_option_title">Exportar base de datos</string>
-
-<string name="ask_account_permission">Esta app requiere acceso a tu cuenta Google (via Contactos)</string>
 <string name="google_play_required">Esta aplicación requiere los servicios de Play. Por favor, instale servicios de Google Play en el dispositivo reinicie esta aplicación.</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
-<string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
 <string name="select_all">Seleccionar todos</string>
@@ -230,8 +212,4 @@ clínica"</string>
 <string name="clear">"Limpiar"</string>
 <string name="admin_announcement">"Anuncio del administrador"</string>
 <string name="user_close">"Este usuario ha sido cerrado por el administrador."</string>
-<string name="survey_first_step">Recovering mandatory questions</string>
-<string name="survey_second_step">Checking mandatory questions</string>
-<string name="survey_third_step">Calculating completeness ratio</string>
-<string name="survey_fourth_step">Calculating Score register</string>
 </resources>
