@@ -29,7 +29,7 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.60"
+        android:layout_weight="0.65"
         android:padding="5dip"
         android:fontFamily="@string/normal_font"
         android:paddingLeft="@dimen/question_padding_left"
@@ -38,13 +38,11 @@
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
 
-    <include layout="@layout/question_uid"></include>
-
     <RadioGroup
         android:id="@+id/answer"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.30"
+        android:layout_weight="0.35"
         android:padding="5dip">
 
     </RadioGroup>
