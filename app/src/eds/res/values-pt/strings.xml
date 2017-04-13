@@ -68,15 +68,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="adherence_info_patient_id">"Identidade do Paciente"</string>
 <string name="adherence_info_prescribed">"Foi receitada TCA?"</string>
 <string name="adherence_info_rdt_positive">"TDR positivo"</string>
-<string name="adherence_info_rdt_negative">"TDR negativo"</string>
-<string name="adherence_info_microscopy_positive">"Microscopia positiva"</string>
-<string name="adherence_info_microscopy_negative">"Microscopia negativa"</string>
-
-<string name="iqatab_info_supervisor">"Supervisor"</string>
-<string name="iqatab_info_parasites">"Parasitas/mL"</string>
-<string name="iqatab_info_species">"Espécies"</string>
-<string name="iqatab_info_labstaff">"Pessoal de Laboratório"</string>
-<string name="iqatab_info_note">"Nota : Revisão de Lâminas deve ser realizada na unidade de saúde durante OTSS na presença do pessoal do laboratório facilidade. As lâminas não deve ser removido a partir da instalação para este propósito."</string>
 
 <string name="reporting_info_reporting">"Relatórios"</string>
 <string name="reporting_info_results">"Resultados"</string>
@@ -105,7 +96,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="settings_text_dhis_server_url">"URL do servidor SISD"</string>
 <string name="settings_text_dhis_user">"Utilizador DHIS"</string>
 <string name="pref_header_general">"Geral"</string>
-<string name="dialog_title_push_response">"Reposta"</string>
 <string name="dialog_info_push_bad_credentials">"Bad credenciais para empurrar"</string>
 <string name="dialog_info_push_empty_survey">"Inquéritos vazias não podem ser empurrados"</string>
 <string name="settings_menu_legal">"Legal"</string>
@@ -175,11 +165,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="progress_pull_validating_composite_scores">"Validação pontuações compostas ..."</string>
 <string name="progress_pull_done">"Feito"</string>
 <string name="dialog_push_success">"Pesquisa empurrou com êxito para o servidor dhis"</string>
-<string name="progress_push_preparing_survey">"Preparando pesquisa para empurrar ..."</string>
-<string name="progress_push_posting_survey">"Empurrando dados do inquérito ao servidor ..."</string>
-<string name="progress_push_updating_survey">"Atualização empurrou dados da pesquisa ..."</string>
-<string name="progress_push_no_survey">"Nenhuma pesquisa constatou para empurrar"</string>
-<string name="dialog_push_before_pull_success">"Pesquisa empurrou com êxito para o servidor dhis, começando a puxar metadados"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
 <string name="planning_label_comment">"* Comente"</string>
 <string name="planning_label_schedule_date">"* Data calendário"</string>
@@ -202,20 +187,13 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="monitor_js_target" >"Objetivo"</string>
 <string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Ultimos"</string>
 <string name="monitor_js_months" >" meses"</string>
-
 <string name="create">Crio</string>
 <string name="modify">Modificar</string>
-<string name="create_or_modify">Você quer criar uma nova avaliação ou modificar a última avaliação, datas[%s]?</string>
-<string name="loading_last_surveys">Carregar a última pesquisa...</string>
-<string name="no_previous_event_info">No evento anterior disponíveis</string>
-
 <string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
 <string name="developer_option_title">Mostrar opções de desenvolvedor</string>
 <string name="export_data_option_title">Banco de dados de exportação</string>
-<string name="ask_account_permission">Este aplicativo precisa acessar sua conta do Google (via Contactos).</string>
 <string name="google_play_required">Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo.</string>
 <string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
-<string name="feedback_media_link" >"Exibição de vídeo"</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
 <string name="select_all">Selecionar tudo</string>
