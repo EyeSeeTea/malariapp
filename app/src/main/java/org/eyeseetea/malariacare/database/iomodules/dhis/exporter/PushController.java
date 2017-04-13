@@ -31,6 +31,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventEx
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
@@ -195,6 +196,8 @@ public class PushController {
         Log.d(TAG,"Converting APP survey into a SDK event");
         converter =new ConvertToSDKVisitor(context);
         for(Survey survey:surveys){
+            survey.setStatus(Constants.SURVEY_SENDING);
+            survey.save();
             survey.accept(converter);
         }
     }
