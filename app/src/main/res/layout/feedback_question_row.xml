@@ -29,7 +29,7 @@
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_question_label"
             android:layout_width="0dp"
-            android:layout_weight=".65"
+            android:layout_weight=".70"
             android:layout_height="wrap_content"
             android:paddingLeft="10dip"
             android:paddingTop="5dip"
@@ -38,11 +38,11 @@
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
              />
-        <include layout="@layout/question_uid"></include>
+
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_option_label"
             android:layout_width="0dp"
-            android:layout_weight=".15"
+            android:layout_weight=".20"
             android:layout_height="wrap_content"
             android:paddingLeft="10dip"
             android:paddingTop="5dip"
