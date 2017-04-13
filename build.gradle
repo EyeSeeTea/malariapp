@@ -8,7 +8,7 @@ buildscript {
 
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -37,7 +37,7 @@ allprojects {
 ext {
     configuration = [
             package          : "org.hisp.dhis.android.skeleton",
-            buildToolsVersion: "24.0.3",
+            buildToolsVersion: "25.0.0",
             minSdkVersion    : 15,
             compileSdkVersion: 24,
             targetSdkVersion : 24,
