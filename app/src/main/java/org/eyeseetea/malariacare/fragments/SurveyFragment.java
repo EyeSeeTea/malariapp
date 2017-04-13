@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import static com.google.android.gms.internal.zzir.runOnUiThread;
+
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,6 +44,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.google.common.collect.Iterables;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.Question;
@@ -49,6 +53,8 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -61,6 +67,7 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,7 +75,7 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends Fragment  {
     private String TAG = ".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
@@ -123,6 +130,13 @@ public class SurveyFragment extends Fragment {
      */
     private SurveyReceiver surveyReceiver;
 
+    /**
+     * Progress text shown while loading
+     */
+    public static CustomTextView progressText;
+    public static Iterator<String> messageIterator;
+    public static int messagesCount = 4;
+    private static ListView listView;
     /**
      * Progress dialog shown while loading
      */
@@ -191,15 +205,55 @@ public class SurveyFragment extends Fragment {
         this.tabAdapter.notifyDataSetChanged();
     }
 
-    public void exit() {
-        unregisterReceiver();
+    public void nextProgressMessage() {
+        runOnUiThread(new Runnable() {
+                public void run() {
+                    if (messageIterator != null) {
+                        if (messageIterator.hasNext()) {
+                            progressText.setText(messageIterator.next());
+                        }
+                    }
+                }
+            });
+    }
+
+    public static int progressMessagesCount() {
+        return messagesCount;
+    }
+
+    private void createProgressMessages() {
+        List<String> messagesList = new ArrayList<>();
+        //// FIXME: 20/03/2017 it is a fake flow.
+        messagesList.add(
+                PreferencesState.getInstance().getContext().getString(R.string.survey_first_step));
+        messagesList.add(
+                PreferencesState.getInstance().getContext().getString(R.string.survey_second_step));
+        messagesList.add(
+                PreferencesState.getInstance().getContext().getString(R.string.survey_third_step));
+        messagesList.add(
+                PreferencesState.getInstance().getContext().getString(R.string.survey_fourth_step));
+        messageIterator = Iterables.cycle(messagesList).iterator();
     }
 
     @Override
     public void onPause() {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        final Survey survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            survey.updateSurveyStatus();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Survey dbSurvey = Survey.findById(survey.getId_survey());
+                            dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
+                        }
+                    });
         }
         unregisterReceiver();
         super.onPause();
@@ -355,14 +409,14 @@ public class SurveyFragment extends Fragment {
                         tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
                     tabAdapter.initializeSubscore();
                 }
-                ListView listView = (ListView) llLayout.findViewById(R.id.listView);
+                listView = (ListView) llLayout.findViewById(R.id.listView);
                 listView.setAdapter((BaseAdapter) tabAdapter);
                 listView.setOnScrollListener(new UnfocusScrollListener());
                 stopProgress();
                 checkArrows();
             } catch (Exception e) {
+                e.printStackTrace();
             }
-            ;
         }
     }
 
@@ -387,6 +441,23 @@ public class SurveyFragment extends Fragment {
     private void createProgress() {
         content = (LinearLayout) llLayout.findViewById(R.id.content);
         progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
+        progressText = (CustomTextView) llLayout.findViewById(R.id.progress_text);
+        createProgressMessages();
+    }
+    /**
+     * Stops progress view and shows real form
+     */
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+        progressText.setVisibility(View.GONE);
+        content.setVisibility(View.VISIBLE);
+    }
+
+    public void showProgress() {
+        content.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setEnabled(true);
+        progressText.setVisibility(View.VISIBLE);
     }
 
     /**

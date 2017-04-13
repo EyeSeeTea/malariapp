@@ -206,4 +206,8 @@ Mensuelle"</string>
 <string name="clear">"Effacer"</string>
 <string name="admin_announcement">"Annonce Admin"</string>
 <string name="user_close">"Cet utilisateur a été fermé par l'administrateur."</string>
+<string name="survey_first_step">Recovering mandatory questions</string>
+<string name="survey_second_step">Checking mandatory questions</string>
+<string name="survey_third_step">Calculating completeness ratio</string>
+<string name="survey_fourth_step">Calculating Score register</string>
 </resources>

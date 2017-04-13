@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils;
+package org.eyeseetea.malariacare.domain.entity;
 
 import java.util.HashMap;
 import java.util.Map;

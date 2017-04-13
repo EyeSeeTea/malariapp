@@ -209,4 +209,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="clear">"Clarear"</string>
 <string name="admin_announcement">"Anúncio do Admin"</string>
 <string name="user_close">"Este usuário foi fechado pelo administrador."</string>
+    <string name="survey_first_step">Recovering mandatory questions</string>
+    <string name="survey_second_step">Checking mandatory questions</string>
+    <string name="survey_third_step">Calculating completeness ratio</string>
+    <string name="survey_fourth_step">Calculating Score register</string>
 </resources>

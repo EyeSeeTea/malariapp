@@ -212,4 +212,8 @@ clínica"</string>
 <string name="clear">"Limpiar"</string>
 <string name="admin_announcement">"Anuncio del administrador"</string>
 <string name="user_close">"Este usuario ha sido cerrado por el administrador."</string>
+<string name="survey_first_step">Recovering mandatory questions</string>
+<string name="survey_second_step">Checking mandatory questions</string>
+<string name="survey_third_step">Calculating completeness ratio</string>
+<string name="survey_fourth_step">Calculating Score register</string>
 </resources>
