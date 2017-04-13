@@ -88,8 +88,6 @@ clínica"</string>
 <string name="compscore_title_score_percentage">"Puntuación (%)"</string>
 
 <string name="title_activity_settings">"Configuración"</string>
-<string name="settings_checkbox_show_num_dems">"Mostrar num/dems"</string>
-<string name="settings_checkbox_description_show_num_dems">"Si está activo, las preguntas del formulario muestran sus numeradores y denominadores, usados para calcular la puntuación total de la encuesta"</string>
 <string name="settings_checkbox_customize_fonts">"¿Personalizar fuentes?"</string>
 <string name="settings_list_font_sizes">"Tamaño de fuentes"</string>
 <string name="settings_text_dhis_server_url">"URL de servidor DHIS"</string>

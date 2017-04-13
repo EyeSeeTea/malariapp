@@ -99,8 +99,6 @@
 
     <string name="compscore_title_score_percentage">Score (%)</string>
 
-    <string name="settings_checkbox_show_num_dems">Show num/dems</string>
-    <string name="settings_checkbox_description_show_num_dems">When activated, survey questions show their numerators and denominators, used to calc the survey score</string>
     <string name="settings_checkbox_location_required">Location required</string>
     <string name="settings_checkbox_description_location_required">When activated, location is a required field for pushing data to dhis server</string>
 

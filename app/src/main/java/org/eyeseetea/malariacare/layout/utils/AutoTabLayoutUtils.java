@@ -107,14 +107,14 @@ public class AutoTabLayoutUtils {
         }
 
         public void setNumAndDenum(String numText, String denumText) {
-            if(PreferencesState.getInstance().isShowNumDen()) {
+            if(PreferencesState.getInstance().isDevelopOptionActive()) {
                 num.setText(numText);
                 denum.setText(denumText);
             }
         }
 
         public void setNum(String numText) {
-            if(PreferencesState.getInstance().isShowNumDen()) {
+            if(PreferencesState.getInstance().isDevelopOptionActive()) {
                 num.setText(numText);
             }
         }
@@ -214,7 +214,7 @@ public class AutoTabLayoutUtils {
 
     public static View initialiseDropDown(int position, ViewGroup parent, Question question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context) {
         View rowView;
-        if(PreferencesState.getInstance().isShowNumDen()) {
+        if(PreferencesState.getInstance().isDevelopOptionActive()) {
             rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
             initialiseScorableComponent(rowView, viewHolder);
         }else{
@@ -286,7 +286,7 @@ public class AutoTabLayoutUtils {
     private static void configureViewByPreference(AutoTabViewHolder viewHolder) {
         int visibility = View.GONE;
 
-        if (PreferencesState.getInstance().isShowNumDen()) {
+        if (PreferencesState.getInstance().isDevelopOptionActive()) {
             visibility = View.VISIBLE;
         }
 

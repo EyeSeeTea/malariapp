@@ -95,12 +95,6 @@
         android:title="@string/hide_planning_tab_title"
         android:summary="@string/hide_planning_tab_summary"
         android:defaultValue="false" />
-
-    <CheckBoxPreference
-        android:key="@string/show_num_dems"
-        android:title="@string/settings_checkbox_show_num_dems"
-        android:summary="@string/settings_checkbox_description_show_num_dems"
-        android:defaultValue="false" />
     
     <CheckBoxPreference
         android:key="@string/developer_option"

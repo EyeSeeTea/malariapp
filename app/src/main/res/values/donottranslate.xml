@@ -36,7 +36,6 @@
     <string name="font_size_level3" translatable="false">large</string>
     <string name="font_size_level4" translatable="false">xlarge</string>
     <string name="font_size_system" translatable="false">system</string>
-    <string name="show_num_dems" translatable="false">show_num_dems</string>
     <string name="customize_fonts" translatable="false">customize_fonts</string>
     <string name="font_sizes" translatable="false">font_sizes</string>
     <string name="eula_accepted" translatable="false">eula_accepted</string>
