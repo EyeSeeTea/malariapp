@@ -26,5 +26,6 @@
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false">https://data.psi-mis.org</string>
 
+    <string name="authority">HNQIS_DHIS2_DEFAULT_AUTHORITY</string>
 
 </resources>

@@ -26,4 +26,6 @@
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false">https://</string>
     
+    <string name="authority">EDS_DHIS2_DEFAULT_AUTHORITY</string>
+    
 </resources>
