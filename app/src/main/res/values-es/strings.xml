@@ -236,4 +236,5 @@ clínica"</string>
 <string name="feedback_media_link" >Ver video</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
+<string name="toast_push_in_progress">"Por favor, espere, ya hay una subida en curso"</string>
 </resources>

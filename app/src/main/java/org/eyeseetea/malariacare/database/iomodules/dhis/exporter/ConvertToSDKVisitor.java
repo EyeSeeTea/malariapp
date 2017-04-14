@@ -156,42 +156,98 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         Log.d(TAG,String.format("Creating event for survey (%s) ...", survey.toString()));
 
 
-        this.currentEvent=buildEvent();
-        Log.d(TAG,currentEvent.toString());
-
-        //Calculates scores and update survey
-        Log.d(TAG,"Registering scores...");
-        List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey, Constants.PUSH_MODULE_KEY);
-        updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
-
-        //Turn score values into dataValues
-        Log.d(TAG, "Creating datavalues from scores...");
-        for(CompositeScore compositeScore:compositeScores){
-            compositeScore.accept(this);
+        String errorMessage = "Exception creating a new event from survey. Removing survey from DB";
+        try {
+            this.currentEvent = buildEvent();
+        } catch (Exception e) {
+            showErrorConversionMessage(errorMessage);
+            currentSurvey.delete();//invalid survey
+            return;
         }
+        try {
+            currentSurvey.setEventUid(currentEvent.getUid());
+            currentSurvey.save();
 
-        //Turn question values into dataValues
-        Log.d(TAG, "Creating datavalues from questions... Values"+survey.getValues().size());
-        for(Value value:currentSurvey.getValues()) {
-            //in a modification an old value is skipped
-            if(isAModification && value.getUploadDate().before(currentSurvey.getUploadDate())){
-                continue;
+            //Calculates scores and update survey
+            Log.d(TAG, "Registering scores...");
+            errorMessage = "Calculating compositeScores";
+            List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey,
+                    Constants.PUSH_MODULE_KEY);
+            updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
+
+            //Turn score values into dataValues
+            Log.d(TAG, "Creating datavalues from scores...");
+            errorMessage = "compositeScores visitors";
+            for (CompositeScore compositeScore : compositeScores) {
+                compositeScore.accept(this);
             }
-            //value -> datavalue
-            value.accept(this);
+
+            errorMessage = "datavalue visitors ";
+            //Turn question values into dataValues
+            Log.d(TAG, "Creating datavalues from questions... Values" + survey.getValues().size());
+            for (Value value : currentSurvey.getValues()) {
+                //in a modification an old value is skipped
+                if (isAModification && value.getUploadDate().before(
+                        currentSurvey.getUploadDate())) {
+                    continue;
+                }
+                //value -> datavalue
+                value.accept(this);
+            }
+
+
+            errorMessage = "updating dates";
+            survey.setUploadDate(uploadedDate);
+
+            //Update all the dates after checks the new values
+            updateEventDates();
+
+            Log.d(TAG, "Creating datavalues from other stuff...");
+            errorMessage = "building dataElements";
+            buildControlDataElements(survey);
+
+            errorMessage = "annotating surveys and events";
+            //Annotate both objects to update its state once the process is over
+            annotateSurveyAndEvent();
+        }catch (Exception e){
+            e.printStackTrace();
+            showErrorConversionMessage(errorMessage);
+            removeSurveyAndEvent(survey);
+            return;
         }
+    }
 
+    private void showErrorConversionMessage(String errorMessage) {
+        String programName = "", orgUnitName = "";
+        if (currentSurvey.getProgram() != null
+                && currentSurvey.getProgram().getName() != null) {
+            programName = currentSurvey.getProgram().getName();
+        }
+        if (currentSurvey.getOrgUnit() != null
+                && currentSurvey.getOrgUnit().getName() != null) {
+            orgUnitName = currentSurvey.getOrgUnit().getName();
+        }
+        Log.d(TAG, "Error: " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
+                + "program: " + programName + " OrgUnit: "
+                + orgUnitName + "Survey: " + currentSurvey.toString());
+        if (currentSurvey.getValues() != null) {
+            for (Value value : currentSurvey.getValues()) {
+                Log.d(TAG, "DataValues:" + value.toString());
+            }
+        }
+    }
 
-        survey.setUploadDate(uploadedDate);
-
-        //Update all the dates after checks the new values
-        updateEventDates();
-
-        Log.d(TAG, "Creating datavalues from other stuff...");
-        buildControlDataElements(survey);
-
-        //Annotate both objects to update its state once the process is over
-        annotateSurveyAndEvent();
+    private void removeSurveyAndEvent(Survey survey) {
+        //remove event from annotated event list and from db
+        if (events.containsKey(currentSurvey.getId_survey())) {
+            events.remove(currentSurvey.getId_survey());
+        }
+        currentEvent.delete();
+        //remove survey from list and from db
+        if (surveys.contains(survey)) {
+            surveys.remove(survey);
+        }
+        survey.delete();
     }
 
     /**
@@ -323,7 +379,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         currentEvent.setProgramId(currentSurvey.getProgram().getUid());
         currentEvent.setProgramStageId(currentSurvey.getProgram().getUid());
         updateEventLocation();
-        Log.d(TAG, "Saving event " + currentEvent.toString());
+        Log.d(TAG, "Saving event " + currentEvent.getUid());
         currentEvent.save();
         return currentEvent;
     }
@@ -679,5 +735,14 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             return user.getName();
         }
         return "";
+    }
+
+    public void setSurveysAsQuarantine() {
+        for (Survey survey : surveys) {
+            Log.d(TAG, "Set Survey status as QUARANTINE" + survey.getId_survey());
+            Log.d(TAG, "Set Survey status as QUARANTINE" + survey.toString());
+            survey.setStatus(Constants.SURVEY_QUARANTINE);
+            survey.save();
+        }
     }
 }

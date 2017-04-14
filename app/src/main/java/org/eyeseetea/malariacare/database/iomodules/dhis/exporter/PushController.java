@@ -30,6 +30,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressSt
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
@@ -89,15 +90,10 @@ public class PushController {
         }
         return instance;
     }
-    /**
-     * Flag that locks the push of events.
-     *
-     */
 
-    private boolean isPushing;
 
-    public boolean isPushing() {
-        return isPushing;
+    public static void changePushInProgress(boolean inProgress) {
+        PreferencesState.getInstance().setPushInProgress(inProgress);
     }
     /**
      * Launches the pull process:
@@ -108,16 +104,13 @@ public class PushController {
      */
     public boolean push(Context ctx,List<Survey> surveys){
         Log.d(TAG, "Starting PUSH process...");
-        if(isPushing)
-            return false;
-        isPushing =true;
 
         context=ctx;
 
         //No survey no push
         if(surveys==null || surveys.size()==0){
+            PushController.changePushInProgress(false);
             postException(new Exception(context.getString(R.string.progress_push_no_survey)));
-            isPushing =false;
             return false;
         }
 
@@ -125,6 +118,7 @@ public class PushController {
         try {
             register();
         }catch(Exception e){
+            e.printStackTrace();
             unregister();
             register();
         }
@@ -136,21 +130,32 @@ public class PushController {
 
             PopulateDB.wipeSDKData();
             convertToSDK(surveys);
-            isPushing =EventExtended.getAllEvents().size()>0;
-            if(!isPushing)
+            if(EventExtended.getAllEvents() == null || EventExtended.getAllEvents().size()==0) {
+                PushController.changePushInProgress(false);
+                Log.d(TAG, "No events to push to server...");
                 return false;
+            }
             //Asks sdk to push localdata
             postProgress(context.getString(R.string.progress_push_posting_survey));
             Log.d(TAG, "Pushing survey data to server...");
-            DhisService.sendEventChanges();
+            try {
+                DhisService.sendEventChanges();
+            }catch (Exception ex){
+                converter.setSurveysAsQuarantine();
+                return exceptionOnPush(ex);
+            }
         }catch (Exception ex) {
-            Log.e(TAG, "push: " + ex.getLocalizedMessage());
-            unregister();
-            postException(ex);
-            isPushing =false;
-            return false;
+            return exceptionOnPush(ex);
         }
         return true;
+    }
+
+    private boolean exceptionOnPush(Exception ex) {
+        PushController.changePushInProgress(false);
+        Log.e(TAG, "push: " + ex.getLocalizedMessage());
+        unregister();
+        postException(ex);
+        return false;
     }
 
     @Subscribe
@@ -183,7 +188,7 @@ public class PushController {
                 }finally {
                     postFinish(success);
                     unregister();
-                    isPushing =false;
+                    PushController.changePushInProgress(false);
                 }
             }
         }.start();

@@ -27,10 +27,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.network.PushClient;
 import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.network.SurveyChecker;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.List;
 
@@ -87,12 +91,21 @@ public class PushService extends IntentService {
     private void pushAllPendingSurveys() {
         Log.d(TAG, "pushAllPendingSurveys (Thread:" + Thread.currentThread().getId() + ")");
 
+        if (!AUtils.isNetworkAvailable() && PreferencesState.getInstance().isPushInProgress()) {
+            Log.d(TAG, "Cancel push, push in progress or not network");
+            return;
+        }
+
+        PushController.changePushInProgress(true);
+        Log.d(TAG, "Start push");
+        SurveyChecker.launchQuarantineChecker();
         //Select surveys from sql
         List<Survey> surveys = Survey.getAllCompletedSurveys();
 
         //No surveys -> done
         if(surveys==null || surveys.isEmpty()){
-            AlarmPushReceiver.isDone();
+            Log.d(TAG, "Not push. 0 surveys with complete as status");
+            PushController.changePushInProgress(false);
             return;
         }
         //All pending surveys are sent at once
