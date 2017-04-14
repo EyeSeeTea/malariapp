@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--
+<!--
   ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
@@ -57,6 +57,8 @@
         <string name="tab_tag_improve" translatable="false">tab_improve</string>
         <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
         <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
+        <item name="developer_option" type="string" translatable="false">show_dev_options</item>
+        <item name="export_data_option" type="string" translatable="false">export_data_option</item>
         <string name="overall_score_code" translatable="false">_Overall Score</string>
         <string name="main_score_class_code" translatable="false">_Overall Class</string>
         <string name="main_score_a_code" translatable="false">_Overall Class A</string>
@@ -71,4 +73,32 @@
         <string name="upload_date_code" translatable="false">_UploadedOn</string>
         <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
         <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
+        <string name="settings_array_values_font_sizes_def"  translatable="false">@string/font_size_level2</string>
+    <string-array name="settings_array_titles_font_sizes" translatable="false">
+        <item>@string/font_size_level0_title</item>
+        <item>@string/font_size_level1_title</item>
+        <item>@string/font_size_level2_title</item>
+        <item>@string/font_size_level3_title</item>
+        <item>@string/font_size_level4_title</item>
+    </string-array>
+        <string-array name="settings_array_values_font_sizes"  translatable="false">
+            <item>@string/font_size_level0</item>
+            <item>@string/font_size_level1</item>
+            <item>@string/font_size_level2</item>
+            <item>@string/font_size_level3</item>
+            <item>@string/font_size_level4</item>
+        </string-array>
+    <string name="lastcommit_unavailable" translatable="false"><![CDATA[
+        <p>This option requires some changes in the git repository.</p>
+        <p>Steps:</p>
+        <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
+            <p>2. If the file does not exist, add the following lines: </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. If the file already exists, you only need add the following lines at the end:</p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Run "git checkout". </p>]]>
+    </string>
     </resources>

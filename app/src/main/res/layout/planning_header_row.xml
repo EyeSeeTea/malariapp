@@ -35,7 +35,7 @@
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:paddingTop="@dimen/dashboard_planning_padding"
         android:paddingBottom="@dimen/dashboard_planning_padding"
-        android:textColor="@color/white"
+        android:textColor="@color/planning_header_text"
         android:text="@string/lorem_ipsum"
         android:textAllCaps="true"
         app:tDimension="@string/font_size_level4"

@@ -9,6 +9,8 @@
     android:gravity="center_horizontal">
     <ImageButton
         android:layout_width="wrap_content"
+        android:paddingLeft="@dimen/left_padding_arrow"
+        android:paddingRight="@dimen/right_padding_arrow"
         android:layout_height="wrap_content"
         android:id="@+id/previous_tab"
         android:background="@color/transparent"
@@ -38,6 +40,8 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/left_padding_arrow"
+        android:paddingRight="@dimen/right_padding_arrow"
         android:id="@+id/next_tab"
         android:src="@drawable/arrow_to_right"
         android:background="@color/transparent"

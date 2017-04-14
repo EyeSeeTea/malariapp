@@ -45,11 +45,13 @@ public class Program extends BaseModel{
     String uid;
     @Column
     String name;
+    @Column
+    String stage_uid;
 
     /**
-     * List of tabgroups for this program
+     * List of tabs that belongs to this programstage
      */
-    List<TabGroup> tabGroups;
+    List<Tab> tabs;
 
     /**
      * List of orgUnit authorized for this program
@@ -92,13 +94,12 @@ public class Program extends BaseModel{
         this.name = name;
     }
 
-    public List<TabGroup> getTabGroups(){
-        if(tabGroups==null){
-            this.tabGroups = new Select().from(TabGroup.class)
-                    .where(Condition.column(TabGroup$Table.ID_PROGRAM).eq(this.getId_program()))
-                    .queryList();
-        }
-        return this.tabGroups;
+    public String getStageUid() {
+        return stage_uid;
+    }
+
+    public void setStageUid(String stage_uid) {
+        this.stage_uid = stage_uid;
     }
 
     public static List<Program> getAllPrograms(){
@@ -126,6 +127,15 @@ public class Program extends BaseModel{
         return orgUnits;
     }
 
+    public List<Tab> getTabs(){
+        if (tabs==null){
+            tabs=new Select().from(Tab.class)
+                    .where(Condition.column(Tab$Table.ID_PROGRAM).eq(this.getId_program()))
+                    .orderBy(Tab$Table.ORDER_POS).queryList();
+        }
+        return tabs;
+    }
+
     public OrgUnitProgramRelation addOrgUnit(OrgUnit orgUnit){
         //Null -> nothing
         if(orgUnit==null){
@@ -146,7 +156,7 @@ public class Program extends BaseModel{
      * @return
      */
     public static List<Program> list() {
-        return new Select().all().from(Program.class).queryList();
+        return new Select().all().from(Program.class).orderBy(true, Program$Table.NAME).queryList();
     }
 
     @Override
@@ -167,6 +177,7 @@ public class Program extends BaseModel{
         int result = (int) (id_program ^ (id_program >>> 32));
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + name.hashCode();
+        result = 31 * result + (stage_uid != null ? stage_uid.hashCode() : 0);
         return result;
     }
 
@@ -176,6 +187,7 @@ public class Program extends BaseModel{
                 "id=" + id_program +
                 ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
+                ", stage_uid='" + stage_uid + '\'' +
                 '}';
     }
 }

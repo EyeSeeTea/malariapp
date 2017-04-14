@@ -21,20 +21,17 @@ package org.eyeseetea.malariacare.utils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -44,9 +41,10 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Tab;;
+import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,12 +54,13 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 public abstract class AUtils {
 
-    static final int numberOfDecimals = 0; // Number of decimals outputs will have
+    private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
 
     public static String round(float base, int decimalPlace){
         BigDecimal bd = new BigDecimal(Float.toString(base));
@@ -70,8 +69,17 @@ public abstract class AUtils {
         return Float.toString(bd.floatValue());
     }
 
+    public static float safeParseFloat(String floatStr){
+        try {
+            return Float.parseFloat(floatStr);
+        }catch (NumberFormatException nfe){
+            Log.d("AUtils", String.format("Error when parsing string %s to float number", floatStr));
+            return 0f;
+        }
+    }
+
     public static String round(float base){
-        return round(base, AUtils.numberOfDecimals);
+        return round(base, AUtils.ZERO_DECIMALS);
     }
 
     public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
@@ -88,11 +96,11 @@ public abstract class AUtils {
         return result;
     }
 
-    public static List<? extends BaseModel> preloadTabItems(Tab tab){
-        List<? extends BaseModel> items = Session.getTabsCache().get(tab.getId_tab());
+    public static List preloadTabItems(Tab tab, String module){
+        List<? extends BaseModel> items;
 
         if (tab.isCompositeScore())
-            items = CompositeScore.listByTabGroup(Session.getSurvey().getTabGroup());
+            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram());
 
         else{
 
@@ -104,10 +112,44 @@ public abstract class AUtils {
             Session.getTabsCache().put(tab.getId_tab(), items);
         }
 
-        return items;
+        return compressTabItems(items);
     }
 
+    /**
+     * Turns a list of headers, questions into a list of headers, questions and questionRows.
+     * @param items
+     * @return
+     */
+    public static List compressTabItems(List items){
+        List<Object> compressedItems = new ArrayList<>();
+        Iterator<Object> iterator = items.iterator();
+        QuestionRow lastRow=null;
+        while(iterator.hasNext()){
+            Object item = iterator.next();
 
+            //Header
+            if(item instanceof Header){
+                compressedItems.add(item);
+                continue;
+            }
+
+            //Normal question
+            if(item instanceof Question && !((Question)item).belongsToCustomTab()){
+                compressedItems.add(item);
+                continue;
+            }
+
+            //Custom tabs questions/titles
+            Question question = (Question) item;
+            //Question that belongs to a customtab
+            if(question.isCustomTabNewRow()){
+                lastRow = new QuestionRow();
+                compressedItems.add(lastRow);
+            }
+            lastRow.addQuestion(question);
+        }
+        return compressedItems;
+    }
 
     public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
         StringBuilder stringBuilder = new StringBuilder();
@@ -119,6 +161,7 @@ public abstract class AUtils {
                 stringBuilder.append(line + "\n");
             }
         } catch (IOException e) {
+            Log.d("AUtils", String.format("Error reading inputStream [%s]", inputStream));
             e.printStackTrace();
         }
 
@@ -132,6 +175,17 @@ public abstract class AUtils {
         }
         Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
         DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+        return dateFormatter.format(date);
+    }
+
+    public static String formatDateToServer(Date date){
+        if(date==null){
+            return "";
+        }
+        Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+
+
         return dateFormatter.format(date);
     }
 
@@ -154,13 +208,13 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    public void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
         String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
+        showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
     /**
@@ -168,9 +222,9 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource
      */
-    public void showAlertWithMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithMessage(int titleId, int rawId, Context context){
         InputStream message = context.getResources().openRawResource(rawId);
-        new Utils().showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
+        showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
     }
 
     /**
@@ -178,15 +232,15 @@ public abstract class AUtils {
      * @param titleId Id of the title resource
      * @param rawId Id of the raw text resource in HTML format
      */
-    public void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
         String stringMessage = getMessageWithCommit(rawId, context);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        new Utils().showAlertWithLogoAndVersion(titleId, linkedMessage, context);
+        showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
-    public String getCommitHash(Context context){
+    public static String getCommitHash(Context context){
         String stringCommit;
         //Check if lastcommit.txt file exist, and if not exist show as unavailable.
         int layoutId = context.getResources().getIdentifier("lastcommit", "raw", context.getPackageName());
@@ -203,7 +257,7 @@ public abstract class AUtils {
      * Merge the lastcommit into the raw file
      * @param rawId Id of the raw text resource in HTML format
      */
-    public String getMessageWithCommit(int rawId, Context context) {
+    public static String getMessageWithCommit(int rawId, Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
         String stringCommit = getCommitHash(context);
         String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
@@ -218,7 +272,7 @@ public abstract class AUtils {
         return stringMessage;
     }
 
-    public void showAlert(int titleId, CharSequence text, Context context){
+    public static void showAlert(int titleId, CharSequence text, Context context){
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(titleId))
                 .setMessage(text)
@@ -227,7 +281,7 @@ public abstract class AUtils {
         ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    public void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
+    public static void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);
@@ -235,7 +289,7 @@ public abstract class AUtils {
 
         //set up text title
         TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setText(BuildConfig.FLAVOR.toUpperCase() + "(bb) " + BuildConfig.VERSION_NAME);
         textTile.setGravity(Gravity.RIGHT);
 
         //set up text title
@@ -254,5 +308,16 @@ public abstract class AUtils {
         dialog.show();
     }
 
+    public static List<Object> convertTabToArray(Tab tab) {
+        List<Object> result = new ArrayList<Object>();
+
+        for (Header header : tab.getHeaders()) {
+            result.add(header);
+            for (Question question : header.getQuestions())
+                result.add(question);
+
+        }
+        return result;
+    }
 
 }

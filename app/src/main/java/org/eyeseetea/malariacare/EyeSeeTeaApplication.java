@@ -42,7 +42,13 @@ import org.eyeseetea.malariacare.database.model.Value$Table;
 import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
+import org.eyeseetea.malariacare.utils.Permissions;
+import org.eyeseetea.malariacare.views.TypefaceCache;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement;
+import org.hisp.dhis.android.sdk.persistence.models.DataElement$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage$Table;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
@@ -56,16 +62,18 @@ import io.fabric.sdk.android.Fabric;
  */
 public class EyeSeeTeaApplication extends Dhis2Application  {
 
+    public static Permissions permissions;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        AppSettingsBuilder.getInstance().init(getApplicationContext());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
+        TypefaceCache.getInstance().init(getApplicationContext());
+        AutoTabLayoutUtils.init();
 
-        //Set the Phone metadata
-        PhoneMetaData phoneMetaData=this.getPhoneMetadata();
-        Session.setPhoneMetaData(phoneMetaData);
 
         FlowManager.init(this, "_EyeSeeTeaDB");
         // Create indexes to accelerate the DB selects and avoid SQlite errors
@@ -92,18 +100,6 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
 
     }
 
-    PhoneMetaData getPhoneMetadata(){
-        PhoneMetaData phoneMetaData=new PhoneMetaData();
-        TelephonyManager phoneManagerMetaData=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String imei = phoneManagerMetaData.getDeviceId();
-        String phone = phoneManagerMetaData.getLine1Number();
-        String serial = phoneManagerMetaData.getSimSerialNumber();
-        phoneMetaData.setImei(imei);
-        phoneMetaData.setPhone_number(phone);
-        phoneMetaData.setPhone_serial(serial);
-        return phoneMetaData;
-    }
-
     private void createDBIndexes(){
         // NOTE: This is to speed up some DB requests, and avoid some anoying messages from the DB on execution time
         new Index<ProgramStageDataElement>("ProgramStageDataElement_DataElement").on(ProgramStageDataElement.class, ProgramStageDataElement$Table.DATAELEMENT).enable();
@@ -113,9 +109,10 @@ public class EyeSeeTeaApplication extends Dhis2Application  {
         new Index<ProgramStage>("ProgramStage_Id").on(ProgramStage.class, ProgramStage$Table.ID).enable();
         new Index<QuestionOption>("QuestionOption_id_question").on(QuestionOption.class, QuestionOption$Table.ID_QUESTION).enable();
         new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class, QuestionRelation$Table.OPERATION).enable();
-        new Index<QuestionRelation>("QuestionRelation_operation").on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
+        new Index<QuestionRelation>("QuestionRelation_id_question").on(QuestionRelation.class, QuestionRelation$Table.ID_QUESTION).enable();
         new Index<Match>("Match_id_question_relation").on(Match.class, Match$Table.ID_QUESTION_RELATION).enable();
         new Index<Value>("Value_id_survey").on(Value.class, Value$Table.ID_SURVEY).enable();
+        new Index<DataElement>("DataElement_id").on(DataElement.class, DataElement$Table.ID).enable();
     }
 
     /**

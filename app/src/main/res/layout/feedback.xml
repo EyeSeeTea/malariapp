@@ -98,6 +98,7 @@
         android:textStyle="bold"
         android:text="@string/quality_of_care"
         android:textColor="@color/feedbackDarkBlue"
+        android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
         android:layout_gravity="left"
         android:gravity="left"
         app:tDimension="@string/font_size_level4"

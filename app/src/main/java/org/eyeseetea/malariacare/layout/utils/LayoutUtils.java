@@ -19,18 +19,19 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v7.app.ActionBar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.database.model.Program;
+import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -117,34 +118,58 @@ public class LayoutUtils {
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 
-    // Used to put the org unit name and the kind of survey instead of the app name
-    public static void setActionBarText(ActionBar actionBar, String title, String subtitle){
-        actionBar.setDisplayUseLogoEnabled(false);
-        // Uncomment in case of we want the logo out
-        // actionBar.setLogo(null);
-        // actionBar.setIcon(null);
-        actionBar.setTitle(title);
+    public static void setActionBarBackButton(DashboardActivity dashboardActivity){
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,Survey survey){
+        String title="";
+        String subtitle="";
+        int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
+        Program program = survey.getProgram();
+        if(survey.getOrgUnit().getName()!=null) {
+            title = survey.getOrgUnit().getName();
+        }
+        if(program.getName()!=null) {
+            subtitle = program.getName();
+        }
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            setActionbarVerticalSurvey(dashboardActivity,title, subtitle);
+        }
+        else{
+            Spanned spannedTitle = Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + title + "</b></font>");
+            setActionbarTitle(dashboardActivity,spannedTitle, subtitle);
+        }
+    }
+
+    public static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity,String title, String subtitle) {
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
         actionBar.setSubtitle(subtitle);
+        actionBar.setTitle(title);
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
-
-        int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+    public static void setActionbarTitle(DashboardActivity dashboardActivity,Spanned title, String subtitle) {
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar);
+        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((TextView) dashboardActivity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
+
+
+    public static void setActionbarAppName(DashboardActivity dashboardActivity) {
+        android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setCustomView(R.layout.abc_action_bar_title_item);
+        actionBar.setSubtitle(null);
+        actionBar.setTitle(dashboardActivity.getResources().getString(R.string.app_name));
+    }
+
 }

@@ -31,7 +31,7 @@
         android:id="@+id/plusButton"
         android:background="@drawable/ic_menu_add"
         android:layout_gravity="center_horizontal"
-        android:onClick="newSurvey"
+        android:onClick="onNewSurvey"
         tools:showIn="@layout/dashboard_row" />
 
 </LinearLayout>

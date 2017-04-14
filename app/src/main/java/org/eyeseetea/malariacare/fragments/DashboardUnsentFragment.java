@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -40,6 +41,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -48,8 +51,13 @@ import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
+import org.eyeseetea.malariacare.network.PushClient;
+import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,16 +65,15 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardUnsentFragment extends ListFragment {
+public class DashboardUnsentFragment extends ListFragment implements IModuleFragment{
 
 
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
     private List<Survey> surveys;
     protected IDashboardAdapter adapter;
-    private static int index = 0;
     private static int selectedPosition=0;
-    onSurveySelectedListener mCallback;
+    DashboardActivity dashboardActivity;
 
 
     public DashboardUnsentFragment(){
@@ -150,27 +157,10 @@ public class DashboardUnsentFragment extends ListFragment {
         }
     }
 
-    // Container Activity must implement this interface
-    public interface onSurveySelectedListener {
-        public void onSurveySelected(Survey survey);
-
-        void dialogCompulsoryQuestionIncompleted();
-
-        void alertOnComplete(Survey survey);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (onSurveySelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnUnsentDashboardListener");
-        }
+        dashboardActivity = (DashboardActivity) activity;
     }
 
     @Override
@@ -180,29 +170,10 @@ public class DashboardUnsentFragment extends ListFragment {
         final Survey survey=(Survey)adapter.getItem(selectedPosition-1);
         switch (item.getItemId()) {
             case R.id.option_edit:
-                mCallback.onSurveySelected(survey);
-
+                dashboardActivity.onSurveySelected(survey);
                 return true;
             case R.id.option_mark_completed:
-
-                SurveyAnsweredRatio surveyAnsweredRatio=survey.getAnsweredQuestionRatio();
-                if(surveyAnsweredRatio.getTotalCompulsory()>0) {
-                    if(Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue()>=100) {
-                        survey.setCompleteSurveyState();
-                        mCallback.alertOnComplete(survey);
-                        removeSurveyFromAdapter(survey);
-                        reloadToSend();
-                    }
-                    else{
-                        mCallback.dialogCompulsoryQuestionIncompleted();
-                    }
-                }
-                else {
-                    survey.setCompleteSurveyState();
-                    mCallback.alertOnComplete(survey);
-                    removeSurveyFromAdapter(survey);
-                    reloadToSend();
-                }
+                dashboardActivity.onMarkAsCompleted(survey);
                 return true;
             case R.id.option_delete:
                 Log.d(TAG, "removing item pos=" + selectedPosition);
@@ -225,11 +196,12 @@ public class DashboardUnsentFragment extends ListFragment {
     }
 
     //Remove survey from the list and reload list.
-    private void removeSurveyFromAdapter(Survey survey) {
+    public void removeSurveyFromAdapter(Survey survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
     }
 
+    @Override
     public void reloadData(){
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
@@ -243,6 +215,7 @@ public class DashboardUnsentFragment extends ListFragment {
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
         getActivity().startService(surveysIntent);
     }
+
     @Override
     public void onPause(){
         Log.d(TAG, "onPause");
@@ -285,16 +258,19 @@ public class DashboardUnsentFragment extends ListFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
         View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
+        if(PreferencesState.getInstance().isVerticalDashboard()) {
+            CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
+            title.setText(adapter.getTitle());
+        }
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
         setListAdapter((BaseAdapter) adapter);
-        Session.listViewUnsent = listView;
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
-        //Discard clicks on header|footer (which is attendend on newSurvey via super)
+        //Discard clicks on header|footer (which is attendend on onNewSurvey via super)
         selectedPosition=position;
         l.showContextMenuForChild(v);
     }
@@ -307,8 +283,7 @@ public class DashboardUnsentFragment extends ListFragment {
 
         if(surveyReceiver==null){
             surveyReceiver=new SurveyReceiver();
-                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
-                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_COMPLETED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         }
     }
 
@@ -336,17 +311,19 @@ public class DashboardUnsentFragment extends ListFragment {
 
     public void reloadCompletedSurveys(){
         List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        if(surveysCompletedFromService!=null) {
-            if (surveysCompletedFromService.size() > 0) {
-                manageSurveysAlarm(surveysCompletedFromService);
-            } else
-                AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
+
+        //No surveys -> cancel alarm for pushing
+        if(surveysCompletedFromService==null || surveysCompletedFromService.size()==0){
+            AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
         }
+
+        //New completed surveys -> set alarm
+        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
 
     public void reloadSurveys(List<Survey> newListSurveys){
         if(newListSurveys!=null) {
-            Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+            Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();
@@ -354,6 +331,87 @@ public class DashboardUnsentFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d(TAG, "onActivityResult");
+        // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
+        if(requestCode == Constants.AUTHORIZE_PUSH) {
+            if(resultCode == Activity.RESULT_OK) {
+
+                //Tell the activity NOT to reload on next resume since the push itself will do it
+                ((DashboardActivity)getActivity()).setReloadOnResume(false);
+
+                // In case authorization was ok, we launch push action
+                Bundle extras = data.getExtras();
+                int position = extras.getInt("Survey", 0);
+                String user = extras.getString("User");
+                String password = extras.getString("Password");
+                final Survey survey = (Survey) adapter.getItem(position - 1);
+                AsyncPush asyncPush = new AsyncPush(survey, user, password);
+                asyncPush.execute((Void) null);
+            } else {
+                // Otherwise we notify and continue
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Authorization failed")
+                        .setMessage("User or password introduced are wrong. Push aborted.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        }
+    }
+
+
+    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
+
+        private Survey survey;
+        private String user;
+        private String password;
+
+
+        public AsyncPush(Survey survey, String user, String password) {
+            this.survey = survey;
+            this.user = user;
+            this.password = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //spinner
+            setListShown(false);
+        }
+
+        @Override
+        protected PushResult doInBackground(Void... params) {
+            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
+            return pushClient.pushAPI();
+        }
+
+        @Override
+        protected void onPostExecute(PushResult pushResult) {
+            super.onPostExecute(pushResult);
+            showResponse(pushResult);
+        }
+
+        /**
+         * Shows the proper response message
+         * @param pushResult
+         */
+        private void showResponse(PushResult pushResult){
+            String msg="";
+            if(pushResult.isSuccessful()){
+                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
+            }else{
+                msg=pushResult.getException().getMessage();
+            }
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
+                    .setMessage(msg)
+                    .setNeutralButton(android.R.string.yes,null).create().show();
+
+        }
+    }
     /**
      * Inner private class that receives the result from the service
      */
