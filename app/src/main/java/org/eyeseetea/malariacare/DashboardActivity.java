@@ -41,12 +41,10 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -150,7 +148,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
         //Pull
-        final List<Survey> unsentSurveys = Survey.getAllUnsentUnplannedSurveys();
+        final List<SurveyEntity> unsentSurveys = SurveyEntity.convertModelListToEntity(Survey.getAllUnsentUnplannedSurveys());
 
         //No unsent data -> pull (no confirmation)
         if (unsentSurveys == null || unsentSurveys.size() == 0) {
@@ -160,8 +158,8 @@ public class DashboardActivity extends BaseActivity {
 
         final Activity activity = this;
         //check if exist a compulsory question without answer before push and pull.
-        for (Survey survey : unsentSurveys) {
-            SurveyAnsweredRatioEntity surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
+        for (SurveyEntity survey : unsentSurveys) {
+            SurveyAnsweredRatioEntity surveyAnsweredRatio = survey.getSurveyAnsweredRatio();
             if (surveyAnsweredRatio.getTotalCompulsory() > 0
                     && surveyAnsweredRatio.getCompulsoryAnswered()
                     != surveyAnsweredRatio.getTotalCompulsory()) {

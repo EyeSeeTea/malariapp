@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatio;
 
 /**
@@ -62,7 +60,7 @@ public class SurveyAnsweredRatioEntity {
     }
 
     public static SurveyAnsweredRatioEntity getModelToEntity(long id_survey){
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getSurveyAnsweredRatioById(id_survey);
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getSurveyAnsweredRatioBySurveyId(id_survey);
         if(surveyAnsweredRatio==null) {
             return null;
         }

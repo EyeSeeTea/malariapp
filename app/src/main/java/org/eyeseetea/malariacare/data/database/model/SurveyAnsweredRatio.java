@@ -28,8 +28,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 
-import java.util.List;
-
 @Table(database = AppDatabase.class)
 public class SurveyAnsweredRatio extends BaseModel{
 
@@ -68,7 +66,7 @@ public class SurveyAnsweredRatio extends BaseModel{
     }
 
     public static void saveEntityToModel(SurveyAnsweredRatioEntity surveyAnsweredRatioEntity){
-        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyAnsweredRatioById(surveyAnsweredRatioEntity.getSurveyId());
+        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyAnsweredRatioBySurveyId(surveyAnsweredRatioEntity.getSurveyId());
         if(surveyAnsweredRatio==null){
             surveyAnsweredRatio = new SurveyAnsweredRatio();
         }
@@ -79,7 +77,7 @@ public class SurveyAnsweredRatio extends BaseModel{
         surveyAnsweredRatio.answered_compulsory_questions = surveyAnsweredRatioEntity.getCompulsoryAnswered();
         surveyAnsweredRatio.save();
     }
-    public static SurveyAnsweredRatio getSurveyAnsweredRatioById(long id_survey){
+    public static SurveyAnsweredRatio getSurveyAnsweredRatioBySurveyId(long id_survey){
         return new Select().from(SurveyAnsweredRatio.class)
                 .where( SurveyAnsweredRatio_Table.id_survey.is(id_survey)).querySingle();
     }

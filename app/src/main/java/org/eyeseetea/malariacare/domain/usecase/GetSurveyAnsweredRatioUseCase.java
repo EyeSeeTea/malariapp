@@ -5,7 +5,6 @@ import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.model.Value;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 
 public class GetSurveyAnsweredRatioUseCase {
     public interface Callback{
@@ -13,7 +12,7 @@ public class GetSurveyAnsweredRatioUseCase {
         void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio);
     }
 
-    public enum RecoveryFrom {DATABASE, MEMORY_FIRST }
+    public enum Action {FORCE_UPDATE, GET}
 
     /**
      * Calculated answered ratio for this survey according to its values
@@ -24,22 +23,22 @@ public class GetSurveyAnsweredRatioUseCase {
     }
 
     SurveyAnsweredRatioEntity mSurveyAnsweredRatio;
-    RecoveryFrom mRecoveryFrom;
+    Action mAction;
 
     org.eyeseetea.malariacare.data.database.model.Survey surveyDB;
 
-    public void execute(long idSurvey, RecoveryFrom recoveryFrom, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        this.mRecoveryFrom = recoveryFrom;
+    public void execute(long idSurvey, Action action, GetSurveyAnsweredRatioUseCase.Callback callback) {
+        this.mAction = action;
         SurveyAnsweredRatioEntity surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
         callback.onComplete(surveyAnsweredRatio);
     }
 
     private SurveyAnsweredRatioEntity getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         surveyDB = org.eyeseetea.malariacare.data.database.model.Survey.findById(idSurvey);
-        if(mRecoveryFrom.equals(RecoveryFrom.DATABASE)) {
+        if(mAction.equals(Action.FORCE_UPDATE)) {
             mSurveyAnsweredRatio = reloadSurveyAnsweredRatio(callback);
-        }else if(mRecoveryFrom.equals(RecoveryFrom.MEMORY_FIRST)){
-            mSurveyAnsweredRatio = getAnsweredQuestionRatio(callback);
+        }else if(mAction.equals(Action.GET)){
+            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
         }
         return mSurveyAnsweredRatio;
     }
@@ -48,9 +47,9 @@ public class GetSurveyAnsweredRatioUseCase {
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatioEntity getAnsweredQuestionRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatioEntity getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = SurveyAnsweredRatioCache.get(surveyDB.getId_survey());
+            answeredQuestionRatio = SurveyAnsweredRatioEntity.getModelToEntity(idSurvey);
             if (answeredQuestionRatio == null) {
                 answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
             }
@@ -81,7 +80,6 @@ public class GetSurveyAnsweredRatioUseCase {
                 numRequired + numOptional,
                 numAnswered, numCompulsory + numActiveChildrenCompulsory,
                 numCompulsoryAnswered);
-        SurveyAnsweredRatioCache.put(surveyDB.getId_survey(), surveyAnsweredRatioEntity);
         SurveyAnsweredRatio.saveEntityToModel(surveyAnsweredRatioEntity);
         return surveyAnsweredRatioEntity;
     }

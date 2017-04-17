@@ -242,7 +242,7 @@ public class SurveyFragment extends Fragment  {
         if (survey != null) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                    GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {
