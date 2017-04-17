@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -169,22 +169,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         if(survey.isSent()){
             return getContext().getString(R.string.dashboard_info_sent);
         }
-
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
-                        Log.d(getClass().getName(), "onComplete");
-                    }
-                });
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
+        SurveyAnsweredRatioEntity surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {

@@ -31,7 +31,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.utils.Action;
@@ -149,7 +149,7 @@ public class AssessModuleController extends ModuleController {
                     public void nextProgressMessage() {
                     }
                     @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                    public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
                         //This cannot be mark as completed
                         if (!surveyAnsweredRatio.isCompulsoryCompleted()) {
                             alertCompulsoryQuestionIncompleted();
@@ -178,7 +178,7 @@ public class AssessModuleController extends ModuleController {
     /**
      * It is called when the user press back in a surveyFragment
      */
-    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio) {
+    private boolean onSurveyBackPressed(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory()
                 && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -259,7 +259,7 @@ public class AssessModuleController extends ModuleController {
                                     }
 
                                     @Override
-                                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                    public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
                                         Survey dbSurvey = Survey.findById(survey.getId_survey());
                                         dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                                     }
@@ -384,8 +384,8 @@ public class AssessModuleController extends ModuleController {
                 R.id.dashboard_details_container);
     }
 
-    public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatio> {
-        SurveyAnsweredRatio mSurveyAnsweredRatio;
+    public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatioEntity> {
+        SurveyAnsweredRatioEntity mSurveyAnsweredRatio;
         SurveyFragment surveyFragment;
         Survey survey;
         Action action;
@@ -406,7 +406,7 @@ public class AssessModuleController extends ModuleController {
 
 
         @Override
-        protected SurveyAnsweredRatio doInBackground(Void... voids) {
+        protected SurveyAnsweredRatioEntity doInBackground(Void... voids) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
@@ -417,7 +417,7 @@ public class AssessModuleController extends ModuleController {
                         }
 
                         @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
                             mSurveyAnsweredRatio = surveyAnsweredRatio;
                         }
                     });
@@ -425,7 +425,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         @Override
-        protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
+        protected void onPostExecute(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
             if(action.equals(Action.PRESS_BACK_BUTTON)) {
                 surveyFragment.hideProgress();
                 boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);

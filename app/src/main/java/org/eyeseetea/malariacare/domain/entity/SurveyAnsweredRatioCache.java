@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
+import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatio;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +30,17 @@ import java.util.Map;
  */
 public class SurveyAnsweredRatioCache {
 
-    private static Map<Long,SurveyAnsweredRatio> surveyAnsweredRatioMap=new HashMap<Long,SurveyAnsweredRatio>();
+    private static Map<Long,SurveyAnsweredRatioEntity> surveyAnsweredRatioMap=new HashMap<Long,SurveyAnsweredRatioEntity>();
 
-    public static void put(Long surveyId,SurveyAnsweredRatio surveyAnsweredRatio){
+    public static void put(Long surveyId,SurveyAnsweredRatioEntity surveyAnsweredRatio){
         surveyAnsweredRatioMap.put(surveyId,surveyAnsweredRatio);
     }
 
-    public static SurveyAnsweredRatio get(Long surveyId){
+    public static SurveyAnsweredRatioEntity get(Long surveyId){
+        SurveyAnsweredRatioEntity surveyAnsweredRatioEntity = surveyAnsweredRatioMap.get(surveyId);
+        if(surveyAnsweredRatioEntity == null) {
+            return SurveyAnsweredRatioEntity.getModelToEntity(surveyId);
+        }
         return surveyAnsweredRatioMap.get(surveyId);
     }
 }

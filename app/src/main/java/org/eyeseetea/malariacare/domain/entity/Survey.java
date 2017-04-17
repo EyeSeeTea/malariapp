@@ -3,7 +3,7 @@ package org.eyeseetea.malariacare.domain.entity;
 public class Survey {
     private long id;
     private int status;
-    private SurveyAnsweredRatio mSurveyAnsweredRatio;
+    private SurveyAnsweredRatioEntity mSurveyAnsweredRatio;
 
     public Survey() {
     }
@@ -13,7 +13,7 @@ public class Survey {
     }
 
     public Survey(long id, int status,
-            SurveyAnsweredRatio surveyAnsweredRatio) {
+            SurveyAnsweredRatioEntity surveyAnsweredRatio) {
         this.id = id;
         this.status = status;
         mSurveyAnsweredRatio = surveyAnsweredRatio;
@@ -35,12 +35,12 @@ public class Survey {
         this.status = status;
     }
 
-    public SurveyAnsweredRatio getSurveyAnsweredRatio() {
+    public SurveyAnsweredRatioEntity getSurveyAnsweredRatio() {
         return mSurveyAnsweredRatio;
     }
 
     public void setSurveyAnsweredRatio(
-            SurveyAnsweredRatio surveyAnsweredRatio) {
+            SurveyAnsweredRatioEntity surveyAnsweredRatio) {
         mSurveyAnsweredRatio = surveyAnsweredRatio;
     }
 

@@ -53,7 +53,7 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -249,7 +249,7 @@ public class SurveyFragment extends Fragment  {
                         }
 
                         @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
                             Survey dbSurvey = Survey.findById(survey.getId_survey());
                             dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                         }
