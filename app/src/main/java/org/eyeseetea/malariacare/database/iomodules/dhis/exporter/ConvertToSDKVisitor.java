@@ -396,7 +396,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //Overall score
-        if(!overallScoreCode.equals("") && survey.hasMainScore())
+        if(controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore())
             buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //Forward order
