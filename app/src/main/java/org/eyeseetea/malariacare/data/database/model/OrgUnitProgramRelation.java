@@ -125,30 +125,32 @@ public class OrgUnitProgramRelation extends BaseModel {
         this.productivity = productivity;
     }
 
+    public static Integer getDefaultProductivity() {
+        return DEFAULT_PRODUCTIVITY;
+    }
     /**
      * Helper method to get the productivity for a given survey.
      * If its orgunit + program combination does NOT have a productivity value then returns 0
-     * @param survey
      * @return
      */
-    public static Integer getProductivity(Survey survey){
-        if(survey==null){
+    public static Integer getProductivity(Long surveyId, Long orgUnitId, Long programId){
+        if(surveyId==null){
             return DEFAULT_PRODUCTIVITY;
         }
 
-        OrgUnit orgUnit = survey.getOrgUnit();
-        if(orgUnit==null){
+
+        if(orgUnitId==null){
             return DEFAULT_PRODUCTIVITY;
         }
 
-        Program program = survey.getProgram();
-        if(program==null){
+
+        if(programId==null){
             return DEFAULT_PRODUCTIVITY;
         }
 
         OrgUnitProgramRelation orgUnitProgramRelation = new Select().from(OrgUnitProgramRelation.class)
-                .where(OrgUnitProgramRelation_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(OrgUnitProgramRelation_Table.id_program_fk.eq(program.getId_program())).querySingle();
+                .where(OrgUnitProgramRelation_Table.id_org_unit_fk.eq(orgUnitId))
+                .and(OrgUnitProgramRelation_Table.id_program_fk.eq(programId)).querySingle();
 
         if(orgUnitProgramRelation==null){
             return DEFAULT_PRODUCTIVITY;

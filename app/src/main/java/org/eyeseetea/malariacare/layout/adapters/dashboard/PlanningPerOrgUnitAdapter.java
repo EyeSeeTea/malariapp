@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -53,7 +54,7 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final PlannedSurveyByOrgUnit plannedSurvey = (PlannedSurveyByOrgUnit) getItem(position);
-        Survey survey = plannedSurvey.getSurvey();
+        SurveyEntity survey = plannedSurvey.getSurvey();
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int) (5 * density);
 
@@ -91,7 +92,7 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
         }
 
         //set row survey name
-        String surveyDescription = survey.getProgram().getName();
+        String surveyDescription = survey.getProgramEntity().getName();
         surveyCheckBox.setText(surveyDescription);
 
         //set background color from header(type of planning survey)

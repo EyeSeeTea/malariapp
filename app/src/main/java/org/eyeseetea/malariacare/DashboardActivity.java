@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
@@ -349,7 +350,7 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onSurveySelected(Survey survey) {
+    public void onSurveySelected(SurveyEntity survey) {
         dashboardController.onSurveySelected(survey);
     }
 
@@ -371,14 +372,14 @@ public class DashboardActivity extends BaseActivity {
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
      */
-    public void onMarkAsCompleted(Survey survey) {
+    public void onMarkAsCompleted(SurveyEntity survey) {
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
      */
-    public void onFeedbackSelected(Survey survey) {
+    public void onFeedbackSelected(SurveyEntity survey) {
         dashboardController.onFeedbackSelected(survey);
     }
 
@@ -400,8 +401,8 @@ public class DashboardActivity extends BaseActivity {
      * Create new survey from VariantSpecificUtils
      */
     public void createNewSurvey(OrgUnit orgUnit, Program program) {
-        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
-        prepareLocationListener(survey);
+        SurveyEntity survey = SurveyPlanner.getInstance().startSurvey(orgUnit.getId_org_unit(), program.getId_program());
+        prepareLocationListener(survey.getId());
         // Put new survey in session
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);

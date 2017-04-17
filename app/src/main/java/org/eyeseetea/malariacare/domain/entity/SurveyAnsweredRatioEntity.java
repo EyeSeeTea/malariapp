@@ -60,6 +60,7 @@ public class SurveyAnsweredRatioEntity {
         this.totalCompulsory=totalCompulsory;
         this.compulsoryAnswered = compulsoryAnswered;
     }
+
     public static SurveyAnsweredRatioEntity getModelToEntity(long id_survey){
         SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getSurveyAnsweredRatioById(id_survey);
         if(surveyAnsweredRatio==null) {
@@ -68,7 +69,6 @@ public class SurveyAnsweredRatioEntity {
         return  new SurveyAnsweredRatioEntity(surveyAnsweredRatio.getIdSurvey(), surveyAnsweredRatio.getTotalQuestions(),
                 surveyAnsweredRatio.getAnsweredQuestions(), surveyAnsweredRatio.getTotalCompulsoryQuestions(), surveyAnsweredRatio.getAnsweredCompulsoryQuestions());
     }
-
 
     public long getSurveyId() {
         return surveyId;

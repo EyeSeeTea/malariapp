@@ -23,10 +23,12 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -57,10 +59,10 @@ public class ScoreRegister {
     public static final Map<String, Map<Float, Map<Tab, TabNumDenRecord>>> tabScoreMap = new HashMap<>();
 
 
-    public static void initScoresForQuestions(List<Question> questions, Survey survey, String module){
+    public static void initScoresForQuestions(List<Question> questions, Long surveyId, String module){
         for(Question question : questions){
-            if(!question.isHiddenBySurvey(survey.getId_survey())) {
-                question.initScore(survey.getId_survey(), module);
+            if(!question.isHiddenBySurvey(surveyId)) {
+                question.initScore(surveyId, module);
             }
         }
     }
@@ -265,26 +267,25 @@ public class ScoreRegister {
 
     /**
      * Cleans, prepares, calculates and returns all the scores info for the given survey
-     * @param survey
+     * @param surveyId
      * @return
      */
-    public static List<CompositeScore> loadCompositeScores(Survey survey, String module){
+    public static List<CompositeScore> loadCompositeScores(Long surveyId, Program program, String module){
         //Cleans score
-        Log.d(TAG, "clean composite score "+ survey.getId_survey() + " module " + module);
-        ScoreRegister.clear(survey.getId_survey(), module);
-        Log.d(TAG, "load composite Score "+ survey.getId_survey() + " module " + module);
-
+        Log.d(TAG, "clean composite score "+ surveyId + " module " + module);
+        ScoreRegister.clear(surveyId, module);
+        Log.d(TAG, "load composite Score "+ surveyId + " module " + module);
         //Register scores for tabs
-        List<Tab> tabs=survey.getProgram().getTabs();
-        ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
+        List<Tab> tabs= program.getTabs();
+        ScoreRegister.registerTabScores(tabs, surveyId, module);
 
         //Register scores for composites
-        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(survey.getProgram());
-        ScoreRegister.registerCompositeScores(compositeScoreList, survey.getId_survey(), module);
+        List<CompositeScore> compositeScoreList=CompositeScore.listByProgram(program.getId_program());
+        ScoreRegister.registerCompositeScores(compositeScoreList, surveyId, module);
         //Initialize scores x question
-        ScoreRegister.initScoresForQuestions(Question.listByProgram(survey.getProgram()), survey, module);
+        ScoreRegister.initScoresForQuestions(Question.listByProgram(program), surveyId, module);
 
-        Log.d(TAG, "Composite Score loaded "+ survey.getId_survey() + " module " + module);
+        Log.d(TAG, "Composite Score loaded "+ surveyId + " module " + module);
         return compositeScoreList;
     }
 
@@ -306,11 +307,12 @@ public class ScoreRegister {
     }
 
 
-    public static float calculateMainScore(Survey survey, String module){
+    public static float calculateMainScore(Long surveyId, String module){
         //Prepare all scores
-        List<CompositeScore> scores = loadCompositeScores(survey, module);
+        Program program = Program.findBySurveyId(surveyId);
+        List<CompositeScore> scores = loadCompositeScores(surveyId, program, module);
 
-        return calculateMainScore(scores, survey.getId_survey(), module);
+        return calculateMainScore(scores, surveyId, module);
     }
 
 }

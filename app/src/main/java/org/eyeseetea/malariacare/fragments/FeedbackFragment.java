@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -153,7 +154,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
 
         //Set adapter and list
         feedbackAdapter = new FeedbackAdapter(getActivity(),
-                Session.getSurveyByModule(module).getId_survey(), module);
+                Session.getSurveyByModule(module).getId(), module);
         feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
@@ -180,7 +181,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         );
 
         //Set mainscore and color.
-        Survey survey = Session.getSurveyByModule(module);
+        SurveyEntity survey = Session.getSurveyByModule(module);
         if (survey.hasMainScore()) {
             float average = survey.getMainScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);

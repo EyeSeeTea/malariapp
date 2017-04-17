@@ -23,13 +23,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 
 import java.util.List;
 
 public abstract class ADashboardAdapter extends BaseAdapter implements IDashboardAdapter {
 
-    List<Survey> items;
+    List<SurveyEntity> items;
     protected LayoutInflater lInflater;
     protected Context context;
     protected Integer headerLayout;
@@ -41,7 +41,7 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
 
     }
 
-    public ADashboardAdapter(List<Survey> items, Context context, Integer headerLayout, Integer footerLayout, Integer recordLayout, String title) {
+    public ADashboardAdapter(List<SurveyEntity> items, Context context, Integer headerLayout, Integer footerLayout, Integer recordLayout, String title) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
@@ -68,7 +68,7 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
 
     @Override
     public void setItems(List items) {
-        this.items = (List<Survey>) items;
+        this.items = (List<SurveyEntity>) items;
     }
 
     @Override

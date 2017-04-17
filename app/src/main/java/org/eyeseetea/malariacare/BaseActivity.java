@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
@@ -277,9 +278,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Asks for location (required while starting to edit a survey)
      */
-    public void prepareLocationListener(Survey survey) {
+    public void prepareLocationListener(Long surveyId) {
 
-        locationListener = new SurveyLocationListener(survey.getId_survey());
+        locationListener = new SurveyLocationListener(surveyId);
         LocationManager locationManager =
                 (LocationManager) LocationMemory.getContext().getSystemService(
                         Context.LOCATION_SERVICE);

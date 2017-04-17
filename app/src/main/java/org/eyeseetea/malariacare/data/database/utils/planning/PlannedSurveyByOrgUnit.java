@@ -5,6 +5,7 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
  */
 
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 
 /**
  * Created by ina on 16/08/2016.
@@ -13,7 +14,7 @@ public class PlannedSurveyByOrgUnit extends PlannedSurvey {
 
     private boolean isChecked;
 
-    public PlannedSurveyByOrgUnit(Survey survey, PlannedHeader header) {
+    public PlannedSurveyByOrgUnit(SurveyEntity survey, PlannedHeader header) {
         super(survey, header);
     }
 

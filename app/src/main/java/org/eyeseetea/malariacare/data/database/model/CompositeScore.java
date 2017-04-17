@@ -186,12 +186,12 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
 
     /**
      * Select all composite score that belongs to a program
-     * @param program Program whose composite scores are searched.
+     * @param programId Program whose composite scores are searched.
      * @return
      */
     //TODO: to enable lazy loading, here we need to set Method.SAVE and Method.DELETE and use the .toModel() to specify when do we want to load the models
-    public static List<CompositeScore> listByProgram(Program program){
-        if(program==null || program.getId_program()==null){
+    public static List<CompositeScore> listByProgram(Long programId){
+        if(programId==null){
             return new ArrayList<>();
         }
 
@@ -214,7 +214,7 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
                 .on(CompositeScore_Table.id_composite_score.withTable(compositeScoreAlias)
                         .eq(CompositeScore_Table.id_composite_score.withTable(compositeScoreTwoAlias)))
                 .where(Program_Table.id_program.withTable(programAlias)
-                        .eq(program.getId_program()))
+                        .eq(programId))
                 .orderBy(CompositeScore_Table.order_pos, true)
                 .queryList();
 

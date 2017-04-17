@@ -28,7 +28,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
+import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
@@ -166,7 +168,7 @@ public class ConvertToSDKVisitor implements
             //Calculates scores and update survey
             Log.d(TAG, "Registering scores...");
             errorMessage = "Calculating compositeScores";
-            List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey,
+            List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey.getId_survey(), survey.getProgram(),
                     Constants.PUSH_MODULE_KEY);
             updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
 
@@ -382,9 +384,17 @@ public class ConvertToSDKVisitor implements
         }
 
         //Overall productivity
+        Program program= survey.getProgram();
+        OrgUnit orgUnit= survey.getOrgUnit();
+        String productivity;
+        if(program == null || orgUnit == null){
+            productivity = Integer.toString(OrgUnitProgramRelation.getDefaultProductivity());
+        }
+        else{
+            productivity = Integer.toString(OrgUnitProgramRelation.getProductivity(survey.getId_survey(), orgUnit.getId_org_unit(), program.getId_program()));
+        }
         if (controlDataElementExistsInServer(overallProductivityCode)) {
-            addOrUpdateDataValue(overallProductivityCode,
-                    Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
+            addOrUpdateDataValue(overallProductivityCode,productivity);
         }
 
         //Next assessment

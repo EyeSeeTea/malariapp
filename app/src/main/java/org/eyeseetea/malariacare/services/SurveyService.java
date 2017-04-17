@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -360,15 +361,15 @@ public class SurveyService extends IntentService {
 
         //register composite scores for current survey and module
         List<CompositeScore> compositeScores = CompositeScore.list();
-        Survey survey = Session.getSurveyByModule(module);
-        ScoreRegister.registerCompositeScores(compositeScores,survey.getId_survey(),module);
+        SurveyEntity survey = Session.getSurveyByModule(module);
+        ScoreRegister.registerCompositeScores(compositeScores,survey.getId(),module);
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession(module);
         //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<Tab> allTabs = new Select().from(Tab.class).where(Tab_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
+        List<Tab> allTabs = new Select().from(Tab.class).where(Tab_Table.id_program_fk.eq(survey.getProgramEntity().getId())).queryList();
         //register tabs scores for current survey and module
-        ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
+        ScoreRegister.registerTabScores(tabs, survey.getId(), module);
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(PREPARE_SURVEY_ACTION_COMPOSITE_SCORES, compositeScores);

@@ -37,6 +37,8 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.ProgramEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -117,15 +119,15 @@ public class LayoutUtils {
     }
 
     public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,
-            Survey survey) {
+            SurveyEntity survey) {
         String title = "";
         String subtitle = "";
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         String appNameColorString = String.format("%X", appNameColor).substring(2);
-        Program program = survey.getProgram();
-        if (survey.getOrgUnit().getName() != null) {
-            title = survey.getOrgUnit().getName();
+        if (survey.getOrgUnitEntity().getName() != null) {
+            title = survey.getOrgUnitEntity().getName();
         }
+        ProgramEntity program = survey.getProgramEntity();
         if (program.getName() != null) {
             subtitle = program.getName();
         }

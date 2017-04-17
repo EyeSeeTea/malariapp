@@ -19,30 +19,28 @@
 
 package org.eyeseetea.malariacare.data.database.utils.multikeydictionaries;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 
 import java.util.List;
 
 /**
  * Created by idelcano on 19/09/2016.
  */
-public class ProgramOUSurveyDict extends ObjectModelDict {
+public class ProgramOUSurveyDict extends ObjectEntityDict {
 
     @Override
-    public void put(String programUid, String orgUnitUid, BaseModel survey) {
+    public void put(String programUid, String orgUnitUid, Object survey) {
         super.put(programUid, orgUnitUid, survey);
-
     }
 
     @Override
-    public Survey get(String programUid, String orgUnitUid) {
-        return (Survey) super.get(programUid, orgUnitUid);
+    public SurveyEntity get(String programUid, String orgUnitUid) {
+        return (SurveyEntity) super.get(programUid, orgUnitUid);
     }
 
     @Override
-    public List<Survey> values() {
-        return (List<Survey>) super.values();
+    public List<SurveyEntity> values() {
+        return (List<SurveyEntity>) super.values();
     }
 }

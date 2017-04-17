@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
@@ -49,7 +50,7 @@ public class Session {
     /**
      * The current selected survey by module
      */
-    private static Map<String, Survey> surveyMappedByModule = new HashMap<>();
+    private static Map<String, SurveyEntity> surveyMappedByModule = new HashMap<>();
     /**
      *  The current selected surveyFeedback
     */
@@ -90,11 +91,19 @@ public class Session {
     private static Credentials credentials;
 
 
-    public static Survey getSurveyByModule(String module) {
+    public static SurveyEntity getSurveyByModule(String module) {
         return surveyMappedByModule.get(module);
     }
 
-    public static void setSurveyByModule(Survey survey, String module) {
+    public static Survey getSurveyModelByModule(String module) {
+        SurveyEntity surveyEntity = surveyMappedByModule.get(module);
+        if(surveyEntity!=null){
+            return Survey.findById(surveyMappedByModule.get(module).getId());
+        }
+        return null;
+    }
+
+    public static void setSurveyByModule(SurveyEntity survey, String module) {
             surveyMappedByModule.put(module,survey);
     }
 

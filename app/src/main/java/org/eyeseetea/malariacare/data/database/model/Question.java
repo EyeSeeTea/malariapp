@@ -475,7 +475,7 @@ public class Question extends BaseModel {
      * Gets the value of this question in the current survey in session
      */
     public Value getValueBySession(String module) {
-        return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
+        return this.getValueBySurvey(Session.getSurveyByModule(module).getId());
     }
 
     /**
@@ -499,7 +499,7 @@ public class Question extends BaseModel {
      * Gets the option of this question in the current survey in session
      */
     public Option getOptionBySession(String module) {
-        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
+        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId());
     }
 
     /**

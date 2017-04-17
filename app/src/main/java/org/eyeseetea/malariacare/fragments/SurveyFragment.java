@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -237,10 +238,10 @@ public class SurveyFragment extends Fragment  {
 
     @Override
     public void onPause() {
-        final Survey survey = Session.getSurveyByModule(moduleName);
+        final SurveyEntity survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+            getSurveyAnsweredRatioUseCase.execute(survey.getId(),
                     GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
@@ -250,7 +251,7 @@ public class SurveyFragment extends Fragment  {
 
                         @Override
                         public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
-                            Survey dbSurvey = Survey.findById(survey.getId_survey());
+                            Survey dbSurvey = Survey.findById(survey.getId());
                             dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                         }
                     });
@@ -470,7 +471,7 @@ public class SurveyFragment extends Fragment  {
             //Initialize scores x question not loaded yet
             List<Tab> notLoadedTabs = tabAdaptersCache.getNotLoadedTabs();
             ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs),
-                    Session.getSurveyByModule(module), module);
+                    Session.getSurveyByModule(module).getId(), module);
         }
         ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(selectedTab);
 
@@ -771,7 +772,7 @@ public class SurveyFragment extends Fragment  {
             Tab firstTab = tabs.get(0);
             this.adapters.clear();
             this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
-                    Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+                    Session.getSurveyByModule(moduleName).getId(), moduleName));
             this.compositeScores = compositeScores;
         }
 
@@ -803,7 +804,7 @@ public class SurveyFragment extends Fragment  {
          */
         private ITabAdapter buildAdapter(Tab tab) {
             return AutoTabAdapter.build(tab, getActivity(),
-                    Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+                    Session.getSurveyByModule(moduleName).getId(), moduleName);
         }
     }
 }

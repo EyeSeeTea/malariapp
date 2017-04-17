@@ -25,6 +25,8 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.ProductivityEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
@@ -53,16 +55,17 @@ public class SurveyPlanner {
     /**
      * Builds a 'NEVER' planned survey for the given combination
      */
-    public Survey buildNext(OrgUnit orgUnit, Program program) {
+    public SurveyEntity buildNext(Long orgUnitId, Long programId) {
         Survey survey = new Survey();
         survey.setStatus(Constants.SURVEY_PLANNED);
-        survey.setOrgUnit(orgUnit);
+        survey.setOrgUnit(orgUnitId);
         survey.setUser(Session.getUser());
 
-        survey.setProgram(program);
+        survey.setProgram(programId);
         survey.save();
 
-        return survey;
+        SurveyEntity surveyEntity = new SurveyEntity();
+        return surveyEntity.getFromModel(survey);
     }
 
 
@@ -71,8 +74,9 @@ public class SurveyPlanner {
      *
      * @return newSurvey
      */
-    public Survey deleteSurveyAndBuildNext(Survey oldSurvey) {
+    public Survey deleteSurveyAndBuildNext(SurveyEntity oldSurveyEntity) {
         Survey newSurvey = new Survey();
+        Survey oldSurvey = Survey.findById(oldSurveyEntity.getId());
         newSurvey.save();//generate the new id
         newSurvey.setStatus(Constants.SURVEY_PLANNED);
         newSurvey.setOrgUnit(oldSurvey.getOrgUnit());
@@ -117,16 +121,18 @@ public class SurveyPlanner {
         return plannedSurvey;
     }
 
+
+
     /**
      * Starts a planned survey with the given orgUnit and tabGroup
      */
-    public Survey startSurvey(OrgUnit orgUnit, Program program) {
+    public SurveyEntity startSurvey(Long orgUnitId, Long programId) {
         //Find planned survey
-        Survey survey = Survey.findPlannedByOrgUnitAndProgram(orgUnit, program);
+        Survey survey = Survey.findPlannedByOrgUnitAndProgram(orgUnitId, programId);
         if (survey == null) {
             survey = new Survey();
-            survey.setProgram(program);
-            survey.setOrgUnit(orgUnit.getId_org_unit());
+            survey.setProgram(programId);
+            survey.setOrgUnit(orgUnitId);
         }
         return startSurvey(survey);
     }
@@ -134,7 +140,7 @@ public class SurveyPlanner {
     /**
      * Starts a planned survey
      */
-    public Survey startSurvey(Survey survey) {
+    public SurveyEntity startSurvey(Survey survey){
         Date now = new Date();
         survey.setCreationDate(now);
         survey.setUploadDate(now);
@@ -145,9 +151,9 @@ public class SurveyPlanner {
         //Reset mainscore for this 'real' survey
         survey.setMainScore(0f);
         survey.saveMainScore();
-        return survey;
+        SurveyEntity surveyEntity = new SurveyEntity();
+        return surveyEntity.getFromModel(survey);
     }
-
     /**
      * Plans a new survey according to the last surveys that has been sent for each combo orgunit +
      * program
@@ -169,20 +175,21 @@ public class SurveyPlanner {
         if (eventDate == null) {
             return null;
         }
+        ProductivityEntity productivityEntity = new ProductivityEntity(survey.getId_survey(), survey.getOrgUnit().getId_org_unit(), survey.getProgram().getId_program());
 
         //Load main score
         Log.d(TAG, String.format(
                 "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
                         + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
+                eventDate.toString(), survey.getMainScore(), productivityEntity.isLowProductivity()));
 
         //A -> 6 months
-        if (survey.isTypeA()) {
+        if (Survey.isTypeA(survey.getMainScore())) {
             return getInXMonths(eventDate, TYPE_A_NEXT_DATE);
         }
 
         //BC + Low OrgUnit -> 4
-        if (survey.isLowProductivity()) {
+        if (productivityEntity.isLowProductivity()) {
             return getInXMonths(eventDate, TYPE_BC_LOW_NEXT_DATE);
         }
 

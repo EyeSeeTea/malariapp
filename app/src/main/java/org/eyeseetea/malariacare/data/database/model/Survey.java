@@ -369,25 +369,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where( Score_Table.id_survey_fk.eq(this.getId_survey())).querySingle();
     }
 
-    /**
-     * Returns the productivity for this survey according to its orgunit + program
-     */
-    public Integer getProductivity() {
-        if (productivity == null) {
-            productivity = OrgUnitProgramRelation.getProductivity(this);
-        }
-        return productivity;
-    }
-
-    /**
-     * Returns if this survey has low productivity or not.
-     * [0..4]: Low
-     * [5..): Not Low
-     */
-    public boolean isLowProductivity() {
-        return getProductivity() < 5;
-    }
-
     @Override
     public void delete() {
         Score score = getScore();
@@ -411,9 +392,15 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Returns this survey is type A (green)
      */
     public boolean isTypeA() {
-        return this.getMainScore() >= Constants.MAX_AMBER;
+        return isTypeA(this.getMainScore());
     }
 
+    /**
+     * Returns this survey is type A (green)
+     */
+    public static boolean isTypeA(Float mainScore) {
+        return mainScore >= Constants.MAX_AMBER;
+    }
     /**
      * Returns this survey is type B (amber)
      */
@@ -525,7 +512,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     private void saveScore(String module) {        //Prepare scores info
-        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
+        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(id_survey, getProgram(),  module);
 
         //Calculate main score to push later
         this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
@@ -740,7 +727,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     /**
      * Moves the scheduled date for this survey to a new given date due to a given reason (comment)
      */
-    public void reschedule(Date newScheduledDate, String comment) {
+    public Date reschedule(Date newScheduledDate, String comment) {
         //Take currentDate
         Date currentScheduledDate = this.getScheduledDate();
 
@@ -754,6 +741,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //Move scheduledate and save
         this.scheduled_date = newScheduledDate;
         this.save();
+        return scheduled_date;
     }
 
     /**
@@ -786,11 +774,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
     /**
      * Finds a survey with a given orgunit and program
      */
-    public static Survey findPlannedByOrgUnitAndProgram(OrgUnit orgUnit, Program program) {
+    public static Survey findPlannedByOrgUnitAndProgram(Long orgUnitId, Long programId) {
         return new Select()
                 .from(Survey.class)
-                .where(Survey_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(Survey_Table.id_program_fk.eq(program.getId_program()))
+                .where(Survey_Table.id_org_unit_fk.eq(orgUnitId))
+                .and(Survey_Table.id_program_fk.eq(programId))
                 .and(Survey_Table.status.eq(Constants.SURVEY_PLANNED))
                 .querySingle();
     }
