@@ -230,7 +230,7 @@ public class ExportData {
      */
     private static Intent createEmailIntent(Activity activity, File data) {
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("*/*");
+        emailIntent.setType("application/zip");
 
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
                 new String[] { "" });

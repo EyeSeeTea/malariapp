@@ -149,6 +149,9 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         uploadedDate =new Date();
 
+        survey.setUploadDate(uploadedDate);
+        survey.save();
+
         //Turn survey into an event
         this.currentSurvey=survey;
 
@@ -180,9 +183,6 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
             //value -> datavalue
             value.accept(this);
         }
-
-
-        survey.setUploadDate(uploadedDate);
 
         //Update all the dates after checks the new values
         updateEventDates();
@@ -387,7 +387,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
 
         //Updated by user
         if(controlDataElementExistsInServer(updatedUserCode)){
-            addOrUpdateDataValue(updatedUserCode, Session.getUser().getUid());
+            addOrUpdateDataValue(updatedUserCode, getSafeUsername());
         }
 
         //Forward order
@@ -396,7 +396,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         }
 
         //Overall score
-        if(!overallScoreCode.equals("") && survey.hasMainScore())
+        if(controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore())
             buildAndSaveDataValue(overallScoreCode, survey.getMainScore().toString());
 
         //Forward order
