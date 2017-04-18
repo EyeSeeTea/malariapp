@@ -29,8 +29,6 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -43,10 +41,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.model.Header;
 import org.eyeseetea.malariacare.database.model.Option;
 import org.eyeseetea.malariacare.database.model.Question;
@@ -54,6 +49,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.utils.DateQuestionFormatter;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabInVisibilityState;
@@ -62,7 +58,6 @@ import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
 import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -73,7 +68,6 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -524,9 +518,9 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
             case Constants.DATE:
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate= EventExtended.parseShortDate(valueString);
+                Date valueDate= DateQuestionFormatter.formatDateOutput(valueString);
                 if(valueDate!=null) {
-                    viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
+                    viewHolder.setText(DateQuestionFormatter.formatDateToView(valueDate));
                 }
                 break;
             case Constants.SHORT_TEXT:
@@ -762,8 +756,10 @@ public class AutoTabAdapter extends ATabAdapter {
                     newCalendar.set(year, monthOfYear, dayOfMonth);
                     Date newScheduledDate = newCalendar.getTime();
                     if(!isCleared) {
-                        ((CustomButton) v).setText( AUtils.formatDate(newCalendar.getTime()));
-                        ReadWriteDB.saveValuesText(question, AUtils.formatDate(newCalendar.getTime()), module);
+                        ((CustomButton) v).setText(
+                                DateQuestionFormatter.formatDateToView(newCalendar.getTime()));
+                        ReadWriteDB.saveValuesText(question,
+                                DateQuestionFormatter.formatDateToValue(newCalendar.getTime()), module);
                     }
                     isCleared =false;
                 }
