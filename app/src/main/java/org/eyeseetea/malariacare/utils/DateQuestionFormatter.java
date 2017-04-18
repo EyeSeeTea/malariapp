@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.entity;
+package org.eyeseetea.malariacare.utils;
 
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
@@ -27,7 +27,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 
-public class DateQuestion {
+public class DateQuestionFormatter {
 
     //Format a date to value using server format
     public static String formatDateToValue(Date date) {

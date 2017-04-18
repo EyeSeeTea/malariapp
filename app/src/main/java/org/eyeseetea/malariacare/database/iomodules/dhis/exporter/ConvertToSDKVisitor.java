@@ -40,7 +40,7 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.DateQuestion;
+import org.eyeseetea.malariacare.utils.DateQuestionFormatter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -304,8 +304,8 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setProvidedElsewhere(false);
         dataValue.setStoredBy(getSafeUsername());
         if(value.getQuestion() != null && value.getQuestion().getOutput() == Constants.DATE){
-            Date valueDate= DateQuestion.formatDateOutput(value.getValue());
-            dataValue.setValue(DateQuestion.formatDateToValue(valueDate));
+            Date valueDate= DateQuestionFormatter.formatDateOutput(value.getValue());
+            dataValue.setValue(DateQuestionFormatter.formatDateToValue(valueDate));
         }else if(value.getOption()!=null){
             dataValue.setValue(value.getOption().getCode());
         }else{

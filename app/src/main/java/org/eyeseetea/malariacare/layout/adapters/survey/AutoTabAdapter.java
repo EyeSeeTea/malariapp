@@ -49,7 +49,7 @@ import org.eyeseetea.malariacare.database.model.Tab;
 import org.eyeseetea.malariacare.database.model.Value;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
-import org.eyeseetea.malariacare.domain.entity.DateQuestion;
+import org.eyeseetea.malariacare.utils.DateQuestionFormatter;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabInVisibilityState;
@@ -518,9 +518,9 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
             case Constants.DATE:
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate= DateQuestion.formatDateOutput(valueString);
+                Date valueDate= DateQuestionFormatter.formatDateOutput(valueString);
                 if(valueDate!=null) {
-                    viewHolder.setText(DateQuestion.formatDateToView(valueDate));
+                    viewHolder.setText(DateQuestionFormatter.formatDateToView(valueDate));
                 }
                 break;
             case Constants.SHORT_TEXT:
@@ -757,9 +757,9 @@ public class AutoTabAdapter extends ATabAdapter {
                     Date newScheduledDate = newCalendar.getTime();
                     if(!isCleared) {
                         ((CustomButton) v).setText(
-                                DateQuestion.formatDateToView(newCalendar.getTime()));
+                                DateQuestionFormatter.formatDateToView(newCalendar.getTime()));
                         ReadWriteDB.saveValuesText(question,
-                                DateQuestion.formatDateToValue(newCalendar.getTime()), module);
+                                DateQuestionFormatter.formatDateToValue(newCalendar.getTime()), module);
                     }
                     isCleared =false;
                 }
