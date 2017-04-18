@@ -19,10 +19,13 @@
 
 package org.eyeseetea.malariacare.database.migrations;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.QueryBuilder;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
 /**
@@ -56,5 +59,22 @@ public class MigrationUtils {
             database.execSQL(DROP_TABLE_IF_EXISTS + myAdapter.getTableName());
             database.execSQL(myAdapter.getCreationQuery());
         }
+    }
+    public static void addColumnSafe(SQLiteDatabase database, String tableName, String newColumnName, String columnType) {
+        Cursor cursor = database.rawQuery("SELECT * FROM " + tableName + " LIMIT 1", null);
+        if (cursor == null) {
+            return;
+        }
+        if (!hasColumnName(cursor, newColumnName)) {
+            try {
+                database.execSQL("ALTER TABLE " + tableName + " ADD COLUMN `" + newColumnName + "` " + columnType);
+            } catch (Exception e) {
+                Log.d(TAG, "Error adding column " + newColumnName + ". Message: " + e.getMessage());
+            }
+        }
+    }
+
+    private static boolean hasColumnName(Cursor cursor, String columnName) {
+        return cursor.getColumnIndex(columnName) != -1;
     }
 }
