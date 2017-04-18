@@ -725,12 +725,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * @return
      */
     public static List<Survey> getLastSentSurveyByProgramAndOrgUnit() {
-        System.out.println(new Select().from(Survey.class)
-                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
-                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
-                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
-                .orderBy(Survey$Table.COMPLETION_DATE)
-                .groupBy(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_PROGRAM).getQuery());
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
