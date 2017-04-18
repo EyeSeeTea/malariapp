@@ -443,6 +443,7 @@ public class ProgressActivity extends Activity {
      * Launches a push using the PushController according to the intent params
      */
     private void launchPush(){
+        PushController.changePushInProgress(true);
         annotateFirstPull(true);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PUSH_STEPS);

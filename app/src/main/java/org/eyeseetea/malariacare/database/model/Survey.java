@@ -370,6 +370,10 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return getProductivity()<5;
     }
 
+    public boolean isInQuarantine(){
+        return Constants.SURVEY_QUARANTINE==this.status;
+    }
+
     @Override
     public void delete(){
         Score score=getScore();
@@ -598,6 +602,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
         return new Select().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENDING))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_QUARANTINE))
                 .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
@@ -713,6 +719,64 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
                 .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+    }
+    /**
+     * Returns all the surveys with status put to "Sent" or completed or Conflict
+     * @return
+     */
+    public static List<Survey> getLastSentSurveyByProgramAndOrgUnit() {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
+                .orderBy(Survey$Table.COMPLETION_DATE)
+                .groupBy(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_PROGRAM).queryList();
+    }
+
+    public static List<Survey> getAllSendingSurveys() {
+        return new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENDING))
+                .queryList();
+    }
+
+    public static List<Survey> getAllQuarantineSurveysByProgramAndOrgUnit(Program program, OrgUnit orgUnit) {
+        return new Select().from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_QUARANTINE))
+                .and(Condition.column(Survey$Table.ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .orderBy(false,Survey$Table.COMPLETION_DATE).queryList();
+    }
+
+    public static Date getMinQuarantineCompletionDateByProgramAndOrgUnit(Program program,
+            OrgUnit orgUnit) {
+        Survey survey = new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_QUARANTINE))
+                .and(Condition.column(Survey$Table.ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .orderBy(true,Survey$Table.COMPLETION_DATE).querySingle();
+        return survey.getCompletionDate();
+    }
+
+    public static Date getMaxQuarantineUpdatedDateByProgramAndOrgUnit(Program program,
+            OrgUnit orgUnit) {
+        Survey survey = new Select()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_QUARANTINE))
+                .and(Condition.column(Survey$Table.ID_PROGRAM).eq(program.getId_program()))
+                .and(Condition.column(Survey$Table.ID_ORG_UNIT).eq(orgUnit.getId_org_unit()))
+                .orderBy(false,Survey$Table.UPLOAD_DATE).querySingle();
+        return survey.getUploadDate();
+    }
+    /**
+     * Returns all the surveys with status put to "quarantine"
+     */
+    public static int countQuarantineSurveys() {
+        return (int) new Select().count()
+                .from(Survey.class)
+                .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_QUARANTINE))
+                .count();
     }
 
     public static long count(){

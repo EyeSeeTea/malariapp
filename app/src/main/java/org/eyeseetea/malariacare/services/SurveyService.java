@@ -206,7 +206,7 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getAllSentCompletedOrConflictSurveys());
+        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getLastSentSurveyByProgramAndOrgUnit());
         sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
         sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
 
@@ -220,7 +220,7 @@ public class SurveyService extends IntentService {
     }
 
     private void reloadOrgUnitPlannedSurveys() {
-        Log.d(TAG, "reloadPlanningSurveys");
+        Log.d(TAG, "reloadOrgUnitPlannedSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
         plannedServiceBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());

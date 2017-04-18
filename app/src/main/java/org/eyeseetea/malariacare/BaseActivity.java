@@ -54,9 +54,12 @@ import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleControll
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.events.UiEvent;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+
+import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
     /**
@@ -64,6 +67,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
     private static final int DUMP_REQUEST_CODE=0;
+    protected static String TAG = ".BaseActivity";
     private SurveyLocationListener locationListener;
 
     @Override
@@ -74,6 +78,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         Dhis2Application.bus.register(this);
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
+        checkQuarantineSurveys();
     }
 
     /**
@@ -162,13 +167,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        if ((requestCode == DUMP_REQUEST_CODE)){
-            ExportData.removeDumpIfExist(this);
-        }
-    }
     /**
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
@@ -321,5 +319,21 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void debugMessage(String message){
         Log.d("." + this.getClass().getSimpleName(), message);
+    }
+
+
+
+
+    private void checkQuarantineSurveys() {
+        if (PreferencesState.getInstance().isPushInProgress()) {
+            List<Survey> surveys = Survey.getAllSendingSurveys();
+            Log.d(TAG + "B&D", "The app was closed in the middle of a push. Surveys sending: "
+                    + surveys.size());
+            for (Survey survey : surveys) {
+                survey.setStatus(Constants.SURVEY_QUARANTINE);
+                survey.save();
+            }
+            PreferencesState.getInstance().setPushInProgress(false);
+        }
     }
 }

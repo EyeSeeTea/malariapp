@@ -177,6 +177,11 @@ public class DashboardActivity extends BaseActivity{
 
     private void pushUnsentBeforePull() {
 
+        if (PreferencesState.getInstance().isPushInProgress()) {
+            Toast.makeText(getBaseContext(), R.string.toast_push_in_progress,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
         //Launch Progress Push before pull
         Intent progressActivityIntent = new Intent(this, ProgressActivity.class);
         progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION, ProgressActivity.ACTION_PUSH_BEFORE_PULL);

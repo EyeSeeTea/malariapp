@@ -311,4 +311,5 @@
     <string name="feedback_media_link">មើលវីដេអូ</string>
     <string name="google_play_required">នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។</string>
     <string name="feedback_view_image">ចែករំលែករូបភាពជាមួយ ...</string>
+    <string name="toast_push_in_progress">"សូមរង់ចាំ, វាមានការជំរុញក្នុងវឌ្ឍនភាពរួចទៅហើយ"</string>
 </resources>

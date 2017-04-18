@@ -52,6 +52,7 @@ import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -634,7 +635,9 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 programList = (List<Program>) sentDashboardBundle.getModelList(Program.class.getName());
                 surveys = (List<Survey>) sentDashboardBundle.getModelList(Survey.class.getName());
                 reloadSentSurveys(surveys);
-                initFilters();
+                if(!PreferencesState.getInstance().isNoneFilter()) {
+                    initFilters();
+                }
             }
         }
     }

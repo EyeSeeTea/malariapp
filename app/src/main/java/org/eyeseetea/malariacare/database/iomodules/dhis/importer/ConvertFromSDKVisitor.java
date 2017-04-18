@@ -329,7 +329,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             if(!controlDataElementMapObjects.containsKey(sdkDataElementExtended.getDataElement().getUid()))
                 controlDataElementMapObjects.put(sdkDataElementExtended.getDataElement().getUid(),buildControlDataElement(sdkDataElementExtended));
         } else {
-            Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().toString());
+            Log.d(TAG, "Error" + sdkDataElementExtended.getDataElement().getUid());
             return;
         }
     }
