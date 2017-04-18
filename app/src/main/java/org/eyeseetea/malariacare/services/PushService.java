@@ -91,7 +91,7 @@ public class PushService extends IntentService {
     private void pushAllPendingSurveys() {
         Log.d(TAG, "pushAllPendingSurveys (Thread:" + Thread.currentThread().getId() + ")");
 
-        if (!AUtils.isNetworkAvailable() && PreferencesState.getInstance().isPushInProgress()) {
+        if (!AUtils.isNetworkAvailable() || PreferencesState.getInstance().isPushInProgress()) {
             Log.d(TAG, "Cancel push, push in progress or not network");
             return;
         }
