@@ -1,17 +1,10 @@
 package org.eyeseetea.malariacare.database.utils;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.AppDatabase;
@@ -237,7 +230,7 @@ public class ExportData {
      */
     private static Intent createEmailIntent(Activity activity, File data) {
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("*/*");
+        emailIntent.setType("application/zip");
 
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
                 new String[] { "" });
@@ -249,7 +242,7 @@ public class ExportData {
         //sets file as readable for external apps
         data.setReadable(true,false);
         Log.d(TAG,data.toURI()+"");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(activity, "org.eyeseetea.malariacare.database.utils.ExportData", data));
+        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".database.utils.ExportData", data));
         Intent chooser = Intent.createChooser(
                 emailIntent,
                 activity.getResources().getString(R.string.export_data_option_title));
