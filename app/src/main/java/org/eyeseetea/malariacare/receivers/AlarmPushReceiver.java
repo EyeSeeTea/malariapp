@@ -42,7 +42,6 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     private static AlarmPushReceiver instance;
     private static boolean fail;
-    private static boolean inProgress=false;
 
     //TODO: period has to be parameterized
     private static final long SECONDS = 1000;
@@ -74,20 +73,12 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     public static void isDoneSuccess(){
         Log.i(TAG,"isDoneSuccess");
         setFail(false);
-        isDone();
         DashboardActivity.reloadDashboard();
     }
 
     public static void isDoneFail(){
         Log.i(TAG,"isDoneFail");
         setFail(true);
-        isDone();
-    }
-    /**
-     * Notifies the alarm that the push attempt is finished
-     */
-    public static void isDone(){
-        AlarmPushReceiver.inProgress=false;
     }
 
     /**
@@ -99,13 +90,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
 
-        if(inProgress){
-            Log.d(TAG, "onReceive but already pushing");
-            return;
-        }
-
         Log.d(TAG, "onReceive asking for push");
-        inProgress=true;
         Intent pushIntent=new Intent(context, PushService.class);
         pushIntent.putExtra(SurveyService.SERVICE_METHOD, PushService.PENDING_SURVEYS_ACTION);
         context.startService(pushIntent);

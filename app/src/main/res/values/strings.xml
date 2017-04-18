@@ -234,4 +234,6 @@ evaluation"</string>
 <string name="feedback_media_link" >View video</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
+
+<string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
 </resources>
