@@ -17,10 +17,9 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.database.migrations;
+/*package org.eyeseetea.malariacare.database.migrations;
 
 
-import static org.eyeseetea.malariacare.database.migrations.MigrationUtils.addColumn;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -58,4 +57,4 @@ public class Migration13addUserColumns extends BaseMigration {
     public void onPostMigrate() {
     }
 
-}
+}*/

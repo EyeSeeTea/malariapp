@@ -26,9 +26,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;

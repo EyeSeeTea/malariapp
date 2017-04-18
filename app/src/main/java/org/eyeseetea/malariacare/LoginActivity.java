@@ -19,100 +19,95 @@
 
 package org.eyeseetea.malariacare;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
+import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.squareup.otto.Subscribe;
-
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
+import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.network.PullClient;
+import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.hisp.dhis.android.sdk.job.NetworkJob;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
-import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
-import org.hisp.dhis.android.sdk.utils.UiUtils;
+import org.eyeseetea.malariacare.utils.Permissions;
+import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
 import java.io.InputStream;
 
-/**
- * Login Screen.
- * It shows only when the user has an open session.
- */
-public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.LoginActivity implements
-        LoaderCallbacks<Cursor> {
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
-    private static final String TAG = "LoginActivity";
-    /**
-     * DHIS server URL
-     */
-    private String serverUrl;
+public class LoginActivity extends AbsLoginActivity {
+    private static final String TAG = ".LoginActivity";
 
-    /**
-     * DHIS username account
-     */
-    private String username;
+    public IUserAccountRepository mUserAccountRepository = new UserAccountRepository(this);
+    public LoginUseCase mLoginUseCase = new LoginUseCase(mUserAccountRepository);
+    LogoutUseCase mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+    public LoginActivityStrategy mLoginActivityStrategy = new LoginActivityStrategy(this);
 
-    /**
-     * DHIS password (required since push is done natively instead of using sdk)
-     */
-    private String password;
+    private CircularProgressBar progressBar;
+    private ViewGroup loginViewsContainer;
+    private static LoginActivity mLoginActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        mLoginActivity = this;
+        requestPermissions();
+        PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mLoginActivityStrategy.onCreate();
         if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
-            startActivity(new Intent(LoginActivity.this,
-                    ((Dhis2Application) getApplication()).getMainActivity()));
-            finish();
+            launchActivity(LoginActivity.this, DashboardActivity.class);
         }
         ProgressActivity.PULL_CANCEL = false;
-        EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
-        serverText.setText(R.string.login_info_dhis_default_server_url);
-    }
+        getServerUrl().setText(R.string.login_info_dhis_default_server_url);
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
+        loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    private void launchActivity(Activity activity, Class<?> activityClass) {
+        Intent intent = new Intent(activity, activityClass);
+        ActivityCompat.startActivity(LoginActivity.this, intent, null);
+    }
 
+    @Override
+    protected void onLoginButtonClicked(Editable server, Editable username, Editable password) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
+            askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
+        } else {
+            login(getServerUrl().getText().toString(), getUsername().getText().toString(),
+                    getPassword().getText().toString());
+        }
     }
 
     /**
@@ -133,7 +128,9 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         rememberEulaAccepted(context);
-                        loginToDhis(serverUrl, username, password);
+                        login(getServerUrl().getText().toString(),
+                                getUsername().getText().toString(),
+                                getPassword().getText().toString());
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create();
@@ -154,85 +151,115 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
     }
 
     /**
-     * User SDK function to login
-     */
-    public void loginToDhis(String serverUrl, String username, String password) {
-        //Delegate real login attempt to parent in sdk
-        super.login(serverUrl, username, password);
-    }
-
-    /**
-     * Ask for EULA acceptance if this is the first time user login to the server, otherwise login
+     * Its called on the requestPermission results, if the user accepts the permissions it request
+     * the Phone permission and gets the phoneMetadata
      */
     @Override
-    public void login(String serverUrl, String username, String password) {
-        //This method is overriden to capture credentials data
-        this.serverUrl = serverUrl;
-        this.username = username;
-        this.password = password;
-
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.getBoolean(getString(R.string.eula_accepted), false)) {
-            askEula(R.string.settings_menu_eula, R.raw.eula, LoginActivity.this);
-        } else {
-            loginToDhis(serverUrl, username, password);
+    public void onRequestPermissionsResult(int requestCode,
+            String permissions[], int[] grantResults) {
+        if (Permissions.processAnswer(requestCode, permissions, grantResults)) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        } else if (EyeSeeTeaApplication.permissions.hasNextPermission()) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
         }
     }
 
-    @Subscribe
-    public void onLoginFinished(NetworkJob.NetworkJobResult<ResourceType> result) {
-        if (result != null && result.getResourceType().equals(ResourceType.USERS)) {
-            if (result.getResponseHolder().getApiException() == null) {
-                //Save server in preferences
-                saveUserDetails();
+    public void login(String serverUrl, String username, String password) {
+        showProgress();
+
+        final Credentials credentials = new Credentials(serverUrl, username, password);
+        mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
+            @Override
+            public void onLoginSuccess() {
+                PreferencesState.getInstance().setUserAccept(false);
+                hideProgress();
                 AsyncPullAnnouncement
                         asyncPullAnnouncement = new AsyncPullAnnouncement();
-                asyncPullAnnouncement.execute(this);
-            } else {
-                onLoginFail(result.getResponseHolder().getApiException());
+                asyncPullAnnouncement.execute(mLoginActivity);
             }
+
+            @Override
+            public void onServerURLNotValid() {
+                showError(PreferencesState.getInstance().getContext().getText(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .error_not_found).toString());
+            }
+
+            @Override
+            public void onInvalidCredentials() {
+                showError(PreferencesState.getInstance().getContext().getText(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string.error_unauthorized)
+                        .toString());
+            }
+
+            @Override
+            public void onNetworkError() {
+                showError(PreferencesState.getInstance().getContext().getString(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .title_error_unexpected));
+            }
+        });
+    }
+
+    public void showError(String message) {
+        hideProgress();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public void onSuccess(boolean isClosed) {
+        if (isClosed) {
+            closeUser(R.string.admin_announcement,
+                    PreferencesState.getInstance().getContext().getString(R.string.user_close),
+                    mLoginActivity);
+        } else {
+            launchActivity(LoginActivity.this, ProgressActivity.class);
         }
     }
 
-    private void loginSuccess() {
-        saveUserDetails();
+    private void closeUser(int titleId, String message, LoginActivity context) {
 
-        populateFromAssetsIfRequired();
-
-        launchMainActivity();
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PreferencesState.getInstance().setUserAccept(false);
+                LoginActivity.mLoginActivity.executeLogout();
+            }
+        };
+        AUtils.closeUser(titleId, message, context, listener);
     }
 
-    /**
-     * Utility method to use while developing to avoid a real pull
-     */
-    private void populateFromAssetsIfRequired() {
-        //From server -> done
-        if (PreferencesState.getInstance().getPullFromServer()) {
-            return;
-        }
+    //Todo: This code is repeated in DashboardActivity
+    public void executeLogout() {
+        mLogoutUseCase.execute(new LogoutUseCase.Callback() {
+            @Override
+            public void onLogoutSuccess() {
+                Log.e("." + this.getClass().getSimpleName(), "Logout success");
+            }
 
-        //Populate locally
-        try {
-            PullController.getInstance().wipeDatabase();
-            User user = new User();
-            user.save();
-            Session.setUser(user);
-            PopulateDB.populateDB(getAssets());
-        } catch (Exception ex) {
-        }
+            @Override
+            public void onLogoutError(String message) {
+                Log.e("." + this.getClass().getSimpleName(), message);
+            }
+        });
     }
 
-    /**
-     * Saves user credentials into preferences
-     */
-    private void saveUserDetails() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.dhis_url), this.serverUrl);
-        editor.putString(getString(R.string.dhis_user), this.username);
-        editor.putString(getString(R.string.dhis_password), this.password);
-        editor.commit();
+    public void showProgress() {
+        hideSoftKeyboard();
+        loginViewsContainer.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        loginViewsContainer.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void hideSoftKeyboard() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(
+                    INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     /**
@@ -247,6 +274,15 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         startActivity(intent);
     }
 
+    public void requestPermissions() {
+        if (EyeSeeTeaApplication.permissions == null) {
+            EyeSeeTeaApplication.permissions = Permissions.getInstance(this);
+        }
+        if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
+            EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
+    }
+
     public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {
         //userCloseChecker is never saved, Only for check if the date is closed.
         LoginActivity loginActivity;
@@ -256,45 +292,14 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         protected Void doInBackground(LoginActivity... params) {
             loginActivity = params[0];
             PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
-            UserAccount dhisUser = UserAccount.getCurrentUserAccountFromDb();
-            isUserClosed = pullClient.isUserClosed(dhisUser.getUId());
+            isUserClosed = pullClient.isUserClosed(Session.getUser().getUid());
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            loginActivity.success(isUserClosed);
-        }
-    }
-
-    private void showLoginDialog() {
-        Animation anim = AnimationUtils.loadAnimation(this,
-                org.hisp.dhis.android.sdk.R.anim.in_down);
-        ((ProgressBar) findViewById(org.hisp.dhis.android.sdk.R.id.progress_bar)).setVisibility(
-                View.GONE);
-        findViewById(org.hisp.dhis.android.sdk.R.id.login_views_container).setVisibility(
-                View.VISIBLE);
-        findViewById(org.hisp.dhis.android.sdk.R.id.login_views_container).startAnimation(anim);
-    }
-
-    private void success(boolean isUserClosed) {
-        if (isUserClosed) {
-            Dialog.OnClickListener listener = new Dialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    PreferencesState.getInstance().setUserAccept(false);
-                    BaseActivity.logout(getBaseContext());
-                    showLoginDialog();
-                }
-            };
-            UiUtils.showErrorDialog(this, getString(R.string.admin_announcement),
-                    PreferencesState.getInstance().getContext().getString(
-                            R.string.user_close), listener);
-        } else
-
-        {
-            loginSuccess();
+            onSuccess(isUserClosed);
         }
     }
 }

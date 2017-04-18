@@ -30,6 +30,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -42,15 +43,17 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.model.Header;
+import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.AutoTabInVisibilityState;
@@ -70,6 +73,7 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -309,7 +313,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey, module);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
-                if(PreferencesState.getInstance().isShowNumDen()) {
+                if(PreferencesState.getInstance().isDevelopOptionActive()) {
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                 }else{
@@ -320,7 +324,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                 break;
             case Constants.RADIO_GROUP_VERTICAL:
-                if(PreferencesState.getInstance().isShowNumDen()) {
+                if(PreferencesState.getInstance().isDevelopOptionActive()) {
                     rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                 }else{
@@ -519,13 +523,10 @@ public class AutoTabAdapter extends ATabAdapter {
 
         switch (question.getOutput()) {
             case Constants.DATE:
-                //Validation
                 String valueString=ReadWriteDB.readValueQuestion(question, module);
-                Date valueDate= EventExtended.parseSimpleDate(valueString);
+                Date valueDate= EventExtended.parseLongDate(valueString);
                 if(valueDate!=null) {
                     viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
-                } else {
-                    Log.e("AutoTabAdapter", "Date field stored in Database do not have the appropriate format. It won't show in the app.");
                 }
                 break;
             case Constants.SHORT_TEXT:

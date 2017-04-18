@@ -21,29 +21,32 @@ package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.squareup.otto.Subscribe;
-
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
@@ -53,8 +56,6 @@ import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
 
 import java.util.Date;
 import java.util.List;
@@ -72,15 +73,17 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        //Check if the announcement should be display
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)) {
-            new AsyncAnnouncement().execute();
-        }
+
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
+            new AsyncAnnouncement().execute();
+        }
 
         //XXX to remove?
         initDataIfRequired();
+
+        loadPhoneMetadata();
 
         //get dashboardcontroller from settings.json
         dashboardController = AppSettingsBuilder.getInstance().getDashboardController();
@@ -94,17 +97,32 @@ public class DashboardActivity extends BaseActivity {
         //inits autopush alarm
         AlarmPushReceiver.getInstance().setPushAlarm(this);
 
-
-        //Media: init drive credentials
-        DriveRestController.getInstance().init(this);
+        if (!Session.getCredentials().isDemoCredentials()) {
+            //Media: init drive credentials
+            DriveRestController.getInstance().init(this);
+        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
+
+    PhoneMetaData getPhoneMetadata() {
+        PhoneMetaData phoneMetaData = new PhoneMetaData();
+        TelephonyManager phoneManagerMetaData = (TelephonyManager) getSystemService(
+                Context.TELEPHONY_SERVICE);
+        String imei = phoneManagerMetaData.getDeviceId();
+        String phone = phoneManagerMetaData.getLine1Number();
+        String serial = phoneManagerMetaData.getSimSerialNumber();
+        phoneMetaData.setImei(imei);
+        phoneMetaData.setPhone_number(phone);
+        phoneMetaData.setPhone_serial(serial);
+
+        return phoneMetaData;
     }
 
+
+    public void loadPhoneMetadata() {
+        PhoneMetaData phoneMetaData = getPhoneMetadata();
+        Session.setPhoneMetaData(phoneMetaData);
+    }
 
     /**
      * Handles resolution callbacks.
@@ -140,9 +158,21 @@ public class DashboardActivity extends BaseActivity {
         }
 
         final Activity activity = this;
-        //check if exist a compulsory question without awnser before push and pull.
+        //check if exist a compulsory question without answer before push and pull.
         for (Survey survey : unsentSurveys) {
-            SurveyAnsweredRatio surveyAnsweredRatio = survey.reloadSurveyAnsweredRatio();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(TAG, "nextProgressMessage");}
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Log.d(TAG, "on complete");}
+                    });
+            SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
             if (surveyAnsweredRatio.getTotalCompulsory() > 0
                     && surveyAnsweredRatio.getCompulsoryAnswered()
                     != surveyAnsweredRatio.getTotalCompulsory()) {
@@ -159,9 +189,8 @@ public class DashboardActivity extends BaseActivity {
         //Unsent data -> ask if pull || push before pulling
         new AlertDialog.Builder(this)
                 .setTitle("Push unsent surveys?")
-                .setMessage(String.format("" +
-                                getResources().getString(R.string
-                                        .dialog_sent_survey_on_refresh_metadata),
+                .setMessage(String.format(
+                        getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata),
                         unsentSurveys.size() + ""))
                 .setNeutralButton(android.R.string.no, null)
                 .setNegativeButton(activity.getString(R.string.no),
@@ -175,6 +204,10 @@ public class DashboardActivity extends BaseActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Try to push before pull
+                        final List<Survey> inProgressSurveys = Survey.getAllInProgressSurveys();
+                        for (Survey survey : inProgressSurveys) {
+                            survey.setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
+                        }
                         pushUnsentBeforePull();
                     }
                 })
@@ -184,13 +217,63 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void pushUnsentBeforePull() {
+        if (Session.getCredentials().isDemoCredentials()) {
+            pullMetadata();//Push is not necessary in demo mode.
+            return;
+        }
+        if (PreferencesState.getInstance().isPushInProgress()) {
+            Toast.makeText(getBaseContext(), R.string.toast_push_in_progress,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        PushController pushController = new PushController(getApplicationContext());
+        PushUseCase pushUseCase = new PushUseCase(pushController);
 
-        //Launch Progress Push before pull
-        Intent progressActivityIntent = new Intent(this, ProgressActivity.class);
-        progressActivityIntent.putExtra(ProgressActivity.TYPE_OF_ACTION,
-                ProgressActivity.ACTION_PUSH_BEFORE_PULL);
-        finish();
-        startActivity(progressActivityIntent);
+        pushUseCase.execute(new PushUseCase.Callback() {
+            @Override
+            public void onComplete() {
+                Toast.makeText(getBaseContext(), R.string.toast_push_done,
+                        Toast.LENGTH_LONG).show();
+
+                pullMetadata();
+            }
+
+            @Override
+            public void onPushInProgressError() {
+                Toast.makeText(getBaseContext(),
+                        R.string.push_stopped, Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_stopped));
+            }
+
+            @Override
+            public void onPushError() {
+                Toast.makeText(getBaseContext(), R.string.push_error,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_error));
+            }
+
+            @Override
+            public void onSurveysNotFoundError() {
+                Toast.makeText(getBaseContext(), R.string.push_surveys_not_found,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_surveys_not_found));
+            }
+
+            @Override
+            public void onConversionError() {
+                Toast.makeText(getBaseContext(),
+                        R.string.push_conversion_error,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.push_conversion_error));
+            }
+
+            @Override
+            public void onNetworkError() {
+                Toast.makeText(getBaseContext(), R.string.network_no_available,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, getString(R.string.network_no_available));
+            }
+        });
     }
 
     private void pullMetadata() {
@@ -276,18 +359,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
     /**
-     * Logging out from sdk is an async method.
-     * Thus it is required a callback to finish askIfLogout gracefully.
-     *
-     * XXX: So far this @subscribe annotation does not work with inheritance since relies on
-     * 'getDeclaredMethods'
-     */
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent) {
-        super.onLogoutFinished(uiEvent);
-    }
-
-    /**
      * Handler that starts or edits a given survey
      */
     public void onSurveySelected(Survey survey) {
@@ -328,37 +399,6 @@ public class DashboardActivity extends BaseActivity {
      */
     public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
-    }
-
-    /**
-     * Modify survey from CreateSurveyFragment
-     * If the survey will be modify, it should have a eventuid. In the convert to sdk a new fake
-     * event will be created
-     */
-    public void modifySurvey(OrgUnit orgUnit, Program program, Event lastEventInServer,
-            String module) {
-        //Looking for that survey in local
-        Survey survey = Survey.findSurveyWith(orgUnit, program, lastEventInServer);
-        //Survey in server BUT not local
-        if (survey == null) {
-            survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
-        }
-        if (lastEventInServer != null) {
-            survey.setEventUid(lastEventInServer.getEvent());
-            EventExtended lastEventExtended = new EventExtended(lastEventInServer);
-            survey.setCreationDate(lastEventExtended.getCreationDate());
-            survey.setCompletionDate(lastEventExtended.getEventDate());
-        } else {
-            //Mark the survey as a modify attempt for pushing accordingly
-            survey.setEventUid(PullClient.NO_EVENT_FOUND);
-        }
-
-        //Upgrade the uploaded date
-        survey.setUploadDate(new Date());
-        survey.setStatus(Constants.SURVEY_IN_PROGRESS);
-        Session.setSurveyByModule(survey, module);
-        prepareLocationListener(survey);
-        dashboardController.onSurveySelected(survey);
     }
 
     /**
@@ -450,6 +490,7 @@ public class DashboardActivity extends BaseActivity {
         planModuleController.clickOrgProgramSpinner();
     }
 
+
     public class AsyncAnnouncement extends AsyncTask<Void, Void, Void> {
         User loggedUser;
 
@@ -457,11 +498,13 @@ public class DashboardActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
             loggedUser = User.getLoggedUser();
+            /* Ignoring the update date
             boolean isUpdated = pullClient.isUserUpdated(loggedUser);
             if (isUpdated) {
                 pullClient.pullUserAttributes(loggedUser);
-            }
-            loggedUser.save();
+            }*/
+            loggedUser = pullClient.pullUserAttributes(loggedUser);
+            loggedUser.save();//save the lastUpdated info and attributes
             return null;
         }
 
@@ -476,7 +519,7 @@ public class DashboardActivity extends BaseActivity {
                         DashboardActivity.this);
                 //show model dialog
             } else {
-                AUtils.checkUserClosed(loggedUser, getBaseContext());
+                AUtils.checkUserClosed(loggedUser, DashboardActivity.this);
             }
         }
     }

@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 
 import java.io.Serializable;
 import java.util.List;

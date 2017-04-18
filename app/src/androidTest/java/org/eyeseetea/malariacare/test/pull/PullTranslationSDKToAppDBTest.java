@@ -8,11 +8,11 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;

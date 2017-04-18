@@ -37,14 +37,14 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedItem;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedSurveyByOrgUnit;
-import org.eyeseetea.malariacare.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -74,6 +74,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        PreferencesState.getInstance().initalizateActivityDependencies();
 
         //get the org unit uid from dashboardactivity
         //filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));

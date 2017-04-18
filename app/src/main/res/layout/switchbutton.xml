@@ -35,6 +35,7 @@
             android:id="@+id/statement"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.3"
             android:fontFamily="@string/normal_font"
             android:paddingLeft="@dimen/question_padding_left"
             android:text="@string/widget_info_empty_statement"

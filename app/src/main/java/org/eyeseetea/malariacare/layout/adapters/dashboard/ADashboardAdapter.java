@@ -23,7 +23,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 
 import java.util.List;
 

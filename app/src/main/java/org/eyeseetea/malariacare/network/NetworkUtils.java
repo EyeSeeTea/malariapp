@@ -146,7 +146,7 @@ public class NetworkUtils {
      * @param data
      * @param url
      */
-    private Response executeCall(JSONObject data, String url, String method) throws IOException {
+    public Response executeCall(JSONObject data, String url, String method) throws IOException {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         final String DHIS_URL=sharedPreferences.getString(applicationContext.getString(R.string.dhis_url), applicationContext.getString(R.string.login_info_dhis_default_server_url)) + url;
 

@@ -27,13 +27,12 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.hisp.dhis.android.sdk.controllers.wrappers.EventsWrapper;
-import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -52,7 +51,6 @@ public class PullClient {
 
     public static final String EVENT = "event";
     public static final String NO_EVENT_FOUND = "NO_EVENT_FOUND";
-    public static final String USER = "user";
     public static final String ATTRIBUTEVALUES = "attributeValues";
     public static final String ATTRIBUTE = "attribute";
     public static final String VALUE = "value";
@@ -78,19 +76,18 @@ public class PullClient {
      * last
      * month from now.
      */
-    public Event getLastEventInServerWith(OrgUnit orgUnit, Program program) {
-        Event lastEventInServer = null;
+    public EventExtended getLastEventInServerWith(OrgUnit orgUnit, Program program) {
+        EventExtended lastEventInServer = null;
         Date oneMonthAgo = getOneMonthAgo();
 
         //Lets for a last event with that orgunit/program
-        String data = EVENT + QueryFormatterUtils.getInstance().prepareLastEventData(
-                orgUnit.getUid(),
+        String data = QueryFormatterUtils.getInstance().prepareLastEventData(orgUnit.getUid(),
                 program.getUid(), oneMonthAgo);
         try {
             JSONObject response = networkUtils.getData(data);
             JsonNode jsonNode = networkUtils.toJsonNode(response);
-            List<Event> eventsFromThatDate = EventsWrapper.getEvents(jsonNode);
-            for (Event event : eventsFromThatDate) {
+            List<EventExtended> eventsFromThatDate = SurveyChecker.getEvents(jsonNode);
+            for (EventExtended event : eventsFromThatDate) {
                 //First event or events without date so far
                 if (lastEventInServer == null) {
                     lastEventInServer = event;
@@ -98,11 +95,8 @@ public class PullClient {
                 }
 
                 //Update event only if it comes afterwards
-                String lastEventInServerEventDateStr = lastEventInServer.getEventDate();
-                String eventDateStr = event.getEventDate();
-                Date lastEventInServerEventDate = EventExtended.parseLongDate(
-                        lastEventInServerEventDateStr);
-                Date eventDate = EventExtended.parseLongDate(eventDateStr);
+                Date lastEventInServerEventDate = lastEventInServer.getEventDate();
+                Date eventDate = event.getEventDate();
 
                 if (eventDate.after(lastEventInServerEventDate)) {
                     lastEventInServer = event;
@@ -128,7 +122,10 @@ public class PullClient {
      * Find if the last updated for the current user was changed
      */
     public boolean isUserUpdated(User user) {
-        //User user = User.getLoggedUser();
+        if (Session.getCredentials().isDemoCredentials()) {
+            return false;
+        }
+
         Date dataBaseLastUpdated = user.getLastUpdated();
         Date dhisLastUpdated = new Date();
         //Lets for a last event with that orgunit/program
@@ -137,15 +134,15 @@ public class PullClient {
             JSONObject response = networkUtils.getData(data);
             JsonNode jsonNode = networkUtils.toJsonNode(response);
             String dateAsString = jsonNode.get(LAST_UPDATED).textValue();
-            dhisLastUpdated = EventExtended.parseLongDate(dateAsString);
+            dhisLastUpdated = EventExtended.parseNewLongDate(dateAsString);
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
         }
 
         user.setLastUpdated(dhisLastUpdated);
-        if (dataBaseLastUpdated != null) {
-            return true;//// TODO: 15/02/2017 Remove 
+        if (dataBaseLastUpdated == null) {
+            return true;
         }
         return (dataBaseLastUpdated.before(dhisLastUpdated));
     }
@@ -178,7 +175,7 @@ public class PullClient {
             if (closeDate == null || closeDate.equals("")) {
                 appUser.setCloseDate(null);
             } else {
-                appUser.setCloseDate(EventExtended.parseShortDate(closeDate));
+                appUser.setCloseDate(EventExtended.parseNewLongDate(closeDate));
             }
 
         } catch (Exception ex) {
@@ -189,6 +186,9 @@ public class PullClient {
     }
 
     public boolean isUserClosed(String userUid) {
+        if (Session.getCredentials().isDemoCredentials()) {
+            return false;
+        }
         //Lets for a last event with that orgunit/program
         String data = QueryFormatterUtils.getInstance().getUserAttributesApiCall(userUid);
         Date closedDate = null;
@@ -206,7 +206,7 @@ public class PullClient {
             if (closeDateAsString == null || closeDateAsString.equals("")) {
                 return false;
             }
-            closedDate = EventExtended.parseShortDate(closeDateAsString);
+            closedDate = EventExtended.parseNewLongDate(closeDateAsString);
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();

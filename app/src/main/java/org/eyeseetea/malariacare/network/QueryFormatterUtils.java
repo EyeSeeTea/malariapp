@@ -24,13 +24,12 @@ import android.location.Location;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.json.JSONArray;
@@ -57,17 +56,21 @@ public class QueryFormatterUtils {
     private static String TAG_COORDINATE_LAT = "latitude";
     private static String TAG_COORDINATE_LNG = "longitude";
     private static String TAG_EVENTDATE = "eventDate";
-    private static String TAG_USER = "users";
 
     private static String TAG_DATAVALUES = "dataValues";
     private static String TAG_DATAELEMENT = "dataElement";
     private static String TAG_VALUE = "value";
 
-    private static String QUERY_USER_LAST_UPDATED="/%s?fields=lastUpdated&paging=false";
+    private static String TAG_USER = "users";
 
-    private static String QUERY_USER_ATTRIBUTES="/%s?fields=attributeValues[value,attribute[code]]id&paging=false";
+    private static String QUERY_LAST_EVENTS_FROM_DATE =
+            "?orgUnit=%s&program=%s&startDate=%s&fields=[event,eventDate,lastUpdated,"
+                    + "created]&skipPaging=true";
 
-    private static String QUERY_LAST_EVENTS_FROM_DATE="?orgUnit=%s&program=%s&startDate=%s&fields=[event,eventDate,lastUpdated,created]&skipPaging=true";
+    private static String QUERY_USER_LAST_UPDATED = "/%s?fields=lastUpdated&paging=false";
+
+    private static String QUERY_USER_ATTRIBUTES =
+            "/%s?fields=attributeValues[value,attribute[code]]id&paging=false";
 
     /**
      * Singleton reference
@@ -89,34 +92,39 @@ public class QueryFormatterUtils {
 
     /**
      * Adds metadata info to json object to get the last events
-     * Ex: https://eds-dev-ci.psi-mis.org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,eventDate,lastUpdated,created]
+     * Ex: https://eds-dev-ci.psi-mis
+     * .org/api/events?orgUnit=QS7sK8XzdQc&program=wK0958s1bdj&startDate=2016-1-01&fields=[event,
+     * eventDate,lastUpdated,created]
+     *
      * @return JSONObject with program, orgunit and lastDate
-     * @throws Exception
      */
     public String prepareLastEventData(String orgUnit, String program, Date lastDate) {
-        String formattedQuery = String.format(QUERY_LAST_EVENTS_FROM_DATE, orgUnit,program,EventExtended.formatShort(lastDate));
+        String formattedQuery = String.format(QUERY_LAST_EVENTS_FROM_DATE, orgUnit, program,
+                EventExtended.formatShort(lastDate));
         Log.d(TAG, "prepareLastEventData-> " + formattedQuery);
         return formattedQuery;
     }
+
     /**
      * Adds metadata info to json object
      *
      * @return JSONObject with program, orgunit, eventdate and so on...
-     * @throws Exception
      */
     public JSONObject prepareMetadata(Survey survey) throws Exception {
         Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
         JSONObject object = new JSONObject();
         object.put(TAG_PROGRAM, survey.getProgram().getUid());
         object.put(TAG_ORG_UNIT, survey.getOrgUnit().getUid());
-        object.put(TAG_EVENTDATE, android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
+        object.put(TAG_EVENTDATE,
+                android.text.format.DateFormat.format("yyyy-MM-dd", survey.getCompletionDate()));
         object.put(TAG_STATUS, COMPLETED);
         object.put(TAG_STOREDBY, survey.getUser().getName());
 
         Location lastLocation = LocationMemory.get(survey.getId_survey());
         //If location is required but there is no location -> exception
         if (PreferencesState.getInstance().isLocationRequired() && lastLocation == null) {
-            throw new Exception(applicationContext.getString(R.string.dialog_error_push_no_location_and_required));
+            throw new Exception(applicationContext.getString(
+                    R.string.dialog_error_push_no_location_and_required));
         }
         //Otherwise (not required or there are coords)
         object.put(TAG_COORDINATE, prepareCoordinates(lastLocation));
@@ -149,9 +157,9 @@ public class QueryFormatterUtils {
      * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
      *
      * @param data JSON object to update
-     * @throws Exception
      */
-    public JSONObject PushUtilsElements(JSONObject data, Survey survey, String module) throws Exception {
+    public JSONObject PushUtilsElements(JSONObject data, Survey survey, String module)
+            throws Exception {
         Log.d(TAG, "PushUtilsElements for survey: " + survey.getId_survey());
 
         //Add dataElement per values
@@ -170,15 +178,12 @@ public class QueryFormatterUtils {
 
     /**
      * Add a dataElement per value (answer)
-     *
-     * @param values
-     * @return
-     * @throws Exception
      */
     private JSONArray prepareValues(JSONArray values, Survey survey) throws Exception {
         List<Value> surveyValues = survey.getValues();
         if (surveyValues == null || surveyValues.size() == 0) {
-            throw new Exception(applicationContext.getString(R.string.dialog_info_push_empty_survey));
+            throw new Exception(
+                    applicationContext.getString(R.string.dialog_info_push_empty_survey));
         }
 
         for (Value value : surveyValues) {
@@ -189,23 +194,27 @@ public class QueryFormatterUtils {
         return values;
     }
 
-    private JSONArray prepareCompositeScores(JSONArray values, Survey survey, String module) throws Exception {
+    private JSONArray prepareCompositeScores(JSONArray values, Survey survey, String module)
+            throws Exception {
 
         //Prepare scores info
         List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey, module);
 
         //Calculate main score to push later
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
+        survey.setMainScore(
+                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
+                        module));
 
         //1 CompositeScore -> 1 dataValue
         for (CompositeScore compositeScore : compositeScoreList) {
-            values.put(prepareValue(compositeScore,survey.getId_survey(), module));
+            values.put(prepareValue(compositeScore, survey.getId_survey(), module));
         }
         return values;
     }
 
 
-    private JSONArray prepareControlDataElementsValues(JSONArray values, JSONArray controlDataElements) throws JSONException {
+    private JSONArray prepareControlDataElementsValues(JSONArray values,
+            JSONArray controlDataElements) throws JSONException {
         if (controlDataElements != null) {
             for (int i = 0; i < controlDataElements.length(); i++) {
                 values.put(controlDataElements.get(i));
@@ -218,19 +227,16 @@ public class QueryFormatterUtils {
     /**
      * Adds a pair dataElement|value according to the passed value.
      * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     *
-     * @param value
-     * @return
-     * @throws Exception
      */
     private JSONObject prepareValue(Value value) throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
 
-        if (value.getOption() != null)
+        if (value.getOption() != null) {
             elementObject.put(TAG_VALUE, value.getOption().getCode());
-        else
+        } else {
             elementObject.put(TAG_VALUE, value.getValue());
+        }
 
         return elementObject;
     }
@@ -238,41 +244,40 @@ public class QueryFormatterUtils {
     /**
      * Adds a pair dataElement|value according to the 'compositeScore' of the value.
      * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
-     *
-     * @param compositeScore
-     * @return
-     * @throws Exception
      */
-    private JSONObject prepareValue(CompositeScore compositeScore, float idSurvey, String module) throws Exception {
+    private JSONObject prepareValue(CompositeScore compositeScore, float idSurvey, String module)
+            throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
-        elementObject.put(TAG_VALUE, AUtils.round(ScoreRegister.getCompositeScore(compositeScore,idSurvey, module)));
+        elementObject.put(TAG_VALUE,
+                AUtils.round(ScoreRegister.getCompositeScore(compositeScore, idSurvey, module)));
         return elementObject;
-    }
-
-    static String encodeBlanks(String endpoint) {
-        return endpoint.replace(" ", "%20");
     }
 
     /**
      * Returns the right endpoint depending on the server version
      */
     static String getUserLastUpdatedApiCall(String userUid) {
-        String endpoint = TAG_USER+  String.format(QUERY_USER_LAST_UPDATED, userUid);
+        String endpoint = TAG_USER + String.format(QUERY_USER_LAST_UPDATED, userUid);
 
         endpoint = encodeBlanks(endpoint);
-        Log.d(TAG, String.format("userLastUpdatedApiCall (%s) -> %s",TAG_USER, endpoint));
+        Log.d(TAG, String.format("userLastUpdatedApiCall (%s) -> %s", TAG_USER, endpoint));
         return endpoint;
     }
+
     /**
      * Returns the right endpoint depending on the server version
      */
     static String getUserAttributesApiCall(String userUid) {
-        String endpoint = TAG_USER+ String.format(QUERY_USER_ATTRIBUTES, userUid);
+        String endpoint = TAG_USER + String.format(QUERY_USER_ATTRIBUTES, userUid);
 
         endpoint = encodeBlanks(endpoint);
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", TAG_USER, endpoint));
         return endpoint;
+    }
+
+    static String encodeBlanks(String endpoint) {
+        return endpoint.replace(" ", "%20");
     }
 
 }
