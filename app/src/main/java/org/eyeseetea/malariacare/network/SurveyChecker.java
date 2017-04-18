@@ -23,7 +23,6 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.util.DateTime;
 import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.R;
@@ -142,12 +141,13 @@ public class SurveyChecker {
 
                 List<Event> events = getEvents(orgUnit.getUid(), minDate,
                         maxDate);
-                if (events != null && events.size() > 0) {
                     for (Survey survey : quarantineSurveys) {
+                        if (events != null && events.size() > 0) {
                         updateQuarantineSurveysStatus(events, survey);
+                        } else {
+                            changeSurveyStatusFromQuarantineToComplete(survey);
+                        }
                     }
-                }
-
             }
         }
     }
@@ -167,28 +167,37 @@ public class SurveyChecker {
             }
         }
         if (isSent) {
-            try {
-                Log.d(TAG, "Set quarantine survey as sent" + survey.getId_survey() + " date "
-                        + EventExtended.format(survey.getCreationDate(),
-                        EventExtended.DHIS2_GMT_DATE_FORMAT));
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }
-            survey.setStatus(Constants.SURVEY_SENT);
+            changeSurveyStatusFromQuarantineToSent(survey);
         } else {
             //When the completion date for a survey is not present in the server, this survey is
             // not in the server.
             //This survey is set as "completed" and will be send in the future.
-            try{
+            changeSurveyStatusFromQuarantineToComplete(survey);
+        }
+    }
+
+    private static void changeSurveyStatusFromQuarantineToSent(Survey survey) {
+        try {
+            Log.d(TAG, "Set quarantine survey as sent" + survey.getId_survey() + " date "
+                    + EventExtended.format(survey.getCreationDate(),
+                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        survey.setStatus(Constants.SURVEY_SENT);
+        survey.save();
+    }
+
+    private static void changeSurveyStatusFromQuarantineToComplete(Survey survey) {
+        try {
             Log.d(TAG, "Set quarantine survey as completed" + survey.getId_survey() + " date "
                     + EventExtended.format(survey.getCreationDate(),
                     EventExtended.DHIS2_GMT_DATE_FORMAT));
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }
-            if (survey.isInQuarantine()) {
-                survey.setStatus(Constants.SURVEY_COMPLETED);
-            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        if (survey.isInQuarantine()) {
+            survey.setStatus(Constants.SURVEY_COMPLETED);
         }
         survey.save();
     }
