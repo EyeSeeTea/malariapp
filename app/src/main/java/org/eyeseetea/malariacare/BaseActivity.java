@@ -31,9 +31,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,11 +43,7 @@ import org.eyeseetea.malariacare.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -325,14 +318,16 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 
     private void checkQuarantineSurveys() {
-        if (PreferencesState.getInstance().isPushInProgress()) {
-            List<Survey> surveys = Survey.getAllSendingSurveys();
-            Log.d(TAG + "B&D", "The app was closed in the middle of a push. Surveys sending: "
+        List<Survey> surveys = Survey.getAllSendingSurveys();
+        Log.d(TAG + "B&D", "Surveys with sending state: "
                     + surveys.size());
-            for (Survey survey : surveys) {
-                survey.setStatus(Constants.SURVEY_QUARANTINE);
-                survey.save();
-            }
+        for (Survey survey : surveys) {
+            survey.setStatus(Constants.SURVEY_QUARANTINE);
+            survey.save();
+        }
+        if (PreferencesState.getInstance().isPushInProgress()) {
+            Log.d(TAG + "B&D", "If the app was closed in the middle of a push. Surveys sending: "
+                    + surveys.size());
             PreferencesState.getInstance().setPushInProgress(false);
         }
     }
