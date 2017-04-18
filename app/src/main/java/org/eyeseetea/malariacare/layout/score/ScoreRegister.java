@@ -299,7 +299,7 @@ public class ScoreRegister {
                 }
             }
         }
-        return sumScores/numParentScores;
+        return (numParentScores==0) ? 0 : sumScores/numParentScores;
     }
 
 
