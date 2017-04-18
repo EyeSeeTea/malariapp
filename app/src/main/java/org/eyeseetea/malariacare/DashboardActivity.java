@@ -57,6 +57,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -72,7 +73,6 @@ public class DashboardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;

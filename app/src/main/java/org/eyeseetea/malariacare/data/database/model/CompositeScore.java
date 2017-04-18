@@ -280,6 +280,10 @@ public class CompositeScore extends BaseModel implements VisitableToSDK {
         return new Select().from(CompositeScore.class).queryList();
     }
 
+    public boolean isEmptyCS(){
+        return !hasChildren() && (getQuestions()==null || getQuestions().size()==0);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
