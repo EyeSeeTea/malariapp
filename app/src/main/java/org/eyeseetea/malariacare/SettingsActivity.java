@@ -429,7 +429,6 @@ public class SettingsActivity extends PreferenceActivity implements
         Intent returnIntent=new Intent(this,callerActivityClass);
         returnIntent.putExtra(getString(R.string.show_announcement_key), false);
         startActivity(returnIntent);
-        startActivity(returnIntent);
     }
 
     private Class getCallerActivity() {

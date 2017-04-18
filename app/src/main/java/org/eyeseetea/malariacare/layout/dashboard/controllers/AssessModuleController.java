@@ -155,9 +155,9 @@ public class AssessModuleController extends ModuleController {
                         if (!surveyAnsweredRatio.isCompulsoryCompleted()) {
                             alertCompulsoryQuestionIncompleted();
                             return;
+                        } else {
+                            alertAreYouSureYouWantToComplete(survey);
                         }
-
-                        alertAreYouSureYouWantToComplete(survey);
                     }
                 });
     }

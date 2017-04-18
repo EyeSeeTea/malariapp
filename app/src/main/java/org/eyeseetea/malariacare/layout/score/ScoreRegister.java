@@ -30,7 +30,6 @@ import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.Value;
 import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -303,7 +302,7 @@ public class ScoreRegister {
                 }
             }
         }
-        return sumScores/numParentScores;
+        return (numParentScores==0) ? 0 : sumScores/numParentScores;
     }
 
 
