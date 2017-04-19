@@ -28,7 +28,7 @@
         android:id="@+id/feedback_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.85"
+        android:layout_weight="0.78"
         android:textColor="@color/white"
         android:typeface="sans"
         android:textStyle="bold"
@@ -45,7 +45,7 @@
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/feedback_score_label"
-        android:layout_weight=".15"
+        android:layout_weight=".22"
         android:layout_width="0dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
