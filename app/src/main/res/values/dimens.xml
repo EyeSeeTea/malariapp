@@ -9,6 +9,8 @@
     <dimen name="survey_main_spinner_padding_updown">10dip</dimen>
 
     <!-- Dashboard -->
+    <dimen name="level_padding_left">10dp</dimen>
+    <!-- Dashboard -->
     <dimen name="dashboard_row_padding">5dp</dimen>
 
     <!-- Planning -->
