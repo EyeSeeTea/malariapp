@@ -598,14 +598,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
      * Returns all the surveys with status yet not put to "Sent"
      * @return
      */
-    public static List<Survey> getAllUnsentUnplannedSurveys() {
-        return new Select().from(Survey.class)
+    public static int getAllUnsentUnplannedSurveys() {
+        return (int) new Select().count().from(Survey.class)
                 .where(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENT))
                 .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_PLANNED))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_SENDING))
-                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_QUARANTINE))
+                .and(Condition.column(Survey$Table.STATUS).isNot(Constants.SURVEY_CONFLICT))
                 .orderBy(Survey$Table.COMPLETION_DATE)
-                .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
+                .orderBy(Survey$Table.ID_ORG_UNIT).count();
     }
 
     /**
