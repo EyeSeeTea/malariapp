@@ -397,11 +397,11 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        String date=EventExtended.format(currentSurvey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
+        String date=EventExtended.format(currentSurvey.getCreationDate(), EventExtended.DHIS2_LONG_DATE_FORMAT);
         currentEvent.setEventDate(date);
-        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_LONG_DATE_FORMAT));
         //Not used
-        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(currentSurvey.getUploadDate(), EventExtended.DHIS2_LONG_DATE_FORMAT));
         currentEvent.save();
     }
 
@@ -585,7 +585,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      */
     private void annotateSurveyAndEvent() {
         surveys.add(currentSurvey);
-        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_GMT_DATE_FORMAT));
+        currentEvent.setLastUpdated(EventExtended.format(uploadedDate, EventExtended.DHIS2_LONG_DATE_FORMAT));
         events.put(currentSurvey.getId_survey(),currentEvent);
         Log.d(TAG, String.format("%d surveys converted so far", surveys.size()));
     }

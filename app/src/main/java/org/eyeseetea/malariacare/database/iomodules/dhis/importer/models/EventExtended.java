@@ -45,7 +45,7 @@ public class EventExtended implements VisitableFromSDK {
 
     private final static String TAG=".EventExtended";
     public final static String DHIS2_GMT_DATE_FORMAT ="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    public final static String DHIS2_LONG_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
+    public final static String DHIS2_LONG_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT ="yyyy-MM-dd";
 
     Event event;
