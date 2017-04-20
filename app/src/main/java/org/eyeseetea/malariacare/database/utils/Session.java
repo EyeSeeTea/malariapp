@@ -25,6 +25,7 @@ import android.widget.ListView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.database.model.Survey;
 import org.eyeseetea.malariacare.database.model.User;
 import org.eyeseetea.malariacare.database.utils.metadata.PhoneMetaData;
@@ -137,10 +138,7 @@ public class Session {
      * Closes the current session when the user logs out
      */
     public static void logout(){
-        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
-        for (Survey survey : surveys) {
-            survey.delete();
-        }
+        BaseActivity.wipeData();
         if(user!=null){
             user.delete();
             user=null;
