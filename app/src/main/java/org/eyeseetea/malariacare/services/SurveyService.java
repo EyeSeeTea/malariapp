@@ -206,7 +206,7 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getLastSentSurveyByProgramAndOrgUnit());
+        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getAllSentCompletedOrConflictSurveys());
         sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
         sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
 
