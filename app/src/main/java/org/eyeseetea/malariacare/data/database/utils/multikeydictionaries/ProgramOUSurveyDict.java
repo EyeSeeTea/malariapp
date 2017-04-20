@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.multikeydictionaries;
 
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import java.util.List;
 
 public class ProgramOUSurveyDict extends ObjectEntityDict {
@@ -30,12 +30,12 @@ public class ProgramOUSurveyDict extends ObjectEntityDict {
     }
 
     @Override
-    public SurveyEntity get(String programUid, String orgUnitUid) {
-        return (SurveyEntity) super.get(programUid, orgUnitUid);
+    public Survey get(String programUid, String orgUnitUid) {
+        return (Survey) super.get(programUid, orgUnitUid);
     }
 
     @Override
-    public List<SurveyEntity> values() {
-        return (List<SurveyEntity>) super.values();
+    public List<Survey> values() {
+        return (List<Survey>) super.values();
     }
 }

@@ -31,9 +31,9 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -80,7 +80,7 @@ public class AssessModuleController extends ModuleController {
             return;
         }
 
-        SurveyEntity survey = Session.getSurveyByModule(getSimpleName());
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         if (survey.isCompleted() || survey.isSent()) {
             dashboardController.setNavigatingBackwards(false);
             closeSurveyFragment();
@@ -112,12 +112,12 @@ public class AssessModuleController extends ModuleController {
 
         surveyFragment.showProgress();
         surveyFragment.nextProgressMessage();
-        final SurveyEntity survey = Session.getSurveyByModule(getSimpleName());
+        final Survey survey = Session.getSurveyByModule(getSimpleName());
         new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON).execute();
         //if the survey is opened in review mode exit.
     }
 
-    public void onSurveySelected(SurveyEntity survey) {
+    public void onSurveySelected(Survey survey) {
 
         Session.setSurveyByModule(survey, getSimpleName());
 
@@ -141,7 +141,7 @@ public class AssessModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
-    public void onMarkAsCompleted(final SurveyEntity survey) {
+    public void onMarkAsCompleted(final Survey survey) {
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
         getSurveyAnsweredRatioUseCase.execute(survey.getId(),
                 GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
@@ -150,7 +150,7 @@ public class AssessModuleController extends ModuleController {
                     public void nextProgressMessage() {
                     }
                     @Override
-                    public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         //This cannot be mark as completed
                         if (!surveyAnsweredRatio.isCompulsoryCompleted()) {
                             alertCompulsoryQuestionIncompleted();
@@ -179,7 +179,7 @@ public class AssessModuleController extends ModuleController {
     /**
      * It is called when the user press back in a surveyFragment
      */
-    private boolean onSurveyBackPressed(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio) {
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory()
                 && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -196,7 +196,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //In survey -> custom action bar
-        SurveyEntity survey = Session.getSurveyByModule(getSimpleName());
+        Survey survey = Session.getSurveyByModule(getSimpleName());
         String appNameColorString = LayoutUtils.getAppNameColorString();
         String title = getActionBarTitleBySurvey(survey);
         String subtitle = getActionBarSubTitleBySurvey(survey);
@@ -248,7 +248,7 @@ public class AssessModuleController extends ModuleController {
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        final SurveyEntity survey = Session.getSurveyByModule(getSimpleName());
+                        final Survey survey = Session.getSurveyByModule(getSimpleName());
 
                         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
                         getSurveyAnsweredRatioUseCase.execute(survey.getId(),
@@ -260,7 +260,7 @@ public class AssessModuleController extends ModuleController {
                                     }
 
                                     @Override
-                                    public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+                                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                                         SurveyDB dbSurvey = SurveyDB.findById(survey.getId());
                                         dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                                     }
@@ -287,7 +287,7 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        SurveyEntity survey = Session.getSurveyByModule(getSimpleName());
+                        Survey survey = Session.getSurveyByModule(getSimpleName());
                         survey.setCompleteSurveyState(getSimpleName());
                         alertOnComplete(survey);
                         dashboardController.setNavigatingBackwards(true);
@@ -330,11 +330,11 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    private void alertAreYouSureYouWantToComplete(final SurveyEntity survey) {
+    private void alertAreYouSureYouWantToComplete(final Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_ask_for_completion), survey.getProgramEntity().getName()))
+                        R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Change state
@@ -353,21 +353,21 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    private void alertOnComplete(SurveyEntity survey) {
+    private void alertOnComplete(Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_on_complete), survey.getProgramEntity().getName()))
+                        R.string.dialog_info_on_complete), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, null)
                 .setCancelable(true)
                 .create().show();
     }
 
-    public void alertOnCompleteGoToFeedback(final SurveyEntity survey) {
+    public void alertOnCompleteGoToFeedback(final Survey survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
-                        R.string.dialog_info_on_complete), survey.getProgramEntity().getName()))
+                        R.string.dialog_info_on_complete), survey.getProgram().getName()))
                 .setNeutralButton(android.R.string.ok, null)
                 .setPositiveButton((R.string.go_to_feedback),
                         new DialogInterface.OnClickListener() {
@@ -385,13 +385,13 @@ public class AssessModuleController extends ModuleController {
                 R.id.dashboard_details_container);
     }
 
-    public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatioEntity> {
-        SurveyAnsweredRatioEntity mSurveyAnsweredRatio;
+    public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatio> {
+        SurveyAnsweredRatio mSurveyAnsweredRatio;
         SurveyFragment surveyFragment;
-        SurveyEntity survey;
+        Survey survey;
         org.eyeseetea.malariacare.domain.utils.Action action;
 
-        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyEntity survey, org.eyeseetea.malariacare.domain.utils.Action action) {
+        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, Survey survey, org.eyeseetea.malariacare.domain.utils.Action action) {
             this.surveyFragment = surveyFragment;
             this.survey = survey;
             this.action = action;
@@ -407,7 +407,7 @@ public class AssessModuleController extends ModuleController {
 
 
         @Override
-        protected SurveyAnsweredRatioEntity doInBackground(Void... voids) {
+        protected SurveyAnsweredRatio doInBackground(Void... voids) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId(),
                     GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
@@ -418,7 +418,7 @@ public class AssessModuleController extends ModuleController {
                         }
 
                         @Override
-                        public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                             mSurveyAnsweredRatio = surveyAnsweredRatio;
                         }
                     });
@@ -426,7 +426,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         @Override
-        protected void onPostExecute(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+        protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
             if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
                 surveyFragment.hideProgress();
                 boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);

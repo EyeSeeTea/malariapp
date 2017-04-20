@@ -2,15 +2,15 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
 public class GetSurveyAnsweredRatioUseCase {
     public interface Callback{
         void nextProgressMessage();
-        void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio);
+        void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
     }
 
     public enum Action {FORCE_UPDATE, GET}
@@ -18,23 +18,23 @@ public class GetSurveyAnsweredRatioUseCase {
     /**
      * Calculated answered ratio for this survey according to its values
      */
-    SurveyAnsweredRatioEntity answeredQuestionRatio;
+    SurveyAnsweredRatio answeredQuestionRatio;
 
     public GetSurveyAnsweredRatioUseCase() {
     }
 
-    SurveyAnsweredRatioEntity mSurveyAnsweredRatio;
+    SurveyAnsweredRatio mSurveyAnsweredRatio;
     Action mAction;
 
     SurveyDB surveyDB;
 
     public void execute(long idSurvey, Action action, GetSurveyAnsweredRatioUseCase.Callback callback) {
         this.mAction = action;
-        SurveyAnsweredRatioEntity surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
+        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
         callback.onComplete(surveyAnsweredRatio);
     }
 
-    private SurveyAnsweredRatioEntity getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         surveyDB = SurveyDB.findById(idSurvey);
         if(mAction.equals(Action.FORCE_UPDATE)) {
             mSurveyAnsweredRatio = reloadSurveyAnsweredRatio(callback);
@@ -48,9 +48,9 @@ public class GetSurveyAnsweredRatioUseCase {
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatioEntity getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = SurveyAnsweredRatioEntity.getModelToEntity(idSurvey);
+            answeredQuestionRatio = SurveyAnsweredRatio.getModelToEntity(idSurvey);
             if (answeredQuestionRatio == null) {
                 answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
             }
@@ -61,11 +61,11 @@ public class GetSurveyAnsweredRatioUseCase {
     /**
      * Calculates the current ratio of completion for this survey
      *
-     * @return SurveyAnsweredRatioEntity that hold the total & answered questions.
+     * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatioEntity reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
         //TODO Review
-        SurveyAnsweredRatioEntity surveyAnsweredRatioEntity=null;
+        SurveyAnsweredRatio surveyAnsweredRatio =null;
         ProgramDB surveyProgram = surveyDB.getProgram();
         int numRequired = QuestionDB.countRequiredByProgram(surveyProgram);
         int numCompulsory = QuestionDB.countCompulsoryByProgram(surveyProgram);
@@ -77,11 +77,11 @@ public class GetSurveyAnsweredRatioUseCase {
                 surveyDB.getId_survey(), callback);
         int numAnswered = ValueDB.countBySurvey(surveyDB);
         int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
-        surveyAnsweredRatioEntity = new SurveyAnsweredRatioEntity(surveyDB.getId_survey(),
+        surveyAnsweredRatio = new SurveyAnsweredRatio(surveyDB.getId_survey(),
                 numRequired + numOptional,
                 numAnswered, numCompulsory + numActiveChildrenCompulsory,
                 numCompulsoryAnswered);
-        SurveyAnsweredRatio.saveEntityToModel(surveyAnsweredRatioEntity);
-        return surveyAnsweredRatioEntity;
+        SurveyAnsweredRatioDB.saveEntityToModel(surveyAnsweredRatio);
+        return surveyAnsweredRatio;
     }
 }

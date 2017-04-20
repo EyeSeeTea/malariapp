@@ -22,9 +22,8 @@ package org.eyeseetea.malariacare.data.database.utils.feedback;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class FeedbackBuilder {
      * @param survey
      * @return
      */
-    public static List<Feedback> build(SurveyEntity survey, String module){
+    public static List<Feedback> build(Survey survey, String module){
         return build(survey, false, module);
     }
 
@@ -52,11 +51,11 @@ public class FeedbackBuilder {
      * @param parents true for representing every composite, including parents, otherwise parents are removed
      * @return
      */
-    public static List<Feedback> build(SurveyEntity survey, boolean parents, String module){
+    public static List<Feedback> build(Survey survey, boolean parents, String module){
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
 
-        ProgramDB program = ProgramDB.findById(survey.getProgramEntity().getId());
+        ProgramDB program = ProgramDB.findById(survey.getProgram().getId());
         List<CompositeScoreDB> compositeScoreList= ScoreRegister.loadCompositeScores(survey.getId(), program, module);
 
 

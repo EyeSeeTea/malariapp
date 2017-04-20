@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SurveyEntity {
+public class Survey {
     private long id;
     private int status;
-    private ProgramEntity programEntity;
-    private OrgUnitEntity orgUnitEntity;
-    private SurveyAnsweredRatioEntity mSurveyAnsweredRatio;
+    private Program mProgram;
+    private OrgUnit mOrgUnit;
+    private SurveyAnsweredRatio mSurveyAnsweredRatio;
     private Date completionDate;
     private Date creationDate;
     private Date scheduledDate;
     private Boolean hasConflict;
-    private ProductivityEntity productivityEntity;
+    private Productivity mProductivity;
     /**
      * hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
      */
@@ -28,34 +28,34 @@ public class SurveyEntity {
      */
     Float mainScore;
 
-    public SurveyEntity() {
+    public Survey() {
     }
 
-    public SurveyEntity(long id) {
+    public Survey(long id) {
         this.id = id;
     }
 
-    public SurveyEntity(long id, int status,
-            SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+    public Survey(long id, int status,
+            SurveyAnsweredRatio surveyAnsweredRatio) {
         this.id = id;
         this.status = status;
         mSurveyAnsweredRatio = surveyAnsweredRatio;
     }
 
-    public ProgramEntity getProgramEntity() {
-        return programEntity;
+    public Program getProgram() {
+        return mProgram;
     }
 
-    public void setProgramEntity(ProgramEntity programEntity) {
-        this.programEntity = programEntity;
+    public void setProgram(Program program) {
+        this.mProgram = program;
     }
 
-    public OrgUnitEntity getOrgUnitEntity() {
-        return orgUnitEntity;
+    public OrgUnit getOrgUnit() {
+        return mOrgUnit;
     }
 
-    public void setOrgUnitEntity(OrgUnitEntity orgUnitEntity) {
-        this.orgUnitEntity = orgUnitEntity;
+    public void setOrgUnit(OrgUnit orgUnit) {
+        this.mOrgUnit = orgUnit;
     }
 
     public Long getId() {
@@ -74,15 +74,15 @@ public class SurveyEntity {
         this.status = status;
     }
 
-    public SurveyAnsweredRatioEntity getSurveyAnsweredRatio() {
+    public SurveyAnsweredRatio getSurveyAnsweredRatio() {
         if(mSurveyAnsweredRatio==null){
-            mSurveyAnsweredRatio = SurveyAnsweredRatioEntity.getModelToEntity(id);
+            mSurveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(id);
         }
         return mSurveyAnsweredRatio;
     }
 
     public void setSurveyAnsweredRatio(
-            SurveyAnsweredRatioEntity surveyAnsweredRatio) {
+            SurveyAnsweredRatio surveyAnsweredRatio) {
         mSurveyAnsweredRatio = surveyAnsweredRatio;
     }
 
@@ -123,25 +123,25 @@ public class SurveyEntity {
         return status == Constants.SURVEY_SENT;
     }
 
-    public static List<SurveyEntity> convertModelListToEntity(List<SurveyDB> surveys){
-        List<SurveyEntity> surveyEntities = new ArrayList<>();
+    public static List<Survey> convertModelListToEntity(List<SurveyDB> surveys){
+        List<Survey> surveyEntities = new ArrayList<>();
         for(SurveyDB survey:surveys){
-            surveyEntities.add(SurveyEntity.getFromModel(survey));
+            surveyEntities.add(Survey.getFromModel(survey));
         }
         return surveyEntities;
     }
 
-    public static SurveyEntity getFromModel(SurveyDB survey) {
-        SurveyEntity surveyEntity = new SurveyEntity();
+    public static Survey getFromModel(SurveyDB survey) {
+        Survey surveyEntity = new Survey();
         surveyEntity.setId(survey.getId_survey());
         if(survey.getOrgUnit()!=null) {
-            OrgUnitEntity orgUnitEntity =
-                    new OrgUnitEntity(survey.getOrgUnit().getName(), survey.getOrgUnit().getUid(), survey.getOrgUnit().getId_org_unit());
-            surveyEntity.setOrgUnitEntity(orgUnitEntity);
+            OrgUnit orgUnit =
+                    new OrgUnit(survey.getOrgUnit().getName(), survey.getOrgUnit().getUid(), survey.getOrgUnit().getId_org_unit());
+            surveyEntity.setOrgUnit(orgUnit);
         }
         if(survey.getProgram()!=null) {
-            ProgramEntity programEntity = new ProgramEntity(survey.getProgram().getName(), survey.getProgram().getUid(), survey.getProgram().getId_program());
-            surveyEntity.setProgramEntity(programEntity);
+            Program program = new Program(survey.getProgram().getName(), survey.getProgram().getUid(), survey.getProgram().getId_program());
+            surveyEntity.setProgram(program);
         }
 
         surveyEntity.setStatus(survey.getStatus());
@@ -167,18 +167,18 @@ public class SurveyEntity {
         return (isCompleted() || isSent());
     }
 
-    public ProductivityEntity getProductivityEntity() {
-        if(productivityEntity == null){
-            if(id > 0 && orgUnitEntity!=null && programEntity != null) {
-                productivityEntity = new ProductivityEntity(id, orgUnitEntity.getId(),
-                        programEntity.getId());
+    public Productivity getProductivity() {
+        if(mProductivity == null){
+            if(id > 0 && mOrgUnit !=null && mProgram != null) {
+                mProductivity = new Productivity(id, mOrgUnit.getId(),
+                        mProgram.getId());
             }
             else
             {
-                productivityEntity = new ProductivityEntity(ProductivityEntity.getDefaultProductivity());
+                mProductivity = new Productivity(Productivity.getDefaultProductivity());
             }
         }
-        return productivityEntity;
+        return mProductivity;
     }
 
     public void setCompletionDate(Date completionDate) {
@@ -197,9 +197,9 @@ public class SurveyEntity {
         this.hasConflict = hasConflict;
     }
 
-    public void setProductivityEntity(
-            ProductivityEntity productivityEntity) {
-        this.productivityEntity = productivityEntity;
+    public void setProductivity(
+            Productivity productivity) {
+        this.mProductivity = productivity;
     }
 
     public Date getScheduledDate() {
@@ -226,7 +226,7 @@ public class SurveyEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SurveyEntity surveyEntity = (SurveyEntity) o;
+        Survey surveyEntity = (Survey) o;
 
         if (id != surveyEntity.id) return false;
         return status == surveyEntity.status;

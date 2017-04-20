@@ -26,10 +26,10 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
-@Table(database = AppDatabase.class)
-public class SurveyAnsweredRatio extends BaseModel{
+@Table(database = AppDatabase.class, name = "SurveyAnsweredRatio")
+public class SurveyAnsweredRatioDB extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -62,24 +62,25 @@ public class SurveyAnsweredRatio extends BaseModel{
     @Column
     int answered_compulsory_questions;
 
-    public SurveyAnsweredRatio() {
+    public SurveyAnsweredRatioDB() {
     }
 
-    public static void saveEntityToModel(SurveyAnsweredRatioEntity surveyAnsweredRatioEntity){
-        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyAnsweredRatioBySurveyId(surveyAnsweredRatioEntity.getSurveyId());
-        if(surveyAnsweredRatio==null){
-            surveyAnsweredRatio = new SurveyAnsweredRatio();
+    public static void saveEntityToModel(SurveyAnsweredRatio surveyAnsweredRatio){
+        SurveyAnsweredRatioDB surveyAnsweredRatioDB = getSurveyAnsweredRatioBySurveyId(
+                surveyAnsweredRatio.getSurveyId());
+        if(surveyAnsweredRatioDB ==null){
+            surveyAnsweredRatioDB = new SurveyAnsweredRatioDB();
         }
-        surveyAnsweredRatio.id_survey = surveyAnsweredRatioEntity.getSurveyId();
-        surveyAnsweredRatio.total_questions = surveyAnsweredRatioEntity.getTotal();
-        surveyAnsweredRatio.answered_questions = surveyAnsweredRatioEntity.getAnswered();
-        surveyAnsweredRatio.total_compulsory_questions = surveyAnsweredRatioEntity.getTotalCompulsory();
-        surveyAnsweredRatio.answered_compulsory_questions = surveyAnsweredRatioEntity.getCompulsoryAnswered();
-        surveyAnsweredRatio.save();
+        surveyAnsweredRatioDB.id_survey = surveyAnsweredRatio.getSurveyId();
+        surveyAnsweredRatioDB.total_questions = surveyAnsweredRatio.getTotal();
+        surveyAnsweredRatioDB.answered_questions = surveyAnsweredRatio.getAnswered();
+        surveyAnsweredRatioDB.total_compulsory_questions = surveyAnsweredRatio.getTotalCompulsory();
+        surveyAnsweredRatioDB.answered_compulsory_questions = surveyAnsweredRatio.getCompulsoryAnswered();
+        surveyAnsweredRatioDB.save();
     }
-    public static SurveyAnsweredRatio getSurveyAnsweredRatioBySurveyId(long id_survey){
-        return new Select().from(SurveyAnsweredRatio.class)
-                .where( SurveyAnsweredRatio_Table.id_survey.is(id_survey)).querySingle();
+    public static SurveyAnsweredRatioDB getSurveyAnsweredRatioBySurveyId(long id_survey){
+        return new Select().from(SurveyAnsweredRatioDB.class)
+                .where( SurveyAnsweredRatioDB_Table.id_survey.is(id_survey)).querySingle();
     }
 
 
@@ -136,7 +137,7 @@ public class SurveyAnsweredRatio extends BaseModel{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SurveyAnsweredRatio that = (SurveyAnsweredRatio) o;
+        SurveyAnsweredRatioDB that = (SurveyAnsweredRatioDB) o;
 
         if (id_survey_answered_ratio != that.id_survey_answered_ratio) return false;
         if (id_survey != that.id_survey) return false;

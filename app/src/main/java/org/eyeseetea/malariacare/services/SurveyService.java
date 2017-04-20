@@ -39,7 +39,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -358,13 +358,13 @@ public class SurveyService extends IntentService {
 
         //register composite scores for current survey and module
         List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
-        SurveyEntity survey = Session.getSurveyByModule(module);
+        Survey survey = Session.getSurveyByModule(module);
         ScoreRegister.registerCompositeScores(compositeScores,survey.getId(),module);
 
         //Get tabs for current program & register them (scores)
         List<TabDB> tabs = TabDB.getTabsBySession(module);
         //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<TabDB> allTabs = new Select().from(TabDB.class).where(TabDB_Table.id_program_fk.eq(survey.getProgramEntity().getId())).queryList();
+        List<TabDB> allTabs = new Select().from(TabDB.class).where(TabDB_Table.id_program_fk.eq(survey.getProgram().getId())).queryList();
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId(), module);
 

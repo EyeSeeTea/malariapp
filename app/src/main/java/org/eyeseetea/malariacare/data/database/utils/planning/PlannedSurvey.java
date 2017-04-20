@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.planning;
 
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -30,7 +30,7 @@ import java.util.Date;
  * Created by arrizabalaga on 15/12/15.
  */
 public class PlannedSurvey implements PlannedItem {
-    private final SurveyEntity survey;
+    private final Survey survey;
 
     private final static String HIGH_PRODUCTIVITY="H";
     private final static String LOW_PRODUCTIVITY="L";
@@ -44,29 +44,29 @@ public class PlannedSurvey implements PlannedItem {
     public PlannedHeader getPlannedHeader(){
         return header;
     }
-    public PlannedSurvey(SurveyEntity survey,PlannedHeader header) {
+    public PlannedSurvey(Survey survey,PlannedHeader header) {
         this.survey = survey;
         this.header = header;
     }
 
     public String getOrgUnit(){
-        if(survey==null || survey.getOrgUnitEntity()==null){
+        if(survey==null || survey.getOrgUnit()==null){
             return null;
         }
-        if(survey.getOrgUnitEntity()==null){
+        if(survey.getOrgUnit()==null){
             return null;
         }
-        return survey.getOrgUnitEntity().getName();
+        return survey.getOrgUnit().getName();
     }
 
     public String getProgram(){
         if(survey==null){
             return null;
         }
-        if(survey.getProgramEntity()==null){
+        if(survey.getProgram()==null){
             return null;
         }
-        return survey.getProgramEntity().getName();
+        return survey.getProgram().getName();
     }
 
     /**
@@ -77,7 +77,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null){
             return "";
         }
-        return survey.getProductivityEntity().isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
+        return survey.getProductivity().isLowProductivity()?LOW_PRODUCTIVITY:HIGH_PRODUCTIVITY;
     }
 
     /**
@@ -98,7 +98,7 @@ public class PlannedSurvey implements PlannedItem {
         return survey.getScheduledDate();
     }
 
-    public SurveyEntity getSurvey(){
+    public Survey getSurvey(){
         return survey;
     }
 
@@ -122,11 +122,11 @@ public class PlannedSurvey implements PlannedItem {
             return true;
         }
 
-        if(survey.getProgramEntity()==null) {
+        if(survey.getProgram()==null) {
             return false;
         }
         //Returns if both match
-        return filterProgram.getId_program().equals(survey.getProgramEntity().getId());
+        return filterProgram.getId_program().equals(survey.getProgram().getId());
     }
 
     /**

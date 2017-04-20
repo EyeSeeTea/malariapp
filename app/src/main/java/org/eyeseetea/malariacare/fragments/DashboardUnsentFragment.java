@@ -46,7 +46,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -64,7 +64,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
-    private List<SurveyEntity> surveys;
+    private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int selectedPosition=0;
     DashboardActivity dashboardActivity;
@@ -161,7 +161,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Log.d(TAG, "id" + item.getItemId());
-        final SurveyEntity survey=(SurveyEntity) adapter.getItem(selectedPosition-1);
+        final Survey survey=(Survey) adapter.getItem(selectedPosition-1);
         switch (item.getItemId()) {
             case R.id.option_edit:
                 dashboardActivity.onSurveySelected(survey);
@@ -173,7 +173,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 Log.d(TAG, "removing item pos=" + selectedPosition);
                 new AlertDialog.Builder(getActivity())
                         .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                        .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgramEntity().getName()))
+                        .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
@@ -190,7 +190,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     //Remove survey from the list and reload list.
-    public void removeSurveyFromAdapter(SurveyEntity survey) {
+    public void removeSurveyFromAdapter(Survey survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
     }
@@ -299,7 +299,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
     public void reloadInProgressSurveys(){
-        List<SurveyEntity> surveysInProgressFromService = SurveyEntity.convertModelListToEntity((List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
+        List<Survey> surveysInProgressFromService = Survey.convertModelListToEntity((List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         reloadSurveys(surveysInProgressFromService);
     }
 
@@ -314,7 +314,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         //New completed surveys -> set alarm
         AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
-    public void reloadSurveys(List<SurveyEntity> newListSurveys){
+    public void reloadSurveys(List<Survey> newListSurveys){
         if(newListSurveys!=null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
             this.surveys.clear();

@@ -26,8 +26,8 @@ import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -41,7 +41,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     public AAssessmentAdapter() { }
 
-    public AAssessmentAdapter(List<SurveyEntity> items, Context context) {
+    public AAssessmentAdapter(List<Survey> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
@@ -54,7 +54,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SurveyEntity surveyEntity = (SurveyEntity) getItem(position);
+        Survey surveyEntity = (Survey) getItem(position);
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int)(5 * density);
 
@@ -90,22 +90,22 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
         // show facility name (or not) and write survey type name
         if (hasToShowFacility(position, surveyEntity)) {
-            facilityName.setText(surveyEntity.getOrgUnitEntity().getName());
+            facilityName.setText(surveyEntity.getOrgUnit().getName());
         } else {
             facilityName.setVisibility(View.GONE);
         }
 
         String surveyDescription;
         if(surveyEntity.isCompleted())
-            surveyDescription = "* " + surveyEntity.getProgramEntity().getName();
+            surveyDescription = "* " + surveyEntity.getProgram().getName();
         else
-            surveyDescription = "- " + surveyEntity.getProgramEntity().getName();
+            surveyDescription = "- " + surveyEntity.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
         // to same org unit with the same background)
         if (position < (this.items.size()-1)) {
-            if (this.items.get(position+1).getOrgUnitEntity().getUid().equals((this.items.get(position)).getOrgUnitEntity().getUid())){
+            if (this.items.get(position+1).getOrgUnit().getUid().equals((this.items.get(position)).getOrgUnit().getUid())){
                 // show background without border and tell the system that next survey belongs to the same org unit, so its name doesn't need to be shown
                 rowView=setBackground(position+1,rowView);
             } else {
@@ -128,13 +128,13 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
      * @param surveyEntity
      * @return
      */
-    private boolean hasToShowFacility(int position, SurveyEntity surveyEntity){
+    private boolean hasToShowFacility(int position, Survey surveyEntity){
         if(position==0){
             return true;
         }
 
-        SurveyEntity previousSurveyEntity = this.items.get(position-1);
-        return !surveyEntity.getOrgUnitEntity().getUid().equals(previousSurveyEntity.getOrgUnitEntity().getUid());
+        Survey previousSurveyEntity = this.items.get(position-1);
+        return !surveyEntity.getOrgUnit().getUid().equals(previousSurveyEntity.getOrgUnit().getUid());
     }
 
     private View setBackgroundWithBorder(int position, View rowView) {
@@ -161,13 +161,13 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
      * @param surveyEntity
      * @return
      */
-    private String getStatus(final SurveyEntity surveyEntity){
+    private String getStatus(final Survey surveyEntity){
 
         if(surveyEntity.isSent()){
             return getContext().getString(R.string.dashboard_info_sent);
         }
 
-        SurveyAnsweredRatioEntity surveyAnsweredRatio = surveyEntity.getSurveyAnsweredRatio();
+        SurveyAnsweredRatio surveyAnsweredRatio = surveyEntity.getSurveyAnsweredRatio();
         if(surveyAnsweredRatio==null) {
             return "0";
         }

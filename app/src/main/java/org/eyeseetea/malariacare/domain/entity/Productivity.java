@@ -2,7 +2,7 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 
-public class ProductivityEntity {
+public class Productivity {
     /**
      * Expected productivity for this survey according to its orgunit + program.
      * Just a cached value from orgunitprogramproductivity
@@ -13,11 +13,11 @@ public class ProductivityEntity {
     Long orgUnitId;
     Long programId;
 
-    public ProductivityEntity(Integer productivity) {
+    public Productivity(Integer productivity) {
         this.productivity = productivity;
     }
 
-    public ProductivityEntity(Long surveyId, Long orgUnitId, Long programId) {
+    public Productivity(Long surveyId, Long orgUnitId, Long programId) {
         this.surveyId = surveyId;
         this.orgUnitId = orgUnitId;
         this.programId = programId;

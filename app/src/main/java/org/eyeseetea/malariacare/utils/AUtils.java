@@ -106,7 +106,7 @@ public abstract class AUtils {
         List<? extends BaseModel> items;
 
         if (tab.isCompositeScore()) {
-            items = CompositeScoreDB.listByProgram(Session.getSurveyByModule(module).getProgramEntity().getId());
+            items = CompositeScoreDB.listByProgram(Session.getSurveyByModule(module).getProgram().getId());
         } else {
 
             items = Session.getTabsCache().get(tab.getId_tab());

@@ -19,13 +19,13 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
 
 /**
  * VO that holds the completion ratio of answered/expected questions
  * Created by arrizabalaga on 1/07/15.
  */
-public class SurveyAnsweredRatioEntity {
+public class SurveyAnsweredRatio {
     /**
      * Id of the related survey
      */
@@ -51,7 +51,7 @@ public class SurveyAnsweredRatioEntity {
 
 
 
-    public SurveyAnsweredRatioEntity(long surveyId, int total, int answered, int totalCompulsory, int compulsoryAnswered) {
+    public SurveyAnsweredRatio(long surveyId, int total, int answered, int totalCompulsory, int compulsoryAnswered) {
         this.surveyId = surveyId;
         this.total = total;
         this.answered = answered;
@@ -59,13 +59,14 @@ public class SurveyAnsweredRatioEntity {
         this.compulsoryAnswered = compulsoryAnswered;
     }
 
-    public static SurveyAnsweredRatioEntity getModelToEntity(long id_survey){
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getSurveyAnsweredRatioBySurveyId(id_survey);
-        if(surveyAnsweredRatio==null) {
+    public static SurveyAnsweredRatio getModelToEntity(long id_survey){
+        SurveyAnsweredRatioDB surveyAnsweredRatioDB = SurveyAnsweredRatioDB.getSurveyAnsweredRatioBySurveyId(id_survey);
+        if(surveyAnsweredRatioDB ==null) {
             return null;
         }
-        return  new SurveyAnsweredRatioEntity(surveyAnsweredRatio.getIdSurvey(), surveyAnsweredRatio.getTotalQuestions(),
-                surveyAnsweredRatio.getAnsweredQuestions(), surveyAnsweredRatio.getTotalCompulsoryQuestions(), surveyAnsweredRatio.getAnsweredCompulsoryQuestions());
+        return  new SurveyAnsweredRatio(surveyAnsweredRatioDB.getIdSurvey(),
+                surveyAnsweredRatioDB.getTotalQuestions(),
+                surveyAnsweredRatioDB.getAnsweredQuestions(), surveyAnsweredRatioDB.getTotalCompulsoryQuestions(), surveyAnsweredRatioDB.getAnsweredCompulsoryQuestions());
     }
 
     public long getSurveyId() {

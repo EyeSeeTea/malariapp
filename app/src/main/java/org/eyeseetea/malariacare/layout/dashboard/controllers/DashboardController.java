@@ -30,7 +30,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 
@@ -237,7 +237,7 @@ public class DashboardController {
      * Starts or edits the given survey from the planning tab
      * @param survey
      */
-    public void onSurveySelected(SurveyEntity survey){
+    public void onSurveySelected(Survey survey){
 
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
@@ -274,7 +274,7 @@ public class DashboardController {
      * Marks the given survey as selected
      * @param survey
      */
-    public void onMarkAsCompleted(SurveyEntity survey){
+    public void onMarkAsCompleted(Survey survey){
         //This action belongs to the assess module
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
         assessModuleController.onMarkAsCompleted(survey);
@@ -303,7 +303,7 @@ public class DashboardController {
      * Called when entering feedback for the given survey
      * @param survey
      */
-    public void onFeedbackSelected(SurveyEntity survey) {
+    public void onFeedbackSelected(Survey survey) {
 
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){

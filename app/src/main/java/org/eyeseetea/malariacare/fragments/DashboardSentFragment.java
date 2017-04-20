@@ -48,7 +48,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -79,9 +79,9 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private SurveyReceiver surveyReceiver;
     protected IDashboardAdapter adapter;
     //surveys contains all the surveys without filter
-    private List<SurveyEntity> surveys;
+    private List<Survey> surveys;
     //oneSurveyForOrgUnit contains the filtered orgunit list
-    List<SurveyEntity> oneSurveyForOrgUnit;
+    List<Survey> oneSurveyForOrgUnit;
     //orgUnitList contains the list of all orgUnits
     List<OrgUnitDB> orgUnitList;
     //programList contains the list of all prgorams
@@ -485,7 +485,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             surveyReceiver = null;
         }
     }
-    public void refreshScreen(List<SurveyEntity> newListSurveys) {
+    public void refreshScreen(List<Survey> newListSurveys) {
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
@@ -514,7 +514,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     /**
      * filter the surveys for last survey in org unit, and set surveysForGraphic for the statistics
      */
-    public void reloadSentSurveys(List<SurveyEntity> surveys) {
+    public void reloadSentSurveys(List<Survey> surveys) {
         // To prevent from reloading too fast, before service has finished its job
         if (surveys == null) return;
 
@@ -523,12 +523,12 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         ProgramOUSurveyDict programOUSurveyDict = new ProgramOUSurveyDict();
         oneSurveyForOrgUnit = new ArrayList<>();
         if(PreferencesState.getInstance().isLastForOrgUnit()) {
-            for (SurveyEntity survey : surveys) {
-                if (survey.getOrgUnitEntity() != null && survey.getProgramEntity() != null) {
-                    if (!programOUSurveyDict.containsKey(survey.getProgramEntity().getUid(), survey.getOrgUnitEntity().getUid())) {
+            for (Survey survey : surveys) {
+                if (survey.getOrgUnit() != null && survey.getProgram() != null) {
+                    if (!programOUSurveyDict.containsKey(survey.getProgram().getUid(), survey.getOrgUnit().getUid())) {
                         AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                     } else {
-                        SurveyEntity surveyMapped = programOUSurveyDict.get(survey.getProgramEntity().getUid(), survey.getOrgUnitEntity().getUid());
+                        Survey surveyMapped = programOUSurveyDict.get(survey.getProgram().getUid(), survey.getOrgUnit().getUid());
                         Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
                         if ((surveyMapped.getCompletionDate() != null && survey.getCompletionDate() != null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
                             programOUSurveyDict = AddSurveyIfNotfiltered(programOUSurveyDict, survey);
@@ -538,7 +538,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             }
             oneSurveyForOrgUnit = programOUSurveyDict.values();
         }else if(PreferencesState.getInstance().isNoneFilter()){
-            for (SurveyEntity survey : surveys) {
+            for (Survey survey : surveys) {
                 oneSurveyForOrgUnit.add(survey);
             }
         }
@@ -549,13 +549,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             if(orderBy==LAST_ORDER){
                 reverse=true;
             }
-            Collections.sort(oneSurveyForOrgUnit, new Comparator<SurveyEntity>() {
-                public int compare(SurveyEntity survey1, SurveyEntity survey2) {
+            Collections.sort(oneSurveyForOrgUnit, new Comparator<Survey>() {
+                public int compare(Survey survey1, Survey survey2) {
                     int compare;
                     switch (orderBy) {
                         case FACILITY_ORDER:
-                            String surveyA = survey1.getOrgUnitEntity().getName();
-                            String surveyB = survey2.getOrgUnitEntity().getName();
+                            String surveyA = survey1.getOrgUnit().getName();
+                            String surveyB = survey2.getOrgUnit().getName();
                             compare = surveyA.compareTo(surveyB);
                             break;
                         case DATE_ORDER:
@@ -592,23 +592,23 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      * @param survey
      * @return
      */
-    private ProgramOUSurveyDict AddSurveyIfNotfiltered(ProgramOUSurveyDict programOUSurveyDict, SurveyEntity survey) {
+    private ProgramOUSurveyDict AddSurveyIfNotfiltered(ProgramOUSurveyDict programOUSurveyDict, Survey survey) {
         if(isNotFilteredByOU(survey) && isNotFilteredByProgram(survey)) {
-            SurveyEntity previousSurvey = programOUSurveyDict.get(survey.getProgramEntity().getUid(), survey.getOrgUnitEntity().getUid());
+            Survey previousSurvey = programOUSurveyDict.get(survey.getProgram().getUid(), survey.getOrgUnit().getUid());
             if (previousSurvey==null || previousSurvey.getCompletionDate().compareTo(survey.getCompletionDate()) < 0)
-                programOUSurveyDict.put(survey.getProgramEntity().getUid(), survey.getOrgUnitEntity().getUid(), survey);
+                programOUSurveyDict.put(survey.getProgram().getUid(), survey.getOrgUnit().getUid(), survey);
         }
         return programOUSurveyDict;
     }
 
-    private boolean isNotFilteredByOU(SurveyEntity survey){
-        if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnitEntity().getUid())))
+    private boolean isNotFilteredByOU(Survey survey){
+        if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
             return true;
         return false;
     }
 
-    private boolean isNotFilteredByProgram(SurveyEntity survey){
-        if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgramEntity().getUid()))
+    private boolean isNotFilteredByProgram(Survey survey){
+        if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgram().getUid()))
             return true;
         return false;
     }
@@ -628,7 +628,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 BaseServiceBundle sentDashboardBundle = (BaseServiceBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
                 orgUnitList = (List<OrgUnitDB>) sentDashboardBundle.getModelList(OrgUnitDB.class.getName());
                 programList = (List<ProgramDB>) sentDashboardBundle.getModelList(ProgramDB.class.getName());
-                surveys = SurveyEntity.convertModelListToEntity((List<SurveyDB>)sentDashboardBundle.getModelList(SurveyDB.class.getName()));
+                surveys = Survey.convertModelListToEntity((List<SurveyDB>)sentDashboardBundle.getModelList(SurveyDB.class.getName()));
                 reloadSentSurveys(surveys);
                 initFilters();
             }

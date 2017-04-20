@@ -1,11 +1,15 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-public class OrgUnitEntity {
+public class Program {
     String name;
     String uid;
     Long id;
 
-    public OrgUnitEntity(String name, String uid, Long id) {
+    public Program(){
+
+    }
+
+    public Program(String name, String uid, Long id) {
         this.name = name;
         this.uid = uid;
         this.id = id;

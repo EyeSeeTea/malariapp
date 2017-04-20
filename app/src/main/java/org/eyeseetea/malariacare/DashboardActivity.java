@@ -43,8 +43,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
-import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -147,7 +147,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
         //Pull
-        final List<SurveyEntity> unsentSurveys = SurveyEntity.convertModelListToEntity(SurveyDB.getAllUnsentUnplannedSurveys());
+        final List<Survey> unsentSurveys = Survey.convertModelListToEntity(SurveyDB.getAllUnsentUnplannedSurveys());
         //No unsent data -> pull (no confirmation)
         if (unsentSurveys == null || unsentSurveys.size() == 0) {
             pullMetadata();
@@ -156,8 +156,8 @@ public class DashboardActivity extends BaseActivity {
 
         final Activity activity = this;
         //check if exist a compulsory question without answer before push and pull.
-        for (SurveyEntity survey : unsentSurveys) {
-            SurveyAnsweredRatioEntity surveyAnsweredRatio = survey.getSurveyAnsweredRatio();
+        for (Survey survey : unsentSurveys) {
+            SurveyAnsweredRatio surveyAnsweredRatio = survey.getSurveyAnsweredRatio();
             if (surveyAnsweredRatio.getTotalCompulsory() > 0
                     && surveyAnsweredRatio.getCompulsoryAnswered()
                     != surveyAnsweredRatio.getTotalCompulsory()) {
@@ -346,7 +346,7 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onSurveySelected(SurveyEntity survey) {
+    public void onSurveySelected(Survey survey) {
         dashboardController.onSurveySelected(survey);
     }
 
@@ -368,14 +368,14 @@ public class DashboardActivity extends BaseActivity {
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
      */
-    public void onMarkAsCompleted(SurveyEntity survey) {
+    public void onMarkAsCompleted(Survey survey) {
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
      */
-    public void onFeedbackSelected(SurveyEntity survey) {
+    public void onFeedbackSelected(Survey survey) {
         dashboardController.onFeedbackSelected(survey);
     }
 
@@ -397,7 +397,7 @@ public class DashboardActivity extends BaseActivity {
      * Create new survey from VariantSpecificUtils
      */
     public void createNewSurvey(OrgUnitDB orgUnit, ProgramDB program) {
-        SurveyEntity survey = SurveyPlanner.getInstance().startSurvey(orgUnit.getId_org_unit(), program.getId_program());
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit.getId_org_unit(), program.getId_program());
         prepareLocationListener(survey.getId());
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);

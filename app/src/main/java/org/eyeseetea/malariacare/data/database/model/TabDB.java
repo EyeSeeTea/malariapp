@@ -134,7 +134,7 @@ public class TabDB extends BaseModel {
      */
     public static List<TabDB> getTabsBySession(String module){
         return new Select().from(TabDB.class)
-                .where(TabDB_Table.id_program_fk.eq(Session.getSurveyByModule(module).getProgramEntity().getId()))
+                .where(TabDB_Table.id_program_fk.eq(Session.getSurveyByModule(module).getProgram().getId()))
                 .orderBy(TabDB_Table.order_pos,true).queryList();
     }
 
