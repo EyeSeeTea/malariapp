@@ -393,4 +393,9 @@ public class DashboardActivity extends BaseActivity{
         Session.setPhoneMetaData(
                 new PhoneMetaData((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)));
     }
+    public void reloadSentData() {
+        Intent surveysIntent=new Intent(this, SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
+        this.startService(surveysIntent);
+    }
 }
