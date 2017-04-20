@@ -22,9 +22,9 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
-
 import com.squareup.otto.Subscribe;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
@@ -38,7 +38,6 @@ import org.hisp.dhis.android.sdk.job.NetworkJob;
 import org.hisp.dhis.android.sdk.network.ResponseHolder;
 import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.models.ImportSummary;
-
 
 import java.util.HashMap;
 import java.util.List;
@@ -189,6 +188,8 @@ public class PushController {
                     postFinish(success);
                     unregister();
                     PushController.changePushInProgress(false);
+                    //Reload data using service
+                    DashboardActivity.dashboardActivity.reloadSentData();
                 }
             }
         }.start();

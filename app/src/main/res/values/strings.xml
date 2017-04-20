@@ -119,8 +119,10 @@ evaluation"</string>
 <string name="dialog_complete_option">"Complete"</string>
 <string name="dialog_are_you_sure_complete_survey">"Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey"</string>
 <string name="dialog_incompleted_compulsory_survey">"This survey cannot be sent yet. Please answer at least all the compulsory questions"</string>
-<string name="dialog_incompleted_compulsory_pulling">"Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions"</string>
-<string name="dialog_sent_survey_on_refresh_metadata">"Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?"</string>
+<string name="dialog_action_logout">"Logout require delete or send your unsent data."</string>
+<string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
+<string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
 <string name="cancellingPull">"The process will be stopped in a few seconds "</string>
 <string name="dashboard_title_total_assessments">"Total number of assessments undertaken"</string>
 <string name="dashboard_title_planned_type_never">"Never assessed"</string>

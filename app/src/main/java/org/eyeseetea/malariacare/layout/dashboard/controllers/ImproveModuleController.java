@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
@@ -55,11 +56,9 @@ public class ImproveModuleController extends ModuleController {
     public void init(DashboardActivity activity) {
         super.init(activity);
         fragment = new DashboardSentFragment();
-        try {
+        if(!PreferencesState.getInstance().isNoneFilter()) {
             LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
             filters.setVisibility(View.VISIBLE);
-        }catch(Exception e){
-            e.printStackTrace();
         }
     }
 
