@@ -492,6 +492,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     public void refreshScreen(List<Survey> newListSurveys) {
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+        this.surveys.clear();
         this.surveys.addAll(newListSurveys);
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();

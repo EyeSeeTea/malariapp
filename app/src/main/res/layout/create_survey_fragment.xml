@@ -40,6 +40,7 @@
             <LinearLayout android:id="@+id/create_survey_form" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="vertical"
                 android:layout_gravity="center"
+                android:paddingLeft="@dimen/level_padding_left"
                 android:gravity="center">
 
                 <LinearLayout
