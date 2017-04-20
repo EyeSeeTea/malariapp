@@ -208,4 +208,5 @@ Mensuelle"</string>
 <string name="survey_second_step">Checking mandatory questions</string>
 <string name="survey_third_step">Calculating completeness ratio</string>
 <string name="survey_fourth_step">Calculating Score register</string>
+<string name="error_conflict_message">"L'événement avec UID: %1$s. A été téléchargé avec conflit dans l'élément de données UID: %2$s avec le message: %3$s. Veuillez contacter l'administrateur."</string>
 </resources>

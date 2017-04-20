@@ -210,4 +210,5 @@ clínica"</string>
 <string name="clear">"Limpiar"</string>
 <string name="admin_announcement">"Anuncio del administrador"</string>
 <string name="user_close">"Este usuario ha sido cerrado por el administrador."</string>
+<string name="error_conflict_message">"El evento con UID: %1$s. Se cargó con un conflicto en el elemento de datos UID: %2$s con el mensaje: %3$s. Póngase en contacto con el administrador."</string>
 </resources>

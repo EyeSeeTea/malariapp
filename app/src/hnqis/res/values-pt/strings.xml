@@ -207,4 +207,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="clear">"Clarear"</string>
 <string name="admin_announcement">"Anúncio do Admin"</string>
 <string name="user_close">"Este usuário foi fechado pelo administrador."</string>
+<string name="error_conflict_message">"O evento com UID: %1$s. Foi carregado com conflito no elemento de dados UID: %2$s com a mensagem: %3$s. Entre em contato com o administrador."</string>
 </resources>

@@ -21,6 +21,8 @@ package org.eyeseetea.malariacare.strategies;
 
 import android.util.Log;
 
+import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
@@ -93,6 +95,14 @@ public class PushServiceStrategy {
             }
 
             @Override
+            public void onInformativeError(String message) {
+                AlarmPushReceiver.isDoneFail();
+                Log.e(TAG, "An error has occurred to the conversion in push process"+message);
+                showInDialog(PreferencesState.getInstance().getContext().getString(
+                        R.string.error_message), message);
+            }
+
+            @Override
             public void onConversionError() {
                 AlarmPushReceiver.isDoneFail();
                 Log.e(TAG, "An error has occurred to the conversion in push process");
@@ -104,5 +114,8 @@ public class PushServiceStrategy {
                 Log.e(TAG, "Network not available");
             }
         });
+    }
+    public void showInDialog(String title, String message) {
+        DashboardActivity.dashboardActivity.showException(title, message);
     }
 }

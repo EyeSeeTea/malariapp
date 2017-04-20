@@ -260,6 +260,12 @@ public class DashboardActivity extends BaseActivity {
             }
 
             @Override
+            public void onInformativeError(String message) {
+                showException(PreferencesState.getInstance().getContext().getString(
+                        R.string.error_message), message);
+            }
+
+            @Override
             public void onConversionError() {
                 Toast.makeText(getBaseContext(),
                         R.string.push_conversion_error,

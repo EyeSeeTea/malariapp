@@ -26,13 +26,21 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.domain.entity.PushReport;
+import org.eyeseetea.malariacare.domain.entity.PushedValuesCount;
+import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
+import org.eyeseetea.malariacare.domain.exception.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
+import org.hisp.dhis.client.sdk.models.common.importsummary.Conflict;
+import org.hisp.dhis.client.sdk.models.common.importsummary.ImportCount;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +54,11 @@ import rx.schedulers.Schedulers;
 public class PushDhisSDKDataSource {
     private final String TAG = ".PushControllerB&D";
 
-    public void pushData(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
+    public void pushData(final IDataSourceCallback<Map<String, PushReport>> callback) {
         pushEvents(callback);
     }
 
-    private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
+    private void pushEvents(final IDataSourceCallback<Map<String, PushReport>> callback) {
         final Set<String> eventUids = getEventUidToBePushed();
 
         if(eventUids.isEmpty() || eventUids.size()==0){
@@ -67,17 +75,18 @@ public class PushDhisSDKDataSource {
                 .subscribe(new Action1<Map<String, ImportSummary>>() {
                     @Override
                     public void call(Map<String, ImportSummary> mapEventsImportSummary) {
+                        if(mapEventsImportSummary==null){
+                            callback.onError(new PushReportException("Error during push"));
+                            return;
+                        }
                         Log.d(TAG,
                                 "Push of events finish. Number of events: "
                                         + mapEventsImportSummary.size());
-
-                        //TODO: from data source should comverto always from SDK object to domain
-                        // object
-                        // this class should not return sdk objects directly
-                        //create a object similar to Map<String,ImportSummary> in domain and
-                        // convert before
-                        // to invoke callback.onSuccess
-                        callback.onSuccess(mapEventsImportSummary);
+                        try {
+                            callback.onSuccess(convertImportSummaryToPushReport(mapEventsImportSummary));
+                        }catch (NullPointerException e){
+                            callback.onError(new PushReportException(e));
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -90,6 +99,42 @@ public class PushDhisSDKDataSource {
                     }
                 });
     }
+
+    private Map<String, PushReport> convertImportSummaryToPushReport(Map<java.lang.String, ImportSummary> mapEventsImportSummary) {
+        Map<String, PushReport> pushReportMap = new HashMap<String, PushReport>();
+            for (Map.Entry<String, ImportSummary> entry : mapEventsImportSummary.entrySet())
+            {
+                PushReport pushReport = new PushReport();
+                List<SurveyConflict> conflictList = new ArrayList<>();
+                if(entry.getValue().getConflicts()!=null) {
+                    for (Conflict conflict : entry.getValue().getConflicts()) {
+                        conflictList.add(
+                                new SurveyConflict(conflict.getObject(), conflict.getValue()));
+                    }
+                }
+                pushReport.setSurveyConflicts(conflictList);
+                pushReport.setDescription(entry.getValue().getDescription());
+                pushReport.setHref(entry.getValue().getHref());
+
+                ImportCount importCount = entry.getValue().getImportCount();
+                pushReport.setPushedValuesCount(new PushedValuesCount(importCount.getImported(), importCount.getUpdated(), importCount.getIgnored(), importCount.getDeleted()));
+
+                pushReport.setReference(entry.getValue().getReference());
+                if(entry.getValue().getStatus()== ImportSummary.Status.ERROR) {
+                    pushReport.setStatus(PushReport.Status.ERROR);
+                }
+                if(entry.getValue().getStatus()== ImportSummary.Status.OK) {
+                    pushReport.setStatus(PushReport.Status.OK);
+                }
+                if(entry.getValue().getStatus()== ImportSummary.Status.SUCCESS) {
+                    pushReport.setStatus(PushReport.Status.SUCCESS);
+                }
+                pushReport.setEventUid(entry.getKey());
+                pushReportMap.put(entry.getKey(), pushReport);
+            }
+        return pushReportMap;
+    }
+
     @NonNull
     private Set<String> getEventUidToBePushed() {
         final Set<String> eventUids = new HashSet<>();
