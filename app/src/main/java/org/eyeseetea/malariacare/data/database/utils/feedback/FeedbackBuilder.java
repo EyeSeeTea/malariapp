@@ -19,12 +19,11 @@
 
 package org.eyeseetea.malariacare.data.database.utils.feedback;
 
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
-import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
@@ -57,8 +56,8 @@ public class FeedbackBuilder {
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
 
-        Program program = Program.findById(survey.getProgramEntity().getId());
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey.getId(), program, module);
+        ProgramDB program = ProgramDB.findById(survey.getProgramEntity().getId());
+        List<CompositeScoreDB> compositeScoreList= ScoreRegister.loadCompositeScores(survey.getId(), program, module);
 
 
         //Calculate main score
@@ -66,8 +65,8 @@ public class FeedbackBuilder {
 
         if (!parents) {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
-            for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
-                CompositeScore compositeScore = iterator.next();
+            for (Iterator<CompositeScoreDB> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
+                CompositeScoreDB compositeScore = iterator.next();
                 //Show only if a parent have questions.
                 if(compositeScore.getQuestions().size()<1) {
                     if (!compositeScore.hasParent()) iterator.remove();
@@ -76,17 +75,17 @@ public class FeedbackBuilder {
         }
 
         //For each score add proper items
-        for(CompositeScore compositeScore:compositeScoreList){
+        for(CompositeScoreDB compositeScore:compositeScoreList){
             //add score
             float score = ScoreRegister.getCompositeScore(compositeScore, survey.getId(),
                         module);
             feedbackList.add(new CompositeScoreFeedback(compositeScore, score));
 
             //add its questions
-            List<Question> questions=compositeScore.getQuestions();
-            for(Question question:questions){
+            List<QuestionDB> questions=compositeScore.getQuestions();
+            for(QuestionDB question:questions){
                 if(!question.isHiddenBySurvey(survey.getId())) {
-                    Value valueInSurvey = question.getValueBySurvey(survey.getId());
+                    ValueDB valueInSurvey = question.getValueBySurvey(survey.getId());
                     feedbackList.add(new QuestionFeedback(question, valueInSurvey));
                 }
             }

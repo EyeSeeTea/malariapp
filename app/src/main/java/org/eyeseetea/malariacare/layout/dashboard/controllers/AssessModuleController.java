@@ -28,7 +28,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioEntity;
@@ -123,7 +123,7 @@ public class AssessModuleController extends ModuleController {
 
         //Planned surveys needs to be started
         if (survey.getStatus() == Constants.SURVEY_PLANNED) {
-            survey = SurveyPlanner.getInstance().startSurvey(Survey.findById(survey.getId()));
+            survey = SurveyPlanner.getInstance().startSurvey(SurveyDB.findById(survey.getId()));
         }
 
         //Set the survey into the session
@@ -261,7 +261,7 @@ public class AssessModuleController extends ModuleController {
 
                                     @Override
                                     public void onComplete(SurveyAnsweredRatioEntity surveyAnsweredRatio) {
-                                        Survey dbSurvey = Survey.findById(survey.getId());
+                                        SurveyDB dbSurvey = SurveyDB.findById(survey.getId());
                                         dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                                     }
                                 });

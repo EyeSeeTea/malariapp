@@ -4,7 +4,6 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
  * Created by idelcano on 07/09/2016.
  */
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
 
 /**

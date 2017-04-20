@@ -19,14 +19,9 @@
 
 package org.eyeseetea.malariacare.data.database.utils.multikeydictionaries;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
-
 import java.util.List;
 
-/**
- * Created by idelcano on 19/09/2016.
- */
 public class ProgramOUSurveyDict extends ObjectEntityDict {
 
     @Override

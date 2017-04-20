@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -19,12 +19,12 @@ import java.util.List;
 
 public class DownloadedMediaAdapter extends
         RecyclerView.Adapter<DownloadedMediaAdapter.MediaViewHolder> {
-    List<Media> items;
+    List<MediaDB> items;
     Context context;
     LayoutInflater lInflater;
     protected Integer rowLayout;
 
-    public DownloadedMediaAdapter(List<Media> items, Context context) {
+    public DownloadedMediaAdapter(List<MediaDB> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
@@ -41,7 +41,7 @@ public class DownloadedMediaAdapter extends
 
     @Override
     public void onBindViewHolder(MediaViewHolder holder, int position) {
-        Media media = items.get(position);
+        MediaDB media = items.get(position);
         if (media.getFilename() != null) {
             holder.fileName.setText(removePathFromName(media.getFilename()));
         }

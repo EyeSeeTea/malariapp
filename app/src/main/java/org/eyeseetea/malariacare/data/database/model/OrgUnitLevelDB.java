@@ -30,8 +30,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class OrgUnitLevel extends BaseModel {
+@Table(database = AppDatabase.class, name = "OrgUnitLevel")
+public class OrgUnitLevelDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -43,17 +43,17 @@ public class OrgUnitLevel extends BaseModel {
     String uid_org_unit_level;
 
 
-    List<OrgUnit> orgUnits;
+    List<OrgUnitDB> orgUnits;
 
-    public OrgUnitLevel() {
+    public OrgUnitLevelDB() {
     }
 
-    public OrgUnitLevel(String name) {
+    public OrgUnitLevelDB(String name) {
         this.name = name;
     }
 
 
-    public OrgUnitLevel(String uid, String name) {
+    public OrgUnitLevelDB(String uid, String name) {
         this.name = name;
     }
 
@@ -82,9 +82,9 @@ public class OrgUnitLevel extends BaseModel {
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "orgUnits")
-    public List<OrgUnit> getOrgUnits(){
-        this.orgUnits = new Select().from(OrgUnit.class)
-                .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit_level())).queryList();
+    public List<OrgUnitDB> getOrgUnits(){
+        this.orgUnits = new Select().from(OrgUnitDB.class)
+                .where(OrgUnitDB_Table.id_org_unit_parent.eq(this.getId_org_unit_level())).queryList();
         return orgUnits;
     }
 
@@ -93,7 +93,7 @@ public class OrgUnitLevel extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrgUnitLevel that = (OrgUnitLevel) o;
+        OrgUnitLevelDB that = (OrgUnitLevelDB) o;
 
         if (id_org_unit_level != that.id_org_unit_level) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -120,7 +120,7 @@ public class OrgUnitLevel extends BaseModel {
                 '}';
     }
 
-    public static List<OrgUnitLevel> list() {
-        return new Select().from(OrgUnitLevel.class).queryList();
+    public static List<OrgUnitLevelDB> list() {
+        return new Select().from(OrgUnitLevelDB.class).queryList();
     }
 }

@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -88,25 +88,25 @@ public class SurveyEntity {
 
     public Date getCompletionDate() {
         if(completionDate==null)
-            completionDate = Survey.findById(id).getCompletionDate();
+            completionDate = SurveyDB.findById(id).getCompletionDate();
         return completionDate;
     }
 
     public boolean hasConflict() {
         if(hasConflict==null)
-            hasConflict = Survey.findById(id).hasConflict();
+            hasConflict = SurveyDB.findById(id).hasConflict();
         return hasConflict;
     }
 
     public boolean hasMainScore() {
         if(hasMainScore==null)
-            hasMainScore = Survey.findById(id).hasMainScore();
+            hasMainScore = SurveyDB.findById(id).hasMainScore();
         return hasMainScore;
     }
 
     public Float getMainScore() {
         if(mainScore==null)
-            mainScore = Survey.findById(id).getMainScore();
+            mainScore = SurveyDB.findById(id).getMainScore();
         return mainScore;
     }
 
@@ -123,15 +123,15 @@ public class SurveyEntity {
         return status == Constants.SURVEY_SENT;
     }
 
-    public static List<SurveyEntity> convertModelListToEntity(List<Survey> surveys){
+    public static List<SurveyEntity> convertModelListToEntity(List<SurveyDB> surveys){
         List<SurveyEntity> surveyEntities = new ArrayList<>();
-        for(Survey survey:surveys){
+        for(SurveyDB survey:surveys){
             surveyEntities.add(SurveyEntity.getFromModel(survey));
         }
         return surveyEntities;
     }
 
-    public static SurveyEntity getFromModel(Survey survey) {
+    public static SurveyEntity getFromModel(SurveyDB survey) {
         SurveyEntity surveyEntity = new SurveyEntity();
         surveyEntity.setId(survey.getId_survey());
         if(survey.getOrgUnit()!=null) {
@@ -153,7 +153,7 @@ public class SurveyEntity {
     }
 
     public void setCompleteSurveyState(String simpleName) {
-        Survey survey = Survey.findById(id);
+        SurveyDB survey = SurveyDB.findById(id);
         setStatus(Constants.SURVEY_COMPLETED);
         setMainScore(survey.getMainScore());
         survey.setCompleteSurveyState(simpleName);
@@ -204,19 +204,19 @@ public class SurveyEntity {
 
     public Date getScheduledDate() {
         if(scheduledDate == null && id > 0) {
-            scheduledDate = Survey.findById(id).getScheduledDate();
+            scheduledDate = SurveyDB.findById(id).getScheduledDate();
         }
         return scheduledDate;
     }
 
     public void reschedule(Date newScheduledDate, String comment) {
-        Survey survey = Survey.findById(id);
+        SurveyDB survey = SurveyDB.findById(id);
         scheduledDate = survey.reschedule(newScheduledDate, comment);
     }
 
     public Date getCreationDate() {
         if(creationDate == null && id > 0) {
-            creationDate = Survey.findById(id).getCreationDate();
+            creationDate = SurveyDB.findById(id).getCreationDate();
         }
         return creationDate;
     }

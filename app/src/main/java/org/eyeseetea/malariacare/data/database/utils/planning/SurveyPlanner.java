@@ -21,9 +21,9 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ProductivityEntity;
 import org.eyeseetea.malariacare.domain.entity.SurveyEntity;
@@ -56,7 +56,7 @@ public class SurveyPlanner {
      * Builds a 'NEVER' planned survey for the given combination
      */
     public SurveyEntity buildNext(Long orgUnitId, Long programId) {
-        Survey survey = new Survey();
+        SurveyDB survey = new SurveyDB();
         survey.setStatus(Constants.SURVEY_PLANNED);
         survey.setOrgUnit(orgUnitId);
         survey.setUser(Session.getUser());
@@ -74,9 +74,9 @@ public class SurveyPlanner {
      *
      * @return newSurvey
      */
-    public Survey deleteSurveyAndBuildNext(SurveyEntity oldSurveyEntity) {
-        Survey newSurvey = new Survey();
-        Survey oldSurvey = Survey.findById(oldSurveyEntity.getId());
+    public SurveyDB deleteSurveyAndBuildNext(SurveyEntity oldSurveyEntity) {
+        SurveyDB newSurvey = new SurveyDB();
+        SurveyDB oldSurvey = SurveyDB.findById(oldSurveyEntity.getId());
         newSurvey.save();//generate the new id
         newSurvey.setStatus(Constants.SURVEY_PLANNED);
         newSurvey.setOrgUnit(oldSurvey.getOrgUnit());
@@ -86,7 +86,7 @@ public class SurveyPlanner {
         oldSurvey.setSurveyScheduleToSurvey(newSurvey);
         oldSurvey.delete();
         //Recovery the last valid main score if exists
-        Survey lastSurveyScore = Survey.getLastSurvey(newSurvey.getOrgUnit().getId_org_unit(),
+        SurveyDB lastSurveyScore = SurveyDB.getLastSurvey(newSurvey.getOrgUnit().getId_org_unit(),
                 newSurvey.getProgram().getId_program());
         if (lastSurveyScore != null) {
             if (lastSurveyScore.hasMainScore()) {
@@ -104,8 +104,8 @@ public class SurveyPlanner {
     /**
      * Plans a new survey according to the given sent survey and its values
      */
-    public Survey buildNext(Survey survey) {
-        Survey plannedSurvey = new Survey();
+    public SurveyDB buildNext(SurveyDB survey) {
+        SurveyDB plannedSurvey = new SurveyDB();
         //Create and save a planned survey
         plannedSurvey.setStatus(Constants.SURVEY_PLANNED);
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
@@ -128,9 +128,9 @@ public class SurveyPlanner {
      */
     public SurveyEntity startSurvey(Long orgUnitId, Long programId) {
         //Find planned survey
-        Survey survey = Survey.findPlannedByOrgUnitAndProgram(orgUnitId, programId);
+        SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnitId, programId);
         if (survey == null) {
-            survey = new Survey();
+            survey = new SurveyDB();
             survey.setProgram(programId);
             survey.setOrgUnit(orgUnitId);
         }
@@ -140,7 +140,7 @@ public class SurveyPlanner {
     /**
      * Starts a planned survey
      */
-    public SurveyEntity startSurvey(Survey survey){
+    public SurveyEntity startSurvey(SurveyDB survey){
         Date now = new Date();
         survey.setCreationDate(now);
         survey.setUploadDate(now);
@@ -160,13 +160,13 @@ public class SurveyPlanner {
      */
     public void buildNext() {
         //Plan a copy according to that survey
-        for (Survey survey : Survey.listLastByOrgUnitProgram()) {
+        for (SurveyDB survey : SurveyDB.listLastByOrgUnitProgram()) {
             buildNext(survey);
         }
 
     }
 
-    public Date findScheduledDateBySurvey(Survey survey) {
+    public Date findScheduledDateBySurvey(SurveyDB survey) {
         if (survey == null) {
             return null;
         }
@@ -184,7 +184,7 @@ public class SurveyPlanner {
                 eventDate.toString(), survey.getMainScore(), productivityEntity.isLowProductivity()));
 
         //A -> 6 months
-        if (Survey.isTypeA(survey.getMainScore())) {
+        if (SurveyDB.isTypeA(survey.getMainScore())) {
             return getInXMonths(eventDate, TYPE_A_NEXT_DATE);
         }
 

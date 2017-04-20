@@ -29,7 +29,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 /**
@@ -44,7 +44,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
     private TypedArray a;
     private Typeface font;
 
-    private Option option = null;
+    private OptionDB option = null;
 
     public CustomRadioButton(Context context) {
         super(context);
@@ -61,21 +61,21 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
         init(attrs, defStyle);
     }
 
-    public CustomRadioButton(Context context, Option option, AttributeSet attrs, int defStyle) {
+    public CustomRadioButton(Context context, OptionDB option, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.setTag(option);
         this.setText(option.getName());
         init(attrs, defStyle);
     }
 
-    public CustomRadioButton(Context context, Option option) {
+    public CustomRadioButton(Context context, OptionDB option) {
         super(context);
         this.setTag(option);
         this.setText(option.getName());
         init(null, 0);
     }
 
-    public CustomRadioButton(Context context, Option option, AttributeSet attrs) {
+    public CustomRadioButton(Context context, OptionDB option, AttributeSet attrs) {
         super(context, attrs);
         this.setTag(option);
         this.setText(option.getName());
@@ -220,11 +220,11 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
         return this.mScale;
     }
 
-    public Option getOption() {
+    public OptionDB getOption() {
         return option;
     }
 
-    public void setOption(Option option) {
+    public void setOption(OptionDB option) {
         this.option = option;
         this.setTag(option);
         this.setText(option.getName());

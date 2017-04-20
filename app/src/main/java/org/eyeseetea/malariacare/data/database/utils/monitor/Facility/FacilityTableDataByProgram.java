@@ -19,8 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,15 +33,15 @@ public class FacilityTableDataByProgram extends  FacilityTableDataBase {
     private static final String TAG=".FacilityTableDataP";
     Map<String,FacilityRowDataBase> rowData;
 
-    public FacilityTableDataByProgram(OrgUnit orgUnit){
+    public FacilityTableDataByProgram(OrgUnitDB orgUnit){
         this.title=orgUnit.getName();
         this.uid=orgUnit.getUid();
         this.id=String.valueOf(orgUnit.getId_org_unit());
         rowData=new HashMap<>();
     }
 
-    public void addSurvey(Survey survey){
-        OrgUnit orgUnit=survey.getOrgUnit();
+    public void addSurvey(SurveyDB survey){
+        OrgUnitDB orgUnit=survey.getOrgUnit();
         //Get facility row
         FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString()+survey.getProgram().getUid());
         //First time facility

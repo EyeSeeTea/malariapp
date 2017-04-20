@@ -42,7 +42,7 @@ import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
@@ -281,7 +281,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    public void manageSurveysAlarm(List<Survey> newListSurveys){
+    public void manageSurveysAlarm(List<SurveyDB> newListSurveys){
         Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         //Fixme think other way to cancel the setPushAlarm in Malariaapp
         AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
@@ -299,12 +299,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
     public void reloadInProgressSurveys(){
-        List<SurveyEntity> surveysInProgressFromService = SurveyEntity.convertModelListToEntity((List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
+        List<SurveyEntity> surveysInProgressFromService = SurveyEntity.convertModelListToEntity((List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         reloadSurveys(surveysInProgressFromService);
     }
 
     public void reloadCompletedSurveys(){
-        List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+        List<SurveyDB> surveysCompletedFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
 
         //No surveys -> cancel alarm for pushing
         if(surveysCompletedFromService==null || surveysCompletedFromService.size()==0){
@@ -314,7 +314,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         //New completed surveys -> set alarm
         AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
-
     public void reloadSurveys(List<SurveyEntity> newListSurveys){
         if(newListSurveys!=null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());

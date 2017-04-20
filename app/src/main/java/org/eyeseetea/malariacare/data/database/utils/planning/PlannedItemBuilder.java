@@ -22,10 +22,10 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import android.content.Context;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.OrgUnitEntity;
 import org.eyeseetea.malariacare.domain.entity.ProgramEntity;
@@ -119,7 +119,7 @@ public class PlannedItemBuilder {
         initBuilder();
 
         //Find its place according to scheduleddate
-        for(Survey survey: Survey.findPlannedOrInProgress()){
+        for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
             findRightState(SurveyEntity.getFromModel(survey));
         }
 
@@ -276,9 +276,9 @@ public class PlannedItemBuilder {
     private void buildNonExistantCombinations() {
 
         //Every orgunit
-        for(OrgUnit orgUnit:OrgUnit.list()){
+        for(OrgUnitDB orgUnit: OrgUnitDB.list()){
             //Each authorized program
-            for(Program program:orgUnit.getPrograms()){
+            for(ProgramDB program:orgUnit.getPrograms()){
                 String key=getSurveyKey(orgUnit.getId_org_unit(),program.getId_program());
                 SurveyEntity survey=surveyMap.get(key);
                 //Already built

@@ -35,10 +35,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -148,8 +147,7 @@ public class DashboardActivity extends BaseActivity {
         }
 
         //Pull
-        final List<SurveyEntity> unsentSurveys = SurveyEntity.convertModelListToEntity(Survey.getAllUnsentUnplannedSurveys());
-
+        final List<SurveyEntity> unsentSurveys = SurveyEntity.convertModelListToEntity(SurveyDB.getAllUnsentUnplannedSurveys());
         //No unsent data -> pull (no confirmation)
         if (unsentSurveys == null || unsentSurveys.size() == 0) {
             pullMetadata();
@@ -191,8 +189,8 @@ public class DashboardActivity extends BaseActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Try to push before pull
-                        final List<Survey> inProgressSurveys = Survey.getAllInProgressSurveys();
-                        for (Survey survey : inProgressSurveys) {
+                        final List<SurveyDB> inProgressSurveys = SurveyDB.getAllInProgressSurveys();
+                        for (SurveyDB survey : inProgressSurveys) {
                             survey.setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
                         }
                         pushUnsentBeforePull();
@@ -341,7 +339,7 @@ public class DashboardActivity extends BaseActivity {
         // If we're in dashboard and User is not yet in session we have to put it
         // FIXME: for the moment there will be only one user in the User table, but in the future
         // we will have to think about tagging the logged user in the DB
-        User user = User.getLoggedUser();
+        UserDB user = UserDB.getLoggedUser();
         Session.setUser(user);
     }
 
@@ -355,14 +353,14 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onOrgUnitSelected(OrgUnit orgUnit) {
+    public void onOrgUnitSelected(OrgUnitDB orgUnit) {
         dashboardController.onOrgUnitSelected(orgUnit);
     }
 
     /**
      * Handler that starts or edits a given survey
      */
-    public void onProgramSelected(Program program) {
+    public void onProgramSelected(ProgramDB program) {
         dashboardController.onProgramSelected(program);
     }
 
@@ -391,17 +389,16 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnit orgUnit, final Program program) {
+    public void onCreateSurvey(final OrgUnitDB orgUnit, final ProgramDB program) {
         createNewSurvey(orgUnit, program);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnit orgUnit, Program program) {
+    public void createNewSurvey(OrgUnitDB orgUnit, ProgramDB program) {
         SurveyEntity survey = SurveyPlanner.getInstance().startSurvey(orgUnit.getId_org_unit(), program.getId_program());
         prepareLocationListener(survey.getId());
-        // Put new survey in session
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);
     }
@@ -456,7 +453,7 @@ public class DashboardActivity extends BaseActivity {
         }, 1000);
     }
 
-    public void preparePlanningFilters(List<Program> programList, List<OrgUnit> orgUnitList) {
+    public void preparePlanningFilters(List<ProgramDB> programList, List<OrgUnitDB> orgUnitList) {
         ((PlanModuleController) dashboardController.getModuleByName(
                 PlanModuleController.getSimpleName())).prepareFilters(programList, orgUnitList);
     }
@@ -479,12 +476,12 @@ public class DashboardActivity extends BaseActivity {
 
 
     public class AsyncAnnouncement extends AsyncTask<Void, Void, Void> {
-        User loggedUser;
+        UserDB loggedUser;
 
         @Override
         protected Void doInBackground(Void... params) {
             PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
-            loggedUser = User.getLoggedUser();
+            loggedUser = UserDB.getLoggedUser();
             /* Ignoring the update date
             boolean isUpdated = pullClient.isUserUpdated(loggedUser);
             if (isUpdated) {

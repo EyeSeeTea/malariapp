@@ -24,9 +24,9 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,15 +49,15 @@ public class SentSurveysBuilderBase {
      */
     private Context context;
 
-    Program  program;
-    OrgUnit  orgUnit;
+    ProgramDB program;
+    OrgUnitDB orgUnit;
 
-    List<Survey> surveyList;
+    List<SurveyDB> surveyList;
 
     /**
      * Default constructor
      */
-    public SentSurveysBuilderBase(List<Survey> surveyList, Context context) {
+    public SentSurveysBuilderBase(List<SurveyDB> surveyList, Context context) {
         this.surveyList=surveyList;
         this.context = context;
     }

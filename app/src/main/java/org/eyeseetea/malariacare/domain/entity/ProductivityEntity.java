@@ -1,6 +1,6 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 
 public class ProductivityEntity {
     /**
@@ -36,7 +36,7 @@ public class ProductivityEntity {
      */
     public Integer getProductivity() {
         if (productivity == null) {
-            productivity = OrgUnitProgramRelation.getProductivity(surveyId, orgUnitId, programId);
+            productivity = OrgUnitProgramRelationDB.getProductivity(surveyId, orgUnitId, programId);
         }
         return productivity;
     }
@@ -44,6 +44,6 @@ public class ProductivityEntity {
      * Returns the productivity for this survey according to its orgunit + program
      */
     public static Integer getDefaultProductivity() {
-        return OrgUnitProgramRelation.getDefaultProductivity();
+        return OrgUnitProgramRelationDB.getDefaultProductivity();
     }
 }

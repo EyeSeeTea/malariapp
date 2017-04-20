@@ -30,12 +30,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
@@ -44,7 +43,6 @@ import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,10 +56,10 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     private PlannedAdapter adapter;
 
 
-    private List<Program> programList;
-    private List<OrgUnit> orgUnitList;
+    private List<ProgramDB> programList;
+    private List<OrgUnitDB> orgUnitList;
 
-    private Program programFilter;
+    private ProgramDB programFilter;
     List<PlannedItem> plannedItemList;
     public PlannedFragment() {
 
@@ -100,7 +98,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     public void reloadFilter(){
         CustomSpinner programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
-        Program selectedProgram=(Program) programSpinner.getSelectedItem();
+        ProgramDB selectedProgram=(ProgramDB) programSpinner.getSelectedItem();
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);
         }
@@ -163,7 +161,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
-    public void loadProgram(Program program) {
+    public void loadProgram(ProgramDB program) {
         Log.d(TAG,"Loading program: "+program.getUid());
         programFilter=program;
         if(adapter!=null){
@@ -200,8 +198,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         }
 
         private void createFilters(PlannedServiceBundle plannedServiceBundle) {
-            programList=(List<Program>) plannedServiceBundle.getModelList(Program.class.getName());
-            orgUnitList=(List<OrgUnit>) plannedServiceBundle.getModelList(OrgUnit.class.getName());
+            programList=(List<ProgramDB>) plannedServiceBundle.getModelList(ProgramDB.class.getName());
+            orgUnitList=(List<OrgUnitDB>) plannedServiceBundle.getModelList(OrgUnitDB.class.getName());
             DashboardActivity.dashboardActivity.preparePlanningFilters(programList,orgUnitList);
         }
 

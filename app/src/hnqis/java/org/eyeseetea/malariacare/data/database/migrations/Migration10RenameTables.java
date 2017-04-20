@@ -28,7 +28,7 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 /**
  * Created by idelcano on 08/09/2016.
@@ -51,7 +51,7 @@ public class Migration10RenameTables extends BaseMigration {
     }
 
     private void migrateSurveyTable(DatabaseWrapper database) {
-        ModelAdapter myAdapter = FlowManager.getModelAdapter(Survey.class);
+        ModelAdapter myAdapter = FlowManager.getModelAdapter(SurveyDB.class);
 
         //Create temporal table
         String sql=myAdapter.getCreationQuery();

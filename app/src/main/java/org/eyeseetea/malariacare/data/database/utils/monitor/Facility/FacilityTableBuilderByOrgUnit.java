@@ -23,8 +23,8 @@ import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
     private static final String TAG=".FacilityTableBuilderOU";
-    Map<Program,FacilityTableDataByOrgUnit> facilityTableDataMap;
+    Map<ProgramDB,FacilityTableDataByOrgUnit> facilityTableDataMap;
     public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByOrgUnit()";
     /**
      * Default constructor
@@ -43,7 +43,7 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
      * @param surveys
      * @param context
      */
-    public FacilityTableBuilderByOrgUnit(List<Survey> surveys, Context context) {
+    public FacilityTableBuilderByOrgUnit(List<SurveyDB> surveys, Context context) {
         super(surveys, context);
         this.facilityTableDataMap = new HashMap<>();
     }
@@ -53,8 +53,8 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
      * @param surveys
      * @return
      */
-    private void build(List<Survey> surveys){
-        for(Survey survey:surveys){
+    private void build(List<SurveyDB> surveys){
+        for(SurveyDB survey:surveys){
 
             //Get right table
             FacilityTableDataByOrgUnit facilityTableDataByOrgUnit= facilityTableDataMap.get(survey.getProgram());
@@ -79,8 +79,8 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
         //Build tables
         build(surveys);
         //Inyect tables in view
-        for(Map.Entry<Program,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
-            Program program=tableEntry.getKey();
+        for(Map.Entry<ProgramDB,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
+            ProgramDB program=tableEntry.getKey();
             FacilityTableDataByOrgUnit facilityTableData=tableEntry.getValue();
             inyectDataInChart(webView, String.valueOf(program.getId_program()), facilityTableData.getAsJSON());
         }

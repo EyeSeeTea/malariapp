@@ -24,8 +24,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -84,13 +84,13 @@ public class PushErrorTest {
         fillSurvey(7, "No");
 
         //Change program id so that pushing is not allowed
-        Survey surveyInProgress=Survey.getSurveyInProgress();
+        SurveyDB surveyInProgress= SurveyDB.getSurveyInProgress();
         mockFalseProgramForSurvey(surveyInProgress);
 
         //WHEN
         Long idSurvey=markInProgressAsCompleted();
 
-        Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
+        SurveyDB survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
 
         //THEN
         //then: Survey is NOT pushed (no UID)
@@ -102,8 +102,8 @@ public class PushErrorTest {
         onView(withId(R.id.score)).check(doesNotExist());
     }
 
-    private void mockFalseProgramForSurvey(Survey surveyInProgress) {
-        Program program = surveyInProgress.getProgram();
+    private void mockFalseProgramForSurvey(SurveyDB surveyInProgress) {
+        ProgramDB program = surveyInProgress.getProgram();
         program.setUid(NON_EXISTANT_PROGRAM_UID);
         program.save();
     }
