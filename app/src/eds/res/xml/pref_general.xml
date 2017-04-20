@@ -95,4 +95,10 @@
         android:title="@string/developer_option_title"
         android:summary="@string/developer_option_summary"
         android:defaultValue="false" />
+    <ListPreference
+        android:defaultValue=""
+        android:key="@string/language_code"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/settings_select_language" />
 </PreferenceScreen>

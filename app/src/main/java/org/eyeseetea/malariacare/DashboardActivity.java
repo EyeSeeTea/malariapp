@@ -67,6 +67,7 @@ public class DashboardActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        PreferencesState.getInstance().loadsLanguageInActivity();
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity=this;
 

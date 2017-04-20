@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
 import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
@@ -128,6 +129,7 @@ public class ProgressActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferencesState.getInstance().loadsLanguageInActivity();
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
         PULL_IS_ACTIVE = true;

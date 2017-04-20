@@ -238,4 +238,6 @@ evaluation"</string>
 <string name="feedback_view_image">Open image with...</string>
 
 <string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
+<string name="settings_select_language">"Language"</string>
+<string name="system_defined">"System defined"</string>
 </resources>

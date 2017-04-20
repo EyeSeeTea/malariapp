@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+
 /**
  * Created by arrizabalaga on 30/05/16.
  */
@@ -15,6 +17,7 @@ public class VideoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferencesState.getInstance().loadsLanguageInActivity();
         setContentView(R.layout.video_activity);
 
         //Displays a video file.
