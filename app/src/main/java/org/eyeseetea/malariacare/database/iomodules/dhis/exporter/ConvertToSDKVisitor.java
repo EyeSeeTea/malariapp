@@ -349,7 +349,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(getSafeUsername());
+        dataValue.setStoredBy(getSafeUser());
         dataValue.setValue(AUtils.round(ScoreRegister.getCompositeScore(compositeScore,currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY)));
         dataValue.save();
     }
@@ -361,7 +361,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(getSafeUsername());
+        dataValue.setStoredBy(getSafeUser());
         if(value.getQuestion() != null && value.getQuestion().getOutput() == Constants.DATE){
             Date valueDate= DateQuestionFormatter.formatDateOutput(value.getValue());
             dataValue.setValue(DateQuestionFormatter.formatDateToValue(valueDate));
@@ -546,7 +546,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
         dataValue.setLocalEventId(currentEvent.getLocalId());
         dataValue.setEvent(currentEvent.getEvent());
         dataValue.setProvidedElsewhere(false);
-        dataValue.setStoredBy(getSafeUsername());
+        dataValue.setStoredBy(getSafeUser());
         dataValue.setValue(value);
         dataValue.save();
     }
@@ -736,10 +736,21 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
      * Returns the name of the username avoiding NPE
      * @return
      */
-    private String getSafeUsername(){
+    private String getSafeUser(){
         User user = Session.getUser();
         if(user!=null){
             return user.getName();
+        }
+        return "";
+    }
+    /**
+     * Returns the name of the username avoiding NPE
+     * @return
+     */
+    private String getSafeUsername(){
+        User user = Session.getUser();
+        if(user!=null){
+            return user.getUsername();
         }
         return "";
     }
