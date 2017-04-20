@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
 
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 
 /**
  * Created by idelcano on 23/08/2016.
@@ -28,13 +28,13 @@ public class PieDataByProgram extends PieDataBase {
     /**
      * Type of program for this chart
      */
-    private Program program;
+    private ProgramDB program;
 
     /**
      * Constructor per program
      * @param program
      */
-    public PieDataByProgram(Program program) {
+    public PieDataByProgram(ProgramDB program) {
         this.program = program;
     }
     public String toJSON(String tipChat){

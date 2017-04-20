@@ -6,9 +6,9 @@ import android.support.test.espresso.NoMatchingViewException;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.hamcrest.Matchers;
@@ -57,7 +57,7 @@ public class SDKVariantUtils {
 
         Espresso.unregisterIdlingResources(idlingResource);
 
-        onData(is(instanceOf(OrgUnit.class))).atPosition(idxOrgUnit).perform(click());
+        onData(is(instanceOf(OrgUnitDB.class))).atPosition(idxOrgUnit).perform(click());
 
 
         idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
@@ -66,7 +66,7 @@ public class SDKVariantUtils {
         onView(withId(R.id.program)).perform(click());
 
         Espresso.unregisterIdlingResources(idlingResource);
-        onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
+        onData(is(instanceOf(ProgramDB.class))).atPosition(idxProgram).perform(click());
         onView(withText(R.string.create_info_ok)).perform(click());
     }
 
@@ -85,7 +85,7 @@ public class SDKVariantUtils {
             try {
                 idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
                 Espresso.registerIdlingResources(idlingResource);
-                onData(is(instanceOf(Question.class)))
+                onData(is(instanceOf(QuestionDB.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))

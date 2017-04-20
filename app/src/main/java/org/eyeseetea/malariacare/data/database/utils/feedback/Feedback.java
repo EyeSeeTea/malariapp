@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.feedback;
 
 /**
  * Base class for every feedback row:
- *  - CompositeScore
+ *  - CompositeScoreDB
  *  - Question
  *
  * Created by arrizabalaga on 14/09/15.

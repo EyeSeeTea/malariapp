@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.List;
  * Created by arrizabalaga on 13/10/15.
  */
 public class FacilityColumnData {
-    private List<Survey> surveys;
+    private List<SurveyDB> surveys;
 
     public FacilityColumnData(){
         surveys=new ArrayList<>();
@@ -39,7 +39,7 @@ public class FacilityColumnData {
      * Adds a survey to this cell
      * @param survey
      */
-    public void addSurvey(Survey survey){
+    public void addSurvey(SurveyDB survey){
         surveys.add(survey);
     }
 
@@ -63,7 +63,7 @@ public class FacilityColumnData {
             return 0f;
         }
         float averageFacilityMonth=0;
-        for(Survey survey:surveys){
+        for(SurveyDB survey:surveys){
             averageFacilityMonth+=survey.getMainScore();
         }
         return averageFacilityMonth/surveys.size();

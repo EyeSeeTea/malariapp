@@ -28,9 +28,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.json.JSONObject;
@@ -76,7 +76,7 @@ public class PullClient {
      * last
      * month from now.
      */
-    public EventExtended getLastEventInServerWith(OrgUnit orgUnit, Program program) {
+    public EventExtended getLastEventInServerWith(OrgUnitDB orgUnit, ProgramDB program) {
         EventExtended lastEventInServer = null;
         Date oneMonthAgo = getOneMonthAgo();
 
@@ -121,7 +121,7 @@ public class PullClient {
     /**
      * Find if the last updated for the current user was changed
      */
-    public boolean isUserUpdated(User user) {
+    public boolean isUserUpdated(UserDB user) {
         if (Session.getCredentials().isDemoCredentials()) {
             return false;
         }
@@ -147,7 +147,7 @@ public class PullClient {
         return (dataBaseLastUpdated.before(dhisLastUpdated));
     }
 
-    public User pullUserAttributes(User appUser) {
+    public UserDB pullUserAttributes(UserDB appUser) {
         String lastMessage = appUser.getAnnouncement();
         //Lets for a last event with that orgunit/program
         String data = QueryFormatterUtils.getInstance().getUserAttributesApiCall(appUser.getUid());
@@ -159,11 +159,11 @@ public class PullClient {
             String closeDate = "";
             for (int i = 0; i < jsonNodeArray.size(); i++) {
                 if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                        User.ATTRIBUTE_USER_ANNOUNCEMENT)) {
+                        UserDB.ATTRIBUTE_USER_ANNOUNCEMENT)) {
                     newMessage = jsonNodeArray.get(i).get(VALUE).textValue();
                 }
                 if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                        User.ATTRIBUTE_USER_CLOSE_DATE)) {
+                        UserDB.ATTRIBUTE_USER_CLOSE_DATE)) {
                     closeDate = jsonNodeArray.get(i).get(VALUE).textValue();
                 }
             }
@@ -199,7 +199,7 @@ public class PullClient {
             String closeDateAsString = "";
             for (int i = 0; i < jsonNodeArray.size(); i++) {
                 if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                        User.ATTRIBUTE_USER_CLOSE_DATE)) {
+                        UserDB.ATTRIBUTE_USER_CLOSE_DATE)) {
                     closeDateAsString = jsonNodeArray.get(i).get(VALUE).textValue();
                 }
             }

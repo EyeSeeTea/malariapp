@@ -1,8 +1,9 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 
@@ -25,7 +26,7 @@ public class GetSurveyAnsweredRatioUseCase {
     SurveyAnsweredRatio mSurveyAnsweredRatio;
     RecoveryFrom mRecoveryFrom;
 
-    org.eyeseetea.malariacare.data.database.model.Survey surveyDB;
+    SurveyDB surveyDB;
 
     public void execute(long idSurvey, RecoveryFrom recoveryFrom, GetSurveyAnsweredRatioUseCase.Callback callback) {
         this.mRecoveryFrom = recoveryFrom;
@@ -34,7 +35,7 @@ public class GetSurveyAnsweredRatioUseCase {
     }
 
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        surveyDB = org.eyeseetea.malariacare.data.database.model.Survey.findById(idSurvey);
+        surveyDB = SurveyDB.findById(idSurvey);
         if(mRecoveryFrom.equals(RecoveryFrom.DATABASE)) {
             mSurveyAnsweredRatio = reloadSurveyAnsweredRatio(callback);
         }else if(mRecoveryFrom.equals(RecoveryFrom.MEMORY_FIRST)){
@@ -65,17 +66,17 @@ public class GetSurveyAnsweredRatioUseCase {
     public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
         //TODO Review
         SurveyAnsweredRatio surveyAnsweredRatio=null;
-        Program surveyProgram = surveyDB.getProgram();
-        int numRequired = Question.countRequiredByProgram(surveyProgram);
-        int numCompulsory = Question.countCompulsoryByProgram(surveyProgram);
+        ProgramDB surveyProgram = surveyDB.getProgram();
+        int numRequired = QuestionDB.countRequiredByProgram(surveyProgram);
+        int numCompulsory = QuestionDB.countCompulsoryByProgram(surveyProgram);
         int numOptional = (int) surveyDB.countNumOptionalQuestionsToAnswer();
         if(callback!=null) {
             callback.nextProgressMessage();
         }
-        int numActiveChildrenCompulsory = Question.countChildrenCompulsoryBySurvey(
+        int numActiveChildrenCompulsory = QuestionDB.countChildrenCompulsoryBySurvey(
                 surveyDB.getId_survey(), callback);
-        int numAnswered = Value.countBySurvey(surveyDB);
-        int numCompulsoryAnswered = Value.countCompulsoryBySurvey(surveyDB);
+        int numAnswered = ValueDB.countBySurvey(surveyDB);
+        int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
         surveyAnsweredRatio = new SurveyAnsweredRatio(
                 numRequired + numOptional,
                 numAnswered, numCompulsory + numActiveChildrenCompulsory,

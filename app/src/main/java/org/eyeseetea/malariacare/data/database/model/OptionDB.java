@@ -30,8 +30,8 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class Option extends BaseModel {
+@Table(database = AppDatabase.class, name = "Option")
+public class OptionDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -50,23 +50,23 @@ public class Option extends BaseModel {
     /**
      * Reference to parent answer (loaded lazily)
      */
-    Answer answer;
+    AnswerDB answer;
 
     /**
      * List of values that has choosen this option
      */
-    List<Value> values;
+    List<ValueDB> values;
 
-    public Option() {
+    public OptionDB() {
     }
 
-    public Option(String name, Float factor, Answer answer) {
+    public OptionDB(String name, Float factor, AnswerDB answer) {
         this.name = name;
         this.factor = factor;
         this.setAnswer(answer);
     }
 
-    public Option(String code, String name, Float factor, Answer answer) {
+    public OptionDB(String code, String name, Float factor, AnswerDB answer) {
         this.name = name;
         this.factor = factor;
         this.code = code;
@@ -74,7 +74,7 @@ public class Option extends BaseModel {
     }
 
 
-    public Option(String name) {
+    public OptionDB(String name) {
         this.name = name;
     }
 
@@ -118,18 +118,18 @@ public class Option extends BaseModel {
         this.factor = factor;
     }
 
-    public Answer getAnswer() {
+    public AnswerDB getAnswer() {
         if(answer==null){
             if(id_answer_fk==null) return null;
             answer = new Select()
-                    .from(Answer.class)
-                    .where(Answer_Table.id_answer
+                    .from(AnswerDB.class)
+                    .where(AnswerDB_Table.id_answer
                             .is(id_answer_fk)).querySingle();
         }
         return answer;
     }
 
-    public void setAnswer(Answer answer) {
+    public void setAnswer(AnswerDB answer) {
         this.answer = answer;
         this.id_answer_fk = (answer!=null)?answer.getId_answer():null;
     }
@@ -144,17 +144,17 @@ public class Option extends BaseModel {
      *
      * @return true: Children questions should be shown, false: otherwise.
      */
-    public boolean isActiveChildren(Question question) {
-        for (Match match : question.getMatches()) {
+    public boolean isActiveChildren(QuestionDB question) {
+        for (MatchDB match : question.getMatches()) {
             if (isActiveChildren(match)) return true;
         }
         return false;
     }
 
-    private boolean isActiveChildren(Match match) {
-        for (QuestionOption questionOption : match.getQuestionOptions()) {
+    private boolean isActiveChildren(MatchDB match) {
+        for (QuestionOptionDB questionOption : match.getQuestionOptions()) {
             if (questionOption.getOption().getId_option() == id_option) {
-                QuestionRelation questionRelation = match.getQuestionRelation();
+                QuestionRelationDB questionRelation = match.getQuestionRelation();
                 if (questionRelation.getOperation() == Constants.OPERATION_TYPE_PARENT) {
                     return true;
                 }
@@ -173,10 +173,10 @@ public class Option extends BaseModel {
         return given.equals(name);
     }
 
-    public List<Value> getValues() {
+    public List<ValueDB> getValues() {
         if (values == null) {
-            values = new Select().from(Value.class)
-                    .where(Value_Table.id_option_fk.eq(this.getId_option())).queryList();
+            values = new Select().from(ValueDB.class)
+                    .where(ValueDB_Table.id_option_fk.eq(this.getId_option())).queryList();
         }
         return values;
     }
@@ -186,7 +186,7 @@ public class Option extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Option option = (Option) o;
+        OptionDB option = (OptionDB) o;
 
         if (id_option != option.id_option) return false;
         if (uid_option != null ? !uid_option.equals(option.uid_option) : option.uid_option != null) return false;

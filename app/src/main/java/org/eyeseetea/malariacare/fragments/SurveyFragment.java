@@ -47,10 +47,10 @@ import android.widget.Spinner;
 import com.google.common.collect.Iterables;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
@@ -111,12 +111,12 @@ public class SurveyFragment extends Fragment  {
     /**
      * List of tabs that belongs to the current selected survey
      */
-    private List<Tab> tabsList = new ArrayList<>();
+    private List<TabDB> tabsList = new ArrayList<>();
 
     /**
      * List of all tabs
      */
-    List<Tab> allTabs;
+    List<TabDB> allTabs;
 
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
@@ -237,7 +237,7 @@ public class SurveyFragment extends Fragment  {
 
     @Override
     public void onPause() {
-        final Survey survey = Session.getSurveyByModule(moduleName);
+        final SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
@@ -250,7 +250,7 @@ public class SurveyFragment extends Fragment  {
 
                         @Override
                         public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            Survey dbSurvey = Survey.findById(survey.getId_survey());
+                            SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
                             dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                         }
                     });
@@ -289,7 +289,7 @@ public class SurveyFragment extends Fragment  {
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
                         long id) {
                     Log.d(TAG, "onItemSelected..");
-                    final Tab selectedTab = (Tab) spinner.getSelectedItem();
+                    final TabDB selectedTab = (TabDB) spinner.getSelectedItem();
                     llLayout.findViewById(R.id.previous_tab).setAlpha(0f);
                     llLayout.findViewById(R.id.next_tab).setAlpha(0f);
                     new AsyncChangeTab(selectedTab).executeOnExecutor(
@@ -340,7 +340,7 @@ public class SurveyFragment extends Fragment  {
      */
     private void setCurrentTab(int position) {
         spinner.setSelection(position);
-        final Tab selectedTab = (Tab) spinner.getSelectedItem();
+        final TabDB selectedTab = (TabDB) spinner.getSelectedItem();
         new AsyncChangeTab(selectedTab).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
                 (Void) null);
         Log.d(TAG, "onItemSelected(" + Thread.currentThread().getId() + ")..DONE");
@@ -352,7 +352,7 @@ public class SurveyFragment extends Fragment  {
     }
 
     private void preLoadItems() {
-        for (Tab tab : allTabs) {
+        for (TabDB tab : allTabs) {
             Intent preLoadService = new Intent(getActivity().getApplicationContext(),
                     SurveyService.class);
             preLoadService.putExtra(Constants.MODULE_KEY, moduleName);
@@ -364,11 +364,11 @@ public class SurveyFragment extends Fragment  {
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
 
-        private Tab tab;
+        private TabDB tab;
 
         String module;
 
-        public AsyncChangeTab(Tab tab) {
+        public AsyncChangeTab(TabDB tab) {
             this.tab = tab;
         }
 
@@ -463,13 +463,13 @@ public class SurveyFragment extends Fragment  {
     /**
      * Prepares the selected tab to be shown
      */
-    private View prepareTab(Tab selectedTab, String module) {
+    private View prepareTab(TabDB selectedTab, String module) {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         if (selectedTab.isCompositeScore()) {
             //Initialize scores x question not loaded yet
-            List<Tab> notLoadedTabs = tabAdaptersCache.getNotLoadedTabs();
-            ScoreRegister.initScoresForQuestions(Question.listAllByTabs(notLoadedTabs),
+            List<TabDB> notLoadedTabs = tabAdaptersCache.getNotLoadedTabs();
+            ScoreRegister.initScoresForQuestions(QuestionDB.listAllByTabs(notLoadedTabs),
                     Session.getSurveyByModule(module), module);
         }
         ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(selectedTab);
@@ -517,7 +517,7 @@ public class SurveyFragment extends Fragment  {
         if (score == null) {
             return;
         }
-        Tab tab = ((AutoTabAdapter) adapter).getTab();
+        TabDB tab = ((AutoTabAdapter) adapter).getTab();
         int viewId = IDS_SCORES_IN_GENERAL_TAB[tab.getOrder_pos()];
         if (viewId != 0) {
             CustomTextView customTextView = ((CustomTextView) llLayout.findViewById(viewId));
@@ -556,7 +556,7 @@ public class SurveyFragment extends Fragment  {
         if (score == null) {
             return 0F;
         }
-        Tab tab = ((AutoTabAdapter) adapter).getTab();
+        TabDB tab = ((AutoTabAdapter) adapter).getTab();
         if (contains(indexToConsider, tab.getOrder_pos())) {
             return score;
         }
@@ -641,7 +641,7 @@ public class SurveyFragment extends Fragment  {
     /**
      * Reloads tabs info and notifies its adapter
      */
-    private void reloadTabs(List<Tab> tabs) {
+    private void reloadTabs(List<TabDB> tabs) {
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")");
 
         this.tabsList.clear();
@@ -694,15 +694,15 @@ public class SurveyFragment extends Fragment  {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<CompositeScore> compositeScores = (List<CompositeScore>) Session.popServiceValue(
+            List<CompositeScoreDB> compositeScores = (List<CompositeScoreDB>) Session.popServiceValue(
                     SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
-            List<Tab> tabs = (List<Tab>) Session.popServiceValue(
+            List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
                     SurveyService.PREPARE_SURVEY_ACTION_TABS);
 
             tabAdaptersCache.reloadAdapters(tabs, compositeScores);
             reloadTabs(tabs);
             stopProgress();
-            allTabs = (List<Tab>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+            allTabs = (List<TabDB>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
             // After loading first tab we start the individual services that preload the items
             // for the rest of tabs
             preLoadItems();
@@ -718,12 +718,12 @@ public class SurveyFragment extends Fragment  {
         /**
          * Cache of {tab: adapter} for each tab in the survey
          */
-        private Map<Tab, ITabAdapter> adapters = new HashMap<>();
+        private Map<TabDB, ITabAdapter> adapters = new HashMap<>();
 
         /**
          * List of composite scores of the current survey
          */
-        private List<CompositeScore> compositeScores;
+        private List<CompositeScoreDB> compositeScores;
 
         /**
          * Flag that optimizes the load of compositeScore the next time
@@ -737,7 +737,7 @@ public class SurveyFragment extends Fragment  {
          * @param tab Tab whose adapter is searched.
          * @return The right adapter to deal with that Tab
          */
-        public ITabAdapter findAdapter(Tab tab) {
+        public ITabAdapter findAdapter(TabDB tab) {
             ITabAdapter adapter = adapters.get(tab);
             if (adapter == null) {
                 adapter = buildAdapter(tab);
@@ -749,8 +749,8 @@ public class SurveyFragment extends Fragment  {
             return adapter;
         }
 
-        public List<Tab> getNotLoadedTabs() {
-            List<Tab> notLoadedTabs = new ArrayList<>();
+        public List<TabDB> getNotLoadedTabs() {
+            List<TabDB> notLoadedTabs = new ArrayList<>();
             //If has already been shown NOTHING to reload
             if (compositeScoreTabShown) {
                 return notLoadedTabs;
@@ -758,7 +758,7 @@ public class SurveyFragment extends Fragment  {
 
             compositeScoreTabShown = true;
             notLoadedTabs = new ArrayList<>(tabsList);
-            Set<Tab> loadedTabs = adapters.keySet();
+            Set<TabDB> loadedTabs = adapters.keySet();
             notLoadedTabs.removeAll(loadedTabs);
             return notLoadedTabs;
         }
@@ -767,8 +767,8 @@ public class SurveyFragment extends Fragment  {
          * Resets the state of the cache.
          * Called form the receiver once data is ready.
          */
-        public void reloadAdapters(List<Tab> tabs, List<CompositeScore> compositeScores) {
-            Tab firstTab = tabs.get(0);
+        public void reloadAdapters(List<TabDB> tabs, List<CompositeScoreDB> compositeScores) {
+            TabDB firstTab = tabs.get(0);
             this.adapters.clear();
             this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
                     Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
@@ -793,7 +793,7 @@ public class SurveyFragment extends Fragment  {
          * Puts every adapter (for every tab) into the cache if is not already there.
          */
         public void cacheAllTabs() {
-            for (Tab tab : tabsList) {
+            for (TabDB tab : tabsList) {
                 findAdapter(tab);
             }
         }
@@ -801,7 +801,7 @@ public class SurveyFragment extends Fragment  {
         /**
          * Builds the right adapter for the given tab
          */
-        private ITabAdapter buildAdapter(Tab tab) {
+        private ITabAdapter buildAdapter(TabDB tab) {
             return AutoTabAdapter.build(tab, getActivity(),
                     Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
         }

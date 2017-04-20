@@ -30,8 +30,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 /**
  * Created by ivan.arrizabalaga on 14/02/15.
  */
-@Table(database = AppDatabase.class)
-public class OrgUnitProgramRelation extends BaseModel {
+@Table(database = AppDatabase.class, name = "OrgUnitProgramRelation")
+public class OrgUnitProgramRelationDB extends BaseModel {
 
     public static final int DEFAULT_PRODUCTIVITY = 0;
 
@@ -45,7 +45,7 @@ public class OrgUnitProgramRelation extends BaseModel {
     /**
      * Reference to lazy orgUnit
      */
-    OrgUnit orgUnit;
+    OrgUnitDB orgUnit;
 
     @Column
     Long id_program_fk;
@@ -53,7 +53,7 @@ public class OrgUnitProgramRelation extends BaseModel {
     /**
      * Reference to lazy program
      */
-    Program program;
+    ProgramDB program;
 
     /**
      * Productivity of this relationship based on orgunit + program attributes
@@ -61,32 +61,32 @@ public class OrgUnitProgramRelation extends BaseModel {
     @Column
     Integer productivity;
 
-    public OrgUnitProgramRelation() {
+    public OrgUnitProgramRelationDB() {
     }
 
-    public OrgUnitProgramRelation(OrgUnit orgUnit, Program program) {
+    public OrgUnitProgramRelationDB(OrgUnitDB orgUnit, ProgramDB program) {
         setOrgUnit(orgUnit);
         setProgram(program);
         this.productivity = DEFAULT_PRODUCTIVITY;
     }
 
-    public OrgUnitProgramRelation(OrgUnit orgUnit, Program program, Integer productivity) {
+    public OrgUnitProgramRelationDB(OrgUnitDB orgUnit, ProgramDB program, Integer productivity) {
         this(orgUnit,program);
         this.productivity=productivity;
     }
 
-    public OrgUnit getOrgUnit() {
+    public OrgUnitDB getOrgUnit() {
         if(orgUnit==null){
             if(id_org_unit_fk==null) return null;
             orgUnit = new Select()
-                    .from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_org_unit
+                    .from(OrgUnitDB.class)
+                    .where(OrgUnitDB_Table.id_org_unit
                             .is(id_org_unit_fk)).querySingle();
         }
         return orgUnit;
     }
 
-    public void setOrgUnit(OrgUnit orgUnit) {
+    public void setOrgUnit(OrgUnitDB orgUnit) {
         this.orgUnit= orgUnit;
         this.id_org_unit_fk = (orgUnit!=null)?orgUnit.getId_org_unit():null;
     }
@@ -96,18 +96,18 @@ public class OrgUnitProgramRelation extends BaseModel {
         this.orgUnit = null;
     }
 
-    public Program getProgram() {
+    public ProgramDB getProgram() {
         if(program==null){
             if(id_program_fk==null) return null;
             program = new Select()
-                    .from(Program.class)
-                    .where(Program_Table.id_program
+                    .from(ProgramDB.class)
+                    .where(ProgramDB_Table.id_program
                             .is(id_program_fk)).querySingle();
         }
         return program;
     }
 
-    public void setProgram(Program program) {
+    public void setProgram(ProgramDB program) {
         this.program=program;
         this.id_program_fk = (program!=null)?program.getId_program():null;
     }
@@ -131,24 +131,25 @@ public class OrgUnitProgramRelation extends BaseModel {
      * @param survey
      * @return
      */
-    public static Integer getProductivity(Survey survey){
+    public static Integer getProductivity(SurveyDB survey){
         if(survey==null){
             return DEFAULT_PRODUCTIVITY;
         }
 
-        OrgUnit orgUnit = survey.getOrgUnit();
+        OrgUnitDB orgUnit = survey.getOrgUnit();
         if(orgUnit==null){
             return DEFAULT_PRODUCTIVITY;
         }
 
-        Program program = survey.getProgram();
+        ProgramDB program = survey.getProgram();
         if(program==null){
             return DEFAULT_PRODUCTIVITY;
         }
 
-        OrgUnitProgramRelation orgUnitProgramRelation = new Select().from(OrgUnitProgramRelation.class)
-                .where(OrgUnitProgramRelation_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(OrgUnitProgramRelation_Table.id_program_fk.eq(program.getId_program())).querySingle();
+        OrgUnitProgramRelationDB
+                orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
+                .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
+                .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(program.getId_program())).querySingle();
 
         if(orgUnitProgramRelation==null){
             return DEFAULT_PRODUCTIVITY;
@@ -170,7 +171,7 @@ public class OrgUnitProgramRelation extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrgUnitProgramRelation that = (OrgUnitProgramRelation) o;
+        OrgUnitProgramRelationDB that = (OrgUnitProgramRelationDB) o;
 
         if (id_orgunit_program_relation != that.id_orgunit_program_relation) return false;
         if (id_org_unit_fk != null ? !id_org_unit_fk.equals(that.id_org_unit_fk) : that.id_org_unit_fk != null)

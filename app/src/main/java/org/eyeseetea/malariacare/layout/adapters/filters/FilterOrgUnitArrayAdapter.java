@@ -23,7 +23,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.layout.adapters.general.AddlArrayAdapter;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -32,13 +32,13 @@ import java.util.List;
 /**
  * Created by adrian on 30/04/15.
  */
-public class FilterOrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
+public class FilterOrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
 
-    public FilterOrgUnitArrayAdapter(Context context, List<OrgUnit> orgUnits) {
+    public FilterOrgUnitArrayAdapter(Context context, List<OrgUnitDB> orgUnits) {
         super(context, orgUnits);
     }
 
-    @Override public void drawText(CustomTextView customTextView, OrgUnit orgUnit) {
+    @Override public void drawText(CustomTextView customTextView, OrgUnitDB orgUnit) {
         if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
             customTextView.setTextSize(20);
         customTextView.setText(orgUnit.getName());

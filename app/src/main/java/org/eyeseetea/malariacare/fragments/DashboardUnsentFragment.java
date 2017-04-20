@@ -42,7 +42,7 @@ import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
@@ -63,7 +63,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
-    private List<Survey> surveys;
+    private List<SurveyDB> surveys;
     protected IDashboardAdapter adapter;
     private static int selectedPosition=0;
     DashboardActivity dashboardActivity;
@@ -160,7 +160,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Log.d(TAG, "id" + item.getItemId());
-        final Survey survey=(Survey)adapter.getItem(selectedPosition-1);
+        final SurveyDB survey=(SurveyDB)adapter.getItem(selectedPosition-1);
         switch (item.getItemId()) {
             case R.id.option_edit:
                 dashboardActivity.onSurveySelected(survey);
@@ -189,7 +189,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     //Remove survey from the list and reload list.
-    public void removeSurveyFromAdapter(Survey survey) {
+    public void removeSurveyFromAdapter(SurveyDB survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
     }
@@ -280,7 +280,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    public void manageSurveysAlarm(List<Survey> newListSurveys){
+    public void manageSurveysAlarm(List<SurveyDB> newListSurveys){
         Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         //Fixme think other way to cancel the setPushAlarm in Malariaapp
         AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
@@ -298,12 +298,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
     public void reloadInProgressSurveys(){
-        List<Survey> surveysInProgressFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+        List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
         reloadSurveys(surveysInProgressFromService);
     }
 
     public void reloadCompletedSurveys(){
-        List<Survey> surveysCompletedFromService = (List<Survey>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+        List<SurveyDB> surveysCompletedFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
 
         //No surveys -> cancel alarm for pushing
         if(surveysCompletedFromService==null || surveysCompletedFromService.size()==0){
@@ -314,7 +314,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys){
+    public void reloadSurveys(List<SurveyDB> newListSurveys){
         if(newListSurveys!=null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
             this.surveys.clear();

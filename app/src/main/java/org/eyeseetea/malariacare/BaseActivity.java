@@ -37,7 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -80,10 +80,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private void checkQuarantineSurveys() {
         if (PreferencesState.getInstance().isPushInProgress()) {
-            List<Survey> surveys = Survey.getAllSendingSurveys();
+            List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
             Log.d(TAG + "B&D", "The app was closed in the middle of a push. Surveys sending: "
                     + surveys.size());
-            for (Survey survey : surveys) {
+            for (SurveyDB survey : surveys) {
                 survey.setStatus(Constants.SURVEY_QUARANTINE);
                 survey.save();
             }
@@ -275,7 +275,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Asks for location (required while starting to edit a survey)
      */
-    public void prepareLocationListener(Survey survey) {
+    public void prepareLocationListener(SurveyDB survey) {
 
         locationListener = new SurveyLocationListener(survey.getId_survey());
         LocationManager locationManager =
