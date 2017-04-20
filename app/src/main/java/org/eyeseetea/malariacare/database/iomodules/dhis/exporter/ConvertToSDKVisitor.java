@@ -397,7 +397,7 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
     private void updateEventDates() {
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in the next push instead of creating it and that will crash
-        String date=EventExtended.format(currentSurvey.getCompletionDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
+        String date=EventExtended.format(currentSurvey.getCreationDate(), EventExtended.DHIS2_GMT_DATE_FORMAT);
         currentEvent.setEventDate(date);
         currentEvent.setDueDate(EventExtended.format(currentSurvey.getScheduledDate(), EventExtended.DHIS2_GMT_DATE_FORMAT));
         //Not used
