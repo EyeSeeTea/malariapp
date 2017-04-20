@@ -90,6 +90,7 @@
         android:background="@color/white"
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
+
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,7 +102,7 @@
         android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
         android:layout_gravity="left"
         android:gravity="left"
-        app:tDimension="@string/font_size_level4"
+        app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
 
     <org.eyeseetea.malariacare.views.CustomTextView

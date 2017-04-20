@@ -448,29 +448,9 @@ public class ProgressActivity extends Activity {
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PUSH_STEPS);
 
-        List<Survey> surveys=findSurveysToPush();
+        List<Survey> surveys=new ArrayList<>();
         Log.d(TAG,"surveys"+surveys.size());
         PushController.getInstance().push(this, surveys);
-    }
-
-    /**
-     * Find the surveys that are going to be pushed
-     * @return
-     */
-    private List<Survey> findSurveysToPush(){
-        if(hasAPullAfterPush()){
-            List <Survey> surveys= Survey.getAllUnsentUnplannedSurveys();
-            for(int i=0;i<surveys.size();i++) {
-                if(surveys.get(i).getCompletionDate()==null)
-                    surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
-            }
-            return surveys;
-        }
-
-        List<Survey> surveys=new ArrayList<>();
-        //Fixme it is not used anymore?.
-        //surveys.add(Session.getSurveyByModule(module));
-        return surveys;
     }
 
     @Subscribe
