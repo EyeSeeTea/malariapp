@@ -189,14 +189,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        if ((requestCode == DUMP_REQUEST_CODE)) {
-            ExportData.removeDumpIfExist(this);
-        }
-    }
-
     /**
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
