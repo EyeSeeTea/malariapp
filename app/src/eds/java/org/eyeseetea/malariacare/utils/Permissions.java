@@ -21,10 +21,15 @@ package org.eyeseetea.malariacare.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
+import org.eyeseetea.malariacare.database.utils.PreferencesState;
+
 import java.util.HashMap;
+import java.util.prefs.PreferenceChangeEvent;
 
 public class Permissions {
 
@@ -93,9 +98,20 @@ public class Permissions {
     }
 
     public void requestPermission(String permission, int code) {
-        ActivityCompat.requestPermissions(activity, new String[]{permission}, code);
+        if(!hasPermissions(activity, new String[]{permission})) {
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, code);
+        }
     }
-
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     public boolean areAllPermissionsGranted() {
         return permissions.isEmpty();
     }
