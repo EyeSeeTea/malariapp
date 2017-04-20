@@ -29,9 +29,10 @@
     <string name="dialog_complete_option">Complete</string>
     <string name="dialog_are_you_sure_complete_survey">Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey</string>
     <string name="dialog_incompleted_compulsory_survey">This survey cannot be sent yet. Please answer at least all the compulsory questions</string>
-    <string name="dialog_incompleted_compulsory_pulling">Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions</string>
-    <string name="dialog_sent_survey_on_refresh_metadata">Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?</string>
-    <string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
+    <string name="dialog_action_logout">"ចេញតម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។ "</string>
+    <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
+    <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
+    <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
 
     <string name="dashboard_info_feedback">Feedback</string>
     <string name="dashboard_info_ready_to_upload">Ready to upload</string>
