@@ -268,6 +268,7 @@ public class AssessModuleController extends ModuleController {
                             dashboardController.reloadVertical();
                         }
                         dashboardController.setNavigatingBackwards(false);
+                        DashboardActivity.dashboardActivity.reloadSentData();
                     }
                 }).create().show();
     }
