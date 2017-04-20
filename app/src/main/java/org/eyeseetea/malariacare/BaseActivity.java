@@ -67,9 +67,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
         Dhis2Application.bus.register(this);
         super.onCreate(savedInstanceState);
+
+        PreferencesState.getInstance().loadsLanguageInActivity();
         initView(savedInstanceState);
         checkQuarantineSurveys();
     }

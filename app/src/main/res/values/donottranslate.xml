@@ -102,4 +102,5 @@
                <p>sh ${gitPath}/generate_last_commit.sh </p>
         <p>3. Run "git checkout". </p>]]>
     </string>
+    <item name="language_code" translatable="false" type="string">language_code</item>
     </resources>
