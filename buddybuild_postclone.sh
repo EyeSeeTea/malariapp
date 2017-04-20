@@ -15,5 +15,4 @@ cd DBFlowORM
 git checkout update_to_gradle_2.0
 cd -
 cp -a DBFlowORM sdk
-cp ${BUDDYBUILD_SECURE_FILES}/driveserviceprivatekey.json app/src/hnqis/res/raw/driveserviceprivatekey.json
 
