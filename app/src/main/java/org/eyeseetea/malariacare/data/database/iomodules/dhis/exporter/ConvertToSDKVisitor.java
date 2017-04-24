@@ -510,7 +510,6 @@ public class ConvertToSDKVisitor implements
                                     iEvent.getEvent()));
                 }
                 saveSurveyFromImportSummary(iSurvey);
-                continue;
             }
         }
     }
