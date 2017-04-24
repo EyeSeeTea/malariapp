@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
 import org.eyeseetea.malariacare.domain.entity.PushReport;
 import org.eyeseetea.malariacare.domain.exception.PushReportException;
+import org.eyeseetea.malariacare.domain.exception.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -448,7 +449,7 @@ public class ConvertToSDKVisitor implements
      * Saves changes in the survey (supposedly after a successfull push)
      */
     public void saveSurveyStatus(Map<String, PushReport> PushReportMap, final
-    IPushController.IPushControllerCallback callback) throws PushReportException {
+    IPushController.IPushControllerCallback callback) {
         for (int i = 0; i < surveys.size(); i++) {
             Survey iSurvey = surveys.get(i);
             //Sets the survey status as quarantine to prevent wrong importSummaries (F.E. in
@@ -456,17 +457,20 @@ public class ConvertToSDKVisitor implements
             //This survey will be checked again in the future push to prevent the duplicates
             // in the server.
             iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
+            iSurvey.save();
+
             Log.d(TAG, "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE"
                     + iSurvey.getId_survey() + " eventuid: " + iSurvey.getEventUid());
-            iSurvey.save();
 
             EventExtended iEvent = new EventExtended(events.get(iSurvey.getId_survey()));
             PushReport pushReport;
             pushReport = PushReportMap.get(
                     iEvent.getEvent().getUId());
             if (pushReport == null) {
-                throw new PushReportException(
+                //the survey was saved as quarantine.
+                new PushReportException(
                         "saveSurveyStatus: report null " + iSurvey.getId_survey());
+                continue;
             }
             List<SurveyConflict> surveyConflicts = pushReport.getSurveyConflicts();
 
@@ -484,7 +488,9 @@ public class ConvertToSDKVisitor implements
                                 " with error " + surveyConflict.getValue()
                                 + " dataelement pushing survey: "
                                 + iSurvey.getId_survey());
-                        callback.onError(new PushReportException(
+                        iSurvey.saveConflict(surveyConflict.getUid());
+                        iSurvey.save();
+                        callback.onError(new PushValueException(
                                 String.format(context.getString(R.string.error_conflict_message),
                                         iEvent.getEvent().getUId(), surveyConflict.getUid(),
                                         surveyConflict.getValue()) + ""));
@@ -505,11 +511,6 @@ public class ConvertToSDKVisitor implements
                 }
                 saveSurveyFromImportSummary(iSurvey);
                 continue;
-            }
-            //Errors
-            if (pushReport != null) {
-                throw new PushReportException(
-                        "saveSurveyStatus: report finish with errors " + iSurvey.getId_survey());
             }
         }
     }

@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class PushController implements IPushController {
     private final String TAG = ".PushControllerB&D";
@@ -100,17 +101,21 @@ public class PushController implements IPushController {
                     @Override
                     public void onSuccess(
                             Map<String, PushReport> mapEventsReports) {
+                        if(mapEventsReports==null || mapEventsReports.size()==0){
+                            onError(new PushReportException("Error on survey push check"));
+                            return;
+                        }
                         try {
                             mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback);
                             callback.onComplete();
-                        }catch (PushReportException e){
-                            onError(e);
+                        }catch (Exception e){
+                            onError(new PushReportException(e));
                         }
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if(throwable instanceof PushReportException) {
+                        if(throwable instanceof  PushReportException) {
                             mConvertToSDKVisitor.setSurveysAsQuarantine();
                         }
                         callback.onError(throwable);
