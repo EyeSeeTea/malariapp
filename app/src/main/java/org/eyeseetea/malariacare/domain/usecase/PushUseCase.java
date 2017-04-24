@@ -25,7 +25,6 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.eyeseetea.malariacare.network.SurveyChecker;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 public class PushUseCase {
 
