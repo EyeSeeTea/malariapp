@@ -5,7 +5,10 @@ import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+
+import java.util.List;
 
 public class GetSurveyAnsweredRatioUseCase {
     public interface Callback{
@@ -25,11 +28,12 @@ public class GetSurveyAnsweredRatioUseCase {
 
     SurveyAnsweredRatio mSurveyAnsweredRatio;
     Action mAction;
-
+    GetSurveyAnsweredRatioUseCase.Callback callback;
     SurveyDB surveyDB;
 
     public void execute(long idSurvey, Action action, GetSurveyAnsweredRatioUseCase.Callback callback) {
         this.mAction = action;
+        this.callback = callback;
         SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
         callback.onComplete(surveyAnsweredRatio);
     }
@@ -37,9 +41,9 @@ public class GetSurveyAnsweredRatioUseCase {
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         surveyDB = SurveyDB.findById(idSurvey);
         if(mAction.equals(Action.FORCE_UPDATE)) {
-            mSurveyAnsweredRatio = reloadSurveyAnsweredRatio(callback);
+            mSurveyAnsweredRatio = reloadSurveyAnsweredRatio();
         }else if(mAction.equals(Action.GET)){
-            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
+            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey);
         }
         return mSurveyAnsweredRatio;
     }
@@ -48,11 +52,11 @@ public class GetSurveyAnsweredRatioUseCase {
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey) {
         if (answeredQuestionRatio == null) {
             answeredQuestionRatio = SurveyAnsweredRatio.getModelToEntity(idSurvey);
             if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
+                answeredQuestionRatio = reloadSurveyAnsweredRatio();
             }
         }
         return answeredQuestionRatio;
@@ -63,7 +67,7 @@ public class GetSurveyAnsweredRatioUseCase {
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio() {
         //TODO Review
         SurveyAnsweredRatio surveyAnsweredRatio =null;
         ProgramDB surveyProgram = surveyDB.getProgram();
@@ -73,8 +77,11 @@ public class GetSurveyAnsweredRatioUseCase {
         if(callback!=null) {
             callback.nextProgressMessage();
         }
-        int numActiveChildrenCompulsory = QuestionDB.countChildrenCompulsoryBySurvey(
-                surveyDB.getId_survey(), callback);
+
+        List<QuestionDB> questionDBList =  QuestionDB.getChildrenCompulsoryBySurvey(
+                surveyDB.getId_survey());
+        int numActiveChildrenCompulsory = calculateCompulsoryChild(QuestionDB.convertModelListToEntity(questionDBList),
+                surveyDB.getId_survey());
         int numAnswered = ValueDB.countBySurvey(surveyDB);
         int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
         surveyAnsweredRatio = new SurveyAnsweredRatio(surveyDB.getId_survey(),
@@ -83,5 +90,26 @@ public class GetSurveyAnsweredRatioUseCase {
                 numCompulsoryAnswered);
         SurveyAnsweredRatioDB.saveEntityToModel(surveyAnsweredRatio);
         return surveyAnsweredRatio;
+    }
+
+    public int calculateCompulsoryChild(List<Question> questions, long idSurvey){
+        int numActiveChildren=0;
+
+        //checks if the children questions are active by UID
+        // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
+        for(int i=0; i<questions.size();i++) {
+            if(questions.get(i).isCompulsory() && !QuestionDB.isHiddenQuestionByUidAndSurvey(questions.get(i).getUId(), idSurvey)) {
+                numActiveChildren++;
+            }
+            if(i == (Math.round((Float.parseFloat(questions.size()+"")*0.25)))
+                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.5)))
+                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.75)))){
+                if (callback != null) {
+                    callback.nextProgressMessage();
+                }
+            }
+        }
+        // Return number of active compulsory children
+        return numActiveChildren;
     }
 }
