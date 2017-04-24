@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.PushReport;
 import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
+import org.eyeseetea.malariacare.domain.exception.NullEventDateException;
 import org.eyeseetea.malariacare.domain.exception.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -505,9 +506,9 @@ public class ConvertToSDKVisitor implements
                         + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
                     //If eventdate is null the event is invalid. The event is sent but we need inform to the user.
-                    DashboardActivity.showException(context.getString(R.string.error_message),
+                    callback.onError(new NullEventDateException(
                             String.format(context.getString(R.string.error_message_push),
-                                    iEvent.getEvent()));
+                                    iEvent.getEvent())));
                 }
                 saveSurveyFromImportSummary(iSurvey);
             }
