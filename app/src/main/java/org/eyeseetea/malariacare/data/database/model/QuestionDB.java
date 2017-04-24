@@ -897,7 +897,7 @@ public class QuestionDB extends BaseModel {
                 output == Constants.RADIO_GROUP_HORIZONTAL ||
                 output == Constants.RADIO_GROUP_VERTICAL;
     }
-    public static List<Question> convertModelListToEntity(List<QuestionDB> questionDBs){
+    public static List<Question> convertListFromModelToEntity(List<QuestionDB> questionDBs){
         List<Question> questionEntities = new ArrayList<>();
         for(QuestionDB questionDB:questionDBs){
             questionEntities.add(QuestionDB.getFromModel(questionDB));

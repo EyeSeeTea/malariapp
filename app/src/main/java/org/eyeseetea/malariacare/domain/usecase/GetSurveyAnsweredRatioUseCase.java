@@ -80,7 +80,7 @@ public class GetSurveyAnsweredRatioUseCase {
 
         List<QuestionDB> questionDBList =  QuestionDB.getChildrenCompulsoryBySurvey(
                 surveyDB.getId_survey());
-        int numActiveChildrenCompulsory = calculateCompulsoryChild(QuestionDB.convertModelListToEntity(questionDBList),
+        int numActiveChildrenCompulsory = calculateCompulsoryChild(QuestionDB.convertListFromModelToEntity(questionDBList),
                 surveyDB.getId_survey());
         int numAnswered = ValueDB.countBySurvey(surveyDB);
         int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
