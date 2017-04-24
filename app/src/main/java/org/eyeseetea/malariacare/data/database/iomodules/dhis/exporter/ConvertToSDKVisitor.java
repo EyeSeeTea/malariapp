@@ -461,7 +461,6 @@ public class ConvertToSDKVisitor implements
 
             Log.d(TAG, "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE"
                     + iSurvey.getId_survey() + " eventuid: " + iSurvey.getEventUid());
-
             EventExtended iEvent = new EventExtended(events.get(iSurvey.getId_survey()));
             PushReport pushReport;
             pushReport = pushReportMap.get(
@@ -474,7 +473,7 @@ public class ConvertToSDKVisitor implements
             }
             List<SurveyConflict> surveyConflicts = pushReport.getSurveyConflicts();
 
-            //If the importSummary has a failedItem the survey was saved in the server but
+            //If the pushResult has some conflict the survey was saved in the server but
             // never resend, the survey is saved as survey in conflict.
             if (surveyConflicts != null && surveyConflicts.size() > 0) {
                 Log.d(TAG, "saveSurveyStatus: conflicts");
