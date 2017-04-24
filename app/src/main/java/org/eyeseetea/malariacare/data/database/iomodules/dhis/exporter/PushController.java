@@ -102,7 +102,7 @@ public class PushController implements IPushController {
                     public void onSuccess(
                             Map<String, PushReport> mapEventsReports) {
                         if(mapEventsReports==null || mapEventsReports.size()==0){
-                            onError(new PushReportException("Error on survey push check"));
+                            onError(new PushReportException("EventReport is null or empty"));
                             return;
                         }
                         try {
