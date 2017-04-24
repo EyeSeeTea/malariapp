@@ -38,8 +38,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
-import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
 import org.eyeseetea.malariacare.domain.entity.PushReport;
+import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
 import org.eyeseetea.malariacare.domain.exception.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -448,13 +448,13 @@ public class ConvertToSDKVisitor implements
     /**
      * Saves changes in the survey (supposedly after a successfull push)
      */
-    public void saveSurveyStatus(Map<String, PushReport> PushReportMap, final
+    public void saveSurveyStatus(Map<String, PushReport> pushReportMap, final
     IPushController.IPushControllerCallback callback) {
         for (int i = 0; i < surveys.size(); i++) {
             Survey iSurvey = surveys.get(i);
-            //Sets the survey status as quarantine to prevent wrong importSummaries (F.E. in
-            // network failures).
-            //This survey will be checked again in the future push to prevent the duplicates
+
+            //Sets the survey status as quarantine to prevent wrong reports on unexpected exception.
+            //F.E. if the app crash unexpected this survey will be checked again in the future push to prevent the duplicates
             // in the server.
             iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
             iSurvey.save();
@@ -464,7 +464,7 @@ public class ConvertToSDKVisitor implements
 
             EventExtended iEvent = new EventExtended(events.get(iSurvey.getId_survey()));
             PushReport pushReport;
-            pushReport = PushReportMap.get(
+            pushReport = pushReportMap.get(
                     iEvent.getEvent().getUId());
             if (pushReport == null) {
                 //the survey was saved as quarantine.

@@ -64,7 +64,7 @@ public class PushUseCase {
                 } else if (throwable instanceof SurveysToPushNotFoundException) {
                     callback.onSurveysNotFoundError();
                 } else if (throwable instanceof PushReportException){
-                    callback.onPushError();
+                    callback.onInformativeError(throwable.getMessage());
                 }else if (throwable instanceof PushValueException){
                     callback.onInformativeError(throwable.getMessage());
                 }else {

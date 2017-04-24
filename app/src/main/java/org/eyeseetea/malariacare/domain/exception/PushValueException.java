@@ -10,7 +10,7 @@ public class PushValueException extends Exception {
     public PushValueException(Throwable throwable) {
         throwable.printStackTrace();
         this.message = throwable.getMessage();
-        System.out.println(PushReportException.class.getName() + " message " + message);
+        System.out.println(PushValueException.class.getName() + " message " + message);
     }
 
     @Override
