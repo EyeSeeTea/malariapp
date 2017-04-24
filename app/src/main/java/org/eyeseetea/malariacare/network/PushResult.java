@@ -36,7 +36,7 @@ public class PushResult {
     public static final String DHIS220_RESPONSE = "response";
 
     private static final String UNAUTHORIZED_EXCEPTION_MESSAGE="Unauthorized";
-    private static final String UIDS_EXCEPTION_MESSAGE="SurveyConflict";
+    private static final String UIDS_EXCEPTION_MESSAGE="Conflict";
 
     private JSONObject jsonObject;
     private Exception exception;
