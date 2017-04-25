@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.domain.exception;
+package org.eyeseetea.malariacare.domain.exception.push;
 
 public class PushReportException extends Exception {
     String message;

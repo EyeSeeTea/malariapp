@@ -26,10 +26,10 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.domain.entity.PushReport;
-import org.eyeseetea.malariacare.domain.entity.PushedValuesCount;
-import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
-import org.eyeseetea.malariacare.domain.exception.PushReportException;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushedValuesCount;
+import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -105,14 +105,14 @@ public class PushDhisSDKDataSource {
             for (Map.Entry<String, ImportSummary> entry : mapEventsImportSummary.entrySet())
             {
                 PushReport pushReport = new PushReport();
-                List<SurveyConflict> conflictList = new ArrayList<>();
+                List<PushConflict> conflictList = new ArrayList<>();
                 if(entry.getValue().getConflicts()!=null) {
                     for (Conflict conflict : entry.getValue().getConflicts()) {
                         conflictList.add(
-                                new SurveyConflict(conflict.getObject(), conflict.getValue()));
+                                new PushConflict(conflict.getObject(), conflict.getValue()));
                     }
                 }
-                pushReport.setSurveyConflicts(conflictList);
+                pushReport.setPushConflicts(conflictList);
                 pushReport.setDescription(entry.getValue().getDescription());
                 pushReport.setHref(entry.getValue().getHref());
 

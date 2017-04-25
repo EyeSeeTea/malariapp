@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.domain.entity;
+package org.eyeseetea.malariacare.domain.entity.pushsummary;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class PushReport {
 
     private String href;
 
-    private List<SurveyConflict> mSurveyConflicts;
+    private List<PushConflict> mPushConflicts;
 
     public PushReport() {
         // explicit empty constructor
@@ -43,8 +43,8 @@ public class PushReport {
         return href;
     }
 
-    public List<SurveyConflict> getSurveyConflicts() {
-        return mSurveyConflicts;
+    public List<PushConflict> getPushConflicts() {
+        return mPushConflicts;
     }
 
     public enum Status {
@@ -71,8 +71,8 @@ public class PushReport {
         this.href = href;
     }
 
-    public void setSurveyConflicts(List<SurveyConflict> surveyConflicts) {
-        this.mSurveyConflicts = surveyConflicts;
+    public void setPushConflicts(List<PushConflict> pushConflicts) {
+        this.mPushConflicts = pushConflicts;
     }
 
     public String getEventUid() {

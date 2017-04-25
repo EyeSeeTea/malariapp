@@ -38,11 +38,11 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
-import org.eyeseetea.malariacare.domain.entity.PushReport;
-import org.eyeseetea.malariacare.domain.entity.SurveyConflict;
-import org.eyeseetea.malariacare.domain.exception.NullEventDateException;
-import org.eyeseetea.malariacare.domain.exception.PushReportException;
-import org.eyeseetea.malariacare.domain.exception.PushValueException;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
+import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
+import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
+import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -473,28 +473,28 @@ public class ConvertToSDKVisitor implements
                 //The loop should continue without throw the Exception.
                 continue;
             }
-            List<SurveyConflict> surveyConflicts = pushReport.getSurveyConflicts();
+            List<PushConflict> pushConflicts = pushReport.getPushConflicts();
 
             //If the pushResult has some conflict the survey was saved in the server but
             // never resend, the survey is saved as survey in conflict.
-            if (surveyConflicts != null && surveyConflicts.size() > 0) {
+            if (pushConflicts != null && pushConflicts.size() > 0) {
                 Log.d(TAG, "saveSurveyStatus: conflicts");
                 iSurvey.setStatus(Constants.SURVEY_CONFLICT);
                 iSurvey.save();
-                for (SurveyConflict surveyConflict : surveyConflicts) {
+                for (PushConflict pushConflict : pushConflicts) {
                     Log.d(TAG, "saveSurveyStatus: Faileditem not null " + iSurvey.getId_survey());
-                    if (surveyConflict.getUid() != null) {
-                        Log.d(TAG, "saveSurveyStatus: PUSH process...SurveyConflict in "
-                                + surveyConflict.getUid() +
-                                " with error " + surveyConflict.getValue()
+                    if (pushConflict.getUid() != null) {
+                        Log.d(TAG, "saveSurveyStatus: PUSH process...PushConflict in "
+                                + pushConflict.getUid() +
+                                " with error " + pushConflict.getValue()
                                 + " dataelement pushing survey: "
                                 + iSurvey.getId_survey());
-                        iSurvey.saveConflict(surveyConflict.getUid());
+                        iSurvey.saveConflict(pushConflict.getUid());
                         iSurvey.save();
                         callback.onError(new PushValueException(
                                 String.format(context.getString(R.string.error_conflict_message),
-                                        iEvent.getEvent().getUId(), surveyConflict.getUid(),
-                                        surveyConflict.getValue()) + ""));
+                                        iEvent.getEvent().getUId(), pushConflict.getUid(),
+                                        pushConflict.getValue()) + ""));
                     }
                 }
                 continue;

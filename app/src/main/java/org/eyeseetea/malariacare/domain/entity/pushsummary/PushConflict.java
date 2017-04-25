@@ -1,11 +1,11 @@
-package org.eyeseetea.malariacare.domain.entity;
+package org.eyeseetea.malariacare.domain.entity.pushsummary;
 
-public class SurveyConflict {
+public class PushConflict {
     private String uid;
 
     private String value;
 
-    public SurveyConflict(String object, String value) {
+    public PushConflict(String object, String value) {
         this.uid = object;
         this.value = value;
     }

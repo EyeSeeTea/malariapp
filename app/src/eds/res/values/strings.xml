@@ -228,5 +228,5 @@
     <string name="clear">"Clear"</string>
     <string name="admin_announcement">"Admin announcement"</string>
     <string name="user_close">"This user has been closed by the administrator."</string>
-    <string name="error_conflict_message">"The event with UID: %1$s. was uploaded with surveyConflict in the data element UID: %2$s with the message: %3$s. Please contact the administrator."</string>
+    <string name="error_conflict_message">"The event with UID: %1$s. was uploaded with pushConflict in the data element UID: %2$s with the message: %3$s. Please contact the administrator."</string>
 </resources>

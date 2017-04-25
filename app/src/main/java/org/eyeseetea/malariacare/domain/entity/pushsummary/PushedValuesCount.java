@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.domain.entity;
+package org.eyeseetea.malariacare.domain.entity.pushsummary;
 
 public class PushedValuesCount {
 

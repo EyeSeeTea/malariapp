@@ -65,6 +65,11 @@ public class PushUseCaseTest {
             }
 
             @Override
+            public void onInformativeError(String message) {
+                callbackInvoked(false);
+            }
+
+            @Override
             public void onConversionError() {
                 callbackInvoked(false);
             }
