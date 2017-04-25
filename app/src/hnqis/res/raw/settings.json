@@ -7,7 +7,6 @@
   },
   "dashboard": {
     "orientation": "horizontal",
-    "adapter": "automatic",
     "layout": "tab_dashboard",
     "listFilter": "lastForOU",
     "developerOptions": true,

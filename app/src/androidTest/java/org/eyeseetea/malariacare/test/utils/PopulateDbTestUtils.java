@@ -25,14 +25,14 @@ import android.util.Log;
 import com.opencsv.CSVReader;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.model.Answer;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Header;
+import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -188,9 +188,6 @@ public class PopulateDbTestUtils {
                         Log.d(TAG, headers.get(Integer.valueOf(line[10])).toString());
                         if (!line[11].equals("")) {
                             question.setAnswer(answers.get(Integer.valueOf(line[11])));
-                        }
-                        if (!line[12].equals("")) {
-                            question.setQuestion(questions.get(Integer.valueOf(line[12])));
                         }
                         //set the output suvreillance
                         question.setCompulsory(false);

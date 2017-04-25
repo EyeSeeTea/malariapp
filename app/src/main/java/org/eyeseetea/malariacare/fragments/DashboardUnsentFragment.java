@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -42,21 +41,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
-import org.eyeseetea.malariacare.network.PushClient;
-import org.eyeseetea.malariacare.network.PushResult;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -331,87 +324,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.d(TAG, "onActivityResult");
-        // This captures the return code sent by Login Activity, to know whether or not the user got the authorization
-        if(requestCode == Constants.AUTHORIZE_PUSH) {
-            if(resultCode == Activity.RESULT_OK) {
-
-                //Tell the activity NOT to reload on next resume since the push itself will do it
-                ((DashboardActivity)getActivity()).setReloadOnResume(false);
-
-                // In case authorization was ok, we launch push action
-                Bundle extras = data.getExtras();
-                int position = extras.getInt("Survey", 0);
-                String user = extras.getString("User");
-                String password = extras.getString("Password");
-                final Survey survey = (Survey) adapter.getItem(position - 1);
-                AsyncPush asyncPush = new AsyncPush(survey, user, password);
-                asyncPush.execute((Void) null);
-            } else {
-                // Otherwise we notify and continue
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Authorization failed")
-                        .setMessage("User or password introduced are wrong. Push aborted.")
-                        .setPositiveButton(android.R.string.ok, null)
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        }
-    }
-
-
-    public class AsyncPush extends AsyncTask<Void, Integer, PushResult> {
-
-        private Survey survey;
-        private String user;
-        private String password;
-
-
-        public AsyncPush(Survey survey, String user, String password) {
-            this.survey = survey;
-            this.user = user;
-            this.password = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //spinner
-            setListShown(false);
-        }
-
-        @Override
-        protected PushResult doInBackground(Void... params) {
-            PushClient pushClient=new PushClient(survey, getActivity(), user, password);
-            return pushClient.pushAPI();
-        }
-
-        @Override
-        protected void onPostExecute(PushResult pushResult) {
-            super.onPostExecute(pushResult);
-            showResponse(pushResult);
-        }
-
-        /**
-         * Shows the proper response message
-         * @param pushResult
-         */
-        private void showResponse(PushResult pushResult){
-            String msg="";
-            if(pushResult.isSuccessful()){
-                msg="Survey data pushed to server. Results: \n"+String.format("Imported: %s | Updated: %s | Ignored: %s",pushResult.getImported(),pushResult.getUpdated(),pushResult.getIgnored());
-            }else{
-                msg=pushResult.getException().getMessage();
-            }
-
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getActivity().getString(R.string.dialog_title_push_response))
-                    .setMessage(msg)
-                    .setNeutralButton(android.R.string.yes,null).create().show();
-
-        }
-    }
     /**
      * Inner private class that receives the result from the service
      */

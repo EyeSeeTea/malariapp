@@ -35,8 +35,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.jexl2.UnifiedJEXL;
 import org.eyeseetea.malariacare.EyeSeeTeaApplication;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.model.Program;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -61,7 +60,7 @@ public class TestDb extends ApplicationTestCase<EyeSeeTeaApplication> {
 
     @MediumTest
     public void testProgramIsPopulated() throws Exception {
-        Assert.assertEquals(true,Program.list().size()>0);
+        Assert.assertEquals(true, Program.list().size()>0);
 
         System.out.println("TESTPUEBW"+ Program.list().size()+"");
         Log.d("TESTPUEBW", Program.list().size()+"");

@@ -49,6 +49,7 @@ public class NetworkUtils {
     private Context applicationContext;
 
     private static String DHIS_PUSH_API="/api/events";
+    private static String DHIS_PULL_API="/api/";
 
     private static String DHIS_SERVER ="https://www.psi-mis.org";
 
@@ -108,7 +109,7 @@ public class NetworkUtils {
     public JSONObject getData(String data)throws Exception {
         Response response = null;
 
-        final String DHIS_URL = getDhisURL()+DHIS_PUSH_API+data;
+        final String DHIS_URL = getDhisURL()+DHIS_PULL_API+data;
 
         OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
 
@@ -145,7 +146,7 @@ public class NetworkUtils {
      * @param data
      * @param url
      */
-    private Response executeCall(JSONObject data, String url, String method) throws IOException {
+    public Response executeCall(JSONObject data, String url, String method) throws IOException {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         final String DHIS_URL=sharedPreferences.getString(applicationContext.getString(R.string.dhis_url), applicationContext.getString(R.string.login_info_dhis_default_server_url)) + url;
 

@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.utils;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.Html;
@@ -34,16 +35,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Header;
+import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
 
 import java.io.BufferedReader;
@@ -62,23 +67,24 @@ public abstract class AUtils {
 
     private static final int ZERO_DECIMALS = 0; // Number of decimals outputs will have
 
-    public static String round(float base, int decimalPlace){
+    public static String round(float base, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(base));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         if (decimalPlace == 0) return Integer.toString((int) bd.floatValue());
         return Float.toString(bd.floatValue());
     }
 
-    public static float safeParseFloat(String floatStr){
+    public static float safeParseFloat(String floatStr) {
         try {
             return Float.parseFloat(floatStr);
-        }catch (NumberFormatException nfe){
-            Log.d("AUtils", String.format("Error when parsing string %s to float number", floatStr));
+        } catch (NumberFormatException nfe) {
+            Log.d("AUtils",
+                    String.format("Error when parsing string %s to float number", floatStr));
             return 0f;
         }
     }
 
-    public static String round(float base){
+    public static String round(float base) {
         return round(base, AUtils.ZERO_DECIMALS);
     }
 
@@ -88,23 +94,24 @@ public abstract class AUtils {
         for (Header header : tab.getHeaders()) {
             result.add(header);
             for (Question question : header.getQuestions()) {
-                if (tab.getType().equals(Constants.TAB_AUTOMATIC) || tab.getType().equals(Constants.TAB_AUTOMATIC_NON_SCORED) || question.hasChildren())
+                if (tab.getType().equals(Constants.TAB_AUTOMATIC) || tab.getType().equals(
+                        Constants.TAB_AUTOMATIC_NON_SCORED) || question.hasChildren()) {
                     result.add(question);
+                }
             }
         }
 
         return result;
     }
 
-    public static List preloadTabItems(Tab tab, String module){
+    public static List preloadTabItems(Tab tab, String module) {
         List<? extends BaseModel> items;
 
-        if (tab.isCompositeScore())
+        if (tab.isCompositeScore()) {
             items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram());
+        } else {
 
-        else{
-
-            items=Session.getTabsCache().get(tab.getId_tab());
+            items = Session.getTabsCache().get(tab.getId_tab());
 
             if (items == null) {
                 items = convertTabToArrayCustom(tab);
@@ -117,24 +124,22 @@ public abstract class AUtils {
 
     /**
      * Turns a list of headers, questions into a list of headers, questions and questionRows.
-     * @param items
-     * @return
      */
-    public static List compressTabItems(List items){
+    public static List compressTabItems(List items) {
         List<Object> compressedItems = new ArrayList<>();
         Iterator<Object> iterator = items.iterator();
-        QuestionRow lastRow=null;
-        while(iterator.hasNext()){
+        QuestionRow lastRow = null;
+        while (iterator.hasNext()) {
             Object item = iterator.next();
 
             //Header
-            if(item instanceof Header){
+            if (item instanceof Header) {
                 compressedItems.add(item);
                 continue;
             }
 
             //Normal question
-            if(item instanceof Question && !((Question)item).belongsToCustomTab()){
+            if (item instanceof Question && !((Question) item).belongsToCustomTab()) {
                 compressedItems.add(item);
                 continue;
             }
@@ -142,7 +147,7 @@ public abstract class AUtils {
             //Custom tabs questions/titles
             Question question = (Question) item;
             //Question that belongs to a customtab
-            if(question.isCustomTabNewRow()){
+            if (question.isCustomTabNewRow()) {
                 lastRow = new QuestionRow();
                 compressedItems.add(lastRow);
             }
@@ -151,7 +156,7 @@ public abstract class AUtils {
         return compressedItems;
     }
 
-    public static StringBuilder convertFromInputStreamToString(InputStream inputStream){
+    public static StringBuilder convertFromInputStreamToString(InputStream inputStream) {
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
@@ -169,20 +174,24 @@ public abstract class AUtils {
     }
 
 
-    public static String formatDate(Date date){
-        if(date==null){
+    public static String formatDate(Date date) {
+        if (date == null) {
             return "-";
         }
-        Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
+        Locale locale =
+                PreferencesState.getInstance().getContext().getResources().getConfiguration()
+                        .locale;
         DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
         return dateFormatter.format(date);
     }
 
-    public static String formatDateToServer(Date date){
-        if(date==null){
+    public static String formatDateToServer(Date date) {
+        if (date == null) {
             return "";
         }
-        Locale locale = PreferencesState.getInstance().getContext().getResources().getConfiguration().locale;
+        Locale locale =
+                PreferencesState.getInstance().getContext().getResources().getConfiguration()
+                        .locale;
         DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
 
 
@@ -192,23 +201,27 @@ public abstract class AUtils {
 
     /**
      * This method check if the Internet conexion is active
+     *
      * @return return true if all is correct.
      */
-    public static boolean isNetworkAvailable(){
+    public static boolean isNetworkAvailable() {
         ConnectivityManager cm =
-                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if(netInfo==null)
+        if (netInfo == null) {
             return false;
+        }
         return netInfo.isConnected();
     }
 
     /**
      * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
+     *
      * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource in HTML format
+     * @param rawId   Id of the raw text resource in HTML format
      */
-    public static void showAlertWithHtmlMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessage(int titleId, int rawId, Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
         String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
@@ -219,20 +232,24 @@ public abstract class AUtils {
 
     /**
      * Shows an alert dialog with a big message inside based on a raw resource
+     *
      * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource
+     * @param rawId   Id of the raw text resource
      */
-    public static void showAlertWithMessage(int titleId, int rawId, Context context){
+    public static void showAlertWithMessage(int titleId, int rawId, Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
-        showAlertWithLogoAndVersion(titleId, AUtils.convertFromInputStreamToString(message).toString(), context);
+        showAlertWithLogoAndVersion(titleId,
+                AUtils.convertFromInputStreamToString(message).toString(), context);
     }
 
     /**
      * Shows an alert dialog with a big message inside based on a raw resource HTML formatted
+     *
      * @param titleId Id of the title resource
-     * @param rawId Id of the raw text resource in HTML format
+     * @param rawId   Id of the raw text resource in HTML format
      */
-    public static void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId, Context context){
+    public static void showAlertWithHtmlMessageAndLastCommit(int titleId, int rawId,
+            Context context) {
         String stringMessage = getMessageWithCommit(rawId, context);
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(stringMessage));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
@@ -240,48 +257,51 @@ public abstract class AUtils {
         showAlertWithLogoAndVersion(titleId, linkedMessage, context);
     }
 
-    public static String getCommitHash(Context context){
+    public static String getCommitHash(Context context) {
         String stringCommit;
         //Check if lastcommit.txt file exist, and if not exist show as unavailable.
-        int layoutId = context.getResources().getIdentifier("lastcommit", "raw", context.getPackageName());
-        if (layoutId == 0){
-            stringCommit=context.getString(R.string.unavailable);
+        int layoutId = context.getResources().getIdentifier("lastcommit", "raw",
+                context.getPackageName());
+        if (layoutId == 0) {
+            stringCommit = context.getString(R.string.unavailable);
         } else {
-            InputStream commit = context.getResources().openRawResource( layoutId);
-            stringCommit= AUtils.convertFromInputStreamToString(commit).toString();
+            InputStream commit = context.getResources().openRawResource(layoutId);
+            stringCommit = AUtils.convertFromInputStreamToString(commit).toString();
         }
         return stringCommit;
     }
 
     /**
      * Merge the lastcommit into the raw file
+     *
      * @param rawId Id of the raw text resource in HTML format
      */
     public static String getMessageWithCommit(int rawId, Context context) {
         InputStream message = context.getResources().openRawResource(rawId);
         String stringCommit = getCommitHash(context);
-        String stringMessage= AUtils.convertFromInputStreamToString(message).toString();
-        if(stringCommit.contains(context.getString(R.string.unavailable))){
-            stringCommit=String.format(context.getString(R.string.lastcommit),stringCommit);
-            stringCommit=stringCommit+" "+context.getText(R.string.lastcommit_unavailable);
-        }
-        else {
+        String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
+        if (stringCommit.contains(context.getString(R.string.unavailable))) {
+            stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
+            stringCommit = stringCommit + " " + context.getText(R.string.lastcommit_unavailable);
+        } else {
             stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
         }
-        stringMessage=String.format(stringMessage,stringCommit);
+        stringMessage = String.format(stringMessage, stringCommit);
         return stringMessage;
     }
 
-    public static void showAlert(int titleId, CharSequence text, Context context){
+    public static void showAlert(int titleId, CharSequence text, Context context) {
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(titleId))
                 .setMessage(text)
                 .setNeutralButton(android.R.string.ok, null).create();
         dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
+                LinkMovementMethod.getInstance());
     }
 
-    public static void showAlertWithLogoAndVersion(int titleId, CharSequence text, Context context){
+    public static void showAlertWithLogoAndVersion(int titleId, CharSequence text,
+            Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);
@@ -308,16 +328,67 @@ public abstract class AUtils {
         dialog.show();
     }
 
-    public static List<Object> convertTabToArray(Tab tab) {
-        List<Object> result = new ArrayList<Object>();
+    /**
+     * Shows an alert dialog asking for acceptance of the announcement. If ok calls the accept the
+     * annoucement, do nothing otherwise
+     */
+    public static void showAnnouncement(int titleId, String message, final Context context) {
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        for (Header header : tab.getHeaders()) {
-            result.add(header);
-            for (Question question : header.getQuestions())
-                result.add(question);
-
-        }
-        return result;
+        final User loggedUser = User.getLoggedUser();
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(titleId))
+                .setMessage(linkedMessage)
+                .setCancelable(false)
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PreferencesState.getInstance().setUserAccept(true);
+                        checkUserClosed(loggedUser, context);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkUserClosed(loggedUser, context);
+                    }
+                }).create();
+        dialog.show();
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
+                LinkMovementMethod.getInstance());
     }
 
+    public static void checkUserClosed(User user, Context context) {
+        if (user.getCloseDate() != null && user.getCloseDate().before(new Date())) {
+            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PreferencesState.getInstance().setUserAccept(false);
+                    DashboardActivity.dashboardActivity.executeLogout();
+                }
+            };
+            closeUser(R.string.admin_announcement,
+                    PreferencesState.getInstance().getContext().getString(R.string.user_close),
+                    context, listener);
+        }
+    }
+
+    /**
+     * Shows an alert dialog asking for acceptance of the announcement. If ok calls the accept the
+     * annoucement, do nothing otherwise
+     */
+    public static void closeUser(int titleId, String message, final Context context,
+            DialogInterface.OnClickListener listener) {
+        SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
+        Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(titleId))
+                .setMessage(linkedMessage)
+                .setCancelable(false)
+                .setNeutralButton(android.R.string.ok, listener).show();
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
+                LinkMovementMethod.getInstance());
+    }
 }

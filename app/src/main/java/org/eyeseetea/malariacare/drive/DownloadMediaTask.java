@@ -15,7 +15,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.Media;
 
 import java.io.FileOutputStream;
 import java.util.IllegalFormatException;
@@ -74,7 +74,9 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer numSyncedFiles) {
-        DashboardActivity.toast(String.format("%d files synced", numSyncedFiles));
+        if(numSyncedFiles>0) {
+            DashboardActivity.toast(String.format("%d files synced", numSyncedFiles));
+        }
     }
 
     @Override

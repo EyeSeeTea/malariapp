@@ -31,61 +31,73 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.ExportData;
-import org.eyeseetea.malariacare.database.utils.LocationMemory;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
-import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
-import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.ExportData;
+import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Utils;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
+import org.eyeseetea.malariacare.utils.Constants;
+
+import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Extra param to annotate the activity to return after settings
      */
     public static final String SETTINGS_CALLER_ACTIVITY = "SETTINGS_CALLER_ACTIVITY";
-    private static final int DUMP_REQUEST_CODE=0;
+    private static final int DUMP_REQUEST_CODE = 0;
+    protected static String TAG = ".BaseActivity";
     private SurveyLocationListener locationListener;
+
+    LogoutUseCase mLogoutUseCase;
+    IUserAccountRepository mUserAccountRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PreferencesState.getInstance().initalizateActivityDependencies();
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
-        Dhis2Application.bus.register(this);
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
+
+        mUserAccountRepository = new UserAccountRepository(this);
+        mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
+        checkQuarantineSurveys();
+    }
+
+    private void checkQuarantineSurveys() {
+        PreferencesState.getInstance().setPushInProgress(false);
+        List<Survey> surveys = Survey.getAllSendingSurveys();
+        Log.d(TAG + "B&D", "Pending surveys sending: "
+                + surveys.size());
+        for (Survey survey : surveys) {
+            survey.setStatus(Constants.SURVEY_QUARANTINE);
+            survey.save();
+        }
     }
 
     /**
      * Common styling
      */
-    private void initView(Bundle savedInstanceState){
+    private void initView(Bundle savedInstanceState) {
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         LayoutUtils.setActionBarLogo(actionBar);
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             initTransition();
         }
     }
@@ -93,14 +105,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Customize transitions for these activities
      */
-    protected void initTransition(){
-        this.overridePendingTransition(R.transition.anim_slide_in_left, R.transition.anim_slide_out_left);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_general, menu);
-        return true;
+    protected void initTransition() {
+        this.overridePendingTransition(R.transition.anim_slide_in_left,
+                R.transition.anim_slide_out_left);
     }
 
     @Override
@@ -115,23 +122,28 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
             case R.id.action_license:
                 debugMessage("User asked for license");
-                AUtils.showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl, BaseActivity.this);
+                AUtils.showAlertWithMessage(R.string.settings_menu_licence, R.raw.gpl,
+                        BaseActivity.this);
                 break;
             case R.id.action_about:
                 debugMessage("User asked for about");
-                AUtils.showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about, R.raw.about, BaseActivity.this);
+                AUtils.showAlertWithHtmlMessageAndLastCommit(R.string.settings_menu_about,
+                        R.raw.about, BaseActivity.this);
                 break;
             case R.id.action_copyright:
                 debugMessage("User asked for copyright");
-                AUtils.showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright, BaseActivity.this);
+                AUtils.showAlertWithMessage(R.string.settings_menu_copyright, R.raw.copyright,
+                        BaseActivity.this);
                 break;
             case R.id.action_licenses:
                 debugMessage("User asked for software licenses");
-                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses, BaseActivity.this);
+                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_licenses, R.raw.licenses,
+                        BaseActivity.this);
                 break;
             case R.id.action_eula:
                 debugMessage("User asked for EULA");
-                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula, BaseActivity.this);
+                AUtils.showAlertWithHtmlMessage(R.string.settings_menu_eula, R.raw.eula,
+                        BaseActivity.this);
                 break;
             case R.id.action_logout:
                 debugMessage("User asked for logout");
@@ -141,11 +153,16 @@ public abstract class BaseActivity extends ActionBarActivity {
                 debugMessage("Go back");
                 onBackPressed();
                 break;
+            case R.id.downloaded_media:
+                debugMessage("Go downloaded media");
+                startActivity(new Intent(this, DownloadedMediaActivity.class));
+                break;
             case R.id.export_db:
                 debugMessage("Export db");
-                Intent emailIntent=ExportData.dumpAndSendToAIntent(this);
-                if(emailIntent!=null)
-                    startActivityForResult(emailIntent,DUMP_REQUEST_CODE);
+                Intent emailIntent = ExportData.dumpAndSendToAIntent(this);
+                if (emailIntent != null) {
+                    startActivityForResult(emailIntent, DUMP_REQUEST_CODE);
+                }
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -154,36 +171,38 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return true;
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if(!PreferencesState.getInstance().isDevelopOptionActive() || !AppSettingsBuilder.isDeveloperOptionsActive()) {
+        if (!PreferencesState.getInstance().isDevelopOptionActive()
+                || !AppSettingsBuilder.isDeveloperOptionsActive()) {
             MenuItem item = menu.findItem(R.id.export_db);
             item.setVisible(false);
         }
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        if ((requestCode == DUMP_REQUEST_CODE)){
-            ExportData.removeDumpIfExist(this);
-        }
-    }
     /**
      * Every BaseActivity(Details, Create, Survey) goes back to DashBoard
      */
-    public void onBackPressed(){
+    public void onBackPressed() {
         finishAndGo(DashboardActivity.class);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         Intent intent;
-        intent = (getCallingActivity() != null) ? new Intent(getCallingActivity().getClassName()) : getIntent();
+        intent = (getCallingActivity() != null) ? new Intent(getCallingActivity().getClassName())
+                : getIntent();
 
-        if (intent.getStringExtra("activity") != null && getCallingActivity() != null && intent.getStringExtra("activity").equals("settings")){
+        if (intent.getStringExtra("activity") != null && getCallingActivity() != null
+                && intent.getStringExtra("activity").equals("settings")) {
             Log.i(".onResume", "coming from settings");
             overridePendingTransition(0, 0);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -195,132 +214,115 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onStop(){
-        try {
-            Dhis2Application.bus.unregister(this);
-        }catch(Exception e){}
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy(){
-        try {
-            Dhis2Application.bus.unregister(this);
-        }catch(Exception e){}
-        super.onDestroy();
-    }
-
-    @Override
-    public void onRestart(){
-        try {
-            Dhis2Application.bus.register(this);
-        }catch(Exception e){}
-        super.onRestart();
-    }
-
-    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
-    protected void goSettings(){
-        Intent intentSettings=new Intent(this,SettingsActivity.class);
-        intentSettings.putExtra(SETTINGS_CALLER_ACTIVITY,this.getClass());
+    protected void goSettings() {
+        Intent intentSettings = new Intent(this, SettingsActivity.class);
+        intentSettings.putExtra(SETTINGS_CALLER_ACTIVITY, this.getClass());
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
     /**
      * Closes current session and goes back to loginactivity
      */
-    protected void logout(){
+    public void logout() {
         new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
-                .setMessage(getApplicationContext().getString(R.string.dialog_content_logout_confirmation))
+                .setMessage(getApplicationContext().getString(
+                        R.string.dialog_content_logout_confirmation))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Start logout
                         debugMessage("Logging out from sdk...");
-                        PreferencesState.getInstance().clearOrgUnitPreference();
-                        DhisService.logOutUser(BaseActivity.this);
+                        executeLogout();
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).create().show();
     }
 
-    public void wipeData(){
-        PopulateDB.wipeDatabase();
-        PopulateDB.wipeSDKData();
-    };
+    public void executeLogout() {
+        mLogoutUseCase.execute(new LogoutUseCase.Callback() {
+            @Override
+            public void onLogoutSuccess() {
+                finishAndGo(LoginActivity.class);
+            }
 
-    public void clickOrgUnitSpinner(View view){
+            @Override
+            public void onLogoutError(String message) {
+                Log.e("." + this.getClass().getSimpleName(), message);
+            }
+        });
     }
 
-    public void clickProgramSpinner(View view){
+    public void clickOrgUnitSpinner(View view) {
+    }
+
+    public void clickProgramSpinner(View view) {
     }
 
     /**
      * Asks for location (required while starting to edit a survey)
-     * @param survey
      */
-    public void prepareLocationListener(Survey survey){
+    public void prepareLocationListener(Survey survey) {
 
-        locationListener=new SurveyLocationListener(survey.getId_survey());
-        LocationManager locationManager=(LocationManager) LocationMemory.getContext().getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        locationListener = new SurveyLocationListener(survey.getId_survey());
+        LocationManager locationManager =
+                (LocationManager) LocationMemory.getContext().getSystemService(
+                        Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             debugMessage("requestLocationUpdates via GPS");
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-            if(permissionCheck == PackageManager.PERMISSION_GRANTED)
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+            int permissionCheck = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
+                        locationListener);
+            }
         }
 
-        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             debugMessage("requestLocationUpdates via NETWORK");
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
-            if (permissionCheck == PackageManager.PERMISSION_GRANTED)
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
-        }else{
-            Location lastLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            int permissionCheck = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_NETWORK_STATE);
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+                        locationListener);
+            }
+        } else {
+            Location lastLocation = locationManager.getLastKnownLocation(
+                    LocationManager.NETWORK_PROVIDER);
             debugMessage("location not available via GPS|NETWORK, last know: " + lastLocation);
             locationListener.saveLocation(lastLocation);
         }
     }
 
-    public void onLogoutFinished(UiEvent uiEvent){
-        //No event or not a logout event -> done
-        if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
-            return;
-        }
-        debugMessage("Logging out from sdk...OK");
-        wipeData();
-        Session.logout();
-        finishAndGo(LoginActivity.class);
-    }
-
     /**
      * Finish current activity and launches an activity with the given class
+     *
      * @param targetActivityClass Given target activity class
      */
-    public void finishAndGo(Class targetActivityClass){
-        Intent targetActivityIntent = new Intent(this,targetActivityClass);
+    public void finishAndGo(Class targetActivityClass) {
+        Intent targetActivityIntent = new Intent(this, targetActivityClass);
         finish();
         startActivity(targetActivityIntent);
     }
 
     /**
      * Launches an activity with the given class
+     *
      * @param targetActivityClass Given target activity class
      */
-    public void go(Class targetActivityClass){
-        Intent targetActivityIntent = new Intent(this,targetActivityClass);
+    public void go(Class targetActivityClass) {
+        Intent targetActivityIntent = new Intent(this, targetActivityClass);
         startActivity(targetActivityIntent);
     }
 
     /**
      * Logs a debug message using current activity SimpleName as tag. Ex:
-     *   SurveyActivity => ".SurveyActivity"
-     * @param message
+     * SurveyActivity => ".SurveyActivity"
      */
-    private void debugMessage(String message){
+    private void debugMessage(String message) {
         Log.d("." + this.getClass().getSimpleName(), message);
     }
 }

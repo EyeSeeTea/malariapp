@@ -30,10 +30,10 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import junit.framework.Assert;
 
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.test.utils.PopulateDbTestUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
