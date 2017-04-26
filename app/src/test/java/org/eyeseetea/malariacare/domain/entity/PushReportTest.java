@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.domain.entity;
+package org.eyeseetea.malariacare.data.sync.mappers;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -6,7 +6,6 @@ import static org.hamcrest.core.Is.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.hisp.dhis.client.sdk.core.common.network.ApiMessage;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
@@ -23,6 +22,26 @@ public class PushReportTest {
                     + "\"importSummaries\":[{\"responseType\":\"ImportSummary\",\"status\":\"SUCCESS\","
                     + "\"description\": \"\",  \"importCount\""
                     + ":{ \"imported\": \"4 \",  \"updated\": \"0 \",  \"ignored\": \"0 \",  \"deleted\": \"0 \"}, "
+                    + " \"reference\": \"DSifqmkzKfJ\", "
+                    + "\"href\": \"https://old-staging.psi-mis.org/api/events/DSifqmkzKfJ\"}]}}";
+
+    public final String ERROR_IMPORT_SUMMARY_JSON =
+            "{\"httpStatus\":\"OK\", \"httpStatusCode\":\"400\", \"message\":\"Import was successful.\", "
+                    + "\"status\":\"OK\", "
+                    + "\"response\":{\"responseType\":\"ImportSummaries\", \"status\":\"ERROR\", "
+                    + "\"importSummaries\":[{\"responseType\":\"ImportSummary\",\"status\":\"ERROR\","
+                    + "\"description\": \"\",  \"importCount\""
+                    + ":{ \"imported\": \"4 \",  \"updated\": \"0 \",  \"ignored\": \"0 \",  \"deleted\": \"0 \"}, "
+                    + " \"reference\": \"DSifqmkzKfJ\", "
+                    + "\"href\": \"https://old-staging.psi-mis.org/api/events/DSifqmkzKfJ\"}]}}";
+
+    public final String DATAVALUES_IMPORTED_SUMMARY_JSON =
+            "{\"httpStatus\":\"OK\", \"httpStatusCode\":\"200\", \"message\":\"Import was successful.\", "
+                    + "\"status\":\"OK\", "
+                    + "\"response\":{\"responseType\":\"ImportSummaries\", \"status\":\"SUCCESS\", "
+                    + "\"importSummaries\":[{\"responseType\":\"ImportSummary\",\"status\":\"SUCCESS\","
+                    + "\"description\": \"\",  \"importCount\""
+                    + ":{ \"imported\": \"0 \",  \"updated\": \"4 \",  \"ignored\": \"4 \",  \"deleted\": \"4 \"}, "
                     + " \"reference\": \"DSifqmkzKfJ\", "
                     + "\"href\": \"https://old-staging.psi-mis.org/api/events/DSifqmkzKfJ\"}]}}";
 
@@ -43,7 +62,7 @@ public class PushReportTest {
     @Test
     public void test_import_summary_conversion_on_success_json() {
         ImportSummary importSummary = getImportSummary(SUCCESS_IMPORT_SUMMARY_JSON);
-        PushReport pushReport = PushReportMapper.convertImportSummaryToPushReport(importSummary,
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
                 COMPLETE_IMPORT_SUMMARY_KEY);
 
         assertThat(pushReport.getDescription().equals(importSummary.getDescription()), is(true));
@@ -76,7 +95,7 @@ public class PushReportTest {
     @Test
     public void test_import_summary_conversion_on_success_with_conflicts_from_Api_message() {
         ImportSummary importSummary = getImportSummary(API_MESSAGE_WITH_CONFLICTS_JSON);
-        PushReport pushReport = PushReportMapper.convertImportSummaryToPushReport(importSummary,
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
                 API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
 
         assertThat(pushReport.getEventUid().equals(importSummary.getReference()), is(true));
@@ -96,6 +115,28 @@ public class PushReportTest {
                 importSummary.getConflicts().get(0).getObject()), is(true));
         assertThat(pushReport.getPushConflicts().get(0).getValue().equals(
                 importSummary.getConflicts().get(0).getValue()), is(true));
+    }
 
+    @Test
+    public void test_import_summary_valid_push() {
+        ImportSummary importSummary = getImportSummary(API_MESSAGE_WITH_CONFLICTS_JSON);
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
+                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
+        assertThat(!pushReport.hasPushErrors(), is(true));
+    }
+
+    @Test
+    public void test_error_push() {
+        ImportSummary importSummary = getImportSummary(ERROR_IMPORT_SUMMARY_JSON);
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
+                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
+        assertThat(!pushReport.hasPushErrors(), is(false));
+    }
+    @Test
+    public void test_error_not_datavalues_imported_push() {
+        ImportSummary importSummary = getImportSummary(DATAVALUES_IMPORTED_SUMMARY_JSON);
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
+                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
+        assertThat(!pushReport.hasPushErrors(), is(false));
     }
 }
