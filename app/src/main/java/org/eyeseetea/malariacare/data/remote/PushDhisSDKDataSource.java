@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushedValuesCount;
+import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.hisp.dhis.client.sdk.android.api.D2;
@@ -91,11 +92,7 @@ public class PushDhisSDKDataSource {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                        callback.onError(throwable);
-
-                        Log.e(TAG,
-                                "Error pushing Events: " + throwable.getLocalizedMessage());
+                        callback.onError(new PushDhisException(throwable));
                     }
                 });
     }
