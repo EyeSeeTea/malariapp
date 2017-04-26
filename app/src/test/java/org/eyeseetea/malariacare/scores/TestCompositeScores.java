@@ -20,9 +20,7 @@
 package org.eyeseetea.malariacare.scores;
 
 import android.support.annotation.NonNull;
-import android.test.mock.MockContext;
 
-import com.google.api.client.googleapis.testing.TestUtils;
 
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.Option;

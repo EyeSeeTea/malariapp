@@ -144,8 +144,6 @@ dependencies {
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
 
-    // Optional -- Mockito framework
-    testCompile "org.mockito:mockito-core:1.+"
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
     
