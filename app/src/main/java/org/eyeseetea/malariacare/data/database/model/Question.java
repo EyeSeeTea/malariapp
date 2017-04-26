@@ -23,6 +23,8 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.headerAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.headerName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionAlias;
@@ -874,6 +876,22 @@ public class Question extends BaseModel {
                 .orderBy(OrderBy.fromProperty(
                         Question_Table.order_pos.withTable(questionAlias))).queryList();
     }
+
+    public static List<Question> getQuestionsByProgram(long idProgram) {
+        return new Select().from(Question.class).as(questionName)
+                .join(Header.class, Join.JoinType.LEFT_OUTER).as(headerName)
+                .on(Question_Table.id_header_fk.withTable(questionAlias)
+                        .eq(Header_Table.id_header.withTable(headerAlias)))
+                .join(Tab.class, Join.JoinType.LEFT_OUTER).as(tabName)
+                .on(Header_Table.id_tab_fk.withTable(headerAlias)
+                        .eq(Tab_Table.id_tab.withTable(tabAlias)))
+                .join(Program.class, Join.JoinType.LEFT_OUTER).as(programName)
+                .on(Tab_Table.id_program_fk.withTable(tabAlias)
+                        .eq(Program_Table.id_program.withTable(programAlias)))
+                .where(Program_Table.id_program.withTable(programAlias).is(idProgram))
+                .queryList();
+    }
+
 
     public static List<Question> listAllByTabs(List<Tab> tabs) {
 

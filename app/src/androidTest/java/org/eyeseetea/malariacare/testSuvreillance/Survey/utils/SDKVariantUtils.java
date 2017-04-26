@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.is;
  */
 public class SDKVariantUtils {
     private static final String TAG = "TestingSuvreillance";
-
+/*
     public static void selectSurvey(int idxOrgUnit, int idxProgram, int seconds) {
         //when: click on assess tab + plus button
 
@@ -178,4 +178,5 @@ public class SDKVariantUtils {
         onView(withText(R.string.send)).perform(click());
         Espresso.unregisterIdlingResources(idlingResource);
     }
+    */
 }

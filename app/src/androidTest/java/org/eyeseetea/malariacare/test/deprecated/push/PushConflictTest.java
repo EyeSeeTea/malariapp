@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.push;
+package org.eyeseetea.malariacare.test.deprecated.push;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;

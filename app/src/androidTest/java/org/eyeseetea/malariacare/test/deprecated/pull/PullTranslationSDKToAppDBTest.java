@@ -1,50 +1,17 @@
-package org.eyeseetea.malariacare.test.pull;
+package org.eyeseetea.malariacare.test.deprecated.pull;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.NoActivityResumedException;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
-
-import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
-import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitAttributeValue;
-import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
-import org.hisp.dhis.android.sdk.utils.api.ProgramType;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.List;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
+
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.runner.RunWith;
 
 /**
  * Created by idelcano on 8/02/16.
  */
 @RunWith(AndroidJUnit4.class)
 public class PullTranslationSDKToAppDBTest {
+    /*
     private static final String TAG="TestingTransaltion";
     private final String ATTRIBUTE_OU_PRODUCTIVITY_VALUES_CODE="OUPV";
     private final String ATTRIBUTE_PROGRAM_PRODUCTIVITY_POSITION_CODE="PPP";
@@ -190,4 +157,5 @@ public class PullTranslationSDKToAppDBTest {
 
         Espresso.unregisterIdlingResources(idlingResource);
     }
+    */
 }

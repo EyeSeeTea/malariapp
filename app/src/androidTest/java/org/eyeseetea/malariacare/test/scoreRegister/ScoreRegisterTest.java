@@ -19,11 +19,14 @@
 
 package org.eyeseetea.malariacare.test.scoreRegister;
 
+import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -54,16 +57,20 @@ import java.util.List;
 public class ScoreRegisterTest extends ScoreRegisterBase {
     @BeforeClass
     public static void startBeforeClass() {
-        FlowManager.init(InstrumentationRegistry.getTargetContext());
-        wipeDB();
     }
 
 
     @Before
     public void populateDB() {
         try {
-            PopulateDbTestUtils.populateDBListTestFolder(
-                    InstrumentationRegistry.getTargetContext().getAssets());
+            Context context = InstrumentationRegistry.getContext();
+            FlowConfig flowConfig = new FlowConfig
+                    .Builder(context)
+                    .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
+                    .build();
+            FlowManager.init(flowConfig);
+            wipeDB();
+            new PopulateDbTestUtils().populateDBListTestFolder(getClass());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +87,6 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
     }
 
     @Test
-    @MediumTest
     public void isDatabasePopulated() {
         Program.list();
         Assert.assertEquals(true, Program.getAllPrograms().size() >= 1);
@@ -90,35 +96,34 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
     }
 
     @Test
-    @MediumTest
     public void TestCompositeScores() {
         Program.list();
         Assert.assertEquals(true, Program.getAllPrograms().size() == 1);
         int count = 1;
-
+        
         //All the questions are Yes and the Scores are 0%.
-        Log.d(TAG, "Test number " + count++);
-        Log.d(TAG, "testSurveyAllNo");
+        System.out.println("Test number " + count++);
+        System.out.println("testSurveyAllNo");
         testSurveyAllNo();
         //All the questions are Yes and the Scores are 100%.
-        Log.d(TAG, "Test number " + count++);
-        Log.d(TAG, "testSurveyAllYes");
+        System.out.println("Test number " + count++);
+        System.out.println("testSurveyAllYes");
         testSurveyAllYes();
         //The 1.1.1 questions are Yes and the 1 Score 50% CS is 25%
-        Log.d(TAG, "Test number " + count++);
-        Log.d(TAG, "testSurveyOneOneOneQuestion");
+        System.out.println("Test number " + count++);
+        System.out.println("testSurveyOneOneOneQuestion");
         testSurveyOneOneOneQuestion();
         //The 1.2.1 questions are Yes and the 1.1 Score 25% CS is 6.25%
-        Log.d(TAG, "Test number " + count++);
-        Log.d(TAG, "testSurveyOneTwoOneQuestion");
+        System.out.println("Test number " + count++);
+        System.out.println("testSurveyOneTwoOneQuestion");
         testSurveyOneTwoOneQuestion();
         //The 1.2.3 questions are Yes and the 1.1 Score 50% CS is  12.5%
-        Log.d(TAG, "Test number " + count++);
-        Log.d(TAG, "testSurveyOneTwoThreeQuestion");
+        System.out.println("Test number " + count++);
+        System.out.println("testSurveyOneTwoThreeQuestion");
         testSurveyOneTwoThreeQuestion();
         //The 1.2.3 questions are Yes  and 1.1.1 question too. the 1 Score is 50% CS is  12.5%
-        Log.d(TAG, "Test number " + count++);
-        Log.d(TAG, "testSurveyOneQuestions");
+        System.out.println("Test number " + count++);
+        System.out.println("testSurveyOneQuestions");
         testSurveyOneQuestions();
     }
 
@@ -129,8 +134,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         List<Question> questions = Question.getQuestionsByProgram(
                 survey.getProgram().getId_program());
         //CS 1.1.1 1.1
-        Log.d(TAG, yes.toString());
-        Log.d(TAG, no.toString());
+        System.out.println(yes.toString());
+        System.out.println(no.toString());
         //CS 1.1.1
         survey = setValue(survey, yes, questions.get(0));
         survey = setValue(survey, yes, questions.get(1));
@@ -204,8 +209,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         List<Question> questions = Question.getQuestionsByProgram(
                 survey.getProgram().getId_program());
         //CS 1.1.1 1.1
-        Log.d(TAG, yes.toString());
-        Log.d(TAG, no.toString());
+        System.out.println(yes.toString());
+        System.out.println(no.toString());
         survey = setValue(survey, no, questions.get(0));
         survey = setValue(survey, no, questions.get(1));
         //CS 1.1.1
@@ -281,8 +286,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         List<Question> questions = Question.getQuestionsByProgram(
                 survey.getProgram().getId_program());
         //CS 1.1.1 1.1
-        Log.d(TAG, yes.toString());
-        Log.d(TAG, no.toString());
+        System.out.println(yes.toString());
+        System.out.println(no.toString());
         survey = setValue(survey, no, questions.get(0));
         survey = setValue(survey, no, questions.get(1));
         //CS 1.1.1
@@ -357,8 +362,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         List<Question> questions = Question.getQuestionsByProgram(
                 survey.getProgram().getId_program());
         //CS 1.1.1 1.1
-        Log.d(TAG, yes.toString());
-        Log.d(TAG, no.toString());
+        System.out.println(yes.toString());
+        System.out.println(no.toString());
         survey = setValue(survey, yes, questions.get(0));
         survey = setValue(survey, yes, questions.get(1));
         //CS 1.1.1
@@ -436,8 +441,8 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
         List<Question> questions = Question.getQuestionsByProgram(
                 survey.getProgram().getId_program());
         //CS 1.1.1 50% 1.1 50% 
-        Log.d(TAG, yes.toString());
-        Log.d(TAG, no.toString());
+        System.out.println(yes.toString());
+        System.out.println(no.toString());
         survey = setValue(survey, no, questions.get(0));
         survey = setValue(survey, no, questions.get(1));
         //CS 1.1.1
@@ -511,14 +516,14 @@ public class ScoreRegisterTest extends ScoreRegisterBase {
 
     private void testSurveyOneOneOneQuestion() {
 
-        Log.d(TAG, "testSurveyOneOneOneQuestion");
+        System.out.println("testSurveyOneOneOneQuestion");
         Survey survey = initSurvey();
 
         List<Question> questions = Question.getQuestionsByProgram(
                 survey.getProgram().getId_program());
         //CS 1.1.1 50% 1.1 50%
-        Log.d(TAG, yes.toString());
-        Log.d(TAG, no.toString());
+        System.out.println(yes.toString());
+        System.out.println(no.toString());
 
         survey = setValue(survey, yes, questions.get(0));
         survey = setValue(survey, yes, questions.get(1));

@@ -17,20 +17,15 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.push;
+package org.eyeseetea.malariacare.test.deprecated.push;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -57,11 +52,11 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPush;
  * Created by arrizabalaga on 3/02/16.
  */
 @RunWith(AndroidJUnit4.class)
-public class PushOKTest {
+public class PushErrorTest {
 
-    private static final String TAG="PushOKTest";
-
-   // private LoginActivity mReceiptCaptureActivity;
+    private static final String TAG="TestingPushError";
+    public static final String NON_EXISTANT_PROGRAM_UID = "d6PHrjjljS1XX";
+    //private LoginActivity mReceiptCaptureActivity;
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
@@ -81,32 +76,36 @@ public class PushOKTest {
     }
 
     @Test
-    public void pushWithPermissionsDoesPush(){
+    public void pushWithOutPermissionsDoesNOTPush(){
+        //GIVEN
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
         startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
-        long numberOfEvents = 1;
-        long eventCount = EventExtended.count();
         fillSurvey(7, "No");
+
+        //Change program id so that pushing is not allowed
+        Survey surveyInProgress=Survey.getSurveyInProgress();
+        mockFalseProgramForSurvey(surveyInProgress);
+
+        //WHEN
         Long idSurvey=markInProgressAsCompleted();
 
-        //then: Survey is pushed (UID)
-        Log.d(TAG, "Session user ->"+ Session.getUser());
         Survey survey=waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH*1000,idSurvey);
 
-
-
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH *1000);
-        Espresso.registerIdlingResources(idlingResource);
-        Log.d(TAG,survey.toString());
-        Espresso.unregisterIdlingResources(idlingResource);
-
-        assertTrue(survey.getEventUid()!=null);
-
-        assertTrue(numberOfEvents == EventExtended.count());
-        assertTrue(eventCount +1 == EventExtended.count());
+        //THEN
+        //then: Survey is NOT pushed (no UID)
+        assertTrue("Survey not pushed"+survey.toString(),!survey.isSent());
+        assertTrue("Survey not pushed"+survey.toString(),survey.getUploadDate()==null);
+        assertTrue("Survey not pushed"+survey.toString(),survey.isConflict());
 
         //then: Row is gone
         onView(withId(R.id.score)).check(doesNotExist());
     }
+
+    private void mockFalseProgramForSurvey(Survey surveyInProgress) {
+        Program program = surveyInProgress.getProgram();
+        program.setUid(NON_EXISTANT_PROGRAM_UID);
+        program.save();
+    }
+
 }

@@ -56,6 +56,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -756,6 +757,13 @@ public class Survey extends BaseModel implements VisitableToSDK {
         //Move scheduledate and save
         this.scheduled_date = newScheduledDate;
         this.save();
+    }
+
+    public void addValue(Value value){
+        if(values==null){
+            values=new ArrayList<>();
+        }
+        values.add(value);
     }
 
     /**

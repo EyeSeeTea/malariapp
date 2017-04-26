@@ -17,27 +17,25 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.AssessAction;
+package org.eyeseetea.malariacare.test.deprecated.AssessAction;
 
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
-
-import com.raizlabs.android.dbflow.sql.language.Delete;
+import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
@@ -49,17 +47,22 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 
 /**
- * Created by idelcano on 14/03/2016.
+ * Created by idelcano on 03/03/2016.
  */
-public class AssessCompulsoryIncompleteTest {
-    private static final String TAG = "AssessActionTest";
+
+@RunWith(AndroidJUnit4.class)
+public class AssessDeleteTest {
+/*
+    private static final String TAG="AssessActionTest";
+
+    // private LoginActivity mReceiptCaptureActivity;
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
 
     @Before
-    public void setup() {
+    public void setup(){
         //force init go to logging activity.
         SDKTestUtils.goToLogin();
         //set the test limit( and throw exception if the time is exceded)
@@ -71,29 +74,28 @@ public class AssessCompulsoryIncompleteTest {
         SDKTestUtils.exitApp();
     }
 
-    @After
-    public void deleteSurveys() throws Exception{
-        Delete.tables(Survey.class);
-    }
-
     @Test
-    public void assessCompulsoryIncomplete() {
+    public void assessDeleteSurvey(){
         //GIVEN
-        if(LoginActivity.class.equals(SDKTestUtils.getActivityInstance().getClass())) {
-            login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
-            waitForPull(DEFAULT_WAIT_FOR_PULL);
-        }
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_IMCI);
-        fillSurvey(12, "Yes");
+        login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
+        waitForPull(DEFAULT_WAIT_FOR_PULL);
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FACILITY_1_IDX);
+        fillSurvey(7, "Yes");
+
 
         //WHEN
-        Long idSurvey = SDKTestUtils.markAsCompleteCompulsory();
-        Log.d(TAG, "Session user ->" + Session.getUser());
-        Survey survey = Survey.findById(idSurvey);
+        Long idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.no);
 
         //THEN
-        onView(withText(R.string.accept)).perform(click());
-        assertTrue(survey.isInProgress());
-    }
+        assertTrue("Survey not deleted", Survey.exists(idSurvey));
 
+        //WHEN
+        idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.yes);
+
+        //THEN
+        assertFalse("Survey not deleted", Survey.exists(idSurvey));
+
+        onView(withId(R.id.score)).check(doesNotExist());
+    }
+*/
 }

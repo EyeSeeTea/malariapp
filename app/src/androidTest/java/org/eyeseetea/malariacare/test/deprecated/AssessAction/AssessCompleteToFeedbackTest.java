@@ -17,14 +17,19 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.AssessAction;
+package org.eyeseetea.malariacare.test.deprecated.AssessAction;
 
+import android.support.test.espresso.AmbiguousViewMatcherException;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,10 +38,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
@@ -47,15 +52,13 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 
 /**
- * Created by idelcano on 03/03/2016.
+ * Created by idelcano on 11/03/2016.
  */
 
 @RunWith(AndroidJUnit4.class)
-public class AssessDeleteTest {
-
+public class AssessCompleteToFeedbackTest {
+/*
     private static final String TAG="AssessActionTest";
-
-    // private LoginActivity mReceiptCaptureActivity;
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
@@ -75,27 +78,42 @@ public class AssessDeleteTest {
     }
 
     @Test
-    public void assessDeleteSurvey(){
+    public void assessCompleteAndGoFeedback(){
         //GIVEN
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         waitForPull(DEFAULT_WAIT_FOR_PULL);
-        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FACILITY_1_IDX);
-        fillSurvey(7, "Yes");
-
-
-        //WHEN
-        Long idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.no);
-
-        //THEN
-        assertTrue("Survey not deleted", Survey.exists(idSurvey));
+        startSurvey(SDKTestUtils.TEST_FACILITY_1_IDX, SDKTestUtils.TEST_FAMILY_PLANNING_IDX);
+        //randomResponseNumber is used to randomize the survey answers to obtain a different main score between tests.
+        int randomResponseNumber=2 + (int)(Math.random() * 7);
+        fillSurvey(randomResponseNumber, "Yes");
 
         //WHEN
-        idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.yes);
+        Long idSurvey=SDKTestUtils.markCompleteAndGoFeedback();
+        Survey survey = Survey.findById(idSurvey);
+
 
         //THEN
-        assertFalse("Survey not deleted", Survey.exists(idSurvey));
+        //check if is in feedback
+        onView(withText(R.string.quality_of_care)).check(matches(isDisplayed()));
+        onView(withText(String.format("%.1f%%", survey.getMainScore()))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.score)).check(doesNotExist());
+        //WHEN
+        onView(withText(R.string.feedback_return)).perform(click());
+
+        //THEN
+
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
+        Espresso.registerIdlingResources(idlingResource);
+        try {
+            onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
+        }catch(AmbiguousViewMatcherException e){
+            Log.d(TAG,"Multiple surveys have the same score "+String.format("%.1f %%", survey.getMainScore()));
+        }
+        Espresso.unregisterIdlingResources(idlingResource);
+        if(survey.isCompleted())
+            onView(withText( "* "  + survey.getProgram().getName())).check(matches(isDisplayed()));
+        else
+            onView(withText("- "   + survey.getProgram().getName())).check(matches(isDisplayed()));
     }
-
+    */
 }

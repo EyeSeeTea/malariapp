@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test;
+package org.eyeseetea.malariacare.test.deprecated;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -32,7 +32,6 @@ import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
@@ -44,7 +43,6 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnit;
 import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Survey$Table;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.model.Value;
@@ -133,35 +131,36 @@ public class MalariaEspressoTest {
         }
     }
 
-    public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
-        List<Survey> surveys=mockSurveys(numSurvey, numProgram);
-        Survey survey=surveys.get(select);
-        Session.setSurveyByModule(survey,"");
-        return survey;
-    }
-
-    public static void mockSessionSurvey(int num, int select){
-        mockSessionSurvey(num, 0, select);
-    }
-
-    public static List<Survey> mockSurveys(int numOrgs, int numPrograms){
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
-        List<Program> programList = Program.list();
-        Program program=programList.get(numPrograms);
-        User user =getSafeUser();
-
-        for(int i=0;i<numOrgs;i++){
-            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
-            survey.save();
+    /*
+        public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
+            List<Survey> surveys=mockSurveys(numSurvey, numProgram);
+            Survey survey=surveys.get(select);
+            Session.setSurveyByModule(survey,"");
+            return survey;
         }
-        List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();
-        return surveys;
-    }
 
-    public static List<Survey> mockSurveys(int num){
-        return mockSurveys(num, 0);
-    }
+        public static void mockSessionSurvey(int num, int select){
+            mocksionSurvey(num, 0, select);
+        }
+    /*
+        public static List<Survey> mockSurveys(int numOrgs, int numPrograms){
+            List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
+            List<Program> programList = Program.list();
+            Program program=programList.get(numPrograms);
+            User user =getSafeUser();
 
+            for(int i=0;i<numOrgs;i++){
+                Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
+                survey.save();
+            }
+            List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();
+            return surveys;
+        }
+
+        public static List<Survey> mockSurveys(int num){
+            return mockSurveys(num, 0);
+        }
+    */
     private static User getSafeUser(){
         User user=Session.getUser();
         if(user!=null){

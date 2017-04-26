@@ -62,7 +62,7 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
  */
 @RunWith(AndroidJUnit4.class)
 public class CompleteSurveyTest {
-
+/*
     private static final String TAG="AssessActionTest";
 
     @Rule
@@ -107,5 +107,5 @@ public class CompleteSurveyTest {
 
     }
 
-
+*/
 }

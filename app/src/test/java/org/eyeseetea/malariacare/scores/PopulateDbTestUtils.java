@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.utils;
+package org.eyeseetea.malariacare.scores;
 
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -35,7 +35,6 @@ import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -84,10 +83,8 @@ public class PopulateDbTestUtils {
         answers = new LinkedHashMap<>();
         compositeScores = new LinkedHashMap<>();
     }
-    private InputStream openFile(Class<?> ioclass, String filename) throws IOException {
-        return ioclass.getClassLoader().getResourceAsStream(filename);
-    }
-    public void populateDBListTestFolder(Class<?> ioclass) throws IOException {
+
+    public static void populateDBListTestFolder(AssetManager assetManager) throws IOException {
 
         Log.d(TAG, "Populating metaData from local csv files");
 
@@ -95,11 +92,11 @@ public class PopulateDbTestUtils {
         initMaps();
         List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV,
                 ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV, QUESTIONS_CSV);
-        populateTestDb(ioclass, tables2populate);
+        populateTestDb(assetManager, tables2populate);
 
     }
 
-    public void populateOtherCSV(Class<?> ioclass) throws Exception {
+    public static void populateOtherCSV(AssetManager assetManager) throws Exception {
 
         Log.d(TAG, "Populating metaData from local csv files");
 
@@ -107,18 +104,18 @@ public class PopulateDbTestUtils {
         initMaps();
         List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV,
                 ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES2_CSV, QUESTIONS2_CSV);
-        populateTestDb(ioclass, tables2populate);
+        populateTestDb(assetManager, tables2populate);
 
 
     }
 
-    private void populateTestDb(Class<?> ioclass, List<String> tables2populate)
+    private static void populateTestDb(AssetManager assetManager, List<String> tables2populate)
             throws IOException {
         //Clear database
         PopulateDB.wipeDatabase();
         CSVReader reader;
         for (String table : tables2populate) {
-            reader = new CSVReader(new InputStreamReader(openFile(ioclass, table)), ';', '\'');
+            reader = new CSVReader(new InputStreamReader(assetManager.open(table)), ';', '\'');
             String[] line;
             while ((line = reader.readNext()) != null) {
                 switch (table) {

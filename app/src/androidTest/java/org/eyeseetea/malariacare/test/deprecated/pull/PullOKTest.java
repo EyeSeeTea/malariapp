@@ -1,46 +1,17 @@
-package org.eyeseetea.malariacare.test.pull;
+package org.eyeseetea.malariacare.test.deprecated.pull;
 
-import android.support.test.rule.ActivityTestRule;
+import static junit.framework.Assert.assertTrue;
+
 import android.support.test.runner.AndroidJUnit4;
 
-import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnit;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.hisp.dhis.android.sdk.persistence.models.Access;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit; 
-import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
-import org.hisp.dhis.android.sdk.utils.api.ProgramType;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertTrue;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 
 /**
  * Created by idelcano on 8/02/16.
  */
 @RunWith(AndroidJUnit4.class)
 public class PullOKTest {
+    /*
     private static final String TAG="TestingPullOk";
     private final String ATTRIBUTE_SUPERVISION_CODE="PSupervisor";
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
@@ -275,10 +246,10 @@ public class PullOKTest {
         String goldenProgramUID=goldenProgram.getUid();
         for(Program program:programs){
             if(program.getUid()!=null && program.getUid().equals(goldenProgramUID)){
-                return true;
+                return true;de
             }
         }
         return false;
     }
-
+*/
 }

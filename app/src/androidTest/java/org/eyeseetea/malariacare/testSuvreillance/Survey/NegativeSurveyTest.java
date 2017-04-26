@@ -71,9 +71,10 @@ public class NegativeSurveyTest {
     public static void exitApp() throws Exception {
         SDKTestUtils.exitApp();
     }
-
+/*
     @Test
     public void suvreillanceSurveyNegativeTest(){
+
         //GIVEN
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
         SDKVariantUtils.selectSurvey(1, 1, 5);
@@ -90,4 +91,5 @@ public class NegativeSurveyTest {
         assertTrue(survey.getValues().get(0).getValue().equals("Negative"));
 
     }
+    */
 }

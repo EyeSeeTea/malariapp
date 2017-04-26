@@ -19,6 +19,17 @@
 
 package org.eyeseetea.malariacare.test.utils;
 
+import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
@@ -30,9 +41,6 @@ import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.util.Log;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
@@ -45,20 +53,9 @@ import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
 import org.hamcrest.Matchers;
-import org.eyeseetea.malariacare.data.remote.models.Event$Table;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
-
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 /**
  * Created by arrizabalaga on 8/02/16.
@@ -101,10 +98,11 @@ public class SDKTestUtils {
 
     public static void login(String server, String user, String password) {
         //when: login
-        onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
-        onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(user));
-        onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText(password));
-        onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
+        //// FIXME: 26/04/2017 
+        //onView(withId(org.hisp.dhis.android.sdk.R.id.server_url)).perform(replaceText(server));
+        //onView(withId(org.hisp.dhis.android.sdk.R.id.username)).perform(replaceText(user));
+        //onView(withId(org.hisp.dhis.android.sdk.R.id.password)).perform(replaceText(password));
+        //onView(withId(org.hisp.dhis.android.sdk.R.id.login_button)).perform(click());
     }
 
     public static void waitForPull(int seconds) {

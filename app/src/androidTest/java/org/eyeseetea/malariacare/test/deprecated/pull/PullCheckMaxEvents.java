@@ -17,38 +17,21 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.test.pull;
+package org.eyeseetea.malariacare.test.deprecated.pull;
 
         import android.support.test.rule.ActivityTestRule;
         import android.support.test.runner.AndroidJUnit4;
 
         import org.eyeseetea.malariacare.LoginActivity;
-        import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
-        import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-        import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-        import org.eyeseetea.malariacare.data.remote.SdkController;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-        import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Event;
         import org.junit.AfterClass;
         import org.junit.Before;
         import org.junit.Rule;
         import org.junit.Test;
         import org.junit.runner.RunWith;
 
-        import java.util.Calendar;
-        import java.util.Date;
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
-
         import static junit.framework.Assert.assertTrue;
         import static junit.framework.Assert.fail;
-        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
-        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
-        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
-        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
-        import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 
 /**
  * Created by idelcano on 8/02/16.
@@ -76,7 +59,7 @@ public class PullCheckMaxEvents {
 
     @Test
     public void pullCheckEventsLowThanMaxEvents(){
-
+        /*
         //GIVEN
         int maxEvents= PreferencesState.getInstance().getMaxEvents();
         login(HNQIS_DEV_CI, TEST_USERNAME_WITH_PERMISSION, TEST_PASSWORD_WITH_PERMISSION);
@@ -109,6 +92,7 @@ public class PullCheckMaxEvents {
                 fail(String.format("More events %d than expected %d for orgUnit %s and program %s",numPair,maxEvents,organisationUnitId,programId));
             }
         }
+        */
     }
 
 }

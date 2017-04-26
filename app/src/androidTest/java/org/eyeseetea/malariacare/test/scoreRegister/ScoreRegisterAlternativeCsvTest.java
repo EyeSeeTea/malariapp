@@ -25,6 +25,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import junit.framework.Assert;
@@ -64,15 +66,18 @@ public class ScoreRegisterAlternativeCsvTest extends ScoreRegisterBase {
 
     @BeforeClass
     public static void init() {
-        FlowManager.init(InstrumentationRegistry.getTargetContext());
+        FlowConfig flowConfig = new FlowConfig
+                .Builder(InstrumentationRegistry.getTargetContext())
+                .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
+                .build();
+        FlowManager.init(flowConfig);
         wipeDB();
     }
 
     @Before
     public void populateDB() {
         try {
-            PopulateDbTestUtils.populateOtherCSV(
-                    InstrumentationRegistry.getTargetContext().getAssets());
+            new PopulateDbTestUtils().populateOtherCSV(getClass());
         } catch (Exception e) {
             e.printStackTrace();
         }

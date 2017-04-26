@@ -19,7 +19,10 @@
 
 package org.eyeseetea.malariacare.scores;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import android.support.annotation.NonNull;
+
 
 
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
@@ -39,10 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-/**
- * Created by idelcano on 19/04/2016.
- */
+/*
 @RunWith(MockitoJUnitRunner.class)
 public class TestCompositeScores {
 
@@ -52,7 +52,7 @@ public class TestCompositeScores {
     public void createMockDB() {
         try {
             String filePath = new File("").getAbsolutePath();
-            TestUtils.populateDBTest(filePath + "\\src\\test\\java\\org\\eyeseetea\\malariacare\\scores\\assets\\");
+            PopulateDbTestUtils.populateDBTest(filePath + "\\src\\test\\java\\org\\eyeseetea\\malariacare\\scores\\assets\\");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,85 +104,85 @@ public class TestCompositeScores {
 
     private void generateSecondCompositeScores() {
         String filePath = new File("").getAbsolutePath();
-        List<String> tables2populate = Arrays.asList(TestUtils.COMPOSITE_SCORES2_CSV, TestUtils.QUESTIONS2_CSV);
-        TestUtils.populateOtherCSV(filePath + "\\src\\test\\java\\org\\eyeseetea\\malariacare\\scores\\assets\\", tables2populate);
+        List<String> tables2populate = Arrays.asList(PopulateDbTestUtils.COMPOSITE_SCORES2_CSV, PopulateDbTestUtils.QUESTIONS2_CSV);
+        PopulateDbTestUtils.populateOtherCSV(filePath + "\\src\\test\\java\\org\\eyeseetea\\malariacare\\scores\\assets\\", tables2populate);
     }
 
     public void readFirst() {
-        for (int i = 1; i <= TestUtils.compositeScores.size(); i++) {
-            Float result = ScoreRegister.getCompositeScore(TestUtils.compositeScores.get(i), survey.getId_survey(), TEST_MODULE);
-            System.out.println("CompositeScore " + TestUtils.compositeScores.get(i).getId_composite_score() + " Hierarchicalcode" + TestUtils.compositeScores.get(i).getHierarchical_code() + " result:" + result + "CS0");
+        for (int i = 1; i <= PopulateDbTestUtils.compositeScores.size(); i++) {
+            Float result = ScoreRegister.getCompositeScore(PopulateDbTestUtils.compositeScores.get(i), survey.getId_survey(), TEST_MODULE);
+            System.out.println("CompositeScore " + PopulateDbTestUtils.compositeScores.get(i).getId_composite_score() + " Hierarchicalcode" + PopulateDbTestUtils.compositeScores.get(i).getHierarchical_code() + " result:" + result + "CS0");
         }
     }
 
     private void then(List<Float> expected) {
         int count=0;
-        for (int i = 1; i <= TestUtils.compositeScores.size(); i++) {
-            Float result = ScoreRegister.getCompositeScore(TestUtils.compositeScores.get(i), survey.getId_survey(), TEST_MODULE);
-            System.out.println("CompositeScore " + TestUtils.compositeScores.get(i).getId_composite_score() + " Hierarchicalcode" + TestUtils.compositeScores.get(i).getHierarchical_code() + " result:" + result + "Expected: "+expected.get(count));
-            assertThat("Assert Composite score " + TestUtils.compositeScores.get(i).getHierarchical_code(), result.equals(expected.get(count++)));
+        for (int i = 1; i <= PopulateDbTestUtils.compositeScores.size(); i++) {
+            Float result = ScoreRegister.getCompositeScore(PopulateDbTestUtils.compositeScores.get(i), survey.getId_survey(), TEST_MODULE);
+            System.out.println("CompositeScore " + PopulateDbTestUtils.compositeScores.get(i).getId_composite_score() + " Hierarchicalcode" + PopulateDbTestUtils.compositeScores.get(i).getHierarchical_code() + " result:" + result + "Expected: "+expected.get(count));
+            assertThat("Assert Composite score " + PopulateDbTestUtils.compositeScores.get(i).getHierarchical_code(), result.equals(expected.get(count++)));
         }
     }
 
     private void loadScores(Survey survey, List<Question> questions, String module) {
-        ScoreRegister.clear(survey, module);
+        ScoreRegister.clear(survey.getId_survey(), module);
         Session.setSurveyByModule(survey, module);
         List<CompositeScore> compositeScoresLoaded = ScoreRegister.loadCompositeScoresFromMemory(survey, questions, module);
         System.out.println(ScoreRegister.calculateMainScore(compositeScoresLoaded, survey.getId_survey(), module));
     }
 
     private void testSurveyAllYes() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(7));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(8));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(7));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(8));
         //CS 1.2.2
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(9));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(10));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(11));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(12));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(9));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(10));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(11));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(12));
         //CS 1.2.3
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(13));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(14));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(15));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(16));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(13));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(14));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(15));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(16));
         //CS 2.1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(17));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(18));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(19));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(20));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(17));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(18));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(19));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(20));
         //CS 2.2.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(21));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(22));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(23));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(24));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(21));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(22));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(23));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(24));
         //CS 2.3.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(25));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(26));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(27));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(28));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(25));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(26));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(27));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(28));
         //CS 2.3.2
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(29));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(30));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(31));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(32));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(29));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(30));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(31));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(32));
         //CS 2.3.3
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(33));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(34));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(35));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(36));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(33));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(34));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(35));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(36));
 
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
@@ -206,57 +206,57 @@ public class TestCompositeScores {
         then(expected);
     }
     private void testSurveyAllNo() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(7));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(8));
         //CS 1.2.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(9));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(10));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(11));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(12));
         //CS 1.2.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(13));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(14));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(15));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(16));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(13));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(14));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(15));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(16));
         //CS 2.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(17));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(18));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(19));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(20));
         //CS 2.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(21));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(22));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(23));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(24));
         //CS 2.3.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(25));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(26));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(27));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(28));
         //CS 2.3.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(29));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(30));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(31));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(32));
         //CS 2.3.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(33));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(34));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(35));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(36));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(0f);//cs0
@@ -280,57 +280,57 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneQuestions() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(7));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(8));
         //CS 1.2.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(9));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(10));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(11));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(12));
         //CS 1.2.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(13));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(14));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(15));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(16));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(13));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(14));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(15));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(16));
         //CS 2.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(17));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(18));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(19));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(20));
         //CS 2.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(21));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(22));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(23));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(24));
         //CS 2.3.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(25));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(26));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(27));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(28));
         //CS 2.3.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(29));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(30));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(31));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(32));
         //CS 2.3.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(33));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(34));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(35));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(36));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(25.0f);//cs0
@@ -354,21 +354,21 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
-        for (int i = 1; i <= TestUtils.questions.size(); i++) {
-            if (TestUtils.questions.get(i) != null)
-                questions.add(TestUtils.questions.get(i));
+        for (int i = 1; i <= PopulateDbTestUtils.questions.size(); i++) {
+            if (PopulateDbTestUtils.questions.get(i) != null)
+                questions.add(PopulateDbTestUtils.questions.get(i));
         }
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(6));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(100f);//cs0
@@ -380,19 +380,19 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree2() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = resetQuestions();
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(6));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(50f);//cs0
@@ -404,19 +404,19 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree4() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = resetQuestions();
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.2
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(4));
         //CS 1.1.2
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(6));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(2));
         loadScores(survey, questions, TEST_MODULE);
         readFirst();
         List<Float> expected = new ArrayList<>();
@@ -429,19 +429,19 @@ public class TestCompositeScores {
     }
 
     private void testSurveySecondCSTree3() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = resetQuestions();
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(2));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(6));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(66.66667f);//cs0
@@ -454,19 +454,19 @@ public class TestCompositeScores {
 
 
     private void testSurveySecondCSTree5() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = resetQuestions();
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(4));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(2));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(6));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(33.333336f);//cs0
@@ -478,60 +478,60 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneOneOneQuestion() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.1.1 50% 1.1 50%
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(2));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(7));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(8));
 
         //CS 1.2.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(9));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(10));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(11));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(12));
 
         //CS 1.2.3 100% 1.2 50%
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(13));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(14));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(15));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(16));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(13));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(14));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(15));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(16));
         //CS 2.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(17));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(18));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(19));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(20));
         //CS 2.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(21));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(22));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(23));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(24));
         //CS 2.3.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(25));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(26));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(27));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(28));
         //CS 2.3.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(29));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(30));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(31));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(32));
         //CS 2.3.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(33));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(34));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(35));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(36));
         loadScores(survey, questions, TEST_MODULE);
 
         List<Float> expected = new ArrayList<>();
@@ -556,57 +556,57 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneTwoOneQuestion() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(6));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(7));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(8));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(7));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(8));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(9));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(10));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(11));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(12));
         //CS 1.2.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(13));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(14));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(15));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(16));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(13));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(14));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(15));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(16));
         //CS 2.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(17));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(18));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(19));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(20));
         //CS 2.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(21));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(22));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(23));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(24));
         //CS 2.3.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(25));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(26));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(27));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(28));
         //CS 2.3.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(29));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(30));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(31));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(32));
         //CS 2.3.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(33));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(34));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(35));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(36));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(6.25f);//cs0
@@ -630,57 +630,57 @@ public class TestCompositeScores {
     }
 
     private void testSurveyOneTwoThreeQuestion() {
-        ScoreRegister.clear(survey, TEST_MODULE);
+        ScoreRegister.clear(survey.getId_survey(), TEST_MODULE);
         List<Question> questions = new ArrayList<>();
         questions = resetQuestions();
         int count = 0;
         survey = new Survey();
-        survey.setProgram(TestUtils.programs.get(1));
+        survey.setProgram(PopulateDbTestUtils.programs.get(1));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(13));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(14));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(15));
-        survey = setValue(survey, TestUtils.options.get(1), TestUtils.questions.get(16));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(13));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(14));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(15));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(1), PopulateDbTestUtils.questions.get(16));
         //CS 1.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(1));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(2));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(3));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(4));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(1));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(2));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(3));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(4));
         //CS 1.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(5));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(6));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(7));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(8));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(5));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(6));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(7));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(8));
         //CS 1.2.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(9));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(10));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(11));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(12));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(9));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(10));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(11));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(12));
         //CS 2.1.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(17));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(18));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(19));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(20));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(17));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(18));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(19));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(20));
         //CS 2.2.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(21));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(22));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(23));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(24));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(21));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(22));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(23));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(24));
         //CS 2.3.1
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(25));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(26));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(27));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(28));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(25));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(26));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(27));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(28));
         //CS 2.3.2
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(29));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(30));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(31));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(32));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(29));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(30));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(31));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(32));
         //CS 2.3.3
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(33));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(34));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(35));
-        survey = setValue(survey, TestUtils.options.get(2), TestUtils.questions.get(36));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(33));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(34));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(35));
+        survey = setValue(survey, PopulateDbTestUtils.options.get(2), PopulateDbTestUtils.questions.get(36));
         loadScores(survey, questions, TEST_MODULE);
         List<Float> expected = new ArrayList<>();
         expected.add(12.5f);//cs0
@@ -707,9 +707,9 @@ public class TestCompositeScores {
     private List<Question> resetQuestions() {
         List<Question> questions;
         questions = new ArrayList<>();
-        for (int i = 1; i <= TestUtils.questions.size(); i++) {
-            TestUtils.questions.get(i).resetValues();
-            questions.add(TestUtils.questions.get(i));
+        for (int i = 1; i <= PopulateDbTestUtils.questions.size(); i++) {
+            PopulateDbTestUtils.questions.get(i).resetValues();
+            questions.add(PopulateDbTestUtils.questions.get(i));
         }
         return questions;
     }
@@ -736,5 +736,5 @@ public class TestCompositeScores {
         survey.addValue(value);
         return survey;
     }
-
 }
+*/
