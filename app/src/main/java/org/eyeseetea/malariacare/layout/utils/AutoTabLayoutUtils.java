@@ -240,7 +240,7 @@ public class AutoTabLayoutUtils {
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
         String questionFormHtml = "<span>"+question.getForm_name()+"</span>";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            questionFormHtml = "<a href=\"" + PreferencesState.getInstance().getServerUrl()
+            questionFormHtml = questionFormHtml + "<a href=\"" + PreferencesState.getInstance().getServerUrl()
                     + PreferencesState.getInstance().getContext().getString(
                     R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
                     + ")</a>";
