@@ -638,6 +638,18 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     /**
+     * Returns the last survey by each program and orgunit combination ordered by completiondate
+     */
+    public static List<Survey> getLastSentCompletedOrConflictSurveys() {
+        return new Select().from(Survey.class)
+                .where(Survey_Table.status.eq(Constants.SURVEY_SENT))
+                .or(Survey_Table.status.eq(Constants.SURVEY_COMPLETED))
+                .or(Survey_Table.status.eq(Constants.SURVEY_CONFLICT))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
+                .groupBy(Survey_Table.id_org_unit_fk, Survey_Table.id_program_fk)
+                .queryList();
+    }
+    /**
      * Returns all the surveys with status put to "Sent" or completed or Conflict
      */
     public static List<Survey> getAllSentCompletedOrConflictSurveys() {

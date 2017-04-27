@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.Tab;
 import org.eyeseetea.malariacare.data.database.model.Tab_Table;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
@@ -208,7 +209,13 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getAllSentCompletedOrConflictSurveys());
+        List<Survey> sentSurveyList;
+        if(PreferencesState.getInstance().isLastForOrgUnit()) {
+            sentSurveyList = Survey.getLastSentCompletedOrConflictSurveys();
+        }else{
+            sentSurveyList = Survey.getAllSentCompletedOrConflictSurveys();
+        }
+        sentDashboardBundle.addModelList(Survey.class.getName(),sentSurveyList);
         sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
         sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
 
