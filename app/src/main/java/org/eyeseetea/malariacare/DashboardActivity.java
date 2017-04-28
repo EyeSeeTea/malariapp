@@ -132,7 +132,6 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             getFragmentManager().popBackStack();
         }
@@ -157,9 +156,6 @@ public class DashboardActivity extends BaseActivity {
             message += String.format(getApplicationContext().getResources().getString(
                     R.string.dialog_incomplete_surveys_before_refresh),
                     unsentSurveysCount);
-        } else {
-            message += getApplicationContext().getResources().getString(
-                    R.string.dialog_all_surveys_sent_before_refresh);
         }
         //check if exist a compulsory question without awnser before push and pull.
 
