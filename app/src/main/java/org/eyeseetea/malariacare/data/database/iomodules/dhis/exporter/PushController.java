@@ -28,13 +28,13 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
-import org.eyeseetea.malariacare.network.SurveyChecker;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
 import java.util.List;
 import java.util.Map;
@@ -96,17 +96,27 @@ public class PushController implements IPushController {
 
     private void pushData(final IPushControllerCallback callback) {
         mPushDhisSDKDataSource.pushData(
-                new IDataSourceCallback<Map<String, ImportSummary>>() {
+                new IDataSourceCallback<Map<String, PushReport>>() {
                     @Override
                     public void onSuccess(
-                            Map<String, ImportSummary> mapEventsImportSummary) {
-                        mConvertToSDKVisitor.saveSurveyStatus(mapEventsImportSummary);
-                        callback.onComplete();
+                            Map<String, PushReport> mapEventsReports) {
+                        if(mapEventsReports==null || mapEventsReports.size()==0){
+                            onError(new PushReportException("EventReport is null or empty"));
+                            return;
+                        }
+                        try {
+                            mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback);
+                            callback.onComplete();
+                        }catch (Exception e){
+                            onError(new PushReportException(e));
+                        }
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        mConvertToSDKVisitor.setSurveysAsQuarantine();
+                        if(throwable instanceof  PushReportException) {
+                            mConvertToSDKVisitor.setSurveysAsQuarantine();
+                        }
                         callback.onError(throwable);
                     }
                 });

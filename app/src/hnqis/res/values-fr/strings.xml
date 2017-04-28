@@ -204,4 +204,5 @@ Mensuelle"</string>
 <string name="clear">"Effacer"</string>
 <string name="admin_announcement">"Annonce Admin"</string>
 <string name="user_close">"Cet utilisateur a été fermé par l'administrateur."</string>
+<string name="error_conflict_message">"L'événement avec UID: %1$s. A été téléchargé avec conflit dans l'élément de données UID: %2$s avec le message: %3$s. Veuillez contacter l'administrateur."</string>
 </resources>

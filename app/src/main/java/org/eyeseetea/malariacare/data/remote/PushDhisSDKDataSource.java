@@ -26,13 +26,22 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushedValuesCount;
+import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
+import org.hisp.dhis.client.sdk.models.common.importsummary.Conflict;
+import org.hisp.dhis.client.sdk.models.common.importsummary.ImportCount;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +55,11 @@ import rx.schedulers.Schedulers;
 public class PushDhisSDKDataSource {
     private final String TAG = ".PushControllerB&D";
 
-    public void pushData(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
+    public void pushData(final IDataSourceCallback<Map<String, PushReport>> callback) {
         pushEvents(callback);
     }
 
-    private void pushEvents(final IDataSourceCallback<Map<String, ImportSummary>> callback) {
+    private void pushEvents(final IDataSourceCallback<Map<String, PushReport>> callback) {
         final Set<String> eventUids = getEventUidToBePushed();
 
         if(eventUids.isEmpty() || eventUids.size()==0){
@@ -67,17 +76,18 @@ public class PushDhisSDKDataSource {
                 .subscribe(new Action1<Map<String, ImportSummary>>() {
                     @Override
                     public void call(Map<String, ImportSummary> mapEventsImportSummary) {
+                        if(mapEventsImportSummary==null){
+                            callback.onError(new PushReportException("Error during push"));
+                            return;
+                        }
                         Log.d(TAG,
                                 "Push of events finish. Number of events: "
                                         + mapEventsImportSummary.size());
-
-                        //TODO: from data source should comverto always from SDK object to domain
-                        // object
-                        // this class should not return sdk objects directly
-                        //create a object similar to Map<String,ImportSummary> in domain and
-                        // convert before
-                        // to invoke callback.onSuccess
-                        callback.onSuccess(mapEventsImportSummary);
+                        try {
+                            callback.onSuccess(PushReportMapper.mapFromImportSummariesToPushReports(mapEventsImportSummary));
+                        }catch (NullPointerException e){
+                            callback.onError(new PushReportException(e));
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -90,6 +100,7 @@ public class PushDhisSDKDataSource {
                     }
                 });
     }
+
     @NonNull
     private Set<String> getEventUidToBePushed() {
         final Set<String> eventUids = new HashSet<>();

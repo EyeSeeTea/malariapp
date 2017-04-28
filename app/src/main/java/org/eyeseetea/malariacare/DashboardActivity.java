@@ -41,10 +41,10 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
@@ -57,7 +57,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -257,6 +256,12 @@ public class DashboardActivity extends BaseActivity {
                 Toast.makeText(getBaseContext(), R.string.push_surveys_not_found,
                         Toast.LENGTH_LONG).show();
                 Log.e(TAG, getString(R.string.push_surveys_not_found));
+            }
+
+            @Override
+            public void onInformativeError(String message) {
+                showException(PreferencesState.getInstance().getContext().getString(
+                        R.string.error_message), message);
             }
 
             @Override
