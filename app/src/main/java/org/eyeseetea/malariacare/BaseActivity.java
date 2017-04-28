@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -63,6 +64,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     LogoutUseCase mLogoutUseCase;
     IUserAccountRepository mUserAccountRepository;
+    private AlarmPushReceiver alarmPush;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         mUserAccountRepository = new UserAccountRepository(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
         checkQuarantineSurveys();
+        alarmPush = new AlarmPushReceiver();
+        alarmPush.setPushAlarm(this);
     }
 
     private void checkQuarantineSurveys() {
@@ -324,5 +328,11 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void debugMessage(String message) {
         Log.d("." + this.getClass().getSimpleName(), message);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        alarmPush.cancelPushAlarm(this);
     }
 }

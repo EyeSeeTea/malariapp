@@ -87,9 +87,6 @@ public class DashboardActivity extends BaseActivity {
         //delegate modules initialization
         dashboardController.onCreate(this, savedInstanceState);
 
-        //inits autopush alarm
-        AlarmPushReceiver.getInstance().setPushAlarm(this);
-
         if (!Session.getCredentials().isDemoCredentials()) {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);

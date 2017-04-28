@@ -47,16 +47,6 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     public AlarmPushReceiver() {
     }
 
-    /**
-     * Singleton constructor
-     */
-    public static AlarmPushReceiver getInstance() {
-        if (instance == null) {
-            instance = new AlarmPushReceiver();
-        }
-        return instance;
-    }
-
     public static void setFail(boolean fail) {
         AlarmPushReceiver.fail = fail;
     }
@@ -89,10 +79,6 @@ public class AlarmPushReceiver extends BroadcastReceiver {
 
     public void setPushAlarm(Context context) {
         Log.d(TAG, "setPushAlarm");
-        if (!AUtils.isNetworkAvailable()) {
-            cancelPushAlarm(PreferencesState.getInstance().getContext());
-            return;
-        }
 
         long pushPeriod = (fail) ? PUSH_FAIL_PERIOD : PUSH_SUCCESS_PERIOD;
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
