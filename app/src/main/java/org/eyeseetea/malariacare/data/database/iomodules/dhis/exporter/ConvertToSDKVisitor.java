@@ -468,8 +468,7 @@ public class ConvertToSDKVisitor implements
                     iEvent.getEvent().getUId());
             if (pushReport == null) {
                 //the survey was saved as quarantine.
-                new PushReportException(
-                        "saveSurveyStatus: report is null in this survey: " + iSurvey.getId_survey());
+                Log.d(TAG,"saveSurveyStatus: report is null in this survey: " + iSurvey.getId_survey());
                 //The loop should continue without throw the Exception.
                 continue;
             }
