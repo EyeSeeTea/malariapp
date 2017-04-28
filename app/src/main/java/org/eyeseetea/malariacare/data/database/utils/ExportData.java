@@ -10,15 +10,14 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
-import org.eyeseetea.malariacare.utils.Utils;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -196,15 +195,16 @@ public class ExportData {
      */
     private static Intent createEmailIntent(Activity activity, File data) {
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("*/*");
+        emailIntent.setType("application/zip");
 
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
                 new String[]{""});
 
-        Random r = new Random();
-
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-                "Local db " + r.nextInt());
+                "Local " + PreferencesState.getInstance().getContext().getString(
+                        R.string.app_name)
+                        + " db " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
+                        Calendar.getInstance().getTime()));
         //sets file as readable for external apps
         data.setReadable(true, false);
         Log.d(TAG, data.toURI() + "");
