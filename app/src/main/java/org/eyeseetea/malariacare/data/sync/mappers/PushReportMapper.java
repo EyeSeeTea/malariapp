@@ -15,7 +15,6 @@ import java.util.Map;
 
 public class PushReportMapper {
 
-
     public static Map<String, PushReport> mapFromImportSummariesToPushReports(
             Map<java.lang.String, ImportSummary> mapEventsImportSummary) {
         Map<String, PushReport> pushReportMap = new HashMap<String, PushReport>();
