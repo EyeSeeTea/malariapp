@@ -223,7 +223,7 @@ public class ConvertToSDKVisitor implements
                 Log.d(TAG, "DataValues:" + value.toString());
             }
         }
-        return "Error: " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
+        return ": " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
                                 + "program: " + programName + " OrgUnit: "
                                 + orgUnitName + "Survey: " + currentSurvey.toString();
     }
