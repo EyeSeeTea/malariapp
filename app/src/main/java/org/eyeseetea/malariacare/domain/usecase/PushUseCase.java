@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -49,6 +50,8 @@ public class PushUseCase {
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
             public void onComplete() {
+                System.out.println("PusUseCase Complete");
+
                 mPushController.changePushInProgress(false);
 
                 callback.onComplete();
@@ -56,21 +59,31 @@ public class PushUseCase {
 
             @Override
             public void onError(Throwable throwable) {
-                mPushController.changePushInProgress(false);
+                System.out.println("PusUseCase error");
 
                 if (throwable instanceof NetworkException) {
+                    mPushController.changePushInProgress(false);
                     callback.onNetworkError();
                 } else if (throwable instanceof ConversionException) {
+                    mPushController.changePushInProgress(false);
                     callback.onConversionError();
                 } else if (throwable instanceof SurveysToPushNotFoundException) {
+                    mPushController.changePushInProgress(false);
                     callback.onSurveysNotFoundError();
                 } else if (throwable instanceof PushReportException){
+                    mPushController.changePushInProgress(false);
                     callback.onPushError();
                 } else if (throwable instanceof PushValueException || throwable instanceof NullEventDateException){
                     callback.onInformativeError(throwable.getMessage());
                 } else {
+                    mPushController.changePushInProgress(false);
                     callback.onPushError();
                 }
+            }
+
+            @Override
+            public void onInformativeError(Throwable throwable) {
+                onInformativeError(throwable);
             }
         });
     }
