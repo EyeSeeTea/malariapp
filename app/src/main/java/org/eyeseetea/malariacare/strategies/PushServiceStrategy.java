@@ -95,7 +95,6 @@ public class PushServiceStrategy {
 
             @Override
             public void onInformativeError(String message) {
-                AlarmPushReceiver.isDoneFail();
                 Log.e(TAG, "An error has occurred to the conversion in push process"+message);
                 showInDialog(PreferencesState.getInstance().getContext().getString(
                         R.string.error_message), message);

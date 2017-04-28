@@ -26,6 +26,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushedValuesCount;
@@ -84,7 +85,7 @@ public class PushDhisSDKDataSource {
                                 "Push of events finish. Number of events: "
                                         + mapEventsImportSummary.size());
                         try {
-                            callback.onSuccess(convertImportSummaryToPushReport(mapEventsImportSummary));
+                            callback.onSuccess(PushReportMapper.mapFromImportSummariesToPushReports(mapEventsImportSummary));
                         }catch (NullPointerException e){
                             callback.onError(new PushReportException(e));
                         }
@@ -95,41 +96,6 @@ public class PushDhisSDKDataSource {
                         callback.onError(new PushDhisException(throwable));
                     }
                 });
-    }
-
-    private Map<String, PushReport> convertImportSummaryToPushReport(Map<java.lang.String, ImportSummary> mapEventsImportSummary) {
-        Map<String, PushReport> pushReportMap = new HashMap<String, PushReport>();
-            for (Map.Entry<String, ImportSummary> entry : mapEventsImportSummary.entrySet())
-            {
-                PushReport pushReport = new PushReport();
-                List<PushConflict> conflictList = new ArrayList<>();
-                if(entry.getValue().getConflicts()!=null) {
-                    for (Conflict conflict : entry.getValue().getConflicts()) {
-                        conflictList.add(
-                                new PushConflict(conflict.getObject(), conflict.getValue()));
-                    }
-                }
-                pushReport.setPushConflicts(conflictList);
-                pushReport.setDescription(entry.getValue().getDescription());
-                pushReport.setHref(entry.getValue().getHref());
-
-                ImportCount importCount = entry.getValue().getImportCount();
-                pushReport.setPushedValuesCount(new PushedValuesCount(importCount.getImported(), importCount.getUpdated(), importCount.getIgnored(), importCount.getDeleted()));
-
-                pushReport.setReference(entry.getValue().getReference());
-                if(entry.getValue().getStatus()== ImportSummary.Status.ERROR) {
-                    pushReport.setStatus(PushReport.Status.ERROR);
-                }
-                if(entry.getValue().getStatus()== ImportSummary.Status.OK) {
-                    pushReport.setStatus(PushReport.Status.OK);
-                }
-                if(entry.getValue().getStatus()== ImportSummary.Status.SUCCESS) {
-                    pushReport.setStatus(PushReport.Status.SUCCESS);
-                }
-                pushReport.setEventUid(entry.getKey());
-                pushReportMap.put(entry.getKey(), pushReport);
-            }
-        return pushReportMap;
     }
 
     @NonNull

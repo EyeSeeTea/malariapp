@@ -60,5 +60,4 @@ public class PushReportMapper {
         pushReport.setEventUid(importSummaryKey);
         return pushReport;
     }
-
 }
