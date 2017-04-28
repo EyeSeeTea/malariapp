@@ -47,6 +47,8 @@ public class PushController implements IPushController {
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
 
+    public PushController() {
+    }
 
     public PushController(Context context) {
         mContext = context;
@@ -56,6 +58,7 @@ public class PushController implements IPushController {
 
     public void push(final IPushControllerCallback callback) {
 
+        Log.d(TAG, "push running");
         if (!AUtils.isNetworkAvailable()) {
             Log.d(TAG, "No network");
             callback.onError(new NetworkException());
@@ -66,19 +69,23 @@ public class PushController implements IPushController {
             List<Survey> surveys = Survey.getAllCompletedSurveys();
 
             if (surveys == null || surveys.size() == 0) {
-                callback.onError(new SurveysToPushNotFoundException());
+                callback.onError(new SurveysToPushNotFoundException("Null surveys"));
             } else {
 
                 mPushDhisSDKDataSource.wipeEvents();
                 try {
+                    Log.d(TAG, "convert surveys to sdk");
                     convertToSDK(surveys);
                 } catch (Exception ex) {
                     callback.onError(new ConversionException(ex));
+                    return;
                 }
 
                 if (EventExtended.getAllEvents().size() == 0) {
                     callback.onError(new ConversionException());
+                    return;
                 } else {
+                    Log.d(TAG, "push data");
                     pushData(callback);
                 }
             }

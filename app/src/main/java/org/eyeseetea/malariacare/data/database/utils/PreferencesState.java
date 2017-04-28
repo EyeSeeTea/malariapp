@@ -357,6 +357,7 @@ public class PreferencesState {
     }
 
     public void setPushInProgress(boolean inProgress) {
+        Log.d(TAG, "change set push in progress to "+ inProgress);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
