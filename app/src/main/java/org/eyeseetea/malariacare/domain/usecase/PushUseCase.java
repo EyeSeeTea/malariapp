@@ -73,8 +73,6 @@ public class PushUseCase {
                 } else if (throwable instanceof PushReportException){
                     mPushController.changePushInProgress(false);
                     callback.onPushError();
-                } else if (throwable instanceof PushValueException || throwable instanceof NullEventDateException){
-                    callback.onInformativeError(throwable.getMessage());
                 } else {
                     mPushController.changePushInProgress(false);
                     callback.onPushError();
