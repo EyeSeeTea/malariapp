@@ -79,15 +79,13 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     private void checkQuarantineSurveys() {
-        if (PreferencesState.getInstance().isPushInProgress()) {
-            List<Survey> surveys = Survey.getAllSendingSurveys();
-            Log.d(TAG + "B&D", "The app was closed in the middle of a push. Surveys sending: "
-                    + surveys.size());
-            for (Survey survey : surveys) {
-                survey.setStatus(Constants.SURVEY_QUARANTINE);
-                survey.save();
-            }
-            PreferencesState.getInstance().setPushInProgress(false);
+        PreferencesState.getInstance().setPushInProgress(false);
+        List<Survey> surveys = Survey.getAllSendingSurveys();
+        Log.d(TAG + "B&D", "Pending surveys sending: "
+                + surveys.size());
+        for (Survey survey : surveys) {
+            survey.setStatus(Constants.SURVEY_QUARANTINE);
+            survey.save();
         }
     }
 
@@ -187,14 +185,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             item.setVisible(false);
         }
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        if ((requestCode == DUMP_REQUEST_CODE)) {
-            ExportData.removeDumpIfExist(this);
-        }
     }
 
     /**
