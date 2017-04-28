@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertT
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -622,7 +623,7 @@ public class Survey extends BaseModel implements VisitableToSDK {
     }
 
     @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws Exception {
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
         IConvertToSDKVisitor.visit(this);
     }
 

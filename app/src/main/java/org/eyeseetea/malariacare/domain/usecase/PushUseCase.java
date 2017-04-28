@@ -19,14 +19,12 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
-import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
-import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.network.SurveyChecker;
 
 public class PushUseCase {
@@ -42,10 +40,9 @@ public class PushUseCase {
             callback.onPushInProgressError();
             return;
         }
+        mPushController.changePushInProgress(true);
 
         SurveyChecker.launchQuarantineChecker();
-
-        mPushController.changePushInProgress(true);
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
@@ -81,7 +78,7 @@ public class PushUseCase {
 
             @Override
             public void onInformativeError(Throwable throwable) {
-                onInformativeError(throwable);
+                callback.onInformativeError(throwable.getMessage());
             }
         });
     }
