@@ -238,9 +238,10 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
-        String questionFormHtml = "<span>"+question.getForm_name()+"</span>";
+        String questionFormHtml = question.getForm_name();
+        String questionUId = "";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            questionFormHtml = questionFormHtml + "<a href=\"" + PreferencesState.getInstance().getServerUrl()
+            questionUId = " <a href=\"" + PreferencesState.getInstance().getServerUrl()
                     + PreferencesState.getInstance().getContext().getString(
                     R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
                     + ")</a>";
@@ -248,10 +249,14 @@ public class AutoTabLayoutUtils {
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
-            Spanned spannedQuestion= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>" + questionFormHtml);
-            viewHolder.statement.setText(spannedQuestion);
+            Spanned compulsoryMark= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>");
+
+            viewHolder.statement.setText(compulsoryMark);
+            viewHolder.statement.append(questionFormHtml);
+            viewHolder.statement.append(Html.fromHtml(questionUId));
         }else{
-            viewHolder.statement.setText(Html.fromHtml(questionFormHtml));
+            viewHolder.statement.setText(questionFormHtml);
+            viewHolder.statement.append(Html.fromHtml(questionUId));
         }
         viewHolder.statement.setMovementMethod(LinkMovementMethod.getInstance());
 
