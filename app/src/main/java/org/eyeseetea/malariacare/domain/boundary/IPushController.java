@@ -30,5 +30,7 @@ public interface IPushController {
         void onComplete();
 
         void onError(Throwable throwable);
+
+        void onInformativeError(Throwable throwable);
     }
 }
