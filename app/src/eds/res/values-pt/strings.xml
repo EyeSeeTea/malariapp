@@ -211,4 +211,8 @@ Passo 2: Localize a identificação do paciente do passo 1) no Registo de Farmá
 <string name="survey_third_step">Calculating completeness ratio</string>
 <string name="survey_fourth_step">Calculating Score register</string>
 <string name="error_conflict_message">"O evento com UID: %1$s. Foi carregado com conflito no elemento de dados UID: %2$s com a mensagem: %3$s. Entre em contato com o administrador."</string>
+<string name="dialog_action_logout">"Logout requerem a exclusão ou enviar seus dados não enviados."</string>
+<string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
+<string name="dialog_incomplete_surveys_before_refresh">"Você tem pesquisas %d não enviadas e será excluído. Deseja continuar?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"Você não tem pesquisas não solicitadas. Você quer continuar?"</string>
 </resources>

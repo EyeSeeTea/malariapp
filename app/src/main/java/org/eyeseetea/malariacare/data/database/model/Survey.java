@@ -547,16 +547,27 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).querySingle();
     }
-
+    /**
+     * Returns the number of surveys with status yet not put to "Sent/conflict/planned.."
+     */
+    public static int countAllUnsentUnplannedSurveys() {
+        return (int) SQLite.selectCountOf().from(Survey.class)
+                .where(Survey_Table.status.is(Constants.SURVEY_COMPLETED))
+                .or(Survey_Table.status.is(Constants.SURVEY_IN_PROGRESS))
+                .or(Survey_Table.status.is(Constants.SURVEY_SENDING))
+                .or(Survey_Table.status.is(Constants.SURVEY_QUARANTINE))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
+                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).count();
+    }
     /**
      * Returns all the surveys with status yet not put to "Sent"
      */
     public static List<Survey> getAllUnsentUnplannedSurveys() {
         return new Select().from(Survey.class)
-                .where(Survey_Table.status.isNot(Constants.SURVEY_SENT))
-                .and(Survey_Table.status.isNot(Constants.SURVEY_PLANNED))
-                .and(Survey_Table.status.isNot(Constants.SURVEY_SENDING))
-                .and(Survey_Table.status.isNot(Constants.SURVEY_QUARANTINE))
+                .where(Survey_Table.status.is(Constants.SURVEY_COMPLETED))
+                .or(Survey_Table.status.is(Constants.SURVEY_IN_PROGRESS))
+                .or(Survey_Table.status.is(Constants.SURVEY_SENDING))
+                .or(Survey_Table.status.is(Constants.SURVEY_QUARANTINE))
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
     }
