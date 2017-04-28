@@ -23,7 +23,6 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
@@ -38,18 +37,15 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
-import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
-import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -144,7 +140,7 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(Survey survey) throws Exception {
+    public void visit(Survey survey) throws ConversionException {
 
         uploadedDate = new Date();
 
@@ -206,13 +202,13 @@ public class ConvertToSDKVisitor implements
             annotateSurveyAndEvent();
         } catch (Exception e) {
             e.printStackTrace();
-            showErrorConversionMessage(errorMessage);
+            errorMessage = showErrorConversionMessage(errorMessage);
             removeSurveyAndEvent(survey);
-            return;
+            throw new ConversionException(errorMessage);
         }
     }
 
-    private void showErrorConversionMessage(String errorMessage) {
+    private String showErrorConversionMessage(String errorMessage) {
         String programName = "", orgUnitName = "";
         if (currentSurvey.getProgram() != null
                 && currentSurvey.getProgram().getName() != null) {
@@ -222,14 +218,14 @@ public class ConvertToSDKVisitor implements
                 && currentSurvey.getOrgUnit().getName() != null) {
             orgUnitName = currentSurvey.getOrgUnit().getName();
         }
-        Log.d(TAG, "Error: " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
-                + "program: " + programName + " OrgUnit: "
-                + orgUnitName + "Survey: " + currentSurvey.toString());
         if (currentSurvey.getValues() != null) {
             for (Value value : currentSurvey.getValues()) {
                 Log.d(TAG, "DataValues:" + value.toString());
             }
         }
+        return "Error: " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
+                                + "program: " + programName + " OrgUnit: "
+                                + orgUnitName + "Survey: " + currentSurvey.toString();
     }
 
     private void removeSurveyAndEvent(Survey survey) {

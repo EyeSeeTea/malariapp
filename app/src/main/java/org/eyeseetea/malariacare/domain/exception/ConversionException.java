@@ -5,6 +5,10 @@ public class ConversionException extends Exception {
         super("Error in conversion");
         e.printStackTrace();
     }
+    public ConversionException(String message) {
+        super("Error in conversion");
+        System.out.println(message);
+    }
     public ConversionException() {
         super("Error in conversion");
     }

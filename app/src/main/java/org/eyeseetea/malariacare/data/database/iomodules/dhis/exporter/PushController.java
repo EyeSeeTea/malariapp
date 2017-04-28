@@ -47,9 +47,6 @@ public class PushController implements IPushController {
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
 
-    public PushController() {
-    }
-
     public PushController(Context context) {
         mContext = context;
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();
@@ -75,7 +72,7 @@ public class PushController implements IPushController {
                 mPushDhisSDKDataSource.wipeEvents();
                 try {
                     Log.d(TAG, "convert surveys to sdk");
-                    convertToSDK(surveys);
+                    convertToSDK(surveys, callback);
                 } catch (Exception ex) {
                     callback.onError(new ConversionException(ex));
                     return;
@@ -131,12 +128,17 @@ public class PushController implements IPushController {
                 });
     }
 
-    private void convertToSDK(List<Survey> surveys) throws Exception {
+    private void convertToSDK(List<Survey> surveys,
+            IPushControllerCallback callback) throws Exception {
         Log.d(TAG, "Converting APP survey into a SDK event");
         for (Survey survey : surveys) {
             survey.setStatus(Constants.SURVEY_SENDING);
             survey.save();
-            survey.accept(mConvertToSDKVisitor);
+            try {
+                survey.accept(mConvertToSDKVisitor);
+            }catch (ConversionException e){
+                callback.onInformativeError(e);
+            }
         }
     }
 }
