@@ -501,7 +501,7 @@ public class ConvertToSDKVisitor implements
             }
 
             //No errors -> Save and next
-            if (!hasPushReportErrors(pushReport)) {
+            if (pushReport!=null && !pushReport.hasPushErrors()) {
                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
                         + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
@@ -522,57 +522,6 @@ public class ConvertToSDKVisitor implements
         iSurvey.save();
 
         Log.d(TAG, "PUSH process...OK. Survey saved");
-    }
-
-    /**
-     * Get dataelement fails from errormessage JSON.
-     */
-    private List<String> getFailedUidQuestion(String responseData) {
-        String message = "";
-        List<String> uid = new ArrayList<>();
-        JSONArray jsonArrayResponse = null;
-        JSONObject jsonObjectResponse = null;
-        try {
-            jsonObjectResponse = new JSONObject(responseData);
-            message = jsonObjectResponse.getString("message");
-            jsonObjectResponse = new JSONObject(jsonObjectResponse.getString("response"));
-            jsonArrayResponse = new JSONArray(jsonObjectResponse.getString("importSummaries"));
-            jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(0));
-            //conflicts
-            jsonArrayResponse = new JSONArray(jsonObjectResponse.getString("conflicts"));
-            //values
-            for (int i = 0; i < jsonArrayResponse.length(); i++) {
-                jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(i));
-                uid.add(jsonObjectResponse.getString("object"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (message != "") {
-            DashboardActivity.showException(context.getString(R.string.error_message), message);
-        }
-        return uid;
-    }
-
-    /**
-     * Checks whether the given importSummary contains errors or has been successful.
-     * An import with 0 importedItems is an error too.
-     */
-    private boolean hasPushReportErrors(PushReport pushReport) {
-        if (pushReport == null) {
-            return true;
-        }
-
-        if (pushReport.getPushedValues() == null) {
-            return true;
-        }
-        if(pushReport.getStatus()==null){
-            return true;
-        }
-        if(!pushReport.getStatus().equals(PushReport.Status.SUCCESS)){
-            return true;
-        }
-        return pushReport.getPushedValues().getImported() == 0;
     }
 
     /**

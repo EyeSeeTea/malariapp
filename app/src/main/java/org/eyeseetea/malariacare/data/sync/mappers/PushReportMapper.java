@@ -15,16 +15,20 @@ import java.util.Map;
 
 public class PushReportMapper {
 
-    public static Map<String, PushReport> convertImportSummaryMapToPushReportMap(
-            Map<String, ImportSummary> mapEventsImportSummary) {
+
+    public static Map<String, PushReport> mapFromImportSummariesToPushReports(
+            Map<java.lang.String, ImportSummary> mapEventsImportSummary) {
         Map<String, PushReport> pushReportMap = new HashMap<String, PushReport>();
         for (Map.Entry<String, ImportSummary> importSummary : mapEventsImportSummary.entrySet()) {
-            pushReportMap.put(importSummary.getKey(), convertImportSummaryToPushReport(importSummary.getValue(), importSummary.getKey()));
+            pushReportMap.put(importSummary.getKey(),
+                    mapFromImportSummaryToPushReport(importSummary.getValue(),
+                            importSummary.getKey()));
         }
         return pushReportMap;
     }
 
-    public static PushReport convertImportSummaryToPushReport(ImportSummary importSummary, String importSummaryKey) {
+    public static PushReport mapFromImportSummaryToPushReport(ImportSummary importSummary,
+            String importSummaryKey) {
         PushReport pushReport = new PushReport();
         List<PushConflict> conflictList = new ArrayList<>();
         if (importSummary.getConflicts() != null) {
@@ -57,5 +61,4 @@ public class PushReportMapper {
         pushReport.setEventUid(importSummaryKey);
         return pushReport;
     }
-
 }

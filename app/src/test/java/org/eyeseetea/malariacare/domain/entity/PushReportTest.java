@@ -1,6 +1,5 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -16,13 +15,13 @@ import java.io.IOException;
 
 public class PushReportTest {
 
-    public final String SUCCESS_IMPORT_SUMMARY_JSON =
+    public final String DATAVALUES_IMPORTED_SUMMARY_JSON =
             "{\"httpStatus\":\"OK\", \"httpStatusCode\":\"200\", \"message\":\"Import was successful.\", "
                     + "\"status\":\"OK\", "
                     + "\"response\":{\"responseType\":\"ImportSummaries\", \"status\":\"SUCCESS\", "
                     + "\"importSummaries\":[{\"responseType\":\"ImportSummary\",\"status\":\"SUCCESS\","
                     + "\"description\": \"\",  \"importCount\""
-                    + ":{ \"imported\": \"4 \",  \"updated\": \"0 \",  \"ignored\": \"0 \",  \"deleted\": \"0 \"}, "
+                    + ":{ \"imported\": \"0 \",  \"updated\": \"4 \",  \"ignored\": \"4 \",  \"deleted\": \"4 \"}, "
                     + " \"reference\": \"DSifqmkzKfJ\", "
                     + "\"href\": \"https://old-staging.psi-mis.org/api/events/DSifqmkzKfJ\"}]}}";
 
@@ -37,29 +36,39 @@ public class PushReportTest {
             + "\"value\":\"value_not_valid_datetime\"}],\"reference\":\"wqee94y5wzT\","
             + "\"href\":\"https://old-staging.psi-mis.org/api/events/wqee94y5wzT\"}]}}";
 
-    public final String COMPLETE_IMPORT_SUMMARY_KEY = "DSifqmkzKfJ";
+    public final String ERROR_IMPORT_SUMMARY_JSON =
+            "{\"httpStatus\":\"OK\", \"httpStatusCode\":\"400\", \"message\":\"Import was successful.\", "
+                    + "\"status\":\"OK\", "
+                    + "\"response\":{\"responseType\":\"ImportSummaries\", \"status\":\"ERROR\", "
+                    + "\"importSummaries\":[{\"responseType\":\"ImportSummary\",\"status\":\"ERROR\","
+                    + "\"description\": \"\",  \"importCount\""
+                    + ":{ \"imported\": \"4 \",  \"updated\": \"0 \",  \"ignored\": \"0 \",  \"deleted\": \"0 \"}, "
+                    + " \"reference\": \"DSifqmkzKfJ\", "
+                    + "\"href\": \"https://old-staging.psi-mis.org/api/events/DSifqmkzKfJ\"}]}}";
+
     public final String API_MESSAGE_WITH_CONFLICTS_JSON_KEY = "wqee94y5wzT";
 
     @Test
-    public void test_import_summary_conversion_on_success_json() {
-        ImportSummary importSummary = getImportSummary(SUCCESS_IMPORT_SUMMARY_JSON);
-        PushReport pushReport = PushReportMapper.convertImportSummaryToPushReport(importSummary,
-                COMPLETE_IMPORT_SUMMARY_KEY);
+    public void test_import_summary_valid_push() {
+        ImportSummary importSummary = getImportSummary(API_MESSAGE_WITH_CONFLICTS_JSON);
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
+                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
+        assertThat(!pushReport.hasPushErrors(), is(true));
+    }
 
-        assertThat(pushReport.getDescription().equals(importSummary.getDescription()), is(true));
-        assertThat(pushReport.getEventUid().equals(importSummary.getReference()), is(true));
-        assertThat(pushReport.getHref().equals(importSummary.getHref()), is(true));
-        assertThat((pushReport.getStatus().equals(PushReport.Status.SUCCESS)), is(true));
-        assertThat((importSummary.getStatus().equals(ImportSummary.Status.SUCCESS)), is(true));
-        assertThat(pushReport.getPushedValues().getImported() == (importSummary.getImportCount()
-                .getImported()), is(true));
-        assertThat(pushReport.getPushedValues().getDeleted() == (importSummary.getImportCount()
-                .getDeleted()), is(true));
-        assertThat(pushReport.getPushedValues().getIgnored() == (importSummary.getImportCount()
-                .getIgnored()), is(true));
-        assertThat(pushReport.getPushedValues().getUpdated() == (importSummary.getImportCount()
-                .getUpdated()), is(true));
-        assertThat(pushReport.getPushConflicts().isEmpty(), is(true));
+    @Test
+    public void test_error_push() {
+        ImportSummary importSummary = getImportSummary(ERROR_IMPORT_SUMMARY_JSON);
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
+                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
+        assertThat(!pushReport.hasPushErrors(), is(false));
+    }
+    @Test
+    public void test_error_not_datavalues_imported_push() {
+        ImportSummary importSummary = getImportSummary(DATAVALUES_IMPORTED_SUMMARY_JSON);
+        PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
+                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
+        assertThat(!pushReport.hasPushErrors(), is(false));
     }
 
     private ImportSummary getImportSummary(String json) {
@@ -71,31 +80,5 @@ public class PushReportTest {
             e.printStackTrace();
         }
         return apiMessage.getResponse().getImportSummaries().get(0);
-    }
-
-    @Test
-    public void test_import_summary_conversion_on_success_with_conflicts_from_Api_message() {
-        ImportSummary importSummary = getImportSummary(API_MESSAGE_WITH_CONFLICTS_JSON);
-        PushReport pushReport = PushReportMapper.convertImportSummaryToPushReport(importSummary,
-                API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
-
-        assertThat(pushReport.getEventUid().equals(importSummary.getReference()), is(true));
-        assertThat(pushReport.getHref().equals(importSummary.getHref()), is(true));
-        assertThat((pushReport.getStatus().equals(PushReport.Status.SUCCESS)), is(true));
-        assertThat((importSummary.getStatus().equals(ImportSummary.Status.SUCCESS)), is(true));
-        assertThat(pushReport.getPushedValues().getImported() == (importSummary.getImportCount()
-                .getImported()), is(true));
-        assertThat(pushReport.getPushedValues().getDeleted() == (importSummary.getImportCount()
-                .getDeleted()), is(true));
-        assertThat(pushReport.getPushedValues().getIgnored() == (importSummary.getImportCount()
-                .getIgnored()), is(true));
-        assertThat(pushReport.getPushedValues().getUpdated() == (importSummary.getImportCount()
-                .getUpdated()), is(true));
-
-        assertThat(pushReport.getPushConflicts().get(0).getUid().equals(
-                importSummary.getConflicts().get(0).getObject()), is(true));
-        assertThat(pushReport.getPushConflicts().get(0).getValue().equals(
-                importSummary.getConflicts().get(0).getValue()), is(true));
-
     }
 }
