@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by idelcano on 04/04/2016.
@@ -81,6 +82,11 @@ public class NetworkUtils {
         final String DHIS_URL = getDhisURL()+DHIS_PUSH_API;
 
         OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
+
+        client.setConnectTimeout(30, TimeUnit.SECONDS); // connect timeout
+        client.setReadTimeout(30, TimeUnit.SECONDS);    // socket timeout
+        client.setWriteTimeout(30, TimeUnit.SECONDS);    // write timeout
+        client.setRetryOnConnectionFailure(false); // Cancel retry on failure
 
         BasicAuthenticator basicAuthenticator = new BasicAuthenticator();
         client.setAuthenticator(basicAuthenticator);
@@ -150,6 +156,11 @@ public class NetworkUtils {
         final String DHIS_URL=sharedPreferences.getString(applicationContext.getString(R.string.dhis_url), applicationContext.getString(R.string.login_info_dhis_default_server_url)) + url;
 
         OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
+
+        client.setConnectTimeout(30, TimeUnit.SECONDS); // connect timeout
+        client.setReadTimeout(30, TimeUnit.SECONDS);    // socket timeout
+        client.setWriteTimeout(30, TimeUnit.SECONDS);    // write timeout
+        client.setRetryOnConnectionFailure(false); // Cancel retry on failure
 
         BasicAuthenticator basicAuthenticator=new BasicAuthenticator();
         client.setAuthenticator(basicAuthenticator);

@@ -37,6 +37,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.android.sdk.controllers.wrappers.EventsWrapper;
 import org.hisp.dhis.android.sdk.persistence.models.DataValue;
 import org.hisp.dhis.android.sdk.persistence.models.Event;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -75,8 +76,7 @@ public class SurveyChecker {
      * Get events filtered by program orgUnit and between dates.
      */
     public static List<Event> getEvents(String orgUnit, Date minDate,
-            Date maxDate) {
-        try {
+            Date maxDate) throws IOException, JSONException{
             Response response;
 
             String startDate = EventExtended.format(minDate, EventExtended.AMERICAN_DATE_FORMAT);
@@ -100,11 +100,6 @@ public class SurveyChecker {
                     JsonNode.class);
 
             return EventsWrapper.getEvents(jsonNode);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     static String encodeBlanks(String endpoint) {
@@ -138,16 +133,27 @@ public class SurveyChecker {
                 c.setTime(maxDate);
                 c.add(Calendar.DATE, 1);
                 maxDate = c.getTime();
-
-                List<Event> events = getEvents(orgUnit.getUid(), minDate,
-                        maxDate);
-                    for (Survey survey : quarantineSurveys) {
-                        if (events != null && events.size() > 0) {
+                List<Event> events = null;
+                try{
+                    events = getEvents(orgUnit.getUid(), minDate,
+                            maxDate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                    return;
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    return;
+                }
+                if(events==null){
+                    return;
+                }
+                for (Survey survey : quarantineSurveys) {
+                    if (events.size() > 0) {
                         updateQuarantineSurveysStatus(events, survey);
-                        } else {
-                            changeSurveyStatusFromQuarantineTo(survey, Constants.SURVEY_COMPLETED);
-                        }
+                    } else {
+                        changeSurveyStatusFromQuarantineTo(survey, Constants.SURVEY_COMPLETED);
                     }
+                }
             }
         }
     }
