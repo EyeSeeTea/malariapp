@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
 
 import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 /**
  * Created by idelcano on 23/08/2016.
@@ -38,7 +39,7 @@ public class PieDataByProgram extends PieDataBase {
         this.program = program;
     }
     public String toJSON(String tipChat){
-        String pieTitle = String.format("%s (%s)", program.getName(), program.getName());
+        String pieTitle = String.format("%s (%s)", AUtils.escapeQuotes(program.getName()), AUtils.escapeQuotes(program.getName()));
         String json = String.format(JSONFORMAT, pieTitle, tipChat, program.getId_program(), this.numA, this.numB, this.numC, program.getUid(), program.getUid());
         return json;
     }

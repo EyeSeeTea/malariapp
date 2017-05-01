@@ -391,4 +391,9 @@ public abstract class AUtils {
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
                 LinkMovementMethod.getInstance());
     }
+
+
+    public static String escapeQuotes(String value) {
+        return value.replace("'", "\\"+"\'").replace("\"", "\\"+"\"");
+    }
 }
