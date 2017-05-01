@@ -38,6 +38,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
+import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
@@ -655,8 +656,11 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Survey_Table.status.eq(Constants.SURVEY_SENT))
                 .or(Survey_Table.status.eq(Constants.SURVEY_COMPLETED))
                 .or(Survey_Table.status.eq(Constants.SURVEY_CONFLICT))
+                .or(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
+                .or(Survey_Table.status.eq(Constants.SURVEY_SENDING))
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
                 .groupBy(Survey_Table.id_org_unit_fk, Survey_Table.id_program_fk)
+                .having(Survey_Table.completion_date.eq(Method.max(Survey_Table.completion_date)))
                 .queryList();
     }
     /**
@@ -667,8 +671,9 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Survey_Table.status.eq(Constants.SURVEY_SENT))
                 .or(Survey_Table.status.eq(Constants.SURVEY_COMPLETED))
                 .or(Survey_Table.status.eq(Constants.SURVEY_CONFLICT))
-                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(Survey_Table.id_org_unit_fk)).queryList();
+                .or(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
+                .or(Survey_Table.status.eq(Constants.SURVEY_SENDING))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date)).queryList();
     }
 
 
