@@ -716,6 +716,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENDING))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_QUARANTINE))
                 .orderBy(Survey$Table.COMPLETION_DATE)
                 .orderBy(Survey$Table.ID_ORG_UNIT).queryList();
     }
@@ -728,6 +730,8 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .where(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENT))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_COMPLETED))
                 .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_CONFLICT))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_SENDING))
+                .or(Condition.column(Survey$Table.STATUS).eq(Constants.SURVEY_QUARANTINE))
                 .orderBy(Survey$Table.COMPLETION_DATE)
                 .groupBy(Survey$Table.ID_ORG_UNIT, Survey$Table.ID_PROGRAM).queryList();
     }
