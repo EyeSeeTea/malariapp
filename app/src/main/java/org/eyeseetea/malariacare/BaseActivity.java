@@ -232,10 +232,20 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Closes current session and goes back to loginactivity
      */
     public void logout() {
+        int unsentSurveyCount = Survey.countAllUnsentUnplannedSurveys();
+        String message = getApplicationContext().getString(
+                R.string.dialog_action_logout);
+        if(unsentSurveyCount == 0) {
+            message += getApplicationContext().getString(
+                    R.string.dialog_all_surveys_sent_before_refresh);
+        }else{
+            message += String.format(getApplicationContext().getString(
+                    R.string.dialog_incomplete_surveys_before_refresh), unsentSurveyCount);
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
-                .setMessage(getApplicationContext().getString(
-                        R.string.dialog_content_logout_confirmation))
+                .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Start logout
