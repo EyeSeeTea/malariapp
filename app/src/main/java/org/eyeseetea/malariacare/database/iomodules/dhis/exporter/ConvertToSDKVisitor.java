@@ -239,6 +239,14 @@ public class ConvertToSDKVisitor implements IConvertToSDKVisitor {
                 Log.d(TAG, "DataValues:" + value.toString());
             }
         }
+        try {
+            DashboardActivity.showException(context.getString(R.string.error_message),
+                    "Error: " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
+                            + "program: " + programName + " OrgUnit: "
+                            + orgUnitName + "Survey: " + currentSurvey.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void removeSurveyAndEvent(Survey survey) {
