@@ -96,10 +96,10 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
         }
 
         String surveyDescription;
-        if(survey.isCompleted())
-            surveyDescription = "* " + survey.getProgram().getName();
-        else
+        if(survey.isSent() || survey.isInProgress())
             surveyDescription = "- " + survey.getProgram().getName();
+        else
+            surveyDescription = "* " + survey.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
@@ -138,7 +138,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
     }
 
     private View setBackgroundWithBorder(int position, View rowView) {
-        if(!PreferencesState.getInstance().isVerticalDashboard() && (items.get(position).isCompleted() || items.get(position).isSent())) {
+        if(!PreferencesState.getInstance().isVerticalDashboard() && !(items.get(position).isInProgress())) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
         }
         else {
