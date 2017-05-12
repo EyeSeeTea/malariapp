@@ -26,8 +26,8 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.After;
 import org.junit.AfterClass;

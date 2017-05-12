@@ -29,8 +29,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 /**
  * Created by adrian on 30/05/15.
@@ -89,7 +89,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      */
     public void init(AttributeSet attrs, int defStyle) {
 
-        if(isInEditMode()){
+        if(!PreferencesState.getInstance().isVerticalDashboard() && isInEditMode()){
             return;
         }
 
@@ -99,8 +99,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
             try {
                 mfontName = a.getString(R.styleable.CustomRadioButton_rFontName);
                 if (mfontName != null) {
-                    font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
-                    setTypeface(font);
+                    setTypeface(TypefaceCache.getInstance().getTypeface(mfontName));
                 }
 
                 mDimension = a.getString(R.styleable.CustomRadioButton_rDimension);
@@ -137,8 +136,7 @@ public class CustomRadioButton extends RadioButton implements IEyeSeeView {
      */
     public void updateFontName(String fontName){
         if (fontName != null){
-            Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + fontName);
-            setTypeface(font);
+            setTypeface(TypefaceCache.getInstance().getTypeface(fontName));
             mfontName = fontName;
         }
     }

@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.score;
 
-import org.eyeseetea.malariacare.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Question;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +32,8 @@ public abstract class ANumDenRecord {
     private Map<Question,List<Float>> numDenRecord = new HashMap<Question,List<Float>>();
 
     public void addRecord(Question question, Float num, Float den){
+        if(num==null)//If the num is null the record should be ignored
+            return;
         numDenRecord.put(question, new ArrayList<Float>(Arrays.asList(num, den)));
     }
 

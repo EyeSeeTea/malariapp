@@ -28,7 +28,7 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 /**
  * TODO: document your custom view class.
@@ -58,7 +58,7 @@ public class CustomTextView extends TextView implements IEyeSeeView {
     }
 
     public void init(AttributeSet attrs, int defStyle) {
-        if(isInEditMode()){
+        if(!PreferencesState.getInstance().isVerticalDashboard() && isInEditMode()){
             return;
         }
         // Load attributes
@@ -67,8 +67,7 @@ public class CustomTextView extends TextView implements IEyeSeeView {
             try {
                 mfontName = a.getString(R.styleable.CustomTextView_tFontName);
                 if (mfontName != null) {
-                    font = Typeface.createFromAsset(assetManager, "fonts/" + mfontName);
-                    setTypeface(font);
+                    setTypeface(TypefaceCache.getInstance().getTypeface(mfontName));
                 }
 
                 mDimension = a.getString(R.styleable.CustomTextView_tDimension);

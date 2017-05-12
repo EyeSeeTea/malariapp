@@ -16,4 +16,4 @@
     android:paddingBottom="@dimen/survey_main_spinner_padding_updown"
     android:paddingTop="@dimen/survey_main_spinner_padding_updown"
     app:tDimension="@string/font_size_level2"
-    app:tFontName="@string/light_font_name" />
+    app:tFontName="@string/light_font" />

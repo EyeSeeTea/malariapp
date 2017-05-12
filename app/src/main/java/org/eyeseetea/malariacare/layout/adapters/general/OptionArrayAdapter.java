@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.Option;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;

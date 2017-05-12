@@ -19,28 +19,32 @@
 
 package org.eyeseetea.malariacare.utils;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileChannel;
 
 /**
  * Created by nacho on 28/03/16.
  */
 public class Utils extends AUtils {
 
-    @Override
-    public void showAlert(int titleId, CharSequence text, Context context){
+    public static void showAlert(int titleId, CharSequence text, Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_about);
         dialog.setTitle(titleId);
@@ -48,7 +52,7 @@ public class Utils extends AUtils {
 
         //set up text title
         TextView textTile = (TextView) dialog.findViewById(R.id.aboutTitle);
-        textTile.setText(BuildConfig.VERSION_NAME);
+        textTile.setText(BuildConfig.FLAVOR.toUpperCase() + "(bb) " + BuildConfig.VERSION_NAME);
         textTile.setGravity(Gravity.RIGHT);
 
         //set up text title

@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
+
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,31 +31,30 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ignac on 07/01/2016.
  */
-public class FeedbackFragment extends Fragment {
+public class FeedbackFragment extends Fragment implements IModuleFragment {
 
     public static final String TAG = ".FeedbackActivity";
 
@@ -82,11 +83,8 @@ public class FeedbackFragment extends Fragment {
      */
     private ListView feedbackListView;
 
-    /**
-     * Menu of the activity
-     */
-    private Menu menu;
 
+    private String moduleName;
 
     /**
      * Parent layout
@@ -94,30 +92,25 @@ public class FeedbackFragment extends Fragment {
     RelativeLayout llLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        FragmentActivity faActivity = (FragmentActivity) super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
-        prepareUI();
-
+        prepareUI(moduleName);
+        //Starts the background service only one time
+        startProgress();
+        registerReceiver();
+        prepareFeedbackInfo();
         return llLayout; // We must return the loaded Layout
     }
 
-    public static FeedbackFragment newInstance(int index) {
-        FeedbackFragment f = new FeedbackFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
+        List<Feedback> feedbackList= new ArrayList<>();
+        Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
     }
 
     @Override
@@ -125,16 +118,28 @@ public class FeedbackFragment extends Fragment {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
     }
+
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
         startProgress();
         registerReceiver();
-        prepareFeedbackInfo();
+        loadDataIfExistsInMemory();
     }
+    //If the feedback service finish on background all the necessary data is in memory
+    private void loadDataIfExistsInMemory() {
+        if (feedbackAdapter != null) {
+            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
+                    PREPARE_FEEDBACK_ACTION_ITEMS);
+            if (feedbackList != null && feedbackList.size() > 0) {
+                loadItems(feedbackList);
+            }
+        }
+    }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         unregisterReceiver();
         super.onPause();
     }
@@ -142,27 +147,30 @@ public class FeedbackFragment extends Fragment {
     /**
      * Gets a reference to the progress view in order to stop it later
      */
-    private void prepareUI(){
+    private void prepareUI(String module) {
         //Get progress
-        progressBar=(ProgressBar)llLayout.findViewById(R.id.survey_progress);
+        progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
 
         //Set adapter and list
-        feedbackAdapter=new FeedbackAdapter(getActivity());
-        feedbackListView=(ListView)llLayout.findViewById(R.id.feedbackListView);
+        feedbackAdapter = new FeedbackAdapter(getActivity(),
+                Session.getSurveyByModule(module).getId_survey(), module);
+        feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
 
         //And checkbox listener
-        chkFailed=(CustomRadioButton)llLayout.findViewById(R.id.chkFailed);
+        chkFailed = (CustomRadioButton) llLayout.findViewById(R.id.chkFailed);
         chkFailed.setChecked(true);
         chkFailed.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
                                              feedbackAdapter.toggleOnlyFailed();
-                                             ((CustomRadioButton) v).setChecked(feedbackAdapter.isOnlyFailed());
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
+                                                     .isOnlyFailed());
                                          }
                                      }
         );
-        CustomRadioButton goback=(CustomRadioButton)llLayout.findViewById(R.id.backToSentSurveys);
+        CustomRadioButton goback = (CustomRadioButton) llLayout.findViewById(
+                R.id.backToSentSurveys);
         goback.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
@@ -170,17 +178,25 @@ public class FeedbackFragment extends Fragment {
                                       }
                                   }
         );
-        
+
         //Set mainscore and color.
-        Survey survey = Session.getSurvey();
-        float average = survey.getMainScore();
-        CustomTextView item= (CustomTextView)llLayout.findViewById(R.id.feedback_total_score);
-        item.setText(String.format("%.1f%%", average));
-        int colorId= LayoutUtils.trafficColor(average);
-        item.setTextColor(getResources().getColor(colorId));
+        Survey survey = Session.getSurveyByModule(module);
+        if (survey.hasMainScore()) {
+            float average = survey.getMainScore();
+            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("%.1f%%", average));
+            int colorId = LayoutUtils.trafficColor(average);
+            item.setTextColor(getResources().getColor(colorId));
+        } else {
+            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("NaN"));
+            float average = 0;
+            int colorId = LayoutUtils.trafficColor(average);
+            item.setTextColor(getResources().getColor(colorId));
+        }
     }
 
-    private void loadItems(List<Feedback> items){
+    private void loadItems(List<Feedback> items) {
         this.feedbackAdapter.setItems(items);
         stopProgress();
     }
@@ -188,7 +204,7 @@ public class FeedbackFragment extends Fragment {
     /**
      * Stops progress view and shows real data
      */
-    private void stopProgress(){
+    private void stopProgress() {
         this.progressBar.setVisibility(View.GONE);
         this.feedbackListView.setVisibility(View.VISIBLE);
     }
@@ -196,7 +212,7 @@ public class FeedbackFragment extends Fragment {
     /**
      * Starts progress view, hiding list temporarily
      */
-    private void startProgress(){
+    private void startProgress() {
         this.feedbackListView.setVisibility(View.GONE);
         this.progressBar.setVisibility(View.VISIBLE);
         this.progressBar.setEnabled(true);
@@ -208,9 +224,10 @@ public class FeedbackFragment extends Fragment {
     public void registerReceiver() {
         Log.d(TAG, "registerReceiver");
 
-        if(surveyReceiver==null){
-            surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.PREPARE_FEEDBACK_ACTION));
+        if (surveyReceiver == null) {
+            surveyReceiver = new SurveyReceiver();
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver,
+                    new IntentFilter(SurveyService.PREPARE_FEEDBACK_ACTION));
         }
     }
 
@@ -218,34 +235,52 @@ public class FeedbackFragment extends Fragment {
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    public void  unregisterReceiver(){
+    public void unregisterReceiver() {
         Log.d(TAG, "unregisterReceiver");
-        if(surveyReceiver!=null){
-            LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).unregisterReceiver(surveyReceiver);
-            surveyReceiver=null;
+        if (surveyReceiver != null) {
+            LocalBroadcastManager.getInstance(
+                    getActivity().getApplicationContext()).unregisterReceiver(surveyReceiver);
+            surveyReceiver = null;
         }
     }
 
     /**
      * Asks SurveyService for the current list of surveys
      */
-    public void prepareFeedbackInfo(){
+    public void prepareFeedbackInfo() {
         Log.d(TAG, "prepareFeedbackInfo");
-        Intent surveysIntent=new Intent(getActivity().getApplicationContext(), SurveyService.class);
+        Intent surveysIntent = new Intent(getActivity().getApplicationContext(),
+                SurveyService.class);
+        surveysIntent.putExtra(Constants.MODULE_KEY, moduleName);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PREPARE_FEEDBACK_ACTION);
         getActivity().getApplicationContext().startService(surveysIntent);
+    }
+
+    public void setModuleName(String simpleName) {
+        this.moduleName = simpleName;
+    }
+
+    @Override
+    public void reloadData() {
+        if (feedbackAdapter != null) {
+            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
+                    PREPARE_FEEDBACK_ACTION_ITEMS);
+            loadItems(feedbackList);
+        }
     }
 
     /**
      * Inner private class that receives the result from the service
      */
     private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver(){}
+        private SurveyReceiver() {
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG,"onReceive");
-            List<Feedback> feedbackList=(List<Feedback>)Session.popServiceValue(SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS);
+            Log.d(TAG, "onReceive");
+            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
+                    PREPARE_FEEDBACK_ACTION_ITEMS);
             loadItems(feedbackList);
         }
     }

@@ -2,15 +2,21 @@ buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
         mavenCentral()
+        mavenLocal()
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'io.fabric'
+
+def cfg = rootProject.ext.configuration
+def libs = rootProject.ext.libraries
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -21,23 +27,22 @@ android {
         config {}
     }
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
 
     defaultConfig {
         applicationId 'org.eyeseetea.malariacare'
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
+        versionCode cfg.versionCode
+        versionName cfg.versionName
         multiDexEnabled true
-        /*dexOptions {
-            jumboMode = true
-            incremental true
-            javaMaxHeapSize "4g"
-        }*/
+        dexOptions {
+            javaMaxHeapSize "6g"
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
+        useLibrary  'org.apache.http.legacy'
     }
     buildTypes {
         release {
@@ -63,72 +68,107 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
+
     productFlavors {
         eds {
-            applicationId "org.eyeseetea.malariacare.eds"
-            versionName "EDS 2.0.0"
-            minSdkVersion 15
-            targetSdkVersion 21
+            applicationId "org.eyeseetea.malariacare.eds_bb"
+            versionName "2.0.5"
+            buildConfigField "boolean", "translations", "false"
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqispull"
-            versionName "HNQIS 1.0.0"
-            minSdkVersion 15
-            targetSdkVersion 21
+            applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
+            versionName "1.2.3"
+            buildConfigField "boolean", "translations", "true"
+        }
+        surveillance {
+            applicationId "org.eyeseetea.malariacare.surveillance_bb"
+            versionName "5.0.0"
+            buildConfigField "boolean", "translations", "true"
         }
     }
+
+
     lintOptions {
         disable 'RtlSymmetry', 'RtlHardcoded'
+        checkReleaseBuilds false
     }
+    apt {
+        arguments {
+            targetModuleName 'EyeSeeTea'
+        }
+    }
+}
 
+configurations {
+    all*.exclude group: 'com.google.guava', module:'guava-jdk5'
 }
 
 dependencies {
+    // SDK submodules
+    compile project(":core-rules")
+    compile project(":ui-bindings")
+
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
 
-    //Sdk & Custom DBFlow
-    compile project(':sdk:app')
-    apt project(':DBFlowORM:DBFlow-Compiler')
-    compile project(':DBFlowORM:DBFlow-Core')
-    compile project(':DBFlowORM:DBFlow')
-
     //Android support
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-    compile 'com.android.support:multidex:1.0.1'
-
+    compile "com.android.support:support-v4:${libs.supportVersion}"
+    compile "com.android.support:appcompat-v7:${libs.supportVersion}"
+    compile "com.android.support:support-annotations:${libs.supportVersion}"
+    compile "com.android.support:multidex:${libs.multidex}"
     //3rd party dependencies
-    compile "com.opencsv:opencsv:$rootProject.opencsvVersion"    
-    compile "com.google.android.gms:play-services:$rootProject.gmsPlayVersion"
-    compile "com.google.guava:guava:$rootProject.guavaVersion"
+    compile "com.opencsv:opencsv:${libs.opencsvVersion}"
+    compile "com.google.android.gms:play-services:${libs.gmsPlayVersion}"
+    compile "com.google.guava:guava:${libs.guavaVersion}"
     compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
+    compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
+
+    //Drive dependencies
+    compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
+    compile("com.google.api-client:google-api-client-android:${libs.googleApiClientAndroidVersion}") {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.code.findbugs'
+    }
+    compile("com.google.apis:google-api-services-drive:${libs.googleApiServicesDriveVersion}") {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+    compile "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
     // Unit testing dependencies
-    testCompile "junit:junit:$rootProject.junitVersion"
+    testCompile "junit:junit:${libs.jUnitVersion}"
+    testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
     
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestCompile "com.android.support.test:rules:$rootProject.ext.runnerVersion"
+    androidTestCompile "com.android.support.test:runner:${libs.runnerVersion}"
+    androidTestCompile "com.android.support.test:rules:${libs.runnerVersion}"
 
     // Espresso UI Testing dependencies.
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${libs.espressoVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:${libs.espressoVersion}"
     // Espresso-idling-resource for synchronization with background jobs
-    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
     // Espresso-web for WebView support
-    androidTestCompile "com.android.support.test.espresso:espresso-web:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-web:${libs.espressoVersion}"
 
     //Tracking crashes
-    compile("com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlyticsVersion") {
+    compile("com.crashlytics.sdk.android:crashlytics:${libs.crashlyticsVersion}") {
         transitive = true;
     }
+
+    // JavaPoet (sucessor to JavaWriter)
+    compile "com.squareup:javapoet:${libs.javapoetVersion}"
+
+    //DBFlow
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${libs.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
 }
 
 

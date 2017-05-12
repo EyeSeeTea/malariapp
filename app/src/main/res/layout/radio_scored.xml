@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/radio"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/statement"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.45"
+        android:padding="5dip"
+        android:fontFamily="@string/normal_font"
+        android:paddingLeft="@dimen/question_padding_left"
+        android:text="@string/widget_info_empty_statement"
+        android:textColor="@color/black"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
+    <RadioGroup
+        android:id="@+id/answer"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:padding="5dip">
+
+    </RadioGroup>
+    <include layout="@layout/score"></include>
+</LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--
+<!--
   ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
@@ -17,58 +17,101 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-    <resources>
-        <string name="app_name" translatable="false">QA App</string>
-        <string name="developers" translatable="false">EyeSeeTea LTD</string>
-        <string name="empty_string" translatable="false"></string>
-        <string name="ok" translatable="false">Ok</string>
-        <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
-        <string name="number_zero" translatable="false">0</string>
-        <string name="number_zero_percentage" translatable="false">0 % </string>
-        <string name="custom_info_one" translatable="false">1</string>
-        <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
-        <string name="light_font" translatable="false">Roboto-Light.ttf</string>
-        <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
-        <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
-        <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
-        <string name="font_size_level0" translatable="false">xsmall</string>
-        <string name="font_size_level1" translatable="false">small</string>
-        <string name="font_size_level2" translatable="false">medium</string>
-        <string name="font_size_level3" translatable="false">large</string>
-        <string name="font_size_level4" translatable="false">xlarge</string>
-        <string name="font_size_system" translatable="false">system</string>
-        <item name="show_num_dems" type="string" translatable="false">show_num_dems</item>
-        <item name="customize_fonts" type="string" translatable="false">customize_fonts</item>
-        <item name="font_sizes" type="string" translatable="false">font_sizes</item>
-        <item name="eula_accepted" type="string" translatable="false">eula_accepted</item>
-        <item name="dhis_url" type="string" translatable="false">dhis_url</item>
-        <item name="dhis_user" type="string" translatable="false">dhis_user</item>
-        <item name="dhis_password" type="string" translatable="false">dhis_password</item>
-        <item name="dhis_max_items" type="string" translatable="false">dhis_max_items</item>
-        <item name="dhis_default_max_items" type="string" translatable="false">30</item>
-        <item name="location_required" type="string" translatable="false">location_required</item>
-        <item name="pull_metadata" type="string" translatable="false">pull_metadata</item>
-        <item name="default_tabGroup" type="string" translatable="false">default_tabGroup</item>
-        <item name="default_program" type="string" translatable="false">default_program</item>
-        <item name="default_orgUnit" type="string" translatable="false">default_orgUnit</item>
-        <item name="default_orgUnits" type="string" translatable="false">default_orgUnits</item>
-        <string name="tab_tag_plan" translatable="false">tab_plan</string>
-        <string name="tab_tag_assess" translatable="false">tab_assess</string>
-        <string name="tab_tag_improve" translatable="false">tab_improve</string>
-        <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
-        <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
-        <string name="overall_score_code" translatable="false">_Overall Score</string>
-        <string name="main_score_class_code" translatable="false">_Overall Class</string>
-        <string name="main_score_a_code" translatable="false">_Overall Class A</string>
-        <string name="main_score_b_code" translatable="false">_Overall Class B</string>
-        <string name="main_score_c_code" translatable="false">_Overall Class C</string>
-        <string name="forward_order_code" translatable="false">_FWR-sort</string>
-        <string name="forward_order_value" translatable="false">9999</string>
-        <string name="push_device_code" translatable="false">_PushDevice</string>
-        <string name="overall_productivity_code" translatable="false">_OverallProductivity</string>
-        <string name="next_assessment_code" translatable="false">_NextAssessmentDate</string>
-        <string name="created_on_code" translatable="false">_CreatedOn</string>
-        <string name="upload_date_code" translatable="false">_UploadedOn</string>
-        <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
-        <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
-    </resources>
+<resources>
+    <string name="app_name" translatable="false">QA App</string>
+    <string name="developers" translatable="false">EyeSeeTea LTD</string>
+    <string name="empty_string" translatable="false"></string>
+    <string name="ok" translatable="false">Ok</string>
+    <string name="login_info_dhis_default_server_url" translatable="false">https://malariacare.psi.org</string>
+    <string name="number_zero" translatable="false">0</string>
+    <string name="number_zero_percentage" translatable="false">0 % </string>
+    <string name="custom_info_one" translatable="false">1</string>
+    <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
+    <string name="light_font" translatable="false">Roboto-Light.ttf</string>
+    <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
+    <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
+    <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
+    <string name="font_size_level0" translatable="false">xsmall</string>
+    <string name="font_size_level1" translatable="false">small</string>
+    <string name="font_size_level2" translatable="false">medium</string>
+    <string name="font_size_level3" translatable="false">large</string>
+    <string name="font_size_level4" translatable="false">xlarge</string>
+    <string name="font_size_system" translatable="false">system</string>
+    <string name="customize_fonts" translatable="false">customize_fonts</string>
+    <string name="font_sizes" translatable="false">font_sizes</string>
+    <string name="eula_accepted" translatable="false">eula_accepted</string>
+    <string name="dhis_url" translatable="false">dhis_url</string>
+    <string name="dhis_user" translatable="false">dhis_user</string>
+    <string name="dhis_password" translatable="false">dhis_password</string>
+    <string name="dhis_max_items" translatable="false">dhis_max_items</string>
+    <string name="dhis_default_max_items" translatable="false">30</string>
+    <string name="location_required" translatable="false">location_required</string>
+    <string name="pull_metadata" translatable="false">pull_metadata</string>
+    <string name="default_tabGroup" translatable="false">default_tabGroup</string>
+    <string name="default_program" translatable="false">default_program</string>
+    <string name="default_orgUnit" translatable="false">default_orgUnit</string>
+    <string name="default_orgUnits" translatable="false">default_orgUnits</string>
+    <string name="tab_tag_plan" translatable="false">tab_plan</string>
+    <string name="tab_tag_assess" translatable="false">tab_assess</string>
+    <string name="tab_tag_improve" translatable="false">tab_improve</string>
+    <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
+    <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
+    <string name="developer_option" translatable="false">show_dev_options</string>
+    <string name="export_data_option" translatable="false">export_data_option</string>
+    <string name="overall_score_code" translatable="false">_Overall Score</string>
+    <string name="main_score_class_code" translatable="false">_Overall Class</string>
+    <string name="main_score_a_code" translatable="false">_Overall Class A</string>
+    <string name="main_score_b_code" translatable="false">_Overall Class B</string>
+    <string name="main_score_c_code" translatable="false">_Overall Class C</string>
+    <string name="forward_order_code" translatable="false">_FWR-sort</string>
+    <string name="forward_order_value" translatable="false">9999</string>
+    <string name="push_device_code" translatable="false">_PushDevice</string>
+    <string name="overall_productivity_code" translatable="false">_OverallProductivity</string>
+    <string name="next_assessment_code" translatable="false">_NextAssessmentDate</string>
+    <string name="created_on_code" translatable="false">_CreatedOn</string>
+    <string name="upload_date_code" translatable="false">_UploadedOn</string>
+    <string name="uploaded_by_code" translatable="false">_UploadedBy</string>
+    <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
+    <string name="settings_array_values_font_sizes_def" translatable="false">@string/font_size_level2</string>
+    <string-array name="settings_array_titles_font_sizes" translatable="false">
+        <item>@string/font_size_level0_title</item>
+        <item>@string/font_size_level1_title</item>
+        <item>@string/font_size_level2_title</item>
+        <item>@string/font_size_level3_title</item>
+        <item>@string/font_size_level4_title</item>
+    </string-array>
+    <string-array name="settings_array_values_font_sizes" translatable="false">
+        <item>@string/font_size_level0</item>
+        <item>@string/font_size_level1</item>
+        <item>@string/font_size_level2</item>
+        <item>@string/font_size_level3</item>
+        <item>@string/font_size_level4</item>
+    </string-array>
+    <string name="lastcommit_unavailable" translatable="false"><![CDATA[
+        <p>This option requires some changes in the git repository.</p>
+        <p>Steps:</p>
+        <p>1. Please open or create the.git/hooks/post-commit and .git/hooks/post-checkout  files.</p>
+            <p>2. If the file does not exist, add the following lines: </p>
+               <p>#!/bin/sh </p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+            <p>2. If the file already exists, you only need add the following lines at the end:</p>
+               <p>gitPath=$(git rev-parse --show-toplevel)</p>
+               <p>sh ${gitPath}/generate_last_commit.sh </p>
+        <p>3. Run "git checkout". </p>]]>
+    </string>
+    <string name="progress_push_preparing_program" translatable="false">"Downloading programs and organisationUnits..."</string>
+    <string name="progress_push_preparing_events" translatable="false">"Downloading events ..."</string>
+    <string name="error_in_pull_conversion" translatable="false">"Pull error during the conversion"</string>
+    <string name="pull_cancelled" translatable="false">"Pull cancelled by the user"</string>
+    <string name="push_in_progress" translatable="false">push_in_progress</string>
+    <string name="language_code" translatable="false">language_code</string>
+    <string name="push_stopped" translatable="false">"Push stopped, There is already a push in progress"</string>
+    <string name="push_error" translatable="false">"Unexpected error has occurred in push process"</string>
+    <string name="push_surveys_not_found" translatable="false">"Pending surveys not found"</string>
+    <string name="push_conversion_error" translatable="false">"An error has occurred to the conversion in push process"</string>
+    <string name="network_no_available" translatable="false">"Network not available"</string>
+    <string name="show_announcement_key" translatable="false">show_announcement_key</string>
+    <string name="user_accept_key" translatable="false">user_accept_key</string>
+    <string name="api_data_elements" translatable="false">/api/dataElements/</string>
+</resources>

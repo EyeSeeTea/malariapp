@@ -39,6 +39,12 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
+    <ListPreference
+        android:defaultValue=""
+        android:key="@string/language_code"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/settings_select_language" />
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
     <org.eyeseetea.malariacare.views.ReadonlyPreference
@@ -89,10 +95,10 @@
         android:title="@string/hide_planning_tab_title"
         android:summary="@string/hide_planning_tab_summary"
         android:defaultValue="false" />
-
+    
     <CheckBoxPreference
-        android:key="@string/show_num_dems"
-        android:title="@string/settings_checkbox_show_num_dems"
-        android:summary="@string/settings_checkbox_description_show_num_dems"
+        android:key="@string/developer_option"
+        android:title="@string/developer_option_title"
+        android:summary="@string/developer_option_summary"
         android:defaultValue="false" />
 </PreferenceScreen>

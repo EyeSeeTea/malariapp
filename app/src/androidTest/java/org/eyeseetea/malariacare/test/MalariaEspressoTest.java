@@ -36,21 +36,20 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.database.model.Answer;
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.Header;
-import org.eyeseetea.malariacare.database.model.Option;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Question;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Survey$Table;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.User;
-import org.eyeseetea.malariacare.database.model.Value;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
+import org.eyeseetea.malariacare.data.database.model.Answer;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.Header;
+import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.Survey$Table;
+import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
 
 import java.util.Collection;
@@ -82,7 +81,7 @@ public class MalariaEspressoTest {
 
     public static void cleanSession(){
         Session.setUser(null);
-        Session.setSurvey(null);
+        Session.setSurveyByModule(null,"");
     }
 
     public static void cleanDB(){
@@ -137,7 +136,7 @@ public class MalariaEspressoTest {
     public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
         List<Survey> surveys=mockSurveys(numSurvey, numProgram);
         Survey survey=surveys.get(select);
-        Session.setSurvey(survey);
+        Session.setSurveyByModule(survey,"");
         return survey;
     }
 
@@ -152,7 +151,7 @@ public class MalariaEspressoTest {
         User user =getSafeUser();
 
         for(int i=0;i<numOrgs;i++){
-            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program.getTabGroups().get(0),user);
+            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
             survey.save();
         }
         List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();

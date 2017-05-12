@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/settings_menu_configuration" />
+    <item
+        android:id="@+id/downloaded_media"
+        android:orderInCategory="101"
+        android:title="@string/downloaded_media_menu" />
+    <item
+        android:id="@+id/action_license"
+        android:orderInCategory="102"
+        android:title="@string/settings_menu_licence"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="103"
+        android:title="@string/settings_menu_about" />
+    <item
+        android:orderInCategory="104"
+        android:title="@string/settings_menu_legal">
+        <menu>
+            <item
+                android:id="@+id/action_copyright"
+                android:orderInCategory="105"
+                android:title="@string/settings_menu_copyright" />
+            <item
+                android:id="@+id/action_licenses"
+                android:orderInCategory="106"
+                android:title="@string/settings_menu_licenses" />
+            <item
+                android:id="@+id/action_eula"
+                android:orderInCategory="107"
+                android:title="@string/settings_menu_eula" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/export_db"
+        android:orderInCategory="108"
+        android:title="@string/export_data_option_title" />
+    <item
+        android:id="@+id/action_pull"
+        android:orderInCategory="109"
+        android:title="@string/settings_menu_pull" />
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="110"
+        android:title="@string/settings_menu_logout" />
+</menu>

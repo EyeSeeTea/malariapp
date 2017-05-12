@@ -18,46 +18,41 @@
  */
 
 
-        package org.eyeseetea.malariacare.services;
+package org.eyeseetea.malariacare.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.network.PushClient;
-import org.eyeseetea.malariacare.network.PushResult;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
 
-import java.util.List;
-
-/**
- * A service that runs pushing process for pending surveys.
- * Created by rhardjon on 19/09/15.
- */
 public class PushService extends IntentService {
-
     /**
      * Constant added to the intent in order to reuse the service for different 'methods'
      */
-    public static final String SERVICE_METHOD="serviceMethod";
+    public static final String SERVICE_METHOD = "serviceMethod";
 
     /**
      * Name of 'push all pending surveys' action
      */
-    public static final String PENDING_SURVEYS_ACTION ="org.eyeseetea.malariacare.services.PushService.PENDING_SURVEYS_ACTION";
+    public static final String PENDING_SURVEYS_ACTION =
+            "org.eyeseetea.malariacare.services.PushService.PENDING_SURVEYS_ACTION";
 
-    /**
-     * Tag for logging
-     */
-    public static final String TAG = ".PushService";
+    public static final String TAG = ".PushServiceB&D";
+
+    IPushController pushController;
+    PushUseCase pushUseCase;
+
+    PushServiceStrategy mPushServiceStrategy = new PushServiceStrategy(this);
 
     /**
      * Constructor required due to a error message in AndroidManifest.xml if it is not present
      */
-    public PushService(){
+    public PushService() {
         super(PushService.class.getSimpleName());
     }
 
@@ -72,66 +67,22 @@ public class PushService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Take action to be done
-        switch (intent.getStringExtra(SERVICE_METHOD)){
-            case PENDING_SURVEYS_ACTION:
-                pushAllPendingSurveys();
-                break;
+        //Ignore wrong actions
+        if (!PENDING_SURVEYS_ACTION.equals(intent.getStringExtra(SERVICE_METHOD))) {
+            return;
         }
+
+        mPushServiceStrategy.push(pushUseCase);
     }
 
-    /**
-     * Push all pending surveys
-     */
-    private void pushAllPendingSurveys() {
-        Log.d(TAG, "pushAllPendingSurveys (Thread:" + Thread.currentThread().getId() + ")");
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-        //Select surveys from sql
-        List<Survey> surveys = Survey.getAllCompletedSurveys();
-
-        if(surveys!=null && !surveys.isEmpty()){
-            for(Survey survey : surveys){
-                    sendPush(survey);
-            }
-        }
+        pushController = new PushController(getApplicationContext());
+        pushUseCase = new PushUseCase(pushController);
     }
 
-    private void sendPush (Survey survey) {
-        //Push in background with SDK
-        sendSDKPush(survey);
-        //Push in background with API
-        //sendAPIPush(survey);
+    public void onPushFinished() {
     }
-
-    private void sendSDKPush(Survey survey) {
-        Log.d(TAG,"sendSDKPush: "+survey);
-        PushClient pushClient = getPushClient(survey);
-        //Push  data
-        pushClient.pushSDK();
-    }
-
-    private void sendAPIPush(Survey survey) {
-        //Push  data
-        PushClient pushClient = getPushClient(survey);
-        PushResult result = pushClient.pushAPI();
-        if(result.isSuccessful()){
-            Log.d(TAG, "Estado del push: OK");
-
-
-            //Reload data using service
-            Intent surveysIntent=new Intent(this, SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-            this.startService(surveysIntent);
-        }else{
-            Log.d(TAG, "Estado del push: ERROR");
-        }
-    }
-
-    private PushClient getPushClient(Survey survey) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String user=sharedPreferences.getString(getString(R.string.dhis_user), "");
-        String password=sharedPreferences.getString(getString(R.string.dhis_password), "");
-        return new PushClient(survey, this.getApplicationContext(),user,password);
-    }
-
 }

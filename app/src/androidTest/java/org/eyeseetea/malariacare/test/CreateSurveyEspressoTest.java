@@ -24,7 +24,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -94,7 +94,7 @@ public class CreateSurveyEspressoTest extends MalariaEspressoTest{
 //
 //        //THEN
 //        intended(anyIntent());
-//        assertNotNull(Session.getSurvey());
+//        assertNotNull(Session.getSurveyByModule());
 //    }
 //
 //    @Test

@@ -28,7 +28,7 @@ import android.util.TypedValue;
 import android.widget.Button;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 /**
  * TODO: document your custom view class.

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+<string name="yes"></string>
+<string name="no"></string>
+<string name="cancel"></string>
+<string name="score"></string>
+<string name="title_id"></string>
+<string name="title_name"></string>
+<string name="good"></string>
+<string name="fair"></string>
+<string name="poor"></string>
+<string name="lorem_ipsum"></string>
+
+<string name="settings_menu_about"></string>
+<string name="settings_menu_configuration"></string>
+<string name="settings_menu_licence"></string>
+<string name="settings_menu_logout"></string>
+
+<string name="dialog_title_delete_survey"></string>
+<string name="dialog_info_delete_survey"></string>
+<string name="dialog_title_missing_selection"></string>
+<string name="dialog_content_missing_selection"></string>
+<string name="dialog_title_existing_survey"></string>
+<string name="dialog_content_existing_survey"></string>
+<string name="dialog_title_incorrect_org_unit"></string>
+<string name="dialog_content_incorrect_org_unit"></string>
+<string name="dialog_content_logout_confirmation"></string>
+<string name="dialog_info_ask_for_completion"></string>
+
+<string name="dashboard_info_feedback"></string>
+<string name="dashboard_info_ready_to_upload"></string>
+<string name="dashboard_info_sent"></string>
+
+<string name="create_info_ok"></string>
+<string name="create_info_organization_unit"></string>
+<string name="create_info_survey"></string>
+<string name="create_info_tabs_group"></string>
+
+<string name="assessment_title_facility_date"></string>
+<string name="assessment_title_state"></string>
+<string name="assessment_sent_date"></string>
+<string name="assessment_title_header"></string>
+<string name="assessment_sent_title_header"></string>
+
+<string name="survey_title_exit"></string>
+<string name="survey_info_exit"></string>
+
+<string name="widget_info_empty_statement"></string>
+
+<string name="custom_title_tallies"></string>
+<string name="custom_info_tallies"></string>
+
+<string name="adherence_info_switchquestion"></string>
+<string name="adherence_title_explanation"></string>
+<string name="adherence_title_explanation_content"></string>
+<string name="adherence_title2_explanation_content"></string>
+<string name="adherence_title_gender"></string>
+<string name="adherence_title_age"></string>
+<string name="adherence_title_test_results"></string>
+<string name="adherence_info_patient_id"></string>
+<string name="adherence_info_prescribed"></string>
+<string name="adherence_info_rdt_positive"></string>
+<string name="adherence_info_rdt_negative"></string>
+<string name="adherence_info_microscopy_positive"></string>
+<string name="adherence_info_microscopy_negative"></string>
+
+<string name="iqatab_info_supervisor"></string>
+<string name="iqatab_info_parasites"></string>
+<string name="iqatab_info_species"></string>
+<string name="iqatab_info_labstaff"></string>
+<string name="iqatab_info_note"></string>
+
+<string name="reporting_info_reporting"></string>
+<string name="reporting_info_results"></string>
+<string name="reporting_info_register"></string>
+<string name="reporting_info_monthly"></string>
+
+<string name="score_title_clinical_fever"></string>
+<string name="score_title_rdt"></string>
+<string name="score_title_avg"></string>
+<string name="score_title_environment"></string>
+<string name="score_title_profile"></string>
+<string name="score_info_tab_score"></string>
+<string name="score_info_overall"></string>
+<string name="score_info_accumulated"></string>
+<string name="score_info_case1"></string>
+<string name="score_info_case2"></string>
+<string name="score_info_case3"></string>
+
+<string name="compscore_title_score_percentage"></string>
+
+<string name="title_activity_settings"></string>
+<string name="settings_checkbox_show_num_dems"></string>
+<string name="settings_checkbox_description_show_num_dems"></string>
+<string name="settings_checkbox_customize_fonts"></string>
+<string name="settings_list_font_sizes"></string>
+<string name="settings_text_dhis_server_url"></string>
+<string name="settings_text_dhis_user"></string>
+<string name="pref_header_general"></string>
+<string name="dialog_title_push_response"></string>
+<string name="dialog_info_push_bad_credentials"></string>
+<string name="dialog_info_push_empty_survey"></string>
+<string name="settings_menu_legal"></string>
+<string name="settings_menu_copyright"></string>
+<string name="settings_menu_licenses"></string>
+<string name="settings_menu_eula"></string>
+<string name="go_to_feedback"></string>
+<string name="dialog_button_preview_feedback"></string>
+<string name="dialog_question_complete_survey"></string>
+<string name="dialog_continue_later_option"></string>
+<string name="dialog_complete_option"></string>
+<string name="dialog_are_you_sure_complete_survey"></string>
+<string name="dialog_incompleted_compulsory_survey"></string>
+<string name="dialog_incompleted_compulsory_pulling"></string>
+<string name="dialog_sent_survey_on_refresh_metadata"></string>
+<string name="cancellingPull"></string>
+<string name="dashboard_title_total_assessments"></string>
+<string name="dashboard_title_planned_type_never"></string>
+<string name="dashboard_title_planned_type_overdue"></string>
+<string name="dashboard_title_planned_type_next_30"></string>
+<string name="dashboard_title_planned_type_future"></string>
+<string name="dashboard_title_planned_productivity"></string>
+<string name="dashboard_title_planned_quality_of_care"></string>
+<string name="dashboard_title_planned_next_qa"></string>
+<string name="assessment_sent_score"></string>
+<string name="feedback_show_only_failed"></string>
+<string name="feedback_return"></string>
+<string name="quality_of_care"></string>
+<string name="feedback_info_passed"></string>
+<string name="feedback_info_failed"></string>
+<string name="feedback_info_not_answered"></string>
+<string name="feedback_info_no_feedback"></string>
+<string name="feedback_info_conflict"></string>
+<string name="settings_checkbox_location_required"></string>
+<string name="settings_checkbox_description_location_required"></string>
+<string name="font_size_level0_title"></string>
+<string name="font_size_level1_title"></string>
+<string name="font_size_level2_title"></string>
+<string name="font_size_level3_title"></string>
+<string name="font_size_level4_title"></string>
+<string name="server_url"></string>
+<string name="settings_text_dhis_password"></string>
+<string name="settings_text_dhis_max_items"></string>
+<string name="dialog_error_push_uids"></string>
+<string name="dialog_error_push_no_location_and_required"></string>
+<string name="dialog_error_attribute_null"></string>
+<string name="dialog_info_push_imported"></string>
+<string name="dialog_info_push_updated"></string>
+<string name="dialog_info_push_ignored"></string>
+<string name="dialog_info_push_stats"></string>
+<string name="dialog_info_on_complete"></string>
+<string name="dialog_deleting_children"></string>
+<string name="dashboard_tip_pie_chart"></string>
+<string name="dialog_pull_error"></string>
+<string name="settings_menu_pull"></string>
+<string name="dialog_pull_success"></string>
+<string name="dialog_title_pull_response"></string>
+<string name="progress_pull_connecting"></string>
+<string name="progress_pull_downloading"></string>
+<string name="progress_pull_preparing_program"></string>
+<string name="progress_pull_preparing_answers"></string>
+<string name="progress_pull_preparing_orgs"></string>
+<string name="progress_pull_questions"></string>
+<string name="progress_pull_relationships"></string>
+<string name="progress_pull_surveys"></string>
+<string name="progress_pull_validating_composite_scores"></string>
+<string name="progress_pull_done"></string>
+<string name="dialog_push_success"></string>
+<string name="progress_push_preparing_survey"></string>
+<string name="progress_push_posting_survey"></string>
+<string name="progress_push_updating_survey"></string>
+<string name="progress_push_no_survey"></string>
+<string name="dialog_push_before_pull_success"></string>
+<string name="planning_title_dialog"></string>
+<string name="planning_label_comment"></string>
+<string name="planning_label_schedule_date"></string>
+<string name="option_edit"></string>
+<string name="option_mark_completed"></string>
+<string name="option_delete"></string>
+<string name="hide_planning_tab_title"></string>
+<string name="hide_planning_tab_summary"></string>
+<string name="plan"></string>
+<string name="assess"></string>
+<string name="improve"></string>
+<string name="monitor"></string>
+<string name="filter_all_org_units"></string>
+<string name="filter_all_org_assessments"></string>
+<string name="dialog_content_dhis_preference_login"></string>
+<string name="lastcommit"></string>
+<string name="unavailable"></string>
+<string name="error_message_push"></string>
+<string name="monitor_js_assessments" ></string>
+<string name="monitor_js_target" ></string>
+<string name="monitor_js_quality_of_care" ></string>
+<string name="monitor_js_months" ></string>
+
+<string name="create"></string>
+<string name="modify"></string>
+<string name="create_or_modify"></string>
+<string name="loading_last_surveys"></string>
+<string name="no_previous_event_info"></string>
+<string name="dynamic_error_phone_format"></string>
+<string name="dynamic_error_age"></string>
+<string name="survey_title_completed"></string>
+<string name="survey_info_completed"></string>
+<string name="review"></string>
+<string name="send"></string>
+<string name="number_0"></string>
+<string name="number_1"></string>
+<string name="number_2"></string>
+<string name="number_3"></string>
+<string name="number_4"></string>
+<string name="number_5"></string>
+<string name="number_6"></string>
+<string name="number_7"></string>
+<string name="number_8"></string>
+<string name="number_9"></string>
+<string name="clear"></string>
+
+<string name="developer_option_summary"></string>
+<string name="developer_option_title"></string>
+<string name="export_data_option_title"></string>
+<string name="ask_account_permission"></string>
+<string name="google_play_required"></string>
+<string name="account_permission_denied"></string>
+<string name="feedback_media_link" ></string>
+<string name="feedback_media"></string>
+<string name="feedback_view_image"></string>
+<string name="admin_announcement"></string>
+<string name="user_close"></string>
+<string name="dialog_action_logout"></string>
+<string name="dialog_action_refresh"></string>
+<string name="dialog_incomplete_surveys_before_refresh"></string>
+<string name="dialog_all_surveys_sent_before_refresh"></string>
+</resources>
