@@ -189,6 +189,7 @@ Passo 2: Localize a identificação do paciente do passo 1) no Registo de Farmá
 <string name="developer_option_summary">"Esta opção permite que as opções de desenvolvedor"</string>
 <string name="developer_option_title">"Mostrar opções de desenvolvedor"</string>
 <string name="export_data_option_title">"Banco de dados de exportação"</string>
+<string name="import_data_option_title">"Importar banco de dados"</string>
 <string name="google_play_required">"Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo."</string>
 <string name="account_permission_denied">"Permissão de contatos negada. A mídia não será sincronizada"</string>
 <string name="feedback_media">"Ver feedback de vídeo"</string>

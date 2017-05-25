@@ -168,6 +168,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                     startActivityForResult(emailIntent, DUMP_REQUEST_CODE);
                 }
                 break;
+            case R.id.import_db:
+                debugMessage("Import db");
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -186,6 +189,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         if (!PreferencesState.getInstance().isDevelopOptionActive()
                 || !AppSettingsBuilder.isDeveloperOptionsActive()) {
             MenuItem item = menu.findItem(R.id.export_db);
+            item.setVisible(false);
+            item = menu.findItem(R.id.import_db);
             item.setVisible(false);
         }
         return true;

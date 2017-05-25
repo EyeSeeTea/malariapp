@@ -188,6 +188,7 @@ Mensuelle"</string>
 <string name="developer_option_summary">"Cette option active les options de développement"</string>
 <string name="developer_option_title">"Afficher les options développeur"</string>
 <string name="export_data_option_title">"Base de données à l'exportation"</string>
+<string name="import_data_option_title">"Base de données d'importation"</string>
 <string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
 <string name="account_permission_denied"> Contacts permission refusée. Médias ne sera pas synchronisé</string>
 <string name="feedback_media">Voir la vidéo commentaires</string>

@@ -212,6 +212,7 @@
     <string name="developer_option_summary">ជម្រើសនេះអនុញ្ញាតជម្រើសអភិវឌ្ឍន៍</string>
     <string name="developer_option_title">អភិវឌ្ឍន៍បង្ហាញជម្រើស</string>
     <string name="export_data_option_title">មូលដ្ឋានទិន្នន័យដែលបាននាំចេញ</string>
+    <string name="import_data_option_title">នាំចូលមូលដ្ឋានទិន្នន័យ</string>
     <string name="account_permission_denied">សិទ្ធិអនុញ្ញាតទំនាក់ទំនងបដិសេធ។ ប្រព័ន្ធផ្សព្វផ្សាយនឹងមិនត្រូវបានធ្វើសមកាលកម្ម</string>
     <string name="error_message_push">ព្រឹត្តិការណ៍នេះជាមួយនឹងលេខសម្គាល់អ្នកប្រើ %s ។ ត្រូវបានផ្ទុកឡើងដោយគ្មានកាលបរិច្ឆេទ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។</string>
     <string name="feedback_media">មតិអ្នកមើលវីដេអូ</string>
