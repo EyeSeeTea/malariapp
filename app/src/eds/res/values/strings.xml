@@ -234,4 +234,7 @@
     <string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
     <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
     <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
+
+    <string name="install_file_manager">Please install a File Manager.</string>
+    <string name="get_db_file_dialog">Please select a valid db file</string>
 </resources>

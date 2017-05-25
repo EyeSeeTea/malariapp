@@ -214,4 +214,6 @@ Mensuelle"</string>
 <string name="dialog_action_refresh">"L'actualisation des métadonnées nécessite la suppression ou l'envoi de vos données non envoyées"."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Vous avez %d sondages non envoyés et seront supprimés. Voulez-vous continuer?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
+<string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
+<string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
 </resources>
