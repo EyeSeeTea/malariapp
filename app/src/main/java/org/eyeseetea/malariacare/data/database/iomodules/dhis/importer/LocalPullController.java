@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.config.DHIS2GeneratedDatabaseHolder;
@@ -67,12 +68,20 @@ public class LocalPullController implements IPullController {
             InputStream inputStream) throws IOException {
         Log.d(TAG, "Copy Database from assets started");
         FlowManager.destroy();
-        copyDBFromAssets(inputStream);
+        copyDBFromFile(inputStream);
         reinitializeDbFlowDatabases(context);
         Log.d(TAG, "Copy Database from assets finished");
     }
 
-    public void copyDBFromAssets(InputStream inputStream)
+    public void importDB(Uri uri) throws IOException {
+        Log.d(TAG, "Import Database from user file started");
+        FlowManager.destroy();
+        copyDBFromFile(context.getContentResolver().openInputStream(uri));
+        reinitializeDbFlowDatabases(context);
+        Log.d(TAG, "Import Database from user file finished");
+    }
+
+    public void copyDBFromFile(InputStream inputStream)
             throws IOException {
         FileIOUtils.copyInputStreamToFile(inputStream, FileIOUtils.getAppDatabaseFile());
     }
