@@ -28,6 +28,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -36,7 +37,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
@@ -51,6 +54,7 @@ import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.io.IOException;
 import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
@@ -168,10 +172,56 @@ public abstract class BaseActivity extends ActionBarActivity {
                     startActivityForResult(emailIntent, DUMP_REQUEST_CODE);
                 }
                 break;
+            case R.id.import_db:
+                debugMessage("Import db");
+                showFileChooser();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private static final int FILE_SELECT_CODE = 0;
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/octet-stream");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent,
+                            PreferencesState.getInstance().getContext().getString(
+                                    R.string.get_db_file_dialog)),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(this, PreferencesState.getInstance().getContext().getString(
+                    R.string.install_file_manager),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    Log.d(TAG, "File Uri: " + uri.toString());
+                    LocalPullController localPullController = new LocalPullController(
+                            getApplicationContext());
+                    try {
+                        localPullController.importDB(uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -186,6 +236,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         if (!PreferencesState.getInstance().isDevelopOptionActive()
                 || !AppSettingsBuilder.isDeveloperOptionsActive()) {
             MenuItem item = menu.findItem(R.id.export_db);
+            item.setVisible(false);
+            item = menu.findItem(R.id.import_db);
             item.setVisible(false);
         }
         return true;
@@ -235,10 +287,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         int unsentSurveyCount = Survey.countAllUnsentUnplannedSurveys();
         String message = getApplicationContext().getString(
                 R.string.dialog_action_logout);
-        if(unsentSurveyCount == 0) {
+        if (unsentSurveyCount == 0) {
             message += getApplicationContext().getString(
                     R.string.dialog_all_surveys_sent_before_refresh);
-        }else{
+        } else {
             message += String.format(getApplicationContext().getString(
                     R.string.dialog_incomplete_surveys_before_refresh), unsentSurveyCount);
         }
