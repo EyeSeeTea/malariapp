@@ -198,7 +198,9 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
     private void checkAll(boolean value) {
         for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
-            plannedSurveyByOrgUnit.setChecked(value);
+            if (plannedSurveyByOrgUnit.getSurvey().getScheduledDate() != null) {
+                plannedSurveyByOrgUnit.setChecked(value);
+            }
         }
         this.adapter.setItems(plannedSurveys);
         this.adapter.notifyDataSetChanged();
