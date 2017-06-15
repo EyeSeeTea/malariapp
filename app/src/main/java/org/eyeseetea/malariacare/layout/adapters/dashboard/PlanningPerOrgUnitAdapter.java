@@ -63,12 +63,6 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
 
         //config row checkbox
         final CheckBox surveyCheckBox = (CheckBox) rowView.findViewById(R.id.survey_type);
-        if (survey.getScheduledDate() != null) {
-            surveyCheckBox.setEnabled(true);
-        } else {
-            surveyCheckBox.setEnabled(false);
-        }
-
         surveyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                                       @Override
                                                       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
