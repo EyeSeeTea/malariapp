@@ -80,9 +80,11 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd");
 
         //set schedule date
+        CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         if (survey.getScheduledDate() != null) {
-            CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
             schedule.setText(sdf.format(survey.getScheduledDate()));
+        } else {
+            schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
