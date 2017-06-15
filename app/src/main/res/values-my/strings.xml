@@ -78,17 +78,8 @@
 <string name="adherence_info_patient_id"></string>
 <string name="adherence_info_prescribed"></string>
 <string name="adherence_info_rdt_positive"></string>
-<string name="adherence_info_rdt_negative"></string>
-<string name="adherence_info_microscopy_positive"></string>
-<string name="adherence_info_microscopy_negative"></string>
 
-<string name="iqatab_info_supervisor"></string>
-<string name="iqatab_info_parasites"></string>
-<string name="iqatab_info_species"></string>
-<string name="iqatab_info_labstaff"></string>
-<string name="iqatab_info_note"></string>
-
-<string name="reporting_info_reporting"></string>
+    <string name="reporting_info_reporting"></string>
 <string name="reporting_info_results"></string>
 <string name="reporting_info_register"></string>
 <string name="reporting_info_monthly"></string>
@@ -108,15 +99,12 @@
 <string name="compscore_title_score_percentage"></string>
 
 <string name="title_activity_settings"></string>
-<string name="settings_checkbox_show_num_dems"></string>
-<string name="settings_checkbox_description_show_num_dems"></string>
-<string name="settings_checkbox_customize_fonts"></string>
+    <string name="settings_checkbox_customize_fonts"></string>
 <string name="settings_list_font_sizes"></string>
 <string name="settings_text_dhis_server_url"></string>
 <string name="settings_text_dhis_user"></string>
 <string name="pref_header_general"></string>
-<string name="dialog_title_push_response"></string>
-<string name="dialog_info_push_bad_credentials"></string>
+    <string name="dialog_info_push_bad_credentials"></string>
 <string name="dialog_info_push_empty_survey"></string>
 <string name="settings_menu_legal"></string>
 <string name="settings_menu_copyright"></string>
@@ -184,12 +172,7 @@
 <string name="progress_pull_validating_composite_scores"></string>
 <string name="progress_pull_done"></string>
 <string name="dialog_push_success"></string>
-<string name="progress_push_preparing_survey"></string>
-<string name="progress_push_posting_survey"></string>
-<string name="progress_push_updating_survey"></string>
-<string name="progress_push_no_survey"></string>
-<string name="dialog_push_before_pull_success"></string>
-<string name="planning_title_dialog"></string>
+    <string name="planning_title_dialog"></string>
 <string name="planning_label_comment"></string>
 <string name="planning_label_schedule_date"></string>
 <string name="option_edit"></string>
@@ -214,35 +197,16 @@
 
 <string name="create"></string>
 <string name="modify"></string>
-<string name="create_or_modify"></string>
-<string name="loading_last_surveys"></string>
-<string name="no_previous_event_info"></string>
-<string name="dynamic_error_phone_format"></string>
-<string name="dynamic_error_age"></string>
-<string name="survey_title_completed"></string>
-<string name="survey_info_completed"></string>
-<string name="review"></string>
+    <string name="review"></string>
 <string name="send"></string>
-<string name="number_0"></string>
-<string name="number_1"></string>
-<string name="number_2"></string>
-<string name="number_3"></string>
-<string name="number_4"></string>
-<string name="number_5"></string>
-<string name="number_6"></string>
-<string name="number_7"></string>
-<string name="number_8"></string>
-<string name="number_9"></string>
-<string name="clear"></string>
+    <string name="clear"></string>
 
 <string name="developer_option_summary"></string>
 <string name="developer_option_title"></string>
 <string name="export_data_option_title"></string>
-<string name="ask_account_permission"></string>
-<string name="google_play_required"></string>
+    <string name="google_play_required"></string>
 <string name="account_permission_denied"></string>
-<string name="feedback_media_link" ></string>
-<string name="feedback_media"></string>
+    <string name="feedback_media"></string>
 <string name="feedback_view_image"></string>
 <string name="admin_announcement"></string>
 <string name="user_close"></string>

@@ -347,7 +347,7 @@ public class ConvertToSDKVisitor implements
 
         //Updated by user
         if (controlDataElementExistsInServer(updatedUserCode)) {
-            addOrUpdateDataValue(updatedUserCode, Session.getUser().getUid());
+            addOrUpdateDataValue(updatedUserCode, Session.getUser().getName());
         }
 
         //Forward order
