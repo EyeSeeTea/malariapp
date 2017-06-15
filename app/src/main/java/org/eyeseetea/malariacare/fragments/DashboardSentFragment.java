@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -61,7 +62,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -191,6 +191,14 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private void initProgramFilters() {
         initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
+        ImageView filterProgramButton =
+                (ImageView) getActivity().findViewById(R.id.filter_program_button);
+        filterProgramButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterSpinnerProgram.performClick();
+            }
+        });
         List<Program> filterProgramList= programList;
         Program defaultAllProgramFilter=new Program();
         defaultAllProgramFilter.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
@@ -233,9 +241,18 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private void initOrgUnitFilters(){
         initiatingFilters=true;
         filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
+        ImageView filterOrgUnitButton =
+                (ImageView) getActivity().findViewById(R.id.filter_orgunit_button);
+        filterOrgUnitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterSpinnerOrgUnit.performClick();
+            }
+        });
 
         //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
         filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
+
         if(orgUnitFilter==null)
             orgUnitFilter=orgUnitList.get(0).getUid();
         filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
