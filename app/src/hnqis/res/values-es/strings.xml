@@ -210,6 +210,10 @@ clínica"</string>
 <string name="clear">"Limpiar"</string>
 <string name="admin_announcement">"Anuncio del administrador"</string>
 <string name="user_close">"Este usuario ha sido cerrado por el administrador."</string>
+<string name="survey_first_step">"Recuperando preguntas obligatorias"</string>
+<string name="survey_second_step">"Comprobando preguntas obligatorias"</string>
+<string name="survey_third_step">"Calculando porcentaje de completitud"</string>
+<string name="survey_fourth_step">"Calculando puntuación"</string>
 <string name="error_conflict_message">"El evento con UID: %1$s. Se cargó con un conflicto en el elemento de datos UID: %2$s con el mensaje: %3$s. Póngase en contacto con el administrador."</string>
 <string name="dialog_action_logout">"El cierre de sesión requiere eliminar o enviar los datos no enviados."</string>
 <string name="dialog_action_refresh">"Refrescar los metadatos requiere eliminar o enviar los datos no enviados."</string>
