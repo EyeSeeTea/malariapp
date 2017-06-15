@@ -44,14 +44,30 @@
                 android:layout_weight="0.44"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"/>
-                <include layout="@layout/image_program_filter_item"></include>
+
+            <ImageView
+                android:id="@+id/filter_program_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.06"
+                android:onClick="clickProgramSpinner"
+                android:src="@drawable/arrow_improve" />
             <org.eyeseetea.malariacare.views.CustomSpinner
                 android:id="@+id/filter_orgunit"
                 android:layout_width="0dp"
                 android:layout_weight="0.44"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"/>
-            <include layout="@layout/image_org_unit_filter_item"></include>
+
+            <ImageView
+                android:id="@+id/filter_orgunit_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.06"
+                android:onClick="clickProgramSpinner"
+                android:src="@drawable/arrow_improve" />
         </LinearLayout>
     </LinearLayout>
     <FrameLayout
