@@ -26,7 +26,7 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit errado"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
 <string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
-<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
+<string name="dialog_info_ask_for_completion">"Tem certeza de que deseja completar %s? Você não pode desfazer essa ação"</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
@@ -212,4 +212,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Você tem pesquisas %d não enviadas e será excluído. Deseja continuar?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Você não tem pesquisas não solicitadas. Você quer continuar?"</string>
+
+<string name="header_reschedule">"Reprogramar"</string>
+<string name="planing_schedule">"Programar"</string>
+<string name="planing_due_date">"Data de Vencimento"</string>
 </resources>

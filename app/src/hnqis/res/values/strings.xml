@@ -182,13 +182,13 @@ evaluation"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
 <string name="error_message_push">"The event with UID: %s. was uploaded without date. Please contact the administrator. "</string>
-<string name="monitor_js_assessments" >Assessments undertaken</string>
-<string name="monitor_js_target" >"Target"</string>
-<string name="monitor_js_quality_of_care" >"Quality of care: Last "</string>
-<string name="monitor_js_months" >" months"</string>
+<string name="monitor_js_assessments">"Assessments undertaken"</string>
+<string name="monitor_js_target">"Target"</string>
+<string name="monitor_js_quality_of_care">"Quality of care: Last "</string>
+<string name="monitor_js_months">" months"</string>
 
-<string name="create">Create</string>
-<string name="modify">Modify</string>
+<string name="create">"Create"</string>
+<string name="modify">"Modify"</string>
 
 <string name="developer_option_summary">This feature activates the developer options</string>
 <string name="developer_option_title">Show developer options</string>
@@ -197,8 +197,8 @@ evaluation"</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-<string name="select_all">Select all</string>
-<string name="demo_login">Demo</string>
+<string name="select_all">"Select all"</string>
+<string name="demo_login">"Demo"</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
 
@@ -210,15 +210,19 @@ evaluation"</string>
 <string name="clear">"Clear"</string>
 <string name="admin_announcement">"Admin announcement"</string>
 <string name="user_close">"This user has been closed by the administrator."</string>
-<string name="survey_first_step">Recovering mandatory questions</string>
-<string name="survey_second_step">Checking mandatory questions</string>
-<string name="survey_third_step">Calculating completeness ratio</string>
-<string name="survey_fourth_step">Calculating Score register</string>
+<string name="survey_first_step">"Recovering mandatory questions"</string>
+<string name="survey_second_step">"Checking mandatory questions"</string>
+<string name="survey_third_step">"Calculating completeness ratio"</string>
+<string name="survey_fourth_step">"Calculating Score register"</string>
 <string name="error_conflict_message">"The event with UID: %1$s. was uploaded with pushConflict in the data element UID: %2$s with the message: %3$s. Please contact the administrator."</string>
 <string name="dialog_action_logout">"Logout require delete or send your unsent data."</string>
 <string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
+
+<string name="header_reschedule">"Reschedule"</string>
+<string name="planing_schedule">"Schedule"</string>
+<string name="planing_due_date">"Due date"</string>
 
 <string name="assessment_no_schedule_date">"-"</string>
 </resources>

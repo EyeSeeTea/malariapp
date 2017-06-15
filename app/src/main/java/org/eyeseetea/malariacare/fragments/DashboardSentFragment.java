@@ -61,7 +61,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -162,22 +161,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void resetList() {
         adapter.setItems(oneSurveyForOrgUnit);
         this.adapter.notifyDataSetChanged();
-        initLongListClick();
-    }
-
-    private void initLongListClick() {
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
-                //Discard clicks on header|footer (which is attended on onNewSurvey via super)
-                if(isPositionASurvey(position)){
-                    // call onSurveySelected function(and it call surveyfragment.
-                    // to looks only as read mode the survey should be iscompleted or issent)-
-                    dashboardActivity.onSurveySelected(oneSurveyForOrgUnit.get(position - 1));
-                }
-
-                return true;
-            }
-        });
     }
 
     @Override
