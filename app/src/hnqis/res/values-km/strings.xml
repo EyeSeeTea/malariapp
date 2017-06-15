@@ -74,18 +74,10 @@ ID"</string>
 <string name="adherence_info_prescribed">"ACT
 Prescribed?"</string>
 <string name="adherence_info_rdt_positive">"RDT Positive"</string>
-<string name="adherence_info_rdt_negative"></string>
-<string name="adherence_info_microscopy_positive"></string>
-<string name="adherence_info_microscopy_negative"></string>
 
-<!-- iqa eqa -->
-<string name="iqatab_info_supervisor"></string>
-<string name="iqatab_info_parasites"></string>
-<string name="iqatab_info_species"></string>
-<string name="iqatab_info_labstaff"></string>
-<string name="iqatab_info_note"></string>
+    <!-- iqa eqa -->
 
-<!-- reporting -->
+    <!-- reporting -->
 <string name="reporting_info_reporting">"Reporting"</string>
 <string name="reporting_info_results">"Results"</string>
 <string name="reporting_info_register">"Register"</string>
@@ -112,15 +104,12 @@ evaluation"</string>
 
 <!-- settings -->
 <string name="title_activity_settings">"ការកំនត់"</string>
-<string name="settings_checkbox_show_num_dems"></string>
-<string name="settings_checkbox_description_show_num_dems"></string>
-<string name="settings_checkbox_customize_fonts">"ប្តូរពុម្ពអក្សរ?"</string>
+    <string name="settings_checkbox_customize_fonts">"ប្តូរពុម្ពអក្សរ?"</string>
 <string name="settings_list_font_sizes">"ទំហំពុម្ពអក្សរ"</string>
 <string name="settings_text_dhis_server_url">"DHIS Server URL"</string>
 <string name="settings_text_dhis_user">"DHIS user"</string>
 <string name="pref_header_general">"General"</string>
-<string name="dialog_title_push_response">"ជា​ការ​ឆ្លើយ​តប​រុញ "</string>
-<string name="dialog_info_push_bad_credentials">"លិខិត​សម្គាល់​អាក្រក់​សម្រាប់​ជំរុញ​ឱ្យ​មាន "</string>
+    <string name="dialog_info_push_bad_credentials">"លិខិត​សម្គាល់​អាក្រក់​សម្រាប់​ជំរុញ​ឱ្យ​មាន "</string>
 <string name="dialog_info_push_empty_survey">"Empty surveys cannot be pushed"</string>
 <string name="settings_menu_legal">"Legal"</string>
 <string name="settings_menu_copyright">"Copyright"</string>
@@ -185,12 +174,7 @@ evaluation"</string>
 <string name="progress_pull_surveys">"កំពុងទាញការស្ទង់មតិ..."</string>
 <string name="progress_pull_done">"រួចរាល់"</string>
 <string name="dialog_push_success">"ការស្ទង់មតិបានបញ្ជូនចូលទៅកាន់ម៉ាស៊ីនបម្រើ DHIS ដោយជោគជ័យ"</string>
-<string name="progress_push_preparing_survey"></string>
-<string name="progress_push_posting_survey"></string>
-<string name="progress_push_updating_survey"></string>
-<string name="progress_push_no_survey"></string>
-<string name="dialog_push_before_pull_success"></string>
-<string name="planning_title_dialog">"Schedule survey"</string>
+    <string name="planning_title_dialog">"Schedule survey"</string>
 <string name="planning_label_comment">"* Comment"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
 <string name="option_edit">"Edit"</string>
@@ -207,8 +191,7 @@ evaluation"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
-<string name="no_previous_event_info"></string>
-<string name="error_message_push">"ព្រឹត្តិការណ៍នេះជាមួយនឹងលេខសម្គាល់អ្នកប្រើ %s ។ ត្រូវបានផ្ទុកឡើងដោយគ្មានកាលបរិច្ឆេទ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។"</string>
+    <string name="error_message_push">"ព្រឹត្តិការណ៍នេះជាមួយនឹងលេខសម្គាល់អ្នកប្រើ %s ។ ត្រូវបានផ្ទុកឡើងដោយគ្មានកាលបរិច្ឆេទ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។"</string>
 <string name="monitor_js_assessments">"ការវាយតម្លៃអនុវត្ត"</string>
 <string name="monitor_js_target">"\"គោលដៅ\""</string>
 <string name="monitor_js_quality_of_care">"\"គុណភាពនៃការថែទាំ: មុន \""</string>
@@ -217,33 +200,13 @@ evaluation"</string>
 <string name="progress_pull_relationships">"កសាងទំនាក់ទំនងសំណួរ ..."</string>
 <string name="create">"Create"</string>
 <string name="modify">"Modify"</string>
-<string name="create_or_modify"></string>
-<string name="loading_last_surveys"></string>
-<string name="dynamic_error_phone_format"></string>
-<string name="dynamic_error_age"></string>
-<string name="survey_title_completed"></string>
-<string name="survey_info_completed"></string>
-<string name="review"></string>
+    <string name="review"></string>
 <string name="send"></string>
-<string name="number_0"></string>
-<string name="number_1"></string>
-<string name="number_2"></string>
-<string name="number_3"></string>
-<string name="number_4"></string>
-<string name="number_5"></string>
-<string name="number_6"></string>
-<string name="number_7"></string>
-<string name="number_8"></string>
-<string name="number_9"></string>
-<string name="clear">"ច្បាស់ណាស់"</string>
-<string name="settings_checkbox_ask_modify_or_create"></string>
-<string name="settings_checkbox_description_ask_modify_or_create"></string>
-<string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
-<string name="ask_account_permission"></string>
-<string name="google_play_required">"នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។"</string>
+    <string name="clear">"ច្បាស់ណាស់"</string>
+    <string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
+    <string name="google_play_required">"នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។"</string>
 <string name="account_permission_denied">"សិទ្ធិអនុញ្ញាតទំនាក់ទំនងបដិសេធ។ ប្រព័ន្ធផ្សព្វផ្សាយនឹងមិនត្រូវបានធ្វើសមកាលកម្ម"</string>
-<string name="feedback_media_link"></string>
-<string name="feedback_media">"មតិអ្នកមើលវីដេអូ"</string>
+    <string name="feedback_media">"មតិអ្នកមើលវីដេអូ"</string>
 <string name="feedback_view_image">"ចែករំលែករូបភាពជាមួយ ..."</string>
 <string name="developer_option_summary">"ជម្រើសនេះអនុញ្ញាតជម្រើសអភិវឌ្ឍន៍"</string>
 <string name="developer_option_title">"អភិវឌ្ឍន៍បង្ហាញជម្រើស"</string>
