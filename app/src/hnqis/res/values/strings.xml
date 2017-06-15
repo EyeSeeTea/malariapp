@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!-- # general -->
 <string name="yes">"Yes"</string>
 <string name="no">"No"</string>
 <string name="cancel">"Cancel"</string>
@@ -13,13 +12,11 @@
 <string name="poor">"Poor"</string>
 <string name="lorem_ipsum">"Lorem ipsum dolor sit amet"</string>
 
-<!-- settings -->
 <string name="settings_menu_about">"About"</string>
 <string name="settings_menu_configuration">"Settings"</string>
 <string name="settings_menu_licence">"License"</string>
 <string name="settings_menu_logout">"Logout"</string>
 
-<!-- # dialogs -->
 <string name="dialog_title_delete_survey">"Delete Survey"</string>
 <string name="dialog_info_delete_survey">"Are you sure you want to completely delete the survey: %s?"</string>
 <string name="dialog_title_missing_selection">"Missing selection"</string>
@@ -29,37 +26,31 @@
 <string name="dialog_title_incorrect_org_unit">"Incorrect Org Unit"</string>
 <string name="dialog_content_incorrect_org_unit">"Please select a final org unit"</string>
 <string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
+<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
 
-<!-- dashboard -->
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
 <string name="dashboard_info_sent">"Sent"</string>
 
-<!-- create -->
 <string name="create_info_ok">"Start"</string>
 <string name="create_info_organization_unit">"Organisation Unit"</string>
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
-<!-- assessment -->
 <string name="assessment_title_facility_date">"Facility / Survey"</string>
 <string name="assessment_title_state">"% complete"</string>
 <string name="assessment_sent_date">"Completion date"</string>
 <string name="assessment_title_header">"Active Assessment(s)"</string>
 <string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
 
-<!-- survey -->
 <string name="survey_title_exit">"Really Exit?"</string>
 <string name="survey_info_exit">"Are you sure you want to exit?"</string>
 
-<!-- widget -->
 <string name="widget_info_empty_statement">"Question statement"</string>
 
-<!-- custom -->
 <string name="custom_title_tallies">"TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet"</string>
 <string name="custom_info_tallies">"TALLIES for the Month of"</string>
 
-<!-- adherence -->
 <string name="adherence_info_switchquestion">"Are there laboratory registers and pharmacy or clinical registers available at this facility?"</string>
 <string name="adherence_title_explanation">"Evaluation of Provider Adherence to Malaria Diagnostic Test Results"</string>
 <string name="adherence_title_explanation_content">"Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.
@@ -74,25 +65,13 @@ ID"</string>
 <string name="adherence_info_prescribed">"ACT
 Prescribed?"</string>
 <string name="adherence_info_rdt_positive">"RDT Positive"</string>
-<string name="adherence_info_rdt_negative">"RDT Negative"</string>
-<string name="adherence_info_microscopy_positive">"Microscopy Positive"</string>
-<string name="adherence_info_microscopy_negative">"Microscopy Negative"</string>
 
-<!-- iqa eqa -->
-<string name="iqatab_info_supervisor">"Supervisor"</string>
-<string name="iqatab_info_parasites">"Parasites/uL"</string>
-<string name="iqatab_info_species">"Species"</string>
-<string name="iqatab_info_labstaff">"Lab Staff"</string>
-<string name="iqatab_info_note">"Note: Slide rechecking should be carried out at the health facility during OTSS in the presence of the facility lab staff.  Slides should not be removed from the facility for this purpose."</string>
-
-<!-- reporting -->
 <string name="reporting_info_reporting">"Reporting"</string>
 <string name="reporting_info_results">"Results"</string>
 <string name="reporting_info_register">"Register"</string>
 <string name="reporting_info_monthly">"Monthly
 Report"</string>
 
-<!-- score -->
 <string name="score_title_clinical_fever">"Clinical
 fever
 evaluation"</string>
@@ -107,19 +86,14 @@ evaluation"</string>
 <string name="score_info_case2">"Case 2"</string>
 <string name="score_info_case3">"Case 3"</string>
 
-<!-- composite score -->
 <string name="compscore_title_score_percentage">"Score (%)"</string>
 
-<!-- settings -->
 <string name="title_activity_settings">"Settings"</string>
-<string name="settings_checkbox_show_num_dems">"Show num/dems"</string>
-<string name="settings_checkbox_description_show_num_dems">"When activated, survey questions show their numerators and denominators, used to calc the survey score"</string>
 <string name="settings_checkbox_customize_fonts">"Customize fonts?"</string>
 <string name="settings_list_font_sizes">"Fonts size"</string>
 <string name="settings_text_dhis_server_url">"DHIS Server URL"</string>
 <string name="settings_text_dhis_user">"DHIS user"</string>
 <string name="pref_header_general">"General"</string>
-<string name="dialog_title_push_response">"Push response"</string>
 <string name="dialog_info_push_bad_credentials">"Bad credentials for pushing"</string>
 <string name="dialog_info_push_empty_survey">"Empty surveys cannot be pushed"</string>
 <string name="settings_menu_legal">"Legal"</string>
@@ -165,6 +139,7 @@ evaluation"</string>
 <string name="settings_text_dhis_max_items">"DHIS max loaded surveys"</string>
 <string name="dialog_error_push_uids">"Incorrect UIDs found in push"</string>
 <string name="dialog_error_push_no_location_and_required">"No location available and it is a required field"</string>
+<string name="dialog_error_attribute_null">\"Attribute with id %s null, please contact your server admin.\"</string>
 <string name="dialog_info_push_imported">"Imported"</string>
 <string name="dialog_info_push_updated">"Updated"</string>
 <string name="dialog_info_push_ignored">"Ignored"</string>
@@ -176,20 +151,18 @@ evaluation"</string>
 <string name="settings_menu_pull">"Refresh metadata"</string>
 <string name="dialog_pull_success">"Dhis metadata successfully pulled from server"</string>
 <string name="dialog_title_pull_response">"Pull status"</string>
+<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
 <string name="progress_pull_connecting">"Connecting to DHIS server..."</string>
 <string name="progress_pull_downloading">"Refreshing metadata (this might take a few minutes) ..."</string>
 <string name="progress_pull_preparing_program">"Loading programs ..."</string>
 <string name="progress_pull_preparing_answers">"Loading answers ..."</string>
 <string name="progress_pull_preparing_orgs">"Loading organisations ..."</string>
 <string name="progress_pull_questions">"Loading questions (this might take a few minutes) ..."</string>
+<string name="progress_pull_relationships">"Building questions relations ..."</string>
 <string name="progress_pull_surveys">"Loading surveys ..."</string>
+<string name="progress_pull_validating_composite_scores">"Validating composite scores ..."</string>
 <string name="progress_pull_done">"Done"</string>
 <string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
-<string name="progress_push_preparing_survey">"Preparing survey for pushing ..."</string>
-<string name="progress_push_posting_survey">"Pushing survey data to server..."</string>
-<string name="progress_push_updating_survey">"Updating pushed survey data..."</string>
-<string name="progress_push_no_survey">"No survey found for pushing"</string>
-<string name="dialog_push_before_pull_success">"Surveys successfully pushed to dhis server, starting to pull metadata"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
 <string name="planning_label_comment">"* Comment"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
@@ -202,65 +175,41 @@ evaluation"</string>
 <string name="assess">"Assess - active surveys"</string>
 <string name="improve">"Improve"</string>
 <string name="monitor">"Monitor"</string>
+
 <string name="filter_all_org_units">"all org units"</string>
 <string name="filter_all_org_assessments">"all assessments"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
-<string name="no_previous_event_info">"No previous event available"</string>
 <string name="error_message_push">"The event with UID: %s. was uploaded without date. Please contact the administrator. "</string>
 <string name="monitor_js_assessments">"Assessments undertaken"</string>
 <string name="monitor_js_target">"Target"</string>
 <string name="monitor_js_quality_of_care">"Quality of care: Last "</string>
 <string name="monitor_js_months">" months"</string>
-<string name="dialog_error_attribute_null">"\"Attribute with id %s null, please contact your server admin.\""</string>
-<string name="progress_pull_relationships">"Building questions relations ..."</string>
+
 <string name="create">"Create"</string>
 <string name="modify">"Modify"</string>
-<string name="create_or_modify">"Do you want to create a new assessment or modify the latest assessment, dated [%s]?"</string>
-<string name="loading_last_surveys">"Loading last survey..."</string>
-<string name="dynamic_error_phone_format">"Invalid format for phone number ( 0NN NNN NNN{N} )"</string>
-<string name="dynamic_error_age">"Invalid age"</string>
-<string name="survey_title_completed">"Survey completed"</string>
-<string name="survey_info_completed">"The survey has been successfully completed"</string>
-<string name="review">"Review"</string>
-<string name="send">"Send"</string>
-<string name="number_0">"0"</string>
-<string name="number_1">"1"</string>
-<string name="number_2">"2"</string>
-<string name="number_3">"3"</string>
-<string name="number_4">"4"</string>
-<string name="number_5">"5"</string>
-<string name="number_6">"6"</string>
-<string name="number_7">"7"</string>
-<string name="number_8">"8"</string>
-<string name="number_9">"9"</string>
-<string name="clear">"Clear"</string>
-<string name="settings_checkbox_ask_modify_or_create"></string>
-<string name="settings_checkbox_description_ask_modify_or_create"></string>
-<string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
-<string name="ask_account_permission">"This app needs to access your Google account (via Contacts)."</string>
-<string name="google_play_required">"This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app."</string>
-<string name="account_permission_denied">"Contacts permission denied. Media will not be synced"</string>
-<string name="feedback_media_link">"View video"</string>
-<string name="feedback_media">"View video feedback"</string>
-<string name="feedback_view_image">"Open image with..."</string>
-<string name="developer_option_summary">"This feature activates the developer options"</string>
-<string name="developer_option_title">"Show developer options"</string>
-<string name="export_data_option_title">"Export database"</string>
-<string name="progress_pull_validating_composite_scores">"Validating composite scores ..."</string>
-<string name="admin_announcement">"Admin announcement"</string>
-<string name="user_close">"This user has been closed by the administrator."</string>
-<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
+
+<string name="developer_option_summary">This feature activates the developer options</string>
+<string name="developer_option_title">Show developer options</string>
+<string name="export_data_option_title">Export database</string>
+<string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
+<string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
+<string name="feedback_media">View video feedback</string>
+<string name="feedback_view_image">Open image with...</string>
 <string name="select_all">"Select all"</string>
 <string name="demo_login">"Demo"</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
+
 <string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
 <string name="toast_push_done">"Survey data pushed to server. Starting pull..."</string>
 <string name="downloaded_media_menu">"Downloaded media"</string>
 <string name="header_filename_title">"Filename"</string>
 <string name="header_size_title">"Size"</string>
+<string name="clear">"Clear"</string>
+<string name="admin_announcement">"Admin announcement"</string>
+<string name="user_close">"This user has been closed by the administrator."</string>
 <string name="survey_first_step">"Recovering mandatory questions"</string>
 <string name="survey_second_step">"Checking mandatory questions"</string>
 <string name="survey_third_step">"Calculating completeness ratio"</string>
@@ -270,4 +219,8 @@ evaluation"</string>
 <string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
+
+<string name="header_reschedule">"Reschedule"</string>
+<string name="planing_schedule">"Schedule"</string>
+<string name="planing_due_date">"Due date"</string>
 </resources>

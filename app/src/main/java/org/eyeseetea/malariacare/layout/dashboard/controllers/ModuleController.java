@@ -194,8 +194,8 @@ public abstract class ModuleController {
      */
     public void onBackPressed() {
         new AlertDialog.Builder(dashboardActivity)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit the app?")
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
