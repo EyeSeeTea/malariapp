@@ -73,16 +73,19 @@ android {
         eds {
             applicationId "org.eyeseetea.malariacare.eds_bb"
             versionName "2.0.5"
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "translations", "false"
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
             versionName "1.2.3"
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "translations", "true"
         }
         surveillance {
             applicationId "org.eyeseetea.malariacare.surveillance_bb"
             versionName "5.0.0"
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "translations", "true"
         }
     }
