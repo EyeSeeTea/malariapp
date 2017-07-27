@@ -37,7 +37,7 @@
 <string name="create_info_survey">"Formulario"</string>
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
 
-<string name="assessment_title_facility_date">"Centro de salud/ Fecha"</string>
+<string name="assessment_title_facility_date">"Encuestas activas"</string>
 <string name="assessment_title_state">"Estado"</string>
 <string name="assessment_sent_date">"Fecha de llenado"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
