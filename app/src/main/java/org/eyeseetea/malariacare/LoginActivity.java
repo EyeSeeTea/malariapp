@@ -36,9 +36,11 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +92,12 @@ public class LoginActivity extends AbsLoginActivity {
         getServerUrl().setText(R.string.login_info_dhis_default_server_url);
 
         progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
+
+        FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
+        ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
+
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
     }
