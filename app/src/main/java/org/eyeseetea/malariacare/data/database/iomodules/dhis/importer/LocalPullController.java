@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.config.DHIS2GeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -113,6 +114,7 @@ public class LocalPullController implements IPullController {
         FlowManager.init(flowConfig);
         FlowConfig flowConfigDhis = new FlowConfig
                 .Builder(context)
+                .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfigDhis);
     }

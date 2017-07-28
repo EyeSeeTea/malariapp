@@ -73,10 +73,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         PreferencesState.getInstance().initalizateActivityDependencies();
-
-        //get the org unit uid from dashboardactivity
-        //filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));
-        //this.adapter = Session.getAdapterSent();
         this.plannedSurveys = new ArrayList();
     }
 
