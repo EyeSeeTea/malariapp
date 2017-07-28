@@ -31,6 +31,6 @@
         app:tFontName="@string/medium_font_name"
         android:id="@+id/textView"
         android:background="@color/assess_grey"
-        android:textColor="@color/White"
+        android:textColor="@color/white"
         android:gravity="center" />
 </merge>

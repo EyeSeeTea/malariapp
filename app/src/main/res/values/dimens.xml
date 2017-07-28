@@ -72,4 +72,11 @@
 
     <!--Text size for age and phone-->
     <dimen name="input_number_edit_text">32dp</dimen>
+
+    <!--Text sizes inherited from old sdk -->
+    <dimen name="xsmall_text_size">14sp</dimen>
+    <dimen name="small_text_size">18sp</dimen>
+    <dimen name="medium_text_size">22sp</dimen>
+    <dimen name="large_text_size">24sp</dimen>
+    <dimen name="xlarge_text_size">26sp</dimen>
 </resources>

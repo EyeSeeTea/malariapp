@@ -1,28 +1,22 @@
 package org.eyeseetea.malariacare.test.pull;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnitProgramRelation;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnit;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
+import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Access;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitDataSet;
-import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitGroup;
+import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit; 
 import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +24,6 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -38,7 +31,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
@@ -56,7 +48,8 @@ public class PullOKTest {
     private final String PROGRAM_PROGRAMTYPE="without_registration";
     private OrganisationUnit goldenOrganisationUnit;
     private OrgUnit goldenOrgUnit;
-    private org.hisp.dhis.android.sdk.persistence.models.Program goldenSdkProgram;
+    private org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Program
+            goldenSdkProgram;
     private Program goldenProgram;
     private OrgUnitProgramRelation goldenOrgUnitProgramRelation;
     private List<String> goldenDataSets;
@@ -99,11 +92,11 @@ public class PullOKTest {
 
         //WHEN
         //Test organisationUnit has been downloaded with the correct propierties.
-        OrganisationUnit sdkOrganisationUnit=OrganisationUnitExtended.getOrganisationUnit(goldenOrganisationUnit.getId());
+        OrganisationUnit sdkOrganisationUnit=OrganisationUnitExtended.getOrganisationUnit(goldenOrganisationUnit.getUId());
         //Test orgUnit in app DB has been saved with the correct propierties.
         OrgUnit appOrgUnit=OrgUnit.getOrgUnit(goldenOrgUnit.getUid());
         //Test program (in sdk) has been downloaded with the correct propierties.
-        org.hisp.dhis.android.sdk.persistence.models.Program sdkProgram= ProgramExtended.getProgram(goldenProgram.getUid());
+        org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Program sdkProgram= ProgramExtended.getProgram(goldenProgram.getUid());
 
         //THEN
         testSdkOrganisationUnit(sdkOrganisationUnit);
@@ -152,7 +145,7 @@ public class PullOKTest {
 
     public void createRealSdkProgram(){
         //sdk program
-        goldenSdkProgram =new org.hisp.dhis.android.sdk.persistence.models.Program();
+        goldenSdkProgram =new org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Program();
         goldenSdkProgram.setName("KE HNQIS Family Planning");
         goldenSdkProgram.setDisplayName("KE HNQIS Family Planning");
         goldenSdkProgram.setCreated("2015-10-16T13:51:32.264+0000");
@@ -256,34 +249,12 @@ public class PullOKTest {
         assertTrue(programType.getValue().equals(PROGRAM_PROGRAMTYPE));
     }
 
-    private void testOrganisationUnitDataSets(OrganisationUnit sdkOrganisationUnit) {
-        for(String organisationUnitDataSetUid: goldenDataSets) {
-            boolean isInSdk=false;
-            for (OrganisationUnitDataSet organisationUnitDataSetsSdk : OrganisationUnitExtended.getOrganisationUnitDataSets(sdkOrganisationUnit.getId())) {
-                if(organisationUnitDataSetsSdk.getDataSetId().equals(organisationUnitDataSetUid))
-                    isInSdk=true;
-            }
-            assertTrue(isInSdk);
-        }
-    }
-
-    private void testOrganisationUnitGroups(OrganisationUnit sdkOrganisationUnit) {
-        for(String organisationUnitGroupsUid: goldenOrganisationUnitGroups) {
-            boolean isInSdk=false;
-            for (OrganisationUnitGroup organisationUnitGroupsSdk : OrganisationUnitExtended.getOrganisationUnitGroups(sdkOrganisationUnit.getId())) {
-                if(organisationUnitGroupsSdk.getOrganisationUnitGroupId().equals(organisationUnitGroupsUid))
-                    isInSdk=true;
-            }
-            assertTrue(isInSdk);
-        }
-    }
-
     private void testSdkOrganisationUnit(OrganisationUnit sdkOrganisationUnit) {
         assertTrue(sdkOrganisationUnit.getLabel().equals(goldenOrganisationUnit.getLabel()));
-        assertTrue(sdkOrganisationUnit.getUuid().equals(goldenOrganisationUnit.getUuid()));
+        assertTrue(sdkOrganisationUnit.getUId().equals(goldenOrganisationUnit.getUId()));
         assertTrue(sdkOrganisationUnit.getLevel()== goldenOrganisationUnit.getLevel());
         assertTrue(sdkOrganisationUnit.getParent().equals(goldenOrganisationUnit.getParent()));
-        assertTrue(sdkOrganisationUnit.getUuid().equals(goldenOrganisationUnit.getUuid()));
+        assertTrue(sdkOrganisationUnit.getUId().equals(goldenOrganisationUnit.getUId()));
         assertTrue(sdkOrganisationUnit.getLastUpdated().equals(goldenOrganisationUnit.getLastUpdated()));
         assertTrue(sdkOrganisationUnit.getCreated().equals(goldenOrganisationUnit.getCreated()));
         assertTrue(sdkOrganisationUnit.getName().equals(goldenOrganisationUnit.getName()));
@@ -295,10 +266,6 @@ public class PullOKTest {
         assertTrue(sdkOrganisationUnit.getFeatureType().equals(goldenOrganisationUnit.getFeatureType()));
         assertTrue(sdkOrganisationUnit.getOpeningDate().equals(goldenOrganisationUnit.getOpeningDate()));
         assertTrue(sdkOrganisationUnit.getDimensionItem().equals(goldenOrganisationUnit.getDimensionItem()));
-
-        testOrganisationUnitGroups(sdkOrganisationUnit);
-
-        testOrganisationUnitDataSets(sdkOrganisationUnit);
     }
 
     private boolean orgUnitProgramsIncludeGolden(List<Program> programs){

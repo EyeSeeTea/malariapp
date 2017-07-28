@@ -26,18 +26,35 @@
         android:layout_height="wrap_content"
         android:weightSum="1">
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/feedback_question_label"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_weight=".70"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:paddingTop="5dip"
-            android:paddingBottom="5dip"
-            android:text="@string/lorem_ipsum"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name"
-             />
+            android:layout_weight=".70">
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/feedback_question_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:text="@string/lorem_ipsum"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name"
+                />
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/feedback_uid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:text="@string/empty_string"
+                android:visibility="gone"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name"
+                />
+        </LinearLayout>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_option_label"
             android:layout_width="0dp"

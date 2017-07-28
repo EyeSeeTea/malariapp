@@ -24,26 +24,29 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.database.model.CompositeScore;
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.database.model.Program;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.model.Tab;
-import org.eyeseetea.malariacare.database.model.Tab$Table;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.database.utils.feedback.FeedbackBuilder;
-import org.eyeseetea.malariacare.database.utils.planning.PlannedItemBuilder;
-import org.eyeseetea.malariacare.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.Tab_Table;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
+import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -206,7 +209,13 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        sentDashboardBundle.addModelList(Survey.class.getName(),Survey.getAllSentCompletedOrConflictSurveys());
+        List<Survey> sentSurveyList;
+        if(PreferencesState.getInstance().isLastForOrgUnit()) {
+            sentSurveyList = Survey.getLastSentCompletedOrConflictSurveys();
+        }else{
+            sentSurveyList = Survey.getAllSentCompletedOrConflictSurveys();
+        }
+        sentDashboardBundle.addModelList(Survey.class.getName(),sentSurveyList);
         sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
         sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
 
@@ -294,7 +303,20 @@ public class SurveyService extends IntentService {
 
         //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
         for(Survey survey:surveys){
-            survey.getAnsweredQuestionRatio();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Log.d(getClass().getName(), "onComplete");
+                        }
+                    });
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
@@ -326,9 +348,10 @@ public class SurveyService extends IntentService {
      * Action that calculates the 'feedback' items corresponding to the current survey in session
      */
     private void getFeedbackItems(String module){
-        //android.os.Debug.waitForDebugger();
-        //Mock some items
-        List<Feedback> feedbackList= FeedbackBuilder.build(Session.getSurveyByModule(module), module);
+        List<Feedback> feedbackList= new ArrayList<>();
+        Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
+
+        feedbackList= FeedbackBuilder.build(Session.getSurveyByModule(module), module);
 
         //Return result to anyone listening
         Log.d(TAG, String.format("getFeedbackItems: %d", feedbackList.size()));
@@ -346,7 +369,20 @@ public class SurveyService extends IntentService {
 
         //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
         for(Survey survey:surveys){
-            survey.getAnsweredQuestionRatio();
+            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                        @Override
+                        public void nextProgressMessage() {
+                            Log.d(getClass().getName(), "nextProgressMessage");
+                        }
+
+                        @Override
+                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                            Log.d(getClass().getName(), "onComplete");
+                        }
+                    });
         }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
@@ -371,8 +407,8 @@ public class SurveyService extends IntentService {
 
         //Get tabs for current program & register them (scores)
         List<Tab> tabs = Tab.getTabsBySession(module);
-        List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-
+        //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
+        List<Tab> allTabs = new Select().from(Tab.class).where(Tab_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 

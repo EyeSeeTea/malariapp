@@ -37,7 +37,7 @@
             android:textAllCaps="true"
             android:id="@+id/textView2"
             android:background="@color/assess_grey"
-            android:textColor="@color/White"
+            android:textColor="@color/white"
             android:gravity="center" />
     </LinearLayout>
 

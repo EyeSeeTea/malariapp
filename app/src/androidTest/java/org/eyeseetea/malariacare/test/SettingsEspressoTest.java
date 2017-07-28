@@ -28,7 +28,7 @@ import junit.framework.Assert;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SettingsActivity;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;

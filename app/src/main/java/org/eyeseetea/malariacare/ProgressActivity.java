@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -34,49 +33,36 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.otto.Subscribe;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.SyncProgressStatus;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.Session;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.android.sdk.controllers.DhisService;
-import org.hisp.dhis.android.sdk.events.UiEvent;
-import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 public class ProgressActivity extends Activity {
 
-    private static final String TAG=".ProgressActivity";
-
+    public static final int NUMBER_OF_MONTHS = 6;
     /**
      * Intent param that tells what to do (push, pull or push before pull)
      */
-    public static final String TYPE_OF_ACTION="TYPE_OF_ACTION";
-
+    public static final String TYPE_OF_ACTION = "TYPE_OF_ACTION";
     /**
      * Intent param that tells what do before push
      */
-    public static final String AFTER_ACTION="AFTER_ACTION";
-    /**
-     * To pull data from server
-     */
-    public static final int ACTION_PULL=0;
-
-    /**
-     * To push a single survey to server
-     */
-    public static final int ACTION_PUSH=1;
-
+    public static final String AFTER_ACTION = "AFTER_ACTION";
     /**
      * To dont show the survey pushed feedback
      */
     public static final int DONT_SHOW_FEEDBACK = 1;
-
     /**
      * To show the survey pushed feedback
      */
@@ -84,457 +70,397 @@ public class ProgressActivity extends Activity {
     /**
      * To push every unsent data to server before pulling metadata
      */
-    public static final int ACTION_PUSH_BEFORE_PULL=2;
-
+    public static final int ACTION_PUSH_BEFORE_PULL = 2;
+    private static final String TAG = ".ProgressActivity";
     /**
      * Num of expected steps while pulling
      */
-    private static final int MAX_PULL_STEPS=7;
-
-    /**
-     * Num of expected steps while pushing
-     */
-    private static final int MAX_PUSH_STEPS=4;
-    /**
-     * Used for control new steps
-     */
-    public static Boolean PULL_IS_ACTIVE =false;
+    //// FIXME: 28/11/2016 revise the max num of pull steps
+    private static final int MAX_PULL_STEPS = 10;
 
     /**
      * Used for control autopull from login
      */
-    public static Boolean PULL_CANCEL =false;
+    public static Boolean PULL_CANCEL = false;
 
     /**
      * Used for control error in pull
      */
-    public static Boolean PULL_ERROR =false;
+    public static Boolean PULL_ERROR = false;
     /**
      * Reference to progress indicator
      */
-    ProgressBar progressBar;
+    public static ProgressBar progressBar;
     /**
      * Reference to progress message
      */
-    TextView textView;
-    /**
-     * Reference required for testing purposes
-     */
-    AlertDialog alertDialog;
-    boolean pullAfterPushInProgress;
-    static Handler handler;
-    static Activity progressActivity;
-    boolean isOnPause=true;
+    public static TextView textView;
+    static boolean isOnPause = true;
+    //Check intent params
+    static Intent intent;
+    public PullUseCase mPullUseCase;
+    private Handler handler;
+    private ProgressActivity mProgressActivity;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
+        PreferencesState.getInstance().initalizateActivityDependencies();
+        initializeDependencies();
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
-        PULL_IS_ACTIVE = true;
-        isOnPause=false;
+        isOnPause = false;
         prepareUI();
         final Button button = (Button) findViewById(R.id.cancelPullButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                cancellPull();
+                cancelPull();
             }
         });
-
-        //the handler and the static activity is needed to show the dialog with the pull controller error.
-        handler = new Handler(Looper.getMainLooper());
-        progressActivity=this;
+        intent = getIntent();
+        handler = new Handler();
+        mProgressActivity = this;
     }
 
-    private void cancellPull() {
-        if(PULL_IS_ACTIVE) {
-            PULL_CANCEL = true;
-            PULL_IS_ACTIVE = false;
-            step(getBaseContext().getResources().getString(R.string.cancellingPull));
-            if(PullController.getInstance().finishPullJob())
-                finishAndGo(LoginActivity.class);
+    private void initializeDependencies() {
+        IPullController pullController;
+        if (Session.getCredentials().isDemoCredentials()) {
+            pullController = new LocalPullController(this);
+        } else {
+            pullController = new PullController();
         }
+        mPullUseCase = new PullUseCase(pullController);
+    }
+
+    /**
+     * Prints the step in the progress bar
+     */
+    public void step(final String msg) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                int currentProgress = progressBar.getProgress();
+                progressBar.setProgress(currentProgress + 1);
+                textView = (TextView) findViewById(R.id.pull_text);
+                textView.setText(msg);
+
+            }
+        });
+    }
+
+    private static void annotateFirstPull(boolean value) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                PreferencesState.getInstance().getContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(
+                PreferencesState.getInstance().getContext().getString(R.string.pull_metadata),
+                value);
+        editor.commit();
+    }
+
+    private static String getDialogMessage(String msg) {
+        if (msg != null) {
+            return msg;
+        }
+        return "";
+    }
+
+    private static String getDialogTitle() {
+        int stringId = R.string.dialog_title_pull_response;
+        return PreferencesState.getInstance().getContext().getString(stringId);
+    }
+
+    private void cancelPull() {
+        step(getBaseContext().getResources().getString(R.string.cancellingPull));
+        mPullUseCase.cancel();
     }
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume");
         super.onResume();
-        if(!isOnPause) {
-            try {
-                Dhis2Application.bus.register(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Dhis2Application.bus.unregister(this);
-                Dhis2Application.bus.register(this);
-            }
-            launchAction();
+        if (!isOnPause) {
+            launchPull();
         }
     }
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause");
         super.onPause();
-        if(PULL_CANCEL==true)
+        if (PULL_CANCEL == true) {
             finishAndGo(LoginActivity.class);
-        else if(!hasAPullAfterPush())
-            finishAndGo(DashboardActivity.class);
-        isOnPause=true;
-    }
-
-    private void prepareUI(){
-        progressBar=(ProgressBar)findViewById(R.id.pull_progress);
-        progressBar.setMax(isAPush() ? MAX_PUSH_STEPS : MAX_PULL_STEPS);
-        textView=(TextView)findViewById(R.id.pull_text);
-    }
-
-    @Subscribe
-    public void onProgressChange(final SyncProgressStatus syncProgressStatus) {
-        //bad event or activity not in foreground -> show nothing
-        if(syncProgressStatus ==null || isOnPause){
-            return;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (syncProgressStatus.hasError()) {
-                    showException(syncProgressStatus.getException().getMessage()+" ");
-                    return;
-                }
-
-                //Step
-                if (syncProgressStatus.hasProgress()) {
-                    step(syncProgressStatus.getMessage()+" ");
-                    return;
-                }
-
-                //Finish
-                if (syncProgressStatus.isFinish()) {
-                    showAndMoveOn();
-                }
-            }
-        });
+        isOnPause = true;
     }
 
-    /**
-     * Launches a pull or push according to an intent extra
-     */
-    private void launchAction(){
-
-        //Clear flag
-        pullAfterPushInProgress=false;
-
-        //Push or Pull according to extra param from intent
-        if(isAPush()){
-            launchPush();
-        }else {
-            launchPull();
-        }
+    private void prepareUI() {
+        progressBar = (ProgressBar) findViewById(R.id.pull_progress);
+        progressBar.setMax(MAX_PULL_STEPS);
+        textView = (TextView) findViewById(R.id.pull_text);
     }
 
     /**
      * Shows a dialog with the given message y move to login after showing error
-     * @param msg
      */
-    private void showException(final String msg){
-        final boolean isAPush=isAPush();
-        Log.d(TAG,msg+" ");
+    public void showException(final String msg) {
+        Log.d(TAG, msg + " ");
 
-        PULL_ERROR=true;
-        PULL_CANCEL=true;
-        PULL_IS_ACTIVE=false;
-        handler.post(new Runnable() {
+        PULL_ERROR = true;
+        PULL_CANCEL = true;
+        final String dialogTitle = getDialogTitle();
+        final String dialogMessage = getDialogMessage(msg);
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                // Run your task here
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                handler.post(new Runnable() { // This thread runs in the UI
                     @Override
                     public void run() {
-                        String dialogTitle="",dialogMessage="";
-                            dialogTitle=getDialogTitle(isAPush());
-                        if(msg!=null)
-                            dialogMessage=msg;
-                        new AlertDialog.Builder(progressActivity)
+                        new AlertDialog.Builder(mProgressActivity)
                                 .setCancelable(false)
                                 .setTitle(dialogTitle)
                                 .setMessage(dialogMessage)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        //A crash during a push might be recoverable -> dashboard
-                                        if (isAPush) {
-                                            Log.d(TAG, "Push crashed, moving to dashboard...");
-                                            finishAndGo(DashboardActivity.class);
-                                        } else {
-                                            //A crash during a pull requires to start from scratch -> logout
-                                            Log.d(TAG, "Logging out from sdk...");
-                                            DhisService.logOutUser(ProgressActivity.this);
-                                        }
-                                    }
-                                }).create().show();
+                                .setNeutralButton(android.R.string.ok,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface arg0, int arg1) {
+                                                executeLogout();
+                                            }
+                                        }).create().show();
                     }
                 });
+            }
+        };
+        new Thread(runnable).start();
+    }
+
+    private void executeLogout() {
+        Log.d(TAG, "Logging out...");
+        UserAccountRepository userAccountRepository = new UserAccountRepository(this);
+        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+
+        logoutUseCase.execute(new LogoutUseCase.Callback() {
+            @Override
+            public void onLogoutSuccess() {
+                finishAndGo(LoginActivity.class);
+            }
+
+            @Override
+            public void onLogoutError(String message) {
+                Log.e(TAG, message);
             }
         });
     }
 
     /**
-     * Prints the step in the progress bar
-     * @param msg
-     */
-    private void step(final String msg) {
-        final int currentProgress = progressBar.getProgress();
-        progressBar.setProgress(currentProgress + 1);
-        textView.setText(msg);
-    }
-
-    /**
      * Shows a dialog to tell that pull is done and then moves into the dashboard.
-     *
      */
     private void showAndMoveOn() {
-        if(PULL_ERROR) {
+        if (PULL_ERROR) {
             PULL_ERROR = false;
+            finishAndGo(LoginActivity.class);
             return;
         }
-        boolean isAPush=isAPush();
 
-        //Annotate pull is done
-        if(!isAPush) {
-            //If is not active, we need restart the process
-            if(!PULL_IS_ACTIVE) {
-                try{Dhis2Application.bus.unregister(this);}
-                catch(Exception e) {
-                }
-                finishAndGo(LoginActivity.class);
-                return;
-            }
-            else
+        //If is not active, we need restart the process
+        if (!mPullUseCase.isPullActive()) {
+            finishAndGo(LoginActivity.class);
+            return;
+        } else {
+            //if is a pull and the process is finished, we annotate the first pull as true
             annotateFirstPull(true);
         }
 
         //Show final step -> done
         step(getString(R.string.progress_pull_done));
 
-        String title=getDialogTitle(isAPush);
+        final String title = getDialogTitle();
 
-        final int msg=getDoneMessage();
+        final int msg = getDoneMessage();
 
-        //Show message and go on -> pull or single push = dashboard | push before pull = start pull
-        Intent intent=getIntent();
-        //Not a pull -> is a Push
-        if(intent!=null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,ProgressActivity.DONT_SHOW_FEEDBACK)==ProgressActivity.SHOW_FEEDBACK)) {
-            this.alertDialog=new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setTitle(title)
-                    .setMessage(msg)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            //Pull or Push(single)
-                            if ( !isAPush() || !hasAPullAfterPush()) {
-                                finishAndGo(DashboardActivity.class);
-                                return;
-                            } else {
-                                //Start pull after push
-                                pullAfterPushInProgress = true;
-                                launchPull();
-                                return;
-                            }
+        Log.d(TAG,"dialog: "+msg);
+        Intent intent = getIntent();
+
+        /**
+         * Reference required for testing purposes
+         */
+        if (intent != null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,
+                ProgressActivity.DONT_SHOW_FEEDBACK) == ProgressActivity.SHOW_FEEDBACK)) {
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() { // This thread runs in the UI
+                        @Override
+                        public void run() {
+                            AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
+                                    .setCancelable(false)
+                                    .setTitle(title)
+                                    .setMessage(msg)
+                                    .setPositiveButton(android.R.string.ok,
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    finishAndGo(DashboardActivity.class);
+                                                    return;
+                                                }
+                                            })
+                                    .setNeutralButton(
+                                            getApplicationContext().getResources().getString(
+                                                    R.string.dialog_button_preview_feedback),
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    //I try using a intent to feedbackactivity
+                                                    // but the
+                                                    // dashboardsActivity was reloaded from the
+                                                    // service.
+                                                    finishAndGo(DashboardActivity.class);
+                                                }
+                                            }).create();
+                            alertDialog.show();
                         }
-                    })
-                    .setNeutralButton(getApplicationContext().getResources().getString(R.string.dialog_button_preview_feedback), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            //I try using a intent to feedbackactivity but the dashboardsActivity was reloaded from the service.
-                            finishAndGo(DashboardActivity.class);
-                        }
-                    }).create();
-            alertDialog.show();
+                    });
+                }
+            };
+            new Thread(runnable).start();
         } else {
-            this.alertDialog=new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setTitle(title)
-                    .setMessage(msg)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        if ( !isAPush() || !hasAPullAfterPush()) {
-                            finishAndGo(DashboardActivity.class);
-                            return;
-                        } else {
-                            //Start pull after push
-                            pullAfterPushInProgress = true;
-                            launchPull();
-                            return;
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() { // This thread runs in the UI
+                        @Override
+                        public void run() {
+                            AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
+                                    .setCancelable(false)
+                                    .setTitle(title)
+                                    .setMessage(msg)
+                                    .setNeutralButton(android.R.string.ok,
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                                    finishAndGo(DashboardActivity.class);
+                                                    return;
+                                                }
+                                            }).create();
+                            alertDialog.show();
                         }
-                    }
-                }).create();
-            alertDialog.show();
+                    });
+                }
+            };
+            new Thread(runnable).start();
         }
     }
 
-    /**
-     * Once an action is over there is a message that changes depending on the kind of action:
-     *  -Pull: Pull ok, let's move to dashboard
-     *  -Push (single): Push ok, let's move to dashboard
-     *  -Push (before pull): Push ok, let's start with the pull
-     *
-     * @return
-     */
-    private int getDoneMessage(){
-        boolean isAPush=isAPush();
-
-        //Pull
-        if(!isAPush){
-            return R.string.dialog_pull_success;
+    private int getDoneMessage() {
+        if (Session.getCredentials().isDemoCredentials()) {
+            return R.string.dialog_demo_pull_success;
         }
-
-        //Push before pull
-        if(hasAPullAfterPush()){
-            return R.string.dialog_push_before_pull_success;
-        }
-
-        //Push (single)
-        return R.string.dialog_push_success;
+        return R.string.dialog_pull_success;
     }
 
-    private void annotateFirstPull(boolean value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(getString(R.string.pull_metadata), value);
-        editor.commit();
-    }
-
-    /**
-     * Tells if a push is required
-     * @return
-     */
-    private boolean isAPush() {
-        //A push before pull
-        if(pullAfterPushInProgress){
-            return false;
-        }
-
-        //Check intent params
-        Intent intent=getIntent();
-        //Not a pull -> is a Push
-        return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)!=ACTION_PULL);
-    }
-
-
-    /**
-     * Tells is the intent requires a Pull after the push is done
-     * @return
-     */
-    private boolean hasAPullAfterPush(){
-        Intent intent=getIntent();
-        return (intent!=null && intent.getIntExtra(TYPE_OF_ACTION,ACTION_PULL)==ACTION_PUSH_BEFORE_PULL);
-    }
-
-    private String getDialogTitle(boolean isAPush){
-        int stringId=isAPush?R.string.dialog_title_push_response:R.string.dialog_title_pull_response;
-        return getString(stringId);
-    }
-
-    private void launchPull(){
+    private void launchPull() {
         annotateFirstPull(false);
         progressBar.setProgress(0);
         progressBar.setMax(MAX_PULL_STEPS);
-        PullController.getInstance().pull(this);
-    }
+        Calendar month = Calendar.getInstance();
+        month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
+        boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
+        PullFilters pullFilters = new PullFilters(month.getTime(), null, isDemo,
+                AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
+                PreferencesState.getInstance().getMaxEvents());
 
-    /**
-     * Launches a push using the PushController according to the intent params
-     */
-    private void launchPush(){
-        annotateFirstPull(true);
-        progressBar.setProgress(0);
-        progressBar.setMax(MAX_PUSH_STEPS);
-
-        List<Survey> surveys=findSurveysToPush();
-        Log.d(TAG,"surveys"+surveys.size());
-        PushController.getInstance().push(this, surveys);
-    }
-
-    /**
-     * Find the surveys that are going to be pushed
-     * @return
-     */
-    private List<Survey> findSurveysToPush(){
-        if(hasAPullAfterPush()){
-            List <Survey> surveys= Survey.getAllUnsentUnplannedSurveys();
-            for(int i=0;i<surveys.size();i++) {
-                if(surveys.get(i).getCompletionDate()==null)
-                    surveys.get(i).setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
+        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+            @Override
+            public void onComplete() {
+                postFinish();
             }
-            return surveys;
-        }
 
-        List<Survey> surveys=new ArrayList<>();
-        //Fixme it is not used anymore?.
-        //surveys.add(Session.getSurveyByModule(module));
-        return surveys;
-    }
+            @Override
+            public void onPullError() {
+                showException(getBaseContext().getString(R.string
+                        .dialog_pull_error));
+            }
 
-    @Subscribe
-    public void onLogoutFinished(UiEvent uiEvent){
-        //No event or not a logout event -> done
-        if(uiEvent==null || !uiEvent.getEventType().equals(UiEvent.UiEventType.USER_LOG_OUT)){
-            return;
-        }
-        Log.d(TAG,"Logging out from sdk...OK");
-        Session.logout();
-        //Go to login
-        finishAndGo(LoginActivity.class);
+            @Override
+            public void onCancel() {
+                showException(getBaseContext().getString(R.string
+                        .pull_cancelled));
+            }
+
+            @Override
+            public void onConversionError() {
+                showException(getBaseContext().getString(R.string
+                        .error_in_pull_conversion));
+            }
+
+            @Override
+            public void onStep(PullStep pullStep) {
+                switch (pullStep) {
+                    case PROGRAMS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_downloading));
+                        break;
+                    case EVENTS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_push_preparing_events));
+                        break;
+                    case PREPARING_PROGRAMS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_preparing_program));
+                        break;
+                    case PREPARING_ANSWERS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_preparing_answers));
+                        break;
+                    case PREPARING_ORGANISATION_UNITS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_preparing_orgs));
+                        break;
+                    case PREPARING_QUESTIONS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_questions));
+                        break;
+                    case PREPARING_RELATIONSHIPS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_relationships));
+                        break;
+                    case PREPARING_SURVEYS:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_surveys));
+                        break;
+                    case VALIDATE_COMPOSITE_SCORES:
+                        step(PreferencesState.getInstance().getContext().getString(
+                                R.string.progress_pull_validating_composite_scores));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNetworkError() {
+                showException(PreferencesState.getInstance().getContext().getString(
+                        org.hisp.dhis.client.sdk.ui.bindings.R.string
+                                .title_error_unexpected));
+            }
+        });
     }
 
     /**
      * Finish current activity and launches an activity with the given class
+     *
      * @param targetActivityClass Given target activity class
      */
-    public void finishAndGo(Class targetActivityClass){
-        Intent targetActivityIntent = new Intent(this,targetActivityClass);
-        finish();
-        startActivity(targetActivityIntent);
+    public void finishAndGo(Class targetActivityClass) {
+        Intent targetActivityIntent = new Intent(this, targetActivityClass);
+        this.finish();
+        this.startActivity(targetActivityIntent);
     }
 
-    public static void cancellPull(final String title, final String errorMessage) {
-        PULL_ERROR = true;
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Run your task here
-                PULL_CANCEL=true;
-                PULL_IS_ACTIVE=false;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        String dialogTitle="",dialogMessage="";
-                        if(title!=null)
-                            dialogTitle=title;
-                        if(errorMessage!=null)
-                            dialogMessage=errorMessage;
-                        new AlertDialog.Builder(progressActivity)
-                                .setCancelable(false)
-                                .setTitle(dialogTitle)
-                                .setMessage(dialogMessage)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        Intent targetActivityIntent = new Intent(progressActivity, LoginActivity.class);
-                                        targetActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        progressActivity.getApplicationContext().startActivity(targetActivityIntent);
-                                        return;
-                                    }
-                                }).create().show();
-                    }
-                });
-            }
-        }, 1000 );
-    }
-
-    /**
-     * Checks if a dialog is being shown (for testing purposes)
-     * @return
-     */
-    public boolean isDialogShowing(){
-        boolean isShowing=this.alertDialog!=null && this.alertDialog.isShowing();
-        Log.d(TAG,"isDialogShowing ->"+isShowing);
-        return isShowing;
+    public void postFinish() {
+        annotateFirstPull(true);
+        showAndMoveOn();
     }
 }

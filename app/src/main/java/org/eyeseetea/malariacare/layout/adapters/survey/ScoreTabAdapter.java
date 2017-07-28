@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import org.eyeseetea.malariacare.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.Tab;
 
 import java.util.List;
 

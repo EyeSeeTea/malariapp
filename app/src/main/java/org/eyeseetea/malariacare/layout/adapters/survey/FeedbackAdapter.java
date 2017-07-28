@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
@@ -28,7 +29,11 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,17 +43,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.eyeseetea.malariacare.BaseActivity;
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.VideoActivity;
-import org.eyeseetea.malariacare.database.model.Media;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.database.utils.feedback.CompositeScoreFeedback;
-import org.eyeseetea.malariacare.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.database.utils.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
+import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -125,13 +135,13 @@ public class FeedbackAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Feedback feedback=(Feedback)getItem(position);
         if (feedback instanceof CompositeScoreFeedback){
-            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, convertView, parent, module);
+            return getViewByCompositeScoreFeedback((CompositeScoreFeedback)feedback, parent, module);
         }else{
             return getViewByQuestionFeedback((QuestionFeedback) feedback, convertView, parent);
         }
     }
 
-    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, View convertView, ViewGroup parent, String module){
+    private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
@@ -173,7 +183,6 @@ public class FeedbackAdapter extends BaseAdapter {
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
-
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()){
@@ -182,8 +191,15 @@ public class FeedbackAdapter extends BaseAdapter {
         if(feedback.isLabel()){
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
+
         textView.setText(feedback.getLabel());
 
+        if(PreferencesState.getInstance().isDevelopOptionActive()){
+            textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(Html.fromHtml("<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>"));
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
         if(!PreferencesState.getInstance().isVerticalDashboard())
@@ -274,7 +290,7 @@ public class FeedbackAdapter extends BaseAdapter {
                     Intent implicitIntent = new Intent();
                     implicitIntent.setAction(Intent.ACTION_VIEW);
                     File file = new File(media.getFilename());
-                    Uri contentUri = FileProvider.getUriForFile(context, "org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter", file);
+                    Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID +".layout.adapters.survey.FeedbackAdapter", file);
 
                     implicitIntent.setDataAndType(contentUri, PreferencesState.getInstance().getContext().getContentResolver().getType(contentUri));
                     implicitIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -336,18 +352,25 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private void addPreview(ImageView viewMediaLink, Media media) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        File mediaFile=new File(media.getFilename());
-        try {
+        File mediaFile = new File(media.getFilename());
+        if (!mediaFile.exists()) {//load from raw
+            AssetFileDescriptor afd = FileIOUtils.getAssetFileDescriptorFromRaw(
+                    media.getFilename());
+            retriever.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        } else {
             retriever.setDataSource(mediaFile.getAbsolutePath());
-            viewMediaLink.setImageBitmap(retriever.getFrameAtTime(10000000,MediaMetadataRetriever.OPTION_CLOSEST));
-        } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
+        }
+        try {
+            viewMediaLink.setImageBitmap(
+                    retriever.getFrameAtTime(10000000, MediaMetadataRetriever.OPTION_CLOSEST));
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         } finally {
             try {
                 retriever.release();
             } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                Log.e("error", "error releasign el video");
             }
         }
     }
@@ -408,5 +431,6 @@ public class FeedbackAdapter extends BaseAdapter {
         }
         return numHidden;
     }
+
 
 }

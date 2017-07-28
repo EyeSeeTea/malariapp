@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.MonitorFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 

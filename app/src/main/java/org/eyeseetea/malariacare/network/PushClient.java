@@ -26,16 +26,12 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.database.iomodules.dhis.exporter.PushController;
-import org.eyeseetea.malariacare.database.model.Survey;
-import org.eyeseetea.malariacare.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.database.utils.Session;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +39,8 @@ import java.util.List;
  */
 public class PushClient {
 
-    private static final String TAG=".PushClient";
+    private static final String TAG = ".PushClient";
+    
     /**
      * For pushing just 1 survey
      */
@@ -59,78 +56,62 @@ public class PushClient {
 
     private PushClient(Context applicationContext, String user, String password) {
         this.applicationContext = applicationContext;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        networkUtils=new NetworkUtils(applicationContext);
-        networkUtils.setDhisServer(sharedPreferences.getString(applicationContext.getResources().getString(R.string.dhis_url),""));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                applicationContext);
+        networkUtils = new NetworkUtils(applicationContext);
+        networkUtils.setDhisServer(sharedPreferences.getString(
+                applicationContext.getResources().getString(R.string.dhis_url), ""));
         networkUtils.setUser(user);
         networkUtils.setPassword(password);
     }
 
-    private boolean launchPush(Survey survey) {
-        Session.setSurveyByModule(survey, Constants.PUSH_MODULE_KEY);
-        //Pushing selected survey via sdk
-        List<Survey> surveys = new ArrayList<>();
-        surveys.add(survey);
-        return PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
-    }
-
-    public PushClient(List<Survey> surveys, Context applicationContext, String user, String password) {
-        this(applicationContext,user,password);
+    public PushClient(List<Survey> surveys, Context applicationContext, String user,
+            String password) {
+        this(applicationContext, user, password);
         this.surveys = surveys;
     }
 
     public PushClient(Survey survey, Context applicationContext, String user, String password) {
-        this(applicationContext,user,password);
+        this(applicationContext, user, password);
         this.survey = survey;
     }
 
-    public void pushSDK() {
-        //No network -> Done
-        if (!AUtils.isNetworkAvailable() || PushController.getInstance().isPushing())
-            AlarmPushReceiver.isDone();
-        else {
-            //Push via sdk
-            PushController.getInstance().push(PreferencesState.getInstance().getContext(), surveys);
-        }
-    }
 
     public PushResult pushAPI() {
         if (AUtils.isNetworkAvailable()) {
-               return malariaApiPush();
+            return malariaApiPush();
         }
         return new PushResult();
     }
 
     public PushResult malariaApiPush() {
         PushResult pushResult;
-        try{
+        try {
             //TODO: This should be removed once DHIS bug is solved
             //Map<String, JSONObject> controlData = prepareControlData();
             survey.prepareSurveyUploadedDate();
             JSONObject data = QueryFormatterUtils.getInstance().prepareMetadata(survey);
             //TODO: This should be removed once DHIS bug is solved
             //data = PushUtilsElements(data, controlData.get(""));
-            data = QueryFormatterUtils.getInstance().PushUtilsElements(data, survey, Constants.PUSH_MODULE_KEY);
+            data = QueryFormatterUtils.getInstance().PushUtilsElements(data, survey,
+                    Constants.PUSH_MODULE_KEY);
             pushResult = new PushResult(networkUtils.pushData(data));
-            if(pushResult.isSuccessful() && !pushResult.getImported().equals("0")){
+            if (pushResult.isSuccessful() && !pushResult.getImported().equals("0")) {
                 //TODO: This should be removed once DHIS bug is solved
                 //pushControlDataElements(controlData);
                 survey.setSentSurveyState();
                 AlarmPushReceiver.setFail(false);
-            }
-            else{
+            } else {
                 AlarmPushReceiver.setFail(true);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             AlarmPushReceiver.setFail(true);
             Log.e(TAG, ex.getMessage());
-            pushResult=new PushResult(ex);
-        }
-        finally {
+            pushResult = new PushResult(ex);
+        } finally {
             //Success or not the dashboard must be reloaded
             DashboardActivity.reloadDashboard();
         }
-        return  pushResult;
+        return pushResult;
     }
-
 }

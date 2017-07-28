@@ -24,8 +24,8 @@ import android.content.Context;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.database.model.OrgUnit;
-import org.eyeseetea.malariacare.database.model.TabGroup;
+import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.TabGroup;
 
 
 /**
