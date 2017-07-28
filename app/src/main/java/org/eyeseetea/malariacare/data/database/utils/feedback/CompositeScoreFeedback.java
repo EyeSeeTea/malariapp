@@ -50,6 +50,7 @@ public class CompositeScoreFeedback implements Feedback {
         this.compositeScore=compositeScore;
         this.score=score;
         mCompositeScoreFeedbackList = new ArrayList<>();
+        mFeedbackList = new ArrayList<>();
         this.isShown = true;
         this.isRoot = isRoot;
     }

@@ -150,6 +150,21 @@ public class FeedbackAdapter extends BaseAdapter {
 
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
+        ImageView imageView = (ImageView)rowLayout.findViewById(R.id.feedback_image);
+        imageView.setBackgroundResource(feedback.getBackgroundColor());
+        if(feedback.getFeedbackList().size()==0 && feedback.getCompositeScoreFeedbackList().size()==0){
+            imageView.setVisibility(View.GONE);
+        }else{
+            if((feedback.getFeedbackList().size()>0 && feedback.getFeedbackList().get(0).isShown()) ||
+                    (feedback.getCompositeScoreFeedbackList().size()>0 && feedback.getCompositeScoreFeedbackList().get(0).isShown()))
+            {
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
+            }else{
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow));
+            }
+
+        }
+
         //CompositeScore title
         TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_label);
         String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
@@ -166,6 +181,7 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
