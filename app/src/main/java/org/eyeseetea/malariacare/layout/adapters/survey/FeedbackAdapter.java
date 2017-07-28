@@ -29,10 +29,7 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -43,9 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -58,7 +53,6 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -144,6 +138,16 @@ public class FeedbackAdapter extends BaseAdapter {
     private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
+
+        if(!feedback.isShown()){
+            rowLayout.setVisibility(View.GONE);
+            View view = new View(parent.getContext());
+            view.setVisibility(View.GONE);
+            return view;
+        }else{
+            rowLayout.setVisibility(View.VISIBLE);
+        }
+
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
         //CompositeScore title
@@ -172,6 +176,16 @@ public class FeedbackAdapter extends BaseAdapter {
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
 
+        rowLayout.setTag(feedback);
+        rowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CompositeScoreFeedback compositeScoreFeedback=(CompositeScoreFeedback)v.getTag();
+                compositeScoreFeedback.toggleChildrenShown(false);
+                notifyDataSetChanged();
+            }
+        });
+
         return rowLayout;
     }
 
@@ -183,6 +197,16 @@ public class FeedbackAdapter extends BaseAdapter {
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
+
+        if(!feedback.isShown()){
+            rowLayout.setVisibility(View.GONE);
+            View view = new View(parent.getContext());
+            view.setVisibility(View.GONE);
+            return view;
+        }else{
+            rowLayout.setVisibility(View.VISIBLE);
+        }
+
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()){

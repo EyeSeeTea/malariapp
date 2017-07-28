@@ -156,6 +156,8 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                 Session.getSurveyByModule(module).getId_survey(), module);
         feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
+        feedbackListView.setDivider(null);
+        feedbackListView.setDividerHeight(0);
 
         //And checkbox listener
         chkFailed = (CustomRadioButton) llLayout.findViewById(R.id.chkFailed);
