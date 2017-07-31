@@ -2,12 +2,6 @@ package org.eyeseetea.malariacare.network;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.squareup.okhttp.Response;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
@@ -16,24 +10,16 @@ import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.remote.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.models.event.Event;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class SurveyChecker {
-
-    private static final String DHIS_CHECK_EVENT_API =
-            "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
-                    + "&fields=event,orgUnit,program,dataValues";
     private static String TAG = ".CheckSurveysB&D";
 
     /**
@@ -54,39 +40,6 @@ public class SurveyChecker {
         }
     }
 
-    /**
-     * Get events filtered by program orgUnit and between dates.
-     */
-    public static List<EventExtended> getEvents(String program, String orgUnit, Date minDate,
-            Date maxDate) throws IOException, JSONException {
-            Response response;
-
-            String startDate = EventExtended.format(minDate, EventExtended.AMERICAN_DATE_FORMAT);
-            String endDate = EventExtended.format(
-                    new Date(maxDate.getTime() + (8 * 24 * 60 * 60 * 1000)),
-                    EventExtended.AMERICAN_DATE_FORMAT);
-            String url = String.format(DHIS_CHECK_EVENT_API, program, orgUnit, startDate,
-                    endDate);
-            Log.d(TAG, url);
-            url = encodeBlanks(url);
-            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
-            NetworkUtils networkUtils = pullClient.networkUtils;
-            response = networkUtils.executeCall(null, url, "GET");
-            if (!response.isSuccessful()) {
-                Log.e(TAG, "pushData (" + response.code() + "): " + response.body().string());
-                throw new IOException(response.message());
-            }
-            JSONObject events = new JSONObject(response.body().string());
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.convertValue(mapper.readTree(events.toString()),
-                    JsonNode.class);
-
-            return getEvents(jsonNode);
-    }
-
-    static String encodeBlanks(String endpoint) {
-        return endpoint.replace(" ", "%20");
-    }
 
     /**
      * Download the related events. and checks all the quarantine surveys.
@@ -103,12 +56,14 @@ public class SurveyChecker {
                     continue;
                 }
                 Date minDate = Survey.getMinQuarantineCompletionDateByProgramAndOrgUnit(program,
-                        orgUnit);//The start date is the first ascending completion date of all the quarantine surveys
+                        orgUnit);//The start date is the first ascending completion date of all
+                // the quarantine surveys
                 Date maxDate = Survey.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
-                        orgUnit);//The last date is the first descending updated date of all the quarantine surveys
+                        orgUnit);//The last date is the first descending updated date of all the
+                // quarantine surveys
                 List<EventExtended> events = null;
                 try {
-                    events = getEvents(program.getUid(), orgUnit.getUid(),
+                    events = PullDhisApiDataSource.getEvents(program.getUid(), orgUnit.getUid(),
                             minDate,
                             maxDate);
                 } catch (IOException e) {
@@ -117,7 +72,7 @@ public class SurveyChecker {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (events == null){
+                if (events == null) {
                     return;
                 }
                 for (Survey survey : quarantineSurveys) {
@@ -148,10 +103,11 @@ public class SurveyChecker {
         //When the completion date for a survey is not present in the server, this survey is
         // not in the server.
         //This survey is set as "completed" and will be send in the future.
-        changeSurveyStatusFromQuarantineTo(survey, (isSent) ? Constants.SURVEY_SENT : Constants.SURVEY_COMPLETED);
+        changeSurveyStatusFromQuarantineTo(survey,
+                (isSent) ? Constants.SURVEY_SENT : Constants.SURVEY_COMPLETED);
     }
 
-    private static void changeSurveyStatusFromQuarantineTo(Survey survey, int status){
+    private static void changeSurveyStatusFromQuarantineTo(Survey survey, int status) {
         try {
             Log.d(TAG, "Set quarantine survey as " + ((status == Constants.SURVEY_SENT) ? "sent "
                     : "complete ") + survey.getId_survey() + " date "
@@ -160,7 +116,7 @@ public class SurveyChecker {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        if(survey.isInQuarantine()){
+        if (survey.isInQuarantine()) {
             survey.setStatus(status);
             survey.save();
         }
@@ -186,37 +142,5 @@ public class SurveyChecker {
             }
         }
         return false;
-    }
-
-    public static List<EventExtended> getEvents(JsonNode jsonNode) {
-        TypeReference<List<Event>> typeRef =
-                new TypeReference<List<Event>>() {
-                };
-        List<Event> events;
-        try {
-            if (jsonNode.has("events")) {
-                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
-                events = objectMapper.
-                        readValue(jsonNode.get("events").traverse(), typeRef);
-            } else {
-                events = new ArrayList<>();
-            }
-        } catch (IOException e) {
-            events = new ArrayList<>();
-            e.printStackTrace();
-        }
-        List<EventExtended> eventExtendedList = new ArrayList<>();
-        for (Event event : events) {
-            EventFlow eventFlow = EventFlow.MAPPER.mapToDatabaseEntity(event);
-            EventExtended eventExtended = new EventExtended(eventFlow);
-            if (event.getDataValues() != null && event.getDataValues().size() > 0) {
-                List<TrackedEntityDataValueFlow> trackedEntityDataValueFlows =
-                        TrackedEntityDataValueFlow.MAPPER.mapToDatabaseEntities(
-                                event.getDataValues());
-                eventExtended.setDataValuesInMemory(trackedEntityDataValueFlows);
-            }
-            eventExtendedList.add(eventExtended);
-        }
-        return eventExtendedList;
     }
 }
