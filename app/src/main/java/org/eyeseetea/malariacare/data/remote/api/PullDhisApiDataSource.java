@@ -53,7 +53,7 @@ public class PullDhisApiDataSource {
     public PullDhisApiDataSource() {
     }
 
-    public User pullUserAttributes(User appUser) {
+    public static User pullUserAttributes(User appUser) {
         String lastMessage = appUser.getAnnouncement();
 
         String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
