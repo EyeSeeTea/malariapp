@@ -18,6 +18,7 @@ import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.exception.ClosedUserDateNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,7 +61,7 @@ public class PullDhisApiDataSource {
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
             Response response = executeCall(DHIS_PULL_API+data, "GET");
-            JsonNode jsonNode = JsonCommonParser.parseResponse(response.body().string());
+            JsonNode jsonNode = parseResponse(response.body().string());
             JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
             String newMessage = "";
             String closeDate = "";
@@ -123,7 +124,7 @@ public class PullDhisApiDataSource {
         Date closedDate = null;
         try {
             Response response = executeCall(DHIS_PULL_API+data, "GET");
-            JsonNode jsonNode = JsonCommonParser.parseResponse(response.body().string());
+            JsonNode jsonNode = parseResponse(response.body().string());
             closedDate = getClosedDate(jsonNode.get(ATTRIBUTEVALUES));
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
@@ -232,6 +233,23 @@ public class PullDhisApiDataSource {
     public static Response executeCall(String url, String method) throws IOException {
         return executeCall(null, url, method);
     }
+
+    private static JsonNode parseResponse(String responseData)throws Exception{
+        try{
+            JSONObject jsonResponse=new JSONObject(responseData);
+            Log.i("JsonCommonParser", "parseResponse: " + jsonResponse);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = jsonResponse.toString();
+            try {
+                return objectMapper.readValue(jsonString, JsonNode.class);
+            }catch(Exception ex){
+                throw new PullApiParsingException();
+            }
+        }catch(Exception ex){
+            throw new PullApiParsingException();
+        }
+    }
+
     /**
      * Basic
      */
