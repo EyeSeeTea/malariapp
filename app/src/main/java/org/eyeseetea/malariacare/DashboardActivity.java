@@ -410,15 +410,18 @@ public class DashboardActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            if (loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
-                    && !PreferencesState.getInstance().isUserAccept()) {
+            if (shouldDisplayAnnoucement()) {
                 Log.d(TAG, "show logged announcement");
                 AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(),
                         DashboardActivity.this);
-                //show model dialog
             } else {
                 AUtils.checkUserClosed(loggedUser, DashboardActivity.this);
             }
+        }
+
+        private boolean shouldDisplayAnnoucement() {
+            return loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
+                    && !PreferencesState.getInstance().isUserAccept();
         }
     }
 }

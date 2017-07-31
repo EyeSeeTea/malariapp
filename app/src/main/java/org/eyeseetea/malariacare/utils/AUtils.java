@@ -35,10 +35,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -360,7 +358,7 @@ public abstract class AUtils {
     }
 
     public static void checkUserClosed(User user, Context context) {
-        if (user.getCloseDate() != null && user.getCloseDate().before(new Date())) {
+        if (isUserClosed(user)) {
             DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -372,6 +370,10 @@ public abstract class AUtils {
                     PreferencesState.getInstance().getContext().getString(R.string.user_close),
                     context, listener);
         }
+    }
+
+    private static boolean isUserClosed(User user) {
+        return user.getCloseDate() != null && user.getCloseDate().before(new Date());
     }
 
     /**

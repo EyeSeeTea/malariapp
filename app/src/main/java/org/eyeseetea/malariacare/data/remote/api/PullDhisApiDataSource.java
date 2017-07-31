@@ -17,7 +17,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Ev
 import org.eyeseetea.malariacare.data.database.model.User;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
+import org.eyeseetea.malariacare.domain.exception.ClosedUserDateNotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,36 +60,57 @@ public class PullDhisApiDataSource {
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
             Response response = executeCall(DHIS_PULL_API+data, "GET");
-            JsonNode jsonNode = toJsonNode(parseResponse(response.body().string()));
+            JsonNode jsonNode = JsonCommonParser.parseResponse(response.body().string());
             JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
             String newMessage = "";
             String closeDate = "";
             for (int i = 0; i < jsonNodeArray.size(); i++) {
-                if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                        User.ATTRIBUTE_USER_ANNOUNCEMENT)) {
-                    newMessage = jsonNodeArray.get(i).get(VALUE).textValue();
-                }
-                if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                        User.ATTRIBUTE_USER_CLOSE_DATE)) {
-                    closeDate = jsonNodeArray.get(i).get(VALUE).textValue();
-                }
+                newMessage =
+                        getUserAnnouncement(jsonNodeArray, newMessage, i,
+                                User.ATTRIBUTE_USER_ANNOUNCEMENT);
+                closeDate = getUserCloseDate(jsonNodeArray, closeDate, i);
             }
-            if ((lastMessage == null && newMessage != null) || (newMessage != null
-                    && !newMessage.equals("") && !lastMessage.equals(newMessage))) {
-                appUser.setAnnouncement(newMessage);
-                PreferencesState.getInstance().setUserAccept(false);
-            }
-            if (closeDate == null || closeDate.equals("")) {
-                appUser.setCloseDate(null);
-            } else {
-                appUser.setCloseDate(EventExtended.parseNewLongDate(closeDate));
-            }
+            saveNewAnnoucement(appUser, lastMessage, newMessage);
+            saveClosedDate(appUser, closeDate);
 
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
         }
         return appUser;
+    }
+
+    private static void saveNewAnnoucement(User appUser, String lastMessage, String newMessage) {
+        if ((lastMessage == null && newMessage != null) || (newMessage != null
+                && !newMessage.equals("") && !lastMessage.equals(newMessage))) {
+            appUser.setAnnouncement(newMessage);
+            PreferencesState.getInstance().setUserAccept(false);
+        }
+    }
+
+    private static void saveClosedDate(User appUser, String closeDate) {
+        if (closeDate == null || closeDate.equals("")) {
+            appUser.setCloseDate(null);
+        } else {
+            appUser.setCloseDate(EventExtended.parseNewLongDate(closeDate));
+        }
+    }
+
+    private static String getUserCloseDate(JsonNode jsonNodeArray, String closeDate, int i) {
+        if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
+                User.ATTRIBUTE_USER_CLOSE_DATE)) {
+            closeDate = jsonNodeArray.get(i).get(VALUE).textValue();
+        }
+        return closeDate;
+    }
+
+    private static String getUserAnnouncement(JsonNode jsonNodeArray, String newMessage, int i,
+            String attributeUserAnnouncement) {
+        if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
+                attributeUserAnnouncement)) {
+            newMessage = jsonNodeArray.get(i).get(VALUE).textValue();
+        }
+        return newMessage;
     }
 
     public static boolean isUserClosed(String userUid) {
@@ -102,25 +123,27 @@ public class PullDhisApiDataSource {
         Date closedDate = null;
         try {
             Response response = executeCall(DHIS_PULL_API+data, "GET");
-            JsonNode jsonNode = toJsonNode(parseResponse(response.body().string()));
-            JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
-            String closeDateAsString = "";
-            for (int i = 0; i < jsonNodeArray.size(); i++) {
-                if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                        User.ATTRIBUTE_USER_CLOSE_DATE)) {
-                    closeDateAsString = jsonNodeArray.get(i).get(VALUE).textValue();
-                }
-            }
-            if (closeDateAsString == null || closeDateAsString.equals("")) {
-                return false;
-            }
-            closedDate = EventExtended.parseNewLongDate(closeDateAsString);
+            JsonNode jsonNode = JsonCommonParser.parseResponse(response.body().string());
+            closedDate = getClosedDate(jsonNode.get(ATTRIBUTEVALUES));
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
             return false;
         }
         return closedDate.before(new Date());
+    }
+
+    private static Date getClosedDate(JsonNode jsonNodeArray)
+            throws ClosedUserDateNotFoundException {
+
+        String closeDateAsString = "";
+        for (int i = 0; i < jsonNodeArray.size(); i++) {
+            closeDateAsString = getUserCloseDate(jsonNodeArray, closeDateAsString, i);
+        }
+        if (closeDateAsString == null || closeDateAsString.equals("")) {
+            throw new ClosedUserDateNotFoundException();
+        }
+        return EventExtended.parseNewLongDate(closeDateAsString);
     }
 
     public static List<EventExtended> pullQuarantineEvents(String url) throws IOException, JSONException {
@@ -148,30 +171,6 @@ public class PullDhisApiDataSource {
         return PullDhisApiDataSource.pullQuarantineEvents(url);
     }
 
-    static String encodeBlanks(String endpoint) {
-        return endpoint.replace(" ", "%20");
-    }
-
-
-    public static JsonNode toJsonNode(JSONObject jsonObject){
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = jsonObject.toString();
-        try {
-            return objectMapper.readValue(jsonString, JsonNode.class);
-        }catch(Exception ex){
-            return null;
-        }
-    }
-
-    private static JSONObject parseResponse(String responseData)throws Exception{
-        try{
-            JSONObject jsonResponse=new JSONObject(responseData);
-            Log.i(TAG, "parseResponse: " + jsonResponse);
-            return jsonResponse;
-        }catch(Exception ex){
-            throw new PullApiParsingException();
-        }
-    }
 
     /**
      * Call to DHIS Server
@@ -180,7 +179,7 @@ public class PullDhisApiDataSource {
      * @param url
      */
     public static Response executeCall(JSONObject data, String url, String method) throws IOException {
-        final String DHIS_URL=encodeBlanks(PreferencesState.getInstance().getServerUrl() + url);
+        final String DHIS_URL=PreferencesState.getInstance().getServerUrl() + url.replace(" ", "%20");
 
         Log.d(TAG, "executeCall Url" + DHIS_URL + "");
 
