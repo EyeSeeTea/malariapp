@@ -425,7 +425,7 @@ public class PreferencesState {
 
     public Credentials getCreedentials() {
         if(creedentials == null) {
-                    SharedPreferences sharedPreferences = = PreferenceManager.getDefaultSharedPreferences(
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                     context);
             String url= sharedPreferences.getString(
                     context.getResources().getString(R.string.dhis_url), "");
