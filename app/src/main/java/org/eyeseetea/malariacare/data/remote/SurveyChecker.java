@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data.remote.api;
+package org.eyeseetea.malariacare.data.remote;
 
 import android.util.Log;
 
@@ -10,6 +10,7 @@ import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.json.JSONException;
