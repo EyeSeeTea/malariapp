@@ -29,11 +29,17 @@ import java.util.concurrent.TimeUnit;
 
 public class PullDhisApiDataSource {
 
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private static final String DHIS_PULL_API="/api/";
+
     private static final String DHIS_CHECK_EVENT_API =
             "/api/events.json?program=%s&orgUnit=%s&startDate=%s&endDate=%s&skipPaging=true"
                     + "&fields=event,orgUnit,program,dataValues";
-    private static String DHIS_PULL_API="/api/";
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private static String QUERY_USER_ATTRIBUTES =
+            "/%s?fields=attributeValues[value,attribute[code]]id&paging=false";
+
 
     private static final String TAG = ".PullDhisApiDataSource";
 
@@ -42,14 +48,16 @@ public class PullDhisApiDataSource {
     public static final String ATTRIBUTE = "attribute";
     public static final String VALUE = "value";
     public static final String CODE = "code";
+    private static final String USER = "users";
 
     public PullDhisApiDataSource() {
     }
 
     public User pullUserAttributes(User appUser) {
         String lastMessage = appUser.getAnnouncement();
-        //Lets for a last event with that orgunit/program
-        String data = QueryFormatterUtils.getInstance().getUserAttributesApiCall(appUser.getUid());
+
+        String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
+        Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
             Response response = executeCall(DHIS_PULL_API+data, "GET");
             JsonNode jsonNode = toJsonNode(parseResponse(response.body().string()));
@@ -88,8 +96,9 @@ public class PullDhisApiDataSource {
         if (Session.getCredentials().isDemoCredentials()) {
             return false;
         }
-        //Lets for a last event with that orgunit/program
-        String data = QueryFormatterUtils.getInstance().getUserAttributesApiCall(userUid);
+        String data = USER + String.format(QUERY_USER_ATTRIBUTES, userUid);
+        Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
+
         Date closedDate = null;
         try {
             Response response = executeCall(DHIS_PULL_API+data, "GET");
