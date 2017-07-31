@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.remote.api;
+package org.eyeseetea.malariacare.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

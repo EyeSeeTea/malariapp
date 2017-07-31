@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data.remote;
+package org.eyeseetea.malariacare.data.remote.sdk;
 
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;

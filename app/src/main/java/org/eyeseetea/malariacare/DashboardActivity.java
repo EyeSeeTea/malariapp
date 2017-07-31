@@ -41,12 +41,11 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
-import org.eyeseetea.malariacare.network.PullClient;
-import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -396,14 +395,13 @@ public class DashboardActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
             loggedUser = User.getLoggedUser();
             /* Ignoring the update date
             boolean isUpdated = pullClient.isUserUpdated(loggedUser);
             if (isUpdated) {
                 pullClient.pullUserAttributes(loggedUser);
             }*/
-            loggedUser = pullClient.pullUserAttributes(loggedUser);
+            loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
             loggedUser.save();//save the lastUpdated info and attributes
             return null;
         }
