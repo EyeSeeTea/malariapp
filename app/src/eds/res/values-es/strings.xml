@@ -194,6 +194,7 @@ clínica"</string>
 <string name="developer_option_summary">Esta opción activa las opciones de desarrollador</string>
 <string name="developer_option_title">Mostrar opciones de desarrollador</string>
 <string name="export_data_option_title">Exportar base de datos</string>
+<string name="import_data_option_title">Importar base de datos</string>
 <string name="google_play_required">Esta aplicación requiere los servicios de Play. Por favor, instale servicios de Google Play en el dispositivo reinicie esta aplicación.</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 <string name="feedback_media">Ver video feedback</string>
@@ -214,4 +215,11 @@ clínica"</string>
 <string name="survey_second_step">Checking mandatory questions</string>
 <string name="survey_third_step">Calculating completeness ratio</string>
 <string name="survey_fourth_step">Calculating Score register</string>
+<string name="error_conflict_message">"El evento con UID: %1$s. Se cargó con un conflicto en el elemento de datos UID: %2$s con el mensaje: %3$s. Póngase en contacto con el administrador."</string>
+<string name="dialog_action_logout">"El cierre de sesión requiere eliminar o enviar los datos no enviados."</string>
+<string name="dialog_action_refresh">"Refrescar los metadatos requiere eliminar o enviar los datos no enviados."</string>
+<string name="dialog_incomplete_surveys_before_refresh">"Tiene %d encuestas no enviadas y serán eliminadas. ¿Quieres continuar?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"No tiene encuestas no solicitadas. ¿Quieres continuar?"</string>
+<string name="install_file_manager">Instale un Administrador de archivos.</string>
+<string name="get_db_file_dialog">Seleccione un archivo db válido.</string>
 </resources>

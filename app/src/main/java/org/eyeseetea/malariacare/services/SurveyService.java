@@ -33,6 +33,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB_Table;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
@@ -207,9 +208,15 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        sentDashboardBundle.addModelList(SurveyDB.class.getName(), SurveyDB.getAllSentCompletedOrConflictSurveys());
-        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
-        sentDashboardBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
+        List<SurveyDB> sentSurveyList;
+        if(PreferencesState.getInstance().isLastForOrgUnit()) {
+            sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
+        }else{
+            sentSurveyList = SurveyDB.getAllSentCompletedOrConflictSurveys();
+        }
+        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
+        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
+        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);

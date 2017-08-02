@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.allassessments;
 
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
 
@@ -44,6 +45,6 @@ public class EntrySentSurveysChartByProgram extends  EntrySentSurveysChartBase {
      * @return
      */
     public String getEntryAsJS(){
-        return String.format(JAVASCRIPT_ADD_DATA,sent,expected,program.getName(),program.getUid(),getDateAsString());
+        return String.format(JAVASCRIPT_ADD_DATA,sent,expected, AUtils.escapeQuotes(program.getName()),program.getUid(),getDateAsString());
     }
 }

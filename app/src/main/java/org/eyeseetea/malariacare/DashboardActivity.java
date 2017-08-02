@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -92,9 +91,6 @@ public class DashboardActivity extends BaseActivity {
         //delegate modules initialization
         dashboardController.onCreate(this, savedInstanceState);
 
-        //inits autopush alarm
-        AlarmPushReceiver.getInstance().setPushAlarm(this);
-
         if (!Session.getCredentials().isDemoCredentials()) {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
@@ -137,7 +133,6 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             getFragmentManager().popBackStack();
         }
@@ -147,121 +142,45 @@ public class DashboardActivity extends BaseActivity {
         }
 
         //Pull
-        final List<Survey> unsentSurveys = Survey.convertModelListToEntity(SurveyDB.getAllUnsentUnplannedSurveys());
+        final int unsentSurveysCount = SurveyDB.countAllUnsentUnplannedSurveys();
+
         //No unsent data -> pull (no confirmation)
-        if (unsentSurveys == null || unsentSurveys.size() == 0) {
+        if (unsentSurveysCount == 0) {
             pullMetadata();
             return true;
         }
 
-        final Activity activity = this;
-        //check if exist a compulsory question without answer before push and pull.
-        for (Survey survey : unsentSurveys) {
-            SurveyAnsweredRatio surveyAnsweredRatio = survey.getSurveyAnsweredRatio();
-            if (surveyAnsweredRatio.getTotalCompulsory() > 0
-                    && surveyAnsweredRatio.getCompulsoryAnswered()
-                    != surveyAnsweredRatio.getTotalCompulsory()) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Unsent surveys")
-                        .setMessage(getApplicationContext().getResources().getString(
-                                R.string.dialog_incompleted_compulsory_pulling))
-                        .setPositiveButton(android.R.string.ok, null)
-                        .setCancelable(true)
-                        .create().show();
-                return true;
-            }
+        //No unsent data -> pull (no confirmation)
+        String message = getApplicationContext().getResources().getString(
+                R.string.dialog_action_refresh);
+        if (unsentSurveysCount > 0) {
+            message += String.format(getApplicationContext().getResources().getString(
+                    R.string.dialog_incomplete_surveys_before_refresh),
+                    unsentSurveysCount);
         }
-        //Unsent data -> ask if pull || push before pulling
+        //check if exist a compulsory question without awnser before push and pull.
+
         new AlertDialog.Builder(this)
-                .setTitle("Push unsent surveys?")
-                .setMessage(String.format(
-                        getResources().getString(R.string.dialog_sent_survey_on_refresh_metadata),
-                        unsentSurveys.size() + ""))
-                .setNeutralButton(android.R.string.no, null)
-                .setNegativeButton(activity.getString(R.string.no),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Pull directly
-                                pullMetadata();
-                            }
-                        })
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setTitle(getApplicationContext().getResources().getString(
+                        R.string.settings_menu_pull))
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Try to push before pull
-                        final List<SurveyDB> inProgressSurveys = SurveyDB.getAllInProgressSurveys();
-                        for (SurveyDB survey : inProgressSurveys) {
-                            survey.setCompleteSurveyState(Constants.PROGRESSACTIVITY_MODULE_KEY);
-                        }
-                        pushUnsentBeforePull();
+                        pullMetadata();
                     }
                 })
+                .setNegativeButton(android.R.string.no, null)
                 .setCancelable(true)
                 .create().show();
         return true;
     }
 
-    private void pushUnsentBeforePull() {
-        if (Session.getCredentials().isDemoCredentials()) {
-            pullMetadata();//Push is not necessary in demo mode.
-            return;
-        }
+    private void pullMetadata() {
         if (PreferencesState.getInstance().isPushInProgress()) {
             Toast.makeText(getBaseContext(), R.string.toast_push_in_progress,
                     Toast.LENGTH_LONG).show();
             return;
         }
-        PushController pushController = new PushController(getApplicationContext());
-        PushUseCase pushUseCase = new PushUseCase(pushController);
-
-        pushUseCase.execute(new PushUseCase.Callback() {
-            @Override
-            public void onComplete() {
-                Toast.makeText(getBaseContext(), R.string.toast_push_done,
-                        Toast.LENGTH_LONG).show();
-
-                pullMetadata();
-            }
-
-            @Override
-            public void onPushInProgressError() {
-                Toast.makeText(getBaseContext(),
-                        R.string.push_stopped, Toast.LENGTH_LONG).show();
-                Log.e(TAG, getString(R.string.push_stopped));
-            }
-
-            @Override
-            public void onPushError() {
-                Toast.makeText(getBaseContext(), R.string.push_error,
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, getString(R.string.push_error));
-            }
-
-            @Override
-            public void onSurveysNotFoundError() {
-                Toast.makeText(getBaseContext(), R.string.push_surveys_not_found,
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, getString(R.string.push_surveys_not_found));
-            }
-
-            @Override
-            public void onConversionError() {
-                Toast.makeText(getBaseContext(),
-                        R.string.push_conversion_error,
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, getString(R.string.push_conversion_error));
-            }
-
-            @Override
-            public void onNetworkError() {
-                Toast.makeText(getBaseContext(), R.string.network_no_available,
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, getString(R.string.network_no_available));
-            }
-        });
-    }
-
-    private void pullMetadata() {
         PreferencesState.getInstance().clearOrgUnitPreference();
         finishAndGo(ProgressActivity.class);
     }

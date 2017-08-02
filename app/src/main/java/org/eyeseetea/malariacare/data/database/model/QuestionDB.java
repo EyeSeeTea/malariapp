@@ -497,7 +497,6 @@ public class QuestionDB extends BaseModel {
     /**
      * Gets the option of this question in the current survey in session
      */
-
     public OptionDB getOptionBySession(String module) {
         return this.getOptionBySurvey(Session.getSurveyByModule(module).getId());
     }

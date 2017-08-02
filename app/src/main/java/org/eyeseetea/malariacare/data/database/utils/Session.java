@@ -54,7 +54,7 @@ public class Session {
     /**
      *  The current selected surveyFeedback
     */
-    private static SurveyDB surveyFeedback;
+    private static Survey surveyFeedback;
     /**
     /**
      * The current user

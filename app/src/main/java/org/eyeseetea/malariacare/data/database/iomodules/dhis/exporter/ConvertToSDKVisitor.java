@@ -23,7 +23,6 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
@@ -35,19 +34,27 @@ import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.push.NullEventDateException;
+import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -142,7 +149,7 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(SurveyDB survey) throws Exception {
+    public void visit(SurveyDB survey) throws ConversionException {
 
         uploadedDate = new Date();
 
@@ -204,13 +211,13 @@ public class ConvertToSDKVisitor implements
             annotateSurveyAndEvent();
         } catch (Exception e) {
             e.printStackTrace();
-            showErrorConversionMessage(errorMessage);
+            errorMessage = showErrorConversionMessage(errorMessage);
             removeSurveyAndEvent(survey);
-            return;
+            throw new ConversionException(errorMessage);
         }
     }
 
-    private void showErrorConversionMessage(String errorMessage) {
+    private String showErrorConversionMessage(String errorMessage) {
         String programName = "", orgUnitName = "";
         if (currentSurvey.getProgram() != null
                 && currentSurvey.getProgram().getName() != null) {
@@ -220,14 +227,14 @@ public class ConvertToSDKVisitor implements
                 && currentSurvey.getOrgUnit().getName() != null) {
             orgUnitName = currentSurvey.getOrgUnit().getName();
         }
-        Log.d(TAG, "Error: " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
-                + "program: " + programName + " OrgUnit: "
-                + orgUnitName + "Survey: " + currentSurvey.toString());
         if (currentSurvey.getValues() != null) {
             for (ValueDB value : currentSurvey.getValues()) {
                 Log.d(TAG, "DataValues:" + value.toString());
             }
         }
+        return ": " + errorMessage + " surveyId: " + currentSurvey.getId_survey()
+                                + "program: " + programName + " OrgUnit: "
+                                + orgUnitName + "Survey: " + currentSurvey.toString();
     }
 
     private void removeSurveyAndEvent(SurveyDB survey) {
@@ -455,58 +462,68 @@ public class ConvertToSDKVisitor implements
     /**
      * Saves changes in the survey (supposedly after a successfull push)
      */
-    public void saveSurveyStatus(Map<String, ImportSummary> importSummaryMap) {
+    public void saveSurveyStatus(Map<String, PushReport> pushReportMap, final
+    IPushController.IPushControllerCallback callback) {
+        Log.d(TAG, String.format("pushReportMap %d surveys savedSurveyStatus", surveys.size()));
         for (int i = 0; i < surveys.size(); i++) {
             SurveyDB iSurvey = surveys.get(i);
-            EventExtended iEvent = new EventExtended(events.get(iSurvey.getId_survey()));
-            ImportSummary importSummary = importSummaryMap.get(iEvent.getEvent().getUId());
-            FailedItemFlow failedItem = EventExtended.hasConflict(iEvent.getLocalId());
 
-            //Sets the survey status as quarantine to prevent wrong importSummaries (F.E. in
-            // network failures).
-            //This survey will be checked again in the future push to prevent the duplicates
+            //Sets the survey status as quarantine to prevent wrong reports on unexpected exception.
+            //F.E. if the app crash unexpected this survey will be checked again in the future push to prevent the duplicates
             // in the server.
             iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
-            Log.d(TAG, "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE" + iSurvey.getId_survey() + " eventuid: "+ iSurvey.getEventUid());
             iSurvey.save();
 
-            //If the importSummary has a failedItem the survey was saved in the server but
-            // never resend, the survey is saved as survey in conflict.
-            if (failedItem != null) {
-                Log.d(TAG, "saveSurveyStatus: Faileditem not null " + iSurvey.getId_survey());
-                List<String> failedUids = getFailedUidQuestion(failedItem.getErrorMessage());
-                for (String uid : failedUids) {
-                    Log.d(TAG, "saveSurveyStatus: PUSH process...Conflict in " + uid + " dataelement pushing survey: "
-                            + iSurvey.getId_survey());
-                    iSurvey.saveConflict(uid);
-                    iSurvey.setStatus(Constants.SURVEY_CONFLICT);
-                }
-                iSurvey.save();
+            Log.d(TAG, "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE"
+                    + iSurvey.getId_survey() + " eventuid: " + iSurvey.getEventUid());
+            EventExtended iEvent = new EventExtended(events.get(iSurvey.getId_survey()));
+            PushReport pushReport;
+            pushReport = pushReportMap.get(
+                    iEvent.getEvent().getUId());
+            if (pushReport == null) {
+                //the survey was saved as quarantine.
+                Log.d(TAG,"Error saving survey: report is null in this survey: " + iSurvey.getId_survey());
+                //The loop should continue without throw the Exception.
                 continue;
             }
+            List<PushConflict> pushConflicts = pushReport.getPushConflicts();
 
-            if (importSummary == null) {
-                Log.d(TAG, "saveSurveyStatus: importSummary null " + iSurvey.getId_survey());
-                //Saved as quarantine
+            //If the pushResult has some conflict the survey was saved in the server but
+            // never resend, the survey is saved as survey in conflict.
+            if (pushConflicts != null && pushConflicts.size() > 0) {
+                Log.d(TAG, "saveSurveyStatus: conflicts");
+                iSurvey.setStatus(Constants.SURVEY_CONFLICT);
+                iSurvey.save();
+                for (PushConflict pushConflict : pushConflicts) {
+                    Log.d(TAG, "saveSurveyStatus: Faileditem not null " + iSurvey.getId_survey());
+                    if (pushConflict.getUid() != null) {
+                        Log.d(TAG, "saveSurveyStatus: PUSH process...PushConflict in "
+                                + pushConflict.getUid() +
+                                " with error " + pushConflict.getValue()
+                                + " dataelement pushing survey: "
+                                + iSurvey.getId_survey());
+                        iSurvey.saveConflict(pushConflict.getUid());
+                        iSurvey.save();
+                        callback.onInformativeError(new PushValueException(
+                                String.format(context.getString(R.string.error_conflict_message),
+                                        iEvent.getEvent().getUId(), pushConflict.getUid(),
+                                        pushConflict.getValue()) + ""));
+                    }
+                }
                 continue;
             }
 
             //No errors -> Save and next
-            if (!hasImportSummaryErrors(importSummary)) {
-                Log.d(TAG, "saveSurveyStatus: importSummary without errors and status ok " + iSurvey.getId_survey());
+            if (pushReport!=null && !pushReport.hasPushErrors()) {
+                Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
+                        + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
                     //If eventdate is null the event is invalid. The event is sent but we need inform to the user.
-                    DashboardActivity.showException(context.getString(R.string.error_message),
+                    callback.onInformativeError(new NullEventDateException(
                             String.format(context.getString(R.string.error_message_push),
-                                    iEvent.getEvent()));
+                                    iEvent.getEvent())));
                 }
                 saveSurveyFromImportSummary(iSurvey);
-                continue;
-            }
-
-            //Errors
-            if (importSummary != null) {
-                Log.d(TAG, "saveSurveyStatus: " + importSummary.toString());
             }
         }
     }
@@ -518,57 +535,6 @@ public class ConvertToSDKVisitor implements
         iSurvey.save();
 
         Log.d(TAG, "PUSH process...OK. Survey saved");
-    }
-
-    /**
-     * Get dataelement fails from errormessage JSON.
-     */
-    private List<String> getFailedUidQuestion(String responseData) {
-        String message = "";
-        List<String> uid = new ArrayList<>();
-        JSONArray jsonArrayResponse = null;
-        JSONObject jsonObjectResponse = null;
-        try {
-            jsonObjectResponse = new JSONObject(responseData);
-            message = jsonObjectResponse.getString("message");
-            jsonObjectResponse = new JSONObject(jsonObjectResponse.getString("response"));
-            jsonArrayResponse = new JSONArray(jsonObjectResponse.getString("importSummaries"));
-            jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(0));
-            //conflicts
-            jsonArrayResponse = new JSONArray(jsonObjectResponse.getString("conflicts"));
-            //values
-            for (int i = 0; i < jsonArrayResponse.length(); i++) {
-                jsonObjectResponse = new JSONObject(jsonArrayResponse.getString(i));
-                uid.add(jsonObjectResponse.getString("object"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (message != "") {
-            DashboardActivity.showException(context.getString(R.string.error_message), message);
-        }
-        return uid;
-    }
-
-    /**
-     * Checks whether the given importSummary contains errors or has been successful.
-     * An import with 0 importedItems is an error too.
-     */
-    private boolean hasImportSummaryErrors(ImportSummary importSummary) {
-        if (importSummary == null) {
-            return true;
-        }
-
-        if (importSummary.getImportCount() == null) {
-            return true;
-        }
-        if(importSummary.getStatus()==null){
-            return true;
-        }
-        if(!importSummary.getStatus().equals(ImportSummary.Status.SUCCESS)){
-            return true;
-        }
-        return importSummary.getImportCount().getImported() == 0;
     }
 
     /**

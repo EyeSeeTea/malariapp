@@ -189,6 +189,7 @@ Passo 2: Localize a identificação do paciente do passo 1) no Registo de Farmá
 <string name="developer_option_summary">"Esta opção permite que as opções de desenvolvedor"</string>
 <string name="developer_option_title">"Mostrar opções de desenvolvedor"</string>
 <string name="export_data_option_title">"Banco de dados de exportação"</string>
+<string name="import_data_option_title">"Importar banco de dados"</string>
 <string name="google_play_required">"Este aplicativo requer serviços do Google Play. Por favor, instale Serviços do Google Play no seu dispositivo e iniciar este aplicativo."</string>
 <string name="account_permission_denied">"Permissão de contatos negada. A mídia não será sincronizada"</string>
 <string name="feedback_media">"Ver feedback de vídeo"</string>
@@ -210,4 +211,11 @@ Passo 2: Localize a identificação do paciente do passo 1) no Registo de Farmá
 <string name="survey_second_step">Checking mandatory questions</string>
 <string name="survey_third_step">Calculating completeness ratio</string>
 <string name="survey_fourth_step">Calculating Score register</string>
+<string name="error_conflict_message">"O evento com UID: %1$s. Foi carregado com conflito no elemento de dados UID: %2$s com a mensagem: %3$s. Entre em contato com o administrador."</string>
+<string name="dialog_action_logout">"Logout requerem a exclusão ou enviar seus dados não enviados."</string>
+<string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
+<string name="dialog_incomplete_surveys_before_refresh">"Você tem pesquisas %d não enviadas e será excluído. Deseja continuar?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"Você não tem pesquisas não solicitadas. Você quer continuar?"</string>
+<string name="install_file_manager">Instale um Gerenciador de Arquivos.</string>
+<string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 </resources>

@@ -137,7 +137,6 @@ public class TabDB extends BaseModel {
                 .where(TabDB_Table.id_program_fk.eq(Session.getSurveyByModule(module).getProgram().getId()))
                 .orderBy(TabDB_Table.order_pos,true).queryList();
     }
-
     /**
      * Returns the tab with the given id
      * @param tabID

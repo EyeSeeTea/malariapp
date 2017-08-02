@@ -58,6 +58,7 @@
     <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
     <string name="developer_option" translatable="false">show_dev_options</string>
     <string name="export_data_option" translatable="false">export_data_option</string>
+    <string name="import_data_option" translatable="false">import_data_option</string>
     <string name="overall_score_code" translatable="false">_Overall Score</string>
     <string name="main_score_class_code" translatable="false">_Overall Class</string>
     <string name="main_score_a_code" translatable="false">_Overall Class A</string>

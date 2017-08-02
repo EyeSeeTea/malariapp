@@ -281,12 +281,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    public void manageSurveysAlarm(List<SurveyDB> newListSurveys){
-        Log.d(TAG, "setSurveysAlarm (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        //Fixme think other way to cancel the setPushAlarm in Malariaapp
-        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
-    }
-
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -303,17 +297,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         reloadSurveys(surveysInProgressFromService);
     }
 
-    public void reloadCompletedSurveys(){
-        List<SurveyDB> surveysCompletedFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-
-        //No surveys -> cancel alarm for pushing
-        if(surveysCompletedFromService==null || surveysCompletedFromService.size()==0){
-            AlarmPushReceiver.getInstance().cancelPushAlarm(getActivity().getApplicationContext());
-        }
-
-        //New completed surveys -> set alarm
-        AlarmPushReceiver.getInstance().setPushAlarm(getActivity());
-    }
     public void reloadSurveys(List<Survey> newListSurveys){
         if(newListSurveys!=null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
@@ -336,11 +319,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             //Listening only intents from this method
             if(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadInProgressSurveys();
-            }
-            //Listening only intents from this method
-            //if the state is completed, the state is not sent.
-            if (SurveyService.ALL_COMPLETED_SURVEYS_ACTION.equals(intent.getAction())) {
-                reloadCompletedSurveys();
             }
         }
     }

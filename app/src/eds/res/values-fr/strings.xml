@@ -188,6 +188,7 @@ Mensuelle"</string>
 <string name="developer_option_summary">"Cette option active les options de développement"</string>
 <string name="developer_option_title">"Afficher les options développeur"</string>
 <string name="export_data_option_title">"Base de données à l'exportation"</string>
+<string name="import_data_option_title">"Base de données d'importation"</string>
 <string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
 <string name="account_permission_denied"> Contacts permission refusée. Médias ne sera pas synchronisé</string>
 <string name="feedback_media">Voir la vidéo commentaires</string>
@@ -208,4 +209,11 @@ Mensuelle"</string>
 <string name="survey_second_step">Checking mandatory questions</string>
 <string name="survey_third_step">Calculating completeness ratio</string>
 <string name="survey_fourth_step">Calculating Score register</string>
+<string name="error_conflict_message">"L'événement avec UID: %1$s. A été téléchargé avec conflit dans l'élément de données UID: %2$s avec le message: %3$s. Veuillez contacter l'administrateur."</string>
+<string name="dialog_action_logout">"Déconnexion nécessite de supprimer ou envoyer vos données non envoyées."</string>
+<string name="dialog_action_refresh">"L'actualisation des métadonnées nécessite la suppression ou l'envoi de vos données non envoyées"."</string>
+<string name="dialog_incomplete_surveys_before_refresh">"Vous avez %d sondages non envoyés et seront supprimés. Voulez-vous continuer?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
+<string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
+<string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
 </resources>
