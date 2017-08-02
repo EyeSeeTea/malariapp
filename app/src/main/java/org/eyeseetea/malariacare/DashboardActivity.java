@@ -265,7 +265,7 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onSurveySelected(SurveyDB survey) {
+    public void onSurveySelected(Survey survey) {
         dashboardController.onSurveySelected(survey);
     }
 
@@ -287,14 +287,14 @@ public class DashboardActivity extends BaseActivity {
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
      */
-    public void onMarkAsCompleted(SurveyDB survey) {
+    public void onMarkAsCompleted(Survey survey) {
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
      */
-    public void onFeedbackSelected(SurveyDB survey) {
+    public void onFeedbackSelected(Survey survey) {
         dashboardController.onFeedbackSelected(survey);
     }
 

@@ -293,7 +293,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
     public void reloadInProgressSurveys(){
-        List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+        List<Survey> surveysInProgressFromService = Survey.convertModelListToEntity((List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         reloadSurveys(surveysInProgressFromService);
     }
 

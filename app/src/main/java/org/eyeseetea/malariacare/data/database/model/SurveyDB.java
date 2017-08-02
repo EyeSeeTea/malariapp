@@ -373,25 +373,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .where( ScoreDB_Table.id_survey_fk.eq(this.getId_survey())).querySingle();
     }
 
-    /**
-     * Returns the productivity for this survey according to its orgunit + program
-     */
-    public Integer getProductivity() {
-        if (productivity == null) {
-            productivity = OrgUnitProgramRelationDB.getProductivity(this);
-        }
-        return productivity;
-    }
-
-    /**
-     * Returns if this survey has low productivity or not.
-     * [0..4]: Low
-     * [5..): Not Low
-     */
-    public boolean isLowProductivity() {
-        return getProductivity() < 5;
-    }
-
     @Override
     public void delete() {
         ScoreDB score = getScore();
@@ -824,11 +805,11 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     /**
      * Finds a survey with a given orgunit and program
      */
-    public static SurveyDB findPlannedByOrgUnitAndProgram(OrgUnitDB orgUnit, ProgramDB program) {
+    public static SurveyDB findPlannedByOrgUnitAndProgram(Long orgUnitId, Long programId) {
         return new Select()
                 .from(SurveyDB.class)
-                .where(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
+                .where(SurveyDB_Table.id_org_unit_fk.eq(orgUnitId))
+                .and(SurveyDB_Table.id_program_fk.eq(programId))
                 .and(SurveyDB_Table.status.eq(Constants.SURVEY_PLANNED))
                 .querySingle();
     }

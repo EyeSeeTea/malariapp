@@ -55,12 +55,10 @@ public class ScoreRegister {
      * Map of scores for each tab by survey and module
      */
     public static final Map<String, Map<Float, Map<TabDB, TabNumDenRecord>>> tabScoreMap = new HashMap<>();
-
-
-    public static void initScoresForQuestions(List<QuestionDB> questions, SurveyDB survey, String module){
+    public static void initScoresForQuestions(List<QuestionDB> questions, Long surveyId, String module){
         for(QuestionDB question : questions){
-            if(!question.isHiddenBySurvey(survey.getId_survey())) {
-                question.initScore(survey.getId_survey(), module);
+            if(!question.isHiddenBySurvey(surveyId)) {
+                question.initScore(surveyId, module);
             }
         }
     }
