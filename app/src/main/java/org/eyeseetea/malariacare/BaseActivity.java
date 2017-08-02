@@ -39,13 +39,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
-import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
@@ -88,10 +89,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private void checkQuarantineSurveys() {
         PreferencesState.getInstance().setPushInProgress(false);
-        List<Survey> surveys = Survey.getAllSendingSurveys();
+        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
         Log.d(TAG + "B&D", "Pending surveys sending: "
                 + surveys.size());
-        for (Survey survey : surveys) {
+        for (SurveyDB survey : surveys) {
             survey.setStatus(Constants.SURVEY_QUARANTINE);
             survey.save();
         }
@@ -284,7 +285,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Closes current session and goes back to loginactivity
      */
     public void logout() {
-        int unsentSurveyCount = Survey.countAllUnsentUnplannedSurveys();
+        int unsentSurveyCount = SurveyDB.countAllUnsentUnplannedSurveys();
         String message = getApplicationContext().getString(
                 R.string.dialog_action_logout);
         if (unsentSurveyCount == 0) {
@@ -331,7 +332,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Asks for location (required while starting to edit a survey)
      */
-    public void prepareLocationListener(Survey survey) {
+    public void prepareLocationListener(SurveyDB survey) {
 
         locationListener = new SurveyLocationListener(survey.getId_survey());
         LocationManager locationManager =

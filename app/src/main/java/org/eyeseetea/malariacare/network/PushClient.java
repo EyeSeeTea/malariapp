@@ -26,7 +26,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -44,12 +44,12 @@ public class PushClient {
     /**
      * For pushing just 1 survey
      */
-    Survey survey;
+    SurveyDB survey;
 
     /**
      * For pushing N surveys
      */
-    List<Survey> surveys;
+    List<SurveyDB> surveys;
 
     Context applicationContext;
     NetworkUtils networkUtils;
@@ -65,13 +65,13 @@ public class PushClient {
         networkUtils.setPassword(password);
     }
 
-    public PushClient(List<Survey> surveys, Context applicationContext, String user,
+    public PushClient(List<SurveyDB> surveys, Context applicationContext, String user,
             String password) {
         this(applicationContext, user, password);
         this.surveys = surveys;
     }
 
-    public PushClient(Survey survey, Context applicationContext, String user, String password) {
+    public PushClient(SurveyDB survey, Context applicationContext, String user, String password) {
         this(applicationContext, user, password);
         this.survey = survey;
     }

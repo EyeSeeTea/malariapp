@@ -34,11 +34,10 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.OrganisationUnitFlow_Table;
-import org.hisp.dhis.client.sdk.models.attribute.AttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
     /**
      * App orgunit reference
      */
-    private OrgUnit appOrgUnit;
+    private OrgUnitDB appOrgUnit;
 
     public OrganisationUnitExtended(){}
 
@@ -144,7 +143,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * App organisationUnit setter
      * @param appOrgUnit
      */
-    public void setAppOrgUnit(OrgUnit appOrgUnit) {
+    public void setAppOrgUnit(OrgUnitDB appOrgUnit) {
         this.appOrgUnit = appOrgUnit;
     }
 
@@ -152,7 +151,7 @@ public class OrganisationUnitExtended implements VisitableFromSDK {
      * App organisationUnit setter
      * @return
      */
-    public OrgUnit getAppOrgUnit() {
+    public OrgUnitDB getAppOrgUnit() {
         return appOrgUnit;
     }
 

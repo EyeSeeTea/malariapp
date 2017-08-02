@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
@@ -30,13 +30,13 @@ import java.util.List;
 /**
  * Created by adrian on 30/04/15.
  */
-public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnit> {
+public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
 
-    public OrgUnitArrayAdapter(Context context, List<OrgUnit> orgUnits) {
+    public OrgUnitArrayAdapter(Context context, List<OrgUnitDB> orgUnits) {
         super(context, orgUnits);
     }
 
-    @Override public void drawText(CustomTextView customTextView, OrgUnit orgUnit) {
+    @Override public void drawText(CustomTextView customTextView, OrgUnitDB orgUnit) {
         if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
             customTextView.setTextSize(18); //FIXME: create a default system size centralized instead of putting a fix 18 here
         customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));

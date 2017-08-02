@@ -19,12 +19,11 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.List;
 
@@ -45,13 +44,13 @@ public class PieBuilderBase {
     /**
      * List of sent surveys
      */
-    List<Survey> surveys;
+    List<SurveyDB> surveys;
 
 
     /**
      * Default constructor
      */
-    public PieBuilderBase(List<Survey> surveys, Context context) {
+    public PieBuilderBase(List<SurveyDB> surveys, Context context) {
         this.surveys = surveys;
         this.context = context;
     }

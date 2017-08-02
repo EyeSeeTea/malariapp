@@ -19,15 +19,10 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
-
-import java.io.Serializable;
 import java.util.List;
 
 public interface IDashboardAdapter {

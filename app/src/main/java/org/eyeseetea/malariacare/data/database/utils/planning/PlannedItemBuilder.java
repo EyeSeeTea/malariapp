@@ -22,10 +22,10 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import android.content.Context;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class PlannedItemBuilder {
     /**
      * Memo to find non existant combinations
      */
-    Map<String,Survey> surveyMap;
+    Map<String,SurveyDB> surveyMap;
 
     /**
      * List of surveys not sent
@@ -116,7 +116,7 @@ public class PlannedItemBuilder {
         initBuilder();
 
         //Find its place according to scheduleddate
-        for(Survey survey: Survey.findPlannedOrInProgress()){
+        for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
             findRightState(survey);
         }
 
@@ -150,7 +150,7 @@ public class PlannedItemBuilder {
      * Puts the survey in its right list
      * @param survey
      */
-    private void findRightState(Survey survey){
+    private void findRightState(SurveyDB survey){
         //Annotate this survey to fill its spot
         annotateSurvey(survey);
 
@@ -178,7 +178,7 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsNever(Survey survey){
+    private boolean processAsNever(SurveyDB survey){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
@@ -197,7 +197,7 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsOverdue(Survey survey){
+    private boolean processAsOverdue(SurveyDB survey){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
@@ -216,7 +216,7 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsNext30(Survey survey){
+    private boolean processAsNext30(SurveyDB survey){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
         Date today30 = getIn30Days(today);
@@ -235,7 +235,7 @@ public class PlannedItemBuilder {
      * Annotates the survey in the map
      * @param survey
      */
-    private void annotateSurvey(Survey survey){
+    private void annotateSurvey(SurveyDB survey){
         if(survey.getProgram()!=null) {
             String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
             surveyMap.put(key,survey);
@@ -251,7 +251,7 @@ public class PlannedItemBuilder {
      * @param program
      * @return
      */
-    private String getSurveyKey(OrgUnit orgUnit,Program program) {
+    private String getSurveyKey(OrgUnitDB orgUnit,ProgramDB program) {
         return orgUnit.getId_org_unit().toString()+"@"+program.getId_program().toString();
     }
 
@@ -273,11 +273,11 @@ public class PlannedItemBuilder {
     private void buildNonExistantCombinations() {
 
         //Every orgunit
-        for(OrgUnit orgUnit:OrgUnit.list()){
+        for(OrgUnitDB orgUnit: OrgUnitDB.list()){
             //Each authorized program
-            for(Program program:orgUnit.getPrograms()){
+            for(ProgramDB program:orgUnit.getPrograms()){
                 String key=getSurveyKey(orgUnit,program);
-                Survey survey=surveyMap.get(key);
+                SurveyDB survey=surveyMap.get(key);
                 //Already built
                 if(survey!=null){
                     continue;
@@ -297,7 +297,7 @@ public class PlannedItemBuilder {
      * @param section
      * @param survey
      */
-    private void addToSection(List<PlannedItem> section,Survey survey){
+    private void addToSection(List<PlannedItem> section,SurveyDB survey){
         PlannedHeader header=(PlannedHeader)section.get(0);
         section.add(new PlannedSurvey(survey,header));
     }

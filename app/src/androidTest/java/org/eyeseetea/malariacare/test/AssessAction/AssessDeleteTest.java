@@ -24,7 +24,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -87,13 +87,13 @@ public class AssessDeleteTest {
         Long idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.no);
 
         //THEN
-        assertTrue("Survey not deleted", Survey.exists(idSurvey));
+        assertTrue("Survey not deleted", SurveyDB.exists(idSurvey));
 
         //WHEN
         idSurvey=SDKTestUtils.clickDeleteAction(android.R.string.yes);
 
         //THEN
-        assertFalse("Survey not deleted", Survey.exists(idSurvey));
+        assertFalse("Survey not deleted", SurveyDB.exists(idSurvey));
 
         onView(withId(R.id.score)).check(doesNotExist());
     }

@@ -21,8 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.multikeydictionaries;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 
 import java.util.List;
 
@@ -38,12 +37,12 @@ public class ProgramCompositeScoreDict extends ObjectModelDict {
     }
 
     @Override
-    public CompositeScore get(String programUid, String compositeScoreUid) {
-        return (CompositeScore) super.get(programUid, compositeScoreUid);
+    public CompositeScoreDB get(String programUid, String compositeScoreUid) {
+        return (CompositeScoreDB) super.get(programUid, compositeScoreUid);
     }
 
     @Override
-    public List<CompositeScore> values() {
-        return (List<CompositeScore>) super.values();
+    public List<CompositeScoreDB> values() {
+        return (List<CompositeScoreDB>) super.values();
     }
 }

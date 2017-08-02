@@ -30,8 +30,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import java.util.Date;
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class User extends BaseModel {
+@Table(database = AppDatabase.class, name = "User")
+public class UserDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -52,15 +52,15 @@ public class User extends BaseModel {
     /**
      * List of surveys of this user
      */
-    List<Survey> surveys;
+    List<SurveyDB> surveys;
 
     public static final String ATTRIBUTE_USER_CLOSE_DATE = "USER_CLOSE_DATE";
     public static final String ATTRIBUTE_USER_ANNOUNCEMENT = "USER_ANNOUNCEMENT";
 
-    public User() {
+    public UserDB() {
     }
 
-    public User(String uid, String name) {
+    public UserDB(String uid, String name) {
         this.uid_user = uid;
         this.name = name;
     }
@@ -89,11 +89,11 @@ public class User extends BaseModel {
         this.name = name;
     }
 
-    public List<Survey> getSurveys() {
+    public List<SurveyDB> getSurveys() {
         if (surveys == null) {
             surveys = new Select()
-                    .from(Survey.class)
-                    .where(Survey_Table.id_user_fk
+                    .from(SurveyDB.class)
+                    .where(SurveyDB_Table.id_user_fk
                             .eq(this.getId_user())).queryList();
         }
         return surveys;
@@ -107,24 +107,24 @@ public class User extends BaseModel {
         this.username = username;
     }
 
-    public static User getLoggedUser() {
+    public static UserDB getLoggedUser() {
         // for the moment we return just the first entry assuming there will be only one entry,
         // but in the future we will have to tag the logged user
-        List<User> users = new Select().from(User.class).queryList();
+        List<UserDB> users = new Select().from(UserDB.class).queryList();
         if (users != null && users.size() != 0) {
             return users.get(0);
         }
         return null;
     }
 
-    public static User getUserByUId( String uid) {
-        return new Select().from(User.class).where(User_Table.uid_user.eq(uid)).querySingle();
+    public static UserDB getUserByUId( String uid) {
+        return new Select().from(UserDB.class).where(UserDB_Table.uid_user.eq(uid)).querySingle();
     }
 
-    public static User getUser(String value) {
+    public static UserDB getUser(String value) {
         return new Select()
-                .from(User.class)
-                .where(User_Table.uid_user.eq(value)).querySingle();
+                .from(UserDB.class)
+                .where(UserDB_Table.uid_user.eq(value)).querySingle();
     }
 
     public String getAnnouncement() {
@@ -156,7 +156,7 @@ public class User extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        UserDB user = (UserDB) o;
 
         if (id_user != user.id_user) return false;
         if (uid_user != null ? !uid_user.equals(user.uid_user) : user.uid_user != null)
