@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.utils.AUtils;
 
 /**
  * Created by idelcano on 23/08/2016.
@@ -39,7 +40,7 @@ public class PieDataByOrgUnit extends PieDataBase {
         this.orgUnit=orgUnit;
     }
     public String toJSON(String tipChat){
-        String pieTitle = String.format("%s (%s)", orgUnit.getName(), orgUnit.getId_org_unit());
+        String pieTitle = String.format("%s (%s)", AUtils.escapeQuotes(orgUnit.getName()), orgUnit.getId_org_unit());
         String json = String.format(JSONFORMAT, pieTitle, tipChat, orgUnit.getId_org_unit(), this.numA, this.numB, this.numC, orgUnit.getUid(), orgUnit.getUid());
         return json;
     }

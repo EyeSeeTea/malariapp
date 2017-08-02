@@ -474,7 +474,7 @@ public class QuestionDB extends BaseModel {
      * Gets the value of this question in the current survey in session
      */
     public ValueDB getValueBySession(String module) {
-        return this.getValueBySurvey(Session.getSurveyByModule(module).getId());
+        return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**
@@ -497,9 +497,8 @@ public class QuestionDB extends BaseModel {
     /**
      * Gets the option of this question in the current survey in session
      */
-
     public OptionDB getOptionBySession(String module) {
-        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId());
+        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
     }
 
     /**

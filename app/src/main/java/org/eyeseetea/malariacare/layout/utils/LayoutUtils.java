@@ -119,10 +119,10 @@ public class LayoutUtils {
         String subtitle = "";
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         String appNameColorString = String.format("%X", appNameColor).substring(2);
+        Program program = survey.getProgram();
         if (survey.getOrgUnit().getName() != null) {
             title = survey.getOrgUnit().getName();
         }
-        Program program = survey.getProgram();
         if (program.getName() != null) {
             subtitle = program.getName();
         }

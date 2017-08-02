@@ -106,7 +106,7 @@ public abstract class AUtils {
         List<? extends BaseModel> items;
 
         if (tab.isCompositeScore()) {
-            items = CompositeScoreDB.listByProgram(Session.getSurveyByModule(module).getProgram().getId());
+            items = CompositeScoreDB.listByProgram(Session.getSurveyByModule(module).getProgram().getId_program());
         } else {
 
             items = Session.getTabsCache().get(tab.getId_tab());
@@ -388,5 +388,10 @@ public abstract class AUtils {
                 .setNeutralButton(android.R.string.ok, listener).show();
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
                 LinkMovementMethod.getInstance());
+    }
+
+
+    public static String escapeQuotes(String value) {
+        return value.replace("'", "\\"+"\'").replace("\"", "\\"+"\"");
     }
 }

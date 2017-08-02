@@ -19,12 +19,13 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.network.SurveyChecker;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 public class PushUseCase {
 
@@ -39,14 +40,15 @@ public class PushUseCase {
             callback.onPushInProgressError();
             return;
         }
+        mPushController.changePushInProgress(true);
 
         SurveyChecker.launchQuarantineChecker();
-
-        mPushController.changePushInProgress(true);
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
             public void onComplete() {
+                System.out.println("PusUseCase Complete");
+
                 mPushController.changePushInProgress(false);
 
                 callback.onComplete();
@@ -54,17 +56,29 @@ public class PushUseCase {
 
             @Override
             public void onError(Throwable throwable) {
-                mPushController.changePushInProgress(false);
+                System.out.println("PusUseCase error");
 
                 if (throwable instanceof NetworkException) {
+                    mPushController.changePushInProgress(false);
                     callback.onNetworkError();
                 } else if (throwable instanceof ConversionException) {
+                    mPushController.changePushInProgress(false);
                     callback.onConversionError();
                 } else if (throwable instanceof SurveysToPushNotFoundException) {
+                    mPushController.changePushInProgress(false);
                     callback.onSurveysNotFoundError();
+                } else if (throwable instanceof PushReportException){
+                    mPushController.changePushInProgress(false);
+                    callback.onPushError();
                 } else {
+                    mPushController.changePushInProgress(false);
                     callback.onPushError();
                 }
+            }
+
+            @Override
+            public void onInformativeError(Throwable throwable) {
+                callback.onInformativeError(throwable.getMessage());
             }
         });
     }
@@ -77,6 +91,8 @@ public class PushUseCase {
         void onPushInProgressError();
 
         void onSurveysNotFoundError();
+
+        void onInformativeError(String message);
 
         void onConversionError();
 

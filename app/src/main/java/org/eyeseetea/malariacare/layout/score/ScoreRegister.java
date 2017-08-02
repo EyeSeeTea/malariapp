@@ -21,10 +21,11 @@ package org.eyeseetea.malariacare.layout.score;
 
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
@@ -54,10 +55,12 @@ public class ScoreRegister {
      * Map of scores for each tab by survey and module
      */
     public static final Map<String, Map<Float, Map<TabDB, TabNumDenRecord>>> tabScoreMap = new HashMap<>();
-    public static void initScoresForQuestions(List<QuestionDB> questions, Long surveyId, String module){
+
+
+    public static void initScoresForQuestions(List<QuestionDB> questions, SurveyDB survey, String module){
         for(QuestionDB question : questions){
-            if(!question.isHiddenBySurvey(surveyId)) {
-                question.initScore(surveyId, module);
+            if(!question.isHiddenBySurvey(survey.getId_survey())) {
+                question.initScore(survey.getId_survey(), module);
             }
         }
     }

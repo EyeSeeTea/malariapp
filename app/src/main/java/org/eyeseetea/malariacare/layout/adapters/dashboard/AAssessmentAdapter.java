@@ -54,7 +54,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Survey surveyEntity = (Survey) getItem(position);
+        Survey survey = (Survey) getItem(position);
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int)(5 * density);
 
@@ -70,36 +70,36 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
 
         if (sentDate != null){
-            Date eventDate = surveyEntity.getCompletionDate();
+            Date eventDate = survey.getCompletionDate();
             sentDate.setText(AUtils.formatDate(eventDate));
-            if(surveyEntity.hasConflict() && sentScore!=null){
+            if(survey.hasConflict() && sentScore!=null){
                 sentScore.setText((getContext().getResources().getString(R.string.feedback_info_conflict)).toUpperCase());
                 sentScore.setTextColor(getContext().getResources().getColor(R.color.darkRed));
             }
             else if(sentScore!=null){
                 // if(!PreferencesState.getInstance().isVerticalDashboard()){
-                float mainScore=(!surveyEntity.hasMainScore())?0f: surveyEntity.getMainScore();
+                float mainScore=(!survey.hasMainScore())?0f:survey.getMainScore();
                 sentScore.setText(String.format("%.1f %%",mainScore));
                 int colorId=LayoutUtils.trafficColor(mainScore);
                 sentScore.setTextColor(getContext().getResources().getColor(colorId));
             }
         } else {
             //Status Cell
-            ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(surveyEntity));
+            ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
         }
 
         // show facility name (or not) and write survey type name
-        if (hasToShowFacility(position, surveyEntity)) {
-            facilityName.setText(surveyEntity.getOrgUnit().getName());
+        if (hasToShowFacility(position,survey)) {
+            facilityName.setText(survey.getOrgUnit().getName());
         } else {
             facilityName.setVisibility(View.GONE);
         }
 
         String surveyDescription;
-        if(surveyEntity.isCompleted())
-            surveyDescription = "* " + surveyEntity.getProgram().getName();
+        if(survey.isSent() || survey.isInProgress())
+            surveyDescription = "- " + survey.getProgram().getName();
         else
-            surveyDescription = "- " + surveyEntity.getProgram().getName();
+            surveyDescription = "* " + survey.getProgram().getName();
         surveyType.setText(surveyDescription);
 
         // check whether the following item belongs to the same org unit (to group the data related
@@ -125,16 +125,16 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
      * Determines whether to show facility or not according to:
      *  - The previous survey belongs to the same one.
      * @param position
-     * @param surveyEntity
+     * @param survey
      * @return
      */
-    private boolean hasToShowFacility(int position, Survey surveyEntity){
+    private boolean hasToShowFacility(int position, Survey survey){
         if(position==0){
             return true;
         }
 
-        Survey previousSurveyEntity = this.items.get(position-1);
-        return !surveyEntity.getOrgUnit().getUid().equals(previousSurveyEntity.getOrgUnit().getUid());
+        Survey previousSurvey = this.items.get(position-1);
+        return !survey.getOrgUnit().getUid().equals(previousSurvey.getOrgUnit().getUid());
     }
 
     private View setBackgroundWithBorder(int position, View rowView) {
@@ -148,7 +148,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
     }
 
     private View setBackground(int position, View rowView) {
-        if(!PreferencesState.getInstance().isVerticalDashboard() && (items.get(position).isCompleted() || items.get(position).isSent())) {
+        if(!PreferencesState.getInstance().isVerticalDashboard() && !(items.get(position).isInProgress())) {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
         }
         else {
@@ -158,16 +158,16 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
     }
     /**
      * Returns the proper status value (% or ready to send) according to the level of completion of the survey
-     * @param surveyEntity
+     * @param survey
      * @return
      */
-    private String getStatus(final Survey surveyEntity){
+    private String getStatus(final Survey survey){
 
-        if(surveyEntity.isSent()){
+        if(survey.isSent()){
             return getContext().getString(R.string.dashboard_info_sent);
         }
 
-        SurveyAnsweredRatio surveyAnsweredRatio = surveyEntity.getSurveyAnsweredRatio();
+        SurveyAnsweredRatio surveyAnsweredRatio = survey.getSurveyAnsweredRatio();
         if(surveyAnsweredRatio==null) {
             return "0";
         }
