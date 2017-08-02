@@ -28,6 +28,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -36,20 +37,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
+import java.io.IOException;
 import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
@@ -63,6 +69,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     LogoutUseCase mLogoutUseCase;
     IUserAccountRepository mUserAccountRepository;
+    private AlarmPushReceiver alarmPush;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +83,18 @@ public abstract class BaseActivity extends ActionBarActivity {
         mUserAccountRepository = new UserAccountRepository(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
         checkQuarantineSurveys();
+        alarmPush = new AlarmPushReceiver();
+        alarmPush.setPushAlarm(this);
     }
 
     private void checkQuarantineSurveys() {
-        if (PreferencesState.getInstance().isPushInProgress()) {
-            List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
-            Log.d(TAG + "B&D", "The app was closed in the middle of a push. Surveys sending: "
-                    + surveys.size());
-            for (SurveyDB survey : surveys) {
-                survey.setStatus(Constants.SURVEY_QUARANTINE);
-                survey.save();
-            }
-            PreferencesState.getInstance().setPushInProgress(false);
+        PreferencesState.getInstance().setPushInProgress(false);
+        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
+        Log.d(TAG + "B&D", "Pending surveys sending: "
+                + surveys.size());
+        for (SurveyDB survey : surveys) {
+            survey.setStatus(Constants.SURVEY_QUARANTINE);
+            survey.save();
         }
     }
 
@@ -166,10 +173,56 @@ public abstract class BaseActivity extends ActionBarActivity {
                     startActivityForResult(emailIntent, DUMP_REQUEST_CODE);
                 }
                 break;
+            case R.id.import_db:
+                debugMessage("Import db");
+                showFileChooser();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private static final int FILE_SELECT_CODE = 0;
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/octet-stream");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent,
+                            PreferencesState.getInstance().getContext().getString(
+                                    R.string.get_db_file_dialog)),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(this, PreferencesState.getInstance().getContext().getString(
+                    R.string.install_file_manager),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    Log.d(TAG, "File Uri: " + uri.toString());
+                    LocalPullController localPullController = new LocalPullController(
+                            getApplicationContext());
+                    try {
+                        localPullController.importDB(uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -185,16 +238,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                 || !AppSettingsBuilder.isDeveloperOptionsActive()) {
             MenuItem item = menu.findItem(R.id.export_db);
             item.setVisible(false);
+            item = menu.findItem(R.id.import_db);
+            item.setVisible(false);
         }
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        if ((requestCode == DUMP_REQUEST_CODE)) {
-            ExportData.removeDumpIfExist(this);
-        }
     }
 
     /**
@@ -238,10 +285,20 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Closes current session and goes back to loginactivity
      */
     public void logout() {
+        int unsentSurveyCount = SurveyDB.countAllUnsentUnplannedSurveys();
+        String message = getApplicationContext().getString(
+                R.string.dialog_action_logout);
+        if (unsentSurveyCount == 0) {
+            message += getApplicationContext().getString(
+                    R.string.dialog_all_surveys_sent_before_refresh);
+        } else {
+            message += String.format(getApplicationContext().getString(
+                    R.string.dialog_incomplete_surveys_before_refresh), unsentSurveyCount);
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle(getApplicationContext().getString(R.string.settings_menu_logout))
-                .setMessage(getApplicationContext().getString(
-                        R.string.dialog_content_logout_confirmation))
+                .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Start logout
@@ -334,5 +391,11 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void debugMessage(String message) {
         Log.d("." + this.getClass().getSimpleName(), message);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        alarmPush.cancelPushAlarm(this);
     }
 }

@@ -29,7 +29,10 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -40,7 +43,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -185,13 +190,15 @@ public class FeedbackAdapter extends BaseAdapter {
         if(feedback.isLabel()){
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
-        String questionForm = "<span>"+feedback.getLabel()+"</span>";
-        if(PreferencesState.getInstance().isDevelopOptionActive()){
-            questionForm = questionForm+"<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>";
-        }
 
-        textView.setText(Html.fromHtml(questionForm));
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setText(feedback.getLabel());
+
+        if(PreferencesState.getInstance().isDevelopOptionActive()){
+            textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(Html.fromHtml("<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>"));
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
         if(!PreferencesState.getInstance().isVerticalDashboard())

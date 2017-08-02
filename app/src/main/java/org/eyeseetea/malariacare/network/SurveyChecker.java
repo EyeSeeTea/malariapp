@@ -21,6 +21,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.models.event.Event;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -57,8 +58,7 @@ public class SurveyChecker {
      * Get events filtered by program orgUnit and between dates.
      */
     public static List<EventExtended> getEvents(String program, String orgUnit, Date minDate,
-            Date maxDate) {
-        try {
+            Date maxDate) throws IOException, JSONException {
             Response response;
 
             String startDate = EventExtended.format(minDate, EventExtended.AMERICAN_DATE_FORMAT);
@@ -82,11 +82,6 @@ public class SurveyChecker {
                     JsonNode.class);
 
             return getEvents(jsonNode);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     static String encodeBlanks(String endpoint) {
@@ -111,14 +106,27 @@ public class SurveyChecker {
                         orgUnit);//The start date is the first ascending completion date of all the quarantine surveys
                 Date maxDate = SurveyDB.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
                         orgUnit);//The last date is the first descending updated date of all the quarantine surveys
-                List<EventExtended> events = getEvents(program.getUid(), orgUnit.getUid(), minDate,
-                        maxDate);
-                if (events != null && events.size() > 0) {
-                    for (SurveyDB survey : quarantineSurveys) {
+                List<EventExtended> events = null;
+                try {
+                    events = getEvents(program.getUid(), orgUnit.getUid(),
+                            minDate,
+                            maxDate);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (events == null){
+                    return;
+                }
+                for (SurveyDB survey : quarantineSurveys) {
+                    if (events.size() > 0) {
                         updateQuarantineSurveysStatus(events, survey);
+                    } else {
+                        changeSurveyStatusFromQuarantineTo(survey, Constants.SURVEY_COMPLETED);
                     }
                 }
-
             }
         }
     }
@@ -137,23 +145,25 @@ public class SurveyChecker {
                 break;
             }
         }
-        if (isSent) {
-            Log.d(TAG, "Set quarantine survey as sent" + survey.getId_survey() + " date "
+        //When the completion date for a survey is not present in the server, this survey is
+        // not in the server.
+        //This survey is set as "completed" and will be send in the future.
+        changeSurveyStatusFromQuarantineTo(survey, (isSent) ? Constants.SURVEY_SENT : Constants.SURVEY_COMPLETED);
+    }
+
+    private static void changeSurveyStatusFromQuarantineTo(SurveyDB survey, int status){
+        try {
+            Log.d(TAG, "Set quarantine survey as " + ((status == Constants.SURVEY_SENT) ? "sent "
+                    : "complete ") + survey.getId_survey() + " date "
                     + EventExtended.format(survey.getCreationDate(),
                     EventExtended.DHIS2_GMT_DATE_FORMAT));
-            survey.setStatus(Constants.SURVEY_SENT);
-        } else {
-            //When the completion date for a survey is not present in the server, this survey is
-            // not in the server.
-            //This survey is set as "completed" and will be send in the future.
-            Log.d(TAG, "Set quarantine survey as completed" + survey.getId_survey() + " date "
-                    + EventExtended.format(survey.getCreationDate(),
-                    EventExtended.DHIS2_GMT_DATE_FORMAT));
-            if (survey.isInQuarantine()) {
-                survey.setStatus(Constants.SURVEY_COMPLETED);
-            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        survey.save();
+        if(survey.isInQuarantine()){
+            survey.setStatus(status);
+            survey.save();
+        }
     }
 
     /**
