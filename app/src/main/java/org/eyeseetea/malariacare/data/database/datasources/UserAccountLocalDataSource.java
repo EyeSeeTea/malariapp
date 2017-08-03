@@ -26,7 +26,7 @@ import android.preference.PreferenceManager;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -65,7 +65,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
     }
 
     private void saveUser(Credentials credentials) {
-        User user = new User(credentials.getUserUid(), credentials.getUsername());
+        UserDB user = new UserDB(credentials.getUserUid(), credentials.getUsername());
         user.setUsername(credentials.getUsername());
         user.save();
 

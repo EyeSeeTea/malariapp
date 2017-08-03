@@ -21,19 +21,19 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.List;
 
 public class AssessmentUnsentAdapter extends AAssessmentAdapter implements IAssessmentAdapter {
 
-    public AssessmentUnsentAdapter(List<Survey> items, Context context) {
+    public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(items, context);
     }
 
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
-        return new AssessmentUnsentAdapter((List<Survey>) items, context);
+        return new AssessmentUnsentAdapter((List<SurveyDB>) items, context);
     }
 
 }

@@ -25,7 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -133,14 +133,14 @@ public class AutoTabViewHolder {
         ((Spinner) component).setSelection(position);
     }
 
-    public void setRadioChecked(Option option) {
+    public void setRadioChecked(OptionDB option) {
         if (component == null || !(component instanceof RadioGroup) || component.findViewWithTag(option)==null) {
             return;
         }
         ((CustomRadioButton) component.findViewWithTag(option)).setChecked(true);
     }
 
-    public void setSwitchOption(Option option) {
+    public void setSwitchOption(OptionDB option) {
         if (component == null || !(component instanceof Switch)) {
             return;
         }

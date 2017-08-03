@@ -38,8 +38,8 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.Visitable
 
 import java.util.Date;
 
-@Table(database = AppDatabase.class)
-public class Value extends BaseModel implements VisitableToSDK {
+@Table(database = AppDatabase.class, name = "Value")
+public class ValueDB extends BaseModel implements VisitableToSDK {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -53,21 +53,21 @@ public class Value extends BaseModel implements VisitableToSDK {
      * Reference to the question for this value (loaded lazily)
      */
 
-    Question question;
+    QuestionDB question;
 
     @Column
     Long id_survey_fk;
     /**
      * Reference to the survey of this value (loaded lazily)
      */
-    Survey survey;
+    SurveyDB survey;
 
     @Column
     Long id_option_fk;
     /**
      * Reference to the option of this value (loaded lazily)
      */
-    Option option;
+    OptionDB option;
     /**
      * is conflict
      */
@@ -77,11 +77,11 @@ public class Value extends BaseModel implements VisitableToSDK {
     @Column
     Date upload_date;
 
-    public Value() {
+    public ValueDB() {
         upload_date =new Date();
     }
 
-    public Value(String value, Question question, Survey survey) {
+    public ValueDB(String value, QuestionDB question, SurveyDB survey) {
         this.option = null;
         this.value = value;
         this.setQuestion(question);
@@ -89,7 +89,7 @@ public class Value extends BaseModel implements VisitableToSDK {
         upload_date =new Date();
     }
 
-    public Value(Option option, Question question, Survey survey) {
+    public ValueDB(OptionDB option, QuestionDB question, SurveyDB survey) {
         this.value = (option!=null)?option.getName():null;
         this.setOption(option);
         this.setQuestion(question);
@@ -105,18 +105,18 @@ public class Value extends BaseModel implements VisitableToSDK {
         this.id_value = id_value;
     }
 
-    public Option getOption() {
+    public OptionDB getOption() {
         if(option==null){
             if(id_option_fk==null) return null;
             option = new Select()
-                    .from(Option.class)
-                    .where(Option_Table.id_option
+                    .from(OptionDB.class)
+                    .where(OptionDB_Table.id_option
                             .is(id_option_fk)).querySingle();
         }
         return option;
     }
 
-    public void setOption(Option option) {
+    public void setOption(OptionDB option) {
         this.option = option;
         this.id_option_fk=(option!=null)?option.getId_option():null;
     }
@@ -126,19 +126,19 @@ public class Value extends BaseModel implements VisitableToSDK {
         this.option=null;
     }
 
-    public Question getQuestion() {
+    public QuestionDB getQuestion() {
         if(question==null){
             if(id_question_fk==null) return null;
             question = new Select()
-                    .from(Question.class)
-                    .where(Question_Table.id_question
+                    .from(QuestionDB.class)
+                    .where(QuestionDB_Table.id_question
                             .is(id_question_fk)).querySingle();
         }
 
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionDB question) {
         this.question = question;
         this.id_question_fk = (question!=null)?question.getId_question():null;
     }
@@ -156,18 +156,18 @@ public class Value extends BaseModel implements VisitableToSDK {
         this.value = value;
     }
 
-    public Survey getSurvey() {
+    public SurveyDB getSurvey() {
         if(survey==null){
             if(id_survey_fk==null) return null;
             survey = new Select()
-                    .from(Survey.class)
-                    .where(Survey_Table.id_survey
+                    .from(SurveyDB.class)
+                    .where(SurveyDB_Table.id_survey
                             .is(id_survey_fk)).querySingle();
         }
         return survey;
     }
 
-    public void setSurvey(Survey survey) {
+    public void setSurvey(SurveyDB survey) {
         this.survey = survey;
         this.id_survey_fk = (survey!=null)?survey.getId_survey():null;
     }
@@ -227,30 +227,30 @@ public class Value extends BaseModel implements VisitableToSDK {
         return getOption() != null && getOption().getName().equals("Yes");
     }
 
-    public static int countBySurvey(Survey survey){
+    public static int countBySurvey(SurveyDB survey){
         if(survey==null || survey.getId_survey()==null){
             return 0;
         }
         return (int) SQLite.selectCountOf()
-                .from(Value.class)
-                .where(Value_Table.id_survey_fk.eq(survey.getId_survey())).count();
+                .from(ValueDB.class)
+                .where(ValueDB_Table.id_survey_fk.eq(survey.getId_survey())).count();
     }
 
-    public static int countCompulsoryBySurvey(Survey survey){
+    public static int countCompulsoryBySurvey(SurveyDB survey){
         if(survey==null || survey.getId_survey()==null){
             return 0;
         }
         return (int) SQLite.selectCountOf()
-                .from(Value.class).as(valueName)
-                .join(Question.class, Join.JoinType.LEFT_OUTER).as(questionName)
-                .on(Value_Table.id_question_fk.withTable(valueAlias).eq(Question_Table.id_question.withTable(questionAlias)))
-                .where(Question_Table.compulsory.withTable(questionAlias).eq(true))
-                .and(Value_Table.id_survey_fk.withTable(valueAlias).eq(survey.getId_survey())).count();
+                .from(ValueDB.class).as(valueName)
+                .join(QuestionDB.class, Join.JoinType.LEFT_OUTER).as(questionName)
+                .on(ValueDB_Table.id_question_fk.withTable(valueAlias).eq(QuestionDB_Table.id_question.withTable(questionAlias)))
+                .where(QuestionDB_Table.compulsory.withTable(questionAlias).eq(true))
+                .and(ValueDB_Table.id_survey_fk.withTable(valueAlias).eq(survey.getId_survey())).count();
     }
 
     public static long count(){
         return SQLite.selectCountOf()
-                .from(Value.class)
+                .from(ValueDB.class)
                 .count();
     }
 
@@ -264,7 +264,7 @@ public class Value extends BaseModel implements VisitableToSDK {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Value value1 = (Value) o;
+        ValueDB value1 = (ValueDB) o;
 
         if (id_value != value1.id_value) return false;
         if (value != null ? !value.equals(value1.value) : value1.value != null) return false;

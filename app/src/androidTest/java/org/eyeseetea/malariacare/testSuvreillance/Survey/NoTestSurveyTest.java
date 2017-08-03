@@ -19,16 +19,12 @@
 
 package org.eyeseetea.malariacare.testSuvreillance.Survey;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.eyeseetea.malariacare.testSuvreillance.Survey.utils.SDKVariantUtils;
 import org.junit.AfterClass;
@@ -37,14 +33,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 
 /**
@@ -81,7 +75,7 @@ public class NoTestSurveyTest {
         //WHEN
         SDKVariantUtils.fillNoTestSurvey(15);
         Long idSurvey = SDKTestUtils.getSurveyId();
-        Survey survey=Survey.findById(idSurvey);
+        SurveyDB survey= SurveyDB.findById(idSurvey);
 
         SDKVariantUtils.clickSend(25);
         //THEN

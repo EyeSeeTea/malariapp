@@ -23,7 +23,7 @@ import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +42,7 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
      * @param surveys
      * @param context
      */
-    public FacilityTableBuilderByProgram(List<Survey> surveys, Context context) {
+    public FacilityTableBuilderByProgram(List<SurveyDB> surveys, Context context) {
         super(surveys, context);
         this.facilityTableDataMap = new HashMap<>();
     }
@@ -52,8 +52,8 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
      * @param surveys
      * @return
      */
-    private void build(List<Survey> surveys){
-        for(Survey survey:surveys){
+    private void build(List<SurveyDB> surveys){
+        for(SurveyDB survey:surveys){
 
             //Get right table
             FacilityTableDataByProgram facilityTableData=facilityTableDataMap.get(survey.getOrgUnit().getUid());

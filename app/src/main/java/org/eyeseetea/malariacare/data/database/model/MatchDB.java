@@ -32,8 +32,8 @@ import java.util.List;
 /**
  * Created by Jose on 25/05/2015.
  */
-@Table(database = AppDatabase.class)
-public class Match extends BaseModel {
+@Table(database = AppDatabase.class, name = "Match")
+public class MatchDB extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_match;
@@ -43,23 +43,23 @@ public class Match extends BaseModel {
     /**
      * Reference to the associated questionRelation (loaded lazily)
      */
-    QuestionRelation questionRelation;
+    QuestionRelationDB questionRelation;
 
     /**
      * List of questionOptions associated to this match
      */
-    List<QuestionOption> questionOptions;
+    List<QuestionOptionDB> questionOptions;
 
-    public Match(){}
+    public MatchDB(){}
 
-    public Match(QuestionRelation questionRelation){
+    public MatchDB(QuestionRelationDB questionRelation){
         setQuestionRelation(questionRelation);
     }
 
-    public List<QuestionOption> getQuestionOptions() {
+    public List<QuestionOptionDB> getQuestionOptions() {
         if(questionOptions==null){
-            this.questionOptions = new Select().from(QuestionOption.class)
-                    .where(QuestionOption_Table.id_match_fk.eq(this.getId_match()))
+            this.questionOptions = new Select().from(QuestionOptionDB.class)
+                    .where(QuestionOptionDB_Table.id_match_fk.eq(this.getId_match()))
                     .queryList();
         }
         return this.questionOptions;
@@ -73,18 +73,18 @@ public class Match extends BaseModel {
         this.id_match = id_match;
     }
 
-    public QuestionRelation getQuestionRelation() {
+    public QuestionRelationDB getQuestionRelation() {
         if(questionRelation==null){
             if(id_question_relation_fk==null) return null;
             questionRelation = new Select()
-                    .from(QuestionRelation.class)
-                    .where(QuestionRelation_Table.id_question_relation
+                    .from(QuestionRelationDB.class)
+                    .where(QuestionRelationDB_Table.id_question_relation
                             .is(id_question_relation_fk)).querySingle();
         }
         return questionRelation;
     }
 
-    public void setQuestionRelation(QuestionRelation questionRelation) {
+    public void setQuestionRelation(QuestionRelationDB questionRelation) {
         this.questionRelation = questionRelation;
         this.id_question_relation_fk = (questionRelation!=null)?questionRelation.getId_question_relation():null;
     }
@@ -99,7 +99,7 @@ public class Match extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Match match = (Match) o;
+        MatchDB match = (MatchDB) o;
 
         if (id_match != match.id_match) return false;
         return !(id_question_relation_fk != null ? !id_question_relation_fk.equals(match.id_question_relation_fk) : match.id_question_relation_fk != null);

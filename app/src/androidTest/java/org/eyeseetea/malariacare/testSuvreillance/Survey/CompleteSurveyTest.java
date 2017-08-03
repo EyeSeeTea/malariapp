@@ -19,43 +19,28 @@
 
 package org.eyeseetea.malariacare.testSuvreillance.Survey;
 
-import android.support.test.espresso.AmbiguousViewMatcherException;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ViewAsserts;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.eyeseetea.malariacare.testSuvreillance.Survey.utils.SDKVariantUtils;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Date;
-
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
+
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
 
 /**
  * Created by idelcano on 21/03/2016.
@@ -91,7 +76,7 @@ public class CompleteSurveyTest {
         //WHEN
         SDKVariantUtils.fillCompleteSurvey(15);
         Long idSurvey = SDKTestUtils.getSurveyId();
-        Survey survey=Survey.findById(idSurvey);
+        SurveyDB survey= SurveyDB.findById(idSurvey);
 
         SDKVariantUtils.clickSend(15);
         //THEN

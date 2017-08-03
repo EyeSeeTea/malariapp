@@ -38,26 +38,26 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
         .ProgramStageDataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
-import org.eyeseetea.malariacare.data.database.model.Answer;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Header;
-import org.eyeseetea.malariacare.data.database.model.Match;
-import org.eyeseetea.malariacare.data.database.model.Media;
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.QuestionOption;
-import org.eyeseetea.malariacare.data.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.data.database.model.Score;
-import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.SurveySchedule;
-import org.eyeseetea.malariacare.data.database.model.Tab;
-import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.AnswerDB;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.HeaderDB;
+import org.eyeseetea.malariacare.data.database.model.MatchDB;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionOptionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -84,17 +84,17 @@ public class ConversionLocalDataSource {
         if (!PullController.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Validate Composite scores");
         callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
-        List<CompositeScore> compositeScores = CompositeScore.list();
-        for (CompositeScore compositeScore : compositeScores) {
+        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
+        for (CompositeScoreDB compositeScore : compositeScores) {
             if (!compositeScore.hasChildren() && (compositeScore.getQuestions() == null
                     || compositeScore.getQuestions().size() == 0)) {
-                Log.d(TAG, "CompositeScore without children and without questions will be removed: "
+                Log.d(TAG, "CompositeScoreDB without children and without questions will be removed: "
                         + compositeScore.toString());
                 compositeScore.delete();
                 continue;
             }
             if (compositeScore.getHierarchical_code() == null) {
-                Log.d(TAG, "CompositeScore without hierarchical code will be removed: "
+                Log.d(TAG, "CompositeScoreDB without hierarchical code will be removed: "
                         + compositeScore.toString());
                 compositeScore.delete();
                 continue;
@@ -102,7 +102,7 @@ public class ConversionLocalDataSource {
             if (compositeScore.getComposite_score() == null
                     && !compositeScore.getHierarchical_code().equals(
                     CompositeScoreBuilder.ROOT_NODE_CODE)) {
-                Log.d(TAG, "CompositeScore not root and not parent should be fixed: "
+                Log.d(TAG, "CompositeScoreDB not root and not parent should be fixed: "
                         + compositeScore.toString());
                 continue;
             }
@@ -388,26 +388,26 @@ public class ConversionLocalDataSource {
 
     public static void wipeDataBase() {
         Delete.tables(
-                Value.class,
-                Score.class,
-                Survey.class,
-                SurveySchedule.class,
-                OrgUnit.class,
-                OrgUnitLevel.class,
-                OrgUnitProgramRelation.class,
-                User.class,
-                QuestionOption.class,
-                Match.class,
-                QuestionRelation.class,
-                Question.class,
-                CompositeScore.class,
-                Option.class,
-                Answer.class,
-                Header.class,
-                Tab.class,
-                Program.class,
-                ServerMetadata.class,
-                Media.class
+                ValueDB.class,
+                ScoreDB.class,
+                SurveyDB.class,
+                SurveyScheduleDB.class,
+                OrgUnitDB.class,
+                OrgUnitLevelDB.class,
+                OrgUnitProgramRelationDB.class,
+                UserDB.class,
+                QuestionOptionDB.class,
+                MatchDB.class,
+                QuestionRelationDB.class,
+                QuestionDB.class,
+                CompositeScoreDB.class,
+                OptionDB.class,
+                AnswerDB.class,
+                HeaderDB.class,
+                TabDB.class,
+                ProgramDB.class,
+                ServerMetadataDB.class,
+                MediaDB.class
         );
     }
 }
