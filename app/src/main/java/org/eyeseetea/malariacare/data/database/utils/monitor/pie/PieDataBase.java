@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.pietemp;
+package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
 
 import org.eyeseetea.malariacare.utils.Constants;
 

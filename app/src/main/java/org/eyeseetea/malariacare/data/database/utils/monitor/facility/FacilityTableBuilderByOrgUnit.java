@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.facilitytemp;
+package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
 
 import android.content.Context;
 import android.util.Log;
