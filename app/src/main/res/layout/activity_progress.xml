@@ -31,12 +31,20 @@
     android:keepScreenOn="true"
     tools:context="org.eyeseetea.malariacare.ProgressActivity">
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/imageContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="fill"
-        android:src="@drawable/dhis2_logo"
-        android:id="@+id/imageView" />
+        android:gravity="center_horizontal"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:src="@drawable/qualityapp_logo" />
+    </LinearLayout>
 
 
     <TextView
@@ -66,9 +74,9 @@
         android:id="@+id/cancelPullButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignBottom="@id/imageContainer"
+        android:layout_alignRight="@id/imageContainer"
+        android:layout_alignEnd="@id/imageContainer"
         android:layout_gravity="center_horizontal"
         style="?android:textAppearanceSmall"
         android:padding="12dp"
