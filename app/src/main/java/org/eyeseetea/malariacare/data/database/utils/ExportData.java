@@ -9,7 +9,8 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.presentation.fileio.FileIOUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;

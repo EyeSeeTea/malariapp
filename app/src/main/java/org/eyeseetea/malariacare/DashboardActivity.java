@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -50,6 +51,7 @@ import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.sdk.presentation.fileio.FileIOUtils;
 
 import java.util.List;
 
@@ -198,6 +200,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
+        FileIOUtils.init(getApplicationContext(), getApplicationContext().getPackageName(), AppDatabase.NAME);
         DriveRestController.getInstance().syncMedia();
     }
 

@@ -7,7 +7,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.presentation.fileio.FileIOUtils;
 
 import java.io.File;
 

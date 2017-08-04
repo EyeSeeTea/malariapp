@@ -10,8 +10,8 @@ import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.sdk.presentation.fileio.FileIOUtils;
 
 import java.io.File;
 import java.text.DecimalFormat;

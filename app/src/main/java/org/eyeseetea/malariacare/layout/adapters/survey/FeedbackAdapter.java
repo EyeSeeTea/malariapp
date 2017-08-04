@@ -52,7 +52,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.presentation.fileio.FileIOUtils;
 
 import java.io.File;
 import java.util.ArrayList;
