@@ -93,13 +93,18 @@ public class LoginActivity extends AbsLoginActivity {
 
         progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
 
+        replaceDhisLogoToHNQISLogo();
+
+        loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
+
+    }
+
+    private void replaceDhisLogoToHNQISLogo() {
         FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
         ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
 
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
-        loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
-
     }
 
     private void launchActivity(Activity activity, Class<?> activityClass) {
