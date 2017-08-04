@@ -218,7 +218,8 @@ public class OrgUnitDB extends BaseModel {
     }
 
     public static List<OrgUnitDB> getAllOrgUnit() {
-        return new Select().from(OrgUnitDB.class).queryList();
+        return new Select().from(OrgUnitDB.class)
+                .orderBy(OrgUnitDB_Table.name, true).queryList();
     }
     /**
      * Returns the UID of an orgUnit with the given name
