@@ -24,7 +24,7 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 
 import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.addColumn;
 
@@ -43,7 +43,7 @@ public class Migration6AddConflictValue extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, Value.class, "conflict", "boolean");
+        addColumn(database, ValueDB.class, "conflict", "boolean");
     }
 
     @Override

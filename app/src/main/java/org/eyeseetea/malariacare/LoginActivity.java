@@ -44,7 +44,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
@@ -83,7 +83,7 @@ public class LoginActivity extends AbsLoginActivity {
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLoginActivityStrategy.onCreate();
-        if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
+        if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
             launchActivity(LoginActivity.this, DashboardActivity.class);

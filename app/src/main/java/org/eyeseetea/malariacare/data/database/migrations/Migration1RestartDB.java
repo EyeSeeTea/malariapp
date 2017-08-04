@@ -24,8 +24,8 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 
@@ -54,9 +54,9 @@ public class Migration1RestartDB extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, Survey.class, "creationDate", "integer");
-        addColumn(database, Survey.class, "scheduledDate", "integer");
-        addColumn(database, Question.class,"output","integer");
+        addColumn(database, SurveyDB.class, "creationDate", "integer");
+        addColumn(database, SurveyDB.class, "scheduledDate", "integer");
+        addColumn(database, QuestionDB.class,"output","integer");
         recreateTables(database,SDK_TABLES_TO_UPDATE);
     }
 
