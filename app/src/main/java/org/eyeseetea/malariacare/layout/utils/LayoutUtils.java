@@ -19,22 +19,19 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -117,12 +114,12 @@ public class LayoutUtils {
     }
 
     public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,
-            Survey survey) {
+            SurveyDB survey) {
         String title = "";
         String subtitle = "";
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         String appNameColorString = String.format("%X", appNameColor).substring(2);
-        Program program = survey.getProgram();
+        ProgramDB program = survey.getProgram();
         if (survey.getOrgUnit().getName() != null) {
             title = survey.getOrgUnit().getName();
         }
@@ -205,7 +202,7 @@ public class LayoutUtils {
     }
 
     public static String getCurrentUsername() {
-        User user = Session.getUser();
+        UserDB user = Session.getUser();
         if (user == null) {
             return "";
         }

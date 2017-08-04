@@ -29,8 +29,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class Header extends BaseModel {
+@Table(database = AppDatabase.class, name = "Header")
+public class HeaderDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -47,17 +47,17 @@ public class Header extends BaseModel {
     /**
      * Reference to parent tab (loaded lazily)
      */
-    Tab tab;
+    TabDB tab;
 
     /**
      * List of questions that belongs to this header
      */
-    List<Question> questions;
+    List<QuestionDB> questions;
 
-    public Header() {
+    public HeaderDB() {
     }
 
-    public Header(String short_name, String name, Integer order_pos, Integer master, Tab tab) {
+    public HeaderDB(String short_name, String name, Integer order_pos, Integer master, TabDB tab) {
         this.short_name = short_name;
         this.name = name;
         this.order_pos = order_pos;
@@ -96,18 +96,18 @@ public class Header extends BaseModel {
         this.order_pos = order_pos;
     }
 
-    public Tab getTab() {
+    public TabDB getTab() {
         if(tab==null){
             if(id_tab_fk==null) return null;
             tab = new Select()
-                    .from(Tab.class)
-                    .where((Tab_Table.id_tab)
+                    .from(TabDB.class)
+                    .where((TabDB_Table.id_tab)
                             .is(id_tab_fk)).querySingle();
         }
         return tab;
     }
 
-    public void setTab(Tab tab) {
+    public void setTab(TabDB tab) {
         this.tab = tab;
         this.id_tab_fk = (tab!=null)?tab.getId_tab():null;
     }
@@ -117,11 +117,11 @@ public class Header extends BaseModel {
         this.tab = null;
     }
 
-    public List<Question> getQuestions() {
+    public List<QuestionDB> getQuestions() {
         if (this.questions == null) {
-            this.questions = new Select().from(Question.class)
-                    .where(Question_Table.id_header_fk.eq(this.getId_header()))
-                    .orderBy( Question_Table.order_pos,true).queryList();
+            this.questions = new Select().from(QuestionDB.class)
+                    .where(QuestionDB_Table.id_header_fk.eq(this.getId_header()))
+                    .orderBy( QuestionDB_Table.order_pos,true).queryList();
         }
         return questions;
     }
@@ -131,7 +131,7 @@ public class Header extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Header header = (Header) o;
+        HeaderDB header = (HeaderDB) o;
 
         if (id_header != header.id_header) return false;
         if (short_name != null ? !short_name.equals(header.short_name)

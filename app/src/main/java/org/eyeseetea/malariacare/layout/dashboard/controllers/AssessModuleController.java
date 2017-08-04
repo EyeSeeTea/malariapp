@@ -28,7 +28,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
@@ -80,7 +80,7 @@ public class AssessModuleController extends ModuleController {
             return;
         }
 
-        Survey survey = Session.getSurveyByModule(getSimpleName());
+        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
         if (survey.isCompleted() || survey.isSent()) {
             dashboardController.setNavigatingBackwards(false);
             closeSurveyFragment();
@@ -111,12 +111,12 @@ public class AssessModuleController extends ModuleController {
 
         surveyFragment.showProgress();
         surveyFragment.nextProgressMessage();
-        final Survey survey = Session.getSurveyByModule(getSimpleName());
+        final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
         new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.PRESS_BACK_BUTTON).execute();
         //if the survey is opened in review mode exit.
     }
 
-    public void onSurveySelected(Survey survey) {
+    public void onSurveySelected(SurveyDB survey) {
 
         Session.setSurveyByModule(survey, getSimpleName());
 
@@ -140,7 +140,7 @@ public class AssessModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
-    public void onMarkAsCompleted(final Survey survey) {
+    public void onMarkAsCompleted(final SurveyDB survey) {
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
@@ -195,7 +195,7 @@ public class AssessModuleController extends ModuleController {
         }
 
         //In survey -> custom action bar
-        Survey survey = Session.getSurveyByModule(getSimpleName());
+        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
         String appNameColorString = LayoutUtils.getAppNameColorString();
         String title = getActionBarTitleBySurvey(survey);
         String subtitle = getActionBarSubTitleBySurvey(survey);
@@ -247,7 +247,7 @@ public class AssessModuleController extends ModuleController {
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        final Survey survey = Session.getSurveyByModule(getSimpleName());
+                        final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
 
                         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
                         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
@@ -260,7 +260,7 @@ public class AssessModuleController extends ModuleController {
 
                                     @Override
                                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                        Survey dbSurvey = Survey.findById(survey.getId_survey());
+                                        SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
                                         dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                                     }
                                 });
@@ -286,7 +286,7 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        Survey survey = Session.getSurveyByModule(getSimpleName());
+                        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
                         survey.setCompleteSurveyState(getSimpleName());
                         alertOnComplete(survey);
                         dashboardController.setNavigatingBackwards(true);
@@ -329,7 +329,7 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    private void alertAreYouSureYouWantToComplete(final Survey survey) {
+    private void alertAreYouSureYouWantToComplete(final SurveyDB survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
@@ -352,7 +352,7 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    private void alertOnComplete(Survey survey) {
+    private void alertOnComplete(SurveyDB survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
@@ -362,7 +362,7 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    public void alertOnCompleteGoToFeedback(final Survey survey) {
+    public void alertOnCompleteGoToFeedback(final SurveyDB survey) {
         new AlertDialog.Builder(dashboardActivity)
                 .setTitle(null)
                 .setMessage(String.format(dashboardActivity.getResources().getString(
@@ -387,10 +387,10 @@ public class AssessModuleController extends ModuleController {
     public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatio> {
         SurveyAnsweredRatio mSurveyAnsweredRatio;
         SurveyFragment surveyFragment;
-        Survey survey;
+        SurveyDB survey;
         Action action;
 
-        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, Survey survey, Action action) {
+        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyDB survey, Action action) {
             this.surveyFragment = surveyFragment;
             this.survey = survey;
             this.action = action;

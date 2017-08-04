@@ -28,9 +28,9 @@ import android.widget.TabWidget;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 
@@ -237,7 +237,7 @@ public class DashboardController {
      * Starts or edits the given survey from the planning tab
      * @param survey
      */
-    public void onSurveySelected(Survey survey){
+    public void onSurveySelected(SurveyDB survey){
 
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
@@ -258,7 +258,7 @@ public class DashboardController {
      * Starts the org unit planning tab
      * @param orgUnit
      */
-    public void onOrgUnitSelected(OrgUnit orgUnit) {
+    public void onOrgUnitSelected(OrgUnitDB orgUnit) {
         PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
         planModuleController.onOrgUnitSelected(orgUnit);
     }
@@ -266,7 +266,7 @@ public class DashboardController {
      * Starts the program planning tab
      * @param program
      */
-    public void onProgramSelected(Program program) {
+    public void onProgramSelected(ProgramDB program) {
         PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
         planModuleController.onProgramSelected(program);
     }
@@ -274,7 +274,7 @@ public class DashboardController {
      * Marks the given survey as selected
      * @param survey
      */
-    public void onMarkAsCompleted(Survey survey){
+    public void onMarkAsCompleted(SurveyDB survey){
         //This action belongs to the assess module
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
         assessModuleController.onMarkAsCompleted(survey);
@@ -303,7 +303,7 @@ public class DashboardController {
      * Called when entering feedback for the given survey
      * @param survey
      */
-    public void onFeedbackSelected(Survey survey) {
+    public void onFeedbackSelected(SurveyDB survey) {
 
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){

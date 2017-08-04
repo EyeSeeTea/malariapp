@@ -23,14 +23,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.List;
 
 public class AssessmentSentAdapter extends AAssessmentAdapter implements IAssessmentAdapter {
 
-    public AssessmentSentAdapter(List<Survey> items, Context context) {
+    public AssessmentSentAdapter(List<SurveyDB> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
@@ -43,6 +43,6 @@ public class AssessmentSentAdapter extends AAssessmentAdapter implements IAssess
 
     @Override
     public IDashboardAdapter newInstance(List items, Context context) {
-        return new AssessmentSentAdapter((List<Survey>) items, context);
+        return new AssessmentSentAdapter((List<SurveyDB>) items, context);
     }
 }

@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 
 import java.util.List;
 
@@ -34,10 +34,10 @@ public class ScoreTabAdapter implements ITabAdapter {
 
     int id_layout;
     String tab_name;
-    List<Tab> tabs;
+    List<TabDB> tabs;
     private LayoutInflater lInflater;
 
-    public ScoreTabAdapter(List<Tab> tabs, int id_layout, String tab_name) {
+    public ScoreTabAdapter(List<TabDB> tabs, int id_layout, String tab_name) {
         this.tabs = tabs;
         this.id_layout = id_layout;
         this.tab_name = tab_name;

@@ -23,8 +23,8 @@ import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +44,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
     /**
      * List of sent surveys
      */
-    List<Program>  programs;
+    List<ProgramDB>  programs;
     /**
      * Default constructor
      *
@@ -52,7 +52,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
      * @param context
      * @param programs
      */
-    public SentSurveysBuilderByProgram(List<Survey> surveyList, Context context, List<Program> programs) {
+    public SentSurveysBuilderByProgram(List<SurveyDB> surveyList, Context context, List<ProgramDB> programs) {
         super(surveyList, context);
         this.programs=programs;
         sentSurveysChartMap= new HashMap<>();
@@ -64,7 +64,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
      */
     public void addDataInChart(WebView webView) {
         //Build entries
-        for (Program program : programs) {
+        for (ProgramDB program : programs) {
             this.program = program;
             build(surveyList);
             //Take only 6 months from now
@@ -116,8 +116,8 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
      * @param surveys List of sent surveys to create the list
      * @return
      */
-    public void build(List<Survey> surveys){
-        for(Survey survey:surveys){
+    public void build(List<SurveyDB> surveys){
+        for(SurveyDB survey:surveys){
             if(survey.getProgram().equals(program)) {
 
                 //Get the month for the survey (key)

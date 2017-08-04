@@ -25,7 +25,7 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 
 import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.addColumn;
 import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.updateColumn;
@@ -45,8 +45,8 @@ public class Migration5AddProductivity extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, OrgUnit.class, "productivity", "Integer");
-        updateColumn(database, OrgUnit.class, "productivity", "0");
+        addColumn(database, OrgUnitDB.class, "productivity", "Integer");
+        updateColumn(database, OrgUnitDB.class, "productivity", "0");
     }
 
     @Override
