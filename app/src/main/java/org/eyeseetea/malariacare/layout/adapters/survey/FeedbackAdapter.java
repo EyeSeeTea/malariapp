@@ -29,10 +29,7 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -43,9 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -191,7 +186,16 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        textView.setText(feedback.getLabel());
+        String compulsoryMark="";
+        if(feedback.getQuestion().getCompulsory()) {
+            int red = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.darkRed);
+            String appNameColorString = String.format("%X", red).substring(2);
+            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
+                    + "</b></font>";
+        }
+
+        textView.setText(Html.fromHtml(compulsoryMark+feedback.getLabel()));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
