@@ -110,7 +110,7 @@ public class LayoutUtils {
 
     public static void setActionBarBackButton(ActionBarActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
     public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,
@@ -139,7 +139,7 @@ public class LayoutUtils {
     public static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setCustomView(R.layout.abc_action_bar_title_item);
         actionBar.setSubtitle(subtitle);
@@ -150,7 +150,7 @@ public class LayoutUtils {
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             actionBar.setCustomView(R.layout.dev_custom_action_bar);
             String server = PreferencesState.getInstance().getServerUrl();
@@ -166,7 +166,7 @@ public class LayoutUtils {
     public static void setActionbarAppName(ActionBarActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setCustomView(R.layout.abc_action_bar_title_item);
         actionBar.setSubtitle(null);
         actionBar.setTitle(activity.getResources().getString(R.string.app_name));
@@ -183,7 +183,7 @@ public class LayoutUtils {
             String appNameColorString = getAppNameColorString();
             String appName = getAppName();
             Spanned spannedTitle = Html.fromHtml(
-                    String.format("<font color=\"#%s\"><b>%s</b></font> | %s", appNameColorString,
+                    String.format("<font color=\"#%s\"><b>%s</b></font> - %s", appNameColorString,
                             appName, title));
             LayoutUtils.setActionbarTitle(activity, spannedTitle, user);
         }
