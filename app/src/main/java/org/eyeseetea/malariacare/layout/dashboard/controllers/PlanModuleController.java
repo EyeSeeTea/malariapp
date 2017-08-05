@@ -20,11 +20,9 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.FragmentTransaction;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -51,12 +49,12 @@ public class PlanModuleController extends ModuleController {
     private ProgramDB programDefaultOption;
     private OrgUnitDB orgUnitDefaultOption;
 
-    public PlanModuleController(ModuleSettings moduleSettings){
+    public PlanModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
-        this.tabLayout=R.id.tab_plan_layout;
+        this.tabLayout = R.id.tab_plan_layout;
     }
 
-    public static String getSimpleName(){
+    public static String getSimpleName() {
         return PlanModuleController.class.getSimpleName();
     }
 
@@ -66,41 +64,51 @@ public class PlanModuleController extends ModuleController {
         createFilters();
         orgUnitVisibility(View.GONE);
         programVisibility(View.VISIBLE);
-        fragment= new PlannedFragment();
+        fragment = new PlannedFragment();
     }
 
     private void createFilters() {
-        programDefaultOption = new ProgramDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnitDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_units).toUpperCase());
+        programDefaultOption = new ProgramDB(
+                PreferencesState.getInstance().getContext().getResources().getString(
+                        R.string.filter_all_org_assessments).toUpperCase());
+        orgUnitDefaultOption = new OrgUnitDB(
+                PreferencesState.getInstance().getContext().getResources().getString(
+                        R.string.filter_all_org_units).toUpperCase());
 
-        orgUnitSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_orgUnit);
-        programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
+        orgUnitSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_spinner_orgUnit);
+        programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_spinner_program);
     }
 
-    public boolean isVisible(){
-        if(PreferencesState.getInstance().isHidePlanningTab())
-            DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(View.GONE);
+    public boolean isVisible() {
+        if (PreferencesState.getInstance().isHidePlanningTab()) {
+            DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(
+                    View.GONE);
+        }
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
-    public void prepareFilters(final List<ProgramDB> programList, final List<OrgUnitDB> orgUnitList) {
+    public void prepareFilters(final List<ProgramDB> programList,
+            final List<OrgUnitDB> orgUnitList) {
         //Populate Program View DDL
-        if (!programList.contains(programDefaultOption))
+        if (!programList.contains(programDefaultOption)) {
             programList.add(0, programDefaultOption);
-        programSpinner.setAdapter(new FilterProgramArrayAdapter(DashboardActivity.dashboardActivity, programList));
+        }
+        programSpinner.setAdapter(
+                new FilterProgramArrayAdapter(DashboardActivity.dashboardActivity, programList));
         //Apply filter to listview
         programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 CustomSpinner spinner = ((CustomSpinner) parent);
                 ProgramDB selectedProgram = (ProgramDB) spinner.getItemAtPosition(position);
 
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                if(selectedProgram==null)
+                if (selectedProgram == null) {
                     return;
+                }
                 //Set orgUnit to "All org units"
-                orgUnitSpinner.setSelection(0,true,true);
+                orgUnitSpinner.setSelection(0, true, true);
                 DashboardActivity.dashboardActivity.onProgramSelected(selectedProgram);
             }
 
@@ -111,23 +119,24 @@ public class PlanModuleController extends ModuleController {
         });
 
         //Populate Program View DDL
-        if(!orgUnitList.contains(orgUnitDefaultOption))
+        if (!orgUnitList.contains(orgUnitDefaultOption)) {
             orgUnitList.add(0, orgUnitDefaultOption);
-        orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(DashboardActivity.dashboardActivity, orgUnitList));
+        }
+        orgUnitSpinner.setAdapter(
+                new FilterOrgUnitArrayAdapter(DashboardActivity.dashboardActivity, orgUnitList));
         //Apply filter to listview
         orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 //Set programSpinner to "All assessments"
-                CustomSpinner spinner=((CustomSpinner) parent);
-                OrgUnitDB selectedOrgUnit=position==0?null:(OrgUnitDB)spinner.getItemAtPosition(position);
+                CustomSpinner spinner = ((CustomSpinner) parent);
+                OrgUnitDB selectedOrgUnit =
+                        position == 0 ? null : (OrgUnitDB) spinner.getItemAtPosition(position);
 
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-
-                if(selectedOrgUnit==null)
+                if (selectedOrgUnit == null) {
                     return;
-                programSpinner.setSelection(0,true,true);
+                }
+                programSpinner.setSelection(0, true, true);
                 DashboardActivity.dashboardActivity.onOrgUnitSelected(selectedOrgUnit);
 
             }
@@ -145,7 +154,7 @@ public class PlanModuleController extends ModuleController {
         programVisibility(View.GONE);
         orgUnitVisibility(View.VISIBLE);
 
-        if(plannedOrgUnitsFragment==null) {
+        if (plannedOrgUnitsFragment == null) {
             plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
         }
         plannedOrgUnitsFragment.setOrgUnitFilter(orgUnit.getUid());
@@ -158,34 +167,39 @@ public class PlanModuleController extends ModuleController {
 
     public void onProgramSelected(ProgramDB program) {
         Log.d(TAG, "onProgramSelected");
-        if (DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
+        if (DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
             //hide plannedFragment layout and show plannedOrgUnitsFragment
             orgUnitVisibility(View.GONE);
             programVisibility(View.VISIBLE);
 
 
-            if (fragment == null)
+            if (fragment == null) {
                 fragment = new PlannedFragment();
+            }
 
             FragmentTransaction ft = getFragmentTransaction();
             ft.replace(R.id.dashboard_planning_init, fragment);
             ft.commit();
-            if(program!=null){
-                ((PlannedFragment)fragment).reloadFilter();
+            if (program != null) {
+                ((PlannedFragment) fragment).reloadFilter();
             }
+        } else {
+            ((PlannedFragment) fragment).reloadFilter();
         }
-        else
-            ((PlannedFragment)fragment).reloadFilter();
 
     }
 
     private void programVisibility(int visibility) {
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_init).setVisibility(visibility);
     }
 
     private void orgUnitVisibility(int visibility) {
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(visibility);
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit_header).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_orgunit).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_orgunit_header).setVisibility(visibility);
     }
 
     public void clickOrgProgramSpinner() {

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
@@ -19,46 +18,75 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/tab_improve_layout"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab_improve_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <LinearLayout
+        android:id="@+id/filters_sentSurveys"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/filters_sentSurveys">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/assess_grey"
-            android:paddingTop="5dip"
+            android:background="@color/background_light_grey"
+            android:orientation="horizontal"
             android:paddingBottom="5dip"
-            android:weightSum="1">
-            <org.eyeseetea.malariacare.views.CustomSpinner
-                android:id="@+id/filter_program"
+            android:paddingTop="5dip">
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="0.44"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"/>
-                <include layout="@layout/image_program_filter_item"></include>
-            <org.eyeseetea.malariacare.views.CustomSpinner
-                android:id="@+id/filter_orgunit"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.45"
+                android:background="@color/background_light_grey"
+                android:orientation="vertical"
+                android:padding="@dimen/dashboard_row_padding">
+
+                <org.eyeseetea.malariacare.views.CustomSpinner
+                    android:id="@+id/filter_program"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/font_name_light">
+
+                </org.eyeseetea.malariacare.views.CustomSpinner>
+
+                <include layout="@layout/spinner_stroke"></include>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="0.44"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"/>
-            <include layout="@layout/image_org_unit_filter_item"></include>
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.45"
+                android:background="@color/background_light_grey"
+                android:orientation="vertical"
+                android:padding="@dimen/dashboard_row_padding">
+
+                <org.eyeseetea.malariacare.views.CustomSpinner
+                    android:id="@+id/filter_orgunit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    app:tDimension="@string/font_size_level1"
+                    app:tFontName="@string/font_name_light" />
+
+                <include layout="@layout/spinner_stroke"></include>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <FrameLayout
-        android:orientation="vertical"
+        android:id="@+id/dashboard_completed_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/dashboard_completed_container">
-    </FrameLayout>
+        android:orientation="vertical"></FrameLayout>
     <!-- list view will be automatically added here by the list fragment -->
 </LinearLayout>
