@@ -181,7 +181,6 @@ public class PlanModuleController extends ModuleController {
 
     private void programVisibility(int visibility) {
         DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(visibility);
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_programs_header).setVisibility(visibility);
     }
 
     private void orgUnitVisibility(int visibility) {
