@@ -30,9 +30,6 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
  */
 public class PlannedHeader implements PlannedItem {
     private String titleHeader;
-    private final String productivityHeader;
-    private final String qualityOfCareHeader;
-    private final String nextHeader;
     private final Integer backgroundColor;
     private final Integer secondaryColor;
     private final Integer gaudyBackgroundColor;
@@ -42,11 +39,8 @@ public class PlannedHeader implements PlannedItem {
      */
     private Integer counter;
 
-    public PlannedHeader(String titleHeader, String productivityHeader, String qualityOfCareHeader, String nextHeader, Integer backgroundColor, Integer secondaryColor, Integer gaudyBackgroundColor) {
+    public PlannedHeader(String titleHeader, Integer backgroundColor, Integer secondaryColor, Integer gaudyBackgroundColor) {
         this.titleHeader = titleHeader;
-        this.productivityHeader = productivityHeader;
-        this.qualityOfCareHeader = qualityOfCareHeader;
-        this.nextHeader = nextHeader;
         this.backgroundColor = backgroundColor;
         this.secondaryColor = secondaryColor;
         this.gaudyBackgroundColor = gaudyBackgroundColor;
@@ -78,18 +72,6 @@ public class PlannedHeader implements PlannedItem {
 
     public void incCounter(){
         counter++;
-    }
-
-    public String getProductivityHeader() {
-        return productivityHeader;
-    }
-
-    public String getQualityOfCareHeader() {
-        return qualityOfCareHeader;
-    }
-
-    public String getNextHeader() {
-        return nextHeader;
     }
 
     public Integer getBackgroundColor(){
@@ -127,9 +109,6 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildNeverHeader(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_never),
-                ctx.getString(R.string.dashboard_title_planned_productivity),
-                ctx.getString(R.string.dashboard_title_planned_quality_of_care),
-                ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.red,
                 R.color.light_red,
                 R.color.gaudyYellow);
@@ -143,9 +122,6 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildOverdueHeader(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_overdue),
-                ctx.getString(R.string.dashboard_title_planned_productivity),
-                ctx.getString(R.string.dashboard_title_planned_quality_of_care),
-                ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.amber,
                 R.color.planLighYellow,
                 R.color.gaudyYellow);
@@ -159,9 +135,6 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildNext30Header(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_next_30),
-                ctx.getString(R.string.dashboard_title_planned_productivity),
-                ctx.getString(R.string.dashboard_title_planned_quality_of_care),
-                ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.green,
                 R.color.planLightGreen,
                 R.color.gaudyYellow);
@@ -175,9 +148,6 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildFutureHeader(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_future),
-                ctx.getString(R.string.dashboard_title_planned_productivity),
-                ctx.getString(R.string.dashboard_title_planned_quality_of_care),
-                ctx.getString(R.string.dashboard_title_planned_next_qa),
                 R.color.scoreGrandson,
                 R.color.feedbackLightBlue,
                 R.color.gaudyYellow);
@@ -192,12 +162,6 @@ public class PlannedHeader implements PlannedItem {
 
         if (titleHeader != null ? !titleHeader.equals(that.titleHeader) : that.titleHeader != null)
             return false;
-        if (productivityHeader != null ? !productivityHeader.equals(that.productivityHeader) : that.productivityHeader != null)
-            return false;
-        if (qualityOfCareHeader != null ? !qualityOfCareHeader.equals(that.qualityOfCareHeader) : that.qualityOfCareHeader != null)
-            return false;
-        if (nextHeader != null ? !nextHeader.equals(that.nextHeader) : that.nextHeader != null)
-            return false;
         return !(backgroundColor != null ? !backgroundColor.equals(that.backgroundColor) : that.backgroundColor != null);
 
     }
@@ -205,9 +169,6 @@ public class PlannedHeader implements PlannedItem {
     @Override
     public int hashCode() {
         int result = titleHeader != null ? titleHeader.hashCode() : 0;
-        result = 31 * result + (productivityHeader != null ? productivityHeader.hashCode() : 0);
-        result = 31 * result + (qualityOfCareHeader != null ? qualityOfCareHeader.hashCode() : 0);
-        result = 31 * result + (nextHeader != null ? nextHeader.hashCode() : 0);
         result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
         return result;
     }
