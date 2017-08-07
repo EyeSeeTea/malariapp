@@ -26,7 +26,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.After;
@@ -73,7 +73,7 @@ public class AssessCompulsoryIncompleteTest {
 
     @After
     public void deleteSurveys() throws Exception{
-        Delete.tables(Survey.class);
+        Delete.tables(SurveyDB.class);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class AssessCompulsoryIncompleteTest {
         //WHEN
         Long idSurvey = SDKTestUtils.markAsCompleteCompulsory();
         Log.d(TAG, "Session user ->" + Session.getUser());
-        Survey survey = Survey.findById(idSurvey);
+        SurveyDB survey = SurveyDB.findById(idSurvey);
 
         //THEN
         onView(withText(R.string.accept)).perform(click());

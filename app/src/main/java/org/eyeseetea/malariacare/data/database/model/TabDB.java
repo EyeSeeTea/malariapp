@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.data.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -32,8 +31,8 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class Tab extends BaseModel {
+@Table(database = AppDatabase.class, name = "Tab")
+public class TabDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -50,17 +49,17 @@ public class Tab extends BaseModel {
     /**
      * Reference to parent Program (loaded lazily)
      */
-    Program program;
+    ProgramDB program;
 
     /**
      * List of headers that belongs to this tab
      */
-    List<Header> headers;
+    List<HeaderDB> headers;
 
-    public Tab() {
+    public TabDB() {
     }
 
-    public Tab(String name, Integer order_pos, Integer type, Program program) {
+    public TabDB(String name, Integer order_pos, Integer type, ProgramDB program) {
         this.name = name;
         this.order_pos = order_pos;
         this.type = type;
@@ -99,13 +98,13 @@ public class Tab extends BaseModel {
         this.type = type;
     }
 
-    public Program getProgram() {
+    public ProgramDB getProgram() {
         if(program ==null){
             if (id_program_fk == null) return null;
 
             program = new Select()
-                    .from(Program.class)
-                    .where(Program_Table.id_program
+                    .from(ProgramDB.class)
+                    .where(ProgramDB_Table.id_program
                             .is(id_program_fk)).querySingle();
         }
         return program;
@@ -116,16 +115,16 @@ public class Tab extends BaseModel {
         this.program=null;
     }
 
-    public void setProgram(Program program) {
+    public void setProgram(ProgramDB program) {
         this.program = program;
         this.id_program_fk = (program!=null)?program.getId_program():null;
     }
 
-    public List<Header> getHeaders(){
+    public List<HeaderDB> getHeaders(){
         if(headers==null){
-            headers =new Select().from(Header.class)
-                    .where(Header_Table.id_tab_fk.eq(this.getId_tab()))
-                    .orderBy(Header_Table.order_pos,true).queryList();
+            headers =new Select().from(HeaderDB.class)
+                    .where(HeaderDB_Table.id_tab_fk.eq(this.getId_tab()))
+                    .orderBy(HeaderDB_Table.order_pos,true).queryList();
         }
         return headers;
     }
@@ -133,10 +132,10 @@ public class Tab extends BaseModel {
     /*
      * Return tabs filter by program and order by orderpos field
      */
-    public static List<Tab> getTabsBySession(String module){
-        return new Select().from(Tab.class)
-                .where(Tab_Table.id_program_fk.eq(Session.getSurveyByModule(module).getProgram().getId_program()))
-                .orderBy(Tab_Table.order_pos,true).queryList();
+    public static List<TabDB> getTabsBySession(String module){
+        return new Select().from(TabDB.class)
+                .where(TabDB_Table.id_program_fk.eq(Session.getSurveyByModule(module).getProgram().getId_program()))
+                .orderBy(TabDB_Table.order_pos,true).queryList();
     }
 
     /**
@@ -144,8 +143,8 @@ public class Tab extends BaseModel {
      * @param tabID
      * @return
      */
-    public static Tab findById(Long tabID) {
-        return new Select().from(Tab.class).where(Tab_Table.id_tab.eq(tabID)).querySingle();
+    public static TabDB findById(Long tabID) {
+        return new Select().from(TabDB.class).where(TabDB_Table.id_tab.eq(tabID)).querySingle();
     }
 
     /**
@@ -186,7 +185,7 @@ public class Tab extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tab tab = (Tab) o;
+        TabDB tab = (TabDB) o;
 
         if (id_tab != tab.id_tab) return false;
         if (name != null ? !name.equals(tab.name) : tab.name != null) return false;

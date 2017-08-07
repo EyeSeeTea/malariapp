@@ -29,8 +29,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
-@Table(database = AppDatabase.class)
-public class ServerMetadata extends BaseModel {
+@Table(database = AppDatabase.class, name = "ServerMetadata")
+public class ServerMetadataDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -48,10 +48,10 @@ public class ServerMetadata extends BaseModel {
     @Column
     String value_type;
 
-    public ServerMetadata() {
+    public ServerMetadataDB() {
     }
 
-    public ServerMetadata(long id_control_dataelement, String name, String code, String valueType, String uid) {
+    public ServerMetadataDB(long id_control_dataelement, String name, String code, String valueType, String uid) {
         this.id_server_metadata = id_control_dataelement;
         this.name = name;
         this.code = code;
@@ -99,16 +99,16 @@ public class ServerMetadata extends BaseModel {
         this.value_type = value_type;
     }
 
-    public static ServerMetadata findControlDataElementByCode(String code){
-        return new Select().from(ServerMetadata.class).where(ServerMetadata_Table.code.eq(code)).querySingle();
+    public static ServerMetadataDB findControlDataElementByCode(String code){
+        return new Select().from(ServerMetadataDB.class).where(ServerMetadataDB_Table.code.eq(code)).querySingle();
     }
 
-    public static ServerMetadata findControlDataElementByName(String code){
-        return new Select().from(ServerMetadata.class).where(ServerMetadata_Table.name.eq(code)).querySingle();
+    public static ServerMetadataDB findControlDataElementByName(String code){
+        return new Select().from(ServerMetadataDB.class).where(ServerMetadataDB_Table.name.eq(code)).querySingle();
     }
 
     public static String findControlDataElementUid(String code){
-        ServerMetadata controlDataElement=findControlDataElementByCode(code);
+        ServerMetadataDB controlDataElement=findControlDataElementByCode(code);
         if(controlDataElement==null){
             controlDataElement=findControlDataElementByName(code);
         }
@@ -124,7 +124,7 @@ public class ServerMetadata extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ServerMetadata that = (ServerMetadata) o;
+        ServerMetadataDB that = (ServerMetadataDB) o;
 
         if (id_server_metadata != that.id_server_metadata) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;

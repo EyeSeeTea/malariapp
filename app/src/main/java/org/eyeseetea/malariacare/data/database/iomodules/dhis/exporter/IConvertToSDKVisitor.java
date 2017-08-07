@@ -19,13 +19,14 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 
 public interface IConvertToSDKVisitor {
-    void visit(Survey survey) throws ConversionException;
-    void visit(CompositeScore compositeScore);
-    void visit(Value value);
+    void visit(SurveyDB survey) throws ConversionException;
+    void visit(CompositeScoreDB compositeScore);
+    void visit(ValueDB value);
 }

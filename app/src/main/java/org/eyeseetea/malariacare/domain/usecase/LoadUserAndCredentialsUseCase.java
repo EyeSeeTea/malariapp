@@ -24,7 +24,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
@@ -42,7 +42,7 @@ public class LoadUserAndCredentialsUseCase {
     }
 
     private void loadUser() {
-        Session.setUser(User.getLoggedUser());
+        Session.setUser(UserDB.getLoggedUser());
     }
 
     private void loadCredentials() {

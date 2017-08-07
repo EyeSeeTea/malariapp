@@ -24,7 +24,7 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.Option;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
 
 import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.addColumn;
 
@@ -43,8 +43,8 @@ public class Migration10AddOptionColumns extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, Option.class, "uid", "string");
-        addColumn(database, Option.class, "id_option_attribute", "integer");
+        addColumn(database, OptionDB.class, "uid", "string");
+        addColumn(database, OptionDB.class, "id_option_attribute", "integer");
 
     }
 

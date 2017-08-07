@@ -26,7 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
@@ -44,7 +44,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     public AAssessmentAdapter() { }
 
-    public AAssessmentAdapter(List<Survey> items, Context context) {
+    public AAssessmentAdapter(List<SurveyDB> items, Context context) {
         this.items = items;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
@@ -57,7 +57,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Survey survey = (Survey) getItem(position);
+        SurveyDB survey = (SurveyDB) getItem(position);
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int)(5 * density);
 
@@ -131,12 +131,12 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
      * @param survey
      * @return
      */
-    private boolean hasToShowFacility(int position, Survey survey){
+    private boolean hasToShowFacility(int position, SurveyDB survey){
         if(position==0){
             return true;
         }
 
-        Survey previousSurvey = this.items.get(position-1);
+        SurveyDB previousSurvey = this.items.get(position-1);
         return !survey.getOrgUnit().getId_org_unit().equals(previousSurvey.getOrgUnit().getId_org_unit());
     }
 
@@ -164,7 +164,7 @@ public abstract class AAssessmentAdapter extends ADashboardAdapter implements ID
      * @param survey
      * @return
      */
-    private String getStatus(final Survey survey){
+    private String getStatus(final SurveyDB survey){
 
         if(survey.isSent()){
             return getContext().getString(R.string.dashboard_info_sent);

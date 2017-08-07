@@ -2,16 +2,13 @@ package org.eyeseetea.malariacare;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
-import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
 import java.util.List;
@@ -25,7 +22,7 @@ public class DownloadedMediaActivity extends BaseActivity {
         setActivityActionBar();
         PreferencesState.getInstance().initalizateActivityDependencies();
         setContentView(R.layout.downloaded_media_activity);
-        List<Media> mediaList = Media.getAllInLocal();
+        List<MediaDB> mediaList = MediaDB.getAllInLocal();
         RecyclerView list = (RecyclerView) findViewById(R.id.downloaded_media_list);
         final DownloadedMediaAdapter downloadedMediaAdapter = new DownloadedMediaAdapter(mediaList,
                 getBaseContext());

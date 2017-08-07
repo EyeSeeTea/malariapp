@@ -26,13 +26,13 @@ import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Tab;
-import org.eyeseetea.malariacare.data.database.model.Tab_Table;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB_Table;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -209,15 +210,15 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        List<Survey> sentSurveyList;
+        List<SurveyDB> sentSurveyList;
         if(PreferencesState.getInstance().isLastForOrgUnit()) {
-            sentSurveyList = Survey.getLastSentCompletedOrConflictSurveys();
+            sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
         }else{
-            sentSurveyList = Survey.getAllSentCompletedOrConflictSurveys();
+            sentSurveyList = SurveyDB.getAllSentCompletedOrConflictSurveys();
         }
-        sentDashboardBundle.addModelList(Survey.class.getName(),sentSurveyList);
-        sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
-        sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
+        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
+        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
+        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
@@ -232,8 +233,8 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "reloadPlanningSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
-        plannedServiceBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
-        plannedServiceBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
+        plannedServiceBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
+        plannedServiceBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
         Session.putServiceValue(PLANNED_ORG_UNIT_SURVEYS_ACTION, plannedServiceBundle);
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_ORG_UNIT_SURVEYS_ACTION));
@@ -243,8 +244,8 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "reloadPlanningSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
-        plannedServiceBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
-        plannedServiceBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
+        plannedServiceBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
+        plannedServiceBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
@@ -254,9 +255,9 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
 
         BaseServiceBundle orgCreateSurveyData=new BaseServiceBundle();
-        orgCreateSurveyData.addModelList(OrgUnit.class.getName(),OrgUnit.list());
-        orgCreateSurveyData.addModelList(OrgUnitLevel.class.getName(),OrgUnitLevel.list());
-        orgCreateSurveyData.addModelList(Program.class.getName(),Program.list());
+        orgCreateSurveyData.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.list());
+        orgCreateSurveyData.addModelList(OrgUnitLevelDB.class.getName(), OrgUnitLevelDB.list());
+        orgCreateSurveyData.addModelList(ProgramDB.class.getName(), ProgramDB.list());
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);
@@ -268,14 +269,14 @@ public class SurveyService extends IntentService {
 
     private void getAllMonitorData() {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
-        List<Program> programList=Program.getAllPrograms();
-        List<Survey> sentSurveys=Survey.getAllSentCompletedOrConflictSurveys();
-        List<OrgUnit> orgUnits=OrgUnit.list();
+        List<ProgramDB> programList= ProgramDB.getAllPrograms();
+        List<SurveyDB> sentSurveys= SurveyDB.getAllSentCompletedOrConflictSurveys();
+        List<OrgUnitDB> orgUnits= OrgUnitDB.list();
 
         BaseServiceBundle monitorMap=new BaseServiceBundle();
-        monitorMap.addModelList(Survey.class.getName(),sentSurveys);
-        monitorMap.addModelList(Program.class.getName(),programList);
-        monitorMap.addModelList(OrgUnit.class.getName(),orgUnits);
+        monitorMap.addModelList(SurveyDB.class.getName(),sentSurveys);
+        monitorMap.addModelList(ProgramDB.class.getName(),programList);
+        monitorMap.addModelList(OrgUnitDB.class.getName(),orgUnits);
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_MONITOR_DATA_ACTION, monitorMap);
 
@@ -286,7 +287,7 @@ public class SurveyService extends IntentService {
 
     private void getAllPrograms() {
         Log.d(TAG,"getAllPrograms (Thread:"+Thread.currentThread().getId()+")");
-        List<Program> programList=Program.getAllPrograms();
+        List<ProgramDB> programList= ProgramDB.getAllPrograms();
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_PROGRAMS_ACTION, programList);
 
@@ -299,10 +300,10 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllUncompletedUnsentUnplanedSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        List<Survey> surveys = Survey.getAllInProgressSurveys();
+        List<SurveyDB> surveys = SurveyDB.getAllInProgressSurveys();
 
         //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(Survey survey:surveys){
+        for(SurveyDB survey:surveys){
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
@@ -328,7 +329,7 @@ public class SurveyService extends IntentService {
     }
 
     private void preLoadTabItems(Long tabID, String module){
-        Tab tab = Tab.findById(tabID);
+        TabDB tab = TabDB.findById(tabID);
         if (tab !=null) {
             AUtils.preloadTabItems(tab, module);
         }
@@ -365,10 +366,10 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getCompletedSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        List<Survey> surveys = Survey.getAllCompletedSurveys();
+        List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
 
         //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(Survey survey:surveys){
+        for(SurveyDB survey:surveys){
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
@@ -401,14 +402,14 @@ public class SurveyService extends IntentService {
         Log.d(TAG, "prepareSurveyInfo (Thread:" + Thread.currentThread().getId() + ")");
 
         //register composite scores for current survey and module
-        List<CompositeScore> compositeScores = CompositeScore.list();
-        Survey survey = Session.getSurveyByModule(module);
+        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
+        SurveyDB survey = Session.getSurveyByModule(module);
         ScoreRegister.registerCompositeScores(compositeScores,survey.getId_survey(),module);
 
         //Get tabs for current program & register them (scores)
-        List<Tab> tabs = Tab.getTabsBySession(module);
+        List<TabDB> tabs = TabDB.getTabsBySession(module);
         //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<Tab> allTabs = new Select().from(Tab.class).where(Tab_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
+        List<TabDB> allTabs = new Select().from(TabDB.class).where(TabDB_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 

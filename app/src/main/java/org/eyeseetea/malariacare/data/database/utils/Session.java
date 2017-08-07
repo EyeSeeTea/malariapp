@@ -25,8 +25,8 @@ import android.widget.ListView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
@@ -49,16 +49,16 @@ public class Session {
     /**
      * The current selected survey by module
      */
-    private static Map<String, Survey> surveyMappedByModule = new HashMap<>();
+    private static Map<String, SurveyDB> surveyMappedByModule = new HashMap<>();
     /**
      *  The current selected surveyFeedback
     */
-    private static Survey surveyFeedback;
+    private static SurveyDB surveyFeedback;
     /**
     /**
      * The current user
      */
-    private static User user;
+    private static UserDB user;
 
     /**
      * The current location
@@ -90,21 +90,21 @@ public class Session {
     private static Credentials credentials;
 
 
-    public static Survey getSurveyByModule(String module) {
+    public static SurveyDB getSurveyByModule(String module) {
         return surveyMappedByModule.get(module);
     }
 
-    public static void setSurveyByModule(Survey survey, String module) {
+    public static void setSurveyByModule(SurveyDB survey, String module) {
             surveyMappedByModule.put(module,survey);
     }
 
-    public static User getUser() {
+    public static UserDB getUser() {
         if(user==null)
-            user=User.getLoggedUser();
+            user= UserDB.getLoggedUser();
         return user;
     }
 
-    public static void setUser(User user) {
+    public static void setUser(UserDB user) {
         Log.d(TAG,"setUser: "+user);
         Session.user = user;
     }
@@ -158,8 +158,8 @@ public class Session {
      * Closes the current session when the user logs out
      */
     public static void logout(){
-        List<Survey> surveys = Survey.getAllUnsentUnplannedSurveys();
-        for (Survey survey : surveys) {
+        List<SurveyDB> surveys = SurveyDB.getAllUnsentUnplannedSurveys();
+        for (SurveyDB survey : surveys) {
             survey.delete();
         }
         if(user!=null){
