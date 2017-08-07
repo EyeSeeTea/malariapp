@@ -19,11 +19,17 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
+import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
+
 /**
  * VO that holds the completion ratio of answered/expected questions
  * Created by arrizabalaga on 1/07/15.
  */
 public class SurveyAnsweredRatio {
+    /**
+     * Id of the related survey
+     */
+    private long surveyId;
     /**
      * Total number of questions to answer
      */
@@ -45,11 +51,30 @@ public class SurveyAnsweredRatio {
 
 
 
-    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory, int compulsoryAnswered) {
+    public SurveyAnsweredRatio(long surveyId, int total, int answered, int totalCompulsory, int compulsoryAnswered) {
+        this.surveyId = surveyId;
         this.total = total;
         this.answered = answered;
         this.totalCompulsory=totalCompulsory;
         this.compulsoryAnswered = compulsoryAnswered;
+    }
+
+    public static SurveyAnsweredRatio getModelToEntity(long id_survey){
+        SurveyAnsweredRatioDB surveyAnsweredRatioDB = SurveyAnsweredRatioDB.getSurveyAnsweredRatioBySurveyId(id_survey);
+        if(surveyAnsweredRatioDB ==null) {
+            return null;
+        }
+        return  new SurveyAnsweredRatio(surveyAnsweredRatioDB.getIdSurvey(),
+                surveyAnsweredRatioDB.getTotalQuestions(),
+                surveyAnsweredRatioDB.getAnsweredQuestions(), surveyAnsweredRatioDB.getTotalCompulsoryQuestions(), surveyAnsweredRatioDB.getAnsweredCompulsoryQuestions());
+    }
+
+    public long getSurveyId() {
+        return surveyId;
+    }
+
+    public void setSurveyId(long surveyId) {
+        this.surveyId = surveyId;
     }
 
     public int getAnswered() {

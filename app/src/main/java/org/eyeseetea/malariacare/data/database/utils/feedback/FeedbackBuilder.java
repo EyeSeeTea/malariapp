@@ -20,9 +20,10 @@
 package org.eyeseetea.malariacare.data.database.utils.feedback;
 
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class FeedbackBuilder {
      * @param survey
      * @return
      */
-    public static List<Feedback> build(SurveyDB survey, String module){
+    public static List<Feedback> build(Survey survey, String module){
         return build(survey, false, module);
     }
 
@@ -50,14 +51,16 @@ public class FeedbackBuilder {
      * @param parents true for representing every composite, including parents, otherwise parents are removed
      * @return
      */
-    public static List<Feedback> build(SurveyDB survey, boolean parents, String module){
+    public static List<Feedback> build(Survey survey, boolean parents, String module){
         List<Feedback> feedbackList=new ArrayList<>();
         //Prepare scores
-        List<CompositeScoreDB> compositeScoreList= ScoreRegister.loadCompositeScores(survey, module);
+
+        ProgramDB program = ProgramDB.findById(survey.getProgram().getId());
+        List<CompositeScoreDB> compositeScoreList= ScoreRegister.loadCompositeScores(survey.getId(), program, module);
 
 
         //Calculate main score
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), module));
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId(), module));
 
         if (!parents) {
             //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
@@ -73,15 +76,15 @@ public class FeedbackBuilder {
         //For each score add proper items
         for(CompositeScoreDB compositeScore:compositeScoreList){
             //add score
-            float score = ScoreRegister.getCompositeScore(compositeScore, survey.getId_survey(),
+            float score = ScoreRegister.getCompositeScore(compositeScore, survey.getId(),
                         module);
             feedbackList.add(new CompositeScoreFeedback(compositeScore, score));
 
             //add its questions
             List<QuestionDB> questions=compositeScore.getQuestions();
             for(QuestionDB question:questions){
-                if(!question.isHiddenBySurvey(survey.getId_survey())) {
-                    ValueDB valueInSurvey = question.getValueBySurvey(survey.getId_survey());
+                if(!question.isHiddenBySurvey(survey.getId())) {
+                    ValueDB valueInSurvey = question.getValueBySurvey(survey.getId());
                     feedbackList.add(new QuestionFeedback(question, valueInSurvey));
                 }
             }

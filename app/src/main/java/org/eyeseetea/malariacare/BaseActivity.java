@@ -332,9 +332,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Asks for location (required while starting to edit a survey)
      */
-    public void prepareLocationListener(SurveyDB survey) {
+    public void prepareLocationListener(Long surveyId) {
 
-        locationListener = new SurveyLocationListener(survey.getId_survey());
+        locationListener = new SurveyLocationListener(surveyId);
         LocationManager locationManager =
                 (LocationManager) LocationMemory.getContext().getSystemService(
                         Context.LOCATION_SERVICE);

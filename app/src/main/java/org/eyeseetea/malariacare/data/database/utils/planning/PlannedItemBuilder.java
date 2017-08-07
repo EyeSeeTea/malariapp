@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +46,7 @@ public class PlannedItemBuilder {
     /**
      * Memo to find non existant combinations
      */
-    Map<String,SurveyDB> surveyMap;
+    Map<String,Survey> surveyMap;
 
     /**
      * List of surveys not sent
@@ -117,7 +118,7 @@ public class PlannedItemBuilder {
 
         //Find its place according to scheduleddate
         for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
-            findRightState(survey);
+            findRightState(Survey.getFromModel(survey));
         }
 
         //Fill potential gaps (a brand new program or orgunit)
@@ -150,7 +151,7 @@ public class PlannedItemBuilder {
      * Puts the survey in its right list
      * @param survey
      */
-    private void findRightState(SurveyDB survey){
+    private void findRightState(Survey survey){
         //Annotate this survey to fill its spot
         annotateSurvey(survey);
 
@@ -178,7 +179,7 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsNever(SurveyDB survey){
+    private boolean processAsNever(Survey survey){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
@@ -197,7 +198,7 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsOverdue(SurveyDB survey){
+    private boolean processAsOverdue(Survey survey){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
@@ -216,14 +217,14 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsNext30(SurveyDB survey){
+    private boolean processAsNext30(Survey survey){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
         Date today30 = getIn30Days(today);
 
         //planned in less 30 days
         if(scheduledDate.before(today30)) {
-            addToSection(next30,survey);
+            addToSection(next30, survey);
             return true;
         }
 
@@ -235,24 +236,24 @@ public class PlannedItemBuilder {
      * Annotates the survey in the map
      * @param survey
      */
-    private void annotateSurvey(SurveyDB survey){
+    private void annotateSurvey(Survey survey){
         if(survey.getProgram()!=null) {
-            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
+            String key= getSurveyKey(survey.getOrgUnit().getId(), survey.getProgram().getId());
             surveyMap.put(key,survey);
         }
         else{
-            Log.d(TAG, "Error program null in survey id: " + survey.getId_survey());
+            Log.d(TAG, "Error program null in survey id: " + survey.getId());
         }
     }
 
     /**
      * Builds a synthetic key for this survey
-     * @param orgUnit
-     * @param program
+     * @param orgUnitId
+     * @param programId
      * @return
      */
-    private String getSurveyKey(OrgUnitDB orgUnit,ProgramDB program) {
-        return orgUnit.getId_org_unit().toString()+"@"+program.getId_program().toString();
+    private String getSurveyKey(Long orgUnitId,Long programId) {
+        return orgUnitId.toString()+"@"+programId.toString();
     }
 
     /**
@@ -276,15 +277,15 @@ public class PlannedItemBuilder {
         for(OrgUnitDB orgUnit: OrgUnitDB.list()){
             //Each authorized program
             for(ProgramDB program:orgUnit.getPrograms()){
-                String key=getSurveyKey(orgUnit,program);
-                SurveyDB survey=surveyMap.get(key);
+                String key=getSurveyKey(orgUnit.getId_org_unit(),program.getId_program());
+                Survey survey=surveyMap.get(key);
                 //Already built
                 if(survey!=null){
                     continue;
                 }
 
                 //NOT exists
-                survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
+                survey=SurveyPlanner.getInstance().buildNext(orgUnit.getId_org_unit(),program.getId_program());
 
                 //Process like any other survey
                 findRightState(survey);
@@ -297,7 +298,7 @@ public class PlannedItemBuilder {
      * @param section
      * @param survey
      */
-    private void addToSection(List<PlannedItem> section,SurveyDB survey){
+    private void addToSection(List<PlannedItem> section, Survey survey){
         PlannedHeader header=(PlannedHeader)section.get(0);
         section.add(new PlannedSurvey(survey,header));
     }

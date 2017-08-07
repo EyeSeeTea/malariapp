@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -53,7 +54,7 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final PlannedSurveyByOrgUnit plannedSurvey = (PlannedSurveyByOrgUnit) getItem(position);
-        SurveyDB survey = plannedSurvey.getSurvey();
+        Survey survey = plannedSurvey.getSurvey();
         float density = getContext().getResources().getDisplayMetrics().density;
         int paddingDp = (int) (5 * density);
 

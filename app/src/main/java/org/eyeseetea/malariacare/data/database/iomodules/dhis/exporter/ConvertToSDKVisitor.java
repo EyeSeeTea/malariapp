@@ -27,6 +27,14 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -45,6 +53,7 @@ import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -166,7 +175,7 @@ public class ConvertToSDKVisitor implements
             //Calculates scores and update survey
             Log.d(TAG, "Registering scores...");
             errorMessage = "Calculating compositeScores";
-            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(survey,
+            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(survey.getId_survey(), survey.getProgram(),
                     Constants.PUSH_MODULE_KEY);
             updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
 
@@ -382,9 +391,17 @@ public class ConvertToSDKVisitor implements
         }
 
         //Overall productivity
+        ProgramDB program= survey.getProgram();
+        OrgUnitDB orgUnit= survey.getOrgUnit();
+        String productivity;
+        if(program == null || orgUnit == null){
+            productivity = Integer.toString(OrgUnitProgramRelationDB.getDefaultProductivity());
+        }
+        else{
+            productivity = Integer.toString(OrgUnitProgramRelationDB.getProductivity(survey.getId_survey(), orgUnit.getId_org_unit(), program.getId_program()));
+        }
         if (controlDataElementExistsInServer(overallProductivityCode)) {
-            addOrUpdateDataValue(overallProductivityCode,
-                    Integer.toString(OrgUnitProgramRelationDB.getProductivity(survey)));
+            addOrUpdateDataValue(overallProductivityCode,productivity);
         }
 
         //Next assessment
