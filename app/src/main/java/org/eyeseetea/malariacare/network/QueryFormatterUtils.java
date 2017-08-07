@@ -198,7 +198,8 @@ public class QueryFormatterUtils {
             throws Exception {
 
         //Prepare scores info
-        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey, module);
+        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey.getId_survey(), survey.getProgram(),
+                module);
 
         //Calculate main score to push later
         survey.setMainScore(

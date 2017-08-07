@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -41,6 +42,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
@@ -261,7 +265,7 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onSurveySelected(SurveyDB survey) {
+    public void onSurveySelected(Survey survey) {
         dashboardController.onSurveySelected(survey);
     }
 
@@ -283,14 +287,14 @@ public class DashboardActivity extends BaseActivity {
      * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
      * This includes a pair or corner cases
      */
-    public void onMarkAsCompleted(SurveyDB survey) {
+    public void onMarkAsCompleted(Survey survey) {
         dashboardController.onMarkAsCompleted(survey);
     }
 
     /**
      * Handler that enter into the feedback for the given survey
      */
-    public void onFeedbackSelected(SurveyDB survey) {
+    public void onFeedbackSelected(Survey survey) {
         dashboardController.onFeedbackSelected(survey);
     }
 
@@ -312,9 +316,8 @@ public class DashboardActivity extends BaseActivity {
      * Create new survey from VariantSpecificUtils
      */
     public void createNewSurvey(OrgUnitDB orgUnit, ProgramDB program) {
-        SurveyDB survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
-        prepareLocationListener(survey);
-        // Put new survey in session
+        Survey survey = SurveyPlanner.getInstance().startSurvey(orgUnit.getId_org_unit(), program.getId_program());
+        prepareLocationListener(survey.getId());
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
         dashboardController.onSurveySelected(survey);
     }

@@ -47,7 +47,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -474,7 +474,7 @@ public class QuestionDB extends BaseModel {
      * Gets the value of this question in the current survey in session
      */
     public ValueDB getValueBySession(String module) {
-        return this.getValueBySurvey(Session.getSurveyByModule(module).getId_survey());
+        return this.getValueBySurvey(Session.getSurveyByModule(module).getId());
     }
 
     /**
@@ -498,7 +498,7 @@ public class QuestionDB extends BaseModel {
      * Gets the option of this question in the current survey in session
      */
     public OptionDB getOptionBySession(String module) {
-        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId_survey());
+        return this.getOptionBySurvey(Session.getSurveyByModule(module).getId());
     }
 
     /**
@@ -726,8 +726,7 @@ public class QuestionDB extends BaseModel {
     /**
      * Gets all the children compulsory questions, and returns the  number of active children
      */
-    public static int countChildrenCompulsoryBySurvey(Long id_survey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        int numActiveChildrens=0;
+    public static List<QuestionDB> getChildrenCompulsoryBySurvey(Long id_survey) {
         //This query returns a list of children compulsory questions
         // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
         List<QuestionDB> questions =new Select().from(QuestionDB.class).as(questionName)
@@ -752,23 +751,7 @@ public class QuestionDB extends BaseModel {
                 //The child question requires an answer
                 .and(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(QuestionDB_Table.compulsory.withTable(questionAlias).eq(true)).queryList();
-
-        //checks if the children questions are active by UID
-        // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
-        for(int i=0; i<questions.size();i++) {
-            if(questions.get(i).getCompulsory() && !QuestionDB.isHiddenQuestionByUidAndSurvey(questions.get(i).getUid(), id_survey)) {
-                numActiveChildrens++;
-            }
-            if(i == (Math.round((Float.parseFloat(questions.size()+"")*0.25)))
-                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.5)))
-                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.75)))){
-                if (callback != null) {
-                    callback.nextProgressMessage();
-                }
-            }
-        }
-        // Return number of active compulsory children
-        return numActiveChildrens;
+        return questions;
     }
 
 
@@ -912,6 +895,19 @@ public class QuestionDB extends BaseModel {
                 output == Constants.DROPDOWN_LIST_DISABLED ||
                 output == Constants.RADIO_GROUP_HORIZONTAL ||
                 output == Constants.RADIO_GROUP_VERTICAL;
+    }
+    public static List<Question> convertListFromModelToEntity(List<QuestionDB> questionDBs){
+        List<Question> questionEntities = new ArrayList<>();
+        for(QuestionDB questionDB:questionDBs){
+            questionEntities.add(QuestionDB.getFromModel(questionDB));
+        }
+        return questionEntities;
+    }
+
+    public static Question getFromModel(QuestionDB questionDB){
+        Question question = new Question(questionDB.getId_question(), questionDB.getUid());
+        question.setCompulsory(questionDB.getCompulsory());
+        return question;
     }
 
     @Override

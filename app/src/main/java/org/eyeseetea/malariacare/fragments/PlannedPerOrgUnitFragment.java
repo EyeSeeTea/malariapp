@@ -37,7 +37,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
@@ -45,6 +44,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -128,7 +128,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private void reCheckCheckboxes(PlannedSurveyByOrgUnit newPlannedSurveys) {
         if (newPlannedSurveys.getSurvey() == null) return;
         for (PlannedSurveyByOrgUnit plannedSurvey: plannedSurveys){
-            if (plannedSurvey.getSurvey() != null && plannedSurvey.getSurvey().getId_survey().equals(newPlannedSurveys.getSurvey().getId_survey())) {
+            if (plannedSurvey.getSurvey() != null && plannedSurvey.getSurvey().getId().equals(newPlannedSurveys.getSurvey().getId())) {
                 newPlannedSurveys.setChecked(plannedSurvey.getChecked());
             }
         }
@@ -149,7 +149,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<SurveyDB> scheduleSurveys=new ArrayList<>();
+                List<Survey> scheduleSurveys=new ArrayList<>();
                 for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
                     if(plannedSurveyByOrgUnit.getChecked()) {
                         scheduleSurveys.add(plannedSurveyByOrgUnit.getSurvey());

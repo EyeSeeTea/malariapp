@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
@@ -63,7 +64,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
-    private List<SurveyDB> surveys;
+    private List<Survey> surveys;
     protected IDashboardAdapter adapter;
     private static int selectedPosition=0;
     DashboardActivity dashboardActivity;
@@ -160,7 +161,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Log.d(TAG, "id" + item.getItemId());
-        final SurveyDB survey=(SurveyDB)adapter.getItem(selectedPosition-1);
+        final Survey survey=(Survey) adapter.getItem(selectedPosition-1);
         switch (item.getItemId()) {
             case R.id.option_edit:
                 dashboardActivity.onSurveySelected(survey);
@@ -189,7 +190,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     //Remove survey from the list and reload list.
-    public void removeSurveyFromAdapter(SurveyDB survey) {
+    public void removeSurveyFromAdapter(Survey survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
     }
@@ -292,11 +293,11 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
     public void reloadInProgressSurveys(){
-        List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+        List<Survey> surveysInProgressFromService = Survey.convertModelListToEntity((List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         reloadSurveys(surveysInProgressFromService);
     }
 
-    public void reloadSurveys(List<SurveyDB> newListSurveys){
+    public void reloadSurveys(List<Survey> newListSurveys){
         if(newListSurveys!=null) {
             Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
             this.surveys.clear();

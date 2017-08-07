@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -332,9 +333,9 @@ public class PlannedAdapter extends BaseAdapter {
      */
     class CreateOrEditSurveyListener implements View.OnClickListener {
 
-        SurveyDB survey;
+        Survey survey;
 
-        CreateOrEditSurveyListener(SurveyDB survey) {
+        CreateOrEditSurveyListener(Survey survey) {
             this.survey = survey;
         }
 

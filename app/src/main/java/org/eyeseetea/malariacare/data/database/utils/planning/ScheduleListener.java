@@ -12,6 +12,7 @@ import android.widget.EditText;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -23,13 +24,13 @@ import java.util.List;
  * Created by ina on 16/08/2016.
  */
 public class ScheduleListener implements View.OnClickListener {
-    SurveyDB survey;
+    Survey survey;
     Date newScheduledDate;
     Context context;
-    List<SurveyDB> plannedSurveys;
-    public ScheduleListener(SurveyDB survey, Context context){this.survey=survey; this.context=context;}
+    List<Survey> plannedSurveys;
+    public ScheduleListener(Survey survey, Context context){this.survey=survey; this.context=context;}
 
-    public ScheduleListener(List<SurveyDB> plannedSurveys, Context applicationContext) {
+    public ScheduleListener(List<Survey> plannedSurveys, Context applicationContext) {
         this.context=applicationContext;
         this.plannedSurveys=plannedSurveys;
         survey=plannedSurveys.get(0);
@@ -95,7 +96,7 @@ public class ScheduleListener implements View.OnClickListener {
                     survey.reschedule(newScheduledDate, comment);
                 }
                 else {
-                    for(SurveyDB survey:plannedSurveys){
+                    for(Survey survey:plannedSurveys){
                         survey.reschedule(newScheduledDate,comment);
                     }
                 }

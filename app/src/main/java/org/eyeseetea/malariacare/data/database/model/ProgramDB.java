@@ -19,9 +19,13 @@
 
 package org.eyeseetea.malariacare.data.database.model;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyProgramRelationAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyProgramRelationName;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -185,5 +189,27 @@ public class ProgramDB extends BaseModel{
                 ", name='" + name + '\'' +
                 ", stage_uid='" + stage_uid + '\'' +
                 '}';
+    }
+
+    /**
+     * Finds a Program by its ID
+     */
+    public static ProgramDB findById(long id) {
+        return new Select()
+                .from(ProgramDB.class)
+                .where(ProgramDB_Table.id_program
+                        .eq(id))
+                .querySingle();
+    }
+
+    public static ProgramDB findBySurveyId(Long surveyId) {
+        return new Select()
+                .from(ProgramDB.class)
+                .join(SurveyDB.class, Join.JoinType.LEFT_OUTER).as(surveyProgramRelationName)
+                .on(SurveyDB_Table.id_program_fk.withTable(surveyProgramRelationAlias)
+                        .eq(SurveyDB_Table.id_program_fk.withTable(surveyProgramRelationAlias)))
+                .where(SurveyDB_Table.id_survey
+                        .eq(surveyId))
+                .querySingle();
     }
 }

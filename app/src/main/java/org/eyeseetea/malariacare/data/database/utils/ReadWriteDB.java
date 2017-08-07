@@ -75,7 +75,7 @@ public class ReadWriteDB {
 
         if (!option.getName().equals(Constants.DEFAULT_SELECT_OPTION)) {
             if (value == null) {
-                value = new ValueDB(option, question, Session.getSurveyByModule(module));
+                value = new ValueDB(option, question, Session.getSurveyModelByModule(module));
                 value.save();
             } else {
                 value.setOption(option);
@@ -94,7 +94,7 @@ public class ReadWriteDB {
 
         // If the value is not found we create one
         if (value == null) {
-            value = new ValueDB(answer, question, Session.getSurveyByModule(module));
+            value = new ValueDB(answer, question, Session.getSurveyModelByModule(module));
             value.save();
         } else {
             value.setOption((Long)null);

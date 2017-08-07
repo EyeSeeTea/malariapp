@@ -29,11 +29,11 @@ import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Program;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -114,12 +114,12 @@ public class LayoutUtils {
     }
 
     public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,
-            SurveyDB survey) {
+            Survey survey) {
         String title = "";
         String subtitle = "";
         int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
         String appNameColorString = String.format("%X", appNameColor).substring(2);
-        ProgramDB program = survey.getProgram();
+        Program program = survey.getProgram();
         if (survey.getOrgUnit().getName() != null) {
             title = survey.getOrgUnit().getName();
         }

@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -237,11 +238,11 @@ public class SurveyFragment extends Fragment  {
 
     @Override
     public void onPause() {
-        final SurveyDB survey = Session.getSurveyByModule(moduleName);
+        final Survey survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+            getSurveyAnsweredRatioUseCase.execute(survey.getId(),
+                    GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {
@@ -250,7 +251,7 @@ public class SurveyFragment extends Fragment  {
 
                         @Override
                         public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
+                            SurveyDB dbSurvey = SurveyDB.findById(survey.getId());
                             dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                         }
                     });
@@ -470,7 +471,7 @@ public class SurveyFragment extends Fragment  {
             //Initialize scores x question not loaded yet
             List<TabDB> notLoadedTabs = tabAdaptersCache.getNotLoadedTabs();
             ScoreRegister.initScoresForQuestions(QuestionDB.listAllByTabs(notLoadedTabs),
-                    Session.getSurveyByModule(module), module);
+                    Session.getSurveyByModule(module).getId(), module);
         }
         ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(selectedTab);
 
@@ -771,7 +772,7 @@ public class SurveyFragment extends Fragment  {
             TabDB firstTab = tabs.get(0);
             this.adapters.clear();
             this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
-                    Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+                    Session.getSurveyByModule(moduleName).getId(), moduleName));
             this.compositeScores = compositeScores;
         }
 
@@ -803,7 +804,7 @@ public class SurveyFragment extends Fragment  {
          */
         private ITabAdapter buildAdapter(TabDB tab) {
             return AutoTabAdapter.build(tab, getActivity(),
-                    Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+                    Session.getSurveyByModule(moduleName).getId(), moduleName);
         }
     }
 }
