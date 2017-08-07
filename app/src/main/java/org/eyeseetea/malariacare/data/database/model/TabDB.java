@@ -218,4 +218,9 @@ public class TabDB extends BaseModel {
                 '}';
     }
 
+    public static List<TabDB> getAllTabsByProgram(Long idProgram) {
+
+        return new Select().from(TabDB.class).where(TabDB_Table.id_program_fk.eq(idProgram))
+                .orderBy(TabDB_Table.order_pos,true).queryList();
+    }
 }
