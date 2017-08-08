@@ -99,7 +99,8 @@ public class ProgramDB extends BaseModel{
     }
 
     public static List<ProgramDB> getAllPrograms(){
-        return new Select().from(ProgramDB.class).queryList();
+        return new Select().from(ProgramDB.class)
+                .orderBy(ProgramDB_Table.name, true).queryList();
     }
 
     public static ProgramDB getProgram(String uid) {
