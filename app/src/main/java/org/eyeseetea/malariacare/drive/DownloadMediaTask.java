@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
@@ -15,10 +14,9 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
 
 import java.io.FileOutputStream;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -48,7 +46,7 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
     protected Integer doInBackground(Void... params) {
 
         //Check elements to download
-        List<Media> mediaList = Media.getAllNotInLocal();
+        List<MediaDB> mediaList = MediaDB.getAllNotInLocal();
 
         //Nothing to sync -> 0
         if(mediaList==null || mediaList.isEmpty()){
@@ -57,7 +55,7 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
 
         //Try to download every non local media
         int numSyncedFiles = 0;
-        for (Media media : mediaList) {
+        for (MediaDB media : mediaList) {
             Exception ex=sync(media);
             //No exception -> inc & next
             if (ex==null) {
@@ -102,10 +100,10 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         Log.e(TAG, "onCancelled: " + mLastError == null ? "" : mLastError.getMessage());
     }
 
-    private Exception sync(Media media) {
+    private Exception sync(MediaDB media) {
 
         //Try to reuse a local copy if another media references same url
-        Media localCopy=media.findLocalCopy();
+        MediaDB localCopy=media.findLocalCopy();
         if(localCopy!=null){
             return syncFromLocal(media,localCopy);
         }
@@ -142,7 +140,7 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
      * @param localCopy
      * @return
      */
-    private Exception syncFromLocal(Media media, Media localCopy) {
+    private Exception syncFromLocal(MediaDB media, MediaDB localCopy) {
         media.setFilename(localCopy.getFilename());
         media.save();
         return null;

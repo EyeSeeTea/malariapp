@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 /**
@@ -29,14 +29,14 @@ public class PieDataByOrgUnit extends PieDataBase {
     /**
      * Type of program for this chart
      */
-    private OrgUnit orgUnit;
+    private OrgUnitDB orgUnit;
 
 
     /**
      * Constructor per OrgUnit
      * @param orgUnit
      */
-    public PieDataByOrgUnit(OrgUnit orgUnit) {
+    public PieDataByOrgUnit(OrgUnitDB orgUnit) {
         this.orgUnit=orgUnit;
     }
     public String toJSON(String tipChat){

@@ -36,7 +36,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
@@ -143,7 +143,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Survey> scheduleSurveys=new ArrayList<>();
+                List<SurveyDB> scheduleSurveys=new ArrayList<>();
                 for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
                     if(plannedSurveyByOrgUnit.getChecked()) {
                         scheduleSurveys.add(plannedSurveyByOrgUnit.getSurvey());

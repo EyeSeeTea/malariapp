@@ -37,7 +37,7 @@
 <string name="create_info_survey">"Rapport"</string>
 <string name="create_info_tabs_group">"Groupe d'onglets"</string>
 
-<string name="assessment_title_facility_date">"Cabinet médical / Rapport"</string>
+<string name="assessment_title_facility_date">"Enquêtes actives"</string>
 <string name="assessment_title_state">"État"</string>
 <string name="assessment_sent_date">"Date de achèvement"</string>
 <string name="assessment_title_header">"Rapport(s) actif(s)"</string>
@@ -212,4 +212,5 @@ Mensuelle"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
 <string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
 <string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
+<string name="start">"Début"</string>
 </resources>

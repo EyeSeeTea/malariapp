@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
-import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
  * Created by arrizabalaga on 24/03/16.
  */
 public class QuestionRow {
-    private List<Question> questions;
+    private List<QuestionDB> questions;
 
     public QuestionRow(){
         this.questions = new ArrayList<>();
@@ -39,11 +39,11 @@ public class QuestionRow {
      * Adds a question to the row
      * @param question
      */
-    public void addQuestion(Question question){
+    public void addQuestion(QuestionDB question){
         this.questions.add(question);
     }
 
-    public List<Question> getQuestions(){
+    public List<QuestionDB> getQuestions(){
         return this.questions;
     }
 
@@ -80,7 +80,7 @@ public class QuestionRow {
      * Useful for visibility issues since all of them are shown/hidden at once
      * @return
      */
-    public Question getFirstQuestion(){
+    public QuestionDB getFirstQuestion(){
         if (questions.size()==0){
             return null;
         }

@@ -29,10 +29,7 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -43,14 +40,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.VideoActivity;
-import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
@@ -58,7 +53,6 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -146,7 +140,7 @@ public class FeedbackAdapter extends BaseAdapter {
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
-        //CompositeScore title
+        //CompositeScoreDB title
         TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_label);
         String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
         if (!PreferencesState.getInstance().isVerticalDashboard())
@@ -160,7 +154,7 @@ public class FeedbackAdapter extends BaseAdapter {
             }
         textView.setText(feedback.getLabel());
 
-        //CompositeScore title
+        //CompositeScoreDB title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
@@ -192,7 +186,16 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        textView.setText(feedback.getLabel());
+        String compulsoryMark="";
+        if(feedback.getQuestion().getCompulsory()) {
+            int red = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.darkRed);
+            String appNameColorString = String.format("%X", red).substring(2);
+            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
+                    + "</b></font>";
+        }
+
+        textView.setText(Html.fromHtml(compulsoryMark+feedback.getLabel()));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
@@ -251,8 +254,8 @@ public class FeedbackAdapter extends BaseAdapter {
      */
     private void addAllMedia(LinearLayout rowLayout, QuestionFeedback feedback) {
         LinearLayout feedbackContainer = (LinearLayout)rowLayout.findViewById(R.id.feedback_container);
-        List<Media> mediaList = feedback.getMedia();
-        for(Media media:mediaList){
+        List<MediaDB> mediaList = feedback.getMedia();
+        for(MediaDB media:mediaList){
             if(media.getMediaType()==Constants.MEDIA_TYPE_IMAGE){
                 addImage(feedbackContainer,media);
             }else{
@@ -267,7 +270,7 @@ public class FeedbackAdapter extends BaseAdapter {
      * @param rowLayout
      * @param media
      */
-    private void addImage(LinearLayout rowLayout, final Media media) {
+    private void addImage(LinearLayout rowLayout, final MediaDB media) {
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_image));
         } else {
@@ -308,7 +311,7 @@ public class FeedbackAdapter extends BaseAdapter {
      * @param rowLayout
      * @param media
      */
-    private void addVideo(LinearLayout rowLayout, Media media){
+    private void addVideo(LinearLayout rowLayout, MediaDB media){
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_video));
         }
@@ -350,7 +353,7 @@ public class FeedbackAdapter extends BaseAdapter {
         return mediaLayout;
     }
 
-    private void addPreview(ImageView viewMediaLink, Media media) {
+    private void addPreview(ImageView viewMediaLink, MediaDB media) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         File mediaFile = new File(media.getFilename());
         if (!mediaFile.exists()) {//load from raw

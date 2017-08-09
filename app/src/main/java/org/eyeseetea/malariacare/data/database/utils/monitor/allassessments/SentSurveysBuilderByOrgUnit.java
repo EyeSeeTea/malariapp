@@ -22,10 +22,8 @@ import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.EntrySentSurveysChartByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +39,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
     /**
      * List of sent surveys
      */
-    List<OrgUnit>  orgUnits;
+    List<OrgUnitDB>  orgUnits;
     /**
      * Map of entries per month
      */
@@ -53,7 +51,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
      * @param context
      * @param orgUnits
      */
-    public SentSurveysBuilderByOrgUnit(List<Survey> surveyList, Context context, List<OrgUnit> orgUnits) {
+    public SentSurveysBuilderByOrgUnit(List<SurveyDB> surveyList, Context context, List<OrgUnitDB> orgUnits) {
         super(surveyList, context);
         this.orgUnits=orgUnits;
         sentSurveysChartMap= new HashMap<>();
@@ -87,7 +85,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
      */
     public void addDataInChart(WebView webView){
         //Build entries
-        for(OrgUnit orgUnit:orgUnits) {
+        for(OrgUnitDB orgUnit:orgUnits) {
             this.orgUnit = orgUnit;
             build(surveyList);
             //Take only 6 months from now
@@ -117,8 +115,8 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
      * @param surveys List of sent surveys to create the list
      * @return
      */
-    public void build(List<Survey> surveys){
-        for(Survey survey:surveys){
+    public void build(List<SurveyDB> surveys){
+        for(SurveyDB survey:surveys){
             if(survey.getOrgUnit().equals(orgUnit)) {
 
                 //Get the month for the survey (key)

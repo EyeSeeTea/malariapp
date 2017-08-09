@@ -26,9 +26,9 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.data.database.model.Answer;
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.AnswerDB;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow_Table;
@@ -71,19 +71,19 @@ public class DataValueExtended implements VisitableFromSDK {
         return dataValue;
     }
 
-    public Option findOptionByQuestion(Question question) {
+    public OptionDB findOptionByQuestion(QuestionDB question) {
         if (question == null) {
             return null;
         }
 
-        Answer answer = question.getAnswer();
+        AnswerDB answer = question.getAnswer();
         if (answer == null) {
             return null;
         }
 
-        List<Option> options = answer.getOptions();
+        List<OptionDB> options = answer.getOptions();
         List<String> optionCodes = new ArrayList<>();
-        for (Option option : options) {
+        for (OptionDB option : options) {
             optionCodes.add(option.getCode());
             if (option.getCode() == null) {
                 continue;

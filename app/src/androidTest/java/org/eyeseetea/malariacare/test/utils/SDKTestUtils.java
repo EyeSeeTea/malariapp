@@ -39,10 +39,10 @@ import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.SettingsActivity;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
 import org.hamcrest.Matchers;
 import org.eyeseetea.malariacare.data.remote.models.Event$Table;
@@ -117,13 +117,13 @@ public class SDKTestUtils {
         Espresso.unregisterIdlingResources(idlingResource);
     }
 
-    public static Survey waitForPush(int seconds, Long idSurvey) {
+    public static SurveyDB waitForPush(int seconds, Long idSurvey) {
         //then: wait for pushservice
 
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(seconds * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
-        Survey survey = Survey.findById(idSurvey);
+        SurveyDB survey = SurveyDB.findById(idSurvey);
 
         Espresso.unregisterIdlingResources(idlingResource);
         return survey;
@@ -160,10 +160,10 @@ public class SDKTestUtils {
 
         Espresso.unregisterIdlingResources(idlingResource);
 
-        onData(is(instanceOf(OrgUnit.class))).atPosition(idxOrgUnit).perform(click());
+        onData(is(instanceOf(OrgUnitDB.class))).atPosition(idxOrgUnit).perform(click());
 
         onView(withId(R.id.program)).perform(click());
-        onData(is(instanceOf(Program.class))).atPosition(idxProgram).perform(click());
+        onData(is(instanceOf(ProgramDB.class))).atPosition(idxProgram).perform(click());
         onView(withId(R.id.create_form_button)).perform(click());
     }
 
@@ -180,7 +180,7 @@ public class SDKTestUtils {
             try {
                 idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
                 Espresso.registerIdlingResources(idlingResource);
-                onData(is(instanceOf(Question.class)))
+                onData(is(instanceOf(QuestionDB.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
@@ -210,7 +210,7 @@ public class SDKTestUtils {
             try {
                 idlingResource = new ElapsedTimeIdlingResource(1 * 1000);
                 Espresso.registerIdlingResources(idlingResource);
-                onData(is(instanceOf(Question.class)))
+                onData(is(instanceOf(QuestionDB.class)))
                         .inAdapterView(withId(R.id.listView))
                         .atPosition(i)
                         .onChildView(withId(R.id.answer)).onChildView(withText(optionValue))
@@ -298,7 +298,7 @@ public class SDKTestUtils {
     }
 
     public static Long getSurveyId(){
-        return Survey.getSurveyInProgress().getId_survey();
+        return SurveyDB.getSurveyInProgress().getId_survey();
     }
 
     public static Activity getActivityInstance() {

@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
@@ -45,7 +45,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
     /**
      * List of surveys to show
      */
-    List<Survey> items;
+    List<SurveyDB> items;
 
     /**
      * Counter that helps with background calculation
@@ -72,14 +72,14 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
     }
 
     public void setItems(List items) {
-        this.items = (List<Survey>) items;
+        this.items = (List<SurveyDB>) items;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         //Get current survey
-        Survey survey = (Survey) getItem(position);
+        SurveyDB survey = (SurveyDB) getItem(position);
 
         //Inflate row with right padding
         View rowView = adjustRowPadding(parent);
@@ -109,20 +109,20 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
     /**
      * Each specific adapter must program its differences using this method
      */
-    protected abstract void decorateCustomColumns(Survey survey, View rowView);
+    protected abstract void decorateCustomColumns(SurveyDB survey, View rowView);
 
 
     /**
      * Determines whether to show facility or not according to:
      * - The previous survey belongs to the same one.
      */
-    protected abstract boolean hasToShowFacility(int position, Survey survey);
+    protected abstract boolean hasToShowFacility(int position, SurveyDB survey);
 
 
     protected abstract void hideFacility(CustomTextView facilityName, CustomTextView surveyType);
 
     protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            Survey survey);
+            SurveyDB survey);
 
     /**
      * Calculate proper background according to the following rule:
@@ -144,7 +144,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         return rowView;
     }
 
-    private CustomTextView decorateSurveyType(CustomTextView surveyType, Survey survey) {
+    private CustomTextView decorateSurveyType(CustomTextView surveyType, SurveyDB survey) {
         String surveyDescription;
         if (survey.isCompleted()) {
             surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
@@ -179,11 +179,12 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
      * Returns the proper status value (% or ready to send) according to the level of completion of
      * the survey
      */
-    protected String getStatus(Survey survey) {
+    protected String getStatus(SurveyDB survey) {
 
         if (survey.isSent()) {
             return getContext().getString(R.string.dashboard_info_sent);
         }
+
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
@@ -199,7 +200,6 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
                     }
                 });
         SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
-
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {

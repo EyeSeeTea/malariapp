@@ -25,7 +25,7 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 
 import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.addColumn;
 
@@ -41,7 +41,7 @@ public class Migration9AddUsername extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, User.class, "username", "string");
+        addColumn(database, UserDB.class, "username", "string");
     }
 
     @Override

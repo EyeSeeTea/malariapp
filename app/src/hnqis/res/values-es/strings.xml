@@ -37,7 +37,7 @@
 <string name="create_info_survey">"Formulario"</string>
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
 
-<string name="assessment_title_facility_date">"Centro de salud/ Fecha"</string>
+<string name="assessment_title_facility_date">"Encuestas activas"</string>
 <string name="assessment_title_state">"Estado"</string>
 <string name="assessment_sent_date">"Fecha de llenado"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
@@ -218,4 +218,5 @@ clínica"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"No tiene encuestas no solicitadas. ¿Quieres continuar?"</string>
 <string name="install_file_manager">Instale un Administrador de archivos.</string>
 <string name="get_db_file_dialog">Seleccione un archivo db válido.</string>
+<string name="start">Comenzar</string>
 </resources>

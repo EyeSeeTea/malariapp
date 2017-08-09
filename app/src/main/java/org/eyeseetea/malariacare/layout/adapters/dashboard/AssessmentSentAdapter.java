@@ -23,21 +23,22 @@ import android.content.Context;
 import android.view.View;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class AssessmentSentAdapter extends ADashboardAdapter {
+public class AssessmentSentAdapter extends
+        ADashboardAdapter {
 
     private static final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
     public static final String SCORE_FORMAT = "%.1f %%";
 
-    public AssessmentSentAdapter(List<Survey> items, Context context) {
+    public AssessmentSentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
         this.headerLayout = R.layout.assessment_sent_header;
@@ -53,7 +54,7 @@ public class AssessmentSentAdapter extends ADashboardAdapter {
      * - The previous survey belongs to the same one.
      */
     @Override
-    protected boolean hasToShowFacility(int position, Survey survey) {
+    protected boolean hasToShowFacility(int position, SurveyDB survey) {
         if (position == 0) {
             return true;
         } else {
@@ -68,17 +69,17 @@ public class AssessmentSentAdapter extends ADashboardAdapter {
 
     @Override
     protected void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            Survey survey) {
+            SurveyDB survey) {
         facilityName.setText(survey.getOrgUnit().getName());
     }
 
     @Override
-    protected void decorateCustomColumns(Survey survey, View rowView) {
+    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
         decorateSentDate(survey, rowView);
         decorateSentScore(survey, rowView);
     }
 
-    private void decorateSentScore(Survey survey, View rowView) {
+    private void decorateSentScore(SurveyDB survey, View rowView) {
 
         int colorId;
         String scoreText;
@@ -100,17 +101,17 @@ public class AssessmentSentAdapter extends ADashboardAdapter {
         sentScore.setTextColor(getContext().getResources().getColor(colorId));
     }
 
-    private void decorateSentDate(Survey survey, View rowView) {
+    private void decorateSentDate(SurveyDB survey, View rowView) {
         CustomTextView sentDate = (CustomTextView) rowView.findViewById(R.id.sentDate);
         sentDate.setText(decorateCompletionDate(survey));
     }
 
-    private String decorateCompletionDate(Survey survey) {
+    private String decorateCompletionDate(SurveyDB survey) {
         Date completionDate = survey.getCompletionDate();
         return format.format(completionDate);
     }
 
-    private int getColorByScore(Survey survey) {
+    private int getColorByScore(SurveyDB survey) {
         return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScore() : 0f);
     }
 

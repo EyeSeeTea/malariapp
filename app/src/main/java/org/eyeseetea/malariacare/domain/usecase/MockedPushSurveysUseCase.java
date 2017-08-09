@@ -22,16 +22,16 @@ package org.eyeseetea.malariacare.domain.usecase;
 
 import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.List;
 
 public class MockedPushSurveysUseCase {
     public void execute(Callback callback) {
-        List<Survey> surveys = Survey.getAllCompletedUnsentSurveys();
+        List<SurveyDB> surveys = SurveyDB.getAllCompletedUnsentSurveys();
 
         //Check surveys not in progress
-        for (Survey survey : surveys) {
+        for (SurveyDB survey : surveys) {
             survey.setStatus(SURVEY_SENT);
             survey.save();
         }

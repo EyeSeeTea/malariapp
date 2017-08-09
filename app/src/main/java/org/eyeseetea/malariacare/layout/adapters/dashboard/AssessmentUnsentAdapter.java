@@ -24,14 +24,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
-public class AssessmentUnsentAdapter extends ADashboardAdapter {
+public class AssessmentUnsentAdapter extends
+        ADashboardAdapter {
 
-    public AssessmentUnsentAdapter(List<Survey> items, Context context) {
+    public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
         this.headerLayout = R.layout.assessment_unsent_header;
@@ -41,18 +42,18 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
 
     @Override
-    protected void decorateCustomColumns(Survey survey, View rowView) {
+    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
         ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
     }
 
 
     @Override
-    protected boolean hasToShowFacility(int position, Survey survey) {
+    protected boolean hasToShowFacility(int position, SurveyDB survey) {
         if (position == 0) {
             return true;
         }
 
-        Survey previousSurvey = this.items.get(position - 1);
+        SurveyDB previousSurvey = this.items.get(position - 1);
         return survey.getOrgUnit().getId_org_unit() != previousSurvey.getOrgUnit().getId_org_unit();
     }
 
@@ -68,7 +69,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
     @Override
     protected void showFacility(CustomTextView facilityName, CustomTextView surveyType,
-            Survey survey) {
+            SurveyDB survey) {
         facilityName.setText(survey.getOrgUnit().getName());
         facilityName.setLayoutParams(
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));

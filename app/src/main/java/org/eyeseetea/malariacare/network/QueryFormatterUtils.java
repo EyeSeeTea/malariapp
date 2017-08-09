@@ -25,9 +25,9 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -110,7 +110,7 @@ public class QueryFormatterUtils {
      *
      * @return JSONObject with program, orgunit, eventdate and so on...
      */
-    public JSONObject prepareMetadata(Survey survey) throws Exception {
+    public JSONObject prepareMetadata(SurveyDB survey) throws Exception {
         Log.d(TAG, "prepareMetadata for survey: " + survey.getId_survey());
         JSONObject object = new JSONObject();
         object.put(TAG_PROGRAM, survey.getProgram().getUid());
@@ -158,7 +158,7 @@ public class QueryFormatterUtils {
      *
      * @param data JSON object to update
      */
-    public JSONObject PushUtilsElements(JSONObject data, Survey survey, String module)
+    public JSONObject PushUtilsElements(JSONObject data, SurveyDB survey, String module)
             throws Exception {
         Log.d(TAG, "PushUtilsElements for survey: " + survey.getId_survey());
 
@@ -179,14 +179,14 @@ public class QueryFormatterUtils {
     /**
      * Add a dataElement per value (answer)
      */
-    private JSONArray prepareValues(JSONArray values, Survey survey) throws Exception {
-        List<Value> surveyValues = survey.getValues();
+    private JSONArray prepareValues(JSONArray values, SurveyDB survey) throws Exception {
+        List<ValueDB> surveyValues = survey.getValues();
         if (surveyValues == null || surveyValues.size() == 0) {
             throw new Exception(
                     applicationContext.getString(R.string.dialog_info_push_empty_survey));
         }
 
-        for (Value value : surveyValues) {
+        for (ValueDB value : surveyValues) {
             values.put(prepareValue(value));
         }
 
@@ -194,19 +194,19 @@ public class QueryFormatterUtils {
         return values;
     }
 
-    private JSONArray prepareCompositeScores(JSONArray values, Survey survey, String module)
+    private JSONArray prepareCompositeScores(JSONArray values, SurveyDB survey, String module)
             throws Exception {
 
         //Prepare scores info
-        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey, module);
+        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey, module);
 
         //Calculate main score to push later
         survey.setMainScore(
                 ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
                         module));
 
-        //1 CompositeScore -> 1 dataValue
-        for (CompositeScore compositeScore : compositeScoreList) {
+        //1 CompositeScoreDB -> 1 dataValue
+        for (CompositeScoreDB compositeScore : compositeScoreList) {
             values.put(prepareValue(compositeScore, survey.getId_survey(), module));
         }
         return values;
@@ -228,7 +228,7 @@ public class QueryFormatterUtils {
      * Adds a pair dataElement|value according to the passed value.
      * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
      */
-    private JSONObject prepareValue(Value value) throws Exception {
+    private JSONObject prepareValue(ValueDB value) throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, value.getQuestion().getUid());
 
@@ -245,7 +245,7 @@ public class QueryFormatterUtils {
      * Adds a pair dataElement|value according to the 'compositeScore' of the value.
      * Format: {dataValues: [{dataElement:'234567',value:'34'}, ...]}
      */
-    private JSONObject prepareValue(CompositeScore compositeScore, float idSurvey, String module)
+    private JSONObject prepareValue(CompositeScoreDB compositeScore, float idSurvey, String module)
             throws Exception {
         JSONObject elementObject = new JSONObject();
         elementObject.put(TAG_DATAELEMENT, compositeScore.getUid());
