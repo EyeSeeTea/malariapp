@@ -36,18 +36,18 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.data.database.model.Answer;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Header;
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.AnswerDB;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.HeaderDB;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.Survey$Table;
-import org.eyeseetea.malariacare.data.database.model.Tab;
-import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.IntentServiceIdlingResource;
@@ -89,9 +89,9 @@ public class MalariaEspressoTest {
             return;
         }
         // Clean DB
-        Delete.tables(Question.class, CompositeScore.class, Option.class, Answer.class, Header.class, Tab.class, Program.class, OrgUnit.class, User.class, Value.class, Survey.class);
+        Delete.tables(QuestionDB.class, CompositeScoreDB.class, OptionDB.class, AnswerDB.class, HeaderDB.class, TabDB.class, ProgramDB.class, OrgUnitDB.class, UserDB.class, ValueDB.class, SurveyDB.class);
         /*new Delete().from(Question.class).where(Condition.column(Question$Table.ID).isNotNull()).query();
-        new Delete().from(CompositeScore.class).where(Condition.column(CompositeScore$Table.ID).isNotNull()).query();;
+        new Delete().from(CompositeScoreDB.class).where(Condition.column(CompositeScoreDB$Table.ID).isNotNull()).query();;
         new Delete().from(Option.class).where(Condition.column(Option$Table.ID).isNotNull()).query();;
         new Delete().from(Answer.class).where(Condition.column(Answer$Table.ID).isNotNull()).query();;
         new Delete().from(Header.class).where(Condition.column(Header$Table.ID).isNotNull()).query();;
@@ -133,9 +133,9 @@ public class MalariaEspressoTest {
         }
     }
 
-    public static Survey mockSessionSurvey(int numSurvey, int numProgram, int select){
-        List<Survey> surveys=mockSurveys(numSurvey, numProgram);
-        Survey survey=surveys.get(select);
+    public static SurveyDB mockSessionSurvey(int numSurvey, int numProgram, int select){
+        List<SurveyDB> surveys=mockSurveys(numSurvey, numProgram);
+        SurveyDB survey=surveys.get(select);
         Session.setSurveyByModule(survey,"");
         return survey;
     }
@@ -144,30 +144,30 @@ public class MalariaEspressoTest {
         mockSessionSurvey(num, 0, select);
     }
 
-    public static List<Survey> mockSurveys(int numOrgs, int numPrograms){
-        List<OrgUnit> orgUnitList = new Select().all().from(OrgUnit.class).queryList();
-        List<Program> programList = Program.list();
-        Program program=programList.get(numPrograms);
-        User user =getSafeUser();
+    public static List<SurveyDB> mockSurveys(int numOrgs, int numPrograms){
+        List<OrgUnitDB> orgUnitList = new Select().all().from(OrgUnitDB.class).queryList();
+        List<ProgramDB> programList = ProgramDB.list();
+        ProgramDB program=programList.get(numPrograms);
+        UserDB user =getSafeUser();
 
         for(int i=0;i<numOrgs;i++){
-            Survey survey=new Survey(orgUnitList.get(i%numOrgs),program,user);
+            SurveyDB survey=new SurveyDB(orgUnitList.get(i%numOrgs),program,user);
             survey.save();
         }
-        List<Survey> surveys = new Select().from(Survey.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();
+        List<SurveyDB> surveys = new Select().from(SurveyDB.class).where(Condition.column(Survey$Table.ID_USER).eq(user.getId_user())).queryList();
         return surveys;
     }
 
-    public static List<Survey> mockSurveys(int num){
+    public static List<SurveyDB> mockSurveys(int num){
         return mockSurveys(num, 0);
     }
 
-    private static User getSafeUser(){
-        User user=Session.getUser();
+    private static UserDB getSafeUser(){
+        UserDB user=Session.getUser();
         if(user!=null){
             return user;
         }
-        user = new User("user", "user");
+        user = new UserDB("user", "user");
         user.save();
         Session.setUser(user);
         return user;

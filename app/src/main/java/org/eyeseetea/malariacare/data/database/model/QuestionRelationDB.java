@@ -34,9 +34,9 @@ import java.util.List;
 /**
  * Created by Jose on 25/05/2015.
  */
-@Table(database = AppDatabase.class)
+@Table(database = AppDatabase.class, name = "QuestionRelation")
 
-public class QuestionRelation extends BaseModel {
+public class QuestionRelationDB extends BaseModel {
 
     private static final String TAG = ".QuestionRelation";
     /**
@@ -56,7 +56,7 @@ public class QuestionRelation extends BaseModel {
     /**
      * Reference to associated question (loaded lazily)
      */
-    Question question;
+    QuestionDB question;
 
     @Column
     int operation;
@@ -64,11 +64,11 @@ public class QuestionRelation extends BaseModel {
     /**
      * List of matches associated to this questionRelation
      */
-    List<Match> matches;
+    List<MatchDB> matches;
 
-    public QuestionRelation(){}
+    public QuestionRelationDB(){}
 
-    public QuestionRelation(Question question, int operation) {
+    public QuestionRelationDB(QuestionDB question, int operation) {
         this.operation = operation;
         this.setQuestion(question);
     }
@@ -81,18 +81,18 @@ public class QuestionRelation extends BaseModel {
         this.id_question_relation = id_question_relation;
     }
 
-    public Question getQuestion() {
+    public QuestionDB getQuestion() {
         if(question==null){
             if(id_question_fk==null) return null;
             question = new Select()
-                    .from(Question.class)
-                    .where( Question_Table.id_question
+                    .from(QuestionDB.class)
+                    .where( QuestionDB_Table.id_question
                             .is(id_question_fk)).querySingle();
         }
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionDB question) {
         this.question = question;
         this.id_question_fk = (question!=null)?question.getId_question():null;
     }
@@ -110,31 +110,31 @@ public class QuestionRelation extends BaseModel {
         this.operation = operation;
     }
 
-    public void createMatchFromQuestions(List<Question> children){
+    public void createMatchFromQuestions(List<QuestionDB> children){
         if (children.size() != 2){
             Log.e(TAG, "createMatchFromQuestions(): children must be 2. Match not created");
             return;
         }
-        Match match;
-        for (Option optionA : children.get(0).getAnswer().getOptions()) {
-            for (Option optionB : children.get(1).getAnswer().getOptions()) {
+        MatchDB match;
+        for (OptionDB optionA : children.get(0).getAnswer().getOptions()) {
+            for (OptionDB optionB : children.get(1).getAnswer().getOptions()) {
                 if(optionA.getFactor().equals(optionB.getFactor())){
                     //Save all optiona factor optionb factor with the same match
-                    match = new Match(this);
+                    match = new MatchDB(this);
                     match.save();
-                    new QuestionOption(optionA, children.get(0), match).save();
-                    new QuestionOption(optionB, children.get(1), match).save();
+                    new QuestionOptionDB(optionA, children.get(0), match).save();
+                    new QuestionOptionDB(optionB, children.get(1), match).save();
                 }
             }
         }
     }
 
-    public List<Match> getMatches() {
+    public List<MatchDB> getMatches() {
         if(matches==null) {
-            this.matches = new Select().from(Match.class)
+            this.matches = new Select().from(MatchDB.class)
                     //// FIXME: 11/11/2016
                     //.indexedBy("Match_id_question_relation")
-                    .where( Match_Table.id_question_relation_fk.eq(this.getId_question_relation()))
+                    .where( MatchDB_Table.id_question_relation_fk.eq(this.getId_question_relation()))
                     .queryList();
         }
         return this.matches;
@@ -145,7 +145,7 @@ public class QuestionRelation extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        QuestionRelation that = (QuestionRelation) o;
+        QuestionRelationDB that = (QuestionRelationDB) o;
 
         if (id_question_relation != that.id_question_relation) return false;
         if (operation != that.operation) return false;

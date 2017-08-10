@@ -37,8 +37,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class OrgUnit extends BaseModel {
+@Table(database = AppDatabase.class, name = "OrgUnit")
+public class OrgUnitDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -53,7 +53,7 @@ public class OrgUnit extends BaseModel {
     /**
      * Refernce to parent orgUnit (loaded lazily)
      */
-    OrgUnit orgUnit;
+    OrgUnitDB orgUnit;
 
     @Column
     Long id_org_unit_level_fk;
@@ -61,33 +61,33 @@ public class OrgUnit extends BaseModel {
     /**
      * Reference to the level of this orgUnit (loaded lazily)
      */
-    OrgUnitLevel orgUnitLevel;
+    OrgUnitLevelDB orgUnitLevel;
 
     /**
      * List of surveys that belong to this orgunit
      */
-    List<Survey> surveys;
+    List<SurveyDB> surveys;
 
     /**
      * List of orgUnits that belong to this one
      */
-    List<OrgUnit> children;
+    List<OrgUnitDB> children;
 
     /**
      * List of program authorized for this orgunit
      */
-    List<Program> programs;
+    List<ProgramDB> programs;
 
-    public OrgUnit() {
+    public OrgUnitDB() {
     }
 
-    public OrgUnit(String name) {
+    public OrgUnitDB(String name) {
         this();
         this.name = name;
     }
 
 
-    public OrgUnit(String uid, String name, OrgUnit orgUnit, OrgUnitLevel orgUnitLevel) {
+    public OrgUnitDB(String uid, String name, OrgUnitDB orgUnit, OrgUnitLevelDB orgUnitLevel) {
         this(name);
         this.uid_org_unit = uid;
         this.setOrgUnit(orgUnit);
@@ -118,18 +118,18 @@ public class OrgUnit extends BaseModel {
         this.name = name;
     }
 
-    public OrgUnit getOrgUnit() {
+    public OrgUnitDB getOrgUnit() {
         if(orgUnit==null){
             if (this.id_org_unit_parent == null) return null;
             orgUnit = new Select()
-                    .from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_org_unit
+                    .from(OrgUnitDB.class)
+                    .where(OrgUnitDB_Table.id_org_unit
                             .is(id_org_unit_parent)).querySingle();
         }
         return orgUnit;
     }
 
-    public void setOrgUnit(OrgUnit orgUnit) {
+    public void setOrgUnit(OrgUnitDB orgUnit) {
         this.orgUnit = orgUnit;
         this.id_org_unit_parent = (orgUnit!=null)?orgUnit.getId_org_unit():null;
     }
@@ -139,18 +139,18 @@ public class OrgUnit extends BaseModel {
         this.orgUnit = null;
     }
 
-    public OrgUnitLevel getOrgUnitLevel() {
+    public OrgUnitLevelDB getOrgUnitLevel() {
         if(orgUnitLevel==null){
             if (this.id_org_unit_level_fk==null) return null;
             orgUnitLevel  = new Select()
-                    .from(OrgUnitLevel.class)
-                    .where(OrgUnitLevel_Table.id_org_unit_level
+                    .from(OrgUnitLevelDB.class)
+                    .where(OrgUnitLevelDB_Table.id_org_unit_level
                             .is(id_org_unit_level_fk)).querySingle();
         }
         return orgUnitLevel;
     }
 
-    public void setOrgUnitLevel(OrgUnitLevel orgUnitLevel) {
+    public void setOrgUnitLevel(OrgUnitLevelDB orgUnitLevel) {
         this.orgUnitLevel = orgUnitLevel;
         this.id_org_unit_level_fk = (orgUnitLevel!=null)?orgUnitLevel.getId_org_unit_level():null;
     }
@@ -160,27 +160,27 @@ public class OrgUnit extends BaseModel {
         this.orgUnitLevel = null;
     }
 
-    public List<OrgUnit> getChildren(){
+    public List<OrgUnitDB> getChildren(){
         if(this.children==null){
-            this.children = new Select().from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit())).queryList();
+            this.children = new Select().from(OrgUnitDB.class)
+                    .where(OrgUnitDB_Table.id_org_unit_parent.eq(this.getId_org_unit())).queryList();
         }
         return children;
     }
 
-    public List<OrgUnit> getChildrenOrderedByName(){
+    public List<OrgUnitDB> getChildrenOrderedByName(){
         if(this.children==null){
-            this.children = new Select().from(OrgUnit.class)
-                    .where(OrgUnit_Table.id_org_unit_parent.eq(this.getId_org_unit())).orderBy(
-                            OrderBy.fromProperty(OrgUnit_Table.name)).queryList();
+            this.children = new Select().from(OrgUnitDB.class)
+                    .where(OrgUnitDB_Table.id_org_unit_parent.eq(this.getId_org_unit())).orderBy(
+                            OrderBy.fromProperty(OrgUnitDB_Table.name)).queryList();
         }
         return children;
     }
 
-    public List<Survey> getSurveys(){
+    public List<SurveyDB> getSurveys(){
         if(this.surveys==null){
-            this.surveys = new Select().from(Survey.class)
-                    .where(Survey_Table.id_org_unit_fk.eq(this.getId_org_unit())).queryList();
+            this.surveys = new Select().from(SurveyDB.class)
+                    .where(SurveyDB_Table.id_org_unit_fk.eq(this.getId_org_unit())).queryList();
         }
         return surveys;
     }
@@ -189,36 +189,37 @@ public class OrgUnit extends BaseModel {
      * List of programs related to this orgunit order by name
      * @return
      */
-    public List<Program> getPrograms(){
+    public List<ProgramDB> getPrograms(){
         if(programs==null){
-            this.programs=new Select().from(Program.class).as(programName)
-                    .join(OrgUnitProgramRelation.class, Join.JoinType.LEFT_OUTER).as(orgUnitProgramRelationName)
-                    .on(Program_Table.id_program.withTable(programAlias)
-                            .eq(OrgUnitProgramRelation_Table.id_program_fk.withTable(orgUnitProgramRelationAlias))
-                    ).where(OrgUnitProgramRelation_Table.id_org_unit_fk.withTable(orgUnitProgramRelationAlias).eq(this.getId_org_unit()))
-                    .orderBy(Program_Table.name.withTable(programAlias), true)
+            this.programs=new Select().from(ProgramDB.class).as(programName)
+                    .join(OrgUnitProgramRelationDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitProgramRelationName)
+                    .on(ProgramDB_Table.id_program.withTable(programAlias)
+                            .eq(OrgUnitProgramRelationDB_Table.id_program_fk.withTable(orgUnitProgramRelationAlias))
+                    ).where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.withTable(orgUnitProgramRelationAlias).eq(this.getId_org_unit()))
+                    .orderBy(ProgramDB_Table.name.withTable(programAlias), true)
                     .queryList();
         }
         return programs;
     }
 
-    public OrgUnitProgramRelation getRelation(Program program){
-        return new Select().from(OrgUnitProgramRelation.class)
-                .where(OrgUnitProgramRelation_Table.id_org_unit_fk.eq(this.getId_org_unit()))
-                .and(OrgUnitProgramRelation_Table.id_program_fk.eq(program.getId_program())).querySingle();
+    public OrgUnitProgramRelationDB getRelation(ProgramDB program){
+        return new Select().from(OrgUnitProgramRelationDB.class)
+                .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(this.getId_org_unit()))
+                .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(program.getId_program())).querySingle();
     }
 
-    public Integer getProductivity(Program program){
-        if (getRelation(program) == null) return OrgUnitProgramRelation.DEFAULT_PRODUCTIVITY;
+    public Integer getProductivity(ProgramDB program){
+        if (getRelation(program) == null) return OrgUnitProgramRelationDB.DEFAULT_PRODUCTIVITY;
         return getRelation(program).getProductivity();
     }
 
-    public void setProductivity(Program program, Integer productivity){
+    public void setProductivity(ProgramDB program, Integer productivity){
         getRelation(program).setProductivity(productivity);
     }
 
-    public static List<OrgUnit> getAllOrgUnit() {
-        return new Select().from(OrgUnit.class).queryList();
+    public static List<OrgUnitDB> getAllOrgUnit() {
+        return new Select().from(OrgUnitDB.class)
+                .orderBy(OrgUnitDB_Table.name, true).queryList();
     }
     /**
      * Returns the UID of an orgUnit with the given name
@@ -226,21 +227,21 @@ public class OrgUnit extends BaseModel {
      * @param name Name of the orgunit
      */
     public static String findUIDByName(String name) {
-        OrgUnit orgUnit = new Select().from(OrgUnit.class)
-                .where(OrgUnit_Table.name.eq(name)).querySingle();
+        OrgUnitDB orgUnit = new Select().from(OrgUnitDB.class)
+                .where(OrgUnitDB_Table.name.eq(name)).querySingle();
         if (orgUnit == null) {
             return null;
         }
         return orgUnit.getUid();
     }
-    public OrgUnitProgramRelation addProgram(Program program){
+    public OrgUnitProgramRelationDB addProgram(ProgramDB program){
         //Null -> nothing
         if(program==null){
             return null;
         }
 
         //Save a new relationship
-        OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation(this,program);
+        OrgUnitProgramRelationDB orgUnitProgramRelation = new OrgUnitProgramRelationDB(this,program);
         orgUnitProgramRelation.save();
 
         //Clear cache to enable reloading
@@ -252,14 +253,17 @@ public class OrgUnit extends BaseModel {
      * Returns all orgunits
      * @return
      */
-    public static List<OrgUnit> list(){
-        return new Select().from(OrgUnit.class).orderBy(OrgUnit_Table.id_org_unit_level_fk,true).orderBy(OrgUnit_Table.name, true).queryList();
+    public static List<OrgUnitDB> list(){
+        return new Select().from(OrgUnitDB.class).orderBy(OrgUnitDB_Table.id_org_unit_level_fk,true).orderBy(
+
+
+                OrgUnitDB_Table.name, true).queryList();
     }
 
-    public static OrgUnit getOrgUnit(String uid) {
-            OrgUnit orgUnit = new Select()
-                    .from(OrgUnit.class)
-                    .where(OrgUnit_Table.uid_org_unit
+    public static OrgUnitDB getOrgUnit(String uid) {
+            OrgUnitDB orgUnit = new Select()
+                    .from(OrgUnitDB.class)
+                    .where(OrgUnitDB_Table.uid_org_unit
                             .is(uid)).querySingle();
         return orgUnit;
     }
@@ -269,7 +273,7 @@ public class OrgUnit extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrgUnit orgUnit = (OrgUnit) o;
+        OrgUnitDB orgUnit = (OrgUnitDB) o;
 
         if (id_org_unit != orgUnit.id_org_unit) return false;
         if (uid_org_unit != null ? !uid_org_unit.equals(orgUnit.uid_org_unit) : orgUnit.uid_org_unit != null) return false;

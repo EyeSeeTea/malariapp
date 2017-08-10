@@ -7,9 +7,9 @@ import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnit;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.persistence.models.Access;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit; 
@@ -47,11 +47,11 @@ public class PullOKTest {
     private final String ATTRIBUTE_SUPERVISION_ID="vInmonKS0rP";
     private final String PROGRAM_PROGRAMTYPE="without_registration";
     private OrganisationUnit goldenOrganisationUnit;
-    private OrgUnit goldenOrgUnit;
+    private OrgUnitDB goldenOrgUnit;
     private org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Program
             goldenSdkProgram;
-    private Program goldenProgram;
-    private OrgUnitProgramRelation goldenOrgUnitProgramRelation;
+    private ProgramDB goldenProgram;
+    private OrgUnitProgramRelationDB goldenOrgUnitProgramRelation;
     private List<String> goldenDataSets;
     private List<String> goldenOrganisationUnitGroups;
 
@@ -94,7 +94,7 @@ public class PullOKTest {
         //Test organisationUnit has been downloaded with the correct propierties.
         OrganisationUnit sdkOrganisationUnit=OrganisationUnitExtended.getOrganisationUnit(goldenOrganisationUnit.getUId());
         //Test orgUnit in app DB has been saved with the correct propierties.
-        OrgUnit appOrgUnit=OrgUnit.getOrgUnit(goldenOrgUnit.getUid());
+        OrgUnitDB appOrgUnit= OrgUnitDB.getOrgUnit(goldenOrgUnit.getUid());
         //Test program (in sdk) has been downloaded with the correct propierties.
         org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Program sdkProgram= ProgramExtended.getProgram(goldenProgram.getUid());
 
@@ -170,14 +170,14 @@ public class PullOKTest {
     }
 
     public void createRealAppProgram(){
-        goldenProgram = new Program("wK0958s1bdj","KE HNQIS Family Planning");
+        goldenProgram = new ProgramDB("wK0958s1bdj","KE HNQIS Family Planning");
     }
 
     public void createRealOrgUnit(){
         //Create the Test Program and OrgUnit to compare with real data.
         //Fixme the orgunitlevel is not pulled.
         //goldenOrgUnit.setOrgUnitLevel(new OrgUnitLevel("Zone"));
-        goldenOrgUnit= new OrgUnit("QS7sK8XzdQc","KE - HNQIS SF pilot test facility 1",null,null);
+        goldenOrgUnit= new OrgUnitDB("QS7sK8XzdQc","KE - HNQIS SF pilot test facility 1",null,null);
         goldenOrgUnit.addProgram(goldenProgram);
         goldenOrgUnit.setProductivity(goldenProgram, 9);
     }
@@ -201,7 +201,7 @@ public class PullOKTest {
         assertTrue(goldenProgram.getName().equals(sdkProgram.getName()));
     }
 
-    private void testOrgUnit(OrgUnit appOrgUnit) {
+    private void testOrgUnit(OrgUnitDB appOrgUnit) {
         assertTrue(goldenOrgUnit.getName().equals(appOrgUnit.getName()));
         assertTrue(goldenOrgUnit.getUid().equals(appOrgUnit.getUid()));
         assertTrue(goldenOrgUnit.getProductivity(goldenProgram).equals(appOrgUnit.getProductivity(goldenProgram)));
@@ -268,12 +268,12 @@ public class PullOKTest {
         assertTrue(sdkOrganisationUnit.getDimensionItem().equals(goldenOrganisationUnit.getDimensionItem()));
     }
 
-    private boolean orgUnitProgramsIncludeGolden(List<Program> programs){
+    private boolean orgUnitProgramsIncludeGolden(List<ProgramDB> programs){
         if(programs==null || goldenProgram==null){
             return false;
         }
         String goldenProgramUID=goldenProgram.getUid();
-        for(Program program:programs){
+        for(ProgramDB program:programs){
             if(program.getUid()!=null && program.getUid().equals(goldenProgramUID)){
                 return true;
             }

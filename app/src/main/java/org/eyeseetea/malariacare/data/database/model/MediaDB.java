@@ -31,13 +31,13 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class Media extends BaseModel {
+@Table(database = AppDatabase.class, name = "Media")
+public class MediaDB extends BaseModel {
 
     /**
      * Null media value to express that a question has NO media without using querys
      */
-    private static Media noMedia = new Media(Constants.NO_MEDIA_ID, null, null);
+    private static MediaDB noMedia = new MediaDB(Constants.NO_MEDIA_ID, null, null);
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -59,24 +59,24 @@ public class Media extends BaseModel {
     /**
      * Reference to the question
      */
-    Question question;
+    QuestionDB question;
 
-    public Media() {
+    public MediaDB() {
     }
 
-    public Media(int media_type, String resource_url, Question question) {
+    public MediaDB(int media_type, String resource_url, QuestionDB question) {
         this.media_type = media_type;
         this.resource_url = resource_url;
         this.filename = null;
         this.setQuestion(question);
     }
 
-    public Question getQuestion(){
+    public QuestionDB getQuestion(){
         if(question==null){
             if(id_question_fk==null) return null;
             question = new Select()
-                    .from(Question.class)
-                    .where(Question_Table.id_question
+                    .from(QuestionDB.class)
+                    .where(QuestionDB_Table.id_question
                         .is(id_question_fk)).querySingle();
         }
         return question;
@@ -106,43 +106,43 @@ public class Media extends BaseModel {
         this.filename = filename;
     }
 
-    public static List<Media> getAllNotInLocal() {
+    public static List<MediaDB> getAllNotInLocal() {
         return new Select().
-                from(Media.class).
-                where(Media_Table.filename.isNull()).
-                and(Media_Table.resource_url.isNotNull()).
-                orderBy(Media_Table.id_media, true).
+                from(MediaDB.class).
+                where(MediaDB_Table.filename.isNull()).
+                and(MediaDB_Table.resource_url.isNotNull()).
+                orderBy(MediaDB_Table.id_media, true).
                 queryList();
     }
 
-    public static List<Media> getAllInLocal() {
+    public static List<MediaDB> getAllInLocal() {
         return new Select().
-                from(Media.class).
-                where(Media_Table.filename.isNotNull()).
-                and(Media_Table.resource_url.isNotNull()).
-                orderBy(Media_Table.id_media, true).
+                from(MediaDB.class).
+                where(MediaDB_Table.filename.isNotNull()).
+                and(MediaDB_Table.resource_url.isNotNull()).
+                orderBy(MediaDB_Table.id_media, true).
                 queryList();
     }
 
-    public static List<Media> getAllMedia() {
+    public static List<MediaDB> getAllMedia() {
         return new Select().
-                from(Media.class).
-                orderBy(Media_Table.id_media, true).
+                from(MediaDB.class).
+                orderBy(MediaDB_Table.id_media, true).
                 queryList();
     }
-    public static List<Media> findByQuestion(Question question) {
+    public static List<MediaDB> findByQuestion(QuestionDB question) {
         if (question == null) {
             return new ArrayList<>();
         }
 
         return new Select().
-                from(Media.class).
-                where(Media_Table.id_question_fk.eq(question.id_question)).
-                orderBy(Media_Table.id_media, true).
+                from(MediaDB.class).
+                where(MediaDB_Table.id_question_fk.eq(question.id_question)).
+                orderBy(MediaDB_Table.id_media, true).
                 queryList();
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionDB question) {
         this.question = question;
         this.id_question_fk = (question!=null)?question.getId_question():null;
     }
@@ -171,11 +171,11 @@ public class Media extends BaseModel {
      * Returns a media that holds a reference to the same resource with an already downloaded copy
      * of the file.
      */
-    public Media findLocalCopy() {
-        return new Select().from(Media.class)
-                .where(Media_Table.filename.isNotNull())
-                .and(Media_Table.id_media.isNot(this.id_media))
-                .and(Media_Table.resource_url.is(this.resource_url))
+    public MediaDB findLocalCopy() {
+        return new Select().from(MediaDB.class)
+                .where(MediaDB_Table.filename.isNotNull())
+                .and(MediaDB_Table.id_media.isNot(this.id_media))
+                .and(MediaDB_Table.resource_url.is(this.resource_url))
                 .querySingle();
     }
 
@@ -197,7 +197,7 @@ public class Media extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Media media = (Media) o;
+        MediaDB media = (MediaDB) o;
 
         if (id_media != media.id_media) return false;
         if (media_type != media.media_type) return false;

@@ -20,18 +20,15 @@
 package org.eyeseetea.malariacare.data.database.utils.feedback;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by arrizabalaga on 14/09/15.
- */
 public class CompositeScoreFeedback implements Feedback {
 
     private float score;
-    private CompositeScore compositeScore;
+    private CompositeScoreDB compositeScore;
     private boolean isActive;
     private List<QuestionFeedback> mFeedbackList;
     private List<CompositeScoreFeedback> mCompositeScoreFeedbackList;
@@ -46,7 +43,7 @@ public class CompositeScoreFeedback implements Feedback {
         return this.isRoot;
     }
 
-    public CompositeScoreFeedback(CompositeScore compositeScore, float score, boolean isRoot){
+    public CompositeScoreFeedback(CompositeScoreDB compositeScore, float score, boolean isRoot){
         this.compositeScore=compositeScore;
         this.score=score;
         mCompositeScoreFeedbackList = new ArrayList<>();

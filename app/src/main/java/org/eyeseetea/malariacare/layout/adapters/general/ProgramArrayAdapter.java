@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
@@ -30,13 +30,13 @@ import java.util.List;
 /**
  * Created by adrian on 30/04/15.
  */
-public class ProgramArrayAdapter extends AddlArrayAdapter<Program> {
+public class ProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
 
-    public ProgramArrayAdapter(Context context, List<Program> programs) {
+    public ProgramArrayAdapter(Context context, List<ProgramDB> programs) {
         super(context, programs);
     }
 
-    @Override public void drawText(CustomTextView customTextView, Program program) {
+    @Override public void drawText(CustomTextView customTextView, ProgramDB program) {
         if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
             customTextView.setTextSize(16);
         customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));

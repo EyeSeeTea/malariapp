@@ -31,8 +31,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class Program extends BaseModel{
+@Table(database = AppDatabase.class, name = "Program")
+public class ProgramDB extends BaseModel{
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -47,21 +47,21 @@ public class Program extends BaseModel{
     /**
      * List of tabs that belongs to this programstage
      */
-    List<Tab> tabs;
+    List<TabDB> tabs;
 
     /**
      * List of orgUnit authorized for this program
      */
-    List<OrgUnit> orgUnits;
+    List<OrgUnitDB> orgUnits;
 
-    public Program() {
+    public ProgramDB() {
     }
 
-    public Program(String name) {
+    public ProgramDB(String name) {
         this.name = name;
     }
 
-    public Program(String uid, String name) {
+    public ProgramDB(String uid, String name) {
         this.uid_program = uid;
         this.name = name;
     }
@@ -98,48 +98,49 @@ public class Program extends BaseModel{
         this.stage_uid = stage_uid;
     }
 
-    public static List<Program> getAllPrograms(){
-        return new Select().from(Program.class).queryList();
+    public static List<ProgramDB> getAllPrograms(){
+        return new Select().from(ProgramDB.class)
+                .orderBy(ProgramDB_Table.name, true).queryList();
     }
 
-    public static Program getProgram(String uid) {
-        Program program = new Select()
-                .from(Program.class)
-                .where(Program_Table.uid_program
+    public static ProgramDB getProgram(String uid) {
+        ProgramDB program = new Select()
+                .from(ProgramDB.class)
+                .where(ProgramDB_Table.uid_program
                         .is(uid)).querySingle();
         return program;
     }
 
-    public List<OrgUnit> getOrgUnits(){
+    public List<OrgUnitDB> getOrgUnits(){
         if(orgUnits==null){
-            List<OrgUnitProgramRelation> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelation.class)
-                    .where(OrgUnitProgramRelation_Table.id_program_fk.eq(this.getId_program()))
+            List<OrgUnitProgramRelationDB> orgUnitProgramRelations = new Select().from(OrgUnitProgramRelationDB.class)
+                    .where(OrgUnitProgramRelationDB_Table.id_program_fk.eq(this.getId_program()))
                     .queryList();
             this.orgUnits = new ArrayList<>();
-            for(OrgUnitProgramRelation programRelation:orgUnitProgramRelations){
+            for(OrgUnitProgramRelationDB programRelation:orgUnitProgramRelations){
                 orgUnits.add(programRelation.getOrgUnit());
             }
         }
         return orgUnits;
     }
 
-    public List<Tab> getTabs(){
+    public List<TabDB> getTabs(){
         if (tabs==null){
-            tabs=new Select().from(Tab.class)
-                    .where(Tab_Table.id_program_fk.eq(this.getId_program()))
-                    .orderBy(OrderBy.fromProperty(Tab_Table.order_pos)).queryList();
+            tabs=new Select().from(TabDB.class)
+                    .where(TabDB_Table.id_program_fk.eq(this.getId_program()))
+                    .orderBy(OrderBy.fromProperty(TabDB_Table.order_pos)).queryList();
         }
         return tabs;
     }
 
-    public OrgUnitProgramRelation addOrgUnit(OrgUnit orgUnit){
+    public OrgUnitProgramRelationDB addOrgUnit(OrgUnitDB orgUnit){
         //Null -> nothing
         if(orgUnit==null){
             return null;
         }
 
         //Save a new relationship
-        OrgUnitProgramRelation orgUnitProgramRelation = new OrgUnitProgramRelation(orgUnit,this);
+        OrgUnitProgramRelationDB orgUnitProgramRelation = new OrgUnitProgramRelationDB(orgUnit,this);
         orgUnitProgramRelation.save();
 
         //Clear cache to enable reloading
@@ -151,16 +152,16 @@ public class Program extends BaseModel{
      * List all programs
      * @return
      */
-    public static List<Program> list() {
-        return new Select().from(Program.class).orderBy(Program_Table.name, true).queryList();
+    public static List<ProgramDB> list() {
+        return new Select().from(ProgramDB.class).orderBy(ProgramDB_Table.name, true).queryList();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Program)) return false;
+        if (!(o instanceof ProgramDB)) return false;
 
-        Program program = (Program) o;
+        ProgramDB program = (ProgramDB) o;
 
         if (id_program != program.id_program) return false;
         if (uid_program != null ? !uid_program.equals(program.uid_program) : program.uid_program != null) return false;

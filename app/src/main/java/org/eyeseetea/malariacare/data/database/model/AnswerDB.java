@@ -26,12 +26,11 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class Answer extends BaseModel{
+@Table(database = AppDatabase.class, name = "Answer")
+public class AnswerDB extends BaseModel{
 
     /**
      * Default mock answer.output value
@@ -47,17 +46,17 @@ public class Answer extends BaseModel{
     /**
      * List of options that belongs to this answer type
      */
-    List<Option> options;
+    List<OptionDB> options;
 
     /**
      * List of options that have this answer type
      */
-    List<Question> questions;
+    List<QuestionDB> questions;
 
-    public Answer() {
+    public AnswerDB() {
     }
 
-    public Answer(String name) {
+    public AnswerDB(String name) {
         this.name = name;
     }
 
@@ -78,21 +77,21 @@ public class Answer extends BaseModel{
     }
 
 
-    public List<Option> getOptions(){
+    public List<OptionDB> getOptions(){
         if(options==null){
             options = new Select()
-                    .from(Option.class)
-                    .where(Option_Table.id_answer_fk
+                    .from(OptionDB.class)
+                    .where(OptionDB_Table.id_answer_fk
                             .eq(this.getId_answer())).queryList();
         }
         return options;
     }
 
-    public List<Question> getQuestions(){
+    public List<QuestionDB> getQuestions(){
         if(questions==null){
             questions = new Select()
-                    .from(Question.class)
-                    .where(Question_Table.id_answer_fk
+                    .from(QuestionDB.class)
+                    .where(QuestionDB_Table.id_answer_fk
                             .eq(this.getId_answer())).queryList();
         }
         return questions;
@@ -103,7 +102,7 @@ public class Answer extends BaseModel{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Answer answer = (Answer) o;
+        AnswerDB answer = (AnswerDB) o;
 
         if (id_answer != answer.id_answer) return false;
         return !(name != null ? !name.equals(answer.name) : answer.name != null);
