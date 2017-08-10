@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
 
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,32 +28,31 @@ import java.util.List;
  * Created by arrizabalaga on 13/10/15.
  */
 public class FacilityColumnCounterData {
-    private List<Survey> surveys;
+    private List<SurveyDB> surveys;
 
-    public FacilityColumnCounterData(){
-        surveys=new ArrayList<>();
+    public FacilityColumnCounterData() {
+        surveys = new ArrayList<>();
     }
 
     /**
      * Adds a survey to this cell
-     * @param survey
      */
-    public void addSurvey(Survey survey){
+    public void addSurvey(SurveyDB survey) {
         surveys.add(survey);
     }
 
     /**
-     * Returns the value of the columns formatted as javascript number or null if no surveys for this cell
-     * @return
+     * Returns the value of the columns formatted as javascript number or null if no surveys for
+     * this cell
      */
-    public String getAsJSON(){
-        if(!hasSurveys()){
+    public String getAsJSON() {
+        if (!hasSurveys()) {
             return "0";
         }
-        return surveys.size()+"";
+        return surveys.size() + "";
     }
 
-    private boolean hasSurveys(){
-        return surveys!=null && surveys.size()>0;
+    private boolean hasSurveys() {
+        return surveys != null && surveys.size() > 0;
     }
 }
