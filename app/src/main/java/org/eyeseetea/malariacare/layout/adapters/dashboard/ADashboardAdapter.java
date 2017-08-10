@@ -20,35 +20,40 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.widget.BaseAdapter;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
-public abstract class ADashboardAdapter extends BaseAdapter implements IDashboardAdapter {
+/**
+ * Adapter that represents a list of surveys in the dashboard.
+ */
+public abstract class ADashboardAdapter extends ABaseAdapter {
 
+    public static final String COMPLETED_SURVEY_MARK = "* ";
+    public static final String SENT_SURVEY_MARK = "- ";
+    /**
+     * List of surveys to show
+     */
     List<SurveyDB> items;
-    protected LayoutInflater lInflater;
-    protected Context context;
-    protected Integer headerLayout;
-    protected Integer footerLayout;
-    protected Integer recordLayout;
-    protected String title;
 
-    public ADashboardAdapter(){
+    /**
+     * Counter that helps with background calculation
+     */
+    protected int backIndex = 0;
 
-    }
-
-    public ADashboardAdapter(List<SurveyDB> items, Context context, Integer headerLayout, Integer footerLayout, Integer recordLayout, String title) {
-        this.items = items;
-        this.context = context;
-        this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = headerLayout;
-        this.footerLayout = footerLayout;
-        this.recordLayout = recordLayout;
-        this.title = title;
+    public ADashboardAdapter(Context context) {
+        super(context);
     }
 
     @Override
@@ -66,64 +71,155 @@ public abstract class ADashboardAdapter extends BaseAdapter implements IDashboar
         return position;
     }
 
-    @Override
     public void setItems(List items) {
         this.items = (List<SurveyDB>) items;
     }
 
     @Override
-    public void setHeaderLayout(Integer headerLayout){
-        this.headerLayout = headerLayout;
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        //Get current survey
+        SurveyDB survey = (SurveyDB) getItem(position);
+
+        //Inflate row with right padding
+        View rowView = adjustRowPadding(parent);
+
+        decorateCustomColumns(survey, rowView);
+
+        //OrgUnit
+        CustomTextView facilityName = (CustomTextView) rowView.findViewById(R.id.facility);
+
+        //Program
+        CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
+
+
+        // show facility name (or not) and write survey type name
+        if (hasToShowFacility(position, survey)) {
+            showFacility(facilityName, surveyType, survey);
+        } else {
+            hideFacility(facilityName, surveyType);
+        }
+
+        decorateSurveyType(surveyType, survey);
+        rowView = decorateBackground(position, rowView);
+
+        return rowView;
     }
 
-    @Override
-    public Integer getHeaderLayout() {
-        return this.headerLayout;
+    /**
+     * Each specific adapter must program its differences using this method
+     */
+    protected abstract void decorateCustomColumns(SurveyDB survey, View rowView);
+
+
+    /**
+     * Determines whether to show facility or not according to:
+     * - The previous survey belongs to the same one.
+     */
+    protected abstract boolean hasToShowFacility(int position, SurveyDB survey);
+
+
+    protected abstract void hideFacility(CustomTextView facilityName, CustomTextView surveyType);
+
+    protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
+            SurveyDB survey);
+
+    /**
+     * Calculate proper background according to the following rule:
+     * -Same orgunit same background
+     */
+    protected abstract View decorateBackground(int position, View rowView);
+
+
+    /**
+     * Each specific adapter must program its differences using this method
+     */
+    protected View adjustRowPadding(ViewGroup parent) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        int paddingDp = (int) (5 * density);
+
+        // Get the row layout
+        View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
+        rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+        return rowView;
     }
 
-    @Override
-    public void setFooterLayout(Integer footerLayout) {
-        this.footerLayout = footerLayout;
+    private CustomTextView decorateSurveyType(CustomTextView surveyType, SurveyDB survey) {
+        String surveyDescription;
+        if (survey.isCompleted()) {
+            surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
+        } else {
+            surveyDescription = SENT_SURVEY_MARK + survey.getProgram().getName();
+        }
+        surveyType.setText(surveyDescription);
+        return surveyType;
     }
 
-    @Override
-    public Integer getFooterLayout() {
-        return footerLayout;
+
+    public View setBackgroundWithBorder(int position, View rowView) {
+        if (!PreferencesState.getInstance().isVerticalDashboard() && (items.get(
+                position).isCompleted() || items.get(position).isSent())) {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
+        } else {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+        }
+        return rowView;
     }
 
-    @Override
-    public void setRecordLayout(Integer recordLayout){
-        this.recordLayout = recordLayout;
+    public View setBackground(int position, View rowView) {
+        if (!PreferencesState.getInstance().isVerticalDashboard() && (items.get(
+                position).isCompleted() || items.get(position).isSent())) {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgroundsImprove(this.backIndex));
+        } else {
+            rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
+        }
+        return rowView;
+    }
+    /**
+     * Returns the proper status value (% or ready to send) according to the level of completion of
+     * the survey
+     */
+    protected String getStatus(SurveyDB survey) {
+
+        if (survey.isSent()) {
+            return getContext().getString(R.string.dashboard_info_sent);
+        }
+
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
+                        Log.d(getClass().getName(), "onComplete");
+                    }
+                });
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
+        if (surveyAnsweredRatio.isCompleted()) {
+            return getContext().getString(R.string.dashboard_info_ready_to_upload);
+        } else {
+            if (!PreferencesState.getInstance().isVerticalDashboard()) {
+                if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
+                    int value = Float.valueOf(
+                            100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+                    if (value >= 100) {
+                        return getContext().getString(R.string.dashboard_info_ready_to_upload);
+                    } else {
+                        return String.format("%d", value);
+                    }
+                }
+            }
+            return String.format("%d",
+                    Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue());
+        }
     }
 
-    @Override
-    public Integer getRecordLayout() {
-        return this.recordLayout;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public void setContext(Context context){
-        this.context = context;
-    }
-
-    @Override
-    public Context getContext(){
-        return this.context;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
     public void remove(Object item) {
         this.items.remove(item);
     }
-
 }

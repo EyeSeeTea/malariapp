@@ -42,17 +42,16 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
+import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
@@ -70,26 +69,13 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     private List<SurveyDB> surveys;
     private List<ProgramDB> programs;
     private List<OrgUnitDB> orgUnits;
-    protected IDashboardAdapter adapter;
     private WebView webView;
     public MonitorFilter filterType;
 
     public MonitorFragment() {
-        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
         this.programs = new ArrayList<>();
         this.orgUnits = new ArrayList<>();
-    }
-
-    public static MonitorFragment newInstance(int index) {
-        MonitorFragment f = new MonitorFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
     }
 
     @Override
@@ -164,6 +150,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             surveyReceiver = null;
         }
     }
+    /**
+     * load and reload sent surveys
+     */
     public void reloadSentSurveys() {
         BaseServiceBundle data= (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
         if(data!=null) {

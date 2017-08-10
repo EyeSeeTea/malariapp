@@ -35,7 +35,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -49,7 +48,6 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
@@ -59,7 +57,6 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -76,7 +73,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private static int LAST_ORDER =WITHOUT_ORDER;
 
     private SurveyReceiver surveyReceiver;
-    protected IDashboardAdapter adapter;
+    protected AssessmentSentAdapter adapter;
     //surveys contains all the surveys without filter
     private List<SurveyDB> surveys;
     //oneSurveyForOrgUnit contains the filtered orgunit list
@@ -102,26 +99,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     boolean initiatingFilters =true;
 
     public DashboardSentFragment() {
-        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
         oneSurveyForOrgUnit = new ArrayList<>();
-    }
-
-    public static DashboardSentFragment newInstance(int index) {
-        DashboardSentFragment f = new DashboardSentFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
-
-    // Container Activity must implement this interface
-    public interface OnFeedbackSelectedListener {
-        public void onFeedbackSelected(SurveyDB survey);
     }
 
 
@@ -264,14 +243,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
      */
     private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterSent();
-        if(adapterInSession == null){
-            adapterInSession = new AssessmentSentAdapter(this.surveys, getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys, getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterSent(this.adapter);
+        this.adapter = new AssessmentSentAdapter(this.surveys, getActivity());
     }
 
     public void setScoreOrder()
@@ -364,10 +336,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         listView.addHeaderView(header);
         listView.addFooterView(footer);
-        setListAdapter((BaseAdapter) adapter);
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-            Session.listViewSent = listView;
-        else{
+        setListAdapter(adapter);
+        if(PreferencesState.getInstance().isVerticalDashboard()){
 
             // Create a ListView-specific touch listener. ListViews are given special treatment because
             // by default they handle touches for their list items... i.e. they're in charge of drawing
@@ -409,8 +379,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             // Setting this scroll listener is required to ensure that during ListView scrolling,
             // we don't look for swipes.
             listView.setOnScrollListener(touchListener.makeScrollListener());
-
-            Session.listViewSent = listView;
         }
     }
 
@@ -502,8 +470,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         // To prevent from reloading too fast, before service has finished its job
         if (surveys == null) return;
 
-        HashMap<String, SurveyDB> orgUnits;
-        orgUnits = new HashMap<>();
         ProgramOUSurveyDict programOUSurveyDict = new ProgramOUSurveyDict();
         oneSurveyForOrgUnit = new ArrayList<>();
         if(PreferencesState.getInstance().isLastForOrgUnit()) {
@@ -536,6 +502,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             Collections.sort(oneSurveyForOrgUnit, new Comparator<SurveyDB>() {
                 public int compare(SurveyDB survey1, SurveyDB survey2) {
                     int compare;
+                    Float noScore=0f;
                     switch (orderBy) {
                         case FACILITY_ORDER:
                             String surveyA = survey1.getOrgUnit().getName();
@@ -546,10 +513,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                             compare = survey1.getCompletionDate().compareTo(survey2.getCompletionDate());
                             break;
                         case SCORE_ORDER:
-                            compare = survey1.getMainScore().compareTo(survey2.getMainScore());
+                            compare = (survey1.hasMainScore()?survey1.getMainScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore():noScore));
                             break;
                         default:
-                            compare = survey1.getMainScore().compareTo(survey2.getMainScore());
+                            compare = (survey1.hasMainScore()?survey1.getMainScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore():noScore));
                             break;
                     }
 
@@ -613,7 +580,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 orgUnitList = (List<OrgUnitDB>) sentDashboardBundle.getModelList(OrgUnitDB.class.getName());
                 programList = (List<ProgramDB>) sentDashboardBundle.getModelList(ProgramDB.class.getName());
                 surveys = (List<SurveyDB>) sentDashboardBundle.getModelList(SurveyDB.class.getName());
-                reloadSentSurveys(surveys);
                 initFilters();
             }
         }
