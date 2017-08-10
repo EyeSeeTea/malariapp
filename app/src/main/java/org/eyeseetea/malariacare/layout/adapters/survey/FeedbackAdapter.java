@@ -29,10 +29,7 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -43,9 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -143,9 +138,34 @@ public class FeedbackAdapter extends BaseAdapter {
     private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
+
+        if(!feedback.isShown()){
+            rowLayout.setVisibility(View.GONE);
+            View view = new View(parent.getContext());
+            view.setVisibility(View.GONE);
+            return view;
+        }else{
+            rowLayout.setVisibility(View.VISIBLE);
+        }
+
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
 
-        //CompositeScoreDB title
+        ImageView imageView = (ImageView)rowLayout.findViewById(R.id.feedback_image);
+        imageView.setBackgroundResource(feedback.getBackgroundColor());
+        if(feedback.getFeedbackList().size()==0 && feedback.getCompositeScoreFeedbackList().size()==0){
+            imageView.setVisibility(View.GONE);
+        }else{
+            if((feedback.getFeedbackList().size()>0 && feedback.getFeedbackList().get(0).isShown()) ||
+                    (feedback.getCompositeScoreFeedbackList().size()>0 && feedback.getCompositeScoreFeedbackList().get(0).isShown()))
+            {
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
+            }else{
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow));
+            }
+
+        }
+
+        //CompositeScore title
         TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_label);
         String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
         if (!PreferencesState.getInstance().isVerticalDashboard())
@@ -159,8 +179,9 @@ public class FeedbackAdapter extends BaseAdapter {
             }
         textView.setText(feedback.getLabel());
 
-        //CompositeScoreDB title
+        //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
@@ -170,6 +191,16 @@ public class FeedbackAdapter extends BaseAdapter {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
+
+        rowLayout.setTag(feedback);
+        rowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CompositeScoreFeedback compositeScoreFeedback=(CompositeScoreFeedback)v.getTag();
+                compositeScoreFeedback.toggleChildrenShown(false);
+                notifyDataSetChanged();
+            }
+        });
 
         return rowLayout;
     }
@@ -182,6 +213,16 @@ public class FeedbackAdapter extends BaseAdapter {
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
+
+        if(!feedback.isShown()){
+            rowLayout.setVisibility(View.GONE);
+            View view = new View(parent.getContext());
+            view.setVisibility(View.GONE);
+            return view;
+        }else{
+            rowLayout.setVisibility(View.VISIBLE);
+        }
+
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()){
@@ -191,7 +232,16 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        textView.setText(feedback.getLabel());
+        String compulsoryMark="";
+        if(feedback.getQuestion().getCompulsory()) {
+            int red = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.darkRed);
+            String appNameColorString = String.format("%X", red).substring(2);
+            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
+                    + "</b></font>";
+        }
+
+        textView.setText(Html.fromHtml(compulsoryMark+feedback.getLabel()));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);

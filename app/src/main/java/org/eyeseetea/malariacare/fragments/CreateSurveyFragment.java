@@ -107,17 +107,6 @@ public class CreateSurveyFragment extends Fragment {
     public CreateSurveyFragment() {
     }
 
-    public static CreateSurveyFragment newInstance(int index) {
-        CreateSurveyFragment f = new CreateSurveyFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");

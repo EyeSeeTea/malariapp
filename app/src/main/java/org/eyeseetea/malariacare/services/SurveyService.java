@@ -24,15 +24,12 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
-import org.eyeseetea.malariacare.data.database.model.TabDB_Table;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
@@ -40,7 +37,6 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -409,7 +405,7 @@ public class SurveyService extends IntentService {
         //Get tabs for current program & register them (scores)
         List<TabDB> tabs = TabDB.getTabsBySession(module);
         //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<TabDB> allTabs = new Select().from(TabDB.class).where(TabDB_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
+        List<TabDB> allTabs = TabDB.getAllTabsByProgram(survey.getProgram().getId_program());
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 

@@ -22,17 +22,34 @@ package org.eyeseetea.malariacare.data.database.utils.feedback;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 
-/**
- * Created by arrizabalaga on 14/09/15.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class CompositeScoreFeedback implements Feedback {
 
     private float score;
     private CompositeScoreDB compositeScore;
+    private boolean isActive;
+    private List<QuestionFeedback> mFeedbackList;
+    private List<CompositeScoreFeedback> mCompositeScoreFeedbackList;
+    private boolean isShown;
+    private boolean isRoot;
 
-    public CompositeScoreFeedback(CompositeScoreDB compositeScore, float score){
+    public boolean isShown() {
+        return this.isShown;
+    }
+
+    public boolean isRoot() {
+        return this.isRoot;
+    }
+
+    public CompositeScoreFeedback(CompositeScoreDB compositeScore, float score, boolean isRoot){
         this.compositeScore=compositeScore;
         this.score=score;
+        mCompositeScoreFeedbackList = new ArrayList<>();
+        mFeedbackList = new ArrayList<>();
+        this.isShown = true;
+        this.isRoot = isRoot;
     }
 
     @Override
@@ -82,8 +99,59 @@ public class CompositeScoreFeedback implements Feedback {
         return R.color.scoreGrandson;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public List<QuestionFeedback> getFeedbackList() {
+        return mFeedbackList;
+    }
+
+    public void setFeedbackList(
+            List<QuestionFeedback> feedbackList) {
+        mFeedbackList = feedbackList;
+    }
+    public List<CompositeScoreFeedback> getCompositeScoreFeedbackList() {
+        return mCompositeScoreFeedbackList;
+    }
+
+    public void addCompositeScoreFeedbackList(CompositeScoreFeedback compositeScoreFeedback) {
+        mCompositeScoreFeedbackList.add(compositeScoreFeedback);
+    }
     @Override
     public int hashCode() {
         return this.compositeScore.hashCode();
+    }
+
+    public void toggleChildrenShown(boolean forceHide) {
+        for(QuestionFeedback questionFeedback : getFeedbackList()){
+            if(forceHide){
+                questionFeedback.setShown(false);
+            }else {
+                questionFeedback.toggleShown();
+            }
+        }
+
+        for(CompositeScoreFeedback compositeScoreFeedback : getCompositeScoreFeedbackList()){
+            compositeScoreFeedback.toggleShown();
+            if(!compositeScoreFeedback.isShown()){
+                compositeScoreFeedback.toggleChildrenShown(true);
+            }
+        }
+    }
+
+    public void toggleShown() {
+        if(isRoot()){
+            return;
+        }
+        this.isShown = !this.isShown;
+    }
+
+    public void setShown(boolean value) {
+        isShown=value;
     }
 }

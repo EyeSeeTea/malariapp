@@ -133,7 +133,7 @@ public class AssessModuleController extends ModuleController {
             dashboardActivity.prepareLocationListener(survey);
         }
         //Prepare survey fragment
-        surveyFragment = SurveyFragment.newInstance(1);
+        surveyFragment = new SurveyFragment();
 
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
@@ -169,8 +169,8 @@ public class AssessModuleController extends ModuleController {
             sentTitle.setText("");
         }
 
-        if (createSurveyFragment == null) {
-            createSurveyFragment = CreateSurveyFragment.newInstance(1);
+        if(createSurveyFragment==null) {
+            createSurveyFragment = new CreateSurveyFragment();
         }
         replaceFragment(getLayout(), createSurveyFragment);
     }

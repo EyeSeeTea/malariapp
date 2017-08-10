@@ -26,8 +26,10 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Little builder thats creates an ordered list of feedback items
@@ -69,22 +71,38 @@ public class FeedbackBuilder {
                 }
             }
         }
+        Map<String, CompositeScoreFeedback> compositeScoreFeedbacks = new HashMap<>();
 
         //For each score add proper items
         for(CompositeScoreDB compositeScore:compositeScoreList){
             //add score
             float score = ScoreRegister.getCompositeScore(compositeScore, survey.getId_survey(),
                         module);
-            feedbackList.add(new CompositeScoreFeedback(compositeScore, score));
+            CompositeScoreFeedback compositeScoreFeedback = new CompositeScoreFeedback(compositeScore, score, !compositeScore.getHierarchical_code().contains("."));
+            String hierarchicalCode = compositeScore.getHierarchical_code();
+            compositeScoreFeedbacks.put(hierarchicalCode, compositeScoreFeedback);
+            if(hierarchicalCode.contains(".")) {
+                int lastIndex = hierarchicalCode.lastIndexOf(".");
+                String parentCS = hierarchicalCode.substring(0, lastIndex);
+                if (compositeScoreFeedbacks.containsKey(parentCS)) {
+                    compositeScoreFeedbacks.get(parentCS).addCompositeScoreFeedbackList(compositeScoreFeedback);
+                }
+            }
+            feedbackList.add(compositeScoreFeedback);
 
             //add its questions
+            List<QuestionFeedback> questionFeedbacks = new ArrayList<>();
             List<QuestionDB> questions=compositeScore.getQuestions();
             for(QuestionDB question:questions){
                 if(!question.isHiddenBySurvey(survey.getId_survey())) {
                     ValueDB valueInSurvey = question.getValueBySurvey(survey.getId_survey());
-                    feedbackList.add(new QuestionFeedback(question, valueInSurvey));
+                    QuestionFeedback questionFeedback = new QuestionFeedback(question, valueInSurvey);
+                    feedbackList.add(questionFeedback);
+                    questionFeedbacks.add(questionFeedback);
                 }
             }
+            compositeScoreFeedback.setFeedbackList(questionFeedbacks);
+
         }
         return feedbackList;
     }
