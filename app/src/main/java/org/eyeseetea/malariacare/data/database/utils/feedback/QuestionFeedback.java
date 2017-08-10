@@ -51,6 +51,10 @@ public class QuestionFeedback implements Feedback {
     /**
      * Flag that indicates if this element has its feedback open or not
      */
+    private boolean isShown;
+    /**
+     * Flag that indicates if this element has its feedback open or not
+     */
     private boolean feedbackShown;
 
     public QuestionFeedback(QuestionDB question, ValueDB value) {
@@ -58,6 +62,7 @@ public class QuestionFeedback implements Feedback {
         this.value = value;
         this.feedbackShown = false;
         this.media = null;
+        this.setShown(true);
     }
 
     @Override
@@ -116,6 +121,23 @@ public class QuestionFeedback implements Feedback {
     public boolean toggleFeedbackShown() {
         this.feedbackShown = !this.feedbackShown;
         return this.feedbackShown;
+    }
+    /**
+     * Returns if this row has its feedback open or not
+     *
+     * @return
+     */
+    public boolean isShown() {
+        return this.isShown;
+    }
+    /**
+     * Toggles the question shown flag
+     *
+     * @return return the new assigned value
+     */
+    public boolean toggleShown() {
+        this.isShown = !this.isShown;
+        return this.isShown;
     }
 
     /**
@@ -209,5 +231,9 @@ public class QuestionFeedback implements Feedback {
     @Override
     public int hashCode() {
         return this.question.hashCode();
+    }
+
+    public void setShown(boolean shown) {
+        isShown = shown;
     }
 }
