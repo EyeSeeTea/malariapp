@@ -49,7 +49,7 @@
     <string name="create_info_survey">Survey</string>
     <string name="create_info_tabs_group">Tab Group</string>
 
-    <string name="assessment_title_facility_date">Facility / Survey</string>
+    <string name="assessment_title_facility_date">Active Survey</string>
     <string name="assessment_title_state">% complete</string>
     <string name="assessment_sent_score">Score</string>
 
@@ -245,4 +245,5 @@
     <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
     <string name="install_file_manager">សូមដំឡើងកម្មវិធីគ្រប់គ្រងឯកសារមួយ។</string>
     <string name="get_db_file_dialog">សូមជ្រើសឯកសារមូលដ្ឋានទិន្នន័យដែលមានសុពលភាព</string>
+    <string name="start">Start</string>
 </resources>

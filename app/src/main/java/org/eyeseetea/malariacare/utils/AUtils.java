@@ -40,11 +40,11 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Header;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Tab;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.HeaderDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
@@ -86,12 +86,12 @@ public abstract class AUtils {
         return round(base, AUtils.ZERO_DECIMALS);
     }
 
-    public static List<BaseModel> convertTabToArrayCustom(Tab tab) {
+    public static List<BaseModel> convertTabToArrayCustom(TabDB tab) {
         List<BaseModel> result = new ArrayList<BaseModel>();
 
-        for (Header header : tab.getHeaders()) {
+        for (HeaderDB header : tab.getHeaders()) {
             result.add(header);
-            for (Question question : header.getQuestions()) {
+            for (QuestionDB question : header.getQuestions()) {
                 if (tab.getType().equals(Constants.TAB_AUTOMATIC) || tab.getType().equals(
                         Constants.TAB_AUTOMATIC_NON_SCORED) || question.hasChildren()) {
                     result.add(question);
@@ -102,11 +102,11 @@ public abstract class AUtils {
         return result;
     }
 
-    public static List preloadTabItems(Tab tab, String module) {
+    public static List preloadTabItems(TabDB tab, String module) {
         List<? extends BaseModel> items;
 
         if (tab.isCompositeScore()) {
-            items = CompositeScore.listByProgram(Session.getSurveyByModule(module).getProgram());
+            items = CompositeScoreDB.listByProgram(Session.getSurveyByModule(module).getProgram());
         } else {
 
             items = Session.getTabsCache().get(tab.getId_tab());
@@ -131,19 +131,19 @@ public abstract class AUtils {
             Object item = iterator.next();
 
             //Header
-            if (item instanceof Header) {
+            if (item instanceof HeaderDB) {
                 compressedItems.add(item);
                 continue;
             }
 
             //Normal question
-            if (item instanceof Question && !((Question) item).belongsToCustomTab()) {
+            if (item instanceof QuestionDB && !((QuestionDB) item).belongsToCustomTab()) {
                 compressedItems.add(item);
                 continue;
             }
 
             //Custom tabs questions/titles
-            Question question = (Question) item;
+            QuestionDB question = (QuestionDB) item;
             //Question that belongs to a customtab
             if (question.isCustomTabNewRow()) {
                 lastRow = new QuestionRow();
@@ -334,7 +334,7 @@ public abstract class AUtils {
         final SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        final User loggedUser = User.getLoggedUser();
+        final UserDB loggedUser = UserDB.getLoggedUser();
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(titleId))
                 .setMessage(linkedMessage)
@@ -357,7 +357,7 @@ public abstract class AUtils {
                 LinkMovementMethod.getInstance());
     }
 
-    public static void checkUserClosed(User user, Context context) {
+    public static void checkUserClosed(UserDB user, Context context) {
         if (isUserClosed(user)) {
             DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                 @Override
@@ -372,7 +372,7 @@ public abstract class AUtils {
         }
     }
 
-    private static boolean isUserClosed(User user) {
+    private static boolean isUserClosed(UserDB user) {
         return user.getCloseDate() != null && user.getCloseDate().before(new Date());
     }
 

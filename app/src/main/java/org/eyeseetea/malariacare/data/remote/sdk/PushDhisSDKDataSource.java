@@ -25,7 +25,7 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
@@ -96,8 +96,8 @@ public class PushDhisSDKDataSource {
     private Set<String> getEventUidToBePushed() {
         final Set<String> eventUids = new HashSet<>();
         final Set<String> sendingEventUids = new HashSet<>();
-        List<Survey> surveys = Survey.getAllSendingSurveys();
-        for (Survey survey : surveys) {
+        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
+        for (SurveyDB survey : surveys) {
             sendingEventUids.add(survey.getEventUid());
         }
         List<EventFlow> eventsFlows = SdkQueries.getEvents();

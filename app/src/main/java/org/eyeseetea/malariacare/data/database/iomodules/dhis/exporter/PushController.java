@@ -24,7 +24,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
@@ -63,7 +63,7 @@ public class PushController implements IPushController {
 
             Log.d(TAG, "Network connected");
 
-            List<Survey> surveys = Survey.getAllCompletedSurveys();
+            List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
 
             if (surveys == null || surveys.size() == 0) {
                 callback.onError(new SurveysToPushNotFoundException("Null surveys"));
@@ -130,9 +130,9 @@ public class PushController implements IPushController {
                 });
     }
 
-    private void convertToSDK(List<Survey> surveys) throws ConversionException{
+    private void convertToSDK(List<SurveyDB> surveys) throws ConversionException{
         Log.d(TAG, "Converting APP survey into a SDK event");
-        for (Survey survey : surveys) {
+        for (SurveyDB survey : surveys) {
             survey.setStatus(Constants.SURVEY_SENDING);
             survey.save();
             survey.accept(mConvertToSDKVisitor);

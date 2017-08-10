@@ -37,7 +37,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -265,21 +265,21 @@ public class DataElementExtended implements VisitableFromSDK {
     }
 
     /**
-     * Checks if this dataElement is a CompositeScore
+     * Checks if this dataElement is a CompositeScoreDB
      */
     public boolean isCompositeScore() {
         return isOfType(OPTION_ELEMENT_TYPE_SCORE_CODE);
     }
 
     /**
-     * Checks if this dataElement is a CompositeScore
+     * Checks if this dataElement is a CompositeScoreDB
      */
     public boolean isControlDataElement() {
         return isOfType(OPTION_ELEMENT_TYPE_CONTROL_CODE);
     }
 
     /**
-     * Checks if this dataElement is a CompositeScore
+     * Checks if this dataElement is a CompositeScoreDB
      */
     public boolean isQuestion() {
         return isOfType(OPTION_ELEMENT_TYPE_QUESTION_CODE);
@@ -495,8 +495,8 @@ public class DataElementExtended implements VisitableFromSDK {
         return null;
     }
 
-    public CompositeScore findCompositeScore() {
-        CompositeScore compositeScore = null;
+    public CompositeScoreDB findCompositeScore() {
+        CompositeScoreDB compositeScore = null;
 
         String value = findCompositeScoreId();
         if (value != null) {

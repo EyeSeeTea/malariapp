@@ -30,8 +30,8 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 /**
  * Created by Jose on 25/05/2015.
  */
-@Table(database = AppDatabase.class)
-public class QuestionOption extends BaseModel {
+@Table(database = AppDatabase.class, name = "QuestionOption")
+public class QuestionOptionDB extends BaseModel {
     @Column
     @PrimaryKey(autoincrement = true)
     long id_question_option;
@@ -41,25 +41,25 @@ public class QuestionOption extends BaseModel {
     /**
      * Reference to its option (lazy)
      */
-    Option option;
+    OptionDB option;
 
     @Column
     Long id_question_fk;
     /**
      * Reference to its question (lazy)
      */
-    Question question;
+    QuestionDB question;
 
     @Column
     Long id_match_fk;
     /**
      * Reference to its match (lazy)
      */
-    Match match;
+    MatchDB match;
 
-    public QuestionOption(){}
+    public QuestionOptionDB(){}
 
-    public QuestionOption(Option option, Question question, Match match) {
+    public QuestionOptionDB(OptionDB option, QuestionDB question, MatchDB match) {
         setQuestion(question);
         setOption(option);
         setMatch(match);
@@ -73,18 +73,18 @@ public class QuestionOption extends BaseModel {
         this.id_question_option = id_question_option;
     }
 
-    public Option getOption() {
+    public OptionDB getOption() {
         if(option==null){
             if(id_option_fk==null) return null;
             option = new Select()
-                    .from(Option.class)
-                    .where(Option_Table.id_option
+                    .from(OptionDB.class)
+                    .where(OptionDB_Table.id_option
                             .is(id_option_fk)).querySingle();
         }
         return option;
     }
 
-    public void setOption(Option option) {
+    public void setOption(OptionDB option) {
         this.option = option;
         this.id_option_fk = (option!=null)?option.getId_option():null;
     }
@@ -94,18 +94,18 @@ public class QuestionOption extends BaseModel {
         this.option = null;
     }
 
-    public Question getQuestion() {
+    public QuestionDB getQuestion() {
         if(question==null){
             if(id_question_fk==null) return null;
             question = new Select()
-                    .from(Question.class)
-                    .where(Question_Table.id_question
+                    .from(QuestionDB.class)
+                    .where(QuestionDB_Table.id_question
                             .is(id_question_fk)).querySingle();
         }
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionDB question) {
         this.question = question;
         this.id_question_fk = (question!=null)?question.getId_question():null;
     }
@@ -115,18 +115,18 @@ public class QuestionOption extends BaseModel {
         this.question = null;
     }
 
-    public Match getMatch() {
+    public MatchDB getMatch() {
         if(match==null){
             if(id_match_fk==null) return null;
             match = new Select()
-                    .from(Match.class)
-                    .where(Match_Table.id_match
+                    .from(MatchDB.class)
+                    .where(MatchDB_Table.id_match
                             .is(id_match_fk)).querySingle();
         }
         return match;
     }
 
-    public void setMatch(Match match) {
+    public void setMatch(MatchDB match) {
         this.match = match;
         this.id_match_fk = (match!=null)?match.getId_match():null;
     }
@@ -141,7 +141,7 @@ public class QuestionOption extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        QuestionOption that = (QuestionOption) o;
+        QuestionOptionDB that = (QuestionOptionDB) o;
 
         if (id_question_option != that.id_question_option) return false;
         if (id_option_fk != null ? !id_option_fk.equals(that.id_option_fk) : that.id_option_fk != null)

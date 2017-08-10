@@ -27,8 +27,8 @@ import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
@@ -104,8 +104,8 @@ public class WipeDataOnLogout {
 
 
         //removed app data
-        assertTrue(Survey.count() == 0);
-        assertTrue(Value.count() == 0);
+        assertTrue(SurveyDB.count() == 0);
+        assertTrue(ValueDB.count() == 0);
 
         Intents.release();
     }

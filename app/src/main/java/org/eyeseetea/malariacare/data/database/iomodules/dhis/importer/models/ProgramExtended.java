@@ -25,13 +25,13 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramFlow_Table;
-import org.eyeseetea.malariacare.data.database.model.Program;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class ProgramExtended implements VisitableFromSDK {
     /**
      * Reference to app program (useful to create relationships with orgunits)
      */
-    Program appProgram;
+    ProgramDB appProgram;
 
     public ProgramExtended(){}
 
@@ -73,11 +73,11 @@ public class ProgramExtended implements VisitableFromSDK {
         return this.program;
     }
 
-    public void setAppProgram(Program appProgram) {
+    public void setAppProgram(ProgramDB appProgram) {
         this.appProgram = appProgram;
     }
 
-    public Program getAppProgram(){
+    public ProgramDB getAppProgram(){
         return this.appProgram;
     }
 

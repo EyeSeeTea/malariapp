@@ -14,7 +14,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.exception.ClosedUserDateNotFoundException;
@@ -54,7 +54,7 @@ public class PullDhisApiDataSource {
     public PullDhisApiDataSource() {
     }
 
-    public static User pullUserAttributes(User appUser) {
+    public static UserDB pullUserAttributes(UserDB appUser) {
         String lastMessage = appUser.getAnnouncement();
 
         String data = USER + String.format(QUERY_USER_ATTRIBUTES, appUser.getUid());
@@ -68,7 +68,7 @@ public class PullDhisApiDataSource {
             for (int i = 0; i < jsonNodeArray.size(); i++) {
                 newMessage =
                         getUserAnnouncement(jsonNodeArray, newMessage, i,
-                                User.ATTRIBUTE_USER_ANNOUNCEMENT);
+                                UserDB.ATTRIBUTE_USER_ANNOUNCEMENT);
                 closeDate = getUserCloseDate(jsonNodeArray, closeDate, i);
             }
             saveNewAnnoucement(appUser, lastMessage, newMessage);
@@ -81,7 +81,7 @@ public class PullDhisApiDataSource {
         return appUser;
     }
 
-    private static void saveNewAnnoucement(User appUser, String lastMessage, String newMessage) {
+    private static void saveNewAnnoucement(UserDB appUser, String lastMessage, String newMessage) {
         if ((lastMessage == null && newMessage != null) || (newMessage != null
                 && !newMessage.equals("") && !lastMessage.equals(newMessage))) {
             appUser.setAnnouncement(newMessage);
@@ -89,7 +89,7 @@ public class PullDhisApiDataSource {
         }
     }
 
-    private static void saveClosedDate(User appUser, String closeDate) {
+    private static void saveClosedDate(UserDB appUser, String closeDate) {
         if (closeDate == null || closeDate.equals("")) {
             appUser.setCloseDate(null);
         } else {
@@ -99,7 +99,7 @@ public class PullDhisApiDataSource {
 
     private static String getUserCloseDate(JsonNode jsonNodeArray, String closeDate, int i) {
         if (jsonNodeArray.get(i).get(ATTRIBUTE).get(CODE).textValue().equals(
-                User.ATTRIBUTE_USER_CLOSE_DATE)) {
+                UserDB.ATTRIBUTE_USER_CLOSE_DATE)) {
             closeDate = jsonNodeArray.get(i).get(VALUE).textValue();
         }
         return closeDate;

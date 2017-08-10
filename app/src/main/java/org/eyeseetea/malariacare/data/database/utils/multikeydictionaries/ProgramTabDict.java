@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.multikeydictionaries;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 
 import java.util.List;
 
@@ -38,12 +38,12 @@ public class ProgramTabDict extends ObjectModelDict {
     }
 
     @Override
-    public Tab get(String programUid, String tabUid) {
-        return (Tab) super.get(programUid, tabUid);
+    public TabDB get(String programUid, String tabUid) {
+        return (TabDB) super.get(programUid, tabUid);
     }
 
     @Override
-    public List<Tab> values() {
-        return (List<Tab>) super.values();
+    public List<TabDB> values() {
+        return (List<TabDB>) super.values();
     }
 }

@@ -5,10 +5,10 @@ import android.util.Log;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -30,7 +30,7 @@ public class SurveyChecker {
             return;
         }
         try {
-            int quarantineSurveysSize = Survey.countQuarantineSurveys();
+            int quarantineSurveysSize = SurveyDB.countQuarantineSurveys();
             Log.d(TAG, "Quarantine size: " + quarantineSurveysSize);
             if (quarantineSurveysSize > 0) {
                 checkAllQuarantineSurveys();
@@ -47,18 +47,18 @@ public class SurveyChecker {
      * set as completed and it will be resend.
      */
     public static void checkAllQuarantineSurveys() {
-        List<Program> programs = Program.getAllPrograms();
-        for (Program program : programs) {
-            for (OrgUnit orgUnit : program.getOrgUnits()) {
-                List<Survey> quarantineSurveys = Survey.getAllQuarantineSurveysByProgramAndOrgUnit(
+        List<ProgramDB> programs = ProgramDB.getAllPrograms();
+        for (ProgramDB program : programs) {
+            for (OrgUnitDB orgUnit : program.getOrgUnits()) {
+                List<SurveyDB> quarantineSurveys = SurveyDB.getAllQuarantineSurveysByProgramAndOrgUnit(
                         program, orgUnit);
                 if (quarantineSurveys.size() == 0) {
                     continue;
                 }
-                Date minDate = Survey.getMinQuarantineCompletionDateByProgramAndOrgUnit(program,
+                Date minDate = SurveyDB.getMinQuarantineCompletionDateByProgramAndOrgUnit(program,
                         orgUnit);//The start date is the first ascending completion date of all
                 // the quarantine surveys
-                Date maxDate = Survey.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
+                Date maxDate = SurveyDB.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
                         orgUnit);//The last date is the first descending updated date of all the
                 // quarantine surveys
                 List<EventExtended> events = null;
@@ -75,7 +75,7 @@ public class SurveyChecker {
                 if (events == null) {
                     return;
                 }
-                for (Survey survey : quarantineSurveys) {
+                for (SurveyDB survey : quarantineSurveys) {
                     if (events.size() > 0) {
                         updateQuarantineSurveysStatus(events, survey);
                     } else {
@@ -92,7 +92,7 @@ public class SurveyChecker {
      * considered as sent, otherwise it will be considered as just completed and awaiting to be
      * sent
      */
-    private static void updateQuarantineSurveysStatus(List<EventExtended> events, Survey survey) {
+    private static void updateQuarantineSurveysStatus(List<EventExtended> events, SurveyDB survey) {
         boolean isSent = false;
         for (EventExtended event : events) {
             isSent = surveyDateExistsInEventTimeCaptureControlDE(survey, event);
@@ -107,7 +107,7 @@ public class SurveyChecker {
                 (isSent) ? Constants.SURVEY_SENT : Constants.SURVEY_COMPLETED);
     }
 
-    private static void changeSurveyStatusFromQuarantineTo(Survey survey, int status) {
+    private static void changeSurveyStatusFromQuarantineTo(SurveyDB survey, int status) {
         try {
             Log.d(TAG, "Set quarantine survey as " + ((status == Constants.SURVEY_SENT) ? "sent "
                     : "complete ") + survey.getId_survey() + " date "
@@ -126,11 +126,11 @@ public class SurveyChecker {
      * Given an event, check through all its DVs if the survey completion date is present in the
      * event in the form of the control DE "Time Capture" whose UID is hardcoded
      */
-    private static boolean surveyDateExistsInEventTimeCaptureControlDE(Survey survey,
+    private static boolean surveyDateExistsInEventTimeCaptureControlDE(SurveyDB survey,
             EventExtended event) {
         for (DataValueExtended dataValue : DataValueExtended.getExtendedList(
                 event.getDataValuesInMemory())) {
-            String uid = ServerMetadata.findControlDataElementUid(
+            String uid = ServerMetadataDB.findControlDataElementUid(
                     PreferencesState.getInstance().getContext().getString(
                             R.string.created_on_code));
             if (dataValue.getDataElement().equals(uid)

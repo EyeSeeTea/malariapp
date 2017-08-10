@@ -23,8 +23,8 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,14 +40,14 @@ public class PieBuilderByProgram extends PieBuilderBase {
     /**
      * Map of entries per program
      */
-    private Map<Program,PieDataByProgram> pieTabGroupDataMap;
+    private Map<ProgramDB,PieDataByProgram> pieTabGroupDataMap;
     /**
      * Default constructor
      *
      * @param surveys
      * @param context
      */
-    public PieBuilderByProgram(List<Survey> surveys, Context context) {
+    public PieBuilderByProgram(List<SurveyDB> surveys, Context context) {
         super(surveys, context);
         pieTabGroupDataMap = new HashMap<>();
     }
@@ -64,9 +64,9 @@ public class PieBuilderByProgram extends PieBuilderBase {
         buildJSONArray(entries);
         entries.clear();
     }
-    private void build(Survey survey) {
+    private void build(SurveyDB survey) {
         //Get the program
-        Program program=survey.getProgram();
+        ProgramDB program=survey.getProgram();
 
         //Get the entry for that program
         PieDataByProgram pieTabGroupData = pieTabGroupDataMap.get(program);
@@ -79,8 +79,8 @@ public class PieBuilderByProgram extends PieBuilderBase {
         //Increment surveys for that month
         pieTabGroupData.incCounter(survey.getMainScore());
     }
-    private List<PieDataByProgram> build(List<Survey> surveys) {
-        for(Survey survey:surveys){
+    private List<PieDataByProgram> build(List<SurveyDB> surveys) {
+        for(SurveyDB survey:surveys){
             build(survey);
         }
 

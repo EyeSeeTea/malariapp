@@ -38,7 +38,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
@@ -156,6 +156,8 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                 Session.getSurveyByModule(module).getId_survey(), module);
         feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
+        feedbackListView.setDivider(null);
+        feedbackListView.setDividerHeight(0);
 
         //And checkbox listener
         chkFailed = (CustomRadioButton) llLayout.findViewById(R.id.chkFailed);
@@ -180,7 +182,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         );
 
         //Set mainscore and color.
-        Survey survey = Session.getSurveyByModule(module);
+        SurveyDB survey = Session.getSurveyByModule(module);
         if (survey.hasMainScore()) {
             float average = survey.getMainScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);

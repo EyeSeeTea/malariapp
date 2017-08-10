@@ -25,15 +25,12 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
@@ -51,7 +48,6 @@ import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillCompulsorySurvey;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.fillSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.startSurvey;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.waitForPull;
@@ -117,7 +113,7 @@ public class AssessCompulsoryTest {
         //THEN
         //then: Survey is pushed (UID)
         Log.d(TAG, "Session user ->" + Session.getUser());
-        Survey survey = waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH, idSurvey);
+        SurveyDB survey = waitForPush(SDKTestUtils.DEFAULT_WAIT_FOR_PUSH, idSurvey);
         assertTrue(survey.isCompleted() || survey.isSent());
     }
 }
