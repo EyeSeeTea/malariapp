@@ -25,7 +25,7 @@ import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.UserAccountDhisSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.UserAccountDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;

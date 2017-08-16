@@ -47,7 +47,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.network.CustomParser;
+import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.sdk.common.VideoUtils;
 

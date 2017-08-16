@@ -38,7 +38,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Composite
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;

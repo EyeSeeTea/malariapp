@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.remote;
+package org.eyeseetea.malariacare.data.remote.sdk;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -27,9 +27,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
-import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
-import org.eyeseetea.malariacare.domain.entity.pushsummary.PushedValuesCount;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
@@ -37,12 +35,8 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.models.common.importsummary.Conflict;
-import org.hisp.dhis.client.sdk.models.common.importsummary.ImportCount;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
