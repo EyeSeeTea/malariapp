@@ -34,7 +34,6 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.utils.Action;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
@@ -86,7 +85,8 @@ public class AssessModuleController extends ModuleController {
             closeSurveyFragment();
             return;
         }
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.CHANGE_TAB).execute();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain
+                .utils.Action.CHANGE_TAB).execute();
 
     }
 
@@ -112,7 +112,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.showProgress();
         surveyFragment.nextProgressMessage();
         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.PRESS_BACK_BUTTON).execute();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON).execute();
         //if the survey is opened in review mode exit.
     }
 
@@ -143,7 +143,7 @@ public class AssessModuleController extends ModuleController {
     public void onMarkAsCompleted(final SurveyDB survey) {
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
@@ -251,7 +251,7 @@ public class AssessModuleController extends ModuleController {
 
                         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
                         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                                GetSurveyAnsweredRatioUseCase.Action.GET,
                                 new GetSurveyAnsweredRatioUseCase.Callback() {
                                     @Override
                                     public void nextProgressMessage() {
@@ -388,9 +388,9 @@ public class AssessModuleController extends ModuleController {
         SurveyAnsweredRatio mSurveyAnsweredRatio;
         SurveyFragment surveyFragment;
         SurveyDB survey;
-        Action action;
+        org.eyeseetea.malariacare.domain.utils.Action action;
 
-        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyDB survey, Action action) {
+        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyDB survey, org.eyeseetea.malariacare.domain.utils.Action action) {
             this.surveyFragment = surveyFragment;
             this.survey = survey;
             this.action = action;
@@ -409,7 +409,7 @@ public class AssessModuleController extends ModuleController {
         protected SurveyAnsweredRatio doInBackground(Void... voids) {
             GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
             getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+                    GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {
@@ -426,7 +426,7 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
-            if(action.equals(Action.PRESS_BACK_BUTTON)) {
+            if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
                 surveyFragment.hideProgress();
                 boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
                 if(!isDialogShown){
@@ -441,7 +441,7 @@ public class AssessModuleController extends ModuleController {
                     }
                 }
             }
-            else if (action.equals(Action.CHANGE_TAB)){
+            else if (action.equals(org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)){
                 super.onPostExecute(surveyAnsweredRatio);
                 if (surveyAnsweredRatio.getCompulsoryAnswered()
                         == surveyAnsweredRatio.getTotalCompulsory()

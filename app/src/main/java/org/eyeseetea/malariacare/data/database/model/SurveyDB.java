@@ -133,6 +133,8 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
      */
     Integer productivity;
 
+    private SurveyAnsweredRatioDB mSurveyAnsweredRatio;
+
     public SurveyDB() {
         //Set dates
         this.creation_date = new Date();
@@ -785,6 +787,13 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         //Move scheduledate and save
         this.scheduled_date = newScheduledDate;
         this.save();
+    }
+
+    public SurveyAnsweredRatioDB getSurveyAnsweredRatio() {
+        if(mSurveyAnsweredRatio==null){
+            mSurveyAnsweredRatio = SurveyAnsweredRatioDB.getSurveyAnsweredRatioBySurveyId(id_survey);
+        }
+        return mSurveyAnsweredRatio;
     }
 
     /**

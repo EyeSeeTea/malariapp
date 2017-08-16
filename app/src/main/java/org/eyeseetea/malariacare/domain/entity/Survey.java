@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
+
 public class Survey {
     private long id;
     private int status;
@@ -36,6 +38,9 @@ public class Survey {
     }
 
     public SurveyAnsweredRatio getSurveyAnsweredRatio() {
+        if(mSurveyAnsweredRatio==null){
+            mSurveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(SurveyAnsweredRatioDB.getSurveyAnsweredRatioBySurveyId(id));
+        }
         return mSurveyAnsweredRatio;
     }
 

@@ -28,7 +28,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -187,7 +186,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
 
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                GetSurveyAnsweredRatioUseCase.Action.GET,
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
@@ -199,19 +198,20 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
                         Log.d(getClass().getName(), "onComplete");
                     }
                 });
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(survey.getSurveyAnsweredRatio());
+        if(surveyAnsweredRatio==null) {
+            return "0";
+        }
         if (surveyAnsweredRatio.isCompleted()) {
             return getContext().getString(R.string.dashboard_info_ready_to_upload);
         } else {
-            if (!PreferencesState.getInstance().isVerticalDashboard()) {
+            if (!PreferencesState.getInstance().isVerticalDashboard()){
                 if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
-                    int value = Float.valueOf(
-                            100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+                    int value = Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
                     if (value >= 100) {
                         return getContext().getString(R.string.dashboard_info_ready_to_upload);
-                    } else {
+                    } else
                         return String.format("%d", value);
-                    }
                 }
             }
             return String.format("%d",
