@@ -21,16 +21,13 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +49,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.network.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.sdk.presentation.fileio.FileIOUtils;
+import org.eyeseetea.sdk.common.VideoUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -337,7 +334,7 @@ public class FeedbackAdapter extends BaseAdapter {
 
             //add preview frame
             ImageView imageView = (ImageView) mediaLayout.findViewById(R.id.feedback_media_preview);
-            imageView.setImageBitmap(FileIOUtils.getVideoPreview(media.getFilename()));
+            imageView.setImageBitmap(VideoUtils.getVideoPreview(media.getFilename(), context));
             //Add media row to feedback layout
             rowLayout.addView(mediaLayout);
         }
