@@ -16,7 +16,8 @@ import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSo
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.common.DatabaseUtils;
+import org.eyeseetea.sdk.common.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,7 +84,7 @@ public class LocalPullController implements IPullController {
 
     public void copyDBFromFile(InputStream inputStream)
             throws IOException {
-        FileIOUtils.copyInputStreamToFile(inputStream, FileIOUtils.getAppDatabaseFile());
+        FileUtils.copyInputStreamToFile(inputStream, DatabaseUtils.getAppDatabaseFile(AppDatabase.NAME, context.getPackageName()));
     }
 
     public void populateFromDB(Context context) throws IOException {
