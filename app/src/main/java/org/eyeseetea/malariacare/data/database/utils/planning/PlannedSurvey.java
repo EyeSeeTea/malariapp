@@ -19,8 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.utils.planning;
 
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
@@ -30,7 +30,7 @@ import java.util.Date;
  * Created by arrizabalaga on 15/12/15.
  */
 public class PlannedSurvey implements PlannedItem {
-    private final Survey survey;
+    private final SurveyDB survey;
 
     private final static String HIGH_PRODUCTIVITY="H";
     private final static String LOW_PRODUCTIVITY="L";
@@ -44,7 +44,7 @@ public class PlannedSurvey implements PlannedItem {
     public PlannedHeader getPlannedHeader(){
         return header;
     }
-    public PlannedSurvey(Survey survey,PlannedHeader header) {
+    public PlannedSurvey(SurveyDB survey,PlannedHeader header) {
         this.survey = survey;
         this.header = header;
     }
@@ -98,7 +98,7 @@ public class PlannedSurvey implements PlannedItem {
         return survey.getScheduledDate();
     }
 
-    public Survey getSurvey(){
+    public SurveyDB getSurvey(){
         return survey;
     }
 
@@ -116,13 +116,13 @@ public class PlannedSurvey implements PlannedItem {
      * @return
      */
     @Override
-    public boolean isShownByProgram(Program filterProgram){
+    public boolean isShownByProgram(ProgramDB filterProgram){
         //No filter -> always show
         if(filterProgram==null){
             return true;
         }
 
-        Program surveyProgram=survey.getProgram();
+        ProgramDB surveyProgram=survey.getProgram();
         //Returns if both match
         return filterProgram.getId_program().equals(surveyProgram.getId_program());
     }

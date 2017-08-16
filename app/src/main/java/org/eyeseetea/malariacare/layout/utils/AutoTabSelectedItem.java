@@ -21,8 +21,8 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.Question;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 
 /**
@@ -34,8 +34,8 @@ public class AutoTabSelectedItem {
     private Context context;
     private AutoTabAdapter autoTabAdapter;
     private AutoTabInVisibilityState inVisibilityState;
-    private Question question;
-    private Option option;
+    private QuestionDB question;
+    private OptionDB option;
     private AutoTabViewHolder viewHolder;
     private float idSurvey;
     private String module;
@@ -60,7 +60,7 @@ public class AutoTabSelectedItem {
      * @param viewHolder
      * @return
      */
-    public AutoTabSelectedItem buildSelectedItem(Question question, Option option, AutoTabViewHolder viewHolder, float idSurvey, String module){
+    public AutoTabSelectedItem buildSelectedItem(QuestionDB question, OptionDB option, AutoTabViewHolder viewHolder, float idSurvey, String module){
         AutoTabSelectedItem autoTabSelectedItem = new AutoTabSelectedItem(autoTabAdapter,inVisibilityState,idSurvey, module);
         autoTabSelectedItem.question = question;
         autoTabSelectedItem.option = option;
@@ -74,15 +74,15 @@ public class AutoTabSelectedItem {
         return context;
     }
 
-    public Question getQuestion() {
+    public QuestionDB getQuestion() {
         return question;
     }
 
-    public Option getOption() {
+    public OptionDB getOption() {
         return option;
     }
 
-    public void setOption(Option option){
+    public void setOption(OptionDB option){
         this.option=option;
     }
 

@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.layout.adapters.general;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
@@ -30,13 +30,13 @@ import java.util.List;
 /**
  * Created by adrian on 30/04/15.
  */
-public class TabArrayAdapter extends AddlArrayAdapter<Tab> {
+public class TabArrayAdapter extends AddlArrayAdapter<TabDB> {
 
-    public TabArrayAdapter(Context context, List<Tab> tabs) {
+    public TabArrayAdapter(Context context, List<TabDB> tabs) {
         super(context, R.layout.main_spinner_item, tabs);
     }
 
-    @Override public void drawText(CustomTextView customTextView, Tab tab) {
+    @Override public void drawText(CustomTextView customTextView, TabDB tab) {
         customTextView.setText(tab.getName());
     }
 

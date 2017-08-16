@@ -23,8 +23,8 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,14 +40,14 @@ public class PieBuilderByOrgUnit extends PieBuilderBase {
     /**
      * Map of entries per program
      */
-    private Map<OrgUnit,PieDataByOrgUnit> pieTabGroupDataMap;
+    private Map<OrgUnitDB,PieDataByOrgUnit> pieTabGroupDataMap;
     /**
      * Default constructor
      *
      * @param surveys
      * @param context
      */
-    public PieBuilderByOrgUnit(List<Survey> surveys, Context context) {
+    public PieBuilderByOrgUnit(List<SurveyDB> surveys, Context context) {
         super(surveys, context);
         pieTabGroupDataMap=new HashMap<>();
     }
@@ -63,9 +63,9 @@ public class PieBuilderByOrgUnit extends PieBuilderBase {
         buildJSONArray(entries);
         entries.clear();
     }
-    private void build(Survey survey) {
+    private void build(SurveyDB survey) {
         //Get the program
-        OrgUnit orgUnit=survey.getOrgUnit();
+        OrgUnitDB orgUnit=survey.getOrgUnit();
 
         //Get the entry for that program
         PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
@@ -80,8 +80,8 @@ public class PieBuilderByOrgUnit extends PieBuilderBase {
     }
 
 
-    private List<PieDataByOrgUnit> build(List<Survey> surveys) {
-        for(Survey survey:surveys){
+    private List<PieDataByOrgUnit> build(List<SurveyDB> surveys) {
+        for(SurveyDB survey:surveys){
             build(survey);
         }
 

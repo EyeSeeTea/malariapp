@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.data.database.utils.services;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 
 import java.util.ArrayList;

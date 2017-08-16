@@ -110,6 +110,7 @@ dependencies {
     // SDK submodules
     compile project(":core-rules")
     compile project(":ui-bindings")
+    compile project(":EyeSeeTea-sdk")
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
