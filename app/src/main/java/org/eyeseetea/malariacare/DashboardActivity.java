@@ -50,7 +50,6 @@ import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.sdk.common.ExternalAppConstants;
 
 import java.util.List;
 
@@ -199,7 +198,6 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, "onResume");
         super.onResume();
         getSurveysFromService();
-        ExternalAppConstants.init(getApplicationContext(), getApplicationContext().getPackageName(), AppDatabase.NAME);
         DriveRestController.getInstance().syncMedia();
     }
 
