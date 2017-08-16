@@ -10,11 +10,8 @@ import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-
-import java.io.File;
-import java.text.DecimalFormat;
+import org.eyeseetea.sdk.common.FileUtils;
 import java.util.List;
 
 public class DownloadedMediaAdapter extends
@@ -43,10 +40,10 @@ public class DownloadedMediaAdapter extends
     public void onBindViewHolder(MediaViewHolder holder, int position) {
         MediaDB media = items.get(position);
         if (media.getFilename() != null) {
-            holder.fileName.setText(removePathFromName(media.getFilename()));
+            holder.fileName.setText(FileUtils.removePathFromName(media.getFilename()));
         }
         if (media.getFilename() != null) {
-            holder.size.setText(getSizeInMB(media.getFilename()));
+            holder.size.setText(FileUtils.getSizeInMB(media.getFilename(), context));
         }
         if (media.isPicture()) {
             holder.icon.setImageDrawable(
@@ -56,38 +53,6 @@ public class DownloadedMediaAdapter extends
             holder.icon.setImageDrawable(
                     ContextCompat.getDrawable(context, R.drawable.ic_movie_black_18dp));
         }
-    }
-
-    private String getSizeInMB(String filename) {
-        String size = "0";
-        try {
-            File file = new File(filename);
-            double fileSizeInBytes;
-            if (file.exists()) {
-                fileSizeInBytes = file.length();
-            } else {
-                fileSizeInBytes = FileIOUtils.getAssetFileDescriptorFromRaw(filename).getLength();
-            }
-            // Get length of file in bytes
-            // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
-            double fileSizeInKB = fileSizeInBytes / 1024.0;
-            // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
-            double fileSizeInMB = fileSizeInKB / 1024.0;
-            if (fileSizeInKB < 1024.0) {
-                size = fixDecimals(fileSizeInMB, "0.000");
-            } else {
-                size = fixDecimals(fileSizeInMB, "#.0");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return size + " MB";
-    }
-
-    private String fixDecimals(double fileSizeInMB, String format) {
-        DecimalFormat df = new DecimalFormat(format);
-        return df.format(fileSizeInMB);
     }
 
     private String removePathFromName(String filename) {

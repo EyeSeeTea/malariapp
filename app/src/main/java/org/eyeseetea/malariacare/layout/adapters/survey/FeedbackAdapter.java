@@ -21,16 +21,13 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +49,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.common.VideoUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -382,8 +379,8 @@ public class FeedbackAdapter extends BaseAdapter {
             });
 
             //add preview frame
-            addPreview((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview), media);
-
+            ImageView imageView = (ImageView) mediaLayout.findViewById(R.id.feedback_media_preview);
+            imageView.setImageBitmap(VideoUtils.getVideoPreview(media.getFilename(), context));
             //Add media row to feedback layout
             rowLayout.addView(mediaLayout);
         }
@@ -397,31 +394,6 @@ public class FeedbackAdapter extends BaseAdapter {
         ((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview)).setImageDrawable(drawable);
         //Add media row to feedback layout
         return mediaLayout;
-    }
-
-    private void addPreview(ImageView viewMediaLink, MediaDB media) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        File mediaFile = new File(media.getFilename());
-        if (!mediaFile.exists()) {//load from raw
-            AssetFileDescriptor afd = FileIOUtils.getAssetFileDescriptorFromRaw(
-                    media.getFilename());
-            retriever.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        } else {
-            retriever.setDataSource(mediaFile.getAbsolutePath());
-        }
-        try {
-            viewMediaLink.setImageBitmap(
-                    retriever.getFrameAtTime(10000000, MediaMetadataRetriever.OPTION_CLOSEST));
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                retriever.release();
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                Log.e("error", "error releasign el video");
-            }
-        }
     }
 
     private void toggleFeedback(LinearLayout rowLayout, boolean visible) {
