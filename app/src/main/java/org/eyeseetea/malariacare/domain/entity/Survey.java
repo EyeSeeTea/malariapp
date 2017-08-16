@@ -39,7 +39,7 @@ public class Survey {
 
     public SurveyAnsweredRatio getSurveyAnsweredRatio() {
         if(mSurveyAnsweredRatio==null){
-            mSurveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(SurveyAnsweredRatioDB.getSurveyAnsweredRatioBySurveyId(id));
+            mSurveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(id);
         }
         return mSurveyAnsweredRatio;
     }

@@ -53,10 +53,19 @@ public class SurveyAnsweredRatio {
         this.surveyId = surveyId;
         this.total = total;
         this.answered = answered;
-        this.totalCompulsory = totalCompulsory;
+        this.totalCompulsory=totalCompulsory;
         this.compulsoryAnswered = compulsoryAnswered;
     }
 
+    public static SurveyAnsweredRatio getModelToEntity(long id_survey){
+        SurveyAnsweredRatioDB surveyAnsweredRatioDB = SurveyAnsweredRatioDB.getSurveyAnsweredRatioBySurveyId(id_survey);
+        if(surveyAnsweredRatioDB ==null) {
+            return null;
+        }
+        return  new SurveyAnsweredRatio(surveyAnsweredRatioDB.getIdSurvey(),
+                surveyAnsweredRatioDB.getTotalQuestions(),
+                surveyAnsweredRatioDB.getAnsweredQuestions(), surveyAnsweredRatioDB.getTotalCompulsoryQuestions(), surveyAnsweredRatioDB.getAnsweredCompulsoryQuestions());
+    }
     public long getSurveyId() {
         return surveyId;
     }
@@ -154,12 +163,4 @@ public class SurveyAnsweredRatio {
         return compulsoryAnswered>=totalCompulsory;
     }
 
-    public static SurveyAnsweredRatio getModelToEntity(SurveyAnsweredRatioDB surveyAnsweredRatioDB){
-        if(surveyAnsweredRatioDB ==null) {
-            return null;
-        }
-        return  new SurveyAnsweredRatio(surveyAnsweredRatioDB.getIdSurvey(),
-                surveyAnsweredRatioDB.getTotalQuestions(),
-                surveyAnsweredRatioDB.getAnsweredQuestions(), surveyAnsweredRatioDB.getTotalCompulsoryQuestions(), surveyAnsweredRatioDB.getAnsweredCompulsoryQuestions());
-    }
 }

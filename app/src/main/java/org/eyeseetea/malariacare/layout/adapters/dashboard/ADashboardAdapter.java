@@ -198,7 +198,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
                         Log.d(getClass().getName(), "onComplete");
                     }
                 });
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(survey.getSurveyAnsweredRatio());
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatio.getModelToEntity(survey.getId_survey());
         if(surveyAnsweredRatio==null) {
             return "0";
         }
