@@ -120,12 +120,12 @@ public class SurveyPlanner {
     /**
      * Starts a planned survey with the given orgUnit and tabGroup
      */
-    public SurveyDB startSurvey(OrgUnitDB orgUnit, ProgramDB program) {
+    public SurveyDB startSurvey(OrgUnitDB orgUnit, long idProgram) {
         //Find planned survey
-        SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnit, program);
+        SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnit, idProgram);
         if (survey == null) {
             survey = new SurveyDB();
-            survey.setProgram(program);
+            survey.setProgram(idProgram);
             survey.setOrgUnit(orgUnit.getId_org_unit());
         }
         return startSurvey(survey);

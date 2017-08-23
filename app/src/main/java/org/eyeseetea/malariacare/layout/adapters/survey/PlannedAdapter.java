@@ -32,13 +32,13 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -58,7 +58,7 @@ public class PlannedAdapter extends BaseAdapter {
     /**
      * Items filtered by this program
      */
-    ProgramDB programFilter;
+    Program programFilter;
 
     /**
      * Current selected header (working like an accordeon)
@@ -105,7 +105,7 @@ public class PlannedAdapter extends BaseAdapter {
         applyFilter(null);
     }
 
-    public void applyFilter(ProgramDB program) {
+    public void applyFilter(Program program) {
         Log.d(TAG, "applyFilter:" + program);
 
         //Annotate filter

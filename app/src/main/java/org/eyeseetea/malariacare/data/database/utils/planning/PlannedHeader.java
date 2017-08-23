@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.domain.entity.Program;
 
 /**
  * Simple VO to model the headers  the planned listview
@@ -105,7 +105,7 @@ public class PlannedHeader implements PlannedItem {
      * @return
      */
     @Override
-    public boolean isShownByProgram(ProgramDB filterProgram){
+    public boolean isShownByProgram(Program filterProgram){
         return true;
     }
 

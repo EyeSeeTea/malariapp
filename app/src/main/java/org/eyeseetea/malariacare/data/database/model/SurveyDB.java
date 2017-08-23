@@ -38,7 +38,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
-import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
@@ -48,9 +47,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -539,14 +537,14 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     /**
      * Returns a survey in progress for the given orgUnit and program
      */
-    public static SurveyDB getInProgressSurveys(OrgUnitDB orgUnit, ProgramDB program) {
+    public static SurveyDB getInProgressSurveys(OrgUnitDB orgUnit, Program program) {
         if (orgUnit == null || program == null) {
             return null;
         }
 
         return new Select().from(SurveyDB.class)
                 .where(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
+                .and(SurveyDB_Table.id_program_fk.eq(program.getId()))
                 .and(SurveyDB_Table.status.is(Constants.SURVEY_IN_PROGRESS))
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).querySingle();
@@ -817,11 +815,11 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     /**
      * Finds a survey with a given orgunit and program
      */
-    public static SurveyDB findPlannedByOrgUnitAndProgram(OrgUnitDB orgUnit, ProgramDB program) {
+    public static SurveyDB findPlannedByOrgUnitAndProgram(OrgUnitDB orgUnit, long idProgram) {
         return new Select()
                 .from(SurveyDB.class)
                 .where(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
+                .and(SurveyDB_Table.id_program_fk.eq(idProgram))
                 .and(SurveyDB_Table.status.eq(Constants.SURVEY_PLANNED))
                 .querySingle();
     }

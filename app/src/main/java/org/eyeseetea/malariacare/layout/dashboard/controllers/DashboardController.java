@@ -29,8 +29,8 @@ import android.widget.TabWidget;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 
@@ -266,7 +266,7 @@ public class DashboardController {
      * Starts the program planning tab
      * @param program
      */
-    public void onProgramSelected(ProgramDB program) {
+    public void onProgramSelected(Program program) {
         PlanModuleController planModuleController = (PlanModuleController)getModuleByName(PlanModuleController.getSimpleName());
         planModuleController.onProgramSelected(program);
     }

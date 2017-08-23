@@ -37,6 +37,8 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
+import org.eyeseetea.malariacare.data.mappers.ProgramMapper;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -214,7 +216,7 @@ public class SurveyService extends IntentService {
         }
         sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
         sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
-        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
+        sentDashboardBundle.addModelList(Program.class.getName(), ProgramMapper.mapFromDbToDomain(ProgramDB.getAllPrograms()));
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
@@ -241,7 +243,7 @@ public class SurveyService extends IntentService {
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
         plannedServiceBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
-        plannedServiceBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
+        plannedServiceBundle.addModelList(Program.class.getName(), ProgramMapper.mapFromDbToDomain(ProgramDB.getAllPrograms()));
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);
         //Returning result to anyone listening
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
@@ -253,7 +255,7 @@ public class SurveyService extends IntentService {
         BaseServiceBundle orgCreateSurveyData=new BaseServiceBundle();
         orgCreateSurveyData.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.list());
         orgCreateSurveyData.addModelList(OrgUnitLevelDB.class.getName(), OrgUnitLevelDB.list());
-        orgCreateSurveyData.addModelList(ProgramDB.class.getName(), ProgramDB.list());
+        orgCreateSurveyData.addModelList(Program.class.getName(), ProgramMapper.mapFromDbToDomain(ProgramDB.list()));
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_CREATE_SURVEY_DATA_ACTION, orgCreateSurveyData);

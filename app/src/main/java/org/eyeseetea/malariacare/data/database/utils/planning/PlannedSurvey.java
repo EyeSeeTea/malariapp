@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
@@ -116,15 +117,15 @@ public class PlannedSurvey implements PlannedItem {
      * @return
      */
     @Override
-    public boolean isShownByProgram(ProgramDB filterProgram){
+    public boolean isShownByProgram(Program filterProgram){
         //No filter -> always show
-        if(filterProgram==null){
+        if(filterProgram==null || filterProgram.getId()==null){
             return true;
         }
 
         ProgramDB surveyProgram=survey.getProgram();
         //Returns if both match
-        return filterProgram.getId_program().equals(surveyProgram.getId_program());
+        return filterProgram.getId().equals(surveyProgram.getId_program());
     }
 
     /**

@@ -33,9 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -43,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
@@ -275,7 +274,7 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Handler that starts or edits a given survey
      */
-    public void onProgramSelected(ProgramDB program) {
+    public void onProgramSelected(Program program) {
         dashboardController.onProgramSelected(program);
     }
 
@@ -304,15 +303,15 @@ public class DashboardActivity extends BaseActivity {
     /**
      * Create new survey from CreateSurveyFragment
      */
-    public void onCreateSurvey(final OrgUnitDB orgUnit, final ProgramDB program) {
-        createNewSurvey(orgUnit, program);
+    public void onCreateSurvey(final OrgUnitDB orgUnit, final long idProgram) {
+        createNewSurvey(orgUnit, idProgram);
     }
 
     /**
      * Create new survey from VariantSpecificUtils
      */
-    public void createNewSurvey(OrgUnitDB orgUnit, ProgramDB program) {
-        SurveyDB survey = SurveyPlanner.getInstance().startSurvey(orgUnit, program);
+    public void createNewSurvey(OrgUnitDB orgUnit, long idProgram) {
+        SurveyDB survey = SurveyPlanner.getInstance().startSurvey(orgUnit, idProgram);
         prepareLocationListener(survey);
         // Put new survey in session
         Session.setSurveyByModule(survey, Constants.FRAGMENT_SURVEY_KEY);
@@ -369,7 +368,7 @@ public class DashboardActivity extends BaseActivity {
         }, 1000);
     }
 
-    public void preparePlanningFilters(List<ProgramDB> programList, List<OrgUnitDB> orgUnitList) {
+    public void preparePlanningFilters(List<Program> programList, List<OrgUnitDB> orgUnitList) {
         ((PlanModuleController) dashboardController.getModuleByName(
                 PlanModuleController.getSimpleName())).prepareFilters(programList, orgUnitList);
     }

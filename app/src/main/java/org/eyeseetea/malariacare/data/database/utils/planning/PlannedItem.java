@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.planning;
 
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.domain.entity.Program;
 
 /**
  * Just a marker interface to add headers and real items to a listview
@@ -32,7 +32,7 @@ public interface PlannedItem {
      * @param filterProgram
      * @return
      */
-    boolean isShownByProgram(ProgramDB filterProgram);
+    boolean isShownByProgram(Program filterProgram);
 
     /**
      * Tells if this item can be shown according to the given header as a filter

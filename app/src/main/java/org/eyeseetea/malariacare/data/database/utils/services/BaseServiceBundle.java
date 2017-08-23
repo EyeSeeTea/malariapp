@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.data.database.utils.services;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,12 +26,12 @@ import java.util.List;
  * Created by idelcano on 05/09/2016.
  */
 public class BaseServiceBundle {
-    HashMap<String, List<? extends BaseModel>> mappedList;
+    HashMap<String, List<? extends Object>> mappedList;
 
-    public List<? extends BaseModel> getModelList(String classname){
+    public List<? extends Object> getModelList(String classname){
         return mappedList.get(classname);
     }
-    public void addModelList(String key, List<? extends  BaseModel> list){
+    public void addModelList(String key, List<? extends  Object> list){
         if(mappedList==null)
             mappedList= new HashMap<>();
         mappedList.put(key,list);

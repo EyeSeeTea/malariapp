@@ -41,7 +41,7 @@ import android.widget.Spinner;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -81,7 +81,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     //orgUnitList contains the list of all orgUnits
     List<OrgUnitDB> orgUnitList;
     //programList contains the list of all prgorams
-    List<ProgramDB> programList;
+    List<Program> programList;
     Spinner filterSpinnerOrgUnit;
     Spinner filterSpinnerProgram;
     //orgUnitFilter contains the selected orgUnit uid
@@ -153,8 +153,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private void initProgramFilters() {
         initiatingFilters=true;
         filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-        List<ProgramDB> filterProgramList= programList;
-        ProgramDB defaultAllProgramFilter=new ProgramDB();
+        List<Program> filterProgramList= programList;
+        Program defaultAllProgramFilter=new Program();
         defaultAllProgramFilter.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
         filterProgramList.add(0, defaultAllProgramFilter);
         if(programFilter ==null) {
@@ -166,7 +166,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                ProgramDB program = (ProgramDB) parent.getItemAtPosition(position);
+                Program program = (Program) parent.getItemAtPosition(position);
                 boolean reload = false;
                 if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
                     if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
@@ -578,7 +578,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             if (SurveyService.RELOAD_SENT_FRAGMENT_ACTION.equals(intent.getAction())) {
                 BaseServiceBundle sentDashboardBundle = (BaseServiceBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
                 orgUnitList = (List<OrgUnitDB>) sentDashboardBundle.getModelList(OrgUnitDB.class.getName());
-                programList = (List<ProgramDB>) sentDashboardBundle.getModelList(ProgramDB.class.getName());
+                programList = (List<Program>) sentDashboardBundle.getModelList(Program.class.getName());
                 surveys = (List<SurveyDB>) sentDashboardBundle.getModelList(SurveyDB.class.getName());
                 initFilters();
             }

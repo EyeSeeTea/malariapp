@@ -47,6 +47,8 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.data.mappers.ProgramMapper;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.layout.adapters.general.OrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.general.ProgramArrayAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -87,12 +89,12 @@ public class CreateSurveyFragment extends Fragment {
     private Spinner programView;
 
     //Loaded one time from service
-    List<ProgramDB> allProgramList;
+    List<Program> allProgramList;
     List<OrgUnitDB> orgUnitList;
     List<OrgUnitLevelDB> orgUnitLevelList;
 
     private OrgUnitDB orgUnitDefaultOption;
-    private ProgramDB programDefaultOption;
+    private Program programDefaultOption;
 
     private OrgUnitHierarchy orgUnitHierarchy;
 
@@ -169,7 +171,7 @@ public class CreateSurveyFragment extends Fragment {
 
         //Create default options
         orgUnitDefaultOption = new OrgUnitDB(Constants.DEFAULT_SELECT_OPTION);
-        programDefaultOption = new ProgramDB(Constants.DEFAULT_SELECT_OPTION);
+        programDefaultOption = new Program(Constants.DEFAULT_SELECT_OPTION);
 
         //Populate Organization Unit DDL
         ViewHolder viewHolder = new ViewHolder();
@@ -215,7 +217,7 @@ public class CreateSurveyFragment extends Fragment {
 
         //Populate Program View DDL
         //get all the programs from a DB query only one time.
-        List<ProgramDB> initProgram=new ArrayList<>();
+        List<Program> initProgram=new ArrayList<>();
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
@@ -255,8 +257,8 @@ public class CreateSurveyFragment extends Fragment {
         for (int i=0;i<spinner.getCount();i++){
             Object objectRow= spinner.getItemAtPosition(i);
             String value="";
-            if(objectRow instanceof ProgramDB) {
-                value= ((ProgramDB) objectRow).getName();
+            if(objectRow instanceof Program) {
+                value= ((Program) objectRow).getName();
             }
             if(objectRow instanceof OrgUnitDB) {
                 value= ((OrgUnitDB) objectRow).getName();
@@ -272,17 +274,26 @@ public class CreateSurveyFragment extends Fragment {
     private boolean isEverythingFilled() {
         try {
             boolean isEverythingFilled = (!programView.getSelectedItem().equals(programDefaultOption));
-            boolean isProgramInOrgUnit=orgUnitHierarchy.getLastSelected().getPrograms().contains((ProgramDB)programView.getSelectedItem());
+            boolean isProgramInOrgUnit = isProgramInOrgUnitList(orgUnitHierarchy.getLastSelected().getPrograms(),((Program)programView.getSelectedItem()));
             return isEverythingFilled && isProgramInOrgUnit;
         }catch(NullPointerException ex){
             return false;
         }
     }
 
+    private boolean isProgramInOrgUnitList(List<ProgramDB> programs, Program selectedItem) {
+        for(ProgramDB programDB : programs){
+            if(programDB.getUid().equals(selectedItem.getUid())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean doesSurveyInProgressExist() {
         // Read Selected Items
         OrgUnitDB orgUnit = orgUnitHierarchy.getLastSelected();
-        ProgramDB program = (ProgramDB) programView.getSelectedItem();
+        Program program = (Program) programView.getSelectedItem();
 
         SurveyDB survey = SurveyDB.getInProgressSurveys(orgUnit, program);
         return (survey != null);
@@ -294,7 +305,7 @@ public class CreateSurveyFragment extends Fragment {
                     .setTitle( getActivity().getApplicationContext().getString(R.string.dialog_title_missing_selection))
                     .setMessage( getActivity().getApplicationContext().getString(R.string.dialog_content_missing_selection))
                     .setPositiveButton(android.R.string.ok, null).create().show();
-        } else if (!orgUnitHierarchy.getLastSelected().getPrograms().contains((ProgramDB) programView.getSelectedItem())) {
+        } else if (!checkIfProgramIsValid(orgUnitHierarchy.getLastSelected().getPrograms(),( (Program) programView.getSelectedItem()))) {
             new AlertDialog.Builder( getActivity())
                     .setTitle(getActivity().getApplicationContext().getString(R.string.dialog_title_incorrect_org_unit))
                     .setMessage(getActivity().getApplicationContext().getString(R.string.dialog_content_incorrect_org_unit))
@@ -311,6 +322,15 @@ public class CreateSurveyFragment extends Fragment {
         return false;
     }
 
+    private boolean checkIfProgramIsValid(List<ProgramDB> programs, Program selectedItem) {
+        for(ProgramDB programDB : programs){
+            if(programDB.getUid().equals(selectedItem.getUid())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Called when the user clicks the Send button
      * Gets the survey with the SURVEY_PLANNED state and set the createdate, user, SURVEY_IN_PROGRESS, and reset main score, and save the survey in session
@@ -322,7 +342,7 @@ public class CreateSurveyFragment extends Fragment {
         OrgUnitDB orgUnit = orgUnitHierarchy.getLastSelected();
 
         //Get selected program
-        ProgramDB program = (ProgramDB)programView.getSelectedItem();
+        Program program = (Program)programView.getSelectedItem();
 
 
         //save  the list of orgUnits
@@ -331,7 +351,7 @@ public class CreateSurveyFragment extends Fragment {
         //save the program in the preferents
         setLastSelectedProgram(program.getUid());
 
-        dashboardActivity.onCreateSurvey(orgUnit,program);
+        dashboardActivity.onCreateSurvey(orgUnit,program.getId());
     }
 
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -450,19 +470,19 @@ public class CreateSurveyFragment extends Fragment {
     }
 
     //filter programs by orgUnit
-    private List<ProgramDB> filterPrograms(OrgUnitDB selectedOrgUnit) {
+    private List<Program> filterPrograms(OrgUnitDB selectedOrgUnit) {
 
-        List<ProgramDB> initProgram= new ArrayList<>();
+        List<Program> initProgram= new ArrayList<>();
         for(ProgramDB orgUnitProgram: selectedOrgUnit.getPrograms()){
-            for(ProgramDB program:allProgramList ){
-                if(orgUnitProgram!=null && orgUnitProgram.equals(program))
-                    initProgram.add(orgUnitProgram);
+            for(Program program:allProgramList ){
+                if(orgUnitProgram!=null && orgUnitProgram.getUid().equals(program.getUid()))
+                    initProgram.add(ProgramMapper.mapFromDbToDomain(orgUnitProgram));
             }
         }
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
-        ProgramDB lastSelectedProgram= getLastSelectedProgram();
+        Program lastSelectedProgram= getLastSelectedProgram();
         if(lastSelectedProgram!=null){
             programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
         }
@@ -491,10 +511,14 @@ public class CreateSurveyFragment extends Fragment {
     }
 
     //Gets the default program/
-    private ProgramDB getLastSelectedProgram() {
+    private Program getLastSelectedProgram() {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        ProgramDB lastSelectedProgram = ProgramDB.getProgram(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_program), ""));
-        return lastSelectedProgram;
+        ProgramDB programDB = ProgramDB.getProgram(sharedPreferences.getString(getActivity().getApplicationContext().getResources().getString(R.string.default_program), ""));
+        if(programDB!=null) {
+            return ProgramMapper.mapFromDbToDomain(programDB);
+        }
+        else
+            return null;
     }
 
 
@@ -544,7 +568,7 @@ public class CreateSurveyFragment extends Fragment {
                     BaseServiceBundle data=(BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_CREATE_SURVEY_DATA_ACTION);
                     orgUnitList=(List<OrgUnitDB>)data.getModelList(OrgUnitDB.class.getName());
                     orgUnitLevelList=(List<OrgUnitLevelDB>)data.getModelList(OrgUnitLevelDB.class.getName());
-                    allProgramList=(List<ProgramDB>)data.getModelList(ProgramDB.class.getName());
+                    allProgramList=(List<Program>)data.getModelList(Program.class.getName());
                     create();
                 }
         }

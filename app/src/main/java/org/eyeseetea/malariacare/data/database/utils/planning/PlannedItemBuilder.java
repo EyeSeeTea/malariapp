@@ -24,7 +24,6 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
@@ -237,7 +236,7 @@ public class PlannedItemBuilder {
      */
     private void annotateSurvey(SurveyDB survey){
         if(survey.getProgram()!=null) {
-            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
+            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram().getId_program());
             surveyMap.put(key,survey);
         }
         else{
@@ -248,11 +247,11 @@ public class PlannedItemBuilder {
     /**
      * Builds a synthetic key for this survey
      * @param orgUnit
-     * @param program
+     * @param idProgram
      * @return
      */
-    private String getSurveyKey(OrgUnitDB orgUnit,ProgramDB program) {
-        return orgUnit.getId_org_unit().toString()+"@"+program.getId_program().toString();
+    private String getSurveyKey(OrgUnitDB orgUnit,Long idProgram) {
+        return orgUnit.getId_org_unit().toString()+"@"+idProgram.toString();
     }
 
     /**
@@ -276,7 +275,7 @@ public class PlannedItemBuilder {
         for(OrgUnitDB orgUnit: OrgUnitDB.list()){
             //Each authorized program
             for(ProgramDB program:orgUnit.getPrograms()){
-                String key=getSurveyKey(orgUnit,program);
+                String key=getSurveyKey(orgUnit,program.getId_program());
                 SurveyDB survey=surveyMap.get(key);
                 //Already built
                 if(survey!=null){

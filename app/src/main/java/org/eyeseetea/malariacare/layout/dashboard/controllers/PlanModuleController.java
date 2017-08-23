@@ -29,8 +29,8 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.Program;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
@@ -48,7 +48,7 @@ public class PlanModuleController extends ModuleController {
     PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
     CustomSpinner orgUnitSpinner;
     CustomSpinner programSpinner;
-    private ProgramDB programDefaultOption;
+    private Program programDefaultOption;
     private OrgUnitDB orgUnitDefaultOption;
 
     public PlanModuleController(ModuleSettings moduleSettings){
@@ -70,7 +70,7 @@ public class PlanModuleController extends ModuleController {
     }
 
     private void createFilters() {
-        programDefaultOption = new ProgramDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
+        programDefaultOption = new Program(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
         orgUnitDefaultOption = new OrgUnitDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_units).toUpperCase());
 
         orgUnitSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_orgUnit);
@@ -83,7 +83,7 @@ public class PlanModuleController extends ModuleController {
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
-    public void prepareFilters(final List<ProgramDB> programList, final List<OrgUnitDB> orgUnitList) {
+    public void prepareFilters(final List<Program> programList, final List<OrgUnitDB> orgUnitList) {
         //Populate Program View DDL
         if (!programList.contains(programDefaultOption))
             programList.add(0, programDefaultOption);
@@ -94,7 +94,7 @@ public class PlanModuleController extends ModuleController {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 CustomSpinner spinner = ((CustomSpinner) parent);
-                ProgramDB selectedProgram = (ProgramDB) spinner.getItemAtPosition(position);
+                Program selectedProgram = (Program) spinner.getItemAtPosition(position);
 
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 if(selectedProgram==null)
@@ -156,7 +156,7 @@ public class PlanModuleController extends ModuleController {
     }
 
 
-    public void onProgramSelected(ProgramDB program) {
+    public void onProgramSelected(Program program) {
         Log.d(TAG, "onProgramSelected");
         if (DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
             //hide plannedFragment layout and show plannedOrgUnitsFragment
