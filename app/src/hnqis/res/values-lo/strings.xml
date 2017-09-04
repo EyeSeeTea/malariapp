@@ -1,226 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+<!-- # general -->
 <string name="yes">"Yes"</string>
 <string name="no">"No"</string>
-<string name="cancel">"Cancel"</string>
-<string name="score">"Score"</string>
-<string name="title_id">"ID"</string>
-<string name="title_name">"Name"</string>
-<string name="good">"Good"</string>
-<string name="fair">"Fair"</string>
-<string name="poor">"Poor"</string>
-<string name="lorem_ipsum">"Lorem ipsum dolor sit amet"</string>
+<string name="cancel">"ຍົກເລີກ"</string>
+<string name="score">"ຄະແນນ"</string>
+<string name="title_id">"ລະຫັດ"</string>
+<string name="title_name">"ຊື່ຫົວຂໍ້"</string>
+<string name="good">"ດີ"</string>
+<string name="fair">"ປານກາງ"</string>
+<string name="poor">"ຕຳ"</string>
+<string name="lorem_ipsum"></string>
 
-<string name="settings_menu_about">"About"</string>
-<string name="settings_menu_configuration">"Settings"</string>
-<string name="settings_menu_licence">"License"</string>
-<string name="settings_menu_logout">"Logout"</string>
+<!-- settings -->
+<string name="settings_menu_about">"ກ່ຽວກັບ"</string>
+<string name="settings_menu_configuration">"ການຕັ້ງຄ່າ"</string>
+<string name="settings_menu_licence">"ການໄດ້ຮັບອະນຸຍາດ"</string>
+<string name="settings_menu_logout">"ອອກຈາກລະບົບ"</string>
 
-<string name="dialog_title_delete_survey">"Delete Survey"</string>
-<string name="dialog_info_delete_survey">"Are you sure you want to completely delete the survey: %s?"</string>
-<string name="dialog_title_missing_selection">"Missing selection"</string>
-<string name="dialog_content_missing_selection">"Please select Org Unit and Survey details"</string>
-<string name="dialog_title_existing_survey">"Existing Survey"</string>
-<string name="dialog_content_existing_survey">"There is already a not sent form in the system for that Org Unit/Survey"</string>
-<string name="dialog_title_incorrect_org_unit">"Incorrect Org Unit"</string>
-<string name="dialog_content_incorrect_org_unit">"Please select a final org unit"</string>
-<string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
-<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
+<!-- # dialogs -->
+<string name="dialog_title_delete_survey">"ລຶບຂໍ້ມູນ"</string>
+<string name="dialog_info_delete_survey">"ທ່ານຕ້ອງການລຶບຂໍ້ມູນທັງໝົດບໍ?"</string>
+<string name="dialog_title_missing_selection">"ບໍ່ເລຶອກຄໍາຕອບ"</string>
+<string name="dialog_content_missing_selection">"ກະລູນາເລືອກສະຖານທີ່ ແລະ ຂໍ້ມູນ"</string>
+<string name="dialog_title_existing_survey">"ຂໍ້ມູນທີ່ມີແລ້ວ"</string>
 
-<string name="dashboard_info_feedback">"Feedback"</string>
-<string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
-<string name="dashboard_info_sent">"Sent"</string>
+<!-- Do  you mean the data form does not exist for that Org Unit/Survey? -->
+<string name="dialog_content_existing_survey">"ຂໍ້ມູນເກົ່າຍັງບໍ່ຖືກສົ່ງເຂົ້າສູ່ລະບົບ"</string>
+<string name="dialog_title_incorrect_org_unit">"ຊື່ສະຖານທີ່ບໍ່ຖືກຕ້ອງ"</string>
+<string name="dialog_content_incorrect_org_unit">"ກະລຸນາເລືອກຊື່ສະຖານທີ່"</string>
+<string name="dialog_content_logout_confirmation">"ຖ້າເຈົ້າອອກຈາກລະບົບຕອນນີ້, ຂໍ້ມູນທັງໝົດທີ່ຍັງບໍ່ທັນຖືກສົ່ງຈະຖືກລືບ. ເຈົ້າຍັງຕ້ອງການອອກຈາກລະບົບບໍ?"</string>
 
-<string name="create_info_ok">"Start"</string>
-<string name="create_info_organization_unit">"Organisation Unit"</string>
-<string name="create_info_survey">"Survey"</string>
-<string name="create_info_tabs_group">"Tab Group"</string>
+<!-- dashboard -->
+<string name="dashboard_info_feedback">"ຄຳຄິດເຫັນ"</string>
+<string name="dashboard_info_ready_to_upload">"ພ້ອມທີ່ຈະສົ່ງຂໍ້ມູນ"</string>
+<string name="dashboard_info_sent">"ຂໍ້ມູນໄດ້ຖືກສົ່ງແລ້ວ"</string>
 
-<string name="assessment_title_facility_date">"Facility / Survey"</string>
-<string name="assessment_title_state">"% complete"</string>
-<string name="assessment_sent_date">"Completion date"</string>
-<string name="assessment_title_header">"Active Assessment(s)"</string>
-<string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
+<!-- create -->
+<string name="create_info_ok">"ເລີ່ມ"</string>
+<string name="create_info_organization_unit">"ຊື່ສະຖານທີ່"</string>
+<string name="create_info_survey">"ຂໍ້ມູນການສຳຫຼວດ"</string>
+<string name="create_info_tabs_group">"ກຸ່ມຂອງໜ້າຕ່າງ"</string>
 
-<string name="survey_title_exit">"Really Exit?"</string>
-<string name="survey_info_exit">"Are you sure you want to exit?"</string>
+<!-- assessment -->
+<string name="assessment_title_facility_date">"ຊື່ສະຖານທີ່ບໍລິການ /ຂໍ້ມູນການສຳຫຼວດ"</string>
+<string name="assessment_title_state">"ສຳເລັດແລ້ວ (%)"</string>
+<string name="assessment_sent_date">"ວັນທີສຳເລັດ"</string>
+<string name="assessment_title_header">"ການປະເມີນຄັ້ງນີ້"</string>
+<string name="assessment_sent_title_header">"ການປະເມີນຄັ້ງກ່ອນ"</string>
 
-<string name="widget_info_empty_statement">"Question statement"</string>
+<!-- survey -->
+<string name="survey_title_exit">"ຕ້ອງການອອກຈາກລະບົບແທ້ບໍ?"</string>
+<string name="survey_info_exit">"ທ່ານຕ້ອງການອອກຈາກລະບົບບໍ?"</string>
 
-<string name="custom_title_tallies">"TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet"</string>
-<string name="custom_info_tallies">"TALLIES for the Month of"</string>
+<!-- widget -->
+<string name="widget_info_empty_statement">"ເນື້ອໃນຄຳຖາມ"</string>
 
-<string name="adherence_info_switchquestion">"Are there laboratory registers and pharmacy or clinical registers available at this facility?"</string>
-<string name="adherence_title_explanation">"Evaluation of Provider Adherence to Malaria Diagnostic Test Results"</string>
-<string name="adherence_title_explanation_content">"Step 1. Record below the patient ID numbers of 20 patients prescribed ACTs from the Pharmacy Register.
-Step 2. Locate the patient IDs from Step 1 in the Laboratory and/or Clinical Registers and record their test result in the appropriate column. "</string>
-<string name="adherence_title2_explanation_content">"Step 1. In the Laboratory Register, record the patient ID numbers 20 patients: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -.
-Step 2. Locate the patient IDs from Step 1 in the Pharmacy Register and record whether they received ACTs in the “ACT Prescribed” column by ticking either Y or N."</string>
-<string name="adherence_title_gender">"Gender"</string>
-<string name="adherence_title_age">"Age (years)"</string>
-<string name="adherence_title_test_results">"Test results"</string>
-<string name="adherence_info_patient_id">"Patient
-ID"</string>
-<string name="adherence_info_prescribed">"ACT
-Prescribed?"</string>
-<string name="adherence_info_rdt_positive">"RDT Positive"</string>
+<!-- custom -->
+<string name="custom_title_tallies">"ຈຳນວນລວມ - ບວກຈຳນວນລວມຂອງຕົວຊີ້ວັດທີຢູ່ໃນຖັນ A ແລະ ປ້ອນຂໍ້ມູນດັ່ງກ່າວເຂົ້າ. ສໍາລັບຖັນ ​B, ໃຫ້ປ້ອນຈຳນວນລວມທັງໝົດທີ່ໄດ້ຈາກບົດລາຍງານປະຈຳເດືອນ"</string>
+<string name="custom_info_tallies">"ຈຳນວນທັງໝົດຂອງເດືອນ"</string>
 
-<string name="reporting_info_reporting">"Reporting"</string>
-<string name="reporting_info_results">"Results"</string>
-<string name="reporting_info_register">"Register"</string>
-<string name="reporting_info_monthly">"Monthly
-Report"</string>
+<!-- adherence -->
+<string name="adherence_info_switchquestion">"ສະຖານທີ່ບໍລິການນີ້ມີແບບຟອມລົງທະບຽນໃນຫ້ອງແລັບ, ຮ້ານຂາຍຢາ ແລະ ຄຣີນິກທີແລ້ວບໍ?"</string>
+<string name="adherence_title_explanation">"ການປະເມີນຜົນຜູ້ໃຫ້ບໍລິການໂດຍອິງໃສ່ຜົນກວດໄຂ້ມາລາເຣຍ"</string>
+<string name="adherence_title_explanation_content">"ຂັ້ນຕອນທີ 1. ບັນທຶກລະຫັດຂອງຄົນເຈັບຈຳນວນ 20 ຄົນທີ່ມີໃບສັ່ງຢາ ACT ຈາກແບບຟອມຂອງຮ້ານຂາຍຢາ.
+ຂັ້ນຕອນທີ 2. ສົ່ງແບບຟອມທີ່ໄດ້ຈາກຂັ້ນຕອນທີ 1 ໄປຫ້ອງແລັບ ຫຼື ຄຣີນິກເພື່ອກວດ ແລະ ບັນທຶກຜົນກວດ."</string>
+<string name="adherence_title2_explanation_content">"ຂັ້ນຕອນທີ່ 1. ໃນແບບຟອມລົງທະບຽນຂອງຫ້ອງແລບ, ໃຫ້ບັນທຶກລະຫັດຄົນເຈັບຈຳນວນ 20 ຄົນທີ່ມີ: 5 RDT +; 5 RDT -; 5 microscopy +; 5 microscopy -
+ຂັ້ນຕອນທີ່ 2. ສົ່ງແບບຟອມທີ່ໄດ້ຈາກຂັ້ນຕອນທີ 1 ແລະ ບັນທຶກການຮັບຢາ ACT ຂອງຄົນເຈັບ ດ້ວຍການເລືອກເອົາຄຳວ່າ 'ໄດ້ຮັບ' ຫຼື 'ບໍ່ໄດ້ຮັບ' ລົງໃນຖັນ \"ໃບສັ່ງຢາ ACT\""</string>
+<string name="adherence_title_gender">"ເພດ"</string>
+<string name="adherence_title_age">"ອາຍຸ"</string>
+<string name="adherence_title_test_results">"ຜົນການກວດເລືອດ"</string>
+<string name="adherence_info_patient_id">"ລະຫັດຄົນເຈັບ"</string>
+<string name="adherence_info_prescribed">"ມີໃບສັ່ງຢາ ACT ບໍ?"</string>
+<string name="adherence_info_rdt_positive">"ເຈ້ມຈຸ່ມທີ່ເປັນຜົນບວກ"</string>
 
-<string name="score_title_clinical_fever">"Clinical
-fever
-evaluation"</string>
-<string name="score_title_rdt">"RDT"</string>
-<string name="score_title_avg">"AVG"</string>
-<string name="score_title_environment">"Environment"</string>
-<string name="score_title_profile">"Profile"</string>
-<string name="score_info_tab_score">"Score for tab:"</string>
-<string name="score_info_overall">"Overall"</string>
-<string name="score_info_accumulated">"Tab num/dem"</string>
-<string name="score_info_case1">"Case 1"</string>
-<string name="score_info_case2">"Case 2"</string>
-<string name="score_info_case3">"Case 3"</string>
+<!-- reporting -->
+<string name="reporting_info_reporting">"ການລາຍງານ"</string>
+<string name="reporting_info_results">"ຜົນໄດ້ຮັບ"</string>
+<string name="reporting_info_register">"ລົງທະບຽນ"</string>
+<string name="reporting_info_monthly">"ບົດລາຍງານປະຈຳເດືອນ"</string>
 
-<string name="compscore_title_score_percentage">"Score (%)"</string>
+<!-- score -->
+<string name="score_title_clinical_fever">"ການປະເມີນອາການໄຂ້"</string>
+<string name="score_title_rdt">"ເຈ້ມຈຸ່ມ"</string>
 
-<string name="title_activity_settings">"Settings"</string>
-<string name="settings_checkbox_customize_fonts">"Customize fonts?"</string>
-<string name="settings_list_font_sizes">"Fonts size"</string>
+<!-- Does AVG = Average? -->
+<string name="score_title_avg">"ຄະແນນສະເລຍ"</string>
+<string name="score_title_environment">"ສະພາບແວັດລ້ອມ"</string>
+<string name="score_title_profile">"ປະຫວັດຫຍໍ້"</string>
+<string name="score_info_tab_score">"ຄະແນນ"</string>
+<string name="score_info_overall">"ຄະແນນລວມ"</string>
+
+<!-- Please describe more details -->
+<string name="score_info_accumulated"></string>
+<string name="score_info_case1">"ກໍລະນີທີ່ 1"</string>
+<string name="score_info_case2">"ກໍລະນີທີ່ 2"</string>
+<string name="score_info_case3">"ກໍລະນີທີ່ 3"</string>
+
+<!-- composite score -->
+<string name="compscore_title_score_percentage">"ຄະແນນ (%)"</string>
+
+<!-- settings -->
+<string name="title_activity_settings">"ການຕັ້ງຄ່າ"</string>
+<string name="settings_checkbox_customize_fonts">"ຕ້ອງການປັບຂະໜາດຕົວອັກສອນບໍ?"</string>
+<string name="settings_list_font_sizes">"ຂະໜາດຕົວອັກສອນ"</string>
 <string name="settings_text_dhis_server_url">"DHIS Server URL"</string>
-<string name="settings_text_dhis_user">"DHIS user"</string>
-<string name="pref_header_general">"General"</string>
-<string name="dialog_info_push_bad_credentials">"Bad credentials for pushing"</string>
-<string name="dialog_info_push_empty_survey">"Empty surveys cannot be pushed"</string>
-<string name="settings_menu_legal">"Legal"</string>
-<string name="settings_menu_copyright">"Copyright"</string>
-<string name="settings_menu_licenses">"Software licenses"</string>
+<string name="settings_text_dhis_user">"ຜູ້ໃຊ້ DHIS"</string>
+<string name="pref_header_general">"ທົ່ວໄປ"</string>
+<string name="dialog_info_push_bad_credentials">"ກະລຸນາເຂົ້າລະບົບຄືນໃໝ່"</string>
+<string name="dialog_info_push_empty_survey">"ແບບຟອມສຳຫຼວດທີ່ບໍ່ມີຂໍ້ມູນບໍ່ສາມາດເອົາເຂົ້າໃສ່ລະບົບໄດ່"</string>
+<string name="settings_menu_legal">"ຂໍ້ກຳນົດດ້ານນິຕິກຳ"</string>
+<string name="settings_menu_copyright">"ສະຫງວນລິຂະສິດ"</string>
+<string name="settings_menu_licenses">"ການອະນຸຍາດໃຫ້ນຳໃຊ້ໂປຣແກມ"</string>
 <string name="settings_menu_eula">"EULA"</string>
-<string name="go_to_feedback">"Go to feedback"</string>
-<string name="dialog_button_preview_feedback">"View Feedback"</string>
-<string name="dialog_question_complete_survey">"All compulsory questions were completed. Would you like to mark this survey as completed?"</string>
-<string name="dialog_continue_later_option">"Continue Later"</string>
-<string name="dialog_complete_option">"Complete"</string>
-<string name="dialog_are_you_sure_complete_survey">"Are you sure? This action cannot be undone and you will no longer be able to edit or delete this survey"</string>
-<string name="dialog_incompleted_compulsory_survey">"This survey cannot be sent yet. Please answer at least all the compulsory questions"</string>
-<string name="dialog_incompleted_compulsory_pulling">"Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions"</string>
-<string name="dialog_sent_survey_on_refresh_metadata">"Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?"</string>
-<string name="cancellingPull">"The process will be stopped in a few seconds "</string>
-<string name="dashboard_title_total_assessments">"Total number of assessments undertaken"</string>
-<string name="dashboard_title_planned_type_never">"Never assessed"</string>
-<string name="dashboard_title_planned_type_overdue">"Overdue"</string>
-<string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
-<string name="dashboard_title_planned_type_future">"Future"</string>
-<string name="dashboard_title_planned_productivity">"Prd"</string>
-<string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Next QA"</string>
-<string name="assessment_sent_score">"Score"</string>
-<string name="feedback_show_only_failed">"Show only failed questions"</string>
-<string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
-<string name="feedback_info_passed">"PASS"</string>
-<string name="feedback_info_failed">"FAIL"</string>
-<string name="feedback_info_not_answered">"NA"</string>
-<string name="feedback_info_no_feedback">"No feedback"</string>
-<string name="feedback_info_conflict">"Conflict"</string>
-<string name="settings_checkbox_location_required">"Location required"</string>
-<string name="settings_checkbox_description_location_required">"When activated, location is a required field for pushing data to dhis server"</string>
-<string name="font_size_level0_title">"Extra small"</string>
-<string name="font_size_level1_title">"Small"</string>
-<string name="font_size_level2_title">"Medium"</string>
-<string name="font_size_level3_title">"Large"</string>
-<string name="font_size_level4_title">"Extra large"</string>
-<string name="server_url">"DHIS2 server"</string>
-<string name="settings_text_dhis_password">"DHIS password"</string>
-<string name="settings_text_dhis_max_items">"DHIS max loaded surveys"</string>
-<string name="dialog_error_push_uids">"Incorrect UIDs found in push"</string>
-<string name="dialog_error_push_no_location_and_required">"No location available and it is a required field"</string>
-<string name="dialog_error_attribute_null">\"Attribute with id %s null, please contact your server admin.\"</string>
-<string name="dialog_info_push_imported">"Imported"</string>
-<string name="dialog_info_push_updated">"Updated"</string>
-<string name="dialog_info_push_ignored">"Ignored"</string>
-<string name="dialog_info_push_stats">"Survey data pushed to server. Results:"</string>
-<string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
-<string name="dialog_deleting_children">"You're about to delete the answer for questions that depend on this one. Do you really want to continue?"</string>
-<string name="dashboard_tip_pie_chart">"Quality of care (based on last assessment)"</string>
-<string name="dialog_pull_error">"Error while trying to pull metadata from dhis server"</string>
-<string name="settings_menu_pull">"Refresh metadata"</string>
-<string name="dialog_pull_success">"Dhis metadata successfully pulled from server"</string>
-<string name="dialog_title_pull_response">"Pull status"</string>
-<string name="dialog_demo_pull_success">"Dhis metadata successfully loaded from local data"</string>
-<string name="progress_pull_connecting">"Connecting to DHIS server..."</string>
-<string name="progress_pull_downloading">"Refreshing metadata (this might take a few minutes) ..."</string>
-<string name="progress_pull_preparing_program">"Loading programs ..."</string>
-<string name="progress_pull_preparing_answers">"Loading answers ..."</string>
-<string name="progress_pull_preparing_orgs">"Loading organisations ..."</string>
-<string name="progress_pull_questions">"Loading questions (this might take a few minutes) ..."</string>
-<string name="progress_pull_relationships">"Building questions relations ..."</string>
-<string name="progress_pull_surveys">"Loading surveys ..."</string>
-<string name="progress_pull_validating_composite_scores">"Validating composite scores ..."</string>
-<string name="progress_pull_done">"Done"</string>
-<string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
-<string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_comment">"* Comment"</string>
-<string name="planning_label_schedule_date">"* Scheduled Date"</string>
-<string name="option_edit">"Edit"</string>
-<string name="option_mark_completed">"Mark as completed"</string>
-<string name="option_delete">"Delete"</string>
-<string name="hide_planning_tab_title">"Hide planning tab"</string>
-<string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
-<string name="plan">"Plan"</string>
-<string name="assess">"Assess - active surveys"</string>
-<string name="improve">"Improve"</string>
-<string name="monitor">"Monitor"</string>
-
-<string name="filter_all_org_units">"all org units"</string>
-<string name="filter_all_org_assessments">"all assessments"</string>
-<string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
-<string name="lastcommit">"Version %s"</string>
-<string name="unavailable">"Unavailable"</string>
-<string name="error_message_push">"The event with UID: %s. was uploaded without date. Please contact the administrator. "</string>
-<string name="monitor_js_assessments">"Assessments undertaken"</string>
-<string name="monitor_js_target">"Target"</string>
-<string name="monitor_js_quality_of_care">"Quality of care: Last "</string>
-<string name="monitor_js_months">" months"</string>
-
-<string name="create">"Create"</string>
-<string name="modify">"Modify"</string>
-
-<string name="developer_option_summary">This feature activates the developer options</string>
-<string name="developer_option_title">Show developer options</string>
-<string name="export_data_option_title">Export database</string>
-<string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
-<string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
-<string name="feedback_media">View video feedback</string>
-<string name="feedback_view_image">Open image with...</string>
-<string name="select_all">"Select all"</string>
-<string name="demo_login">"Demo"</string>
-<string name="system_defined">"System defined"</string>
-<string name="settings_select_language">"Language"</string>
-
-<string name="toast_push_in_progress">"Please wait, There is already a push in progress"</string>
-<string name="toast_push_done">"Survey data pushed to server. Starting pull..."</string>
-<string name="downloaded_media_menu">"Downloaded media"</string>
-<string name="header_filename_title">"Filename"</string>
-<string name="header_size_title">"Size"</string>
-<string name="clear">"Clear"</string>
-<string name="admin_announcement">"Admin announcement"</string>
-<string name="user_close">"This user has been closed by the administrator."</string>
-<string name="survey_first_step">"Recovering mandatory questions"</string>
-<string name="survey_second_step">"Checking mandatory questions"</string>
-<string name="survey_third_step">"Calculating completeness ratio"</string>
-<string name="survey_fourth_step">"Calculating Score register"</string>
-<string name="error_conflict_message">"The event with UID: %1$s. was uploaded with pushConflict in the data element UID: %2$s with the message: %3$s. Please contact the administrator."</string>
-<string name="dialog_action_logout">"Logout require delete or send your unsent data."</string>
-<string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
-<string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
-<string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
-
-<string name="header_reschedule">"Reschedule"</string>
-<string name="planing_schedule">"Schedule"</string>
-<string name="planing_due_date">"Due date"</string>
+<string name="go_to_feedback">"ໄປເບິ່ງຄວາມເຫັນທີ່ສົ່ງກັບມາ"</string>
+<string name="dialog_button_preview_feedback">"ເບິ່ງຄວາມເຫັນທີ່ສົ່ງກັບມາ"</string>
+<string name="dialog_question_complete_survey">"ທູກໆຄຳຖາມທີ່ຈຳເປັນຕ້ອງຕອບແມ່ນຖືກຕອບແລ້ວ. ເຈົ້າຢາກໝາຍແບບຟອມນີ້ວ່າເປັນຟອມທີ່ສົມບູນແລ້ວບໍ?"</string>
+<string name="dialog_continue_later_option">"ສຶບຕໍ່ປະເມີນພາຍຫຼັງ"</string>
+<string name="dialog_complete_option">"ສຳເລັດ"</string>
+<string name="dialog_are_you_sure_complete_survey">"ເຈົ້າໝັ້ນໃຈວ່າຂໍ້ມູນການສຳຫຼວດຄັ້ງນີ້ບໍ່ສາມາດສຳເລັດໄດ້ ແລະ ຈະບໍ່ສາມາດດັດແກ້ ຫຼື ລຶບອອກໄດ້ບໍ? "</string>
+<string name="dialog_incompleted_compulsory_survey">"ຂໍ້ມູນການສຳຫຼວດຄັ້ງນີ້ບໍ່ສາມາດສົ່ງໄດ້. ກະລຸນາຕອບທຸກໆຄຳຖາມທີ່ຈຳເປັນຕ້ອງຕອບ"</string>
+<string name="dialog_incompleted_compulsory_pulling">"ເພື່ອປັບປຸງລະບົບໂຄງຮ່າງ, ຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງຈະຖືກລຶບອອກ ຫຼື ຕ້ອງສົ່ງອອກໝົດກ່ອນ. ກະລຸນາຕອບຄຳຖາມທູກໆຄຳຖາມທີ່ຈຳເປັນຕ້ອງຕອບ"</string>
+<string name="dialog_sent_survey_on_refresh_metadata">"ເພື່ອປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງຈະຖືກລຶບ. ເຈົ້າຍັງບໍ່ທັນໄດ້ສົ່ງຂໍ້ມູນ %s ອັນ. ເຈົ້າຕ້ອງການອັບໂຫຼດຂໍ້ມູນດັ່ງກ່າວກ່ອນການປັບປຸງບໍ?"</string>
+<string name="cancellingPull">"ລະ​ບົບຈະ​ຢຸດການ​ທຳ​ງານ​ພາຍ​ໃນ​ສອງ​ສາມ​ວິນາທີ​ນີ້"</string>
+<string name="dashboard_title_total_assessments">"ຈຳນວນການປະເມີນຜົນທັງໝົດທີ່ກຳລັງດຳເນີນການຢູ່"</string>
+<string name="dashboard_title_planned_type_never">"ບໍ່ເຄີຍປະເມີນ"</string>
+<string name="dashboard_title_planned_type_overdue">"ກາຍກຳນົດ"</string>
+<string name="dashboard_title_planned_type_next_30">"ໃນ 30 ວັນຕໍ່ໜ້າ"</string>
+<string name="dashboard_title_planned_type_future">"ຄັ້ງຕໍ່ໄປ"</string>
+<string name="dashboard_title_planned_productivity">"ຈຳນວນ"</string>
+<string name="dashboard_title_planned_quality_of_care">"ຄະແນນ"</string>
+<string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
+<string name="assessment_sent_score">"ຄະແນນ"</string>
+<string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
+<string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>
+<string name="quality_of_care">"ຄະແນນຄຸນນະພາບ"</string>
+<string name="feedback_info_passed">"ຜ່ານ"</string>
+<string name="feedback_info_failed">"ບໍ່ຜ່ານ"</string>
+<string name="feedback_info_not_answered">"
+ ບໍ່ມີຂໍ້ມູນ"</string>
+<string name="feedback_info_no_feedback">"ບໍ່ມີຄວາມເຫັນຕອບກັບມາ"</string>
+<string name="feedback_info_conflict">"ຂັດກັນ"</string>
+<string name="settings_checkbox_location_required">"ຕ້ອງເປີດຈຸດທີ່ຕັ້ງ"</string>
+<string name="settings_checkbox_description_location_required">"ເພືອອັບໂຫຼດຂໍ້ມູນເຂົ້າສູ່ລະບົບເຊີເວີຂອງ dhis ຈຳເປັນຕ້ອງເປີດຈຸດທີ່ຕັ້ງ"</string>
+<string name="font_size_level0_title">"ນ້ອຍສຸດ "</string>
+<string name="font_size_level1_title">"ນ້ອຍ"</string>
+<string name="font_size_level2_title">"ປານກາງ"</string>
+<string name="font_size_level3_title">"ໃຫ່ຍ"</string>
+<string name="font_size_level4_title">"ໃຫ່ຍສຸດ"</string>
+<string name="server_url">"ເຊີເວີຂອງລະບົບ DHIS"</string>
+<string name="settings_text_dhis_password">"ລະຫັດຜ່ານເຂົ້ານຳໃຊ້ລະບົບ DHIS"</string>
+<string name="settings_text_dhis_max_items">"ຈຳນວນຫຼາຍສຸດຂອງຂໍ້ມູນທີ່ລະບົບ dhis ສາມາດຮອງຮັບໄດ້"</string>
+<string name="dialog_error_push_uids">"ລະຫັດ  UIDs  ບໍ່ຖືກ "</string>
+<string name="dialog_error_push_no_location_and_required">"ຈຸດທີ່ຕັ້ງບໍ່ເຫັນ, ກະລຸນາຕືມຂໍ້ມູນໃສ່"</string>
+<string name="dialog_info_push_imported">"ນຳເຂົ້າ"</string>
+<string name="dialog_info_push_updated">"ປັບປຸງ"</string>
+<string name="dialog_info_push_ignored">"ປະຕິເສດ"</string>
+<string name="dialog_info_push_stats">"ຂໍ້ມູນໄດ້ຖືກນຳເຂົ້າໃສ່ລະບົບແລ້ວ. ຜົນໄດ້ຮັບ:"</string>
+<string name="dialog_info_on_complete">"ການປະເມີນນີ້ໄດ້ຖືກບັນທຶກວ່າສຳລັດແລ້ວ. ເຈົ້າສາມາດເຂົ້າເບິ່ງໄດ້ທີ່ໜ້າຕ່າງປັບປຸງ"</string>
+<string name="dialog_deleting_children">"ເຈົ້າກຳລັງຈະລຶບຄຳຕອບຂອງບັນດາຄຳຖາມທີ່ຂື້ນກັບໝວດນີ້. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
+<string name="dashboard_tip_pie_chart">"ຄະແນນຄຸນນະພາບ (ອິງໃສ່ການປະເມີນຜົນຄັ້ງທີ່ຜ່ານມາ)"</string>
+<string name="dialog_pull_error">"ເກີດຄວາມຜິດພາດໃນຄະນະທີ່ກຳລັງໂຫຼດລະບົບໂຄງຮ່າງຂໍ້ມູນຈາກລະບົບ"</string>
+<string name="settings_menu_pull">"ປັບປຸງລະບົບໂຄງຮ່າງ"</string>
+<string name="dialog_pull_success">"ຊຸດຂໍ້ມູນໂຄງຮ່າງໄດ້ໂຫຼດມາຈາກລະບົບສຳເລັດແລ້ວ"</string>
+<string name="dialog_title_pull_response">"ສະຖານະການໂຫຼດ"</string>
+<string name="progress_pull_connecting">"ກຳລັງເຊື່ອມຕໍ່ກັບລະບົບ DHIS "</string>
+<string name="progress_pull_downloading">"ກຳລັງປັບປຸງລບົບໂຄງຮ່າງຂໍ້ມູນ (ອາດຈະໃໍຊ້ເວລາສອງສາມນາທີ)..."</string>
+<string name="progress_pull_preparing_program">"ກຳລັງໂຫຼດໂປຣແກຣມ..."</string>
+<string name="progress_pull_preparing_answers">"ກຳລັງໂຫຼດຄຳຕອບ..."</string>
+<string name="progress_pull_preparing_orgs">"ກຳລັງໂຫຼດສະຖານທີ..."</string>
+<string name="progress_pull_questions">"ກຳລັງໂຫຼດຄຳຖາມ (ອາດຈະໃໍຊ້ເວລາສອງສາມນາທີ)..."</string>
+<string name="progress_pull_surveys">"ກຳລັງໂຫຼດຂໍ້ມູນການສຳຫຼວດ..."</string>
+<string name="progress_pull_done">"ສຳເລັດ"</string>
+<string name="dialog_push_success">"ຂໍ້ມູນການສຳຫຼວດໄດ້ນຳເຂົ້າສູ່ລະບົບ dhis ສຳເລັດແລ້ວ"</string>
+<string name="planning_title_dialog">"ເຮັດແຜນການສຳຫຼວດ"</string>
+<string name="planning_label_comment">"ຄຳເຫັນ"</string>
+<string name="planning_label_schedule_date">"ວັນທີສຳຫຼວດ"</string>
+<string name="option_edit">"ແກ້ໄຂ"</string>
+<string name="option_mark_completed">"ໃຫ້ໝາຍວ່າສຳເລັດແລ້ວ"</string>
+<string name="option_delete">"ລຶບ"</string>
+<string name="hide_planning_tab_title">"ເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
+<string name="hide_planning_tab_summary">"ໝາຍເອົາຫ້ອງນີ້ເພື່ອເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
+<string name="plan">"ການວາງແຜນ"</string>
+<string name="assess">"ປະເມີນຜົນ - ການສຳຫຼວດທີ່ກຳລັງດຳເນີນ"</string>
+<string name="improve">"ປັບປູງ"</string>
+<string name="monitor">"ຕິດຕາມ"</string>
+<string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
+<string name="filter_all_org_assessments">"ການປະເມີນຜົນທັງໝົດ"</string>
+<string name="dialog_content_dhis_preference_login">"ການປ່ຽນເຂົ້າໄປສູ່ລະບົບຈະຕ້ອງໄດ້ອອກ ແລະ ເຂົ້າໃໝ່. ທຸກໆຂໍ້ມູນການສຳຫຼວດທີ່ຍັງບໍ່ທັນສົ່ງຈະຖືກລຶບອອກ. ເຈົ້າຕ້ອງການຈະດຳເນີດການຕໍ່ບໍ? "</string>
+<string name="lastcommit">"ລຸ້ນທີ %s"</string>
+<string name="unavailable">"ບໍ່ມີ"</string>
+<string name="error_message_push">"ຂໍ້ມູນສຳຫຼວດທີ່ມີລະຫັດ UID: %s ນີ້, ຖືກໂຫຼດເຂົ້າໃສ່ລະບົບໂດຍບໍ່ມີວັນທີ. ກະລຸນາຕິດຕໍ່ຫາຜູ້ຄວບຄຸມລະບົບ."</string>
+<string name="monitor_js_assessments">"ການປະເມີນທີ່ກຳລັງດຳເນີດການ"</string>
+<string name="monitor_js_target">"ເປົ້າໝາຍ"</string>
+<string name="monitor_js_quality_of_care">"ຄຸນນະພາບຂອງການບໍລິການ: ຜ່ານມາ"</string>
+<string name="monitor_js_months">"ເດຶອນ"</string>
+<string name="dialog_error_attribute_null">"\" ຂໍ້ມູນຂອງ id %s ນີ້ບໍ່ມີ. ກະລຸນາຕິດຫາຜູ້ຄວບຄຸມລະບົບ\""</string>
+<string name="progress_pull_relationships">"ການສ້າງຄວາມເຊື່ອມໂຍງຂອງຄຳຖາມ"</string>
+<string name="create">"ສ້າງ"</string>
+<string name="modify">"ດັດແກ້"</string>
+<string name="clear">"ລົບລ້າງ"</string>
+<string name="dialog_info_ask_for_completion">"ເຈົ້າໝັ້ນໃຈວ່າເຈົ້າຕ້ອງການເຮັດສຳເລັດ  %s ບໍ? ເຈົ້າບໍ່ສາມາດກັບຄືນມາແປ່ງໄດ້"</string>
+<string name="google_play_required">"ແອັບນີ້ມີໃຫ້ບໍລິການຢູ່ Google Play. ກະລູນາຕິດຕັ້ງໃສ່ເຄື່ອງຂອງທ່ານເພື່ອນຳໃຊ້"</string>
+<string name="account_permission_denied">"ການອະນຸມັດຖືກປະຕິເສດ. ຮູບພາບຈະບໍ່ຖືກສົ່ງ"</string>
+<string name="feedback_media">"ເບິ່ງວີດີໂອກ່ຽວກັບຄວາມເຫັນຕອບກັບມາ"</string>
+<string name="feedback_view_image">"ເປີດຮູບພາບດ້ວຍ..."</string>
+<string name="developer_option_summary">"ບ່ອນເລືອກສຳລັບຜູ້ພັດທະນາລະບົບ"</string>
+<string name="developer_option_title">"ສະແດງບ່ອນເລືອກສຳລັບຜູ້ພັດທະນາລະບົບ"</string>
+<string name="export_data_option_title">"ການສົ່ງຖານຂໍ້ມູນອອກ"</string>
+<string name="progress_pull_validating_composite_scores">"ກຳລັງກວດຄະແນນລວມ..."</string>
+<string name="admin_announcement">"ການແຈ້ງການຈາກຜູ້ຄວບຄຸມລະບົບ"</string>
+<string name="user_close">"ຜູ້ໃຊ້ນີ້ຖືກປິດໂດຍຜູ້ຄວບຄຸມລະບົບ"</string>
+<string name="dialog_demo_pull_success">"ໂຄງຮ່າງຂອງລະບົບ dhis ໄດ້ຖືກນຳເຂົ້າມາຈາກຂໍ້ມູນການສຳຫຼວດສຳເລັດແລ້ວ"</string>
+<string name="select_all">"ເລືອກທັງໝົດ"</string>
+<string name="demo_login">"ຕົວຢ່າງ"</string>
+<string name="system_defined">"ລະບົບທີ່ໄດ້ຮັບການກວດກາແລ້ວ"</string>
+<string name="settings_select_language">"ພາສາ"</string>
+<string name="toast_push_in_progress">"ກະລຸນາລໍຖ້າ, ຂໍ້ມູນກຳລັງນຳເຂົ້າສູ່ລະບົບ"</string>
+<string name="toast_push_done">"ຂໍ້ມູນການສຳຫຼວດໄດ້ນຳເຂົ້າສູ່ລະບົບແລ້ວ. ກຳລັງໂຫຼດຂໍ້ມູນ..."</string>
+<string name="downloaded_media_menu">"ຮູບພາບທີ່ຖືກດາວໂຫຼດແລ້ວ"</string>
+<string name="header_filename_title">"ຊື່ຟາຍຂໍ້ມູນ"</string>
+<string name="header_size_title">"ຂະໜາດ"</string>
+<string name="survey_first_step">"ກຳລັງທົບທວນຄຳຖາມທີ່ຈຳເປັນຕ້ອງຕອບ"</string>
+<string name="survey_second_step">"ກຳລັງກວດຄຳຖາມທີຈຳເປັນຕອບ"</string>
+<string name="survey_third_step">"ກຳລັງຄຳນວນອັດຕາມຄວາມສຳເລັດ"</string>
+<string name="survey_fourth_step">"ກຳລັງຄິດໄລ່ຄະແນນ"</string>
+<string name="error_conflict_message">"ຂໍ້ມູນການສຳຫຼວດທີມີລະຫັດ UID: %1$s. ຖືກນຳເຂົ້່າໄປສູ່ອົງປະກອບຂໍ້ມູນທີ່ມີລະຫັດ UID: %2$s ພ້ອມກັບຂໍ້ຄວາມເຕືອນ: %3$s. ກະລຸນາຕິດຕໍ່ຜູ້ຄວບຄຸມລະບົບ."</string>
+<string name="dialog_action_logout">"ການອອກຈາກລະບົບຈະລຶບຂໍ້ມູນ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
+<string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
+<string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
+<string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
+<string name="planing_schedule">"ວາງແຜນ"</string>
+<string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 </resources>
