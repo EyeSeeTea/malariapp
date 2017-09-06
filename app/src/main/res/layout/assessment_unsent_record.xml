@@ -56,7 +56,6 @@
             app:tFontName="@string/medium_font_name" />
 
     </LinearLayout>
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
@@ -66,15 +65,22 @@
         android:layout_gravity="center"
         android:gravity="center">
 
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/internal_chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="50dp"
+    android:layout_height="50dp">
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/external_chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"/>
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/internal_chart"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
     </LinearLayout>
 
 

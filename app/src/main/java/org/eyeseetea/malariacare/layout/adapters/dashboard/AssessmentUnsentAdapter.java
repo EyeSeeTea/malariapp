@@ -59,10 +59,12 @@ public class AssessmentUnsentAdapter extends
 
     @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        PieChart mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
+        //TODO The external and internal pie charts should represent two percentages of the survey completion. One of te piechart will be established with the percentage of questions compulsory, and the other with the percentage of normal questions.
+        PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
         createPie(mChart, getStatus(survey));
-        mChart = (PieChart) rowView.findViewById(R.id.external_chart);
-        createPie(mChart, getStatus(survey));
+        //// FIXME: 06/09/2017 50 is only a visible example
+        mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
+        createPie(mChart, 50);
     }
 
 
