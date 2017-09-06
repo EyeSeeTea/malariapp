@@ -60,26 +60,22 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/statusContainer"
         android:layout_weight="0.3"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/survey_row_marging"
-        android:layout_marginBottom="@dimen/survey_row_marging">
+        android:gravity="center">
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/score"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
 
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/internal_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/external_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
+
 
 </TableRow>
