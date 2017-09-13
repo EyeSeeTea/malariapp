@@ -223,4 +223,5 @@ clínica"</string>
 <string name="header_reschedule">"Reprogramar"</string>
 <string name="planing_schedule">"Programar"</string>
 <string name="planing_due_date">"Fecha de vencimiento"</string>
+<string name="action_button_text">PLAN DE ACCIÓN</string>
 </resources>

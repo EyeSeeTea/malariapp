@@ -233,4 +233,5 @@ evaluation"</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
+<string name="action_button_text">ប្លង់ផែនការ</string>
 </resources>

@@ -234,4 +234,5 @@
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
 <string name="planing_schedule">"ວາງແຜນ"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
+ <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 </resources>
