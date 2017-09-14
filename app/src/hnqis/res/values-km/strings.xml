@@ -235,4 +235,6 @@ evaluation"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
+<string name="plan_action_today_date">ថ្ងៃនេះ: %s</string>
+<string name="plan_action_next_date">កាលបរិច្ឆេទនៃការឃ្លាំមើលបន្ទាប់: %s</string>
 </resources>

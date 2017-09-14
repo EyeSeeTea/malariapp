@@ -225,4 +225,6 @@ clínica"</string>
 <string name="planing_due_date">"Fecha de vencimiento"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
+<string name="plan_action_today_date">Hoy: %s</string>
+<string name="plan_action_next_date">Próxima fecha de supervisión: %s</string>
 </resources>

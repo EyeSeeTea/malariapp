@@ -219,4 +219,6 @@ Mensuelle"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN DE L'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
+<string name="plan_action_today_date">"Aujourd'hui: %s"</string>
+<string name="plan_action_next_date">"Date de supervision suivante: %s"</string>
 </resources>

@@ -236,4 +236,6 @@
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
+<string name="plan_action_today_date">ວັນນີ້: %s</string>
+<string name="plan_action_next_date">ວັນທີຕິດຕາມຕໍ່ໄປ: %s</string>
 </resources>

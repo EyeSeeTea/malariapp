@@ -225,4 +225,6 @@ evaluation"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
+<string name="plan_action_today_date">Today: %s</string>
+<string name="plan_action_next_date">Next Supervision Date: %s</string>
 </resources>
