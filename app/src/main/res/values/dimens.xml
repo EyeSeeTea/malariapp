@@ -79,4 +79,8 @@
     <dimen name="medium_text_size">22sp</dimen>
     <dimen name="large_text_size">24sp</dimen>
     <dimen name="xlarge_text_size">26sp</dimen>
+
+    <!--Plan action -->
+    <dimen name="padding_plan_action_title_left">100dp</dimen>
+
 </resources>
