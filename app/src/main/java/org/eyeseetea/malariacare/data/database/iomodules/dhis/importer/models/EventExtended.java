@@ -51,6 +51,7 @@ public class EventExtended implements VisitableFromSDK {
     public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public final static String DHIS2_LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
+    public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
 
 
     public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
