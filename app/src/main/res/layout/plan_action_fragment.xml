@@ -64,36 +64,36 @@ android:gravity="top">
     android:id="@+id/layoutSecondHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_below="@id/layoutHeader"
     android:background="@color/white"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
         android:textStyle="bold"
         android:text="@string/quality_of_care"
-        android:textColor="@color/feedbackDarkBlue"
         android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
         android:layout_gravity="left|center_vertical"
         android:textSize="@dimen/medium_xsmall_text_size"
         android:gravity="left"
+        android:textColor="@color/black"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
 
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
         android:id="@+id/feedback_total_score"
+        android:layout_marginLeft="4dp"
         android:layout_gravity="left|center_vertical"
         android:gravity="center_horizontal"
         android:textSize="@dimen/medium_xsmall_text_size"
@@ -101,18 +101,41 @@ android:gravity="top">
         android:textColor="@color/black"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/plan_completion_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/new_grey_text_color"
+            android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="@dimen/medium_xsmall_text_size"
+            android:gravity="left"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
 
-    <org.eyeseetea.malariacare.views.CustomButton
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/action_plan"
-        android:layout_gravity="left|center_vertical"
-        android:text="@string/action_button_text"
-        android:textColor="@color/white"
-        android:textSize="@dimen/medium_xsmall_text_size"
-        android:background="@drawable/button_selector" />
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/new_supervision_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
+            android:paddingLeft="5dp"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="right|center_horizontal"
+            android:textSize="@dimen/medium_xsmall_text_size"
+            android:textColor="@color/new_grey_text_color"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+    </RelativeLayout>
 </LinearLayout>
 <ListView
     android:id="@+id/feedbackListView"

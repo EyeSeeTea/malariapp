@@ -41,6 +41,7 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
@@ -71,8 +72,39 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         FragmentActivity faActivity = (FragmentActivity) super.getActivity();
 
         llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container, false);
+        setLayoutHeaders(llLayout);
         prepareUI(moduleName);
         return llLayout; // We must return the loaded Layout
+    }
+
+    private void setLayoutHeaders(RelativeLayout llLayout) {
+        Survey survey = Session.getSurveyByModule(moduleName);
+        if (survey.hasMainScore()) {
+            float average = survey.getMainScore();
+            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("%.1f%%", average));
+            int colorId = LayoutUtils.trafficColor(average);
+            item.setBackgroundColor(getResources().getColor(colorId));
+        } else {
+            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
+            item.setText(String.format("NaN"));
+            float average = 0;
+            int colorId = LayoutUtils.trafficColor(average);
+            item.setBackgroundColor(getResources().getColor(colorId));
+        }
+        CustomTextView nextDate = (CustomTextView) llLayout.findViewById(R.id.plan_completion_day);
+        String formattedCompletionDate="NaN";
+        if(survey.getCompletionDate()!=null){
+            formattedCompletionDate =  EventExtended.format(survey.getCompletionDate(),EventExtended.EUROPEAN_DATE_FORMAT);
+        }
+        nextDate.setText(String.format(getString(R.string.plan_action_today_date),formattedCompletionDate));
+
+        CustomTextView completionDate = (CustomTextView) llLayout.findViewById(R.id.new_supervision_date);
+        String formattedNextDate="NaN";
+        if(survey.getScheduledDate()!=null){
+            formattedNextDate =  EventExtended.format(survey.getScheduledDate(),EventExtended.EUROPEAN_DATE_FORMAT);
+        }
+        completionDate.setText(String.format(getString(R.string.plan_action_next_date),formattedNextDate));
     }
 
     @Override
