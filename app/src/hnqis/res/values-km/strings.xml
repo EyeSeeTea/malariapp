@@ -237,4 +237,19 @@ evaluation"</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
 <string name="plan_action_today_date">ថ្ងៃនេះ: %s</string>
 <string name="plan_action_next_date">កាលបរិច្ឆេទនៃការឃ្លាំមើលបន្ទាប់: %s</string>
+<string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
+<string name="plan_action_action_title">សកម្មភាព:</string>
+<string-array name="plan_action_dropdown_options">
+<item>ការបណ្តុះបណ្តាលបំប៉នក្នុងអំឡុងពេល SSV</item>
+<item>បណ្តុះបណ្តារំលឹកជាក្រុមនៅថ្ងៃក្រោយ</item>
+<item>ផែនការសកម្មភាព CME</item>
+<item>បង្ហាញពីបច្ចេកទេសជាមួយអតិថិជន</item>
+<item>ផ្សេងទៀត</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>មើលវីដេអូ</item>
+<item>អនុវត្តបច្ចេកទេសបានត្រឹមត្រូវនៅពេលដែលការបញ្ចូលនៃដំណើរទស្សនកិច្ច</item>
+</string-array>
 </resources>

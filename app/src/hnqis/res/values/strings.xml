@@ -227,4 +227,20 @@ evaluation"</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
 <string name="plan_action_today_date">Today: %s</string>
 <string name="plan_action_next_date">Next Supervision Date: %s</string>
+<string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">Action plan:</string>
+<string name="plan_action_action_title">Action:</string>
+<string-array name="plan_action_dropdown_options">
+<item>Refresher training during SSV</item>
+<item>Group refresher training at a later date</item>
+<item>Plan CME activity</item>
+<item>Demonstrate technique with client</item>
+<item>Other</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>Watch video</item>
+<item>Practice proper insertion technique at time of visit</item>
+</string-array>
+
 </resources>

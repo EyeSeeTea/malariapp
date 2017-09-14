@@ -221,4 +221,19 @@ Mensuelle"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
 <string name="plan_action_today_date">"Aujourd'hui: %s"</string>
 <string name="plan_action_next_date">"Date de supervision suivante: %s"</string>
+<string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">"Plan d'action:"</string>
+<string name="plan_action_action_title">Action:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"Formation de rafraîchissement pendant la SSV"</item>
+<item>"Formation de rappel de groupe à une date ultérieure"</item>
+<item>"Planifier l'activité de CME"</item>
+<item>"Démontrer la technique avec le client"</item>
+<item>"Autre"</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>"Regarder la vidéo"</item>
+<item>"Pratiquer une technique d'insertion appropriée au moment de la visite"</item>
+</string-array>
 </resources>

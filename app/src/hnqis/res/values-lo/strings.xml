@@ -238,4 +238,19 @@
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
 <string name="plan_action_today_date">ວັນນີ້: %s</string>
 <string name="plan_action_next_date">ວັນທີຕິດຕາມຕໍ່ໄປ: %s</string>
+<string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
+<string name="plan_action_action_title">ການປະຕິບັດ:</string>
+<string-array name="plan_action_dropdown_options">
+<item>ການຝຶກອົບຮົມທົບທວນໄລຍະ SSV</item>
+<item>ການຝຶກອົບຮົມທົບທວນ Group ໃນວັນຕໍ່ມາ</item>
+<item>ແຜນກິດຈະກໍາ CME</item>
+<item>ສະແດງໃຫ້ເຫັນເຕັກນິກກັບລູກຄ້າ</item>
+<item>ອື່ນໆ</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>ເບິ່ງວິດີໂອ</item>
+<item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
+</string-array>
 </resources>

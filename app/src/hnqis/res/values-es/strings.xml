@@ -227,4 +227,20 @@ clínica"</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
 <string name="plan_action_today_date">Hoy: %s</string>
 <string name="plan_action_next_date">Próxima fecha de supervisión: %s</string>
+<string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">Plan de acción:</string>
+<string name="plan_action_action_title">Acción:</string>
+<string-array name="plan_action_dropdown_options">
+<item>Entrenamiento de actualización durante SSV</item>
+<item>Entrenamiento de grupo en una fecha posterior</item>
+<item>Actividad de Plan CME</item>
+<item>Demostrar la técnica con el cliente</item>
+<item>Otro</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>Ver video</item>
+<item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
+</string-array>
+
 </resources>
