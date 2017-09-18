@@ -237,4 +237,9 @@ Mensuelle"</string>
 <item>"Regarder la vidéo"</item>
 <item>"Pratiquer une technique d'insertion appropriée au moment de la visite"</item>
 </string-array>
+<string name="supervision_on">"Surveillance des résultats sur:"</string>
+<string name="critical_steps">"Étapes critiques manquées:"</string>
+<string name="url_not_available">"L'URL n'est pas encore disponible"</string>
+<string name="see_full_assessment">"Voir l'évaluation complète à:"</string>
+
 </resources>

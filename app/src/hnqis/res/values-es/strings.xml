@@ -243,5 +243,8 @@ clínica"</string>
 <item>Ver video</item>
 <item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
 </string-array>
-
+<string name="supervision_on">Supervisión de resultados en:</string>
+<string name="critical_steps">Pasos críticos perdidos:</string>
+<string name="url_not_available">URL aún no disponible</string>
+<string name="see_full_assessment">Ver evaluación completa en:</string>
 </resources>
