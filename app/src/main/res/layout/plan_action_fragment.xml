@@ -204,17 +204,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"></org.eyeseetea.malariacare.views.CustomTextView>
 
-            <org.eyeseetea.malariacare.views.CustomEditText
-                android:id="@+id/plan_action_action_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:minLines="5"
-                android:scrollbars="none" />
-
             <org.eyeseetea.malariacare.views.CustomSpinner
                 android:id="@+id/plan_action_spinner"
                 android:layout_width="match_parent"
