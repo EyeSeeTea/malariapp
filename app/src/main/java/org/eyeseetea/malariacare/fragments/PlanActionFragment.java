@@ -22,35 +22,24 @@ package org.eyeseetea.malariacare.fragments;
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.views.CustomButton;
-import org.eyeseetea.malariacare.views.CustomRadioButton;
+import org.eyeseetea.malariacare.views.CustomEditText;
+import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -61,6 +50,12 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     public static final String TAG = ".PlanActionFragment";
 
     private String moduleName;
+    boolean isFABOpen;
+    FloatingActionButton fabHtmlOption;
+    CustomTextView mTextViewHtml;
+    FloatingActionButton fabPlainTextOption;
+    CustomTextView mTextViewPlainText;
+
     /**
      * Parent layout
      */
@@ -69,12 +64,117 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        FragmentActivity faActivity = (FragmentActivity) super.getActivity();
-
         llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container, false);
         setLayoutHeaders(llLayout);
         prepareUI(moduleName);
+        setSpinner(llLayout);
+        setFAB(llLayout);
         return llLayout; // We must return the loaded Layout
+    }
+
+    private void setFAB(RelativeLayout llLayout) {
+        FloatingActionButton fab = (FloatingActionButton) llLayout.findViewById(R.id.fab);
+        fabHtmlOption = (FloatingActionButton) llLayout.findViewById(R.id.fab1);
+        mTextViewHtml = (CustomTextView) llLayout.findViewById(R.id.text1);
+        fabPlainTextOption = (FloatingActionButton) llLayout.findViewById(R.id.fab2);
+        mTextViewPlainText = (CustomTextView) llLayout.findViewById(R.id.text2);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+            }
+        });
+        fabHtmlOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+            }
+        });
+        fabPlainTextOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+            }
+        });
+    }
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        fabHtmlOption.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        mTextViewHtml.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        mTextViewHtml.setVisibility(View.VISIBLE);
+        fabPlainTextOption.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        mTextViewPlainText.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        mTextViewPlainText.setVisibility(View.VISIBLE);
+    }
+
+    private void closeFABMenu(){
+        isFABOpen = false;
+        mTextViewPlainText.animate().translationY(0);
+        mTextViewHtml.animate().translationY(0);
+        fabHtmlOption.animate().translationY(0);
+        fabPlainTextOption.animate().translationY(0);
+        mTextViewPlainText.setVisibility(View.GONE);
+        mTextViewHtml.setVisibility(View.GONE);
+    }
+
+    public boolean onBackPressed() {
+        if(!isFABOpen){
+            return false;
+        }else{
+            closeFABMenu();
+            return true;
+        }
+    }
+
+    private void setSpinner(RelativeLayout llLayout) {
+        CustomSpinner spinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
+
+        final CustomSpinner secondarySpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_secondary_spinner);
+        final CustomEditText othersEditText = (CustomEditText) llLayout.findViewById(R.id.plan_action_others_edit_text);
+
+        ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(llLayout.getContext(),R.array.plan_action_dropdown_suboptions, android.R.layout.simple_spinner_item);
+        secondarySpinner.setAdapter(secondaryAdapter);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String[] options = getResources().getStringArray(R.array.plan_action_dropdown_options);
+                if(adapterView.getItemAtPosition(position).equals(options[1])){
+                    secondarySpinner.setVisibility(View.VISIBLE);
+                    othersEditText.setVisibility(View.GONE);
+                }else if(adapterView.getItemAtPosition(position).equals(options[5])) {
+                    secondarySpinner.setVisibility(View.GONE);
+                    othersEditText.setVisibility(View.VISIBLE);
+                }
+                else{
+                    secondarySpinner.setVisibility(View.GONE);
+                    othersEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                secondarySpinner.setVisibility(View.GONE);
+                othersEditText.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private void setLayoutHeaders(RelativeLayout llLayout) {

@@ -226,6 +226,7 @@ Mensuelle"</string>
 <string name="plan_action_action_plan_title">"Plan d'action:"</string>
 <string name="plan_action_action_title">Action:</string>
 <string-array name="plan_action_dropdown_options">
+<item>"..."</item>
 <item>"Formation de rafraîchissement pendant la SSV"</item>
 <item>"Formation de rappel de groupe à une date ultérieure"</item>
 <item>"Planifier l'activité de CME"</item>

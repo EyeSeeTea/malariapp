@@ -242,6 +242,7 @@ evaluation"</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
 <string name="plan_action_action_title">សកម្មភាព:</string>
 <string-array name="plan_action_dropdown_options">
+<item>"..."</item>
 <item>ការបណ្តុះបណ្តាលបំប៉នក្នុងអំឡុងពេល SSV</item>
 <item>បណ្តុះបណ្តារំលឹកជាក្រុមនៅថ្ងៃក្រោយ</item>
 <item>ផែនការសកម្មភាព CME</item>

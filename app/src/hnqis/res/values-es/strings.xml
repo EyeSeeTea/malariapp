@@ -232,6 +232,7 @@ clínica"</string>
 <string name="plan_action_action_plan_title">Plan de acción:</string>
 <string name="plan_action_action_title">Acción:</string>
 <string-array name="plan_action_dropdown_options">
+<item>"..."</item>
 <item>Entrenamiento de actualización durante SSV</item>
 <item>Entrenamiento de grupo en una fecha posterior</item>
 <item>Actividad de Plan CME</item>

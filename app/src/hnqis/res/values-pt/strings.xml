@@ -229,6 +229,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="plan_action_action_plan_title">Plano de ação:</string>
 <string name="plan_action_action_title">Açao:</string>
 <string-array name="plan_action_dropdown_options">
+<item>"..."</item>
 <item>Treinamento de atualização durante SSV</item>
 <item>Treinamento de atualização de grupo em uma data posterior</item>
 <item>Planejar a atividade do CME</item>

@@ -243,6 +243,7 @@
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
 <string name="plan_action_action_title">ການປະຕິບັດ:</string>
 <string-array name="plan_action_dropdown_options">
+<item>"..."</item>
 <item>ການຝຶກອົບຮົມທົບທວນໄລຍະ SSV</item>
 <item>ການຝຶກອົບຮົມທົບທວນ Group ໃນວັນຕໍ່ມາ</item>
 <item>ແຜນກິດຈະກໍາ CME</item>

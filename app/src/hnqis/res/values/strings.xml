@@ -232,6 +232,7 @@ evaluation"</string>
 <string name="plan_action_action_plan_title">Action plan:</string>
 <string name="plan_action_action_title">Action:</string>
 <string-array name="plan_action_dropdown_options">
+<item>"..."</item>
 <item>Refresher training during SSV</item>
 <item>Group refresher training at a later date</item>
 <item>Plan CME activity</item>
