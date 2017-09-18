@@ -589,7 +589,17 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         orgUnits = new HashMap<>();
         ProgramOUSurveyDict programOUSurveyDict = new ProgramOUSurveyDict();
         oneSurveyForOrgUnit = new ArrayList<>();
-        if (PreferencesState.getInstance().isLastForOrgUnit()) {
+        if (PreferencesState.getInstance().isNoneFilter()) {
+            for (Survey survey : surveys) {
+                oneSurveyForOrgUnit.add(survey);
+            }
+        }else if (isForceAllSurveys()) {
+            for (Survey survey : surveys) {
+                if(isNotFilteredByOU(survey) && isNotFilteredByProgram(survey)) {
+                    oneSurveyForOrgUnit.add(survey);
+                }
+            }
+        }else if(PreferencesState.getInstance().isLastForOrgUnit()){
             for (Survey survey : surveys) {
                 if (survey.getOrgUnit() != null && survey.getProgram() != null) {
                     if (!programOUSurveyDict.containsKey(survey.getProgram().getUid(),
@@ -611,10 +621,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 }
             }
             oneSurveyForOrgUnit = programOUSurveyDict.values();
-        } else if (PreferencesState.getInstance().isNoneFilter()) {
-            for (Survey survey : surveys) {
-                oneSurveyForOrgUnit.add(survey);
-            }
         }
 
         //Order the surveys, and reverse if is needed, taking the last order from LAST_ORDER
