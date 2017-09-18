@@ -566,18 +566,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         this.adapter.notifyDataSetChanged();
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): "
-                + newListSurveys.size());
-        adapter.setItems(newListSurveys);
-        this.adapter.notifyDataSetChanged();
-        if (isAdded()) {
-            setListShown(true);
-        } else {
-            reloadData();
-        }
-    }
-
     @Override
     public void reloadData() {
         //Reload data using service
