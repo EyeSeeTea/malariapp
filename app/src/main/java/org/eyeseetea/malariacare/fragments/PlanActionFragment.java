@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomEditText;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -69,7 +70,21 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         prepareUI(moduleName);
         setSpinner(llLayout);
         setFAB(llLayout);
+        setBackButton(llLayout);
         return llLayout; // We must return the loaded Layout
+    }
+
+    private void setBackButton(RelativeLayout llLayout) {
+        CustomRadioButton goback = (CustomRadioButton) llLayout.findViewById(
+                R.id.backToSentSurveys);
+        goback.setText(Session.getSurveyByModule(moduleName).getOrgUnit().getName());
+        goback.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          getActivity().onBackPressed();
+                                      }
+                                  }
+        );
     }
 
     private void setFAB(RelativeLayout llLayout) {
