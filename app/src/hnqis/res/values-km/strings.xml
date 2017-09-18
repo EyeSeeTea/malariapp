@@ -135,6 +135,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
+<string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
