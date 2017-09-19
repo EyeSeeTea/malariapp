@@ -105,12 +105,24 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         initSpinner(llLayout);
         initFAB(llLayout);
         initBackButton(llLayout);
+        if(mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+            setReadOnlyMode();
+        }
         return llLayout; // We must return the loaded Layout
+    }
+
+    private void setReadOnlyMode() {
+        mCustomGapsEditText.setEnabled(false);
+        mCustomActionPlanEditText.setEnabled(false);
+        mCustomActionOtherEditText.setEnabled(false);
+        actionDropdown.setEnabled(false);
+        secondaryActionDropdown.setEnabled(false);
     }
 
     private void initEditTexts(RelativeLayout llLayout) {
         mCustomGapsEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_gasp_edit_text);
+        mCustomGapsEditText.setText(mObsActionPlan.getGaps());
         mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -130,6 +142,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         });
         mCustomActionPlanEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_action_plan_edit_text);
+        mCustomActionPlanEditText.setText(mObsActionPlan.getAction_plan());
         mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -149,7 +162,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         });
         mCustomActionOtherEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_others_edit_text);
-        mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
+        String options[] = getResources().getStringArray(
+                R.array.plan_action_dropdown_options);
+        if (mObsActionPlan.getAction1().equals(options[5])) {
+            if (mObsActionPlan.getAction2() != null) {
+                mCustomActionOtherEditText.setText(mObsActionPlan.getAction2());
+            }
+        }
+        mCustomActionOtherEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -341,19 +361,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     private void initSpinner(RelativeLayout llLayout) {
         actionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
 
-        secondaryActionDropdown = (CustomSpinner) llLayout.findViewById(
-                R.id.plan_action_secondary_spinner);
-        mCustomActionOtherEditText = (CustomEditText) llLayout.findViewById(
-                R.id.plan_action_others_edit_text);
-
-        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
-                llLayout.getContext(), R.array.plan_action_dropdown_suboptions,
-                android.R.layout.simple_spinner_item);
-        secondaryActionDropdown.setAdapter(secondaryAdapter);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),
                 R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
         actionDropdown.setAdapter(adapter);
+
         actionDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position,
@@ -361,16 +373,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 String[] options = getResources().getStringArray(
                         R.array.plan_action_dropdown_options);
                 String selectedItem = adapterView.getItemAtPosition(position).toString();
+                String lastItem = mObsActionPlan.getAction1();
                 if (selectedItem.equals(options[0])) {
                     mObsActionPlan.setAction1(null);
-                    mCustomActionOtherEditText.setText("");
-                    secondaryActionDropdown.setSelection(0);
-                }else{
+                } else {
                     mObsActionPlan.setAction1(selectedItem);
                 }
-                if(mObsActionPlan.getAction2()==null || !mObsActionPlan.getAction2().equals(selectedItem)) {
+                if (lastItem == null || lastItem.equals(selectedItem)) {
+                } else if (!lastItem.equals(options[5])) {
+                    secondaryActionDropdown.setSelection(0, false);
+                } else if (!lastItem.equals(options[1])) {
                     mCustomActionOtherEditText.setText("");
-                    secondaryActionDropdown.setSelection(0);
                 }
                 if (selectedItem.equals(options[1])) {
                     secondaryActionDropdown.setVisibility(View.VISIBLE);
@@ -390,26 +403,63 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             }
         });
 
-        secondaryActionDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
-                String[] options = getResources().getStringArray(
-                        R.array.plan_action_dropdown_suboptions);
-                String selectedItem = adapterView.getItemAtPosition(position).toString();
-                if (selectedItem.equals(options[0])) {
-                    mObsActionPlan.setAction2(null);
-                } else {
-                    mObsActionPlan.setAction2(selectedItem);
+        secondaryActionDropdown = (CustomSpinner) llLayout.findViewById(
+                R.id.plan_action_secondary_spinner);
+
+        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
+                llLayout.getContext(), R.array.plan_action_dropdown_suboptions,
+                android.R.layout.simple_spinner_item);
+        secondaryActionDropdown.setAdapter(secondaryAdapter);
+
+        secondaryActionDropdown.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view,
+                            int position,
+                            long l) {
+                        String[] options = getResources().getStringArray(
+                                R.array.plan_action_dropdown_suboptions);
+                        String selectedItem = adapterView.getItemAtPosition(
+                                position).toString();
+                        if (selectedItem.equals(options[0])) {
+                            mObsActionPlan.setAction2(null);
+                        } else {
+                            mObsActionPlan.setAction2(selectedItem);
+                        }
+                        mObsActionPlan.save();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+
+        setSpinnerValues();
+
+    }
+
+    private void setSpinnerValues() {
+        String options[] = getResources().getStringArray(
+                R.array.plan_action_dropdown_options);
+        if (mObsActionPlan.getAction1() != null) {
+            for (int i = 0; i < options.length; i++) {
+                if (mObsActionPlan.getAction1().equals(options[i])) {
+                    actionDropdown.setSelection(i);
                 }
-                mObsActionPlan.save();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        }
+        if (mObsActionPlan.getAction2() != null && mObsActionPlan.getAction1() != null) {
+            if (mObsActionPlan.getAction1().equals(options[1])) {
+                String subOptions[] = getResources().getStringArray(
+                        R.array.plan_action_dropdown_suboptions);
+                for (int i = 0; i < subOptions.length; i++) {
+                    if (mObsActionPlan.getAction2().equals(subOptions[i])) {
+                        secondaryActionDropdown.setSelection(i);
+                    }
+                }
             }
-        });
-
+        }
     }
 
     private void initLayoutHeaders(RelativeLayout llLayout) {
