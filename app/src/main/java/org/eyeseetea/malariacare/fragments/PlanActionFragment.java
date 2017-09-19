@@ -22,7 +22,9 @@ package org.eyeseetea.malariacare.fragments;
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -202,12 +204,33 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initFAB(RelativeLayout llLayout) {
+        final FloatingActionButton fabSave = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+            fabSave.setImageResource(R.drawable.ic_action_check);
+        }
         FloatingActionButton fab = (FloatingActionButton) llLayout.findViewById(R.id.fab);
         fabHtmlOption = (FloatingActionButton) llLayout.findViewById(R.id.fab2);
         mTextViewHtml = (CustomTextView) llLayout.findViewById(R.id.text2);
         fabPlainTextOption = (FloatingActionButton) llLayout.findViewById(R.id.fab1);
         mTextViewPlainText = (CustomTextView) llLayout.findViewById(R.id.text1);
 
+        fabSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(null)
+                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+                                mObsActionPlan.save();
+                                fabSave.setImageResource(R.drawable.ic_action_check);
+                                setReadOnlyMode();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
