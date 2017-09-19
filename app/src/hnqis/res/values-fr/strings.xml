@@ -234,6 +234,7 @@ Mensuelle"</string>
 <item>"Autre"</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>"Regarder la vidéo"</item>
 <item>"Pratiquer une technique d'insertion appropriée au moment de la visite"</item>
 </string-array>

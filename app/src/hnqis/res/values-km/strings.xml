@@ -250,6 +250,7 @@ evaluation"</string>
 <item>ផ្សេងទៀត</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>មើលវីដេអូ</item>
 <item>អនុវត្តបច្ចេកទេសបានត្រឹមត្រូវនៅពេលដែលការបញ្ចូលនៃដំណើរទស្សនកិច្ច</item>
 </string-array>
