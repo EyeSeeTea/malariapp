@@ -315,5 +315,18 @@
             app:backgroundTint="@color/new_blue"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_share_white_48dp" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_save"
+            android:layout_width="@dimen/standard_45"
+            android:layout_height="@dimen/standard_45"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/fab"
+            android:layout_marginBottom="@dimen/standard_21"
+            android:layout_marginTop="@dimen/standard_21"
+            android:layout_marginRight="@dimen/standard_45"
+            android:background="@color/new_blue"
+            app:backgroundTint="@color/new_blue"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_action_uncheck" />
     </RelativeLayout>
 </RelativeLayout>
