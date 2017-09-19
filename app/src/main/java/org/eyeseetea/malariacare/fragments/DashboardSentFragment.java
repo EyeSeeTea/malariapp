@@ -531,7 +531,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                         AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                     } else {
                         Survey surveyMapped = programOUSurveyDict.get(survey.getProgram().getUid(), survey.getOrgUnit().getUid());
-                        Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
+                        //Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
                         if ((surveyMapped.getCompletionDate() != null && survey.getCompletionDate() != null) && surveyMapped.getCompletionDate().before(survey.getCompletionDate())) {
                             programOUSurveyDict = AddSurveyIfNotfiltered(programOUSurveyDict, survey);
                         }

@@ -19,11 +19,17 @@
 
 package org.eyeseetea.malariacare.data.database.model;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.obsActionPlanAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.obsActionPlanName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
+
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -32,6 +38,8 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertT
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.utils.Constants;
+
+import java.util.List;
 
 @Table(database = AppDatabase.class)
 public class ObsActionPlan extends BaseModel implements VisitableToSDK {
@@ -209,6 +217,34 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
 
     public static ObsActionPlan findObsActionPlanBySurvey(long id_survey) {
         return new Select().from(ObsActionPlan.class).where(ObsActionPlan_Table.id_survey_obs_action_fk.eq(id_survey)).querySingle();
+    }
+
+    public static List<ObsActionPlan> getAllCompletedObsActionPlansInSentSurveys() {
+        return new Select().from(ObsActionPlan.class).as(obsActionPlanName)
+                .join(Survey.class, Join.JoinType.LEFT_OUTER).as(surveyName)
+                .on(Survey_Table.id_survey.withTable(surveyAlias)
+                        .eq(ObsActionPlan_Table.id_survey_obs_action_fk.withTable(obsActionPlanAlias)))
+                .where(Survey_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
+                .and(ObsActionPlan_Table.status.withTable(obsActionPlanAlias).eq(Constants.SURVEY_COMPLETED))
+                .queryList();
+    }
+
+
+    public static List<Survey> getAllSentSurveysWithSendingObsActionPlans() {
+        return new Select().from(Survey.class).as(surveyName)
+                .join(ObsActionPlan.class, Join.JoinType.LEFT_OUTER).as(obsActionPlanName)
+                .on(Survey_Table.id_survey.withTable(surveyAlias)
+                        .eq(ObsActionPlan_Table.id_survey_obs_action_fk.withTable(obsActionPlanAlias)))
+                .where(Survey_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
+                .and(ObsActionPlan_Table.status.withTable(obsActionPlanAlias).eq(Constants.SURVEY_SENDING))
+                .queryList();
+    }
+
+
+    public static List<ObsActionPlan> getAllSendingObsActionPlans() {
+        return new Select().from(ObsActionPlan.class)
+                .where(ObsActionPlan_Table.status.eq(Constants.SURVEY_SENDING))
+                .queryList();
     }
 
     @Override

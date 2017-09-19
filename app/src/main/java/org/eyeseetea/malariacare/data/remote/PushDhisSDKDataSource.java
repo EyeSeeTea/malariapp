@@ -25,11 +25,11 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
-import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
-import org.eyeseetea.malariacare.domain.entity.pushsummary.PushedValuesCount;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
@@ -37,12 +37,8 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.models.common.importsummary.Conflict;
-import org.hisp.dhis.client.sdk.models.common.importsummary.ImportCount;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -56,12 +52,14 @@ import rx.schedulers.Schedulers;
 public class PushDhisSDKDataSource {
     private final String TAG = ".PushControllerB&D";
 
-    public void pushData(final IDataSourceCallback<Map<String, PushReport>> callback) {
-        pushEvents(callback);
+    public void pushData(final IDataSourceCallback<Map<String, PushReport>> callback,
+            PushController.Kind kind) {
+        pushEvents(callback, kind);
     }
 
-    private void pushEvents(final IDataSourceCallback<Map<String, PushReport>> callback) {
-        final Set<String> eventUids = getEventUidToBePushed();
+    private void pushEvents(final IDataSourceCallback<Map<String, PushReport>> callback,
+            PushController.Kind kind) {
+        final Set<String> eventUids = getEventUidToBePushed(kind);
 
         if(eventUids.isEmpty() || eventUids.size()==0){
             callback.onError(new SurveysToPushNotFoundException("Null events"));
@@ -99,12 +97,19 @@ public class PushDhisSDKDataSource {
     }
 
     @NonNull
-    private Set<String> getEventUidToBePushed() {
+    private Set<String> getEventUidToBePushed(PushController.Kind kind) {
         final Set<String> eventUids = new HashSet<>();
         final Set<String> sendingEventUids = new HashSet<>();
-        List<Survey> surveys = Survey.getAllSendingSurveys();
-        for (Survey survey : surveys) {
-            sendingEventUids.add(survey.getEventUid());
+        if(kind.equals(PushController.Kind.EVENTS)) {
+            List<Survey> surveys = Survey.getAllSendingSurveys();
+            for (Survey survey : surveys) {
+                sendingEventUids.add(survey.getEventUid());
+            }
+        }else if(kind.equals(PushController.Kind.PLANS)) {
+            List<Survey> surveysWithPlans = ObsActionPlan.getAllSentSurveysWithSendingObsActionPlans();
+            for (Survey survey : surveysWithPlans) {
+                sendingEventUids.add(survey.getEventUid());
+            }
         }
         List<EventFlow> eventsFlows = SdkQueries.getEvents();
         Log.d(TAG, "Size of events " + eventsFlows.size() + "size of surveys" + sendingEventUids.size());
