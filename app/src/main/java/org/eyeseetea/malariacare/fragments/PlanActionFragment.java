@@ -84,6 +84,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     CustomEditText mCustomActionOtherEditText;
     CustomSpinner actionDropdown;
     CustomSpinner secondaryActionDropdown;
+    FloatingActionButton fabSave;
 
     /**
      * Parent layout
@@ -119,6 +120,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         mCustomActionOtherEditText.setEnabled(false);
         actionDropdown.setEnabled(false);
         secondaryActionDropdown.setEnabled(false);
+        fabSave.setEnabled(false);
     }
 
     private void initEditTexts(RelativeLayout llLayout) {
@@ -204,7 +206,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initFAB(RelativeLayout llLayout) {
-        final FloatingActionButton fabSave = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        fabSave = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
         if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
             fabSave.setImageResource(R.drawable.ic_action_check);
         }
