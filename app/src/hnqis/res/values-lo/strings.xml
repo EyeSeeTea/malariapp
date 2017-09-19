@@ -202,6 +202,7 @@
 <string name="modify">"ດັດແກ້"</string>
 <string name="clear">"ລົບລ້າງ"</string>
 <string name="dialog_info_ask_for_completion">"ເຈົ້າໝັ້ນໃຈວ່າເຈົ້າຕ້ອງການເຮັດສຳເລັດ  %s ບໍ? ເຈົ້າບໍ່ສາມາດກັບຄືນມາແປ່ງໄດ້"</string>
+<string name="dialog_info_ask_for_completion_plan">ທ່ານແນ່ໃຈວ່າທ່ານຕ້ອງການສໍາເລັດແຜນການບໍ? ທ່ານບໍ່ສາມາດຍົກເລີກການປະຕິບັດນີ້ໄດ້</string>
 <string name="google_play_required">"ແອັບນີ້ມີໃຫ້ບໍລິການຢູ່ Google Play. ກະລູນາຕິດຕັ້ງໃສ່ເຄື່ອງຂອງທ່ານເພື່ອນຳໃຊ້"</string>
 <string name="account_permission_denied">"ການອະນຸມັດຖືກປະຕິເສດ. ຮູບພາບຈະບໍ່ຖືກສົ່ງ"</string>
 <string name="feedback_media">"ເບິ່ງວີດີໂອກ່ຽວກັບຄວາມເຫັນຕອບກັບມາ"</string>

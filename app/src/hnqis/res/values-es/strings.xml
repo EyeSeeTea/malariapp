@@ -27,6 +27,7 @@
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione una org unit final"</string>
 <string name="dialog_content_logout_confirmation">"Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?"</string>
 <string name="dialog_info_ask_for_completion">"¿Está seguro de que desea completar %s? No se puede deshacer esta acción"</string>
+<string name="dialog_info_ask_for_completion_plan">"¿Está seguro que desea completar el plan? No se puede deshacer esta acción"</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Lista para enviar"</string>
