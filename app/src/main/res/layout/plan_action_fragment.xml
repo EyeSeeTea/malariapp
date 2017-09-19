@@ -130,6 +130,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/layoutSecondHeader">
 
         <LinearLayout
@@ -236,6 +237,11 @@
                 android:minLines="5"
                 android:scrollbars="none"
                 android:visibility="gone" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/standard_65"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"></View>
         </LinearLayout>
     </ScrollView>
 
@@ -307,7 +313,7 @@
             android:layout_margin="@dimen/standard_21"
             android:background="@color/new_blue"
             app:backgroundTint="@color/new_blue"
-            app:fabSize="auto"
+            app:fabSize="mini"
             app:srcCompat="@drawable/ic_share_white_48dp" />
     </RelativeLayout>
 </RelativeLayout>
