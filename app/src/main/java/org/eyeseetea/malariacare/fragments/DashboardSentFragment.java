@@ -103,8 +103,9 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      */
     boolean initiatingFilters = true;
 
-    boolean forceAllSurveys = false;
+    boolean forceAllSurveys;
 
+    CustomRadioButton customRadioButton;
     /**
      * Toggles the state of the flag that determines if only shown one or all the surveys
      */
@@ -162,7 +163,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         if (container == null) {
             return null;
         }
-        initCheckBox(container.getRootView());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -170,21 +170,24 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
+        initCheckBox(getView().getRootView());
         initAdapter();
         initListView();
         resetList();
     }
 
     private void initCheckBox(View view) {
-        final CustomRadioButton customRadioButton = (CustomRadioButton) view.findViewById(
+        customRadioButton = (CustomRadioButton) view.findViewById(
                 R.id.check_show_all_surveys);
-        customRadioButton.setChecked(false);
+        forceAllSurveys = false;
+        PreferencesState.getInstance().setForceAllSentSurveys(forceAllSurveys);
+        customRadioButton.setChecked(true);
         customRadioButton.setOnClickListener(new View.OnClickListener() {
                                                  @Override
                                                  public void onClick(View v) {
                                                              toggleForceAllSurveys();
                                                              PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
-                                                             ((CustomRadioButton) v).setChecked(isForceAllSurveys());
+                                                             ((CustomRadioButton) v).setChecked(!isForceAllSurveys());
                                                              reloadData();
                                                  }
                                              }
@@ -608,8 +611,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                     } else {
                         Survey surveyMapped = programOUSurveyDict.get(survey.getProgram().getUid(),
                                 survey.getOrgUnit().getUid());
-                        Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped
-                                + "\tsurvey:" + survey);
+                        //Log.d(TAG, "reloadSentSurveys check NPE \tsurveyMapped:" + surveyMapped + "\tsurvey:" + survey);
                         if ((surveyMapped.getCompletionDate() != null
                                 && survey.getCompletionDate() != null)
                                 && surveyMapped.getCompletionDate().before(
