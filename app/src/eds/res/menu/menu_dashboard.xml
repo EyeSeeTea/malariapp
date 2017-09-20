@@ -34,10 +34,12 @@
                 android:orderInCategory="107" />
         </menu>
     </item>
-    <item android:id="@+id/export_db" android:title="@string/export_data_option_title"
-        android:orderInCategory="109"/>
     <item android:id="@+id/action_pull" android:title="@string/settings_menu_pull"
         android:orderInCategory="108"/>
-    <item android:id="@+id/action_logout" android:title="@string/settings_menu_logout"
+    <item android:id="@+id/export_db" android:title="@string/export_data_option_title"
         android:orderInCategory="109"/>
+    <item android:id="@+id/import_db" android:title="@string/import_data_option_title"
+        android:orderInCategory="110"/>
+    <item android:id="@+id/action_logout" android:title="@string/settings_menu_logout"
+        android:orderInCategory="111"/>
 </menu>

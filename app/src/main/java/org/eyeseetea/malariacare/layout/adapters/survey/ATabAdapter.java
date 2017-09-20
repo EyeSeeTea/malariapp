@@ -23,9 +23,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -34,7 +32,7 @@ import java.util.List;
 public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
 
     private int id_layout;
-    private Tab tab;
+    private TabDB tab;
     private LayoutInflater lInflater;
     private final Context context;
 
@@ -46,7 +44,7 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
     public String module;
 
 
-    public ATabAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module){
+    public ATabAdapter(TabDB tab, Context context, int id_layout, float idSurvey, String module){
         this.context = context;
         this.tab = tab;
         this.lInflater = LayoutInflater.from(context);
@@ -111,7 +109,7 @@ public abstract class ATabAdapter extends BaseAdapter implements  ITabAdapter{
         return Session.getSurveyByModule(module).isReadOnly();
     }
 
-    public Tab getTab() {
+    public TabDB getTab() {
         return this.tab;
     }
 

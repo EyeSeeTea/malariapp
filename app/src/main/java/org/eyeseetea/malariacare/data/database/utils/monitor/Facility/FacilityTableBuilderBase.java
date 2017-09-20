@@ -19,13 +19,12 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.List;
@@ -50,14 +49,14 @@ public class FacilityTableBuilderBase {
     /**
      * List of sent surveys
      */
-    List<Survey> surveys;
+    List<SurveyDB> surveys;
 
 
 
     /**
      * Default constructor
      */
-    public FacilityTableBuilderBase(List<Survey> surveys, Context context) {
+    public FacilityTableBuilderBase(List<SurveyDB> surveys, Context context) {
         this.surveys = surveys;
         this.context = context;
     }

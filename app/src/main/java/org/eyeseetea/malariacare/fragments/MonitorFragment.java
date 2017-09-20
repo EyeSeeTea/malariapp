@@ -36,23 +36,22 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
+import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
+import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.services.SurveyService;
 
@@ -64,32 +63,19 @@ import java.util.List;
  * Created by ignac on 10/12/2015.
  */
 public class MonitorFragment extends Fragment implements IModuleFragment{
-    List<Survey> surveysForGraphic;
+    List<SurveyDB> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
-    private List<Survey> surveys;
-    private List<Program> programs;
-    private List<OrgUnit> orgUnits;
-    protected IDashboardAdapter adapter;
+    private List<SurveyDB> surveys;
+    private List<ProgramDB> programs;
+    private List<OrgUnitDB> orgUnits;
     private WebView webView;
     public MonitorFilter filterType;
 
     public MonitorFragment() {
-        this.adapter = Session.getAdapterSent();
         this.surveys = new ArrayList();
         this.programs = new ArrayList<>();
         this.orgUnits = new ArrayList<>();
-    }
-
-    public static MonitorFragment newInstance(int index) {
-        MonitorFragment f = new MonitorFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
     }
 
     @Override
@@ -164,26 +150,29 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             surveyReceiver = null;
         }
     }
+    /**
+     * load and reload sent surveys
+     */
     public void reloadSentSurveys() {
         BaseServiceBundle data= (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
         if(data!=null) {
-            surveysForGraphic = (List<Survey>)data.getModelList(Survey.class.getName());
+            surveysForGraphic = (List<SurveyDB>)data.getModelList(SurveyDB.class.getName());
             //Remove the bad surveys.
-            Iterator<Survey> iter = surveysForGraphic.iterator();
+            Iterator<SurveyDB> iter = surveysForGraphic.iterator();
             while(iter.hasNext()){
-                Survey survey = iter.next();
+                SurveyDB survey = iter.next();
                 if(!survey.hasMainScore()) {
                     iter.remove();
                 }
             }
-            programs = (List<Program>)data.getModelList(Program.class.getName());
-            orgUnits = (List<OrgUnit>)data.getModelList(OrgUnit.class.getName());
+            programs = (List<ProgramDB>)data.getModelList(ProgramDB.class.getName());
+            orgUnits = (List<OrgUnitDB>)data.getModelList(OrgUnitDB.class.getName());
 
             reloadSurveys(surveysForGraphic,programs,orgUnits);
         }
     }
 
-    public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms, List<OrgUnit> newListOrgUnit) {
+    public void reloadSurveys(List<SurveyDB> newListSurveys,List<ProgramDB> newListPrograms, List<OrgUnitDB> newListOrgUnit) {
         Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         boolean hasPrograms = newListPrograms != null && newListPrograms.size() > 0;

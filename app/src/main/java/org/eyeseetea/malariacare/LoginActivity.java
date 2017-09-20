@@ -36,21 +36,23 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
-import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -81,7 +83,7 @@ public class LoginActivity extends AbsLoginActivity {
         PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLoginActivityStrategy.onCreate();
-        if (User.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
+        if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
                 && sharedPreferences.getBoolean(
                 getApplicationContext().getResources().getString(R.string.pull_metadata), false)) {
             launchActivity(LoginActivity.this, DashboardActivity.class);
@@ -90,8 +92,19 @@ public class LoginActivity extends AbsLoginActivity {
         getServerUrl().setText(R.string.login_info_dhis_default_server_url);
 
         progressBar = (CircularProgressBar) findViewById(R.id.progress_bar_circular);
+
+        replaceDhisLogoToHNQISLogo();
+
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
+    }
+
+    private void replaceDhisLogoToHNQISLogo() {
+        FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
+        ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
+
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
     }
 
     private void launchActivity(Activity activity, Class<?> activityClass) {
@@ -291,8 +304,7 @@ public class LoginActivity extends AbsLoginActivity {
         @Override
         protected Void doInBackground(LoginActivity... params) {
             loginActivity = params[0];
-            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
-            isUserClosed = pullClient.isUserClosed(Session.getUser().getUid());
+            isUserClosed = PullDhisApiDataSource.isUserClosed(Session.getUser().getUid());
             return null;
         }
 

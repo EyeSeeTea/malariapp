@@ -26,9 +26,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -39,7 +38,7 @@ import org.eyeseetea.malariacare.views.CustomTextView;
  */
 public class CompositeScoreAdapter extends ATabAdapter {
 
-    public CompositeScoreAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module) {
+    public CompositeScoreAdapter(TabDB tab, Context context, int id_layout, float idSurvey, String module) {
         super(tab, context, id_layout, idSurvey, module);
     }
 
@@ -50,7 +49,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static CompositeScoreAdapter build(Tab tab, Context context, float idSurvey, String module) {
+    public static CompositeScoreAdapter build(TabDB tab, Context context, float idSurvey, String module) {
         return new CompositeScoreAdapter(tab, context, R.layout.composite_score_tab, idSurvey, module);
     }
 
@@ -71,7 +70,7 @@ public class CompositeScoreAdapter extends ATabAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = getInflater().inflate(R.layout.composite_scores_record, parent, false);
 
-        CompositeScore item = (CompositeScore) getItem(position);
+        CompositeScoreDB item = (CompositeScoreDB) getItem(position);
 
         ((CustomTextView)rowView.findViewById(R.id.code)).setText(item.getHierarchical_code());
         ((CustomTextView)rowView.findViewById(R.id.label)).setText(item.getLabel());

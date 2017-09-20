@@ -80,7 +80,7 @@
 <string name="adherence_info_prescribed"></string>
 <string name="adherence_info_rdt_positive"></string>
 
-    <string name="reporting_info_reporting"></string>
+<string name="reporting_info_reporting"></string>
 <string name="reporting_info_results"></string>
 <string name="reporting_info_register"></string>
 <string name="reporting_info_monthly"></string>
@@ -100,12 +100,12 @@
 <string name="compscore_title_score_percentage"></string>
 
 <string name="title_activity_settings"></string>
-    <string name="settings_checkbox_customize_fonts"></string>
+<string name="settings_checkbox_customize_fonts"></string>
 <string name="settings_list_font_sizes"></string>
 <string name="settings_text_dhis_server_url"></string>
 <string name="settings_text_dhis_user"></string>
 <string name="pref_header_general"></string>
-    <string name="dialog_info_push_bad_credentials"></string>
+<string name="dialog_info_push_bad_credentials"></string>
 <string name="dialog_info_push_empty_survey"></string>
 <string name="settings_menu_legal"></string>
 <string name="settings_menu_copyright"></string>
@@ -175,7 +175,7 @@
 <string name="progress_pull_validating_composite_scores"></string>
 <string name="progress_pull_done"></string>
 <string name="dialog_push_success"></string>
-    <string name="planning_title_dialog"></string>
+<string name="planning_title_dialog"></string>
 <string name="planning_label_comment"></string>
 <string name="planning_label_schedule_date"></string>
 <string name="option_edit"></string>
@@ -200,16 +200,18 @@
 
 <string name="create"></string>
 <string name="modify"></string>
-    <string name="review"></string>
+<string name="review"></string>
 <string name="send"></string>
-    <string name="clear"></string>
+<string name="clear"></string>
 
 <string name="developer_option_summary"></string>
 <string name="developer_option_title"></string>
 <string name="export_data_option_title"></string>
-    <string name="google_play_required"></string>
+<string name="google_play_required"></string>
+<string name="import_data_option_title"></string>
+<string name="ask_account_permission"></string>
 <string name="account_permission_denied"></string>
-    <string name="feedback_media"></string>
+<string name="feedback_media"></string>
 <string name="feedback_view_image"></string>
 <string name="admin_announcement"></string>
 <string name="user_close"></string>
@@ -222,4 +224,7 @@
 <string name="critical_steps"></string>
 <string name="url_not_available"></string>
 <string name="see_full_assessment"></string>
+<string name="install_file_manager"></string>
+<string name="get_db_file_dialog"></string>
+<string name="start"></string>
 </resources>

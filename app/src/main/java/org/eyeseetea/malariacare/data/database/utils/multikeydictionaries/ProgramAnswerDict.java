@@ -21,7 +21,7 @@ package org.eyeseetea.malariacare.data.database.utils.multikeydictionaries;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.eyeseetea.malariacare.data.database.model.Answer;
+import org.eyeseetea.malariacare.data.database.model.AnswerDB;
 
 import java.util.List;
 
@@ -36,12 +36,12 @@ public class ProgramAnswerDict extends ObjectModelDict {
     }
 
     @Override
-    public Answer get(String programUid, String optionSetUid) {
-        return (Answer) super.get(programUid, optionSetUid);
+    public AnswerDB get(String programUid, String optionSetUid) {
+        return (AnswerDB) super.get(programUid, optionSetUid);
     }
 
     @Override
-    public List<Answer> values() {
-        return (List<Answer>) super.values();
+    public List<AnswerDB> values() {
+        return (List<AnswerDB>) super.values();
     }
 }

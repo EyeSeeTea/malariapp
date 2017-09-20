@@ -26,10 +26,10 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.remote.PushDhisSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -70,7 +70,7 @@ public class PushController implements IPushController {
 
             Log.d(TAG, "Network connected");
 
-            List<Survey> surveys = Survey.getAllCompletedSurveys();
+            List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
 
             if (surveys == null || surveys.size() == 0) {
                 callback.onError(new SurveysToPushNotFoundException("Null surveys"));
@@ -95,8 +95,8 @@ public class PushController implements IPushController {
                     pushData(callback, Kind.EVENTS);
                 }
             }
-            List<ObsActionPlan> obsActionPlen =
-                    ObsActionPlan.getAllCompletedObsActionPlansInSentSurveys();
+            List<ObsActionPlanDB> obsActionPlen =
+                    ObsActionPlanDB.getAllCompletedObsActionPlansInSentSurveys();
 
             if (obsActionPlen == null || obsActionPlen.size() == 0) {
                 callback.onError(new SurveysToPushNotFoundException("Null surveys"));
@@ -163,9 +163,9 @@ public class PushController implements IPushController {
                 }, kind);
     }
 
-    private void convertToSDK(List<Survey> surveys) throws ConversionException{
+    private void convertToSDK(List<SurveyDB> surveys) throws ConversionException{
         Log.d(TAG, "Converting APP survey into a SDK event");
-        for (Survey survey : surveys) {
+        for (SurveyDB survey : surveys) {
             survey.setStatus(Constants.SURVEY_SENDING);
             survey.save();
             survey.accept(mConvertToSDKVisitor);

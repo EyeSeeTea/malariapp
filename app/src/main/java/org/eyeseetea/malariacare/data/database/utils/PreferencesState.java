@@ -29,6 +29,7 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
@@ -89,6 +90,7 @@ public class PreferencesState {
      */
     private boolean userAccept;
     private String serverUrl;
+    private Credentials creedentials;
 
     private PreferencesState() {
     }
@@ -427,5 +429,20 @@ public class PreferencesState {
         serverUrl = sharedPreferences.getString(
                 PreferencesState.getInstance().getContext().getResources().getString(
                         R.string.dhis_url), "");
+    }
+
+    public Credentials getCreedentials() {
+        if(creedentials == null) {
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                    context);
+            String url= sharedPreferences.getString(
+                    context.getResources().getString(R.string.dhis_url), "");
+            String name =
+                    sharedPreferences.getString(context.getString(R.string.dhis_user), "");
+            String password =
+                    sharedPreferences.getString(context.getString(R.string.dhis_password), "");
+            creedentials = new Credentials(url, name, password);
+        }
+        return creedentials;
     }
 }
