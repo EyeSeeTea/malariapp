@@ -256,9 +256,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     private void initSpinner(RelativeLayout llLayout) {
         actionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
 
-        secondaryActionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_secondary_spinner);
-        mCustomActionOtherEditText = (CustomEditText) llLayout.findViewById(R.id.plan_action_others_edit_text);
-
+        final CustomSpinner secondarySpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_secondary_spinner);
+        final CustomEditText othersEditText = (CustomEditText) llLayout.findViewById(R.id.plan_action_others_edit_text);
+        final View secondaryView = llLayout.findViewById(R.id.secondaryView);
+        final View otherView = llLayout.findViewById(R.id.otherView);
         ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(llLayout.getContext(),R.array.plan_action_dropdown_suboptions, android.R.layout.simple_spinner_item);
         secondaryActionDropdown.setAdapter(secondaryAdapter);
 
@@ -269,15 +270,21 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String[] options = getResources().getStringArray(R.array.plan_action_dropdown_options);
                 if(adapterView.getItemAtPosition(position).equals(options[1])){
-                    secondaryActionDropdown.setVisibility(View.VISIBLE);
-                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    secondarySpinner.setVisibility(View.VISIBLE);
+                    secondaryView.setVisibility(View.VISIBLE);
+                    othersEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
                 }else if(adapterView.getItemAtPosition(position).equals(options[5])) {
-                    secondaryActionDropdown.setVisibility(View.GONE);
-                    mCustomActionOtherEditText.setVisibility(View.VISIBLE);
+                    secondarySpinner.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
+                    othersEditText.setVisibility(View.VISIBLE);
+                    otherView.setVisibility(View.VISIBLE);
                 }
                 else{
-                    secondaryActionDropdown.setVisibility(View.GONE);
-                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    secondarySpinner.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
+                    othersEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
                 }
             }
 
