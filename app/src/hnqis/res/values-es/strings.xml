@@ -121,6 +121,7 @@ clínica"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>
 <string name="feedback_return">"Regresar a todas las evaluaciones"</string>
 <string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
 <string name="feedback_info_not_answered">"Sin respuesta"</string>

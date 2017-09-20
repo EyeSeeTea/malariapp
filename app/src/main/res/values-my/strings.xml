@@ -132,6 +132,7 @@
 <string name="feedback_show_only_failed"></string>
 <string name="feedback_return"></string>
 <string name="quality_of_care"></string>
+<string name="overall_quality_of_care"></string>
 <string name="feedback_info_passed"></string>
 <string name="feedback_info_failed"></string>
 <string name="feedback_info_not_answered"></string>
