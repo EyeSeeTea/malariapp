@@ -230,12 +230,12 @@ public class SurveyService extends IntentService {
         Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
 
         //Select surveys from sql
-        List<Survey> sentSurveyList;
+        List<SurveyDB> sentSurveyList;
 
-        sentSurveyList = Survey.getLastSentCompletedOrConflictSurveys();
-        sentDashboardBundle.addModelList(Survey.class.getName(),sentSurveyList);
-        sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
-        sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
+        sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
+        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
+        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
+        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);

@@ -201,8 +201,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                 filterSpinnerProgram.performClick();
             }
         });
-        List<ProgramDB> filterProgramList= programList;
-        ProgramDB defaultAllProgramFilter=new ProgramDB();
         defaultAllProgramFilter.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
         filterProgramList.add(0, defaultAllProgramFilter);
         if(programFilter ==null) {

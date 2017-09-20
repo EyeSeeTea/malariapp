@@ -41,8 +41,8 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
-@Table(database = AppDatabase.class)
-public class ObsActionPlan extends BaseModel implements VisitableToSDK {
+@Table(database = AppDatabase.class, name = "ObsActionPlan")
+public class ObsActionPlanDB extends BaseModel implements VisitableToSDK {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -53,7 +53,7 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
     /**
      * Reference to the survey associated to this obs action plan (loaded lazily)
      */
-    Survey mSurvey;
+    SurveyDB mSurvey;
 
     @Column
     String gaps;
@@ -70,10 +70,10 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
     @Column
     Integer status;
 
-    public ObsActionPlan() {
+    public ObsActionPlanDB() {
     }
 
-    public ObsActionPlan(Long surveyId) {
+    public ObsActionPlanDB(Long surveyId) {
         this();
 
         this.status = Constants.SURVEY_IN_PROGRESS;
@@ -82,18 +82,18 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
     }
 
 
-    public Survey getSurvey() {
+    public SurveyDB getSurvey() {
         if (mSurvey == null) {
             if (id_survey_obs_action_fk == null) return null;
             mSurvey = new Select()
-                    .from(Survey.class)
-                    .where(Survey_Table.id_survey
+                    .from(SurveyDB.class)
+                    .where(SurveyDB_Table.id_survey
                             .is(id_survey_obs_action_fk)).querySingle();
         }
         return mSurvey;
     }
 
-    public void setSurvey(Survey survey) {
+    public void setSurvey(SurveyDB survey) {
         this.mSurvey = survey;
         this.id_survey_obs_action_fk = (survey != null) ? survey.getId_survey() : null;
     }
@@ -108,7 +108,7 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
     }
 
     public void setStatus(Integer status) {
-        Log.d(ObsActionPlan.class.getName() + "B&D ObsActionPlan",
+        Log.d(ObsActionPlanDB.class.getName() + "B&D ObsActionPlan",
                 "Id: " + id_survey_obs_action_fk + " actual status:" + status + " set as:"
                         + status);
         this.status = status;
@@ -215,35 +215,35 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
         this.action2 = action2;
     }
 
-    public static ObsActionPlan findObsActionPlanBySurvey(long id_survey) {
-        return new Select().from(ObsActionPlan.class).where(ObsActionPlan_Table.id_survey_obs_action_fk.eq(id_survey)).querySingle();
+    public static ObsActionPlanDB findObsActionPlanBySurvey(long id_survey) {
+        return new Select().from(ObsActionPlanDB.class).where(ObsActionPlanDB_Table.id_survey_obs_action_fk.eq(id_survey)).querySingle();
     }
 
-    public static List<ObsActionPlan> getAllCompletedObsActionPlansInSentSurveys() {
-        return new Select().from(ObsActionPlan.class).as(obsActionPlanName)
-                .join(Survey.class, Join.JoinType.LEFT_OUTER).as(surveyName)
-                .on(Survey_Table.id_survey.withTable(surveyAlias)
-                        .eq(ObsActionPlan_Table.id_survey_obs_action_fk.withTable(obsActionPlanAlias)))
-                .where(Survey_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
-                .and(ObsActionPlan_Table.status.withTable(obsActionPlanAlias).eq(Constants.SURVEY_COMPLETED))
+    public static List<ObsActionPlanDB> getAllCompletedObsActionPlansInSentSurveys() {
+        return new Select().from(ObsActionPlanDB.class).as(obsActionPlanName)
+                .join(SurveyDB.class, Join.JoinType.LEFT_OUTER).as(surveyName)
+                .on(SurveyDB_Table.id_survey.withTable(surveyAlias)
+                        .eq(ObsActionPlanDB_Table.id_survey_obs_action_fk.withTable(obsActionPlanAlias)))
+                .where(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
+                .and(ObsActionPlanDB_Table.status.withTable(obsActionPlanAlias).eq(Constants.SURVEY_COMPLETED))
                 .queryList();
     }
 
 
-    public static List<Survey> getAllSentSurveysWithSendingObsActionPlans() {
-        return new Select().from(Survey.class).as(surveyName)
-                .join(ObsActionPlan.class, Join.JoinType.LEFT_OUTER).as(obsActionPlanName)
-                .on(Survey_Table.id_survey.withTable(surveyAlias)
-                        .eq(ObsActionPlan_Table.id_survey_obs_action_fk.withTable(obsActionPlanAlias)))
-                .where(Survey_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
-                .and(ObsActionPlan_Table.status.withTable(obsActionPlanAlias).eq(Constants.SURVEY_SENDING))
+    public static List<SurveyDB> getAllSentSurveysWithSendingObsActionPlans() {
+        return new Select().from(SurveyDB.class).as(surveyName)
+                .join(ObsActionPlanDB.class, Join.JoinType.LEFT_OUTER).as(obsActionPlanName)
+                .on(SurveyDB_Table.id_survey.withTable(surveyAlias)
+                        .eq(ObsActionPlanDB_Table.id_survey_obs_action_fk.withTable(obsActionPlanAlias)))
+                .where(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
+                .and(ObsActionPlanDB_Table.status.withTable(obsActionPlanAlias).eq(Constants.SURVEY_SENDING))
                 .queryList();
     }
 
 
-    public static List<ObsActionPlan> getAllSendingObsActionPlans() {
-        return new Select().from(ObsActionPlan.class)
-                .where(ObsActionPlan_Table.status.eq(Constants.SURVEY_SENDING))
+    public static List<ObsActionPlanDB> getAllSendingObsActionPlans() {
+        return new Select().from(ObsActionPlanDB.class)
+                .where(ObsActionPlanDB_Table.status.eq(Constants.SURVEY_SENDING))
                 .queryList();
     }
 
@@ -252,7 +252,7 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ObsActionPlan that = (ObsActionPlan) o;
+        ObsActionPlanDB that = (ObsActionPlanDB) o;
 
         if (id_obs_action_plan != that.id_obs_action_plan) return false;
         if (id_survey_obs_action_fk != null ? !id_survey_obs_action_fk.equals(

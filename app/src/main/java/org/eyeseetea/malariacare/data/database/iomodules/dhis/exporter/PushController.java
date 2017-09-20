@@ -171,9 +171,9 @@ public class PushController implements IPushController {
             survey.accept(mConvertToSDKVisitor);
         }
     }
-    private void convertObsToSDK(List<ObsActionPlan> obsActionPlanList) throws ConversionException{
+    private void convertObsToSDK(List<ObsActionPlanDB> obsActionPlanList) throws ConversionException{
         Log.d(TAG, "Converting APP survey into a SDK event");
-        for (ObsActionPlan obsActionPlan : obsActionPlanList) {
+        for (ObsActionPlanDB obsActionPlan : obsActionPlanList) {
             obsActionPlan.setStatus(Constants.SURVEY_SENDING);
             obsActionPlan.save();
             obsActionPlan.accept(mConvertToSDKVisitor);

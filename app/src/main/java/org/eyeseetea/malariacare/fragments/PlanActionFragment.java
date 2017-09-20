@@ -37,25 +37,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
-import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
-import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -64,7 +56,6 @@ import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,7 +63,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
     public static final String TAG = ".PlanActionFragment";
 
-    private ObsActionPlan mObsActionPlan;
+    private ObsActionPlanDB mObsActionPlan;
     private String moduleName;
     boolean isFABOpen;
     FloatingActionButton fabHtmlOption;
@@ -96,10 +87,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             Bundle savedInstanceState) {
         llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
                 false);
-        mObsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(
+        mObsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(
                 Session.getSurveyByModule(moduleName).getId_survey());
         if (mObsActionPlan == null) {
-            mObsActionPlan = new ObsActionPlan(
+            mObsActionPlan = new ObsActionPlanDB(
                     Session.getSurveyByModule(moduleName).getId_survey());
             mObsActionPlan.save();
         }
@@ -262,7 +253,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void sharePlainText() {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n";
@@ -287,10 +278,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         }
         data += getString(R.string.critical_steps) + "\n";
 
-        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
 
-        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
+        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
                 moduleName);
 
 
@@ -301,16 +292,16 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
         //Remove parents from list (to avoid showing the parent composite that is there just to
         // push the overall score)
-        for (Iterator<CompositeScore> iterator = compositeScoreList.iterator();
+        for (Iterator<CompositeScoreDB> iterator = compositeScoreList.iterator();
                 iterator.hasNext(); ) {
-            CompositeScore compositeScore = iterator.next();
+            CompositeScoreDB compositeScore = iterator.next();
             //Show only if a parent have questions.
             if (compositeScore.getQuestions().size() < 1) {
                 if (!compositeScore.hasParent()) iterator.remove();
             } else {
                 boolean isValid = false;
-                for (Question question : compositeScore.getQuestions()) {
-                    for (Question criticalQuestion : criticalQuestions) {
+                for (QuestionDB question : compositeScore.getQuestions()) {
+                    for (QuestionDB criticalQuestion : criticalQuestions) {
                         if (question.getUid().equals(criticalQuestion.getUid())) {
                             isValid = true;
                         }
@@ -323,9 +314,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         }
 
         //For each score add proper items
-        for (CompositeScore compositeScore : compositeScoreList) {
+        for (CompositeScoreDB compositeScore : compositeScoreList) {
             data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel() + "\n";
-            for (Question question : criticalQuestions) {
+            for (QuestionDB question : criticalQuestions) {
                 if (question.getCompositeScoreFk() == (compositeScore.getId_composite_score())) {
                     data += "-" + question.getForm_name() + "\n";
                 }
@@ -495,7 +486,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initLayoutHeaders(RelativeLayout llLayout) {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey.hasMainScore()) {
             float average = survey.getMainScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);

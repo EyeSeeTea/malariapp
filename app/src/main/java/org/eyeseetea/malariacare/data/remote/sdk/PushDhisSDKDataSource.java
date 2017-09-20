@@ -101,13 +101,13 @@ public class PushDhisSDKDataSource {
         final Set<String> eventUids = new HashSet<>();
         final Set<String> sendingEventUids = new HashSet<>();
         if(kind.equals(PushController.Kind.EVENTS)) {
-            List<Survey> surveys = Survey.getAllSendingSurveys();
-            for (Survey survey : surveys) {
+            List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
+            for (SurveyDB survey : surveys) {
                 sendingEventUids.add(survey.getEventUid());
             }
         }else if(kind.equals(PushController.Kind.PLANS)) {
-            List<Survey> surveysWithPlans = ObsActionPlan.getAllSentSurveysWithSendingObsActionPlans();
-            for (Survey survey : surveysWithPlans) {
+            List<SurveyDB> surveysWithPlans = ObsActionPlanDB.getAllSentSurveysWithSendingObsActionPlans();
+            for (SurveyDB survey : surveysWithPlans) {
                 sendingEventUids.add(survey.getEventUid());
             }
         }

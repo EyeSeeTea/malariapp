@@ -151,13 +151,13 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.upload_date_code));
         updatedUserCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.uploaded_by_code));
-        gapsCode = ServerMetadata.findControlDataElementUid(
+        gapsCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.gaps_code));
-        planActionCode = ServerMetadata.findControlDataElementUid(
+        planActionCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action_plan_code));
-        action1Code = ServerMetadata.findControlDataElementUid(
+        action1Code = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action1_code));
-        action2Code = ServerMetadata.findControlDataElementUid(
+        action2Code = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action2_code));
 
         surveys = new ArrayList<>();
@@ -207,7 +207,7 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(Survey survey) throws ConversionException {
+    public void visit(SurveyDB survey) throws ConversionException {
 
         uploadedDate = new Date();
 
@@ -654,17 +654,17 @@ public class ConvertToSDKVisitor implements
     }
 
     public void setSurveysAsQuarantine(PushController.Kind kind) {
-        List<Survey> surveys = new ArrayList<>();
+        List<SurveyDB> surveys = new ArrayList<>();
         if(kind.equals(PushController.Kind.EVENTS)) {
             surveys=this.surveys;
         }else if(kind.equals(PushController.Kind.PLANS)){
             surveys=this.obsActionPlanSurveys;
         }
-        for (Survey survey : surveys) {
+        for (SurveyDB survey : surveys) {
             if(kind.equals(PushController.Kind.PLANS)){
                 Log.d(TAG, "Set plan status as QUARANTINE" + survey.getId_survey());
                 Log.d(TAG, "Set plan status as QUARANTINE" + survey.toString());
-                ObsActionPlan obsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(survey.getId_survey());
+                ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(survey.getId_survey());
                 //The obs action plan doesn't need the quarantine status.
                 obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
                 obsActionPlan.save();
