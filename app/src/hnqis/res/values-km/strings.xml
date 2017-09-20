@@ -138,6 +138,7 @@ evaluation"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
 <string name="feedback_info_failed">"FAIL"</string>
 <string name="feedback_info_not_answered">"NA"</string>
@@ -234,4 +235,24 @@ evaluation"</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
+<string name="action_button_text">ប្លង់ផែនការ</string>
+<string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
+<string name="plan_action_today_date">បានបញ្ចប់: %s</string>
+<string name="plan_action_next_date">កាលបរិច្ឆេទនៃការឃ្លាំមើលបន្ទាប់: %s</string>
+<string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
+<string name="plan_action_action_title">សកម្មភាព:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"..."</item>
+<item>ការបណ្តុះបណ្តាលបំប៉នក្នុងអំឡុងពេល SSV</item>
+<item>បណ្តុះបណ្តារំលឹកជាក្រុមនៅថ្ងៃក្រោយ</item>
+<item>ផែនការសកម្មភាព CME</item>
+<item>បង្ហាញពីបច្ចេកទេសជាមួយអតិថិជន</item>
+<item>ផ្សេងទៀត</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>មើលវីដេអូ</item>
+<item>អនុវត្តបច្ចេកទេសបានត្រឹមត្រូវនៅពេលដែលការបញ្ចូលនៃដំណើរទស្សនកិច្ច</item>
+</string-array>
 </resources>

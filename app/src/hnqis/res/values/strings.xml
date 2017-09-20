@@ -123,6 +123,7 @@ evaluation"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback per Program/OU"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
 <string name="feedback_info_failed">"FAIL"</string>
 <string name="feedback_info_not_answered">"NA"</string>
@@ -224,4 +225,25 @@ evaluation"</string>
 <string name="header_reschedule">"Reschedule"</string>
 <string name="planing_schedule">"Schedule"</string>
 <string name="planing_due_date">"Due date"</string>
+<string name="action_button_text">ACTION PLAN</string>
+<string name="plan_action_title">Observations &amp; Action Plan</string>
+<string name="plan_action_today_date">Completed: %s</string>
+<string name="plan_action_next_date">Next Supervision Date: %s</string>
+<string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">Action plan:</string>
+<string name="plan_action_action_title">Action:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"..."</item>
+<item>Refresher training during SSV</item>
+<item>Group refresher training at a later date</item>
+<item>Plan CME activity</item>
+<item>Demonstrate technique with client</item>
+<item>Other</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>Watch video</item>
+<item>Practice proper insertion technique at time of visit</item>
+</string-array>
+
 </resources>

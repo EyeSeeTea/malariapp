@@ -137,6 +137,7 @@
 <string name="feedback_show_only_one_or_show_all">"ສະແດງໃຫ້ເຫັນຄວາມຄິດເຫັນຫຼ້າສຸດຕໍ່ໂຄງການ / OU"</string>
 <string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>
 <string name="quality_of_care">"ຄະແນນຄຸນນະພາບ"</string>
+<string name="overall_quality_of_care">"ຜະລິດຕະພາບການດູແລສຸຂະພາບໂດຍລວມ (QoC):"</string>
 <string name="feedback_info_passed">"ຜ່ານ"</string>
 <string name="feedback_info_failed">"ບໍ່ຜ່ານ"</string>
 <string name="feedback_info_not_answered">"
@@ -235,4 +236,24 @@
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
 <string name="planing_schedule">"ວາງແຜນ"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
+<string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
+<string name="plan_action_title">"Observations &amp; Action Plan"</string>
+<string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
+<string name="plan_action_next_date">ວັນທີຕິດຕາມຕໍ່ໄປ: %s</string>
+<string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
+<string name="plan_action_action_title">ການປະຕິບັດ:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"..."</item>
+<item>ການຝຶກອົບຮົມທົບທວນໄລຍະ SSV</item>
+<item>ການຝຶກອົບຮົມທົບທວນ Group ໃນວັນຕໍ່ມາ</item>
+<item>ແຜນກິດຈະກໍາ CME</item>
+<item>ສະແດງໃຫ້ເຫັນເຕັກນິກກັບລູກຄ້າ</item>
+<item>ອື່ນໆ</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>ເບິ່ງວິດີໂອ</item>
+<item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
+</string-array>
 </resources>

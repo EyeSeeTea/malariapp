@@ -133,6 +133,7 @@
 <string name="feedback_show_only_one_or_show_all"></string>
 <string name="feedback_return"></string>
 <string name="quality_of_care"></string>
+<string name="overall_quality_of_care"></string>
 <string name="feedback_info_passed"></string>
 <string name="feedback_info_failed"></string>
 <string name="feedback_info_not_answered"></string>
@@ -215,4 +216,5 @@
 <string name="dialog_action_refresh"></string>
 <string name="dialog_incomplete_surveys_before_refresh"></string>
 <string name="dialog_all_surveys_sent_before_refresh"></string>
+<string name="action_button_text"></string>
 </resources>
