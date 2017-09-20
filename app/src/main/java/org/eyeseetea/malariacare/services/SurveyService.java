@@ -336,6 +336,7 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
+        reloadSentFragment();
         getAllCompletedSurveys();
         getAllCreateSurveyData();
         getAllInProgressSurveys();
