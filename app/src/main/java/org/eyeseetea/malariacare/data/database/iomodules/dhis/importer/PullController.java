@@ -51,13 +51,6 @@ public class PullController implements IPullController {
         conversionLocalDataSource.convertFromSDK();
 
         conversionLocalDataSource.validateCS();
-
-        if (PULL_IS_ACTIVE) {
-            Log.d(TAG, "PULL process...OK");
-            postFinish();
-        } else {
-            callback.onCancel();
-        }
     }
 
 
@@ -136,11 +129,13 @@ public class PullController implements IPullController {
                                 ConversionException(e));
                         return;
                     }
-                    if (!PULL_IS_ACTIVE) {
+
+                    if (PULL_IS_ACTIVE) {
+                        Log.d(TAG, "PULL process...OK");
+                        callback.onComplete();
+                    } else {
                         callback.onCancel();
-                        return;
                     }
-                    callback.onComplete();
                 } catch (NullPointerException e) {
                     callback.onError(new
                             ConversionException(e));
