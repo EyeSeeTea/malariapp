@@ -24,8 +24,12 @@ import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -129,11 +133,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         fabHtmlOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isFABOpen){
-                    showFABMenu();
-                }else{
-                    closeFABMenu();
-                }
+                shareHtmlText();
             }
         });
         fabPlainTextOption.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +142,57 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 sharePlainText();
             }
         });
+    }
+
+    private void shareHtmlText() {
+        Survey survey = Session.getSurveyByModule(moduleName);
+
+        String title = getString(R.string.supervision_on) +" "+ survey.getOrgUnit().getName() +"/"+survey.getProgram().getName() + "\n";
+        String data =
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.app_name) + "\n";
+        data +=getString(R.string.supervision_on) +" "+ survey.getOrgUnit().getName() +"/"+survey.getProgram().getName() + "\n";
+        data +=getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n";
+        data +=String.format(getString(R.string.plan_action_next_date), EventExtended.format(survey.getCompletionDate(),EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
+        data +="<p><b>"+getString(R.string.plan_action_gasp_title) + "</b> " + mCustomGapsEditText.getText().toString() + "</p>";
+        data +="<p><b>"+getString(R.string.plan_action_action_plan_title) + "</b> " + mCustomActionPlanEditText.getText().toString() + "</p>";
+        if(!actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(0))) {
+            data += "<p><b>"+getString(R.string.plan_action_action_title) + "</b> " + actionDropdown.getSelectedItem().toString();
+        }
+        if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(1))){
+            data +=secondaryActionDropdown.getSelectedItem().toString()  + "</p>";
+        }else if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(5))){
+            data +=mCustomActionOtherEditText.getText().toString()  +"</p>";
+        }
+        else{
+            data +="</p>";
+        }
+        data +="<p><b>"+getString(R.string.critical_steps) + "</p>";
+
+        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session.getSurveyByModule(moduleName).getId_survey());
+
+        List<CompositeScore> compositeScoreList = prepareCompositeScores(survey, criticalQuestions);
+
+
+        //For each score add proper items
+        for(CompositeScore compositeScore:compositeScoreList) {
+            data +="<p><b>"+compositeScore.getHierarchical_code() +" "+ compositeScore.getLabel() +"</b></p>";
+            for(Question question : criticalQuestions){
+                if(question.getCompositeScoreFk()==(compositeScore.getId_composite_score())) {
+                    data += "<p style=\"font-style: italic;\">" +"-" + question.getForm_name() + "</p>";
+                }
+            }
+        }
+        data += getString(R.string.see_full_assessment)+ "</p>";
+        if(survey.isSent()) {
+            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "</p>";
+        }else{
+            data += getString(R.string.url_not_available) + "</p>";
+        }
+        System.out.println(data);
+
+        Spanned spannedData= Html.fromHtml(data);
+        createHtmlIntent(getActivity(), data, title);
     }
 
     private void sharePlainText() {
@@ -166,33 +217,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
         List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session.getSurveyByModule(moduleName).getId_survey());
 
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey, moduleName);
+        List<CompositeScore> compositeScoreList = prepareCompositeScores(survey, criticalQuestions);
 
 
         //Calculate main score
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), moduleName));
-
-            //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
-            for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
-                CompositeScore compositeScore = iterator.next();
-                //Show only if a parent have questions.
-                if(compositeScore.getQuestions().size()<1) {
-                    if (!compositeScore.hasParent()) iterator.remove();
-                }
-                else{
-                    boolean isValid=false;
-                    for(Question question : compositeScore.getQuestions()){
-                        for(Question criticalQuestion : criticalQuestions){
-                            if(question.getUid().equals(criticalQuestion.getUid())){
-                                isValid=true;
-                            }
-                        }
-                    }
-                    if(!isValid){
-                        if (!compositeScore.hasParent()) iterator.remove();
-                    }
-                }
-            }
 
         //For each score add proper items
         for(CompositeScore compositeScore:compositeScoreList) {
@@ -216,12 +244,54 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     /**
      * This method create the email intent
      */
+    private static void createHtmlIntent(Activity activity, String data, String title) {Intent emailIntent = new Intent();
+        emailIntent.putExtra(Intent.EXTRA_EMAIL,
+                new String[]{""});
+        emailIntent.setType("text/html");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
+        emailIntent.putExtra(Intent.EXTRA_HTML_TEXT, Html.fromHtml("<html><body>"+data+"</body></html>"));
+        activity.startActivity(emailIntent);
+    }
+
+    /**
+     * This method create the email intent
+     */
     private static void createTextIntent(Activity activity, String data) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, data);
         sendIntent.setType("text/plain");
         activity.startActivity(sendIntent);
+    }
+
+    private List<CompositeScore> prepareCompositeScores(Survey survey, List<Question> criticalQuestions) {
+        //Calculate main score
+        List<CompositeScore> compositeScoreList =ScoreRegister.loadCompositeScores(survey, moduleName);
+        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), moduleName));
+
+        //Remove parents from list (to avoid showing the parent composite that is there just to
+        // push the overall score)
+        for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
+            CompositeScore compositeScore = iterator.next();
+            //Show only if a parent have questions.
+            if(compositeScore.getQuestions().size()<1) {
+                if (!compositeScore.hasParent()) iterator.remove();
+            }
+            else{
+                boolean isValid=false;
+                for(Question question : compositeScore.getQuestions()){
+                    for(Question criticalQuestion : criticalQuestions){
+                        if(question.getUid().equals(criticalQuestion.getUid())){
+                            isValid=true;
+                        }
+                    }
+                }
+                if(!isValid){
+                    if (!compositeScore.hasParent()) iterator.remove();
+                }
+            }
+        }
+        return compositeScoreList;
     }
 
     private void showFABMenu(){
