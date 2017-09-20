@@ -386,7 +386,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     private void initSpinner(RelativeLayout llLayout) {
         actionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
 
-
+        final View secondaryView = llLayout.findViewById(R.id.secondaryView);
+        final View otherView = llLayout.findViewById(R.id.otherView);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),
                 R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
         actionDropdown.setAdapter(adapter);
@@ -412,13 +413,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 }
                 if (selectedItem.equals(options[1])) {
                     secondaryActionDropdown.setVisibility(View.VISIBLE);
+                    secondaryView.setVisibility(View.VISIBLE);
                     mCustomActionOtherEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
                 } else if (selectedItem.equals(options[5])) {
                     secondaryActionDropdown.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
                     mCustomActionOtherEditText.setVisibility(View.VISIBLE);
+                    otherView.setVisibility(View.VISIBLE);
                 } else {
                     secondaryActionDropdown.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
                     mCustomActionOtherEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
                 }
                 mObsActionPlan.save();
             }
