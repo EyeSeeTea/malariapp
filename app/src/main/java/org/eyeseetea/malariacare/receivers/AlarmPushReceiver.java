@@ -43,7 +43,6 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     private static AlarmPushReceiver instance;
     private static boolean fail;
 
-    //the constructor should be public becouse is needed in a receiver class.
     public AlarmPushReceiver() {
     }
 
