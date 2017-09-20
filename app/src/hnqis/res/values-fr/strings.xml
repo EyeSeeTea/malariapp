@@ -117,6 +117,7 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_next_qa">"Prochaine évaluation"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Afficher uniquement les questions ratées"</string>
+<string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par programme/OU"</string>
 <string name="feedback_return">"Retour à Fiches d'évaluation"</string>
 <string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
 <string name="feedback_info_passed">"Passé"</string>
