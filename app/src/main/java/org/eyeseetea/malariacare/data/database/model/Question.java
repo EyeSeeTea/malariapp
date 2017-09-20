@@ -23,6 +23,8 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.headerAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.headerName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionAlias;
@@ -48,7 +50,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -899,6 +900,22 @@ public class Question extends BaseModel {
                 .orderBy(Question_Table.order_pos.withTable(questionAlias), true).queryList();
     }
 
+
+    public static List<Question> getCriticalFailedQuestions(long idSurvey) {
+        return SQLite.select()
+                .from(Question.class).as(questionName)
+                .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(Value_Table.id_question_fk.withTable(valueAlias)
+                        .eq(Question_Table.id_question.withTable(questionAlias)))
+                .join(Option.class, Join.JoinType.LEFT_OUTER).as(optionFlowName)
+                .on(Option_Table.id_answer_fk.withTable(optionFlowAlias)
+                        .eq(Question_Table.id_answer_fk.withTable(questionAlias)))
+                .where(Value_Table.id_survey_fk.eq(idSurvey))
+                .and(Option_Table.factor.is(0.0f))
+                .and(Question_Table.compulsory.is(true))
+                .and(Value_Table.value.withTable(valueAlias).is(Option_Table.name.withTable(optionFlowAlias)))
+                .queryList();
+    }
 
     /**
      * Checks if this question is scored or not.
