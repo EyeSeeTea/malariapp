@@ -280,14 +280,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
     /**
-     * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
-     * This includes a pair or corner cases
-     */
-    public void onMarkAsCompleted(SurveyDB survey) {
-        dashboardController.onMarkAsCompleted(survey);
-    }
-
-    /**
      * Handler that enter into the feedback for the given survey
      */
     public void onFeedbackSelected(SurveyDB survey) {
@@ -388,6 +380,18 @@ public class DashboardActivity extends BaseActivity {
                 (PlanModuleController) dashboardController.getModuleByName(
                         PlanModuleController.getSimpleName());
         planModuleController.clickOrgProgramSpinner();
+    }
+
+    public void onAssetsSelected(SurveyDB survey) {
+        dashboardController.onAssetsSelected(survey);
+    }
+
+    public void openFeedback(SurveyDB survey) {
+        dashboardController.openFeedback(survey);
+    }
+
+    public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
+        dashboardController.onPlannedSurvey(survey, scheduleClickListener);
     }
 
 

@@ -84,6 +84,7 @@
 
 
     <ImageView
+        android:id="@+id/menu_dots"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="0.1"

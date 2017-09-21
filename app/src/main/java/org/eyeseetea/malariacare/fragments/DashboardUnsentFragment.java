@@ -116,51 +116,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenu.ContextMenuInfo menuInfo) {
-        if (isPositionASurvey(selectedPosition)) {
-            MenuInflater inflater = getActivity().getMenuInflater();
-            inflater.inflate(R.menu.unsent_options, menu);
-        }
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         dashboardActivity = (DashboardActivity) activity;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Log.d(TAG, "id" + item.getItemId());
-        final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition - 1);
-        switch (item.getItemId()) {
-            case R.id.option_edit:
-                dashboardActivity.onSurveySelected(survey);
-                return true;
-            case R.id.option_mark_completed:
-                dashboardActivity.onMarkAsCompleted(survey);
-                return true;
-            case R.id.option_delete:
-                Log.d(TAG, "removing item pos=" + selectedPosition);
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                        .setMessage(String.format(""+getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                                removeSurveyFromAdapter(survey);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
     }
 
     //Remove survey from the list and reload list.
@@ -240,7 +198,10 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void onListItemClick(ListView l, View v, int position, long id){
         //Discard clicks on header|footer (which is attendend on onNewSurvey via super)
         selectedPosition=position;
-        l.showContextMenuForChild(v);
+        if (isPositionASurvey(selectedPosition)) {
+            final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition - 1);
+            dashboardActivity.onSurveySelected(survey);
+        }
     }
 
     /**

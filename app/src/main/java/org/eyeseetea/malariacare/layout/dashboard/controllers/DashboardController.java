@@ -19,8 +19,14 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -31,8 +37,11 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
+import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -300,11 +309,140 @@ public class DashboardController {
     }
 
     /**
+     * Called when click on assets survey
+     * @param survey
+     */
+    public void onAssetsSelected(SurveyDB survey) {
+        assetsModelDialog(survey);
+    }
+
+
+    public AlertDialog assetsModelDialog(final SurveyDB survey) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+
+        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.modal_menu, null);
+
+        builder.setView(v);
+
+        Button delete = (Button) v.findViewById(R.id.delete);
+        Button cancel = (Button) v.findViewById(R.id.cancel);
+        Button markComplete = (Button) v.findViewById(R.id.mark_completed);
+        Button edit = (Button) v.findViewById(R.id.edit);
+
+        final AlertDialog alertDialog = builder.create();
+
+        edit.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onSurveySelected(survey);
+                        alertDialog.dismiss();
+                    }
+                }
+
+        );
+        markComplete.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onMarkAsCompleted(survey);
+                        alertDialog.dismiss();
+                    }
+                }
+
+        );
+        delete.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog.Builder(dashboardActivity)
+                                .setTitle(dashboardActivity.getString(R.string.dialog_title_delete_survey))
+                                .setMessage(String.format(""+dashboardActivity.getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
+                                        SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
+                                        dashboardActivity.reloadDashboard();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null).create().show();
+                        alertDialog.dismiss();
+                    }
+                }
+        );
+        cancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                }
+        );
+        alertDialog.show();
+        return alertDialog;
+    }
+
+    /**
      * Called when entering feedback for the given survey
      * @param survey
      */
     public void onFeedbackSelected(SurveyDB survey) {
+        feedbackModelDialog(survey);
+    }
 
+    public AlertDialog feedbackModelDialog(final SurveyDB survey) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+
+        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.modal_feedback_menu, null);
+
+        builder.setView(v);
+
+        builder.setCancelable(false);
+        Button viewFeedback = (Button) v.findViewById(R.id.view);
+        Button actionPlan = (Button) v.findViewById(R.id.action_plan);
+        Button cancel = (Button) v.findViewById(R.id.cancel);
+
+        final AlertDialog alertDialog =builder.create();
+        viewFeedback.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openFeedback(survey);
+
+
+                        alertDialog.dismiss();
+                    }
+                }
+        );
+
+        actionPlan.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //// TODO: 21/09/2017 Open plan action fragment
+                        alertDialog.dismiss();
+                    }
+                }
+
+        );
+        cancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                }
+
+        );
+        alertDialog.show();
+        return alertDialog;
+    }
+
+    public void openFeedback(SurveyDB survey) {
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
@@ -323,6 +461,57 @@ public class DashboardController {
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
         improveModuleController.onFeedbackSelected(survey);
+    }
+
+
+    public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
+        plannedModelDialog(survey, scheduleClickListener);
+    }
+
+    public AlertDialog plannedModelDialog(final SurveyDB survey,
+            View.OnClickListener scheduleClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+
+        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.modal_planned_menu, null);
+
+        builder.setView(v);
+
+        builder.setCancelable(false);
+        Button add = (Button) v.findViewById(R.id.add);
+        Button change = (Button) v.findViewById(R.id.change);
+        Button cancel = (Button) v.findViewById(R.id.cancel);
+
+
+        CustomTextView orgUnitTextView = (CustomTextView) v.findViewById(R.id.planned_org_unit);
+        orgUnitTextView.setText(survey.getOrgUnit().getName());
+
+        CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
+        programTextView.setText(survey.getProgram().getName());
+        final AlertDialog alertDialog =builder.create();
+        add.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onSurveySelected(survey);
+                        alertDialog.dismiss();
+                    }
+                }
+        );
+        ((ScheduleListener) scheduleClickListener).addAlertDialog(alertDialog);
+        change.setOnClickListener(scheduleClickListener);
+        cancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                }
+
+        );
+        alertDialog.show();
+        return alertDialog;
     }
 
     public void reloadVertical(){

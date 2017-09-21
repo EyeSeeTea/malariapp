@@ -372,7 +372,7 @@ public class AssessModuleController extends ModuleController {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 //Move to feedbackfragment
-                                dashboardActivity.onFeedbackSelected(survey);
+                                dashboardActivity.openFeedback(survey);
                             }
                         })
                 .setCancelable(true)

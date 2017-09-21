@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -40,6 +42,15 @@ public class AssessmentUnsentAdapter extends
         this.footerLayout = R.layout.assessment_unsent_footer;
     }
 
+    @Override
+    protected void initMenu(final SurveyDB survey) {
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardActivity.onAssetsSelected(survey);
+            }
+        });
+    }
 
     @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
