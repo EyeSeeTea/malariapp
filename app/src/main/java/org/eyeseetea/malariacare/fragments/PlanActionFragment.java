@@ -35,34 +35,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.Option;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
-import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
-import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,8 +70,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     CustomEditText mCustomGapsEditText;
     CustomEditText mCustomActionPlanEditText;
     CustomEditText mCustomActionOtherEditText;
-    CustomSpinner actionDropdown;
-    CustomSpinner secondaryActionDropdown;
+    CustomSpinner actionSpinner;
+    CustomSpinner secondaryActionSpinner;
 
     /**
      * Parent layout
@@ -231,13 +221,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 + mCustomGapsEditText.getText().toString() + "\n";
         data += getString(R.string.plan_action_action_plan_title) + " "
                 + mCustomActionPlanEditText.getText().toString() + "\n";
-        if (!actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(0))) {
+        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
             data += getString(R.string.plan_action_action_title) + " "
-                    + actionDropdown.getSelectedItem().toString() + "\n";
+                    + actionSpinner.getSelectedItem().toString() + "\n";
         }
-        if (actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(1))) {
-            data += secondaryActionDropdown.getSelectedItem().toString() + "\n";
-        } else if (actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(5))) {
+        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
+            data += secondaryActionSpinner.getSelectedItem().toString() + "\n";
+        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
         data += getString(R.string.critical_steps) + "\n";
@@ -339,49 +329,59 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initSpinner(RelativeLayout llLayout) {
-        actionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
+        actionSpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
 
-        secondaryActionDropdown = (CustomSpinner) llLayout.findViewById(
+        secondaryActionSpinner = (CustomSpinner) llLayout.findViewById(
                 R.id.plan_action_secondary_spinner);
-        mCustomActionOtherEditText = (CustomEditText) llLayout.findViewById(
-                R.id.plan_action_others_edit_text);
+
+        final View secondaryView = llLayout.findViewById(R.id.secondaryView);
+        final View otherView = llLayout.findViewById(R.id.otherView);
 
         final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
-                llLayout.getContext(), R.array.plan_action_dropdown_suboptions,
+                llLayout.getContext(),R.array.plan_action_dropdown_suboptions,
                 android.R.layout.simple_spinner_item);
-        secondaryActionDropdown.setAdapter(secondaryAdapter);
+        secondaryActionSpinner.setAdapter(secondaryAdapter);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),
                 R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
-        actionDropdown.setAdapter(adapter);
-        actionDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        actionSpinner.setAdapter(adapter);
+        actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
-                    long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String[] options = getResources().getStringArray(
                         R.array.plan_action_dropdown_options);
                 String selectedItem = adapterView.getItemAtPosition(position).toString();
+
                 if (selectedItem.equals(options[0])) {
                     mObsActionPlan.setAction1(null);
                     mCustomActionOtherEditText.setText("");
-                    secondaryActionDropdown.setSelection(0);
+                    secondaryActionSpinner.setSelection(0);
                 }else{
                     mObsActionPlan.setAction1(selectedItem);
                 }
                 if(mObsActionPlan.getAction2()==null || !mObsActionPlan.getAction2().equals(selectedItem)) {
                     mCustomActionOtherEditText.setText("");
-                    secondaryActionDropdown.setSelection(0);
+                    secondaryActionSpinner.setSelection(0);
                 }
-                if (selectedItem.equals(options[1])) {
-                    secondaryActionDropdown.setVisibility(View.VISIBLE);
+
+                if(selectedItem.equals(options[1])){
+                    secondaryActionSpinner.setVisibility(View.VISIBLE);
+                    secondaryView.setVisibility(View.VISIBLE);
                     mCustomActionOtherEditText.setVisibility(View.GONE);
-                } else if (selectedItem.equals(options[5])) {
-                    secondaryActionDropdown.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
+                }else if(selectedItem.equals(options[5])) {
+                    secondaryActionSpinner.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
                     mCustomActionOtherEditText.setVisibility(View.VISIBLE);
-                } else {
-                    secondaryActionDropdown.setVisibility(View.GONE);
-                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.VISIBLE);
                 }
+                else{
+                    secondaryActionSpinner.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
+                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
+                }
+
                 mObsActionPlan.save();
             }
 
@@ -390,7 +390,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             }
         });
 
-        secondaryActionDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        secondaryActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position,
                     long l) {
