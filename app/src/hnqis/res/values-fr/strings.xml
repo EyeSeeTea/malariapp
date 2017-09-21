@@ -117,8 +117,10 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_next_qa">"Prochaine évaluation"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Afficher uniquement les questions ratées"</string>
+<string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par programme/OU"</string>
 <string name="feedback_return">"Retour à Fiches d'évaluation"</string>
 <string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
+<string name="overall_quality_of_care">"Note globale sur la qualité des soins (QoC):"</string>
 <string name="feedback_info_passed">"Passé"</string>
 <string name="feedback_info_failed">"Raté"</string>
 <string name="feedback_info_not_answered">"Non répondu"</string>
@@ -219,7 +221,7 @@ Mensuelle"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN DE L'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
-<string name="plan_action_today_date">"Aujourd'hui: %s"</string>
+<string name="plan_action_today_date">"Terminé: %s"</string>
 <string name="plan_action_next_date">"Date de supervision suivante: %s"</string>
 <string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
 <string name="plan_action_gasp_title">Gaps:</string>
