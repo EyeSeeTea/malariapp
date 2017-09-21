@@ -253,6 +253,7 @@
 <item>ອື່ນໆ</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>ເບິ່ງວິດີໂອ</item>
 <item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
 </string-array>

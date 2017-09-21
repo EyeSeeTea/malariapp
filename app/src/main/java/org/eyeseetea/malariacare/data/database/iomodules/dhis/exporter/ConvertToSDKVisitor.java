@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
 import org.eyeseetea.malariacare.data.database.model.Survey;
@@ -137,6 +138,11 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.uploaded_by_code));
         surveys = new ArrayList<>();
         events = new HashMap<>();
+    }
+
+    @Override
+    public void visit(ObsActionPlan obsActionPlan) throws ConversionException {
+        //Todo
     }
 
     @Override

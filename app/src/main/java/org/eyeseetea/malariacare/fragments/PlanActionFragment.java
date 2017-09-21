@@ -26,6 +26,8 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +37,9 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -58,6 +60,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
     public static final String TAG = ".PlanActionFragment";
 
+    private ObsActionPlan mObsActionPlan;
     private String moduleName;
     boolean isFABOpen;
     FloatingActionButton fabHtmlOption;
@@ -67,8 +70,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     CustomEditText mCustomGapsEditText;
     CustomEditText mCustomActionPlanEditText;
     CustomEditText mCustomActionOtherEditText;
-    CustomSpinner actionDropdown;
-    CustomSpinner secondaryActionDropdown;
+    CustomSpinner actionSpinner;
+    CustomSpinner secondaryActionSpinner;
 
     /**
      * Parent layout
@@ -78,7 +81,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container, false);
+        llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
+                false);
+        mObsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(
+                Session.getSurveyByModule(moduleName).getId_survey());
+        if (mObsActionPlan == null) {
+            mObsActionPlan = new ObsActionPlan(
+                    Session.getSurveyByModule(moduleName).getId_survey());
+            mObsActionPlan.save();
+        }
         initLayoutHeaders(llLayout);
         initEditTexts(llLayout);
         initSpinner(llLayout);
@@ -90,10 +101,61 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     private void initEditTexts(RelativeLayout llLayout) {
         mCustomGapsEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_gasp_edit_text);
+        mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mObsActionPlan.setGaps(editable.toString());
+                mObsActionPlan.save();
+            }
+        });
         mCustomActionPlanEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_action_plan_edit_text);
+        mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mObsActionPlan.setAction_plan(editable.toString());
+                mObsActionPlan.save();
+            }
+        });
         mCustomActionOtherEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_others_edit_text);
+        mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mObsActionPlan.setAction2(editable.toString());
+                mObsActionPlan.save();
+            }
+        });
     }
 
     private void initBackButton(RelativeLayout llLayout) {
@@ -119,9 +181,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isFABOpen){
+                if (!isFABOpen) {
                     showFABMenu();
-                }else{
+                } else {
                     closeFABMenu();
                 }
             }
@@ -129,9 +191,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         fabHtmlOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isFABOpen){
+                if (!isFABOpen) {
                     showFABMenu();
-                }else{
+                } else {
                     closeFABMenu();
                 }
             }
@@ -146,67 +208,78 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
     private void sharePlainText() {
         Survey survey = Session.getSurveyByModule(moduleName);
-        String data=
+        String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n";
-        data +=getString(R.string.supervision_on) +" "+ survey.getOrgUnit().getName() +"/"+survey.getProgram().getName() + "\n";
-        data +=getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n";
-        data +=String.format(getString(R.string.plan_action_next_date), EventExtended.format(survey.getCompletionDate(),EventExtended.EUROPEAN_DATE_FORMAT)) + "\n";
-        data +=getString(R.string.plan_action_gasp_title) + " " + mCustomGapsEditText.getText().toString() + "\n";
-        data +=getString(R.string.plan_action_action_plan_title) + " " + mCustomActionPlanEditText.getText().toString() + "\n";
-        if(!actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(0))) {
-            data += getString(R.string.plan_action_action_title) + " " + actionDropdown.getSelectedItem().toString() + "\n";
+        data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
+                + survey.getProgram().getName() + "\n";
+        data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n";
+        data += String.format(getString(R.string.plan_action_next_date),
+                EventExtended.format(survey.getCompletionDate(),
+                        EventExtended.EUROPEAN_DATE_FORMAT)) + "\n";
+        data += getString(R.string.plan_action_gasp_title) + " "
+                + mCustomGapsEditText.getText().toString() + "\n";
+        data += getString(R.string.plan_action_action_plan_title) + " "
+                + mCustomActionPlanEditText.getText().toString() + "\n";
+        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
+            data += getString(R.string.plan_action_action_title) + " "
+                    + actionSpinner.getSelectedItem().toString() + "\n";
         }
-        if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(1))){
-            data += secondaryActionDropdown.getSelectedItem().toString() + "\n";
-        }else if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(5))){
+        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
+            data += secondaryActionSpinner.getSelectedItem().toString() + "\n";
+        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
-        data +=getString(R.string.critical_steps) + "\n";
+        data += getString(R.string.critical_steps) + "\n";
 
-        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session.getSurveyByModule(moduleName).getId_survey());
+        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(
+                Session.getSurveyByModule(moduleName).getId_survey());
 
-        List<CompositeScore> compositeScoreList= ScoreRegister.loadCompositeScores(survey, moduleName);
+        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
+                moduleName);
 
 
         //Calculate main score
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), moduleName));
+        survey.setMainScore(
+                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
+                        moduleName));
 
-            //Remove parents from list (to avoid showing the parent composite that is there just to push the overall score)
-            for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
-                CompositeScore compositeScore = iterator.next();
-                //Show only if a parent have questions.
-                if(compositeScore.getQuestions().size()<1) {
-                    if (!compositeScore.hasParent()) iterator.remove();
-                }
-                else{
-                    boolean isValid=false;
-                    for(Question question : compositeScore.getQuestions()){
-                        for(Question criticalQuestion : criticalQuestions){
-                            if(question.getUid().equals(criticalQuestion.getUid())){
-                                isValid=true;
-                            }
+        //Remove parents from list (to avoid showing the parent composite that is there just to
+        // push the overall score)
+        for (Iterator<CompositeScore> iterator = compositeScoreList.iterator();
+                iterator.hasNext(); ) {
+            CompositeScore compositeScore = iterator.next();
+            //Show only if a parent have questions.
+            if (compositeScore.getQuestions().size() < 1) {
+                if (!compositeScore.hasParent()) iterator.remove();
+            } else {
+                boolean isValid = false;
+                for (Question question : compositeScore.getQuestions()) {
+                    for (Question criticalQuestion : criticalQuestions) {
+                        if (question.getUid().equals(criticalQuestion.getUid())) {
+                            isValid = true;
                         }
                     }
-                    if(!isValid){
-                        if (!compositeScore.hasParent()) iterator.remove();
-                    }
+                }
+                if (!isValid) {
+                    if (!compositeScore.hasParent()) iterator.remove();
                 }
             }
+        }
 
         //For each score add proper items
-        for(CompositeScore compositeScore:compositeScoreList) {
-            data +=compositeScore.getHierarchical_code() +" "+ compositeScore.getLabel() +"\n";
-            for(Question question : criticalQuestions){
-                if(question.getCompositeScoreFk()==(compositeScore.getId_composite_score())) {
+        for (CompositeScore compositeScore : compositeScoreList) {
+            data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel() + "\n";
+            for (Question question : criticalQuestions) {
+                if (question.getCompositeScoreFk() == (compositeScore.getId_composite_score())) {
                     data += "-" + question.getForm_name() + "\n";
                 }
             }
         }
-        data += getString(R.string.see_full_assessment)+ "\n";
-        if(survey.isSent()) {
+        data += getString(R.string.see_full_assessment) + "\n";
+        if (survey.isSent()) {
             data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
-        }else{
+        } else {
             data += getString(R.string.url_not_available) + "\n";
         }
         System.out.println(data);
@@ -224,17 +297,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         activity.startActivity(sendIntent);
     }
 
-    private void showFABMenu(){
-        isFABOpen=true;
+    private void showFABMenu() {
+        isFABOpen = true;
         fabHtmlOption.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
         mTextViewHtml.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
         mTextViewHtml.setVisibility(View.VISIBLE);
-        fabPlainTextOption.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
-        mTextViewPlainText.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        fabPlainTextOption.animate().translationY(
+                -getResources().getDimension(R.dimen.standard_105));
+        mTextViewPlainText.animate().translationY(
+                -getResources().getDimension(R.dimen.standard_105));
         mTextViewPlainText.setVisibility(View.VISIBLE);
     }
 
-    private void closeFABMenu(){
+    private void closeFABMenu() {
         isFABOpen = false;
         mTextViewPlainText.animate().translationY(0);
         mTextViewHtml.animate().translationY(0);
@@ -245,53 +320,93 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     public boolean onBackPressed() {
-        if(!isFABOpen){
+        if (!isFABOpen) {
             return false;
-        }else{
+        } else {
             closeFABMenu();
             return true;
         }
     }
 
     private void initSpinner(RelativeLayout llLayout) {
-        actionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
+        actionSpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
 
-        final CustomSpinner secondarySpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_secondary_spinner);
-        final CustomEditText othersEditText = (CustomEditText) llLayout.findViewById(R.id.plan_action_others_edit_text);
+        secondaryActionSpinner = (CustomSpinner) llLayout.findViewById(
+                R.id.plan_action_secondary_spinner);
+
         final View secondaryView = llLayout.findViewById(R.id.secondaryView);
         final View otherView = llLayout.findViewById(R.id.otherView);
-        ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(llLayout.getContext(),R.array.plan_action_dropdown_suboptions, android.R.layout.simple_spinner_item);
-        secondaryActionDropdown.setAdapter(secondaryAdapter);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
-        actionDropdown.setAdapter(adapter);
-        actionDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
+                llLayout.getContext(),R.array.plan_action_dropdown_suboptions,
+                android.R.layout.simple_spinner_item);
+        secondaryActionSpinner.setAdapter(secondaryAdapter);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),
+                R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
+        actionSpinner.setAdapter(adapter);
+        actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String[] options = getResources().getStringArray(R.array.plan_action_dropdown_options);
-                if(adapterView.getItemAtPosition(position).equals(options[1])){
-                    secondarySpinner.setVisibility(View.VISIBLE);
+                String[] options = getResources().getStringArray(
+                        R.array.plan_action_dropdown_options);
+                String selectedItem = adapterView.getItemAtPosition(position).toString();
+
+                if (selectedItem.equals(options[0])) {
+                    mObsActionPlan.setAction1(null);
+                    mCustomActionOtherEditText.setText("");
+                    secondaryActionSpinner.setSelection(0);
+                }else{
+                    mObsActionPlan.setAction1(selectedItem);
+                }
+                if(mObsActionPlan.getAction2()==null || !mObsActionPlan.getAction2().equals(selectedItem)) {
+                    mCustomActionOtherEditText.setText("");
+                    secondaryActionSpinner.setSelection(0);
+                }
+
+                if(selectedItem.equals(options[1])){
+                    secondaryActionSpinner.setVisibility(View.VISIBLE);
                     secondaryView.setVisibility(View.VISIBLE);
-                    othersEditText.setVisibility(View.GONE);
+                    mCustomActionOtherEditText.setVisibility(View.GONE);
                     otherView.setVisibility(View.GONE);
-                }else if(adapterView.getItemAtPosition(position).equals(options[5])) {
-                    secondarySpinner.setVisibility(View.GONE);
+                }else if(selectedItem.equals(options[5])) {
+                    secondaryActionSpinner.setVisibility(View.GONE);
                     secondaryView.setVisibility(View.GONE);
-                    othersEditText.setVisibility(View.VISIBLE);
+                    mCustomActionOtherEditText.setVisibility(View.VISIBLE);
                     otherView.setVisibility(View.VISIBLE);
                 }
                 else{
-                    secondarySpinner.setVisibility(View.GONE);
+                    secondaryActionSpinner.setVisibility(View.GONE);
                     secondaryView.setVisibility(View.GONE);
-                    othersEditText.setVisibility(View.GONE);
+                    mCustomActionOtherEditText.setVisibility(View.GONE);
                     otherView.setVisibility(View.GONE);
                 }
+
+                mObsActionPlan.save();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                secondaryActionDropdown.setVisibility(View.GONE);
-                mCustomActionOtherEditText.setVisibility(View.GONE);
+            }
+        });
+
+        secondaryActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+                    long l) {
+                String[] options = getResources().getStringArray(
+                        R.array.plan_action_dropdown_suboptions);
+                String selectedItem = adapterView.getItemAtPosition(position).toString();
+                if (selectedItem.equals(options[0])) {
+                    mObsActionPlan.setAction2(null);
+                } else {
+                    mObsActionPlan.setAction2(selectedItem);
+                }
+                mObsActionPlan.save();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
@@ -313,25 +428,30 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             item.setBackgroundColor(getResources().getColor(colorId));
         }
         CustomTextView nextDate = (CustomTextView) llLayout.findViewById(R.id.plan_completion_day);
-        String formattedCompletionDate="NaN";
-        if(survey.getCompletionDate()!=null){
-            formattedCompletionDate =  EventExtended.format(survey.getCompletionDate(),EventExtended.EUROPEAN_DATE_FORMAT);
+        String formattedCompletionDate = "NaN";
+        if (survey.getCompletionDate() != null) {
+            formattedCompletionDate = EventExtended.format(survey.getCompletionDate(),
+                    EventExtended.EUROPEAN_DATE_FORMAT);
         }
-        nextDate.setText(String.format(getString(R.string.plan_action_today_date),formattedCompletionDate));
+        nextDate.setText(
+                String.format(getString(R.string.plan_action_today_date), formattedCompletionDate));
 
-        CustomTextView completionDate = (CustomTextView) llLayout.findViewById(R.id.new_supervision_date);
-        String formattedNextDate="NaN";
-        if(survey.getScheduledDate()!=null){
-            formattedNextDate =  EventExtended.format(survey.getScheduledDate(),EventExtended.EUROPEAN_DATE_FORMAT);
+        CustomTextView completionDate = (CustomTextView) llLayout.findViewById(
+                R.id.new_supervision_date);
+        String formattedNextDate = "NaN";
+        if (survey.getScheduledDate() != null) {
+            formattedNextDate = EventExtended.format(survey.getScheduledDate(),
+                    EventExtended.EUROPEAN_DATE_FORMAT);
         }
-        completionDate.setText(String.format(getString(R.string.plan_action_next_date),formattedNextDate));
+        completionDate.setText(
+                String.format(getString(R.string.plan_action_next_date), formattedNextDate));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        List<Feedback> feedbackList= new ArrayList<>();
+        List<Feedback> feedbackList = new ArrayList<>();
         Session.putServiceValue(PREPARE_FEEDBACK_ACTION_ITEMS, feedbackList);
     }
 
@@ -359,5 +479,4 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     @Override
     public void reloadData() {
     }
-
 }

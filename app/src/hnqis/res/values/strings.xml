@@ -242,6 +242,7 @@ evaluation"</string>
 <item>Other</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>Watch video</item>
 <item>Practice proper insertion technique at time of visit</item>
 </string-array>

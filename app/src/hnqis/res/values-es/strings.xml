@@ -242,6 +242,7 @@ clínica"</string>
 <item>Otro</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>Ver video</item>
 <item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
 </string-array>
