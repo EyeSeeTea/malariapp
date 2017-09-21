@@ -83,7 +83,7 @@
     <!--Plan action -->
     <dimen name="padding_plan_action_title_left">100dp</dimen>
     <dimen name="standard_55">55dp</dimen>
-    <dimen name="standard_65">65dp</dimen>>
+    <dimen name="standard_65">65dp</dimen>
     <dimen name="standard_75">75dp</dimen>
     <dimen name="standard_105">105dp</dimen>
     <dimen name="standard_155">155dp</dimen>
