@@ -22,7 +22,9 @@ package org.eyeseetea.malariacare.fragments;
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -73,7 +75,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     CustomEditText mCustomActionOtherEditText;
     CustomSpinner actionSpinner;
     CustomSpinner secondaryActionSpinner;
-
+    FloatingActionButton fabComplete;
     /**
      * Parent layout
      */
@@ -96,7 +98,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         initSpinner(llLayout);
         initFAB(llLayout);
         initBackButton(llLayout);
-        if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
+        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
             setReadOnlyMode();
         }
         return llLayout; // We must return the loaded Layout
@@ -108,6 +110,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         mCustomActionOtherEditText.setEnabled(false);
         actionSpinner.setEnabled(false);
         secondaryActionSpinner.setEnabled(false);
+        fabComplete.setEnabled(false);
     }
 
     private void initEditTexts(RelativeLayout llLayout) {
@@ -155,7 +158,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 R.id.plan_action_others_edit_text);
         String options[] = getResources().getStringArray(
                 R.array.plan_action_dropdown_options);
-        if (mObsActionPlan.getAction1() != null && mObsActionPlan.getAction1().equals(options[5])) {
+        if (mObsActionPlan.getAction1()!=null && mObsActionPlan.getAction1().equals(options[5])) {
             if (mObsActionPlan.getAction2() != null) {
                 mCustomActionOtherEditText.setText(mObsActionPlan.getAction2());
             }
@@ -193,11 +196,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initFAB(RelativeLayout llLayout) {
+        initFabComplete(llLayout);
+
         FloatingActionButton fab = (FloatingActionButton) llLayout.findViewById(R.id.fab);
         fabHtmlOption = (FloatingActionButton) llLayout.findViewById(R.id.fab2);
         mTextViewHtml = (CustomTextView) llLayout.findViewById(R.id.text2);
         fabPlainTextOption = (FloatingActionButton) llLayout.findViewById(R.id.fab1);
         mTextViewPlainText = (CustomTextView) llLayout.findViewById(R.id.text1);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +229,31 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             @Override
             public void onClick(View view) {
                 sharePlainText();
+            }
+        });
+    }
+
+    private void initFabComplete(RelativeLayout llLayout) {
+        fabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+            fabComplete.setImageResource(R.drawable.ic_action_check);
+        }
+
+        fabComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(null)
+                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+                                mObsActionPlan.save();
+                                fabComplete.setImageResource(R.drawable.ic_action_check);
+                                setReadOnlyMode();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
             }
         });
     }

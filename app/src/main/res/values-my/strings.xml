@@ -44,6 +44,7 @@
 <string name="dialog_content_incorrect_org_unit"></string>
 <string name="dialog_content_logout_confirmation"></string>
 <string name="dialog_info_ask_for_completion"></string>
+<string name="dialog_info_ask_for_completion_plan"></string>
 
 <string name="dashboard_info_feedback"></string>
 <string name="dashboard_info_ready_to_upload"></string>
