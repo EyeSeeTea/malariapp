@@ -121,7 +121,7 @@ public class SurveyFragment extends Fragment  {
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
     /**
-     * Adapter for the tabs actionDropdown
+     * Adapter for the tabs actionSpinner
      */
     private TabArrayAdapter tabAdapter;
 
@@ -272,14 +272,14 @@ public class SurveyFragment extends Fragment  {
     }
 
     /**
-     * Adds the actionDropdown and imagebutons for tabs
+     * Adds the actionSpinner and imagebutons for tabs
      */
     private void createMenu(final String moduleName) {
 
         Log.d(TAG, "createMenu");
         this.tabAdapter = new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
         spinner = (Spinner) llLayout.findViewById(R.id.tabSpinner);
-        //If the actionDropdown is null, is a survey without header tabs)
+        //If the actionSpinner is null, is a survey without header tabs)
         if (spinner != null) {
             //Invisible until info ready
             spinner.setVisibility(View.GONE);
@@ -375,7 +375,7 @@ public class SurveyFragment extends Fragment  {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //actionDropdown
+            //actionSpinner
             startProgress();
         }
 

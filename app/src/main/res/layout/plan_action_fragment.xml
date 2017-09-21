@@ -301,7 +301,7 @@
                 android:background="@color/assess_grey"></View>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/standard_75"
+                android:layout_height="@dimen/standard_65"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"></View>
         </LinearLayout>
