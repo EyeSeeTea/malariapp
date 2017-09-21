@@ -370,12 +370,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 } else {
                     mObsActionPlan.setAction1(selectedItem);
                 }
-                if (lastItem == null || lastItem.equals(selectedItem)) {
-                } else if (!lastItem.equals(options[5])) {
-                    secondaryActionSpinner.setSelection(0, false);
-                } else if (!lastItem.equals(options[1])) {
-                    mCustomActionOtherEditText.setText("");
-                }
+                mObsActionPlan.save();
                 if (selectedItem.equals(options[1])) {
                     secondaryActionSpinner.setVisibility(View.VISIBLE);
                     secondaryView.setVisibility(View.VISIBLE);
@@ -392,7 +387,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                     mCustomActionOtherEditText.setVisibility(View.GONE);
                     otherView.setVisibility(View.GONE);
                 }
-                mObsActionPlan.save();
+                if (lastItem == null || lastItem.equals(selectedItem)) {
+                    return;
+                } else if (!lastItem.equals(options[5])) {
+                    secondaryActionSpinner.setSelection(0, false);
+                } else if (!lastItem.equals(options[1])) {
+                    mCustomActionOtherEditText.setText("");
+                }
             }
 
             @Override
