@@ -59,21 +59,6 @@ public class FacilityColumnData {
         return jsonObject;
     }
 
-    /**
-     * Calculates the value for this column (facility/month)
-     * @return
-     */
-    private float getValue(){
-        if(!hasSurveys()){
-            return 0f;
-        }
-        float averageFacilityMonth=0;
-        for(SurveyDB survey:surveys){
-            averageFacilityMonth+=survey.getMainScore();
-        }
-        return averageFacilityMonth/surveys.size();
-    }
-
     private boolean hasSurveys(){
         return surveys!=null && surveys.size()>0;
     }
