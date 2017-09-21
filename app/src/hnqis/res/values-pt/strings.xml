@@ -123,6 +123,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_return">"Voltar para todas as avaliações"</string>
 <string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação:"</string>
+<string name="overall_quality_of_care">"Pontuação Global Quality of Care (QoC):"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
 <string name="feedback_info_not_answered">"Não respondeu"</string>
@@ -223,7 +224,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="planing_due_date">"Data de Vencimento"</string>
 <string name="action_button_text">PLANO DE AÇÃO</string>
 <string name="plan_action_title">Observações e Plano de Ação</string>
-<string name="plan_action_today_date">Hoje: %s</string>
+<string name="plan_action_today_date">Concluído: %s</string>
 <string name="plan_action_next_date">Próxima Data de Supervisão: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
 <string name="plan_action_gasp_title">Gaps:</string>

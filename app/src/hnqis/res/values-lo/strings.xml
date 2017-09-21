@@ -134,8 +134,10 @@
 <string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
 <string name="assessment_sent_score">"ຄະແນນ"</string>
 <string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
+<string name="feedback_show_only_one_or_show_all">"ສະແດງໃຫ້ເຫັນຄວາມຄິດເຫັນຫຼ້າສຸດຕໍ່ໂຄງການ / OU"</string>
 <string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>
 <string name="quality_of_care">"ຄະແນນຄຸນນະພາບ"</string>
+<string name="overall_quality_of_care">"ຜະລິດຕະພາບການດູແລສຸຂະພາບໂດຍລວມ (QoC):"</string>
 <string name="feedback_info_passed">"ຜ່ານ"</string>
 <string name="feedback_info_failed">"ບໍ່ຜ່ານ"</string>
 <string name="feedback_info_not_answered">"
@@ -237,7 +239,7 @@
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
-<string name="plan_action_today_date">ວັນນີ້: %s</string>
+<string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
 <string name="plan_action_next_date">ວັນທີຕິດຕາມຕໍ່ໄປ: %s</string>
 <string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
