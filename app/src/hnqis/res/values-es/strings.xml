@@ -120,8 +120,10 @@ clínica"</string>
 <string name="dashboard_title_planned_next_qa">"Próxima evaluación"</string>
 <string name="assessment_sent_score">"Puntos"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>
+<string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
 <string name="feedback_return">"Regresar a todas las evaluaciones"</string>
 <string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
 <string name="feedback_info_not_answered">"Sin respuesta"</string>
@@ -226,7 +228,7 @@ clínica"</string>
 <string name="planing_due_date">"Fecha de vencimiento"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
-<string name="plan_action_today_date">Hoy: %s</string>
+<string name="plan_action_today_date">Terminado: %s</string>
 <string name="plan_action_next_date">Próxima fecha de supervisión: %s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
 <string name="plan_action_gasp_title">Gaps:</string>

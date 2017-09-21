@@ -37,25 +37,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.Option;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.Value;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
-import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
-import org.eyeseetea.malariacare.layout.utils.AutoTabSelectedItem;
-import org.eyeseetea.malariacare.layout.utils.AutoTabViewHolder;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -64,7 +56,6 @@ import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -82,10 +73,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     CustomEditText mCustomGapsEditText;
     CustomEditText mCustomActionPlanEditText;
     CustomEditText mCustomActionOtherEditText;
-    CustomSpinner actionDropdown;
-    CustomSpinner secondaryActionDropdown;
-    FloatingActionButton fabSave;
-
+    CustomSpinner actionSpinner;
+    CustomSpinner secondaryActionSpinner;
+    FloatingActionButton fabComplete;
     /**
      * Parent layout
      */
@@ -118,9 +108,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         mCustomGapsEditText.setEnabled(false);
         mCustomActionPlanEditText.setEnabled(false);
         mCustomActionOtherEditText.setEnabled(false);
-        actionDropdown.setEnabled(false);
-        secondaryActionDropdown.setEnabled(false);
-        fabSave.setEnabled(false);
+        actionSpinner.setEnabled(false);
+        secondaryActionSpinner.setEnabled(false);
+        fabComplete.setEnabled(false);
     }
 
     private void initEditTexts(RelativeLayout llLayout) {
@@ -206,33 +196,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initFAB(RelativeLayout llLayout) {
-        fabSave = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
-        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
-            fabSave.setImageResource(R.drawable.ic_action_check);
-        }
+        initFabComplete(llLayout);
+
         FloatingActionButton fab = (FloatingActionButton) llLayout.findViewById(R.id.fab);
         fabHtmlOption = (FloatingActionButton) llLayout.findViewById(R.id.fab2);
         mTextViewHtml = (CustomTextView) llLayout.findViewById(R.id.text2);
         fabPlainTextOption = (FloatingActionButton) llLayout.findViewById(R.id.fab1);
         mTextViewPlainText = (CustomTextView) llLayout.findViewById(R.id.text1);
 
-        fabSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(null)
-                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-                                mObsActionPlan.save();
-                                fabSave.setImageResource(R.drawable.ic_action_check);
-                                setReadOnlyMode();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,6 +233,31 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         });
     }
 
+    private void initFabComplete(RelativeLayout llLayout) {
+        fabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+            fabComplete.setImageResource(R.drawable.ic_action_check);
+        }
+
+        fabComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(null)
+                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+                                mObsActionPlan.save();
+                                fabComplete.setImageResource(R.drawable.ic_action_check);
+                                setReadOnlyMode();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
+            }
+        });
+    }
+
     private void sharePlainText() {
         Survey survey = Session.getSurveyByModule(moduleName);
         String data =
@@ -276,13 +273,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 + mCustomGapsEditText.getText().toString() + "\n";
         data += getString(R.string.plan_action_action_plan_title) + " "
                 + mCustomActionPlanEditText.getText().toString() + "\n";
-        if (!actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(0))) {
+        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
             data += getString(R.string.plan_action_action_title) + " "
-                    + actionDropdown.getSelectedItem().toString() + "\n";
+                    + actionSpinner.getSelectedItem().toString() + "\n";
         }
-        if (actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(1))) {
-            data += secondaryActionDropdown.getSelectedItem().toString() + "\n";
-        } else if (actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(5))) {
+        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
+            data += secondaryActionSpinner.getSelectedItem().toString() + "\n";
+        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
         data += getString(R.string.critical_steps) + "\n";
@@ -384,14 +381,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initSpinner(RelativeLayout llLayout) {
-        actionDropdown = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
-
+        actionSpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
+        final View secondaryView = llLayout.findViewById(R.id.secondaryView);
+        final View otherView = llLayout.findViewById(R.id.otherView);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),
                 R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
-        actionDropdown.setAdapter(adapter);
-
-        actionDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        actionSpinner.setAdapter(adapter);
+        actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position,
                     long l) {
@@ -404,21 +401,58 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 } else {
                     mObsActionPlan.setAction1(selectedItem);
                 }
+                mObsActionPlan.save();
+                if (selectedItem.equals(options[1])) {
+                    secondaryActionSpinner.setVisibility(View.VISIBLE);
+                    secondaryView.setVisibility(View.VISIBLE);
+                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
+                } else if (selectedItem.equals(options[5])) {
+                    secondaryActionSpinner.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
+                    mCustomActionOtherEditText.setVisibility(View.VISIBLE);
+                    otherView.setVisibility(View.VISIBLE);
+                } else {
+                    secondaryActionSpinner.setVisibility(View.GONE);
+                    secondaryView.setVisibility(View.GONE);
+                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    otherView.setVisibility(View.GONE);
+                }
                 if (lastItem == null || lastItem.equals(selectedItem)) {
+                    return;
                 } else if (!lastItem.equals(options[5])) {
-                    secondaryActionDropdown.setSelection(0, false);
+                    secondaryActionSpinner.setSelection(0, false);
                 } else if (!lastItem.equals(options[1])) {
                     mCustomActionOtherEditText.setText("");
                 }
-                if (selectedItem.equals(options[1])) {
-                    secondaryActionDropdown.setVisibility(View.VISIBLE);
-                    mCustomActionOtherEditText.setVisibility(View.GONE);
-                } else if (selectedItem.equals(options[5])) {
-                    secondaryActionDropdown.setVisibility(View.GONE);
-                    mCustomActionOtherEditText.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        secondaryActionSpinner = (CustomSpinner) llLayout.findViewById(
+                R.id.plan_action_secondary_spinner);
+
+
+        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
+                llLayout.getContext(), R.array.plan_action_dropdown_suboptions,
+                android.R.layout.simple_spinner_item);
+        secondaryActionSpinner.setAdapter(secondaryAdapter);
+
+
+        secondaryActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+                    long l) {
+                String[] options = getResources().getStringArray(
+                        R.array.plan_action_dropdown_suboptions);
+                String selectedItem = adapterView.getItemAtPosition(position).toString();
+                if (selectedItem.equals(options[0])) {
+                    mObsActionPlan.setAction2(null);
                 } else {
-                    secondaryActionDropdown.setVisibility(View.GONE);
-                    mCustomActionOtherEditText.setVisibility(View.GONE);
+                    mObsActionPlan.setAction2(selectedItem);
                 }
                 mObsActionPlan.save();
             }
@@ -427,38 +461,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
-        secondaryActionDropdown = (CustomSpinner) llLayout.findViewById(
-                R.id.plan_action_secondary_spinner);
-
-        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
-                llLayout.getContext(), R.array.plan_action_dropdown_suboptions,
-                android.R.layout.simple_spinner_item);
-        secondaryActionDropdown.setAdapter(secondaryAdapter);
-
-        secondaryActionDropdown.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view,
-                            int position,
-                            long l) {
-                        String[] options = getResources().getStringArray(
-                                R.array.plan_action_dropdown_suboptions);
-                        String selectedItem = adapterView.getItemAtPosition(
-                                position).toString();
-                        if (selectedItem.equals(options[0])) {
-                            mObsActionPlan.setAction2(null);
-                        } else {
-                            mObsActionPlan.setAction2(selectedItem);
-                        }
-                        mObsActionPlan.save();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                    }
-                });
 
         setSpinnerValues();
 
@@ -470,7 +472,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         if (mObsActionPlan.getAction1() != null) {
             for (int i = 0; i < options.length; i++) {
                 if (mObsActionPlan.getAction1().equals(options[i])) {
-                    actionDropdown.setSelection(i);
+                    actionSpinner.setSelection(i);
                 }
             }
         }
@@ -480,7 +482,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                         R.array.plan_action_dropdown_suboptions);
                 for (int i = 0; i < subOptions.length; i++) {
                     if (mObsActionPlan.getAction2().equals(subOptions[i])) {
-                        secondaryActionDropdown.setSelection(i);
+                        secondaryActionSpinner.setSelection(i);
                     }
                 }
             }

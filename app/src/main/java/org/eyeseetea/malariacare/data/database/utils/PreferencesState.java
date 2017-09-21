@@ -64,6 +64,10 @@ public class PreferencesState {
      */
     private Boolean hidePlanningTab;
     /**
+     * Flag that force if get all surveys
+     */
+    private Boolean forceAllSentSurveys = false;
+    /**
      * Map that holds the relationship between a scale and a set of dimensions
      */
     private Map<String, Map<String, Float>> scaleDimensionsMap;
@@ -294,14 +298,18 @@ public class PreferencesState {
      * Tells if the application is Vertical or horizontall
      */
     public Boolean isVerticalDashboard() {
-        return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
+        return  DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
     }
 
     /**
      * Tells if the application is filter for last org unit
      */
     public Boolean isLastForOrgUnit() {
-        return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
+        return (!forceAllSentSurveys && DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter()));
+    }
+
+    public void setForceAllSentSurveys(boolean value){
+        forceAllSentSurveys = value;
     }
 
     /**
