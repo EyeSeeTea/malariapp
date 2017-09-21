@@ -108,7 +108,6 @@ public class EventExtended implements VisitableFromSDK {
         }
         return event.getCreated().toDate();
     }
-
     /**
      * Returns the survey.completionDate associated with this event (lastUpdated field)
      */
@@ -300,5 +299,14 @@ public class EventExtended implements VisitableFromSDK {
             eventExtendeds.add(new EventExtended(pojoFlow));
         }
         return eventExtendeds;
+    }
+
+
+    public void setCreationDate(Date creationDate) {
+        event.setCreated(new DateTime(creationDate));
+    }
+
+    public void setEventUid(String eventUid) {
+        event.setUId(eventUid);
     }
 }
