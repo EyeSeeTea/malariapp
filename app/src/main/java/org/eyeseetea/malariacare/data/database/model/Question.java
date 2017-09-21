@@ -344,6 +344,10 @@ public class Question extends BaseModel {
         return compositeScore;
     }
 
+    public long getCompositeScoreFk() {
+        return id_composite_score_fk;
+    }
+
     public void setCompositeScore(CompositeScore compositeScore) {
         this.compositeScore = compositeScore;
         this.id_composite_score_fk = (compositeScore!=null)?compositeScore.getId_composite_score():null;

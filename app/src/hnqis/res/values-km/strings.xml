@@ -255,4 +255,9 @@ evaluation"</string>
 <item>មើលវីដេអូ</item>
 <item>អនុវត្តបច្ចេកទេសបានត្រឹមត្រូវនៅពេលដែលការបញ្ចូលនៃដំណើរទស្សនកិច្ច</item>
 </string-array>
+<string name="supervision_on">ការត្រួតពិនិត្យលទ្ធផលលើ:</string>
+<string name="critical_steps">ជំហានរិះគន់ខកខាន:</string>
+<string name="url_not_available">URL មិនទាន់មានទេ</string>
+<string name="see_full_assessment">មើលការវាយតម្លៃពេញលេញនៅ</string>
+
 </resources>

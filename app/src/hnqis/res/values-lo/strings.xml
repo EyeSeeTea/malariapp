@@ -256,4 +256,9 @@
 <item>ເບິ່ງວິດີໂອ</item>
 <item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
 </string-array>
+<string name="supervision_on">ຜົນການຊີ້ນໍາກ່ຽວກັບ:</string>
+<string name="critical_steps">ຂັ້ນຕອນສໍາຄັນທີ່ພາດໂອກາດນີ້:</string>
+<string name="url_not_available">URL ບໍ່ສາມາດໃຊ້ໄດ້</string>
+<string name="see_full_assessment">ເບິ່ງການປະເມີນຜົນເຕັມທີ່ຢູ່</string>
+
 </resources>

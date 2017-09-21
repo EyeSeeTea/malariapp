@@ -245,5 +245,8 @@ evaluation"</string>
 <item>Watch video</item>
 <item>Practice proper insertion technique at time of visit</item>
 </string-array>
-
+<string name="supervision_on">Results supervision on:</string>
+<string name="critical_steps">Critical Steps missed:</string>
+<string name="url_not_available">"URL not yet available"</string>
+<string name="see_full_assessment">"See full assessment at:"</string>
 </resources>
