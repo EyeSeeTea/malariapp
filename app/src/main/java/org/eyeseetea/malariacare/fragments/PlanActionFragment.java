@@ -75,7 +75,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     CustomEditText mCustomActionOtherEditText;
     CustomSpinner actionSpinner;
     CustomSpinner secondaryActionSpinner;
-    FloatingActionButton fabSave;
+    FloatingActionButton fabComplete;
     /**
      * Parent layout
      */
@@ -110,7 +110,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         mCustomActionOtherEditText.setEnabled(false);
         actionSpinner.setEnabled(false);
         secondaryActionSpinner.setEnabled(false);
-        fabSave.setEnabled(false);
+        fabComplete.setEnabled(false);
     }
 
     private void initEditTexts(RelativeLayout llLayout) {
@@ -196,33 +196,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     }
 
     private void initFAB(RelativeLayout llLayout) {
-        fabSave = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
-        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
-            fabSave.setImageResource(R.drawable.ic_action_check);
-        }
+        initFabComplete(llLayout);
+
         FloatingActionButton fab = (FloatingActionButton) llLayout.findViewById(R.id.fab);
         fabHtmlOption = (FloatingActionButton) llLayout.findViewById(R.id.fab2);
         mTextViewHtml = (CustomTextView) llLayout.findViewById(R.id.text2);
         fabPlainTextOption = (FloatingActionButton) llLayout.findViewById(R.id.fab1);
         mTextViewPlainText = (CustomTextView) llLayout.findViewById(R.id.text1);
 
-        fabSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(null)
-                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-                                mObsActionPlan.save();
-                                fabSave.setImageResource(R.drawable.ic_action_check);
-                                setReadOnlyMode();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-            }
-        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,6 +229,31 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             @Override
             public void onClick(View view) {
                 sharePlainText();
+            }
+        });
+    }
+
+    private void initFabComplete(RelativeLayout llLayout) {
+        fabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
+        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+            fabComplete.setImageResource(R.drawable.ic_action_check);
+        }
+
+        fabComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(null)
+                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+                                mObsActionPlan.save();
+                                fabComplete.setImageResource(R.drawable.ic_action_check);
+                                setReadOnlyMode();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
             }
         });
     }
