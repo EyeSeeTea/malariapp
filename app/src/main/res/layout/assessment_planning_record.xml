@@ -89,4 +89,11 @@
             app:tFontName="@string/medium_font_name"/>
 
     </LinearLayout>
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.1"
+        android:src="@drawable/ic_action_more_vert"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal" />
 </TableRow>

@@ -28,7 +28,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_weight=".36"
+        android:layout_weight=".26"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="10dip"
@@ -114,6 +114,13 @@
         android:background="@null"
         android:tintMode="src_over" />
 
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".1"
+        android:src="@drawable/ic_action_more_vert"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal" />
 
 
 </LinearLayout>
