@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_margin="20dp"
+    android:background="@android:color/white" >
+
+    <Button
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Edit"
+        android:background="@color/dialog_button_text"
+        android:textColor="@android:color/white"/>
+    <Button
+        android:id="@+id/mark_completed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_below="@id/edit"
+        android:text="Mark complete"
+        android:background="@color/dialog_button_text"
+        android:textColor="@android:color/white"/>
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_below="@id/mark_completed"
+        android:text="Delete"
+        android:background="@color/dialog_button_text"
+        android:textColor="@android:color/white" />
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_below="@id/delete"
+        android:text="Cancel"
+        android:background="@color/dialog_button_text"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>
