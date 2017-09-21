@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
@@ -95,12 +96,24 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         initSpinner(llLayout);
         initFAB(llLayout);
         initBackButton(llLayout);
+        if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
+            setReadOnlyMode();
+        }
         return llLayout; // We must return the loaded Layout
+    }
+
+    private void setReadOnlyMode() {
+        mCustomGapsEditText.setEnabled(false);
+        mCustomActionPlanEditText.setEnabled(false);
+        mCustomActionOtherEditText.setEnabled(false);
+        actionSpinner.setEnabled(false);
+        secondaryActionSpinner.setEnabled(false);
     }
 
     private void initEditTexts(RelativeLayout llLayout) {
         mCustomGapsEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_gasp_edit_text);
+        mCustomGapsEditText.setText(mObsActionPlan.getGaps());
         mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -120,6 +133,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         });
         mCustomActionPlanEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_action_plan_edit_text);
+        mCustomActionPlanEditText.setText(mObsActionPlan.getAction_plan());
         mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -139,7 +153,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         });
         mCustomActionOtherEditText = (CustomEditText) llLayout.findViewById(
                 R.id.plan_action_others_edit_text);
-        mCustomActionPlanEditText.addTextChangedListener(new TextWatcher() {
+        String options[] = getResources().getStringArray(
+                R.array.plan_action_dropdown_options);
+        if (mObsActionPlan.getAction1() != null && mObsActionPlan.getAction1().equals(options[5])) {
+            if (mObsActionPlan.getAction2() != null) {
+                mCustomActionOtherEditText.setText(mObsActionPlan.getAction2());
+            }
+        }
+        mCustomActionOtherEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -330,65 +351,65 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
     private void initSpinner(RelativeLayout llLayout) {
         actionSpinner = (CustomSpinner) llLayout.findViewById(R.id.plan_action_spinner);
-
-        secondaryActionSpinner = (CustomSpinner) llLayout.findViewById(
-                R.id.plan_action_secondary_spinner);
-
         final View secondaryView = llLayout.findViewById(R.id.secondaryView);
         final View otherView = llLayout.findViewById(R.id.otherView);
-
-        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
-                llLayout.getContext(),R.array.plan_action_dropdown_suboptions,
-                android.R.layout.simple_spinner_item);
-        secondaryActionSpinner.setAdapter(secondaryAdapter);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(llLayout.getContext(),
                 R.array.plan_action_dropdown_options, android.R.layout.simple_spinner_item);
         actionSpinner.setAdapter(adapter);
         actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+                    long l) {
                 String[] options = getResources().getStringArray(
                         R.array.plan_action_dropdown_options);
                 String selectedItem = adapterView.getItemAtPosition(position).toString();
-
+                String lastItem = mObsActionPlan.getAction1();
                 if (selectedItem.equals(options[0])) {
                     mObsActionPlan.setAction1(null);
-                    mCustomActionOtherEditText.setText("");
-                    secondaryActionSpinner.setSelection(0);
-                }else{
+                } else {
                     mObsActionPlan.setAction1(selectedItem);
                 }
-                if(mObsActionPlan.getAction2()==null || !mObsActionPlan.getAction2().equals(selectedItem)) {
-                    mCustomActionOtherEditText.setText("");
-                    secondaryActionSpinner.setSelection(0);
-                }
-
-                if(selectedItem.equals(options[1])){
+                mObsActionPlan.save();
+                if (selectedItem.equals(options[1])) {
                     secondaryActionSpinner.setVisibility(View.VISIBLE);
                     secondaryView.setVisibility(View.VISIBLE);
                     mCustomActionOtherEditText.setVisibility(View.GONE);
                     otherView.setVisibility(View.GONE);
-                }else if(selectedItem.equals(options[5])) {
+                } else if (selectedItem.equals(options[5])) {
                     secondaryActionSpinner.setVisibility(View.GONE);
                     secondaryView.setVisibility(View.GONE);
                     mCustomActionOtherEditText.setVisibility(View.VISIBLE);
                     otherView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     secondaryActionSpinner.setVisibility(View.GONE);
                     secondaryView.setVisibility(View.GONE);
                     mCustomActionOtherEditText.setVisibility(View.GONE);
                     otherView.setVisibility(View.GONE);
                 }
-
-                mObsActionPlan.save();
+                if (lastItem == null || lastItem.equals(selectedItem)) {
+                    return;
+                } else if (!lastItem.equals(options[5])) {
+                    secondaryActionSpinner.setSelection(0, false);
+                } else if (!lastItem.equals(options[1])) {
+                    mCustomActionOtherEditText.setText("");
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+
+        secondaryActionSpinner = (CustomSpinner) llLayout.findViewById(
+                R.id.plan_action_secondary_spinner);
+
+
+        final ArrayAdapter<CharSequence> secondaryAdapter = ArrayAdapter.createFromResource(
+                llLayout.getContext(), R.array.plan_action_dropdown_suboptions,
+                android.R.layout.simple_spinner_item);
+        secondaryActionSpinner.setAdapter(secondaryAdapter);
+
 
         secondaryActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -410,6 +431,31 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
             }
         });
 
+        setSpinnerValues();
+
+    }
+
+    private void setSpinnerValues() {
+        String options[] = getResources().getStringArray(
+                R.array.plan_action_dropdown_options);
+        if (mObsActionPlan.getAction1() != null) {
+            for (int i = 0; i < options.length; i++) {
+                if (mObsActionPlan.getAction1().equals(options[i])) {
+                    actionSpinner.setSelection(i);
+                }
+            }
+        }
+        if (mObsActionPlan.getAction2() != null && mObsActionPlan.getAction1() != null) {
+            if (mObsActionPlan.getAction1().equals(options[1])) {
+                String subOptions[] = getResources().getStringArray(
+                        R.array.plan_action_dropdown_suboptions);
+                for (int i = 0; i < subOptions.length; i++) {
+                    if (mObsActionPlan.getAction2().equals(subOptions[i])) {
+                        secondaryActionSpinner.setSelection(i);
+                    }
+                }
+            }
+        }
     }
 
     private void initLayoutHeaders(RelativeLayout llLayout) {
