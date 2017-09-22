@@ -267,7 +267,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 + survey.getProgram().getName() + "\n\n";
         data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(survey.getCompletionDate(),
+                EventExtended.format(survey.getScheduledDate(),
                         EventExtended.EUROPEAN_DATE_FORMAT)) + "\n\n";
         data += getString(R.string.plan_action_gasp_title) + " "
                 + mCustomGapsEditText.getText().toString() + "\n\n";
