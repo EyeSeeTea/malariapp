@@ -238,6 +238,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
                 FacilityTableBuilderBase.setColor(view);
             }
         });
+
+
         //Load html
         webView.loadUrl("file:///android_asset/dashboard/dashboard.html");
     }
@@ -262,7 +264,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             WebView.setWebContentsDebuggingEnabled(true);
         }
         webView.getSettings().setJavaScriptEnabled(true);
-
+        webView.addJavascriptInterface(new WebViewInterceptor(), "Android");
         return webView;
     }
 

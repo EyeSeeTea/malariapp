@@ -96,27 +96,28 @@ function buildRowFacility(facility){
 			average=average/facilityMonth.length;
 			average=Math.round(average);
 		}
-        row=row+""+buildColorXScore(average)+""+buildCellXScore(average)+"</span></div></td>";
+
+        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average,facilityMonth)+"</span></div></td>";
 	}
 	//end row
 	row=row+"</tr>";
 	return row;
 }
 
-function buildColorXScore(value){
+function buildColorXScore(value, listOfSurveys){
 	if(value==null){
-		return "<td class='novisible'  ><div class='circlerow' ><span class='centerspan'>";
+		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
 
 	if(value<50){
-		return "<td class='redcircle'  ><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+		return "<td class='redcircle'   onclick=\"android_click("+listOfSurveys+")\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 	}
 
 	if(value<80){
-		return "<td class='ambercircle' ><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+		return "<td class='ambercircle'  onclick=\"android_click("+listOfSurveys+")\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 	}
 
-	return "<td class='greencircle'  ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	return "<td class='greencircle'  onclick=\"android_click("+listOfSurveys+")\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
 }
 
 function buildCellXScore(value){
@@ -124,4 +125,13 @@ function buildCellXScore(value){
 		return '';
 	}
 	return value;
+}
+
+function android_click(value){
+	if(value!=null){
+		value=JSON.stringify(value);
+	}
+    console.log(value);
+    Android.log();
+    Android.onClick(value);
 }
