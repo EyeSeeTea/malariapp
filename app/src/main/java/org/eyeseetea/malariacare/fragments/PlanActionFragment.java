@@ -262,27 +262,27 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         Survey survey = Session.getSurveyByModule(moduleName);
         String data =
                 PreferencesState.getInstance().getContext().getString(
-                        R.string.app_name) + "\n";
+                        R.string.app_name) + "\n\n";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
-                + survey.getProgram().getName() + "\n";
-        data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n";
+                + survey.getProgram().getName() + "\n\n";
+        data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
         data += String.format(getString(R.string.plan_action_next_date),
                 EventExtended.format(survey.getCompletionDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT)) + "\n";
+                        EventExtended.EUROPEAN_DATE_FORMAT)) + "\n\n";
         data += getString(R.string.plan_action_gasp_title) + " "
-                + mCustomGapsEditText.getText().toString() + "\n";
+                + mCustomGapsEditText.getText().toString() + "\n\n";
         data += getString(R.string.plan_action_action_plan_title) + " "
-                + mCustomActionPlanEditText.getText().toString() + "\n";
+                + mCustomActionPlanEditText.getText().toString() + "\n\n";
         if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
             data += getString(R.string.plan_action_action_title) + " "
-                    + actionSpinner.getSelectedItem().toString() + "\n";
+                    + actionSpinner.getSelectedItem().toString() + "\n\n";
         }
         if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
             data += secondaryActionSpinner.getSelectedItem().toString() + "\n";
         } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
-        data += getString(R.string.critical_steps) + "\n";
+        data += getString(R.string.critical_steps) + "\n\n";
 
         List<Question> criticalQuestions = Question.getCriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
@@ -321,14 +321,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
         //For each score add proper items
         for (CompositeScore compositeScore : compositeScoreList) {
-            data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel() + "\n";
+            data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
+                    + "\n";
             for (Question question : criticalQuestions) {
                 if (question.getCompositeScoreFk() == (compositeScore.getId_composite_score())) {
                     data += "-" + question.getForm_name() + "\n";
                 }
             }
         }
-        data += getString(R.string.see_full_assessment) + "\n";
+        data += "\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
         } else {
