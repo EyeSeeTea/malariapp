@@ -121,19 +121,20 @@ public class ImproveModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
+
     private void closeFeedbackFragment() {
         android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
             feedbackFragment.getView().setVisibility(View.GONE);
         }else if(fragment instanceof PlanActionFragment){
-            mPlanActionFragment.getView().setVisibility(View.GONE);
+            replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         }
 
         //Reload improve fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
-        }else{
+        } else if (fragment instanceof FeedbackFragment) {
             reloadFragment();
         }
 
