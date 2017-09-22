@@ -109,6 +109,10 @@ function buildColorXScore(value, listOfSurveys){
 		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
 
+	if(listOfSurveys!=null){
+		listOfSurveys=JSON.stringify(listOfSurveys);
+	}
+	//fixme: is necessary escape the listOfSurveys before addded in the android_click onclick function.
 	if(value<50){
 		return "<td class='redcircle'   onclick=\"android_click("+listOfSurveys+")\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 	}
@@ -128,9 +132,6 @@ function buildCellXScore(value){
 }
 
 function android_click(value){
-	if(value!=null){
-		value=JSON.stringify(value);
-	}
     console.log(value);
     Android.log();
     Android.onClick(value);
