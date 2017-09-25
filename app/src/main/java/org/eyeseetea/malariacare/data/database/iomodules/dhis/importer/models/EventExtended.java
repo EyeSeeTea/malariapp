@@ -56,6 +56,7 @@ public class EventExtended implements VisitableFromSDK {
     public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public final static String DHIS2_LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
+    public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
 
 
     public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
@@ -112,7 +113,6 @@ public class EventExtended implements VisitableFromSDK {
         }
         return event.getCreated().toDate();
     }
-
     /**
      * Returns the survey.completionDate associated with this event (lastUpdated field)
      */
@@ -306,6 +306,13 @@ public class EventExtended implements VisitableFromSDK {
         return eventExtendeds;
     }
 
+    public void setCreationDate(Date creationDate) {
+        event.setCreated(new DateTime(creationDate));
+    }
+
+    public void setEventUid(String eventUid) {
+        event.setUId(eventUid);
+    }
 
     public static List<EventExtended> fromJsonToEvents(JsonNode jsonNode) {
         TypeReference<List<Event>> typeRef =

@@ -26,7 +26,8 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit errado"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
 <string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
-<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
+<string name="dialog_info_ask_for_completion">"Tem certeza de que deseja completar %s? Você não pode desfazer essa ação"</string>
+<string name="dialog_info_ask_for_completion_plan">Tem certeza de que deseja completar o plano? Você não pode desfazer essa ação້</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
@@ -122,6 +123,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_return">"Voltar para todas as avaliações"</string>
 <string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação:"</string>
+<string name="overall_quality_of_care">"Pontuação Global Quality of Care (QoC):"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
 <string name="feedback_info_not_answered">"Não respondeu"</string>
@@ -208,6 +210,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="clear">"Clarear"</string>
 <string name="admin_announcement">"Anúncio do Admin"</string>
 <string name="user_close">"Este usuário foi fechado pelo administrador."</string>
+<string name="survey_first_step">"Recuperando perguntas obrigatórias"</string>
+<string name="survey_second_step">"Verificando perguntas obrigatórias"</string>
+<string name="survey_third_step">"Calculando a relação de integridade"</string>
+<string name="survey_fourth_step">"Calculando contagem"</string>
 <string name="error_conflict_message">"O evento com UID: %1$s. Foi carregado com conflito no elemento de dados UID: %2$s com a mensagem: %3$s. Entre em contato com o administrador."</string>
 <string name="dialog_action_logout">"Logout requerem a exclusão ou enviar seus dados não enviados."</string>
 <string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
@@ -216,4 +222,33 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="install_file_manager">Instale um Gerenciador de Arquivos.</string>
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
+
+<string name="header_reschedule">"Reprogramar"</string>
+<string name="planing_schedule">"Programar"</string>
+<string name="planing_due_date">"Data de Vencimento"</string>
+<string name="action_button_text">PLANO DE AÇÃO</string>
+<string name="plan_action_title">Observações e Plano de Ação</string>
+<string name="plan_action_today_date">Concluído: %s</string>
+<string name="plan_action_next_date">Próxima Data de Supervisão: %s</string>
+<string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">Plano de ação:</string>
+<string name="plan_action_action_title">Açao:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"..."</item>
+<item>Treinamento de atualização durante SSV</item>
+<item>Treinamento de atualização de grupo em uma data posterior</item>
+<item>Planejar a atividade do CME</item>
+<item>Demonstrar técnica com o cliente</item>
+<item>Outros</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
+<item>Assista vídeo</item>
+<item>Pratique a técnica de inserção adequada no momento da visita</item>
+</string-array>
+<string name="supervision_on">Supervisão de resultados em:</string>
+<string name="critical_steps">Passos críticos perdidos:</string>
+<string name="url_not_available">URL ainda não disponível</string>
+<string name="see_full_assessment">Veja a avaliação completa em:</string>
 </resources>
