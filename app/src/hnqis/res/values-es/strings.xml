@@ -229,7 +229,7 @@ clínica"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
 <string name="plan_action_today_date">Terminado: %s</string>
-<string name="plan_action_next_date">Próxima fecha de supervisión: %s</string>
+<string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Plan de acción:</string>
