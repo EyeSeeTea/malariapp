@@ -27,6 +27,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -47,7 +48,6 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -56,6 +56,8 @@ import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -282,50 +284,24 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
-        data += getString(R.string.critical_steps) + "\n\n";
 
         List<Question> criticalQuestions = Question.getCriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
+        if(criticalQuestions!=null && criticalQuestions.size()>0) {
+            data += getString(R.string.critical_steps) + "\n\n";
 
-        List<CompositeScore> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
-                moduleName);
-
-
-        //Calculate main score
-        survey.setMainScore(
-                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
-                        moduleName));
-
-        //Remove parents from list (to avoid showing the parent composite that is there just to
-        // push the overall score)
-        for (Iterator<CompositeScore> iterator = compositeScoreList.iterator();
-                iterator.hasNext(); ) {
-            CompositeScore compositeScore = iterator.next();
-            //Show only if a parent have questions.
-            if (compositeScore.getQuestions().size() < 1) {
-                if (!compositeScore.hasParent()) iterator.remove();
-            } else {
-                boolean isValid = false;
-                for (Question question : compositeScore.getQuestions()) {
-                    for (Question criticalQuestion : criticalQuestions) {
-                        if (question.getUid().equals(criticalQuestion.getUid())) {
-                            isValid = true;
-                        }
+            List<CompositeScore> compositeScoresTree = getValidTreeOfCompositeScores();
+            //For each score add proper items
+            for (Iterator<CompositeScore> iterator = compositeScoresTree.iterator();
+                    iterator.hasNext(); ) {
+                CompositeScore compositeScore = iterator.next();
+                data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
+                        + "\n";
+                for (Question question : criticalQuestions) {
+                    if (question.getCompositeScoreFk()
+                            == (compositeScore.getId_composite_score())) {
+                        data += "-" + question.getForm_name() + "\n";
                     }
-                }
-                if (!isValid) {
-                    if (!compositeScore.hasParent()) iterator.remove();
-                }
-            }
-        }
-
-        //For each score add proper items
-        for (CompositeScore compositeScore : compositeScoreList) {
-            data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
-                    + "\n";
-            for (Question question : criticalQuestions) {
-                if (question.getCompositeScoreFk() == (compositeScore.getId_composite_score())) {
-                    data += "-" + question.getForm_name() + "\n";
                 }
             }
         }
@@ -335,8 +311,47 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
-        System.out.println(data);
+        System.out.println("data:"+data);
         createTextIntent(getActivity(), data);
+    }
+
+    @NonNull
+    private List<CompositeScore> getValidTreeOfCompositeScores() {
+        List<CompositeScore> compositeScoreList = Question.getCSOfriticalFailedQuestions(
+                Session.getSurveyByModule(moduleName).getId_survey());
+        List<CompositeScore> compositeScoresTree = new ArrayList<>();
+        for (CompositeScore compositeScore : compositeScoreList) {
+            buildCompositeScoreTree(compositeScore, compositeScoresTree);
+        }
+
+        //Order composite scores
+        Collections.sort(compositeScoresTree, new Comparator() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+
+                CompositeScore cs1 = (CompositeScore) o1;
+                CompositeScore cs2 = (CompositeScore) o2;
+
+                return new Integer(cs1.getOrder_pos().compareTo(cs2.getOrder_pos()));
+            }
+        });
+        return compositeScoresTree;
+    }
+
+    //Recursive compositescore parent builder
+    private void buildCompositeScoreTree(CompositeScore compositeScore,
+            List<CompositeScore> compositeScoresTree) {
+        if(compositeScore.getHierarchical_code().equals("0")){
+            //ignore composite score root
+            return;
+        }
+        if(!compositeScoresTree.contains(compositeScore)){
+            compositeScoresTree.add(compositeScore);
+        }
+        if(compositeScore.hasParent()){
+            buildCompositeScoreTree(compositeScore.getComposite_score(), compositeScoresTree);
+        }
     }
 
     /**
