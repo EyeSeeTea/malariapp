@@ -54,6 +54,9 @@ public class FacilityTableDataByOrgUnit extends FacilityTableDataBase{
         facilityRow.addSurvey(survey);
     }
     public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(rowData),uid,id);
+        return String.format("{title:'%s',months:%s,facilities:%s,tableuid:'%s',id:'%s'}",title,
+                getMonthsAsJSONArray(),
+                getFacilitiesAsJSONArray(rowData),
+                uid,id);
     }
 }
