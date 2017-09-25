@@ -239,7 +239,7 @@ evaluation"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
-<string name="plan_action_next_date">កាលបរិច្ឆេទនៃការឃ្លាំមើលបន្ទាប់: %s</string>
+<string name="plan_action_next_date">បន្ទាប់: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
