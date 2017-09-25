@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.model;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.compositeScoreAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.compositeScoreName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.headerAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.headerName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
@@ -918,6 +920,27 @@ public class Question extends BaseModel {
                 .and(Option_Table.factor.is(0.0f))
                 .and(Question_Table.compulsory.is(true))
                 .and(Value_Table.value.withTable(valueAlias).is(Option_Table.name.withTable(optionFlowAlias)))
+                .queryList();
+    }
+
+    public static List<CompositeScore> getCSOfriticalFailedQuestions(long idSurvey) {
+        return new Select()
+                .from(CompositeScore.class).as(compositeScoreName)
+                .join(Question.class, Join.JoinType.LEFT_OUTER).as(questionName)
+                .on((CompositeScore_Table.id_composite_score.eq(Question_Table.id_composite_score_fk)))
+
+                .join(Value.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(Value_Table.id_question_fk.withTable(valueAlias)
+                        .eq(Question_Table.id_question.withTable(questionAlias)))
+                .join(Option.class, Join.JoinType.LEFT_OUTER).as(optionFlowName)
+                .on(Option_Table.id_answer_fk.withTable(optionFlowAlias)
+                        .eq(Question_Table.id_answer_fk.withTable(questionAlias)))
+                .where(Value_Table.id_survey_fk.eq(idSurvey))
+                .and(Option_Table.factor.is(0.0f))
+                .and(Question_Table.compulsory.is(true))
+                .and(Value_Table.value.withTable(valueAlias).is(Option_Table.name.withTable(optionFlowAlias)))
+                .groupBy(CompositeScore_Table.hierarchical_code)
+                .orderBy(CompositeScore_Table.hierarchical_code.withTable(compositeScoreAlias),true)
                 .queryList();
     }
 

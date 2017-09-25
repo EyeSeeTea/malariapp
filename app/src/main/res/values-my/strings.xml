@@ -44,6 +44,7 @@
 <string name="dialog_content_incorrect_org_unit"></string>
 <string name="dialog_content_logout_confirmation"></string>
 <string name="dialog_info_ask_for_completion"></string>
+<string name="dialog_info_ask_for_completion_plan"></string>
 
 <string name="dashboard_info_feedback"></string>
 <string name="dashboard_info_ready_to_upload"></string>
@@ -130,8 +131,10 @@
 <string name="dashboard_title_planned_next_qa"></string>
 <string name="assessment_sent_score"></string>
 <string name="feedback_show_only_failed"></string>
+<string name="feedback_show_only_one_or_show_all"></string>
 <string name="feedback_return"></string>
 <string name="quality_of_care"></string>
+<string name="overall_quality_of_care"></string>
 <string name="feedback_info_passed"></string>
 <string name="feedback_info_failed"></string>
 <string name="feedback_info_not_answered"></string>

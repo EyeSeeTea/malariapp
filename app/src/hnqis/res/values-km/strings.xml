@@ -135,8 +135,10 @@ evaluation"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
+<string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
 <string name="feedback_info_failed">"FAIL"</string>
 <string name="feedback_info_not_answered">"NA"</string>
@@ -200,13 +202,14 @@ evaluation"</string>
 <string name="progress_pull_relationships">"កសាងទំនាក់ទំនងសំណួរ ..."</string>
 <string name="create">"Create"</string>
 <string name="modify">"Modify"</string>
-    <string name="review"></string>
+<string name="review"></string>
 <string name="send"></string>
-    <string name="clear">"ច្បាស់ណាស់"</string>
-    <string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
-    <string name="google_play_required">"នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។"</string>
+<string name="clear">"ច្បាស់ណាស់"</string>
+<string name="dialog_info_ask_for_completion">"Are you sure you want to complete %s? You cannot undo this action"</string>
+<string name="dialog_info_ask_for_completion_plan">Are you sure you want to complete plan? You cannot undo this action</string>
+<string name="google_play_required">"នេះតម្រូវឱ្យមានកម្មវិធីសេវាកម្ម Google Play ។ សូមដំឡើងសេវាកម្ម Google Play នៅលើឧបករណ៍របស់អ្នកនិងបើកដំណើរការកម្មវិធីនេះ។"</string>
 <string name="account_permission_denied">"សិទ្ធិអនុញ្ញាតទំនាក់ទំនងបដិសេធ។ ប្រព័ន្ធផ្សព្វផ្សាយនឹងមិនត្រូវបានធ្វើសមកាលកម្ម"</string>
-    <string name="feedback_media">"មតិអ្នកមើលវីដេអូ"</string>
+<string name="feedback_media">"មតិអ្នកមើលវីដេអូ"</string>
 <string name="feedback_view_image">"ចែករំលែករូបភាពជាមួយ ..."</string>
 <string name="developer_option_summary">"ជម្រើសនេះអនុញ្ញាតជម្រើសអភិវឌ្ឍន៍"</string>
 <string name="developer_option_title">"អភិវឌ្ឍន៍បង្ហាញជម្រើស"</string>
@@ -235,8 +238,8 @@ evaluation"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
-<string name="plan_action_today_date">ថ្ងៃនេះ: %s</string>
-<string name="plan_action_next_date">កាលបរិច្ឆេទនៃការឃ្លាំមើលបន្ទាប់: %s</string>
+<string name="plan_action_today_date">បានបញ្ចប់: %s</string>
+<string name="plan_action_next_date">បន្ទាប់: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
@@ -250,6 +253,7 @@ evaluation"</string>
 <item>ផ្សេងទៀត</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>មើលវីដេអូ</item>
 <item>អនុវត្តបច្ចេកទេសបានត្រឹមត្រូវនៅពេលដែលការបញ្ចូលនៃដំណើរទស្សនកិច្ច</item>
 </string-array>

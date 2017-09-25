@@ -134,8 +134,10 @@
 <string name="dashboard_title_planned_next_qa">"ການປະເມີນຄຸນນະພາບຄັ້ງຕໍ່ໄປ"</string>
 <string name="assessment_sent_score">"ຄະແນນ"</string>
 <string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
+<string name="feedback_show_only_one_or_show_all">"ສະແດງໃຫ້ເຫັນຄວາມຄິດເຫັນຫຼ້າສຸດຕໍ່ໂຄງການ / OU"</string>
 <string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>
 <string name="quality_of_care">"ຄະແນນຄຸນນະພາບ"</string>
+<string name="overall_quality_of_care">"ຜະລິດຕະພາບການດູແລສຸຂະພາບໂດຍລວມ (QoC):"</string>
 <string name="feedback_info_passed">"ຜ່ານ"</string>
 <string name="feedback_info_failed">"ບໍ່ຜ່ານ"</string>
 <string name="feedback_info_not_answered">"
@@ -202,6 +204,7 @@
 <string name="modify">"ດັດແກ້"</string>
 <string name="clear">"ລົບລ້າງ"</string>
 <string name="dialog_info_ask_for_completion">"ເຈົ້າໝັ້ນໃຈວ່າເຈົ້າຕ້ອງການເຮັດສຳເລັດ  %s ບໍ? ເຈົ້າບໍ່ສາມາດກັບຄືນມາແປ່ງໄດ້"</string>
+<string name="dialog_info_ask_for_completion_plan">ທ່ານແນ່ໃຈວ່າທ່ານຕ້ອງການສໍາເລັດແຜນການບໍ? ທ່ານບໍ່ສາມາດຍົກເລີກການປະຕິບັດນີ້ໄດ້</string>
 <string name="google_play_required">"ແອັບນີ້ມີໃຫ້ບໍລິການຢູ່ Google Play. ກະລູນາຕິດຕັ້ງໃສ່ເຄື່ອງຂອງທ່ານເພື່ອນຳໃຊ້"</string>
 <string name="account_permission_denied">"ການອະນຸມັດຖືກປະຕິເສດ. ຮູບພາບຈະບໍ່ຖືກສົ່ງ"</string>
 <string name="feedback_media">"ເບິ່ງວີດີໂອກ່ຽວກັບຄວາມເຫັນຕອບກັບມາ"</string>
@@ -236,8 +239,8 @@
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
-<string name="plan_action_today_date">ວັນນີ້: %s</string>
-<string name="plan_action_next_date">ວັນທີຕິດຕາມຕໍ່ໄປ: %s</string>
+<string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
+<string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
 <string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
@@ -251,6 +254,7 @@
 <item>ອື່ນໆ</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>ເບິ່ງວິດີໂອ</item>
 <item>ຕິບັດເຕັກນິກການແຊກທີ່ເຫມາະສົມໃນເວລາຂອງການຢ້ຽມຢາມ</item>
 </string-array>

@@ -27,6 +27,7 @@
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
 <string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
 <string name="dialog_info_ask_for_completion">"Tem certeza de que deseja completar %s? Você não pode desfazer essa ação"</string>
+<string name="dialog_info_ask_for_completion_plan">Tem certeza de que deseja completar o plano? Você não pode desfazer essa ação້</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
@@ -122,6 +123,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_return">"Voltar para todas as avaliações"</string>
 <string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação:"</string>
+<string name="overall_quality_of_care">"Pontuação Global Quality of Care (QoC):"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
 <string name="feedback_info_not_answered">"Não respondeu"</string>
@@ -222,8 +224,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="planing_due_date">"Data de Vencimento"</string>
 <string name="action_button_text">PLANO DE AÇÃO</string>
 <string name="plan_action_title">Observações e Plano de Ação</string>
-<string name="plan_action_today_date">Hoje: %s</string>
-<string name="plan_action_next_date">Próxima Data de Supervisão: %s</string>
+<string name="plan_action_today_date">Concluído: %s</string>
+<string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Plano de ação:</string>
@@ -237,6 +239,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <item>Outros</item>
 </string-array>
 <string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
 <item>Assista vídeo</item>
 <item>Pratique a técnica de inserção adequada no momento da visita</item>
 </string-array>

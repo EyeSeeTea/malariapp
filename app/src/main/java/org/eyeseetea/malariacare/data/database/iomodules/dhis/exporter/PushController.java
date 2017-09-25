@@ -22,8 +22,11 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Delete;
+
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.PushDhisSDKDataSource;
@@ -36,6 +39,8 @@ import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.models.event.Event;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +51,8 @@ public class PushController implements IPushController {
     private Context mContext;
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
+
+    public enum Kind {EVENTS, PLANS}
 
     public PushController(Context context) {
         mContext = context;
@@ -74,7 +81,7 @@ public class PushController implements IPushController {
 
                 try {
                     convertToSDK(surveys);
-                }catch (ConversionException e){
+                } catch (ConversionException e) {
                     callback.onInformativeError(e);//notify to the user
                     callback.onError(e);//close push
                     return;
@@ -85,7 +92,33 @@ public class PushController implements IPushController {
                     return;
                 } else {
                     Log.d(TAG, "push data");
-                    pushData(callback);
+                    pushData(callback, Kind.EVENTS);
+                }
+            }
+            List<ObsActionPlan> obsActionPlen =
+                    ObsActionPlan.getAllCompletedObsActionPlansInSentSurveys();
+
+            if (obsActionPlen == null || obsActionPlen.size() == 0) {
+                callback.onError(new SurveysToPushNotFoundException("Null surveys"));
+            } else {
+
+                mPushDhisSDKDataSource.wipeEvents();
+                Log.d(TAG, "convert surveys to sdk");
+
+                try {
+                    convertObsToSDK(obsActionPlen);
+                } catch (ConversionException e) {
+                    callback.onInformativeError(e);//notify to the user
+                    callback.onError(e);//close push
+                    return;
+                }
+
+                if (EventExtended.getAllEvents().size() == 0) {
+                    callback.onError(new ConversionException());
+                    return;
+                } else {
+                    Log.d(TAG, "push data of observation and plan surveys");
+                    pushData(callback, Kind.PLANS);
                 }
             }
         }
@@ -101,7 +134,7 @@ public class PushController implements IPushController {
         PreferencesState.getInstance().setPushInProgress(inProgress);
     }
 
-    private void pushData(final IPushControllerCallback callback) {
+    private void pushData(final IPushControllerCallback callback, final Kind kind) {
         mPushDhisSDKDataSource.pushData(
                 new IDataSourceCallback<Map<String, PushReport>>() {
                     @Override
@@ -112,7 +145,7 @@ public class PushController implements IPushController {
                             return;
                         }
                         try {
-                            mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback);
+                            mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback, kind);
                             callback.onComplete();
                         }catch (Exception e){
                             onError(new PushReportException(e));
@@ -123,11 +156,11 @@ public class PushController implements IPushController {
                     public void onError(Throwable throwable) {
                         if(throwable instanceof  PushReportException
                                 || throwable instanceof PushDhisException) {
-                            mConvertToSDKVisitor.setSurveysAsQuarantine();
+                            mConvertToSDKVisitor.setSurveysAsQuarantine(kind);
                         }
                         callback.onError(throwable);
                     }
-                });
+                }, kind);
     }
 
     private void convertToSDK(List<Survey> surveys) throws ConversionException{
@@ -136,6 +169,14 @@ public class PushController implements IPushController {
             survey.setStatus(Constants.SURVEY_SENDING);
             survey.save();
             survey.accept(mConvertToSDKVisitor);
+        }
+    }
+    private void convertObsToSDK(List<ObsActionPlan> obsActionPlanList) throws ConversionException{
+        Log.d(TAG, "Converting APP survey into a SDK event");
+        for (ObsActionPlan obsActionPlan : obsActionPlanList) {
+            obsActionPlan.setStatus(Constants.SURVEY_SENDING);
+            obsActionPlan.save();
+            obsActionPlan.accept(mConvertToSDKVisitor);
         }
     }
 }

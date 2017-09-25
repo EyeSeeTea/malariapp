@@ -37,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
@@ -90,6 +91,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         for (Survey survey : surveys) {
             survey.setStatus(Constants.SURVEY_QUARANTINE);
             survey.save();
+        }
+        List<ObsActionPlan> obsActionPlens = ObsActionPlan.getAllSendingObsActionPlans();
+        for (ObsActionPlan obsActionPlan : obsActionPlens) {
+            //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
+            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+            obsActionPlan.save();
         }
     }
 

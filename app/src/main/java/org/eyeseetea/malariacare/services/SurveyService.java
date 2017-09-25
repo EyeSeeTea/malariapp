@@ -225,6 +225,27 @@ public class SurveyService extends IntentService {
         //Returning result to anyone listening
         Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+    }
+
+    private void reloadOnlyLastSentFragment() {
+        BaseServiceBundle sentDashboardBundle = new BaseServiceBundle();
+
+        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
+
+        //Select surveys from sql
+        List<Survey> sentSurveyList;
+
+        sentSurveyList = Survey.getLastSentCompletedOrConflictSurveys();
+        sentDashboardBundle.addModelList(Survey.class.getName(),sentSurveyList);
+        sentDashboardBundle.addModelList(OrgUnit.class.getName(),OrgUnit.getAllOrgUnit());
+        sentDashboardBundle.addModelList(Program.class.getName(),Program.getAllPrograms());
+
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
 
     }
 
@@ -336,6 +357,7 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
+        reloadSentFragment();
         getAllCompletedSurveys();
         getAllCreateSurveyData();
         getAllInProgressSurveys();
