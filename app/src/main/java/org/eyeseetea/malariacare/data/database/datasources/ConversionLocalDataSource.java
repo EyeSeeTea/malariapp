@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.MatchDB;
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
@@ -59,7 +60,7 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -407,7 +408,8 @@ public class ConversionLocalDataSource {
                 TabDB.class,
                 ProgramDB.class,
                 ServerMetadataDB.class,
-                MediaDB.class
+                MediaDB.class,
+                ObsActionPlanDB.class
         );
     }
 }

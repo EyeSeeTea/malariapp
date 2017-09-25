@@ -74,16 +74,19 @@ android {
             applicationId "org.eyeseetea.malariacare.eds_bb"
             versionName "2.0.5"
             buildConfigField "boolean", "translations", "false"
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
-            versionName "1.2.3"
+            versionName "1.2.6"
             buildConfigField "boolean", "translations", "true"
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
         }
         surveillance {
             applicationId "org.eyeseetea.malariacare.surveillance_bb"
             versionName "5.0.0"
             buildConfigField "boolean", "translations", "true"
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
         }
     }
 
@@ -107,6 +110,7 @@ dependencies {
     // SDK submodules
     compile project(":core-rules")
     compile project(":ui-bindings")
+    compile project(":EyeSeeTea-sdk")
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')

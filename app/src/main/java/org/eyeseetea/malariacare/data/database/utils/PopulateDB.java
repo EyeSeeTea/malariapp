@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class PopulateDB {
     public static final String HEADERS_CSV = "Header.csv";
     public static final String ANSWERS_CSV = "Answer.csv";
     public static final String OPTIONS_CSV = "Option.csv";
-    public static final String COMPOSITE_SCORES_CSV = "CompositeScoreDB.csv";
+    public static final String COMPOSITE_SCORES_CSV = "CompositeScore.csv";
     public static final String QUESTIONS_CSV = "Question.csv";
     public static final String QUESTION_RELATIONS_CSV = "QuestionRelation.csv";
     public static final String MATCHES_CSV = "Match.csv";
@@ -384,7 +385,8 @@ public class PopulateDB {
                 TabDB.class,
                 ProgramDB.class,
                 ServerMetadataDB.class,
-                MediaDB.class
+                MediaDB.class,
+                ObsActionPlanDB.class
         );
     }
 

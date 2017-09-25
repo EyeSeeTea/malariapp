@@ -26,7 +26,7 @@ package org.eyeseetea.malariacare.test.pull;
         import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
         import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
         import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-        import org.eyeseetea.malariacare.data.remote.SdkController;
+        import org.eyeseetea.malariacare.data.remote.sdk.SdkController;
         import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
         import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Event;
         import org.junit.AfterClass;

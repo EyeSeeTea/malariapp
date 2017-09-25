@@ -268,9 +268,6 @@ public class ProgressActivity extends Activity {
         if (!mPullUseCase.isPullActive()) {
             finishAndGo(LoginActivity.class);
             return;
-        } else {
-            //if is a pull and the process is finished, we annotate the first pull as true
-            annotateFirstPull(true);
         }
 
         //Show final step -> done
@@ -280,78 +277,33 @@ public class ProgressActivity extends Activity {
 
         final int msg = getDoneMessage();
 
-        Log.d(TAG,"dialog: "+msg);
-        Intent intent = getIntent();
+        Log.i(TAG, getString(msg));
 
-        /**
-         * Reference required for testing purposes
-         */
-        if (intent != null && (intent.getIntExtra(ProgressActivity.AFTER_ACTION,
-                ProgressActivity.DONT_SHOW_FEEDBACK) == ProgressActivity.SHOW_FEEDBACK)) {
 
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    handler.post(new Runnable() { // This thread runs in the UI
-                        @Override
-                        public void run() {
-                            AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
-                                    .setCancelable(false)
-                                    .setTitle(title)
-                                    .setMessage(msg)
-                                    .setPositiveButton(android.R.string.ok,
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface arg0,
-                                                        int arg1) {
-                                                    finishAndGo(DashboardActivity.class);
-                                                    return;
-                                                }
-                                            })
-                                    .setNeutralButton(
-                                            getApplicationContext().getResources().getString(
-                                                    R.string.dialog_button_preview_feedback),
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface arg0,
-                                                        int arg1) {
-                                                    //I try using a intent to feedbackactivity
-                                                    // but the
-                                                    // dashboardsActivity was reloaded from the
-                                                    // service.
-                                                    finishAndGo(DashboardActivity.class);
-                                                }
-                                            }).create();
-                            alertDialog.show();
-                        }
-                    });
-                }
-            };
-            new Thread(runnable).start();
-        } else {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    handler.post(new Runnable() { // This thread runs in the UI
-                        @Override
-                        public void run() {
-                            AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
-                                    .setCancelable(false)
-                                    .setTitle(title)
-                                    .setMessage(msg)
-                                    .setNeutralButton(android.R.string.ok,
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface arg0,
-                                                        int arg1) {
-                                                    finishAndGo(DashboardActivity.class);
-                                                    return;
-                                                }
-                                            }).create();
-                            alertDialog.show();
-                        }
-                    });
-                }
-            };
-            new Thread(runnable).start();
-        }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() { // This thread runs in the UI
+                    @Override
+                    public void run() {
+                        AlertDialog alertDialog = new AlertDialog.Builder(mProgressActivity)
+                                .setCancelable(false)
+                                .setTitle(title)
+                                .setMessage(msg)
+                                .setNeutralButton(android.R.string.ok,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface arg0,
+                                                    int arg1) {
+                                                finishAndGo(DashboardActivity.class);
+                                                return;
+                                            }
+                                        }).create();
+                        alertDialog.show();
+                    }
+                });
+            }
+        };
+        new Thread(runnable).start();
     }
 
     private int getDoneMessage() {
@@ -460,6 +412,7 @@ public class ProgressActivity extends Activity {
     }
 
     public void postFinish() {
+        Log.d(TAG, "post finish");
         annotateFirstPull(true);
         showAndMoveOn();
     }

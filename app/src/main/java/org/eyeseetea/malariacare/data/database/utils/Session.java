@@ -81,6 +81,9 @@ public class Session {
 
 
     public static SurveyDB getSurveyByModule(String module) {
+        if(surveyMappedByModule==null){
+            return null;
+        }
         return surveyMappedByModule.get(module);
     }
 
@@ -132,7 +135,12 @@ public class Session {
             user.delete();
             user=null;
         }
-        surveyMappedByModule=null;
+        if(surveyMappedByModule!=null) {
+            surveyMappedByModule.clear();
+        }
+        if(tabsCache!=null){
+            tabsCache.clear();
+        }
         if(serviceValues!=null){
             serviceValues.clear();
         }

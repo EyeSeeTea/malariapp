@@ -25,7 +25,7 @@ import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.PullException;
@@ -51,13 +51,6 @@ public class PullController implements IPullController {
         conversionLocalDataSource.convertFromSDK();
 
         conversionLocalDataSource.validateCS();
-
-        if (PULL_IS_ACTIVE) {
-            Log.d(TAG, "PULL process...OK");
-            postFinish();
-        } else {
-            callback.onCancel();
-        }
     }
 
 
@@ -136,11 +129,13 @@ public class PullController implements IPullController {
                                 ConversionException(e));
                         return;
                     }
-                    if (!PULL_IS_ACTIVE) {
+
+                    if (PULL_IS_ACTIVE) {
+                        Log.d(TAG, "PULL process...OK");
+                        callback.onComplete();
+                    } else {
                         callback.onCancel();
-                        return;
                     }
-                    callback.onComplete();
                 } catch (NullPointerException e) {
                     callback.onError(new
                             ConversionException(e));

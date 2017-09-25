@@ -7,7 +7,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.common.FileUtils;
 
 import java.io.File;
 
@@ -30,7 +30,7 @@ public class VideoActivity extends Activity {
         if (file.exists()) {
             mVideoView.setVideoPath(videoPathParam);
         } else {
-            mVideoView.setVideoURI(FileIOUtils.getRawUri(videoPathParam));
+            mVideoView.setVideoURI(FileUtils.getRawUri(videoPathParam, getPackageName()));
         }
         mVideoView.setMediaController(mediaController);
         mediaController.setAnchorView(mVideoView);

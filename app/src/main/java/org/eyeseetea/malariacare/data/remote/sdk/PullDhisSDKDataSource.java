@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.remote;
+package org.eyeseetea.malariacare.data.remote.sdk;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -30,6 +30,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.remote.IPullDataSource;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.hisp.dhis.client.sdk.android.api.D2;

@@ -1,4 +1,4 @@
-include ':app', ':core', ':core-android', ':core-rules', ':models', ':ui', ':ui-bindings', ':utils'
+include ':app', ':core', ':core-android', ':core-rules', ':models', ':ui', ':ui-bindings', ':utils', ':EyeSeeTea-sdk'
 project(':core').projectDir = new File(settingsDir, 'sdk/core')
 project(':core-android').projectDir = new File(settingsDir, 'sdk/core-android')
 project(':core-rules').projectDir = new File(settingsDir, 'sdk/core-rules')
