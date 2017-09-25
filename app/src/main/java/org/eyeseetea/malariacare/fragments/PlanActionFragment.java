@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -303,13 +304,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 mCustomGapsEditText.getText().toString() + "</p>";
         data += "<p><b>" + getString(R.string.plan_action_action_plan_title) + "</b> " +
                 mCustomActionPlanEditText.getText().toString() + "</p>";
-        if(!actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(0))) {
+        if(!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
             data += "<p><b>" + getString(R.string.plan_action_action_title) + "</b> " +
-                    actionDropdown.getSelectedItem().toString();
+                    actionSpinner.getSelectedItem().toString();
         }
-        if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(1))){
-            data +=secondaryActionDropdown.getSelectedItem().toString()  + "</p>";
-        }else if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(5))){
+        if(actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))){
+            data +=secondaryActionSpinner.getSelectedItem().toString()  + "</p>";
+        }else if(actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))){
             data +=mCustomActionOtherEditText.getText().toString()  +"</p>";
         }
         else{
@@ -385,17 +386,21 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         if(criticalQuestions!=null && criticalQuestions.size()>0) {
             data += getString(R.string.critical_steps) + "\n\n";
 
-        List<CompositeScore> compositeScoreList = prepareCompositeScores(survey, criticalQuestions);
+            List<CompositeScore> compositeScoreList = prepareCompositeScores(survey,
+                    criticalQuestions);
 
 
-        //Calculate main score
+            //Calculate main score
 
-        //For each score add proper items
-        for(CompositeScore compositeScore:compositeScoreList) {
-            data +=compositeScore.getHierarchical_code() +" "+ compositeScore.getLabel() +"\n";
-            for(Question question : criticalQuestions){
-                if(question.getCompositeScoreFk()==(compositeScore.getId_composite_score())) {
-                    data += "-" + question.getForm_name() + "\n";
+            //For each score add proper items
+            for (CompositeScore compositeScore : compositeScoreList) {
+                data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
+                        + "\n";
+                for (Question question : criticalQuestions) {
+                    if (question.getCompositeScoreFk()
+                            == (compositeScore.getId_composite_score())) {
+                        data += "-" + question.getForm_name() + "\n";
+                    }
                 }
             }
         }
@@ -408,6 +413,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         System.out.println("data:"+data);
         createTextIntent(getActivity(), data);
     }
+
 
     /**
      * This method create the email intent
@@ -497,8 +503,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         return compositeScoreList;
     }
 
-    private void showFABMenu(){
-        isFABOpen=true;
     private void showFABMenu() {
         isFABOpen = true;
         fabHtmlOption.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
