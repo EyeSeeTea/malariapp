@@ -39,6 +39,7 @@
     <color name="planning_header_background">@color/custom_background_grey</color>
     <color name="planning_header_text">@color/white</color>
     <color name="planning_row_text">@color/black</color>
+    <color name="clear_gray">#e3e4e4</color>
 
     <!-- from old SDK-->
     <color name="button_login_state_enabled_false">#FF223F5C</color>
