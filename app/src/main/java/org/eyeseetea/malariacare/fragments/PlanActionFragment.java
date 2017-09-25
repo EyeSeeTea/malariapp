@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -60,8 +61,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class PlanActionFragment extends Fragment implements IModuleFragment {
+public class PlanActionFragment extends Fragment implements IModuleFragment, Observer {
 
     public static final String TAG = ".PlanActionFragment";
 
@@ -103,6 +106,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
             setReadOnlyMode();
         }
+        ObservablePush.getInstance().addObserver(this);
         return llLayout; // We must return the loaded Layout
     }
 
@@ -239,6 +243,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         fabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
         if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
             fabComplete.setImageResource(R.drawable.ic_action_check);
+        }
+        if (mObsActionPlan.getStatus() == Constants.SURVEY_SENT) {
+            fabComplete.setImageResource(R.drawable.ic_double_check);
         }
 
         fabComplete.setOnClickListener(new View.OnClickListener() {
@@ -571,5 +578,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
 
     @Override
     public void reloadData() {
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        onActionPlanSent();
+    }
+
+    private void onActionPlanSent() {
+        mObsActionPlan = ObsActionPlan.findById(mObsActionPlan.getId_obs_action_plan());
+        if (mObsActionPlan.getStatus() == Constants.SURVEY_SENT) {
+            fabComplete.setImageResource(R.drawable.ic_double_check);
+        }
     }
 }

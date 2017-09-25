@@ -29,6 +29,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -55,6 +56,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
         DashboardActivity.reloadDashboard();
+        ObservablePush.getInstance().updateValue(null);
     }
 
     public static void isDoneFail() {
