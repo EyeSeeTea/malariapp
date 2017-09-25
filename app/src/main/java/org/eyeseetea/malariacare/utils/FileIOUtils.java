@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.utils;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
+import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -31,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 
 public class FileIOUtils {
@@ -40,6 +42,7 @@ public class FileIOUtils {
      * Databases folder
      */
     private final static String DATABASE_FOLDER = "databases/";
+    private final static String TAG = "FileIOUUtils";
 
     /**
      * This method copy a file in other file
@@ -54,6 +57,27 @@ public class FileIOUtils {
             src.close();
             dst.close();
         }
+    }
+
+    public static File saveStringToFile(String filename, String data, Context context)
+            throws IOException {
+        File file;
+        try {
+            if (!fileExists(filename, context)) {
+                file = createFile(filename, context);
+            } else {
+                context.deleteFile(filename);
+                file = createFile(filename, context);
+            }
+            FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return file;
     }
 
     public static void copyInputStreamToFile(InputStream inputStream, File file)
@@ -122,4 +146,22 @@ public class FileIOUtils {
         return filename.substring(0, filename.lastIndexOf("."));
     }
 
+
+    public static boolean fileExists(String fname, Context context) {
+        File file = context.getFileStreamPath(fname);
+        return file.exists();
+    }
+
+    public static File createFile(String fileName, Context context) throws IOException {
+        boolean created;
+        File file = new File(context.getFilesDir(), fileName);
+        try {
+            created = file.createNewFile();
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating new file " + fileName);
+            e.printStackTrace();
+            throw e;
+        }
+        return created ? file : null;
+    }
 }

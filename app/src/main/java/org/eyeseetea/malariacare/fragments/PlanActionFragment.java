@@ -24,12 +24,8 @@ import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,21 +35,24 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScore;
 import org.eyeseetea.malariacare.data.database.model.Question;
 import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -147,17 +146,49 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     private void shareHtmlText() {
         Survey survey = Session.getSurveyByModule(moduleName);
 
-        String title = getString(R.string.supervision_on) +" "+ survey.getOrgUnit().getName() +"/"+survey.getProgram().getName() + "\n";
-        String data =
-                PreferencesState.getInstance().getContext().getString(
-                        R.string.app_name) + "\n";
-        data +=getString(R.string.supervision_on) +" "+ survey.getOrgUnit().getName() +"/"+survey.getProgram().getName() + "\n";
-        data +=getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n";
-        data +=String.format(getString(R.string.plan_action_next_date), EventExtended.format(survey.getCompletionDate(),EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
-        data +="<p><b>"+getString(R.string.plan_action_gasp_title) + "</b> " + mCustomGapsEditText.getText().toString() + "</p>";
-        data +="<p><b>"+getString(R.string.plan_action_action_plan_title) + "</b> " + mCustomActionPlanEditText.getText().toString() + "</p>";
+        String title = getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
+                + "/" + survey.getProgram().getName() + "\n";
+        String data = "<!DOCTYPE html>"
+                + "<html>"
+                + "<head>"
+                + "<style>"
+                + ".header{"
+                + "color:#6E6E6E; margin-top:0"
+                + "}"
+                + ".header em{"
+                + "color:#FFBF00;"
+                + "}"
+                + ".title p{margin:0}"
+                + ".nextDate {margin-left: 6cm; color:#6E6E6E;}"
+                + ".header b{color:black;}"
+                + "</style>"
+                + "</head>"
+                + "<body>";
+
+        data +=
+                "<p class=\"header\"><img src=\"https://lh3.googleusercontent"
+                        + ".com/dLn5w5rNHKkMm1axNlD1iZuwBxqgUqRRD5d9N_F"
+                        + "-H3CIN7wDHiSEm2vK6fnSRXRBj7te=w75-rw\" align=\"left\"/><b>"
+                        + PreferencesState.getInstance().getContext().getString(
+                        R.string.app_name) + "</b><br/>";
+        data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
+                + "/" + survey.getProgram().getName() + "<br/>";
+        data += getString(R.string.on) + " " + String.format(
+                getString(R.string.plan_action_next_date), EventExtended.format
+                        (survey.getCompletionDate(), getString(R.string.date_month_text_format)))
+                + "<br/>";
+        data += getString(R.string.quality_of_care) + " <em>" + Math.round(survey.getMainScore())
+                + "%</em><br/>";
+        data += "</p><p class=\"nextDate\">" + String.format(
+                getString(R.string.plan_action_next_date), EventExtended.format
+                        (survey.getScheduledDate(), EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
+        data += "<p><b>" + getString(R.string.plan_action_gasp_title) + "</b> " +
+                mCustomGapsEditText.getText().toString() + "</p>";
+        data += "<p><b>" + getString(R.string.plan_action_action_plan_title) + "</b> " +
+                mCustomActionPlanEditText.getText().toString() + "</p>";
         if(!actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(0))) {
-            data += "<p><b>"+getString(R.string.plan_action_action_title) + "</b> " + actionDropdown.getSelectedItem().toString();
+            data += "<p><b>" + getString(R.string.plan_action_action_title) + "</b> " +
+                    actionDropdown.getSelectedItem().toString();
         }
         if(actionDropdown.getSelectedItem().equals(actionDropdown.getItemAtPosition(1))){
             data +=secondaryActionDropdown.getSelectedItem().toString()  + "</p>";
@@ -169,30 +200,42 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         }
         data +="<p><b>"+getString(R.string.critical_steps) + "</p>";
 
-        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session.getSurveyByModule(moduleName).getId_survey());
+        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session
+                .getSurveyByModule(moduleName).getId_survey());
 
-        List<CompositeScore> compositeScoreList = prepareCompositeScores(survey, criticalQuestions);
+        List<CompositeScore> compositeScoreList = prepareCompositeScores(survey,
+                criticalQuestions);
 
 
         //For each score add proper items
         for(CompositeScore compositeScore:compositeScoreList) {
-            data +="<p><b>"+compositeScore.getHierarchical_code() +" "+ compositeScore.getLabel() +"</b></p>";
+            data += "<p><b>" + compositeScore.getHierarchical_code() + " " + compositeScore.getLabel
+                    () + "</b></p>";
             for(Question question : criticalQuestions){
                 if(question.getCompositeScoreFk()==(compositeScore.getId_composite_score())) {
-                    data += "<p style=\"font-style: italic;\">" +"-" + question.getForm_name() + "</p>";
+                    data += "<p style=\"font-style: italic;\">" + "-" + question.getForm_name()
+                            + "</p>";
                 }
             }
         }
         data += getString(R.string.see_full_assessment)+ "</p>";
         if(survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "</p>";
+            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() +
+                    "</p>";
         }else{
             data += getString(R.string.url_not_available) + "</p>";
         }
-        System.out.println(data);
+        data += "</body>"
+                + "</html>";
+        File attached = null;
+        try {
+            attached = FileIOUtils.saveStringToFile("shared_html.html", data, getActivity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Spanned spannedData= Html.fromHtml(data);
-        createHtmlIntent(getActivity(), data, title);
+
+        createHtmlIntent(getActivity(), "", title, attached);
     }
 
     private void sharePlainText() {
@@ -244,13 +287,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
     /**
      * This method create the email intent
      */
-    private static void createHtmlIntent(Activity activity, String data, String title) {Intent emailIntent = new Intent();
-        emailIntent.putExtra(Intent.EXTRA_EMAIL,
-                new String[]{""});
-        emailIntent.setType("text/html");
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
-        emailIntent.putExtra(Intent.EXTRA_HTML_TEXT, Html.fromHtml("<html><body>"+data+"</body></html>"));
-        activity.startActivity(emailIntent);
+    private static void createHtmlIntent(Activity activity, String data, String title,
+            File attached) {
+        ExportData.shareFileIntent(activity, data, title, attached);
     }
 
     /**

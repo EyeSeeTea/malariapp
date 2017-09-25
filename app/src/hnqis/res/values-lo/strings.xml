@@ -258,5 +258,6 @@
 <string name="critical_steps">ຂັ້ນຕອນສໍາຄັນທີ່ພາດໂອກາດນີ້:</string>
 <string name="url_not_available">URL ບໍ່ສາມາດໃຊ້ໄດ້</string>
 <string name="see_full_assessment">ເບິ່ງການປະເມີນຜົນເຕັມທີ່ຢູ່</string>
+<string name="on">""</string>
 
 </resources>
