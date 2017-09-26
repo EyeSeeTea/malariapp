@@ -65,7 +65,8 @@ public class ScoreRegister {
     }
 
     public static void addRecord(QuestionDB question, Float num, Float den, float idSurvey, String module){
-         if (question.getCompositeScore() != null) {
+         if (question.getCompositeScore() != null&& compositeScoreMapBySurvey.get(module).get(
+                 idSurvey) != null) {
              compositeScoreMapBySurvey.get(module).get(idSurvey).get(question.getCompositeScore()).addRecord(question, num, den);
         }
         tabScoreMap.get(module).get(idSurvey).get(question.getHeader().getTab()).addRecord(question, num, den);
@@ -87,7 +88,10 @@ public class ScoreRegister {
     private static List<Float> getRecursiveScore(CompositeScoreDB cScore, List<Float> result, float idSurvey, String module) {
         Log.d(TAG, " mod "+ module +" idsurvey "+ idSurvey + " score "+ cScore);
         //Protect from wrong server data
-        if (compositeScoreMapBySurvey.get(module).get(idSurvey).get(cScore)==null) {
+        if (compositeScoreMapBySurvey.get(module) == null || compositeScoreMapBySurvey.get(
+                module).get(idSurvey) == null || compositeScoreMapBySurvey.get(
+                module).get(
+                idSurvey).get(cScore) == null) {
             return Arrays.asList(0f,0f);
         }
 

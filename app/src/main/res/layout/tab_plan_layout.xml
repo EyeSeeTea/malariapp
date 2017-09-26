@@ -142,7 +142,7 @@
             android:visibility="gone"
             android:background="@color/planning_header_background">
             <org.eyeseetea.malariacare.views.CustomButton
-                android:text="Reschedule"
+                android:text="@string/header_reschedule"
                 android:id="@+id/reschedule_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

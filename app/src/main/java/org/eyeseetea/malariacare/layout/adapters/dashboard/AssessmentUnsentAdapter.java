@@ -22,18 +22,29 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AssessmentUnsentAdapter extends
         ADashboardAdapter {
 
+    ;
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
@@ -54,9 +65,88 @@ public class AssessmentUnsentAdapter extends
 
     @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        ((CustomTextView) rowView.findViewById(R.id.score)).setText(getStatus(survey));
+        PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
+        createPie(mChart, getTotalStatus(survey));
+        mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
+        createPie(mChart, getMandatoryStatus(survey));
     }
 
+
+
+
+
+    protected void createPie(PieChart mChart, int percentage) {
+        Log.d("percentage", "percentage: "+percentage);
+        mChart.setUsePercentValues(true);
+        mChart.getDescription().setEnabled(false);
+
+        mChart.setDragDecelerationFrictionCoef(0.95f);
+
+        mChart.setDrawHoleEnabled(true);
+
+
+        mChart.setTransparentCircleColor(Color.RED);
+        mChart.setTransparentCircleAlpha(255);
+
+        mChart.setHoleRadius(0f);
+        mChart.setTransparentCircleRadius(0f);
+
+        mChart.setDrawCenterText(false);
+
+        // enable rotation of the chart by touch
+        mChart.setRotationEnabled(true);
+        mChart.setHighlightPerTapEnabled(true);
+
+        setData(mChart, percentage);
+
+        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);
+    }
+
+    private void setData(PieChart mChart, int percentage) {
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        if(percentage==0){
+            percentage++;
+        }
+        entries.add(new PieEntry((float) percentage));
+        entries.add(new PieEntry((float) (100-percentage)));
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+
+        dataSet.setDrawIcons(false);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors  = new ArrayList<Integer>();
+
+        if(percentage>90) {
+            colors.add(Color.GREEN);
+        }else if(percentage>50){
+            colors.add(Color.YELLOW);
+        }else{
+            colors.add(Color.RED);
+        }
+        colors.add(Color.TRANSPARENT);
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setValueTextColor(Color.TRANSPARENT);
+
+        //hide legend
+        Legend l = mChart.getLegend();
+        l.setEnabled(false);
+
+        mChart.setData(data);
+
+        // undo all highlights
+        mChart.highlightValues(null);
+
+        mChart.invalidate();
+    }
 
     @Override
     protected boolean hasToShowFacility(int position, SurveyDB survey) {

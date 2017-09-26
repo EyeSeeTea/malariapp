@@ -91,32 +91,49 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
         android:textStyle="bold"
         android:text="@string/quality_of_care"
         android:textColor="@color/feedbackDarkBlue"
         android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
-        android:layout_gravity="left"
+        android:layout_gravity="left|center_vertical"
+        android:textSize="@dimen/medium_xsmall_text_size"
         android:gravity="left"
-        app:tDimension="@string/font_size_level4"
+        app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
 
     <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.2"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
         android:id="@+id/feedback_total_score"
         android:layout_gravity="left|center_vertical"
         android:gravity="center_horizontal"
-        android:textSize="@dimen/large_xsmall_text_size"
+        android:textSize="@dimen/medium_xsmall_text_size"
         android:textStyle="bold"
         android:textColor="@color/black"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
+
+        <org.eyeseetea.malariacare.views.CustomButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/action_plan"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/action_button_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_xsmall_text_size"
+            android:background="@drawable/button_selector" />
     </LinearLayout>
     <ListView
         android:id="@+id/feedbackListView"

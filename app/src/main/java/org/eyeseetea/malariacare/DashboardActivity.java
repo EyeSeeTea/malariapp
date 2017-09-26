@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -380,6 +381,11 @@ public class DashboardActivity extends BaseActivity {
                 (PlanModuleController) dashboardController.getModuleByName(
                         PlanModuleController.getSimpleName());
         planModuleController.clickOrgProgramSpinner();
+    }
+
+    public void openActionPlan() {
+        ImproveModuleController improveModuleController = (ImproveModuleController) dashboardController.getModuleByName(ImproveModuleController.getSimpleName());
+        improveModuleController.onPlanActionSelected(Session.getSurveyByModule(improveModuleController.getName()));
     }
 
     public void onAssetsSelected(SurveyDB survey) {
