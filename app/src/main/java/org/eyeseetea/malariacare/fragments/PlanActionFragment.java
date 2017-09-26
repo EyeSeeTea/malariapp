@@ -51,8 +51,8 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
@@ -269,24 +269,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         String data = "<!DOCTYPE html>"
                 + "<html>"
                 + "<head>"
-                + "<style>"
-                + ".header{"
-                + "color:#6E6E6E; margin-top:0"
-                + "}"
-                + ".header em{"
-                + "color:#FFBF00;"
-                + "}"
-                + ".title p{margin:0}"
-                + ".nextDate {margin-left: 6cm; color:#6E6E6E;}"
-                + ".header b{color:black;}"
-                + "</style>"
+                + "<meta charset=\"utf-8\"/>"
                 + "</head>"
-                + "<body>";
-
+                + "<body>"
+                + "<div class=\"header\" style=\"height: 210px;\">";
         data +=
-                "<p class=\"header\"><img src=\"https://lh3.googleusercontent"
+                "<img  class=\"headerImage\" src=\"https://lh3.googleusercontent"
                         + ".com/dLn5w5rNHKkMm1axNlD1iZuwBxqgUqRRD5d9N_F"
-                        + "-H3CIN7wDHiSEm2vK6fnSRXRBj7te=w75-rw\" align=\"left\"/><b>"
+                        + "-H3CIN7wDHiSEm2vK6fnSRXRBj7te=w300-rw\" style=\"float: left; height: "
+                        + "210px;\"/>"
+                        + "<p class=\"headerText\" style=\"font-size: 210%; color: #6E6E6E;><b "
+                        + "style=\"color: black;\">"
                         + PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "</b><br/>";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
@@ -295,9 +288,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
                 getString(R.string.plan_action_next_date), EventExtended.format
                         (survey.getCompletionDate(), getString(R.string.date_month_text_format)))
                 + "<br/>";
-        data += getString(R.string.quality_of_care) + " <em>" + Math.round(survey.getMainScore())
+        data += getString(R.string.quality_of_care) + " <em style=\"color: #FFBF00;\">"
+                + Math.round(survey.getMainScore())
                 + "%</em><br/>";
-        data += "</p><p class=\"nextDate\">" + String.format(
+        data += "</p></div><p class=\"nextDate\" style=\"margin-left: 50%; color: #6E6E6E;\">"
+                + String.format(
                 getString(R.string.plan_action_next_date), EventExtended.format
                         (survey.getScheduledDate(), EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
         data += "<p><b>" + getString(R.string.plan_action_gasp_title) + "</b> " +
@@ -321,12 +316,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session
                 .getSurveyByModule(moduleName).getId_survey());
 
-        List<CompositeScore> compositeScoreList = prepareCompositeScores(survey,
-                criticalQuestions);
+        List<CompositeScore> compositeScoresTree = getValidTreeOfCompositeScores();
 
 
         //For each score add proper items
-        for(CompositeScore compositeScore:compositeScoreList) {
+        for (Iterator<CompositeScore> iterator = compositeScoresTree.iterator();
+                iterator.hasNext(); ) {
+            CompositeScore compositeScore = iterator.next();
             data += "<p><b>" + compositeScore.getHierarchical_code() + " " + compositeScore.getLabel
                     () + "</b></p>";
             for(Question question : criticalQuestions){
@@ -338,8 +334,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         }
         data += getString(R.string.see_full_assessment)+ "</p>";
         if(survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() +
-                    "</p>";
+            data += "<a href=https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
+                    +
+                    ">https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
+                    + "</a></p>";
         }else{
             data += getString(R.string.url_not_available) + "</p>";
         }
@@ -386,14 +384,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment {
         if(criticalQuestions!=null && criticalQuestions.size()>0) {
             data += getString(R.string.critical_steps) + "\n\n";
 
-            List<CompositeScore> compositeScoreList = prepareCompositeScores(survey,
-                    criticalQuestions);
-
-
-            //Calculate main score
-
+            List<CompositeScore> compositeScoresTree = getValidTreeOfCompositeScores();
             //For each score add proper items
-            for (CompositeScore compositeScore : compositeScoreList) {
+            for (Iterator<CompositeScore> iterator = compositeScoresTree.iterator();
+                    iterator.hasNext(); ) {
+                CompositeScore compositeScore = iterator.next();
                 data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
                         + "\n";
                 for (Question question : criticalQuestions) {

@@ -245,8 +245,7 @@ public class ExportData {
                 .setSubject(title)
                 .setStream(FileProvider.getUriForFile(activity,
                         BuildConfig.APPLICATION_ID + ".data.database.utils.ExportData", attached))
-                .setText(data) //If you are using HTML in your body text
-                .setChooserTitle("test")
+                .setText(data)
                 .startChooser();
     }
 }
