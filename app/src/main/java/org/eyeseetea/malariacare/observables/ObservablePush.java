@@ -6,10 +6,10 @@ import java.util.Observable;
 public class ObservablePush extends Observable {
     private static ObservablePush instance = new ObservablePush();
 
-    public void updateValue(Object data) {
+    public void pushFinish() {
         synchronized (this) {
             setChanged();
-            notifyObservers(data);
+            notifyObservers();
         }
     }
 
