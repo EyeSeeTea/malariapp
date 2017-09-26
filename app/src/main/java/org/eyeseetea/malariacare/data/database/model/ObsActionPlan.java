@@ -215,6 +215,10 @@ public class ObsActionPlan extends BaseModel implements VisitableToSDK {
         this.action2 = action2;
     }
 
+    public static ObsActionPlan findById(long id_obs_action_plan) {
+        return new Select().from(ObsActionPlan.class).where(
+                ObsActionPlan_Table.id_obs_action_plan.eq(id_obs_action_plan)).querySingle();
+    }
     public static ObsActionPlan findObsActionPlanBySurvey(long id_survey) {
         return new Select().from(ObsActionPlan.class).where(ObsActionPlan_Table.id_survey_obs_action_fk.eq(id_survey)).querySingle();
     }
