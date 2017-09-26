@@ -26,16 +26,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -59,12 +54,10 @@ public class AssessmentUnsentAdapter extends
 
     @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        //TODO The external and internal pie charts should represent two percentages of the survey completion. One of te piechart will be established with the percentage of questions compulsory, and the other with the percentage of normal questions.
         PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
-        createPie(mChart, getStatus(survey));
-        //// FIXME: 06/09/2017 50 is only a visible example
+        createPie(mChart, getTotalStatus(survey));
         mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
-        createPie(mChart, 50);
+        createPie(mChart, getMandatoryStatus(survey));
     }
 
 
