@@ -48,7 +48,7 @@ function pieXTabGroupChart(data){
 
     //Chart
     var ctx = document.getElementById(canvasDOMId).getContext("2d");
-    var  myChart  = new Chart(ctx).Doughnut(
+    var  myChart  = new Chart(ctx).Pie(
                                [{
                                    value: data.valueA,
                                    color: green,
@@ -63,10 +63,6 @@ function pieXTabGroupChart(data){
                                    label: "C (<50)"
                                }],
                                {
-                                   segmentShowStroke: false,
-                                   animateRotate: false,
-                                   animateScale: false,
-                                   percentageInnerCutout: 50,
                                    tooltipTemplate: "<%= value %>",
                                    onAnimationComplete: function(){
                                        this.showTooltip(this.segments, true);

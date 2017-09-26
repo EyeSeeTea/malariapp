@@ -85,8 +85,13 @@ function buildRowFacility(facility){
 	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
+		var asterisk = "";
+		if(facility.counter[i]>1){
+		    showMultipleEventLegend();
+			asterisk = "*";
+		}
 		var iValue=facility.values[i];
-        row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
+        row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div>"+asterisk+"</td>";
 
 	}
 	//end row
