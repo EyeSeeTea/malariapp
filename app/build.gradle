@@ -132,6 +132,7 @@ dependencies {
     compile "com.google.guava:guava:${libs.guavaVersion}"
     compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
     compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
+    compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
