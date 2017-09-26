@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import static org.eyeseetea.malariacare.R.layout.survey;
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
 import android.app.Activity;
@@ -274,35 +275,55 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
     private void sharePlainText() {
         SurveyDB survey = Session.getSurveyByModule(moduleName);
+
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
+                survey.getId_survey());
+
+        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+
+        String data = extractTextData(survey,criticalQuestions,compositeScoresTree);
+
+        System.out.println("data:"+data);
+        createTextIntent(getActivity(), data);
+    }
+
+    @NonNull
+    private String extractTextData(SurveyDB survey, List<QuestionDB> criticalQuestions,
+            List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n\n";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n\n";
+
         data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
+
         data += String.format(getString(R.string.plan_action_next_date),
                 EventExtended.format(survey.getScheduledDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT)) + "\n\n";
-        data += getString(R.string.plan_action_gasp_title) + " "
-                + mCustomGapsEditText.getText().toString() + "\n\n";
-        data += getString(R.string.plan_action_action_plan_title) + " "
-                + mCustomActionPlanEditText.getText().toString() + "\n\n";
-        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
-            data += getString(R.string.plan_action_action_title) + " "
-                    + actionSpinner.getSelectedItem().toString() + "\n\n";
-        }
-        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
-            data += secondaryActionSpinner.getSelectedItem().toString() + "\n";
-        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
-            data += mCustomActionOtherEditText.getText().toString() + "\n";
-        }
+                        EventExtended.EUROPEAN_DATE_FORMAT)) ;
 
-        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
-                Session.getSurveyByModule(moduleName).getId_survey());
+        data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
+
+        if (mObsActionPlan.getGaps() != null && !mObsActionPlan.getGaps().isEmpty())
+            data += mObsActionPlan.getGaps();
+
+        data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " ";
+
+        if (mObsActionPlan.getAction_plan() != null && !mObsActionPlan.getAction_plan().isEmpty())
+            data += mObsActionPlan.getAction_plan();
+
+        data += "\n\n" + getString(R.string.plan_action_action_title) + " ";
+
+        if (mObsActionPlan.getAction1() != null && !mObsActionPlan.getAction1().isEmpty())
+            data += mObsActionPlan.getAction1();
+
+
+        if (mObsActionPlan.getAction2() != null && !mObsActionPlan.getAction2().isEmpty())
+            data += "\n" + mObsActionPlan.getAction2();
+
         if(criticalQuestions!=null && criticalQuestions.size()>0) {
-            data += getString(R.string.critical_steps) + "\n\n";
+            data += "\n\n" + getString(R.string.critical_steps) + "\n\n";
 
-            List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
             //For each score add proper items
             for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
                     iterator.hasNext(); ) {
@@ -317,14 +338,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 }
             }
         }
-        data += "\n" + getString(R.string.see_full_assessment) + "\n";
+        data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
-        System.out.println("data:"+data);
-        createTextIntent(getActivity(), data);
+        return data;
     }
 
     @NonNull
