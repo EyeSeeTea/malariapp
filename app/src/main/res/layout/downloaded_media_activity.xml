@@ -75,5 +75,4 @@
         android:clipToPadding="false"
         android:padding="4dp" />
 
-    <include layout="@layout/assessment_footer"></include>
 </LinearLayout>

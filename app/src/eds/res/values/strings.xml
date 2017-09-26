@@ -211,6 +211,7 @@
     <string name="developer_option_summary">This feature activates the developer options</string>
     <string name="developer_option_title">Show developer options</string>
     <string name="export_data_option_title">Export database</string>
+    <string name="import_data_option_title">Import database</string>
     <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
     <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
     <string name="feedback_media">View video feedback</string>
@@ -233,4 +234,7 @@
     <string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
     <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
     <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
+
+    <string name="install_file_manager">Please install a File Manager.</string>
+    <string name="get_db_file_dialog">Please select a valid db file</string>
 </resources>

@@ -29,8 +29,6 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -43,15 +41,13 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.Header;
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Tab;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.HeaderDB;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
@@ -73,7 +69,6 @@ import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -101,7 +96,7 @@ public class AutoTabAdapter extends ATabAdapter {
      */
     private final AutoTabSelectedItem autoTabSelectedItemFactory;
 
-    public AutoTabAdapter(Tab tab, Context context, int id_layout, float idSurvey, String module) {
+    public AutoTabAdapter(TabDB tab, Context context, int id_layout, float idSurvey, String module) {
         super(tab, context, id_layout, idSurvey, module);
         this.inVisibilityState = new AutoTabInVisibilityState();
         this.autoTabSelectedItemFactory = new AutoTabSelectedItem(this,this.inVisibilityState, idSurvey, module);
@@ -112,19 +107,19 @@ public class AutoTabAdapter extends ATabAdapter {
             Object item = getItems().get(i);
 
             //Header are visible by default
-            if (item instanceof Header) {
-                inVisibilityState.initVisibility((Header) item);
+            if (item instanceof HeaderDB) {
+                inVisibilityState.initVisibility((HeaderDB) item);
             }
 
             //Question might be visible or not (according to parent values)
-            if (item instanceof Question) {
-                boolean visible = inVisibilityState.initVisibility((Question) item, idSurvey);
+            if (item instanceof QuestionDB) {
+                boolean visible = inVisibilityState.initVisibility((QuestionDB) item, idSurvey);
                 if (visible){
-                    AutoTabLayoutUtils.initScoreQuestion((Question) item, idSurvey, module);
+                    AutoTabLayoutUtils.initScoreQuestion((QuestionDB) item, idSurvey, module);
                 }else{
-                    ScoreRegister.addRecord((Question) item, 0F, ScoreRegister.calcDenum((Question) item,idSurvey), idSurvey, module);
+                    ScoreRegister.addRecord((QuestionDB) item, 0F, ScoreRegister.calcDenum((QuestionDB) item,idSurvey), idSurvey, module);
                 }
-                inVisibilityState.updateHeaderVisibility((Question) item);
+                inVisibilityState.updateHeaderVisibility((QuestionDB) item);
             }
 
             //QuestionRow visibility equals first Question
@@ -148,7 +143,7 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param context
      * @return
      */
-    public static AutoTabAdapter build(Tab tab, Context context, float idSurvey, String module) {
+    public static AutoTabAdapter build(TabDB tab, Context context, float idSurvey, String module) {
         int idLayout = tab.getType() == Constants.TAB_AUTOMATIC_NON_SCORED ? R.layout.form_without_score : R.layout.form_with_score;
         return new AutoTabAdapter(tab, context, idLayout, idSurvey, module);
     }
@@ -190,8 +185,8 @@ public class AutoTabAdapter extends ATabAdapter {
         if (totalDenum == 0) {
             for (int i = 0; i < number_items; i++) {
                 Object item=getItems().get(i);
-                if ( item instanceof Question && inVisibilityState.isVisible(item)) {
-                    Question question = (Question) item;
+                if ( item instanceof QuestionDB && inVisibilityState.isVisible(item)) {
+                    QuestionDB question = (QuestionDB) item;
                     if (question.getOutput() == Constants.DROPDOWN_LIST) {
                         result = result + ScoreRegister.calcDenum(question, idSurvey);
                     }
@@ -224,11 +219,11 @@ public class AutoTabAdapter extends ATabAdapter {
         View rowView = null;
 
         final Object item = getItem(position);
-        Question question;
+        QuestionDB question;
         AutoTabViewHolder viewHolder = new AutoTabViewHolder();
 
-        if (item instanceof Question) {
-            question = (Question) item;
+        if (item instanceof QuestionDB) {
+            question = (QuestionDB) item;
             rowView = getView(position, parent, rowView, question, viewHolder, idSurvey);
 
             //Put current value in the component
@@ -241,10 +236,10 @@ public class AutoTabAdapter extends ATabAdapter {
                 AutoTabLayoutUtils.updateReadOnly(viewHolder.component, question, getReadOnly(module));
             }
 
-        } else if(item instanceof Header){
+        } else if(item instanceof HeaderDB){
             rowView = getInflater().inflate(R.layout.headers, parent, false);
             viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.headerName);
-            viewHolder.statement.setText(((Header) item).getName());
+            viewHolder.statement.setText(((HeaderDB) item).getName());
         }else{
             QuestionRow questionRow = (QuestionRow)item;
             rowView = getRowView(position,parent,questionRow,viewHolder, idSurvey);
@@ -268,7 +263,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return  rowView;
     }
 
-    private View getView(int position, ViewGroup parent, View rowView, Question question, AutoTabViewHolder viewHolder, float idSurvey) {
+    private View getView(int position, ViewGroup parent, View rowView, QuestionDB question, AutoTabViewHolder viewHolder, float idSurvey) {
         //FIXME This should be moved into its own class (Ex: ViewHolderFactory.getView(item))
         switch (question.getOutput()) {
 
@@ -347,7 +342,7 @@ public class AutoTabAdapter extends ATabAdapter {
     private View getViewTableHeader(LinearLayout row, QuestionRow questionRow){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
-        for(Question question:questionRow.getQuestions()){
+        for(QuestionDB question:questionRow.getQuestions()){
             addTextViewToRow(row,question,columnWeight, R.drawable.background_header,
                     getContext().getResources().getColor(R.color.white),
                     getContext().getString(R.string.condensed_font_name),
@@ -359,7 +354,7 @@ public class AutoTabAdapter extends ATabAdapter {
     private View getViewTableContent(LinearLayout row,QuestionRow questionRow, AutoTabViewHolder viewHolder, float idSurvey){
         row.setWeightSum(1f);
         float columnWeight=questionRow.sizeColumns()/1f;
-        for(Question question:questionRow.getQuestions()){
+        for(QuestionDB question:questionRow.getQuestions()){
             CustomEditText customEditText;
             Spinner spinner;
             CustomButton customButton;
@@ -418,7 +413,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return row;
     }
 
-    private void addTextViewToRow(LinearLayout rowLayout, Question question, float columnWeight, Integer background, Integer fontColor, String fontName, String fontDimension){
+    private void addTextViewToRow(LinearLayout rowLayout, QuestionDB question, float columnWeight, Integer background, Integer fontColor, String fontName, String fontDimension){
         rowLayout.setWeightSum(columnWeight);
         CustomTextView textView = new CustomTextView(getContext());
         textView.setText(question.getForm_name());
@@ -436,7 +431,7 @@ public class AutoTabAdapter extends ATabAdapter {
             textView.setTextSize(PreferencesState.getInstance().getFontSize(PreferencesState.getInstance().getScale(), textView.getmDimension()));
     }
 
-    private CustomButton addDateButtonToRow(LinearLayout rowLayout, Question question, float columnWeight){
+    private CustomButton addDateButtonToRow(LinearLayout rowLayout, QuestionDB question, float columnWeight){
         rowLayout.setWeightSum(columnWeight);
         CustomButton dateButton = new CustomButton(getContext());
         dateButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
@@ -444,11 +439,11 @@ public class AutoTabAdapter extends ATabAdapter {
         return dateButton;
     }
 
-    private void addTextViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+    private void addTextViewToRow(LinearLayout rowLayout, QuestionDB question, float columnWeight){
         addTextViewToRow(rowLayout, question, columnWeight, null, null, null, null);
     }
 
-    private CustomEditText addEditViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+    private CustomEditText addEditViewToRow(LinearLayout rowLayout, QuestionDB question, float columnWeight){
         //TODO Add the right widget, style, setvalues, readonly, ...
         rowLayout.setWeightSum(columnWeight);
         CustomEditText editText = new CustomEditText(getContext());
@@ -458,13 +453,13 @@ public class AutoTabAdapter extends ATabAdapter {
         return editText;
     }
 
-    private CustomEditText addEditIntViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+    private CustomEditText addEditIntViewToRow(LinearLayout rowLayout, QuestionDB question, float columnWeight){
         CustomEditText customEditText=addEditViewToRow(rowLayout,question,columnWeight);
         customEditText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
         return customEditText;
     }
 
-    private Spinner addSpinnerViewToRow (LinearLayout rowLayout, Question question, float columnWeight) {
+    private Spinner addSpinnerViewToRow (LinearLayout rowLayout, QuestionDB question, float columnWeight) {
         rowLayout.setWeightSum(columnWeight);
         Spinner spinner = new Spinner(getContext(), Spinner.MODE_DROPDOWN);
         spinner.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
@@ -476,13 +471,13 @@ public class AutoTabAdapter extends ATabAdapter {
 //        spinner.getBackground().setColorFilter(getContext().getResources().getColor(R.color.headerColor), PorterDuff.Mode.SRC_ATOP);
 
         rowLayout.addView(spinner);
-        List<Option> optionList = new ArrayList<>(question.getAnswer().getOptions());
-        optionList.add(0, new Option(Constants.DEFAULT_SELECT_OPTION));
+        List<OptionDB> optionList = new ArrayList<>(question.getAnswer().getOptions());
+        optionList.add(0, new OptionDB(Constants.DEFAULT_SELECT_OPTION));
         spinner.setAdapter(new OptionArrayAdapter(getContext(), optionList));
         return spinner;
     }
 
-    private RadioGroup addRadioGroupViewToRow (LinearLayout rowLayout, Question question, float columnWeight) {
+    private RadioGroup addRadioGroupViewToRow (LinearLayout rowLayout, QuestionDB question, float columnWeight) {
         rowLayout.setWeightSum(columnWeight);
         RadioGroup radioGroup = new RadioGroup(getContext());
         radioGroup.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
@@ -494,7 +489,7 @@ public class AutoTabAdapter extends ATabAdapter {
         return radioGroup;
     }
 
-    private Switch addSwitchViewToRow(LinearLayout rowLayout, Question question, float columnWeight){
+    private Switch addSwitchViewToRow(LinearLayout rowLayout, QuestionDB question, float columnWeight){
         rowLayout.setWeightSum(columnWeight);
         Switch switchButton = new Switch(getContext());
         rowLayout.addView(switchButton);
@@ -504,19 +499,19 @@ public class AutoTabAdapter extends ATabAdapter {
     public void setValues(AutoTabViewHolder viewHolder, QuestionRow questionRow, float idSurvey, String module) {
         for(int i=0;i<questionRow.sizeColumns();i++){
             View component = viewHolder.getColumnComponent(i);
-            Question question = questionRow.getQuestions().get(i);
+            QuestionDB question = questionRow.getQuestions().get(i);
             setValues(component,question, idSurvey, module);
         }
     }
 
-    public void setValues(View component, Question question, float idSurvey, String module){
+    public void setValues(View component, QuestionDB question, float idSurvey, String module){
         if(component==null || question==null){
             return;
         }
         setValues(new AutoTabViewHolder(component),question, idSurvey, module);
     }
 
-    public void setValues(AutoTabViewHolder viewHolder, Question question, float idSurvey, String module) {
+    public void setValues(AutoTabViewHolder viewHolder, QuestionDB question, float idSurvey, String module) {
         if(viewHolder==null || question==null){
             return;
         }
@@ -556,7 +551,7 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.RADIO_GROUP_HORIZONTAL:
             case Constants.RADIO_GROUP_VERTICAL:
                 //FIXME: it is almost the same as the previous case
-                Value value = question.getValueBySession(module);
+                ValueDB value = question.getValueBySession(module);
                 List<Float> numdenumradiobutton = ScoreRegister.getNumDenum(question, idSurvey, module);
                 if (numdenumradiobutton == null) { //FIXME: this avoid app crash when onResume
                     break;
@@ -574,7 +569,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 }
                 break;
             case Constants.SWITCH_BUTTON:
-                Option option = findOptionBySession(question, module);
+                OptionDB option = findOptionBySession(question, module);
                 viewHolder.setSwitchOption(option);
                 break;
             default:
@@ -588,9 +583,9 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param isChecked
      * @return
      */
-    public static Option findSwitchOption(Question question,boolean isChecked){
+    public static OptionDB findSwitchOption(QuestionDB question,boolean isChecked){
         String expectedCode=String.valueOf(isChecked);
-        for(Option option:question.getAnswer().getOptions()){
+        for(OptionDB option:question.getAnswer().getOptions()){
             if(expectedCode.equals(option.getCode())){
                 return option;
             }
@@ -603,8 +598,8 @@ public class AutoTabAdapter extends ATabAdapter {
      * @param question
      * @return
      */
-    private Option findOptionBySession(Question question, String module){
-        Value value = question.getValueBySession(module);
+    private OptionDB findOptionBySession(QuestionDB question, String module){
+        ValueDB value = question.getValueBySession(module);
 
         //real value -> real option
         if(value!=null){
@@ -620,9 +615,9 @@ public class AutoTabAdapter extends ATabAdapter {
     //////////////////////////////////////
     private class TextViewListener implements TextWatcher {
         private boolean viewCreated;
-        private Question question;
+        private QuestionDB question;
 
-        public TextViewListener(Question question) {
+        public TextViewListener(QuestionDB question) {
             this.viewCreated = false;
             this.question = question;
         }
@@ -652,9 +647,9 @@ public class AutoTabAdapter extends ATabAdapter {
 
         private boolean viewCreated;
         private AutoTabViewHolder viewHolder;
-        private Question question;
+        private QuestionDB question;
 
-        public SpinnerListener(Question question, AutoTabViewHolder viewHolder) {
+        public SpinnerListener(QuestionDB question, AutoTabViewHolder viewHolder) {
             this.viewCreated = false;
             this.question = question;
             this.viewHolder = viewHolder;
@@ -668,7 +663,7 @@ public class AutoTabAdapter extends ATabAdapter {
                 return;
             }
 
-            Option selectedOption=(Option) ((Spinner) viewHolder.component).getItemAtPosition(pos);
+            OptionDB selectedOption=(OptionDB) ((Spinner) viewHolder.component).getItemAtPosition(pos);
             AutoTabSelectedItem autoTabSelectedItem = autoTabSelectedItemFactory.buildSelectedItem(question,selectedOption,viewHolder, idSurvey, module);
             AutoTabLayoutUtils.itemSelected(autoTabSelectedItem, idSurvey, module);
             if(question.hasAMatchTrigger()) {
@@ -683,9 +678,9 @@ public class AutoTabAdapter extends ATabAdapter {
 
     public class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
         private AutoTabViewHolder viewHolder;
-        private Question question;
+        private QuestionDB question;
 
-        public RadioGroupListener(Question question, AutoTabViewHolder viewHolder) {
+        public RadioGroupListener(QuestionDB question, AutoTabViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }
@@ -696,10 +691,10 @@ public class AutoTabAdapter extends ATabAdapter {
                 return;
             }
 
-            Option selectedOption = new Option(Constants.DEFAULT_SELECT_OPTION);
+            OptionDB selectedOption = new OptionDB(Constants.DEFAULT_SELECT_OPTION);
             if (checkedId != -1) {
                 CustomRadioButton customRadioButton = this.viewHolder.findRadioButtonById(checkedId);
-                selectedOption = (Option) customRadioButton.getTag();
+                selectedOption = (OptionDB) customRadioButton.getTag();
                 if(question.getOptionBySurvey(idSurvey)!=null && question.getOptionBySurvey(idSurvey).equals(selectedOption)){
                     //if is already active ignore it( it is to ignore the first click of two)
                     return;
@@ -714,9 +709,9 @@ public class AutoTabAdapter extends ATabAdapter {
     public class SwitchButtonListener implements CompoundButton.OnCheckedChangeListener{
 
         private AutoTabViewHolder viewHolder;
-        private Question question;
+        private QuestionDB question;
 
-        public SwitchButtonListener(Question question, AutoTabViewHolder viewHolder) {
+        public SwitchButtonListener(QuestionDB question, AutoTabViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }
@@ -728,7 +723,7 @@ public class AutoTabAdapter extends ATabAdapter {
             }
 
             //Take option
-            Option selectedOption=findSwitchOption(question, isChecked);
+            OptionDB selectedOption=findSwitchOption(question, isChecked);
             if(selectedOption==null){
                 return;
             }
@@ -741,11 +736,11 @@ public class AutoTabAdapter extends ATabAdapter {
     public class DatePickerListener implements Button.OnClickListener {
 
         private AutoTabViewHolder viewHolder;
-        private Question question;
+        private QuestionDB question;
         private Calendar calendar = Calendar.getInstance();
         boolean isCleared=false;
 
-        public DatePickerListener(Question question, AutoTabViewHolder viewHolder) {
+        public DatePickerListener(QuestionDB question, AutoTabViewHolder viewHolder) {
             this.question = question;
             this.viewHolder = viewHolder;
         }

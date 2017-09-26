@@ -2,17 +2,14 @@ package org.eyeseetea.malariacare.test.pull;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnit;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -21,20 +18,17 @@ import org.hisp.dhis.android.sdk.persistence.models.ProgramAttributeValue;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.DEFAULT_WAIT_FOR_PULL;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_CI;
-import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.HNQIS_DEV_STAGING;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_USERNAME_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.TEST_PASSWORD_WITH_PERMISSION;
 import static org.eyeseetea.malariacare.test.utils.SDKTestUtils.login;
@@ -53,8 +47,8 @@ public class PullTranslationSDKToAppDBTest {
     private final String ATTRIBUTE_SUPERVISION_VALUE="Adrian Quintana";
     private final String ATTRIBUTE_SUPERVISION_ID="vInmonKS0rP";
     private final String ATTRIBUTE_OUPV_VALUE="0815789256346";
-    private static List<OrgUnit> orgUnitList;
-    private static List<Program> programList;
+    private static List<OrgUnitDB> orgUnitList;
+    private static List<ProgramDB> programList;
     private static List<org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit> orgUnitSdkList;
     private static List<org.hisp.dhis.android.sdk.persistence.models.Program> programsSdkList;
     @Rule
@@ -114,7 +108,7 @@ public class PullTranslationSDKToAppDBTest {
     private void testProgramUIDTranslation() {
         for(org.hisp.dhis.android.sdk.persistence.models.Program programSDK:programsSdkList){
             boolean hasAProgramWithUID=false;
-            for(Program program:programList){
+            for(ProgramDB program:programList){
                 if(programSDK.getUid().equals(program.getUid())){
                     hasAProgramWithUID=true;
                     break;
@@ -134,7 +128,7 @@ public class PullTranslationSDKToAppDBTest {
             boolean isProgramListInOrgUnit=false;
             boolean isOrgUnitOrgUnitLevel=false;
             //WHEN
-            for(OrgUnit orgUnit:orgUnitList){
+            for(OrgUnitDB orgUnit:orgUnitList){
                 if(organisationUnit.getId().equals(orgUnit.getUid())){
                     isOrgUnitUid=true;
                     if(organisationUnit.getLabel().equals(orgUnit.getName())){
@@ -151,7 +145,7 @@ public class PullTranslationSDKToAppDBTest {
 
                     for (org.hisp.dhis.android.sdk.persistence.models.Program program : MetaDataController.getProgramsForOrganisationUnit(organisationUnit.getId(), ProgramType.WITHOUT_REGISTRATION)) {
                         boolean isProgramInOrgUnit=false;
-                        for(Program orgUnitProgram:orgUnit.getPrograms()){
+                        for(ProgramDB orgUnitProgram:orgUnit.getPrograms()){
                             if(program.getUid().equals(orgUnitProgram.getUid())){
                                 isProgramInOrgUnit=true;
                             }
@@ -181,9 +175,9 @@ public class PullTranslationSDKToAppDBTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(secs * 1000);
         Espresso.registerIdlingResources(idlingResource);
 
-        orgUnitList = OrgUnit.getAllOrgUnit();
+        orgUnitList = OrgUnitDB.getAllOrgUnit();
 
-        programList = Program.getAllPrograms();
+        programList = ProgramDB.getAllPrograms();
 
         orgUnitSdkList= OrganisationUnitExtended.getAllOrganisationUnits();
         programsSdkList= ProgramExtended.getAllPrograms();

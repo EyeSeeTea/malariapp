@@ -23,19 +23,18 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.Header;
-import org.eyeseetea.malariacare.data.database.model.Match;
-import org.eyeseetea.malariacare.data.database.model.Media;
-import org.eyeseetea.malariacare.data.database.model.Option;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.QuestionOption;
-import org.eyeseetea.malariacare.data.database.model.QuestionRelation;
-import org.eyeseetea.malariacare.data.database.model.Tab;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.HeaderDB;
+import org.eyeseetea.malariacare.data.database.model.MatchDB;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionOptionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionRelationDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +67,7 @@ public class QuestionBuilder {
     /**
      * Mapping all the questions
      */
-    Map<String, Question> mapQuestions;
+    Map<String, QuestionDB> mapQuestions;
 
     /**
      * Mapping all the question parents
@@ -101,17 +100,17 @@ public class QuestionBuilder {
     /**
      * Mapping headers(it is needed for not duplicate data)
      */
-    Map<String, Header> mapHeader;
+    Map<String, HeaderDB> mapHeader;
 
     /**
      * Mapping headers(it is needed for not duplicate data)
      */
-    Map<String, Program> mapProgram;
+    Map<String, ProgramDB> mapProgram;
 
     /**
      * Contains all media (required for batch save)
      */
-    List<Media> listMedia;
+    List<MediaDB> listMedia;
     /**
      * It is needed in the header order.
      */
@@ -138,7 +137,7 @@ public class QuestionBuilder {
         listMedia = new ArrayList<>();
     }
 
-    public List<Media> getListMedia(){
+    public List<MediaDB> getListMedia(){
         return this.listMedia;
     }
 
@@ -147,7 +146,7 @@ public class QuestionBuilder {
      *
      * @param question
      */
-    public void add(Question question, String programUid) {
+    public void add(QuestionDB question, String programUid) {
         mapQuestions.put(question.getUid()+programUid, question);
     }
 
@@ -157,8 +156,8 @@ public class QuestionBuilder {
      * @param dataElementExtended
      * @return question header
      */
-    public Header findOrSaveHeader(DataElementExtended dataElementExtended, ProgramTabDict programTabDict, String programUid) {
-        Header header;
+    public HeaderDB findOrSaveHeader(DataElementExtended dataElementExtended, ProgramTabDict programTabDict, String programUid) {
+        HeaderDB header;
         String attributeHeaderName = dataElementExtended.getValue(DataElementExtended.ATTRIBUTE_HEADER_NAME);
         //No header attribute no header
         if(attributeHeaderName==null){
@@ -179,7 +178,7 @@ public class QuestionBuilder {
             return header;
         }
 
-        Tab tab = programTabDict.get(programUid, tabUid);
+        TabDB tab = programTabDict.get(programUid, tabUid);
         //No tab-> something wrong
         if(tab==null){
             return null;
@@ -191,10 +190,10 @@ public class QuestionBuilder {
     }
 
     @NonNull
-    private Header buildHeader(String attributeHeaderValue, Tab tab, String tabUID) {
+    private HeaderDB buildHeader(String attributeHeaderValue, TabDB tab, String tabUID) {
         String keyHeader=tabUID+attributeHeaderValue;
-        Header header;
-        header = new Header();
+        HeaderDB header;
+        header = new HeaderDB();
         header.setName(attributeHeaderValue);
         header.setShort_name(attributeHeaderValue);
         header.setOrder_pos(header_order);
@@ -212,7 +211,7 @@ public class QuestionBuilder {
      * @param question
      * @return
      */
-    public void attachMedia(DataElementExtended dataElementExtended, Question question){
+    public void attachMedia(DataElementExtended dataElementExtended, QuestionDB question){
         // Loop on every media type to attach any possible media type for the DE
         for (Integer mediaType: MAP_MEDIATYPE_DEATTRIBUTE.keySet()) {
             String attributeMediaValue = dataElementExtended.getValue(MAP_MEDIATYPE_DEATTRIBUTE.get(mediaType));
@@ -223,7 +222,7 @@ public class QuestionBuilder {
             List<String> mediaReferences = Arrays.asList(attributeMediaValue.split(Constants.MEDIA_SEPARATOR));
             for(String mediaReference: mediaReferences){
                 Log.i(TAG,String.format("Adding media %s to question %s",mediaReference, question.getForm_name()));
-                Media media = new Media();
+                MediaDB media = new MediaDB();
                 media.setMediaType(mediaType);
                 media.setResourceUrl(mediaReference);
                 media.setQuestion(question);
@@ -292,9 +291,9 @@ public class QuestionBuilder {
     }
 
     private void addCompositeScores(DataElementExtended dataElementExtended) {
-        CompositeScore compositeScore = dataElementExtended.findCompositeScore();
+        CompositeScoreDB compositeScore = dataElementExtended.findCompositeScore();
         if (compositeScore != null) {
-            Question appQuestion = mapQuestions.get(dataElementExtended.getUid()+dataElementExtended.getProgramUid());
+            QuestionDB appQuestion = mapQuestions.get(dataElementExtended.getUid()+dataElementExtended.getProgramUid());
             if (appQuestion != null) {
                 appQuestion.setCompositeScore(compositeScore);
                 appQuestion.save();
@@ -313,30 +312,30 @@ public class QuestionBuilder {
         String questionRelationType = mapType.get(programUid + dataElementExtended.getUid());
         String questionRelationGroup = mapLevel.get(programUid + dataElementExtended.getUid());
 
-        Question appQuestion = mapQuestions.get(dataElementExtended.getUid()+programUid);
+        QuestionDB appQuestion = mapQuestions.get(dataElementExtended.getUid()+programUid);
 
         if (questionRelationType != null && questionRelationType.equals(DataElementExtended.CHILD)) {
             try {
                 if (questionRelationType.equals(DataElementExtended.CHILD)) {
                     String parentuid = mapParent.get(programUid + questionRelationGroup);
                     if (parentuid != null) {
-                        QuestionRelation questionRelation = new QuestionRelation();
+                        QuestionRelationDB questionRelation = new QuestionRelationDB();
                         questionRelation.setOperation(1);
                         questionRelation.setQuestion(appQuestion);
                         boolean isSaved=false;
-                        Question parentQuestion = mapQuestions.get(parentuid+programUid);
-                        List<Option> options = parentQuestion.getAnswer().getOptions();
-                        for (Option option : options)
+                        QuestionDB parentQuestion = mapQuestions.get(parentuid+programUid);
+                        List<OptionDB> options = parentQuestion.getAnswer().getOptions();
+                        for (OptionDB option : options)
                         {
                             if (option.getFactor()==MATCHFACTOR) {
                                 if(!isSaved) {
                                     questionRelation.save();
                                     isSaved=true;
                                 }
-                                Match match = new Match();
+                                MatchDB match = new MatchDB();
                                 match.setQuestionRelation(questionRelation);
                                 match.save();
-                                new QuestionOption(option, parentQuestion, match).save();
+                                new QuestionOptionDB(option, parentQuestion, match).save();
                             }
                         }
                     }
@@ -373,27 +372,27 @@ public class QuestionBuilder {
      */
     private void addDataElementParent(DataElementExtended dataElementExtended, String parent, String options) {
         String[] matchOptions = options.split(OPTIONSUBTOKEN);
-        Question childQuestion = mapQuestions.get(dataElementExtended.getUid()+ dataElementExtended.getProgramUid());
+        QuestionDB childQuestion = mapQuestions.get(dataElementExtended.getUid()+ dataElementExtended.getProgramUid());
 
 
         //get parentquestion
-        Question parentQuestion = mapQuestions.get(parent+ dataElementExtended.getProgramUid());
+        QuestionDB parentQuestion = mapQuestions.get(parent+ dataElementExtended.getProgramUid());
         //get parentquestion options
         if(parentQuestion==null)
             Log.d(TAG, "the parent of "+ childQuestion.getUid()+ "is not downloaded (parentUid: "+parent);
-        List<Option> parentOptions = parentQuestion.getAnswer().getOptions();
-        for (Option option : parentOptions)
+        List<OptionDB> parentOptions = parentQuestion.getAnswer().getOptions();
+        for (OptionDB option : parentOptions)
         {
             for(String matchOption:matchOptions) {
                 if (matchOption.equals(option.getUid())) {
-                    QuestionRelation questionRelation = new QuestionRelation();
+                    QuestionRelationDB questionRelation = new QuestionRelationDB();
                     questionRelation.setOperation(1);
                     questionRelation.setQuestion(childQuestion);
                     questionRelation.save();
-                    Match match = new Match();
+                    MatchDB match = new MatchDB();
                     match.setQuestionRelation(questionRelation);
                     match.save();
-                    new QuestionOption(option, parentQuestion, match).save();
+                    new QuestionOptionDB(option, parentQuestion, match).save();
                 }
             }
         }
@@ -411,16 +410,16 @@ public class QuestionBuilder {
         String programUid = dataElementExtended.getProgramUid();
         String matchRelationType = mapMatchType.get(programUid + dataElementExtended.getUid());
         String matchRelationGroup = mapMatchLevel.get(programUid + dataElementExtended.getUid());
-        Question appQuestion = mapQuestions.get(dataElementExtended.getUid()+programUid);
+        QuestionDB appQuestion = mapQuestions.get(dataElementExtended.getUid()+programUid);
 
         if (matchRelationType != null && matchRelationType.equals(DataElementExtended.PARENT)) {
             List<String> mapChilds = mapMatchChilds.get(programUid + matchRelationGroup);
-            List<Question> children = new ArrayList<>();
+            List<QuestionDB> children = new ArrayList<>();
             children.add(mapQuestions.get(mapChilds.get(0)+programUid));
             children.add(mapQuestions.get(mapChilds.get(1)+programUid));
 
             if (mapQuestions.get(mapChilds.get(0)+programUid) != null && mapQuestions.get(mapChilds.get(1)+programUid) != null) {
-                QuestionRelation questionRelation = new QuestionRelation();
+                QuestionRelationDB questionRelation = new QuestionRelationDB();
                 questionRelation.setOperation(0);
                 questionRelation.setQuestion(appQuestion);
                 questionRelation.save();

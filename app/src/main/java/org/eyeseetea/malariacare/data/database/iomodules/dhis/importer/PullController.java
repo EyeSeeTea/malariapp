@@ -23,9 +23,9 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
-import org.eyeseetea.malariacare.data.database.model.User;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.PullDhisSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.PullException;
@@ -58,9 +58,9 @@ public class PullController implements IPullController {
      * Notifies that the pull is over
      */
     public void postFinish() {
-        User user = User.getLoggedUser();
+        UserDB user = UserDB.getLoggedUser();
         if (user == null) {
-            user = new User();
+            user = new UserDB();
             user.save();
         }
         Session.setUser(user);

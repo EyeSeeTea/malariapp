@@ -41,13 +41,18 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -68,7 +73,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
     public static final String TAG = ".PlanActionFragment";
 
-    private ObsActionPlan mObsActionPlan;
+    private ObsActionPlanDB mObsActionPlan;
     private String moduleName;
     boolean isFABOpen;
     FloatingActionButton fabHtmlOption;
@@ -91,10 +96,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             Bundle savedInstanceState) {
         llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
                 false);
-        mObsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(
+        mObsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(
                 Session.getSurveyByModule(moduleName).getId_survey());
         if (mObsActionPlan == null) {
-            mObsActionPlan = new ObsActionPlan(
+            mObsActionPlan = new ObsActionPlanDB(
                     Session.getSurveyByModule(moduleName).getId_survey());
             mObsActionPlan.save();
         }
@@ -268,7 +273,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     private void sharePlainText() {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n\n";
@@ -292,19 +297,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
 
-        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
         if(criticalQuestions!=null && criticalQuestions.size()>0) {
             data += getString(R.string.critical_steps) + "\n\n";
 
-            List<CompositeScore> compositeScoresTree = getValidTreeOfCompositeScores();
+            List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
             //For each score add proper items
-            for (Iterator<CompositeScore> iterator = compositeScoresTree.iterator();
+            for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
                     iterator.hasNext(); ) {
-                CompositeScore compositeScore = iterator.next();
+                CompositeScoreDB compositeScore = iterator.next();
                 data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
                         + "\n";
-                for (Question question : criticalQuestions) {
+                for (QuestionDB question : criticalQuestions) {
                     if (question.getCompositeScoreFk()
                             == (compositeScore.getId_composite_score())) {
                         data += "-" + question.getForm_name() + "\n";
@@ -323,11 +328,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     @NonNull
-    private List<CompositeScore> getValidTreeOfCompositeScores() {
-        List<CompositeScore> compositeScoreList = Question.getCSOfriticalFailedQuestions(
+    private List<CompositeScoreDB> getValidTreeOfCompositeScores() {
+        List<CompositeScoreDB> compositeScoreList = QuestionDB.getCSOfriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
-        List<CompositeScore> compositeScoresTree = new ArrayList<>();
-        for (CompositeScore compositeScore : compositeScoreList) {
+        List<CompositeScoreDB> compositeScoresTree = new ArrayList<>();
+        for (CompositeScoreDB compositeScore : compositeScoreList) {
             buildCompositeScoreTree(compositeScore, compositeScoresTree);
         }
 
@@ -337,8 +342,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             @Override
             public int compare(Object o1, Object o2) {
 
-                CompositeScore cs1 = (CompositeScore) o1;
-                CompositeScore cs2 = (CompositeScore) o2;
+                CompositeScoreDB cs1 = (CompositeScoreDB) o1;
+                CompositeScoreDB cs2 = (CompositeScoreDB) o2;
 
                 return new Integer(cs1.getOrder_pos().compareTo(cs2.getOrder_pos()));
             }
@@ -347,8 +352,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     //Recursive compositescore parent builder
-    private void buildCompositeScoreTree(CompositeScore compositeScore,
-            List<CompositeScore> compositeScoresTree) {
+    private void buildCompositeScoreTree(CompositeScoreDB compositeScore,
+            List<CompositeScoreDB> compositeScoresTree) {
         if(compositeScore.getHierarchical_code().equals("0")){
             //ignore composite score root
             return;
@@ -513,7 +518,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     private void initLayoutHeaders(RelativeLayout llLayout) {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey.hasMainScore()) {
             float average = survey.getMainScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
@@ -586,7 +591,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     private void onActionPlanSent() {
-        mObsActionPlan = ObsActionPlan.findById(mObsActionPlan.getId_obs_action_plan());
+        mObsActionPlan = ObsActionPlanDB.findById(mObsActionPlan.getId_obs_action_plan());
         if (mObsActionPlan.getStatus() == Constants.SURVEY_SENT) {
             fabComplete.setImageResource(R.drawable.ic_double_check);
         }

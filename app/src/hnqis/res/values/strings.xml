@@ -38,7 +38,7 @@
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
-<string name="assessment_title_facility_date">"Facility / Survey"</string>
+<string name="assessment_title_facility_date">"Active surveys"</string>
 <string name="assessment_title_state">"% complete"</string>
 <string name="assessment_sent_date">"Completion date"</string>
 <string name="assessment_title_header">"Active Assessment(s)"</string>
@@ -196,6 +196,7 @@ evaluation"</string>
 <string name="developer_option_summary">This feature activates the developer options</string>
 <string name="developer_option_title">Show developer options</string>
 <string name="export_data_option_title">Export database</string>
+<string name="import_data_option_title">"Import database"</string>
 <string name="google_play_required">This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
 <string name="feedback_media">View video feedback</string>
@@ -251,4 +252,8 @@ evaluation"</string>
 <string name="critical_steps">Critical Steps missed:</string>
 <string name="url_not_available">"URL not yet available"</string>
 <string name="see_full_assessment">"See full assessment at:"</string>
+
+<string name="install_file_manager">Please install a File Manager.</string>
+<string name="get_db_file_dialog">Please select a valid db file</string>
+<string name="start">Start</string>
 </resources>
