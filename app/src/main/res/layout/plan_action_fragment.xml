@@ -49,22 +49,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutHeader"
-        android:background="@color/white"
+        android:background="@color/clear_gray"
         android:orientation="vertical"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
             android:orientation="horizontal">
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
+
                 android:gravity="left"
                 android:text="@string/overall_quality_of_care"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -91,17 +91,14 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton">
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/plan_completion_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
                 android:gravity="left"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/new_grey_text_color"
@@ -114,11 +111,12 @@
                 android:id="@+id/new_supervision_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right|center_vertical"
+                android:layout_toRightOf="@+id/plan_completion_day"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
-                android:gravity="right|center_horizontal"
-                android:paddingLeft="5dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:paddingLeft="10dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/new_grey_text_color"
                 android:textSize="@dimen/xsmall_text_size"
@@ -136,7 +134,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/white">
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="match_parent"
@@ -301,7 +300,7 @@
                 android:background="@color/assess_grey"></View>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/standard_75"
+                android:layout_height="@dimen/standard_65"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"></View>
         </LinearLayout>
@@ -312,7 +311,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        >
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/text2"

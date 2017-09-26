@@ -229,7 +229,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="action_button_text">PLANO DE AÇÃO</string>
 <string name="plan_action_title">Observações e Plano de Ação</string>
 <string name="plan_action_today_date">Concluído: %s</string>
-<string name="plan_action_next_date">Próxima Data de Supervisão: %s</string>
+<string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Plano de ação:</string>

@@ -224,7 +224,7 @@ Mensuelle"</string>
 <string name="action_button_text">"PLAN DE L'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
 <string name="plan_action_today_date">"Terminé: %s"</string>
-<string name="plan_action_next_date">"Date de supervision suivante: %s"</string>
+<string name="plan_action_next_date">"Suivante: %s"</string>
 <string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">"Plan d'action:"</string>

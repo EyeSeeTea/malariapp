@@ -230,7 +230,7 @@ evaluation"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
 <string name="plan_action_today_date">Completed: %s</string>
-<string name="plan_action_next_date">Next Supervision Date: %s</string>
+<string name="plan_action_next_date">Next: %s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Action plan:</string>
