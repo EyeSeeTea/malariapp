@@ -175,14 +175,16 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         }
         return rowView;
     }
+
     /**
      * Returns the proper status value (% or ready to send) according to the level of completion of
      * the survey
      */
-    protected String getStatus(SurveyDB survey) {
+    protected int getTotalStatus(SurveyDB survey) {
 
         if (survey.isSent()) {
-            return getContext().getString(R.string.dashboard_info_sent);
+            //return getContext().getString(R.string.dashboard_info_sent);
+            return 0;
         }
 
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
@@ -201,21 +203,46 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
                 });
         SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
         if (surveyAnsweredRatio.isCompleted()) {
-            return getContext().getString(R.string.dashboard_info_ready_to_upload);
+            //return getContext().getString(R.string.dashboard_info_ready_to_upload);
+            return 100;
         } else {
-            if (!PreferencesState.getInstance().isVerticalDashboard()) {
-                if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
-                    int value = Float.valueOf(
-                            100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
-                    if (value >= 100) {
-                        return getContext().getString(R.string.dashboard_info_ready_to_upload);
-                    } else {
-                        return String.format("%d", value);
+            //return String.format("%d",Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue());
+            return Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue();
+        }
+    }
+
+
+    /**
+     * Returns the proper status value (% or ready to send) according to the level of completion of mandatory questions
+     */
+    protected int getMandatoryStatus(SurveyDB survey) {
+
+        if (survey.isSent()) {
+            //return getContext().getString(R.string.dashboard_info_sent);
+            return 0;
+        }
+
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
                     }
-                }
-            }
-            return String.format("%d",
-                    Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue());
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
+                        Log.d(getClass().getName(), "onComplete");
+                    }
+                });
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
+        if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
+            int value = Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+            return  value;
+        }
+        else{
+            return 100;
         }
     }
 

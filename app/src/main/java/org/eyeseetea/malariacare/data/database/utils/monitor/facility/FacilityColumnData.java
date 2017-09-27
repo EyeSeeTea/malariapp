@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,22 +50,13 @@ public class FacilityColumnData {
         if(!hasSurveys()){
             return "null";
         }
-        return AUtils.round(getValue());
-    }
-
-    /**
-     * Calculates the value for this column (facility/month)
-     * @return
-     */
-    private float getValue(){
-        if(!hasSurveys()){
-            return 0f;
-        }
-        float averageFacilityMonth=0;
+        String jsonObject="[";
         for(SurveyDB survey:surveys){
-            averageFacilityMonth+=survey.getMainScore();
+            jsonObject+="{\"id\":"+survey.getId_survey() + ",\"score\":" +  survey.getMainScore()+"},";
         }
-        return averageFacilityMonth/surveys.size();
+        jsonObject=jsonObject.substring(0,jsonObject.lastIndexOf(","));
+        jsonObject= jsonObject +"]";
+        return jsonObject;
     }
 
     private boolean hasSurveys(){
