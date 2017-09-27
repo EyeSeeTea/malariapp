@@ -251,4 +251,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="critical_steps">Passos críticos perdidos:</string>
 <string name="url_not_available">URL ainda não disponível</string>
 <string name="see_full_assessment">Veja a avaliação completa em:</string>
+<string name="on">"em"</string>
 </resources>
