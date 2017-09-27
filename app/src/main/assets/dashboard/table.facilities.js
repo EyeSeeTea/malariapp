@@ -96,7 +96,13 @@ function buildRowFacility(facility){
 			average=average/facilityMonth.length;
 			average=Math.round(average);
 		}
-        row=row+""+buildColorXScore(average)+""+buildCellXScore(average)+"</span></div></td>";
+
+        var asterisk = "";
+        if(facility.counter[i]>1){
+            showMultipleEventLegend();
+            asterisk = "*";
+        }
+        row=row+""+buildColorXScore(average)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
 	}
 	//end row
 	row=row+"</tr>";

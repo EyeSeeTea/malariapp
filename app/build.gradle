@@ -73,20 +73,23 @@ android {
         eds {
             applicationId "org.eyeseetea.malariacare.eds_bb"
             versionName "2.0.5"
-            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "translations", "false"
+            buildConfigField "String", "defaultLocale", "\"en\""
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
-            versionName "1.2.3"
-            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            versionName "1.2.6"
             buildConfigField "boolean", "translations", "true"
+            buildConfigField "String", "defaultLocale", "\"en\""
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
         }
         surveillance {
             applicationId "org.eyeseetea.malariacare.surveillance_bb"
             versionName "5.0.0"
-            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "translations", "true"
+            buildConfigField "String", "defaultLocale", "\"en\""
+            resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
         }
     }
 
@@ -129,6 +132,7 @@ dependencies {
     compile "com.google.guava:guava:${libs.guavaVersion}"
     compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
     compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
+    compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"

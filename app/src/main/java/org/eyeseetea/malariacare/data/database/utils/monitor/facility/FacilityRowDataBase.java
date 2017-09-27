@@ -33,6 +33,7 @@ import java.util.Map;
  */
 public class FacilityRowDataBase {
     public static int NUM_MONTHS=6;
+    List<FacilityColumnCounterData> counterData;
     List<FacilityColumnData> columnData;
     private Map<String,Integer> monthsIndex;
     private SimpleDateFormat KEY_MONTH_FORMATTER=new SimpleDateFormat("yyyyMM");
@@ -43,10 +44,14 @@ public class FacilityRowDataBase {
         init();
     }
     public void init(){
-        //Init 12 empty months
+        //Init empty months
         columnData=new ArrayList<>();
         for(int i=0;i<NUM_MONTHS;i++){
             columnData.add(new FacilityColumnData());
+        }
+        counterData=new ArrayList<>();
+        for(int i=0;i<NUM_MONTHS;i++){
+            counterData.add(new FacilityColumnCounterData());
         }
         //Build monthsIndex
         initMonthsIndex();
@@ -77,10 +82,11 @@ public class FacilityRowDataBase {
 
         //Put survey in its cell
         columnData.get(i).addSurvey(survey);
+        counterData.get(i).addSurvey(survey);
     }
 
     public String getAsJSON(){
-        return String.format("{name:'%s',values:%s}",name,getColumnDataAsJSON());
+        return String.format("{name:'%s',values:%s, counter:%s}",name,getColumnDataAsJSON(), getNumberOfSurveysAsJSON());
     }
 
     /**
@@ -105,6 +111,20 @@ public class FacilityRowDataBase {
             columnValues.append(column.getAsJSON());
             i++;
             if(i!=columnData.size()){
+                columnValues.append(",");
+            }
+        }
+        columnValues.append("]");
+        return columnValues.toString();
+    }
+
+    private String getNumberOfSurveysAsJSON(){
+        StringBuffer columnValues=new StringBuffer("[");
+        int i=0;
+        for(FacilityColumnCounterData column:counterData){
+            columnValues.append(column.getAsJSON());
+            i++;
+            if(i!=counterData.size()){
                 columnValues.append(",");
             }
         }

@@ -41,9 +41,13 @@
     <color name="planning_row_text">@color/black</color>
     <color name="assess_darkyellow">#9FA631</color>
     <color name="assess_lightyellow">#DBE444</color>
+    <color name="clear_gray">#e3e4e4</color>
 
     <!-- from old SDK-->
     <color name="button_login_state_enabled_false">#FF223F5C</color>
     <color name="button_login_state_unpressed">#FF113151</color>
     <color name="button_login_state_pressed">#FF0C243C</color>
+    <color name="new_grey">#cccccc</color>
+    <color name="new_blue">#6ca9d8</color>
+    <color name="new_grey_text_color">#434343</color>
 </resources>
