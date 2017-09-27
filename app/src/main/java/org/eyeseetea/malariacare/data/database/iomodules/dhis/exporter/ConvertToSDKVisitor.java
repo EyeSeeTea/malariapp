@@ -26,13 +26,13 @@ import android.util.Log;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
-import org.eyeseetea.malariacare.data.database.model.ServerMetadata;
-import org.eyeseetea.malariacare.data.database.model.Survey;
-import org.eyeseetea.malariacare.data.database.model.User;
-import org.eyeseetea.malariacare.data.database.model.Value;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -91,11 +91,11 @@ public class ConvertToSDKVisitor implements
     /**
      * List of surveys that are going to be pushed
      */
-    List<Survey> surveys;
+    List<SurveyDB> surveys;
     /**
      * List of surveys with obsActionPlans that are going to be pushed
      */
-    List<Survey> obsActionPlanSurveys;
+    List<SurveyDB> obsActionPlanSurveys;
 
     /**
      * Map app surveys with sdk events (N to 1)
@@ -109,7 +109,7 @@ public class ConvertToSDKVisitor implements
     /**
      * The last survey that it is being translated
      */
-    Survey currentSurvey;
+    SurveyDB currentSurvey;
 
     /**
      * The generated event
@@ -126,38 +126,38 @@ public class ConvertToSDKVisitor implements
         this.context = context;
         Log.d(TAG, "new convertToSdkVisitor");
         // FIXME: We should create a visitor to translate the ControlDataElement class
-        overallScoreCode = ServerMetadata.findControlDataElementUid(
+        overallScoreCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.overall_score_code));
-        mainScoreClassCode = ServerMetadata.findControlDataElementUid(
+        mainScoreClassCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.main_score_class_code));
-        mainScoreACode = ServerMetadata.findControlDataElementUid(
+        mainScoreACode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.main_score_a_code));
-        mainScoreBCode = ServerMetadata.findControlDataElementUid(
+        mainScoreBCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.main_score_b_code));
-        mainScoreCCode = ServerMetadata.findControlDataElementUid(
+        mainScoreCCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.main_score_c_code));
-        forwardOrderCode = ServerMetadata.findControlDataElementUid(
+        forwardOrderCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.forward_order_code));
-        pushDeviceCode = ServerMetadata.findControlDataElementUid(
+        pushDeviceCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.push_device_code));
-        overallProductivityCode = ServerMetadata.findControlDataElementUid(
+        overallProductivityCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.overall_productivity_code));
-        nextAssessmentCode = ServerMetadata.findControlDataElementUid(
+        nextAssessmentCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.next_assessment_code));
 
-        createdOnCode = ServerMetadata.findControlDataElementUid(
+        createdOnCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.created_on_code));
-        updatedDateCode = ServerMetadata.findControlDataElementUid(
+        updatedDateCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.upload_date_code));
-        updatedUserCode = ServerMetadata.findControlDataElementUid(
+        updatedUserCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.uploaded_by_code));
-        gapsCode = ServerMetadata.findControlDataElementUid(
+        gapsCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.gaps_code));
-        planActionCode = ServerMetadata.findControlDataElementUid(
+        planActionCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action_plan_code));
-        action1Code = ServerMetadata.findControlDataElementUid(
+        action1Code = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action1_code));
-        action2Code = ServerMetadata.findControlDataElementUid(
+        action2Code = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.action2_code));
 
         surveys = new ArrayList<>();
@@ -167,8 +167,8 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(ObsActionPlan obsActionPlan) throws ConversionException {
-        Survey survey = Survey.findById(obsActionPlan.getId_survey_obs_action_fk());
+    public void visit(ObsActionPlanDB obsActionPlan) throws ConversionException {
+        SurveyDB survey = SurveyDB.findById(obsActionPlan.getId_survey_obs_action_fk());
         currentSurvey=survey;
         String errorMessage = "Exception creating a new event from obsActionPlan. Removing survey from DB";
     try{
@@ -207,7 +207,7 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(Survey survey) throws ConversionException {
+    public void visit(SurveyDB survey) throws ConversionException {
 
         uploadedDate = new Date();
 
@@ -233,7 +233,7 @@ public class ConvertToSDKVisitor implements
             //Calculates scores and update survey
             Log.d(TAG, "Registering scores...");
             errorMessage = "Calculating compositeScores";
-            List<CompositeScore> compositeScores = ScoreRegister.loadCompositeScores(survey,
+            List<CompositeScoreDB> compositeScores = ScoreRegister.loadCompositeScores(survey,
                     Constants.PUSH_MODULE_KEY);
             updateSurvey(compositeScores, currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
 
@@ -241,14 +241,14 @@ public class ConvertToSDKVisitor implements
             Log.d(TAG, "Creating datavalues from scores...");
 
             errorMessage = "compositeScores visitors";
-            for (CompositeScore compositeScore : compositeScores) {
+            for (CompositeScoreDB compositeScore : compositeScores) {
                 compositeScore.accept(this);
             }
 
             errorMessage = "datavalue visitors ";
             //Turn question values into dataValues
             Log.d(TAG, "Creating datavalues from questions... Values" + survey.getValues().size());
-            for (Value value : currentSurvey.getValues()) {
+            for (ValueDB value : currentSurvey.getValues()) {
                 //value -> datavalue
                 value.accept(this);
             }
@@ -286,7 +286,7 @@ public class ConvertToSDKVisitor implements
             orgUnitName = currentSurvey.getOrgUnit().getName();
         }
         if (currentSurvey.getValues() != null) {
-            for (Value value : currentSurvey.getValues()) {
+            for (ValueDB value : currentSurvey.getValues()) {
                 Log.d(TAG, "DataValues:" + value.toString());
             }
         }
@@ -295,7 +295,7 @@ public class ConvertToSDKVisitor implements
                                 + orgUnitName + "Survey: " + currentSurvey.toString();
     }
 
-    private void removeSurveyAndEvent(Survey survey, PushController.Kind kind) {
+    private void removeSurveyAndEvent(SurveyDB survey, PushController.Kind kind) {
         //remove event from annotated event list and from db
         if(kind.equals(PushController.Kind.PLANS)){
             if (obsActionPlanEvents.containsKey(currentSurvey.getId_survey())) {
@@ -321,7 +321,7 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(CompositeScore compositeScore) {
+    public void visit(CompositeScoreDB compositeScore) {
         List<Float> result = ScoreRegister.getCompositeScoreResult(compositeScore,
                 currentSurvey.getId_survey(), Constants.PUSH_MODULE_KEY);
         //Checks if the result have at least one valid denominator.
@@ -339,7 +339,7 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
-    public void visit(Value value) {
+    public void visit(ValueDB value) {
         DataValueExtended dataValue = new DataValueExtended();
         dataValue.setDataElement(value.getQuestion().getUid());
         dataValue.setEvent(currentEvent.getEvent());
@@ -415,7 +415,7 @@ public class ConvertToSDKVisitor implements
     /**
      * Builds several datavalues from the mainScore of the survey
      */
-    private void buildControlDataElements(Survey survey) {
+    private void buildControlDataElements(SurveyDB survey) {
 
         //Overall score
         if (controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore()) {
@@ -474,7 +474,7 @@ public class ConvertToSDKVisitor implements
         //Overall productivity
         if (controlDataElementExistsInServer(overallProductivityCode)) {
             addOrUpdateDataValue(overallProductivityCode,
-                    Integer.toString(OrgUnitProgramRelation.getProductivity(survey)));
+                    Integer.toString(OrgUnitProgramRelationDB.getProductivity(survey)));
         }
 
         //Next assessment
@@ -515,7 +515,7 @@ public class ConvertToSDKVisitor implements
      * Several properties must be updated when a survey is about to be sent.
      * This changes will be saved just when process finish successfully.
      */
-    private void updateSurvey(List<CompositeScore> compositeScores, float idSurvey, String module) {
+    private void updateSurvey(List<CompositeScoreDB> compositeScores, float idSurvey, String module) {
         currentSurvey.setMainScore(
                 ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
@@ -546,7 +546,7 @@ public class ConvertToSDKVisitor implements
      */
     public void saveSurveyStatus(Map<String, PushReport> pushReportMap, final
     IPushController.IPushControllerCallback callback, PushController.Kind kind) {
-        List<Survey> surveys = new ArrayList<>();
+        List<SurveyDB> surveys = new ArrayList<>();
         Map<Long, EventExtended> events = new HashMap<>();
         if(kind.equals(PushController.Kind.EVENTS)) {
             surveys=this.surveys;
@@ -557,8 +557,8 @@ public class ConvertToSDKVisitor implements
         }
         Log.d(TAG, String.format("pushReportMap %d surveys savedSurveyStatus", surveys.size()));
         for (int i = 0; i < surveys.size(); i++) {
-            Survey iSurvey = surveys.get(i);
-            ObsActionPlan obsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(iSurvey.getId_survey());
+            SurveyDB iSurvey = surveys.get(i);
+            ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(iSurvey.getId_survey());
 
             //Sets the survey status as quarantine to prevent wrong reports on unexpected exception.
             //F.E. if the app crash unexpected this survey will be checked again in the future push to prevent the duplicates
@@ -633,7 +633,7 @@ public class ConvertToSDKVisitor implements
         }
     }
 
-    private void saveSurveyFromImportSummary(Survey iSurvey) {
+    private void saveSurveyFromImportSummary(SurveyDB iSurvey) {
         iSurvey.setStatus(Constants.SURVEY_SENT);
         iSurvey.setUploadDate(uploadedDate);
         iSurvey.saveMainScore();
@@ -646,7 +646,7 @@ public class ConvertToSDKVisitor implements
      * Returns the name of the username avoiding NPE
      */
     private String getSafeUsername() {
-        User user = Session.getUser();
+        UserDB user = Session.getUser();
         if (user != null) {
             return user.getName();
         }
@@ -654,17 +654,17 @@ public class ConvertToSDKVisitor implements
     }
 
     public void setSurveysAsQuarantine(PushController.Kind kind) {
-        List<Survey> surveys = new ArrayList<>();
+        List<SurveyDB> surveys = new ArrayList<>();
         if(kind.equals(PushController.Kind.EVENTS)) {
             surveys=this.surveys;
         }else if(kind.equals(PushController.Kind.PLANS)){
             surveys=this.obsActionPlanSurveys;
         }
-        for (Survey survey : surveys) {
+        for (SurveyDB survey : surveys) {
             if(kind.equals(PushController.Kind.PLANS)){
                 Log.d(TAG, "Set plan status as QUARANTINE" + survey.getId_survey());
                 Log.d(TAG, "Set plan status as QUARANTINE" + survey.toString());
-                ObsActionPlan obsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(survey.getId_survey());
+                ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(survey.getId_survey());
                 //The obs action plan doesn't need the quarantine status.
                 obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
                 obsActionPlan.save();

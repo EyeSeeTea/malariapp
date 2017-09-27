@@ -25,7 +25,7 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitLevel;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 
 import static org.eyeseetea.malariacare.data.database.migrations.MigrationUtils.addColumn;
 
@@ -44,7 +44,7 @@ public class Migration5AddOrgUnitLevelUID extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, OrgUnitLevel.class, "uid", "string");
+        addColumn(database, OrgUnitLevelDB.class, "uid", "string");
     }
 
     @Override

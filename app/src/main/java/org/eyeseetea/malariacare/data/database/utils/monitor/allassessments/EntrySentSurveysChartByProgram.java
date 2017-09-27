@@ -19,7 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.allassessments;
 
-import org.eyeseetea.malariacare.data.database.model.Program;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.Date;
@@ -34,8 +34,8 @@ public class EntrySentSurveysChartByProgram extends  EntrySentSurveysChartBase {
     /**
      * The date whose month represents this point (day info is discarded)
      */
-    Program program;
-    public EntrySentSurveysChartByProgram(int expected, Date date, Program program) {
+    ProgramDB program;
+    public EntrySentSurveysChartByProgram(int expected, Date date, ProgramDB program) {
         super(expected, date);
         this.program=program;
     }

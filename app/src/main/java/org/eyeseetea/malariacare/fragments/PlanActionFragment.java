@@ -41,10 +41,10 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScore;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlan;
-import org.eyeseetea.malariacare.data.database.model.Question;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -53,11 +53,11 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.sdk.common.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
     public static final String TAG = ".PlanActionFragment";
 
-    private ObsActionPlan mObsActionPlan;
+    private ObsActionPlanDB mObsActionPlan;
     private String moduleName;
     boolean isFABOpen;
     FloatingActionButton fabHtmlOption;
@@ -96,10 +96,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             Bundle savedInstanceState) {
         llLayout = (RelativeLayout) inflater.inflate(R.layout.plan_action_fragment, container,
                 false);
-        mObsActionPlan = ObsActionPlan.findObsActionPlanBySurvey(
+        mObsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(
                 Session.getSurveyByModule(moduleName).getId_survey());
         if (mObsActionPlan == null) {
-            mObsActionPlan = new ObsActionPlan(
+            mObsActionPlan = new ObsActionPlanDB(
                     Session.getSurveyByModule(moduleName).getId_survey());
             mObsActionPlan.save();
         }
@@ -108,7 +108,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         initSpinner(llLayout);
         initFAB(llLayout);
         initBackButton(llLayout);
-        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+        if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
             setReadOnlyMode();
         }
         ObservablePush.getInstance().addObserver(this);
@@ -169,7 +169,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 R.id.plan_action_others_edit_text);
         String options[] = getResources().getStringArray(
                 R.array.plan_action_dropdown_options);
-        if (mObsActionPlan.getAction1()!=null && mObsActionPlan.getAction1().equals(options[5])) {
+        if (mObsActionPlan.getAction1() != null && mObsActionPlan.getAction1().equals(options[5])) {
             if (mObsActionPlan.getAction2() != null) {
                 mCustomActionOtherEditText.setText(mObsActionPlan.getAction2());
             }
@@ -242,7 +242,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
     private void initFabComplete(RelativeLayout llLayout) {
         fabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
-        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+        if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
             fabComplete.setImageResource(R.drawable.ic_action_check);
         }
         if (mObsActionPlan.getStatus() == Constants.SURVEY_SENT) {
@@ -254,22 +254,24 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             public void onClick(View view) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle(null)
-                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-                                mObsActionPlan.save();
-                                fabComplete.setImageResource(R.drawable.ic_action_check);
-                                setReadOnlyMode();
-                            }
-                        })
+                        .setMessage(getActivity().getString(
+                                R.string.dialog_info_ask_for_completion_plan))
+                        .setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+                                        mObsActionPlan.save();
+                                        fabComplete.setImageResource(R.drawable.ic_action_check);
+                                        setReadOnlyMode();
+                                    }
+                                })
                         .setNegativeButton(android.R.string.no, null).create().show();
             }
         });
     }
 
     private void shareHtmlText() {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
 
         String title = getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
                 + "/" + survey.getProgram().getName() + "\n";
@@ -306,53 +308,52 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 mCustomGapsEditText.getText().toString() + "</p>";
         data += "<p><b>" + getString(R.string.plan_action_action_plan_title) + "</b> " +
                 mCustomActionPlanEditText.getText().toString() + "</p>";
-        if(!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
+        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
             data += "<p><b>" + getString(R.string.plan_action_action_title) + "</b> " +
                     actionSpinner.getSelectedItem().toString();
         }
-        if(actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))){
-            data +=secondaryActionSpinner.getSelectedItem().toString()  + "</p>";
-        }else if(actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))){
-            data +=mCustomActionOtherEditText.getText().toString()  +"</p>";
+        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
+            data += secondaryActionSpinner.getSelectedItem().toString() + "</p>";
+        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
+            data += mCustomActionOtherEditText.getText().toString() + "</p>";
+        } else {
+            data += "</p>";
         }
-        else{
-            data +="</p>";
-        }
-        data +="<p><b>"+getString(R.string.critical_steps) + "</p>";
+        data += "<p><b>" + getString(R.string.critical_steps) + "</p>";
 
-        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(Session
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(Session
                 .getSurveyByModule(moduleName).getId_survey());
 
-        List<CompositeScore> compositeScoresTree = getValidTreeOfCompositeScores();
+        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
 
 
         //For each score add proper items
-        for (Iterator<CompositeScore> iterator = compositeScoresTree.iterator();
+        for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
                 iterator.hasNext(); ) {
-            CompositeScore compositeScore = iterator.next();
+            CompositeScoreDB compositeScore = iterator.next();
             data += "<p><b>" + compositeScore.getHierarchical_code() + " " + compositeScore.getLabel
                     () + "</b></p>";
-            for(Question question : criticalQuestions){
-                if(question.getCompositeScoreFk()==(compositeScore.getId_composite_score())) {
+            for (QuestionDB question : criticalQuestions) {
+                if (question.getCompositeScoreFk() == (compositeScore.getId_composite_score())) {
                     data += "<p style=\"font-style: italic;\">" + "-" + question.getForm_name()
                             + "</p>";
                 }
             }
         }
-        data += getString(R.string.see_full_assessment)+ "</p>";
-        if(survey.isSent()) {
+        data += getString(R.string.see_full_assessment) + "</p>";
+        if (survey.isSent()) {
             data += "<a href=https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
                     +
                     ">https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
                     + "</a></p>";
-        }else{
+        } else {
             data += getString(R.string.url_not_available) + "</p>";
         }
         data += "</body>"
                 + "</html>";
         File attached = null;
         try {
-            attached = FileIOUtils.saveStringToFile("shared_html.html", data, getActivity());
+            attached = FileUtils.saveStringToFile("shared_html.html", data, getActivity());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -362,7 +363,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     private void sharePlainText() {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n\n";
@@ -386,19 +387,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             data += mCustomActionOtherEditText.getText().toString() + "\n";
         }
 
-        List<Question> criticalQuestions = Question.getCriticalFailedQuestions(
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
-        if(criticalQuestions!=null && criticalQuestions.size()>0) {
+        if (criticalQuestions != null && criticalQuestions.size() > 0) {
             data += getString(R.string.critical_steps) + "\n\n";
 
-            List<CompositeScore> compositeScoresTree = getValidTreeOfCompositeScores();
+            List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
             //For each score add proper items
-            for (Iterator<CompositeScore> iterator = compositeScoresTree.iterator();
+            for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
                     iterator.hasNext(); ) {
-                CompositeScore compositeScore = iterator.next();
+                CompositeScoreDB compositeScore = iterator.next();
                 data += compositeScore.getHierarchical_code() + " " + compositeScore.getLabel()
                         + "\n";
-                for (Question question : criticalQuestions) {
+                for (QuestionDB question : criticalQuestions) {
                     if (question.getCompositeScoreFk()
                             == (compositeScore.getId_composite_score())) {
                         data += "-" + question.getForm_name() + "\n";
@@ -412,7 +413,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
-        System.out.println("data:"+data);
+        System.out.println("data:" + data);
         createTextIntent(getActivity(), data);
     }
 
@@ -426,11 +427,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     @NonNull
-    private List<CompositeScore> getValidTreeOfCompositeScores() {
-        List<CompositeScore> compositeScoreList = Question.getCSOfriticalFailedQuestions(
+    private List<CompositeScoreDB> getValidTreeOfCompositeScores() {
+        List<CompositeScoreDB> compositeScoreList = QuestionDB.getCSOfriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
-        List<CompositeScore> compositeScoresTree = new ArrayList<>();
-        for (CompositeScore compositeScore : compositeScoreList) {
+        List<CompositeScoreDB> compositeScoresTree = new ArrayList<>();
+        for (CompositeScoreDB compositeScore : compositeScoreList) {
             buildCompositeScoreTree(compositeScore, compositeScoresTree);
         }
 
@@ -440,8 +441,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             @Override
             public int compare(Object o1, Object o2) {
 
-                CompositeScore cs1 = (CompositeScore) o1;
-                CompositeScore cs2 = (CompositeScore) o2;
+                CompositeScoreDB cs1 = (CompositeScoreDB) o1;
+                CompositeScoreDB cs2 = (CompositeScoreDB) o2;
 
                 return new Integer(cs1.getOrder_pos().compareTo(cs2.getOrder_pos()));
             }
@@ -450,16 +451,16 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     //Recursive compositescore parent builder
-    private void buildCompositeScoreTree(CompositeScore compositeScore,
-            List<CompositeScore> compositeScoresTree) {
-        if(compositeScore.getHierarchical_code().equals("0")){
+    private void buildCompositeScoreTree(CompositeScoreDB compositeScore,
+            List<CompositeScoreDB> compositeScoresTree) {
+        if (compositeScore.getHierarchical_code().equals("0")) {
             //ignore composite score root
             return;
         }
-        if(!compositeScoresTree.contains(compositeScore)){
+        if (!compositeScoresTree.contains(compositeScore)) {
             compositeScoresTree.add(compositeScore);
         }
-        if(compositeScore.hasParent()){
+        if (compositeScore.hasParent()) {
             buildCompositeScoreTree(compositeScore.getComposite_score(), compositeScoresTree);
         }
     }
@@ -475,29 +476,33 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         activity.startActivity(sendIntent);
     }
 
-    private List<CompositeScore> prepareCompositeScores(Survey survey, List<Question> criticalQuestions) {
+    private List<CompositeScoreDB> prepareCompositeScores(SurveyDB survey,
+            List<QuestionDB> criticalQuestions) {
         //Calculate main score
-        List<CompositeScore> compositeScoreList =ScoreRegister.loadCompositeScores(survey, moduleName);
-        survey.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList,survey.getId_survey(), moduleName));
+        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
+                moduleName);
+        survey.setMainScore(
+                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
+                        moduleName));
 
         //Remove parents from list (to avoid showing the parent composite that is there just to
         // push the overall score)
-        for (Iterator<CompositeScore> iterator = compositeScoreList.iterator(); iterator.hasNext(); ) {
-            CompositeScore compositeScore = iterator.next();
+        for (Iterator<CompositeScoreDB> iterator = compositeScoreList.iterator();
+                iterator.hasNext(); ) {
+            CompositeScoreDB compositeScore = iterator.next();
             //Show only if a parent have questions.
-            if(compositeScore.getQuestions().size()<1) {
+            if (compositeScore.getQuestions().size() < 1) {
                 if (!compositeScore.hasParent()) iterator.remove();
-            }
-            else{
-                boolean isValid=false;
-                for(Question question : compositeScore.getQuestions()){
-                    for(Question criticalQuestion : criticalQuestions){
-                        if(question.getUid().equals(criticalQuestion.getUid())){
-                            isValid=true;
+            } else {
+                boolean isValid = false;
+                for (QuestionDB question : compositeScore.getQuestions()) {
+                    for (QuestionDB criticalQuestion : criticalQuestions) {
+                        if (question.getUid().equals(criticalQuestion.getUid())) {
+                            isValid = true;
                         }
                     }
                 }
-                if(!isValid){
+                if (!isValid) {
                     if (!compositeScore.hasParent()) iterator.remove();
                 }
             }
@@ -646,7 +651,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     private void initLayoutHeaders(RelativeLayout llLayout) {
-        Survey survey = Session.getSurveyByModule(moduleName);
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey.hasMainScore()) {
             float average = survey.getMainScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
@@ -719,7 +724,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     }
 
     private void onActionPlanSent() {
-        mObsActionPlan = ObsActionPlan.findById(mObsActionPlan.getId_obs_action_plan());
+        mObsActionPlan = ObsActionPlanDB.findById(mObsActionPlan.getId_obs_action_plan());
         if (mObsActionPlan.getStatus() == Constants.SURVEY_SENT) {
             fabComplete.setImageResource(R.drawable.ic_double_check);
         }
