@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.FileIOUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -233,5 +235,17 @@ public class ExportData {
             files[i].delete();
         }
         tempFolder.delete();
+    }
+
+    public static void shareFileIntent(Activity activity, String data, String title,
+            File attached) {
+        ShareCompat.IntentBuilder.from(activity)
+                .setType("text/plain")
+                .addEmailTo("")
+                .setSubject(title)
+                .setStream(FileProvider.getUriForFile(activity,
+                        BuildConfig.APPLICATION_ID + ".data.database.utils.ExportData", attached))
+                .setText(data)
+                .startChooser();
     }
 }

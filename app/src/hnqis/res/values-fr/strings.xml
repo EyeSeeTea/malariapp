@@ -245,5 +245,5 @@ Mensuelle"</string>
 <string name="critical_steps">"Étapes critiques manquées:"</string>
 <string name="url_not_available">"L'URL n'est pas encore disponible"</string>
 <string name="see_full_assessment">"Voir l'évaluation complète à:"</string>
-
+<string name="on">"à"</string>
 </resources>
