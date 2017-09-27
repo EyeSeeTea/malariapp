@@ -21,7 +21,9 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,6 +31,7 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
@@ -64,6 +67,10 @@ public class PreferencesState {
      */
     private Boolean hidePlanningTab;
     /**
+     * Flag that force if get all surveys
+     */
+    private Boolean forceAllSentSurveys = false;
+    /**
      * Map that holds the relationship between a scale and a set of dimensions
      */
     private Map<String, Map<String, Float>> scaleDimensionsMap;
@@ -85,6 +92,8 @@ public class PreferencesState {
      */
     private boolean userAccept;
     private String serverUrl;
+    private String phoneLanguage;
+    private Credentials creedentials;
 
     private PreferencesState() {
     }
@@ -97,6 +106,7 @@ public class PreferencesState {
     }
 
     public void init(Context context) {
+        phoneLanguage = Locale.getDefault().getLanguage();
         this.context = context;
         scaleDimensionsMap = initScaleDimensionsMap();
         reloadPreferences();
@@ -294,14 +304,18 @@ public class PreferencesState {
      * Tells if the application is Vertical or horizontall
      */
     public Boolean isVerticalDashboard() {
-        return DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
+        return  DashboardOrientation.VERTICAL.equals(AppSettingsBuilder.getDashboardOrientation());
     }
 
     /**
      * Tells if the application is filter for last org unit
      */
     public Boolean isLastForOrgUnit() {
-        return DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter());
+        return (!forceAllSentSurveys && DashboardListFilter.LAST_FOR_ORG.equals(AppSettingsBuilder.getDashboardListFilter()));
+    }
+
+    public void setForceAllSentSurveys(boolean value){
+        forceAllSentSurveys = value;
     }
 
     /**
@@ -390,15 +404,24 @@ public class PreferencesState {
     }
 
     public void loadsLanguageInActivity() {
+        String temLanguageCode = languageCode;
         if (languageCode.equals("")) {
-            return;
+            temLanguageCode = phoneLanguage;
         }
         Resources res = context.getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-        conf.locale = new Locale(languageCode);
-        res.updateConfiguration(conf, dm);
+        Configuration conf = res.getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(new Locale(temLanguageCode));
+        } else {
+            conf.locale = new Locale(temLanguageCode);
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            res.updateConfiguration(conf, dm);
+        } else {
+            context.createConfigurationContext(conf);
+        }
     }
 
     public String getServerUrl(){
@@ -419,5 +442,24 @@ public class PreferencesState {
         serverUrl = sharedPreferences.getString(
                 PreferencesState.getInstance().getContext().getResources().getString(
                         R.string.dhis_url), "");
+    }
+
+    public String getPhoneLanguage() {
+        return phoneLanguage;
+    }
+
+    public Credentials getCreedentials() {
+        if(creedentials == null) {
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                    context);
+            String url= sharedPreferences.getString(
+                    context.getResources().getString(R.string.dhis_url), "");
+            String name =
+                    sharedPreferences.getString(context.getString(R.string.dhis_user), "");
+            String password =
+                    sharedPreferences.getString(context.getString(R.string.dhis_password), "");
+            creedentials = new Credentials(url, name, password);
+        }
+        return creedentials;
     }
 }

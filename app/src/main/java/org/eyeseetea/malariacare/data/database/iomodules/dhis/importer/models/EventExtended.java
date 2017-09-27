@@ -19,12 +19,16 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.FailedItemFlow;
@@ -35,6 +39,7 @@ import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +56,7 @@ public class EventExtended implements VisitableFromSDK {
     public final static String DHIS2_GMT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public final static String DHIS2_LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
+    public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
 
 
     public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
@@ -107,7 +113,6 @@ public class EventExtended implements VisitableFromSDK {
         }
         return event.getCreated().toDate();
     }
-
     /**
      * Returns the survey.completionDate associated with this event (lastUpdated field)
      */
@@ -299,5 +304,45 @@ public class EventExtended implements VisitableFromSDK {
             eventExtendeds.add(new EventExtended(pojoFlow));
         }
         return eventExtendeds;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        event.setCreated(new DateTime(creationDate));
+    }
+
+    public void setEventUid(String eventUid) {
+        event.setUId(eventUid);
+    }
+
+    public static List<EventExtended> fromJsonToEvents(JsonNode jsonNode) {
+        TypeReference<List<Event>> typeRef =
+                new TypeReference<List<Event>>() {
+                };
+        List<Event> events;
+        try {
+            if (jsonNode.has("events")) {
+                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
+                events = objectMapper.
+                        readValue(jsonNode.get("events").traverse(), typeRef);
+            } else {
+                events = new ArrayList<>();
+            }
+        } catch (IOException e) {
+            events = new ArrayList<>();
+            e.printStackTrace();
+        }
+        List<EventExtended> eventExtendedList = new ArrayList<>();
+        for (Event event : events) {
+            EventFlow eventFlow = EventFlow.MAPPER.mapToDatabaseEntity(event);
+            EventExtended eventExtended = new EventExtended(eventFlow);
+            if (event.getDataValues() != null && event.getDataValues().size() > 0) {
+                List<TrackedEntityDataValueFlow> trackedEntityDataValueFlows =
+                        TrackedEntityDataValueFlow.MAPPER.mapToDatabaseEntities(
+                                event.getDataValues());
+                eventExtended.setDataValuesInMemory(trackedEntityDataValueFlows);
+            }
+            eventExtendedList.add(eventExtended);
+        }
+        return eventExtendedList;
     }
 }

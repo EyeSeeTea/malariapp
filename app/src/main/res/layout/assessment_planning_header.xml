@@ -47,7 +47,7 @@
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:text="Due date"
+        android:text="@string/planing_due_date"
         android:id="@+id/nameHeader"
         android:gravity="center"
         android:layout_weight="0.25"
@@ -61,7 +61,7 @@
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:text="Schedule"
+        android:text="@string/planing_schedule"
         android:id="@+id/nameHeader2"
         android:textColor="@color/planning_header_text"
         android:gravity="center"

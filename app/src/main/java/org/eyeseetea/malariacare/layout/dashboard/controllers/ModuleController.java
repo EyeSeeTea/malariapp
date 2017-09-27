@@ -30,8 +30,8 @@ import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.Program;
-import org.eyeseetea.malariacare.data.database.model.Survey;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -87,7 +87,7 @@ public abstract class ModuleController {
         return dashboardActivity.getResources().getString(moduleSettings.getResTitle());
     }
 
-    public String getActionBarTitleBySurvey(Survey survey) {
+    public String getActionBarTitleBySurvey(SurveyDB survey) {
         String title = "";
         if (survey.getOrgUnit().getName() != null) {
             title = survey.getOrgUnit().getName();
@@ -95,8 +95,8 @@ public abstract class ModuleController {
         return title;
     }
 
-    public String getActionBarSubTitleBySurvey(Survey survey) {
-        Program program = survey.getProgram();
+    public String getActionBarSubTitleBySurvey(SurveyDB survey) {
+        ProgramDB program = survey.getProgram();
         if (program.getName() != null) {
             return program.getName();
         }
@@ -194,8 +194,8 @@ public abstract class ModuleController {
      */
     public void onBackPressed() {
         new AlertDialog.Builder(dashboardActivity)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit the app?")
+                .setTitle(R.string.survey_title_exit)
+                .setMessage(R.string.survey_info_exit)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 

@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -9,7 +10,9 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
+import org.eyeseetea.sdk.common.DatabaseUtils;
+import org.eyeseetea.sdk.common.FileUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -146,10 +149,10 @@ public class ExportData {
     private static void dumpDatabase(String dbName, File tempFolder) {
         File backupDB = null;
         if (tempFolder.canWrite()) {
-            File currentDB = new File(FileIOUtils.getDatabasesFolder(), dbName);
+            File currentDB = new File(DatabaseUtils.getDatabasesFolder(AppDatabase.NAME), dbName);
             backupDB = new File(tempFolder, dbName);
             try {
-                FileIOUtils.copyFile(currentDB, backupDB);
+                FileUtils.copyFile(currentDB, backupDB);
             } catch (IOException e) {
                 Log.d(TAG, "Error exporting file " + currentDB + " to " + backupDB);
             }
@@ -166,7 +169,7 @@ public class ExportData {
             Log.d("Files", "FileName:" + files[i].getName());
             File backupFile = new File(tempFolder, files[i].getName());
             try {
-                FileIOUtils.copyFile(files[i], backupFile);
+                FileUtils.copyFile(files[i], backupFile);
             } catch (IOException e) {
                 Log.d(TAG, "Error exporting file " + files[i] + " to " + backupFile);
             }
@@ -185,7 +188,7 @@ public class ExportData {
      * This method returns the sharedPreferences app folder
      */
     private static File getSharedPreferencesFolder() {
-        String sharedPreferencesPath = FileIOUtils.getAppPath() + SHAREDPREFERENCES_FOLDER;
+        String sharedPreferencesPath = DatabaseUtils.getAppPath(PreferencesState.getInstance().getContext().getPackageName()) + SHAREDPREFERENCES_FOLDER;
         File file = new File(sharedPreferencesPath);
         return file;
     }
@@ -233,5 +236,17 @@ public class ExportData {
             files[i].delete();
         }
         tempFolder.delete();
+    }
+
+    public static void shareFileIntent(Activity activity, String data, String title,
+            File attached) {
+        ShareCompat.IntentBuilder.from(activity)
+                .setType("text/plain")
+                .addEmailTo("")
+                .setSubject(title)
+                .setStream(FileProvider.getUriForFile(activity,
+                        BuildConfig.APPLICATION_ID + ".data.database.utils.ExportData", attached))
+                .setText(data)
+                .startChooser();
     }
 }

@@ -21,19 +21,13 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,22 +37,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.eyeseetea.malariacare.BaseActivity;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.VideoActivity;
-import org.eyeseetea.malariacare.data.database.model.Media;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.network.CustomParser;
+import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.eyeseetea.malariacare.utils.FileIOUtils;
-import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.sdk.common.VideoUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -144,7 +135,32 @@ public class FeedbackAdapter extends BaseAdapter {
     private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
+
+        if(!feedback.isShown()){
+            rowLayout.setVisibility(View.GONE);
+            View view = new View(parent.getContext());
+            view.setVisibility(View.GONE);
+            return view;
+        }else{
+            rowLayout.setVisibility(View.VISIBLE);
+        }
+
         rowLayout.setBackgroundResource(feedback.getBackgroundColor());
+
+        ImageView imageView = (ImageView)rowLayout.findViewById(R.id.feedback_image);
+        imageView.setBackgroundResource(feedback.getBackgroundColor());
+        if(feedback.getFeedbackList().size()==0 && feedback.getCompositeScoreFeedbackList().size()==0){
+            imageView.setVisibility(View.GONE);
+        }else{
+            if((feedback.getFeedbackList().size()>0 && feedback.getFeedbackList().get(0).isShown()) ||
+                    (feedback.getCompositeScoreFeedbackList().size()>0 && feedback.getCompositeScoreFeedbackList().get(0).isShown()))
+            {
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
+            }else{
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow));
+            }
+
+        }
 
         //CompositeScore title
         TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_label);
@@ -162,6 +178,7 @@ public class FeedbackAdapter extends BaseAdapter {
 
         //CompositeScore title
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
+
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
@@ -171,6 +188,16 @@ public class FeedbackAdapter extends BaseAdapter {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
+
+        rowLayout.setTag(feedback);
+        rowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CompositeScoreFeedback compositeScoreFeedback=(CompositeScoreFeedback)v.getTag();
+                compositeScoreFeedback.toggleChildrenShown(false);
+                notifyDataSetChanged();
+            }
+        });
 
         return rowLayout;
     }
@@ -183,6 +210,16 @@ public class FeedbackAdapter extends BaseAdapter {
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
+
+        if(!feedback.isShown()){
+            rowLayout.setVisibility(View.GONE);
+            View view = new View(parent.getContext());
+            view.setVisibility(View.GONE);
+            return view;
+        }else{
+            rowLayout.setVisibility(View.VISIBLE);
+        }
+
         //Question label
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_question_label);
         if(!PreferencesState.getInstance().isVerticalDashboard()){
@@ -192,7 +229,16 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        textView.setText(feedback.getLabel());
+        String compulsoryMark="";
+        if(feedback.getQuestion().getCompulsory()) {
+            int red = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.darkRed);
+            String appNameColorString = String.format("%X", red).substring(2);
+            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
+                    + "</b></font>";
+        }
+
+        textView.setText(Html.fromHtml(compulsoryMark+feedback.getLabel()));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
@@ -251,8 +297,8 @@ public class FeedbackAdapter extends BaseAdapter {
      */
     private void addAllMedia(LinearLayout rowLayout, QuestionFeedback feedback) {
         LinearLayout feedbackContainer = (LinearLayout)rowLayout.findViewById(R.id.feedback_container);
-        List<Media> mediaList = feedback.getMedia();
-        for(Media media:mediaList){
+        List<MediaDB> mediaList = feedback.getMedia();
+        for(MediaDB media:mediaList){
             if(media.getMediaType()==Constants.MEDIA_TYPE_IMAGE){
                 addImage(feedbackContainer,media);
             }else{
@@ -267,7 +313,7 @@ public class FeedbackAdapter extends BaseAdapter {
      * @param rowLayout
      * @param media
      */
-    private void addImage(LinearLayout rowLayout, final Media media) {
+    private void addImage(LinearLayout rowLayout, final MediaDB media) {
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_image));
         } else {
@@ -308,7 +354,7 @@ public class FeedbackAdapter extends BaseAdapter {
      * @param rowLayout
      * @param media
      */
-    private void addVideo(LinearLayout rowLayout, Media media){
+    private void addVideo(LinearLayout rowLayout, MediaDB media){
         if(media !=null && media.getFilename()==null){
             rowLayout.addView(setDrawableOnLayout(rowLayout, R.drawable.no_video));
         }
@@ -333,8 +379,8 @@ public class FeedbackAdapter extends BaseAdapter {
             });
 
             //add preview frame
-            addPreview((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview), media);
-
+            ImageView imageView = (ImageView) mediaLayout.findViewById(R.id.feedback_media_preview);
+            imageView.setImageBitmap(VideoUtils.getVideoPreview(media.getFilename(), context));
             //Add media row to feedback layout
             rowLayout.addView(mediaLayout);
         }
@@ -348,31 +394,6 @@ public class FeedbackAdapter extends BaseAdapter {
         ((ImageView) mediaLayout.findViewById(R.id.feedback_media_preview)).setImageDrawable(drawable);
         //Add media row to feedback layout
         return mediaLayout;
-    }
-
-    private void addPreview(ImageView viewMediaLink, Media media) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        File mediaFile = new File(media.getFilename());
-        if (!mediaFile.exists()) {//load from raw
-            AssetFileDescriptor afd = FileIOUtils.getAssetFileDescriptorFromRaw(
-                    media.getFilename());
-            retriever.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        } else {
-            retriever.setDataSource(mediaFile.getAbsolutePath());
-        }
-        try {
-            viewMediaLink.setImageBitmap(
-                    retriever.getFrameAtTime(10000000, MediaMetadataRetriever.OPTION_CLOSEST));
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                retriever.release();
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                Log.e("error", "error releasign el video");
-            }
-        }
     }
 
     private void toggleFeedback(LinearLayout rowLayout, boolean visible) {

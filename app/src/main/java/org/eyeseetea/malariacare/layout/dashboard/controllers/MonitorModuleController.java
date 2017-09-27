@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import com.google.common.util.concurrent.Monitor;
-
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -40,7 +38,7 @@ public class MonitorModuleController extends ModuleController {
     @Override
     public void init(DashboardActivity activity) {
         super.init(activity);
-        MonitorFragment monitorFragment=MonitorFragment.newInstance(1);
+        MonitorFragment monitorFragment=new MonitorFragment();
         monitorFragment.setFilterType(moduleSettings.getMonitorFilter());
         fragment = monitorFragment;
     }

@@ -44,6 +44,7 @@
 <string name="dialog_content_incorrect_org_unit"></string>
 <string name="dialog_content_logout_confirmation"></string>
 <string name="dialog_info_ask_for_completion"></string>
+<string name="dialog_info_ask_for_completion_plan"></string>
 
 <string name="dashboard_info_feedback"></string>
 <string name="dashboard_info_ready_to_upload"></string>
@@ -78,15 +79,6 @@
 <string name="adherence_info_patient_id"></string>
 <string name="adherence_info_prescribed"></string>
 <string name="adherence_info_rdt_positive"></string>
-<string name="adherence_info_rdt_negative"></string>
-<string name="adherence_info_microscopy_positive"></string>
-<string name="adherence_info_microscopy_negative"></string>
-
-<string name="iqatab_info_supervisor"></string>
-<string name="iqatab_info_parasites"></string>
-<string name="iqatab_info_species"></string>
-<string name="iqatab_info_labstaff"></string>
-<string name="iqatab_info_note"></string>
 
 <string name="reporting_info_reporting"></string>
 <string name="reporting_info_results"></string>
@@ -108,14 +100,11 @@
 <string name="compscore_title_score_percentage"></string>
 
 <string name="title_activity_settings"></string>
-<string name="settings_checkbox_show_num_dems"></string>
-<string name="settings_checkbox_description_show_num_dems"></string>
 <string name="settings_checkbox_customize_fonts"></string>
 <string name="settings_list_font_sizes"></string>
 <string name="settings_text_dhis_server_url"></string>
 <string name="settings_text_dhis_user"></string>
 <string name="pref_header_general"></string>
-<string name="dialog_title_push_response"></string>
 <string name="dialog_info_push_bad_credentials"></string>
 <string name="dialog_info_push_empty_survey"></string>
 <string name="settings_menu_legal"></string>
@@ -142,8 +131,10 @@
 <string name="dashboard_title_planned_next_qa"></string>
 <string name="assessment_sent_score"></string>
 <string name="feedback_show_only_failed"></string>
+<string name="feedback_show_only_one_or_show_all"></string>
 <string name="feedback_return"></string>
 <string name="quality_of_care"></string>
+<string name="overall_quality_of_care"></string>
 <string name="feedback_info_passed"></string>
 <string name="feedback_info_failed"></string>
 <string name="feedback_info_not_answered"></string>
@@ -184,11 +175,6 @@
 <string name="progress_pull_validating_composite_scores"></string>
 <string name="progress_pull_done"></string>
 <string name="dialog_push_success"></string>
-<string name="progress_push_preparing_survey"></string>
-<string name="progress_push_posting_survey"></string>
-<string name="progress_push_updating_survey"></string>
-<string name="progress_push_no_survey"></string>
-<string name="dialog_push_before_pull_success"></string>
 <string name="planning_title_dialog"></string>
 <string name="planning_label_comment"></string>
 <string name="planning_label_schedule_date"></string>
@@ -214,34 +200,17 @@
 
 <string name="create"></string>
 <string name="modify"></string>
-<string name="create_or_modify"></string>
-<string name="loading_last_surveys"></string>
-<string name="no_previous_event_info"></string>
-<string name="dynamic_error_phone_format"></string>
-<string name="dynamic_error_age"></string>
-<string name="survey_title_completed"></string>
-<string name="survey_info_completed"></string>
 <string name="review"></string>
 <string name="send"></string>
-<string name="number_0"></string>
-<string name="number_1"></string>
-<string name="number_2"></string>
-<string name="number_3"></string>
-<string name="number_4"></string>
-<string name="number_5"></string>
-<string name="number_6"></string>
-<string name="number_7"></string>
-<string name="number_8"></string>
-<string name="number_9"></string>
 <string name="clear"></string>
 
 <string name="developer_option_summary"></string>
 <string name="developer_option_title"></string>
 <string name="export_data_option_title"></string>
-<string name="ask_account_permission"></string>
 <string name="google_play_required"></string>
+<string name="import_data_option_title"></string>
+<string name="ask_account_permission"></string>
 <string name="account_permission_denied"></string>
-<string name="feedback_media_link" ></string>
 <string name="feedback_media"></string>
 <string name="feedback_view_image"></string>
 <string name="admin_announcement"></string>
@@ -250,4 +219,12 @@
 <string name="dialog_action_refresh"></string>
 <string name="dialog_incomplete_surveys_before_refresh"></string>
 <string name="dialog_all_surveys_sent_before_refresh"></string>
+<string name="action_button_text"></string>
+<string name="supervision_on"></string>
+<string name="critical_steps"></string>
+<string name="url_not_available"></string>
+<string name="see_full_assessment"></string>
+<string name="install_file_manager"></string>
+<string name="get_db_file_dialog"></string>
+<string name="start"></string>
 </resources>

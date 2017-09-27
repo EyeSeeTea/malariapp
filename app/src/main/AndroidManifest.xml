@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.eyeseetea.malariacare"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="org.eyeseetea.malariacare">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -14,15 +12,14 @@
         android:name="android.permission.USE_CREDENTIALS"
         tools:node="remove" />
     <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        tools:node="remove" />
+        android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:node="remove" />
 
     <application
         android:name=".EyeSeeTeaApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/qualityapp_logo"
         android:label="@string/app_name"
         android:theme="@style/EyeSeeTheme"
@@ -36,14 +33,14 @@
             android:name=".DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity
             android:name=".VideoActivity"
-            android:label="@string/feedback_media"></activity>
+            android:label="@string/feedback_media"/>
         <activity
             android:name=".DownloadedMediaActivity"
-            android:label="@string/downloaded_media_menu"></activity>
+            android:label="@string/downloaded_media_menu"/>
 
         <service
             android:name=".services.SurveyService"
@@ -68,7 +65,7 @@
         <activity
             android:name=".ProgressActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/settings_menu_pull"></activity>
+            android:label="@string/settings_menu_pull"/>
 
         <activity
             android:name=".SettingsActivity"
@@ -81,7 +78,7 @@
                 android:value=".DashboardActivity" />
         </activity>
 
-        <receiver android:name="org.eyeseetea.malariacare.receivers.AlarmPushReceiver"></receiver>
+        <receiver android:name="org.eyeseetea.malariacare.receivers.AlarmPushReceiver"/>
 
         <meta-data
             android:name="nextClassName"
