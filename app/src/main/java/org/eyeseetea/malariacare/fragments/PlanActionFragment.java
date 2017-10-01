@@ -45,10 +45,7 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
@@ -60,7 +57,10 @@ import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.sdk.common.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -108,7 +108,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         initSpinner(llLayout);
         initFAB(llLayout);
         initBackButton(llLayout);
-        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+        if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
             setReadOnlyMode();
         }
         ObservablePush.getInstance().addObserver(this);
@@ -169,7 +169,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 R.id.plan_action_others_edit_text);
         String options[] = getResources().getStringArray(
                 R.array.plan_action_dropdown_options);
-        if (mObsActionPlan.getAction1()!=null && mObsActionPlan.getAction1().equals(options[5])) {
+        if (mObsActionPlan.getAction1() != null && mObsActionPlan.getAction1().equals(options[5])) {
             if (mObsActionPlan.getAction2() != null) {
                 mCustomActionOtherEditText.setText(mObsActionPlan.getAction2());
             }
@@ -229,11 +229,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         fabHtmlOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isFABOpen) {
-                    showFABMenu();
-                } else {
-                    closeFABMenu();
-                }
+                shareHtmlText();
             }
         });
         fabPlainTextOption.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +242,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
     private void initFabComplete(RelativeLayout llLayout) {
         fabComplete = (FloatingActionButton) llLayout.findViewById(R.id.fab_save);
-        if(!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)){
+        if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
             fabComplete.setImageResource(R.drawable.ic_action_check);
         }
         if (mObsActionPlan.getStatus() == Constants.SURVEY_SENT) {
@@ -258,18 +254,112 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
             public void onClick(View view) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle(null)
-                        .setMessage(getActivity().getString(R.string.dialog_info_ask_for_completion_plan))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-                                mObsActionPlan.save();
-                                fabComplete.setImageResource(R.drawable.ic_action_check);
-                                setReadOnlyMode();
-                            }
-                        })
+                        .setMessage(getActivity().getString(
+                                R.string.dialog_info_ask_for_completion_plan))
+                        .setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+                                        mObsActionPlan.save();
+                                        fabComplete.setImageResource(R.drawable.ic_action_check);
+                                        setReadOnlyMode();
+                                    }
+                                })
                         .setNegativeButton(android.R.string.no, null).create().show();
             }
         });
+    }
+
+    private void shareHtmlText() {
+        SurveyDB survey = Session.getSurveyByModule(moduleName);
+
+        String title = getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
+                + "/" + survey.getProgram().getName() + "\n";
+        String data = "<!DOCTYPE html>"
+                + "<html>"
+                + "<head>"
+                + "<meta charset=\"utf-8\"/>"
+                + "</head>"
+                + "<body>"
+                + "<div class=\"header\" style=\"height: 210px;\">";
+        data +=
+                "<img  class=\"headerImage\" src=\"https://lh3.googleusercontent"
+                        + ".com/dLn5w5rNHKkMm1axNlD1iZuwBxqgUqRRD5d9N_F"
+                        + "-H3CIN7wDHiSEm2vK6fnSRXRBj7te=w300-rw\" style=\"float: left; height: "
+                        + "210px;\"/>"
+                        + "<p class=\"headerText\" style=\"font-size: 210%; color: #6E6E6E;><b "
+                        + "style=\"color: black;\">"
+                        + PreferencesState.getInstance().getContext().getString(
+                        R.string.app_name) + "</b><br/>";
+        data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
+                + "/" + survey.getProgram().getName() + "<br/>";
+        data += getString(R.string.on) + " " + String.format(
+                getString(R.string.plan_action_next_date), EventExtended.format
+                        (survey.getCompletionDate(), getString(R.string.date_month_text_format)))
+                + "<br/>";
+        data += getString(R.string.quality_of_care) + " <em style=\"color: #FFBF00;\">"
+                + Math.round(survey.getMainScore())
+                + "%</em><br/>";
+        data += "</p></div><p class=\"nextDate\" style=\"margin-left: 50%; color: #6E6E6E;\">"
+                + String.format(
+                getString(R.string.plan_action_next_date), EventExtended.format
+                        (survey.getScheduledDate(), EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
+        data += "<p><b>" + getString(R.string.plan_action_gasp_title) + "</b> " +
+                mCustomGapsEditText.getText().toString() + "</p>";
+        data += "<p><b>" + getString(R.string.plan_action_action_plan_title) + "</b> " +
+                mCustomActionPlanEditText.getText().toString() + "</p>";
+        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
+            data += "<p><b>" + getString(R.string.plan_action_action_title) + "</b> " +
+                    actionSpinner.getSelectedItem().toString();
+        }
+        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
+            data += secondaryActionSpinner.getSelectedItem().toString() + "</p>";
+        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
+            data += mCustomActionOtherEditText.getText().toString() + "</p>";
+        } else {
+            data += "</p>";
+        }
+        data += "<p><b>" + getString(R.string.critical_steps) + "</p>";
+
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(Session
+                .getSurveyByModule(moduleName).getId_survey());
+
+        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+
+
+        //For each score add proper items
+        for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
+                iterator.hasNext(); ) {
+            CompositeScoreDB compositeScore = iterator.next();
+            data += "<p><b>" + compositeScore.getHierarchical_code() + " " + compositeScore.getLabel
+                    () + "</b></p>";
+            for (QuestionDB question : criticalQuestions) {
+                if (question.getCompositeScoreFk() == (compositeScore.getId_composite_score())) {
+                    data += "<p style=\"font-style: italic;\">" + "-" + question.getForm_name()
+                            + "</p>";
+                }
+            }
+        }
+        data += getString(R.string.see_full_assessment) + "</p>";
+        if (survey.isSent()) {
+            data += "<a href=https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
+                    +
+                    ">https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
+                    + "</a></p>";
+        } else {
+            data += getString(R.string.url_not_available) + "</p>";
+        }
+        data += "</body>"
+                + "</html>";
+        File attached = null;
+        try {
+            attached = FileUtils.saveStringToFile("shared_html.html", data, getActivity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        createHtmlIntent(getActivity(), "", title, attached);
     }
 
     private void sharePlainText() {
@@ -299,7 +389,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
         List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 Session.getSurveyByModule(moduleName).getId_survey());
-        if(criticalQuestions!=null && criticalQuestions.size()>0) {
+        if (criticalQuestions != null && criticalQuestions.size() > 0) {
             data += getString(R.string.critical_steps) + "\n\n";
 
             List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
@@ -323,8 +413,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
-        System.out.println("data:"+data);
+        System.out.println("data:" + data);
         createTextIntent(getActivity(), data);
+    }
+
+
+    /**
+     * This method create the email intent
+     */
+    private static void createHtmlIntent(Activity activity, String data, String title,
+            File attached) {
+        ExportData.shareFileIntent(activity, data, title, attached);
     }
 
     @NonNull
@@ -354,14 +453,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
     //Recursive compositescore parent builder
     private void buildCompositeScoreTree(CompositeScoreDB compositeScore,
             List<CompositeScoreDB> compositeScoresTree) {
-        if(compositeScore.getHierarchical_code().equals("0")){
+        if (compositeScore.getHierarchical_code().equals("0")) {
             //ignore composite score root
             return;
         }
-        if(!compositeScoresTree.contains(compositeScore)){
+        if (!compositeScoresTree.contains(compositeScore)) {
             compositeScoresTree.add(compositeScore);
         }
-        if(compositeScore.hasParent()){
+        if (compositeScore.hasParent()) {
             buildCompositeScoreTree(compositeScore.getComposite_score(), compositeScoresTree);
         }
     }
@@ -375,6 +474,40 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         sendIntent.putExtra(Intent.EXTRA_TEXT, data);
         sendIntent.setType("text/plain");
         activity.startActivity(sendIntent);
+    }
+
+    private List<CompositeScoreDB> prepareCompositeScores(SurveyDB survey,
+            List<QuestionDB> criticalQuestions) {
+        //Calculate main score
+        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
+                moduleName);
+        survey.setMainScore(
+                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
+                        moduleName));
+
+        //Remove parents from list (to avoid showing the parent composite that is there just to
+        // push the overall score)
+        for (Iterator<CompositeScoreDB> iterator = compositeScoreList.iterator();
+                iterator.hasNext(); ) {
+            CompositeScoreDB compositeScore = iterator.next();
+            //Show only if a parent have questions.
+            if (compositeScore.getQuestions().size() < 1) {
+                if (!compositeScore.hasParent()) iterator.remove();
+            } else {
+                boolean isValid = false;
+                for (QuestionDB question : compositeScore.getQuestions()) {
+                    for (QuestionDB criticalQuestion : criticalQuestions) {
+                        if (question.getUid().equals(criticalQuestion.getUid())) {
+                            isValid = true;
+                        }
+                    }
+                }
+                if (!isValid) {
+                    if (!compositeScore.hasParent()) iterator.remove();
+                }
+            }
+        }
+        return compositeScoreList;
     }
 
     private void showFABMenu() {
