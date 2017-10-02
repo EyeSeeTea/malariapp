@@ -26,7 +26,8 @@
 <string name="dialog_title_incorrect_org_unit">"Org Unit Incorrecta"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione una org unit final"</string>
 <string name="dialog_content_logout_confirmation">"Si se desconecta del sistema, se borrarán todas las encuestas no enviadas. ¿Quiere continuar?"</string>
-<string name="dialog_info_ask_for_completion">Are you sure you want to complete %s? You cannot undo this action</string>
+<string name="dialog_info_ask_for_completion">"¿Está seguro de que desea completar %s? No se puede deshacer esta acción"</string>
+<string name="dialog_info_ask_for_completion_plan">"¿Está seguro que desea completar el plan? No se puede deshacer esta acción"</string>
 
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Lista para enviar"</string>
@@ -119,8 +120,10 @@ clínica"</string>
 <string name="dashboard_title_planned_next_qa">"Próxima evaluación"</string>
 <string name="assessment_sent_score">"Puntos"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>
+<string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
 <string name="feedback_return">"Regresar a todas las evaluaciones"</string>
 <string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
 <string name="feedback_info_not_answered">"Sin respuesta"</string>
@@ -211,6 +214,10 @@ clínica"</string>
 <string name="clear">"Limpiar"</string>
 <string name="admin_announcement">"Anuncio del administrador"</string>
 <string name="user_close">"Este usuario ha sido cerrado por el administrador."</string>
+<string name="survey_first_step">"Recuperando preguntas obligatorias"</string>
+<string name="survey_second_step">"Comprobando preguntas obligatorias"</string>
+<string name="survey_third_step">"Calculando porcentaje de completitud"</string>
+<string name="survey_fourth_step">"Calculando puntuación"</string>
 <string name="error_conflict_message">"El evento con UID: %1$s. Se cargó con un conflicto en el elemento de datos UID: %2$s con el mensaje: %3$s. Póngase en contacto con el administrador."</string>
 <string name="dialog_action_logout">"El cierre de sesión requiere eliminar o enviar los datos no enviados."</string>
 <string name="dialog_action_refresh">"Refrescar los metadatos requiere eliminar o enviar los datos no enviados."</string>
@@ -219,4 +226,34 @@ clínica"</string>
 <string name="install_file_manager">Instale un Administrador de archivos.</string>
 <string name="get_db_file_dialog">Seleccione un archivo db válido.</string>
 <string name="start">Comenzar</string>
+
+<string name="header_reschedule">"Reprogramar"</string>
+<string name="planing_schedule">"Programar"</string>
+<string name="planing_due_date">"Fecha de vencimiento"</string>
+<string name="action_button_text">PLAN DE ACCIÓN</string>
+<string name="plan_action_title">Observaciones y plan de acción</string>
+<string name="plan_action_today_date">Terminado: %s</string>
+<string name="plan_action_next_date">Próxima: %s</string>
+<string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
+<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_action_plan_title">Plan de acción:</string>
+<string name="plan_action_action_title">Acción:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"..."</item>
+<item>Entrenamiento de actualización durante SSV</item>
+<item>Entrenamiento de grupo en una fecha posterior</item>
+<item>Actividad de Plan CME</item>
+<item>Demostrar la técnica con el cliente</item>
+<item>Otro</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
+<item>Ver video</item>
+<item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
+</string-array>
+<string name="supervision_on">Supervisión de resultados en:</string>
+<string name="critical_steps">Pasos críticos perdidos:</string>
+<string name="url_not_available">URL aún no disponible</string>
+<string name="see_full_assessment">Ver evaluación completa en:</string>
+<string name="on">"en"</string>
 </resources>

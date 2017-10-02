@@ -206,12 +206,17 @@ public class SettingsActivity extends PreferenceActivity implements
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         Resources r = context.getResources();
         Configuration c = r.getConfiguration();
+        Locale currentLocale = c.locale;
+        if (currentLocale.getLanguage().isEmpty()) {
+            currentLocale = new Locale(PreferencesState.getInstance().getPhoneLanguage());
+        }
         String[] loc = r.getAssets().getLocales();
         for (int i = 0; i < loc.length; i++) {
             c.locale = new Locale(loc[i]);
             Resources res = new Resources(context.getAssets(), metrics, c);
             String s1 = res.getString(stringId);
-            String language = c.locale.getDisplayLanguage();
+
+            String language = new Locale(loc[i]).getDisplayLanguage(currentLocale);
             c.locale = new Locale("");
             Resources res2 = new Resources(context.getAssets(), metrics, c);
             String s2 = res2.getString(stringId);
@@ -220,6 +225,10 @@ public class SettingsActivity extends PreferenceActivity implements
             if (!s1.equals(s2)) {
                 languages.put(language, loc[i]);
             }
+            Locale defaultLocale = new Locale(BuildConfig.defaultLocale);
+            languages.put(defaultLocale.getDisplayLanguage(currentLocale),
+                    defaultLocale.getLanguage());
+
         }
         return languages;
     }

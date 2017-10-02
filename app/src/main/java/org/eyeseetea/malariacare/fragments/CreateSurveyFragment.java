@@ -360,7 +360,7 @@ public class CreateSurveyFragment extends Fragment {
             if(orgUnitHierarchy.getLastSelected()!=null)
                 refreshPrograms(orgUnitHierarchy.getLastSelected());
 
-            // If there are children create spinner or populate it otherwise hide existing one
+            // If there are children create actionSpinner or populate it otherwise hide existing one
             if (orgUnitList.size() > 0){
                 View childView;
                 if(orgUnitList.get(0).getUid()!=null){
@@ -376,7 +376,7 @@ public class CreateSurveyFragment extends Fragment {
                     ViewHolder subViewHolder = new ViewHolder();
                     subViewHolder.component = childView.findViewById(R.id.org_unit_item_spinner);
 
-                    //Show  and populate orgunits spinner
+                    //Show  and populate orgunits actionSpinner
                     if(orgUnitList.get(0).getUid()!=null){
                         orgUnitDefaultOption.setOrgUnitLevel(orgUnitList.get(0).getOrgUnitLevel());
                         orgUnitList.add(0, orgUnitDefaultOption);

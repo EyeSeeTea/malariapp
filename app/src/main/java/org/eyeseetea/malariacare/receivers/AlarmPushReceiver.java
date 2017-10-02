@@ -28,10 +28,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 public class AlarmPushReceiver extends BroadcastReceiver {
 
@@ -43,7 +42,6 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     private static AlarmPushReceiver instance;
     private static boolean fail;
 
-    //the constructor should be public becouse is needed in a receiver class.
     public AlarmPushReceiver() {
     }
 
@@ -56,6 +54,7 @@ public class AlarmPushReceiver extends BroadcastReceiver {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
         DashboardActivity.reloadDashboard();
+        ObservablePush.getInstance().pushFinish();
     }
 
     public static void isDoneFail() {

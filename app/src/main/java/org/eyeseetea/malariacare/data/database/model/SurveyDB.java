@@ -631,7 +631,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
         IConvertToSDKVisitor.visit(this);
     }
-
     /* Returns the last surveys (by date) with status Completed or sent
     * @return
          */

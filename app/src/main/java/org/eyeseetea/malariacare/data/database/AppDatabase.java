@@ -34,6 +34,8 @@ public class AppDatabase {
     public static final int VERSION = 13;
 
     // Aliases used for EyeSeeTea DB queries
+    public static final String obsActionPlanName = "oap";
+    public static final String surveyName = "s";
     public static final String matchName = "m";
     public static final String valueName = "v";
     public static final String questionName = "q";
@@ -47,6 +49,8 @@ public class AppDatabase {
     public static final String orgUnitProgramRelationName = "oupr";
     public static final String surveyProgramRelationName = "spr";
 
+    public static final NameAlias surveyAlias = NameAlias.builder(surveyName).build();
+    public static final NameAlias obsActionPlanAlias = NameAlias.builder(obsActionPlanName).build();
     public static final NameAlias questionAlias = NameAlias.builder(questionName).build();
     public static final NameAlias questionRelationAlias = NameAlias.builder(
             questionRelationName).build();

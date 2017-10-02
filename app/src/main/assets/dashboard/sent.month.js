@@ -136,8 +136,16 @@ function showMainTable(){
 	}
 }
 
+function hideMultipleEventLegend(){
+    document.getElementById('multipleEventLegend').style.display = 'none';
+}
+function showMultipleEventLegend(){
+    document.getElementById('multipleEventLegend').style.display = 'block';
+}
+
 //change program and refresh table and graphics (or refresh principal table with all the stats)
 function changeProgram(){
+	hideMultipleEventLegend();
     var myselect = document.getElementById("changeProgram");
     selectedProgram=(myselect.options[myselect.selectedIndex].value);
 	if(selectedProgram===allAssessmentKey){

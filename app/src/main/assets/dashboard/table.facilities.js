@@ -10,16 +10,16 @@
 						values:[
 							null,
 							null,
-							67,
+							[{"uid":31,"score":0.0},{"uid":30,"score":100.0}],
 							null,
-							83,
-							96,
-							91,
-							20,
+							[{"uid":1,"score":0.0},{"uid":12,"score":100.0},{"uid":21,"score":100.0}],
 							null,
 							null,
-							15,
-							25
+							null,
+							null,
+							null,
+							null,
+							[{"uid":113,"score":10.0}]
 						]
 					},
 					...
@@ -85,9 +85,24 @@ function buildRowFacility(facility){
 	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
-		var iValue=facility.values[i];
-        row=row+""+buildColorXScore(iValue)+""+buildCellXScore(iValue)+"</span></div></td>";
+		var facilityMonth=facility.values[i];
+		var average=0;
+		if(facilityMonth==null){
+			var average=null;
+		}else{
+			for(var d=0;d<facilityMonth.length;d++){
+				average+= facilityMonth[d].score;
+			}
+			average=average/facilityMonth.length;
+			average=Math.round(average);
+		}
 
+        var asterisk = "";
+        if(facility.counter[i]>1){
+            showMultipleEventLegend();
+            asterisk = "*";
+        }
+        row=row+""+buildColorXScore(average)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
 	}
 	//end row
 	row=row+"</tr>";
