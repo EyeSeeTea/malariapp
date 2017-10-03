@@ -19,10 +19,16 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -43,6 +49,7 @@ public class AssessmentUnsentAdapter extends
         ADashboardAdapter {
 
     ;
+
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
@@ -54,18 +61,63 @@ public class AssessmentUnsentAdapter extends
 
     @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
+
+        renderMandatoryQuestionsChart(survey, rowView);
+        renderQuestionsChart(survey, rowView);
+    }
+
+    private void renderQuestionsChart(SurveyDB survey, View rowView) {
+        int highColor = ResourcesCompat.getColor(
+                context.getResources(), R.color.ratio_questions_high, null);
+
+        int middleColor = ResourcesCompat.getColor(
+                context.getResources(), R.color.ratio_questions_middle, null);
+
+        int lowColor = ResourcesCompat.getColor(
+                context.getResources(), R.color.ratio_questions_low, null);
+
         PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
-        createPie(mChart, getTotalStatus(survey));
-        mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
-        createPie(mChart, getMandatoryStatus(survey));
+        createPie(mChart, getTotalStatus(survey),
+                highColor, middleColor, lowColor);
+    }
+
+    private void renderMandatoryQuestionsChart(SurveyDB survey, View rowView) {
+        int mandatoryHighColor = ResourcesCompat.getColor(
+                context.getResources(), R.color.ratio_mandatory_questions_high, null);
+
+        int mandatoryMiddleColor = ResourcesCompat.getColor(
+                context.getResources(), R.color.ratio_mandatory_questions_middle, null);
+
+        int mandatoryLowColor = ResourcesCompat.getColor(
+                context.getResources(), R.color.ratio_mandatory_questions_low, null);
+
+        final int mandatoryStatus = getMandatoryStatus(survey);
+
+        PieChart mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
+        createPie(mChart, mandatoryStatus,
+                mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor);
+
+        final ImageView mandatoryCheck = (ImageView) rowView.findViewById(
+                R.id.completed_mandatory_check);
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mandatoryStatus == 100) {
+                    mandatoryCheck.setVisibility(View.VISIBLE);
+                } else {
+                    mandatoryCheck.setVisibility(GONE);
+                }
+            }
+        }, 1400);
+
     }
 
 
-
-
-
-    protected void createPie(PieChart mChart, int percentage) {
-        Log.d("percentage", "percentage: "+percentage);
+    protected void createPie(PieChart mChart, int percentage,
+            int highColor, int middleColor, int lowColor) {
+        Log.d("percentage", "percentage: " + percentage);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
 
@@ -86,23 +138,25 @@ public class AssessmentUnsentAdapter extends
         mChart.setRotationEnabled(true);
         mChart.setHighlightPerTapEnabled(true);
 
-        setData(mChart, percentage);
+        setData(mChart, percentage, highColor, middleColor, lowColor);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
     }
 
-    private void setData(PieChart mChart, int percentage) {
+    private void setData(PieChart mChart, int percentage,
+            int highColor, int middleColor, int lowColor) {
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // NOTE: The order of the entries when being added to the entries array determines their
+        // position around the center of
         // the chart.
-        if(percentage==0){
+        if (percentage == 0) {
             percentage++;
         }
         entries.add(new PieEntry((float) percentage));
-        entries.add(new PieEntry((float) (100-percentage)));
+        entries.add(new PieEntry((float) (100 - percentage)));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 
@@ -110,15 +164,17 @@ public class AssessmentUnsentAdapter extends
 
         // add a lot of colors
 
-        ArrayList<Integer> colors  = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if(percentage>90) {
-            colors.add(Color.GREEN);
-        }else if(percentage>50){
-            colors.add(Color.YELLOW);
-        }else{
-            colors.add(Color.RED);
+        if (percentage > 90) {
+            colors.add(highColor);
+        } else if (percentage > 50) {
+            colors.add(middleColor);
+        } else {
+            colors.add(lowColor);
         }
+
+
         colors.add(Color.TRANSPARENT);
         dataSet.setColors(colors);
 
@@ -149,7 +205,7 @@ public class AssessmentUnsentAdapter extends
 
     @Override
     protected void hideFacility(CustomTextView facilityName, CustomTextView surveyType) {
-        facilityName.setVisibility(View.GONE);
+        facilityName.setVisibility(GONE);
         facilityName.setLayoutParams(
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
         LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(
