@@ -7,52 +7,17 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
-public class GetSurveyAnsweredRatioUseCase {
-    public interface Callback{
-        void nextProgressMessage();
-        void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
-    }
+public class SaveSurveyAnsweredRatioUseCase {
+    private ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
 
-
-    /**
-     * Calculated answered ratio for this survey according to its values
-     */
-    SurveyAnsweredRatio answeredQuestionRatio;
-    ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
-
-    public GetSurveyAnsweredRatioUseCase(
+    public SaveSurveyAnsweredRatioUseCase(
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository) {
         mSurveyAnsweredRatioRepository = surveyAnsweredRatioRepository;
     }
 
-    SurveyAnsweredRatio mSurveyAnsweredRatio;
-
-    SurveyDB surveyDB;
-
     public void execute(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
+        SurveyAnsweredRatio surveyAnsweredRatio = reloadSurveyAnsweredRatio(idSurvey, callback);
         callback.onComplete(surveyAnsweredRatio);
-    }
-
-    private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        surveyDB = SurveyDB.findById(idSurvey);
-            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
-        return mSurveyAnsweredRatio;
-    }
-
-
-    /**
-     * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
-     */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(
-                    idSurvey);
-            if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
-            }
-        }
-        return answeredQuestionRatio;
     }
 
     /**
@@ -60,14 +25,15 @@ public class GetSurveyAnsweredRatioUseCase {
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
-        //TODO Review
-        SurveyAnsweredRatio surveyAnsweredRatio =null;
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(long idSurvey,
+            GetSurveyAnsweredRatioUseCase.Callback callback) {
+        SurveyDB surveyDB = SurveyDB.findById(idSurvey);
+        SurveyAnsweredRatio surveyAnsweredRatio = null;
         ProgramDB surveyProgram = surveyDB.getProgram();
         int numRequired = QuestionDB.countRequiredByProgram(surveyProgram);
         int numCompulsory = QuestionDB.countCompulsoryByProgram(surveyProgram);
         int numOptional = (int) surveyDB.countNumOptionalQuestionsToAnswer();
-        if(callback!=null) {
+        if (callback != null) {
             callback.nextProgressMessage();
         }
         int numActiveChildrenCompulsory = QuestionDB.countChildrenCompulsoryBySurvey(
@@ -80,5 +46,9 @@ public class GetSurveyAnsweredRatioUseCase {
                 numCompulsoryAnswered);
         mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         return surveyAnsweredRatio;
+    }
+
+    public interface Callback {
+        void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
     }
 }

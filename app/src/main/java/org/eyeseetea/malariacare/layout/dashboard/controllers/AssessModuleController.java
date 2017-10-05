@@ -31,9 +31,12 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
@@ -141,9 +144,11 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onMarkAsCompleted(final SurveyDB survey) {
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
@@ -249,9 +254,11 @@ public class AssessModuleController extends ModuleController {
                     public void onClick(DialogInterface dialog, int arg1) {
                         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
 
-                        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+                        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                                new SurveyAnsweredRatioRepository();
+                        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
                         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                                GetSurveyAnsweredRatioUseCase.Action.GET,
                                 new GetSurveyAnsweredRatioUseCase.Callback() {
                                     @Override
                                     public void nextProgressMessage() {
@@ -407,9 +414,11 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected SurveyAnsweredRatio doInBackground(Void... voids) {
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
+            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                    new SurveyAnsweredRatioRepository();
+            SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+            saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {

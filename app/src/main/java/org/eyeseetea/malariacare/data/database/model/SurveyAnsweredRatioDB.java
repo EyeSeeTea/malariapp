@@ -22,11 +22,9 @@ package org.eyeseetea.malariacare.data.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
 @Table(database = AppDatabase.class, name = "SurveyAnsweredRatio")
 public class SurveyAnsweredRatioDB extends BaseModel{
@@ -64,25 +62,6 @@ public class SurveyAnsweredRatioDB extends BaseModel{
 
     public SurveyAnsweredRatioDB() {
     }
-
-    public static void saveEntityToModel(SurveyAnsweredRatio surveyAnsweredRatio){
-        SurveyAnsweredRatioDB surveyAnsweredRatioDB = getSurveyAnsweredRatioBySurveyId(
-                surveyAnsweredRatio.getSurveyId());
-        if(surveyAnsweredRatioDB ==null){
-            surveyAnsweredRatioDB = new SurveyAnsweredRatioDB();
-        }
-        surveyAnsweredRatioDB.id_survey = surveyAnsweredRatio.getSurveyId();
-        surveyAnsweredRatioDB.total_questions = surveyAnsweredRatio.getTotal();
-        surveyAnsweredRatioDB.answered_questions = surveyAnsweredRatio.getAnswered();
-        surveyAnsweredRatioDB.total_compulsory_questions = surveyAnsweredRatio.getTotalCompulsory();
-        surveyAnsweredRatioDB.answered_compulsory_questions = surveyAnsweredRatio.getCompulsoryAnswered();
-        surveyAnsweredRatioDB.save();
-    }
-    public static SurveyAnsweredRatioDB getSurveyAnsweredRatioBySurveyId(long id_survey){
-        return new Select().from(SurveyAnsweredRatioDB.class)
-                .where(SurveyAnsweredRatioDB_Table.id_survey.is(id_survey)).querySingle();
-    }
-
 
     public long getIdSurveyAnsweredRatio() {
         return id_survey_answered_ratio;

@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
 
 /**
  * VO that holds the completion ratio of answered/expected questions
@@ -152,14 +151,5 @@ public class SurveyAnsweredRatio {
         }
 
         return compulsoryAnswered>=totalCompulsory;
-    }
-
-    public static SurveyAnsweredRatio getModelToEntity(SurveyAnsweredRatioDB surveyAnsweredRatioDB){
-        if(surveyAnsweredRatioDB ==null) {
-            return null;
-        }
-        return  new SurveyAnsweredRatio(surveyAnsweredRatioDB.getIdSurvey(),
-                surveyAnsweredRatioDB.getTotalQuestions(),
-                surveyAnsweredRatioDB.getAnsweredQuestions(), surveyAnsweredRatioDB.getTotalCompulsoryQuestions(), surveyAnsweredRatioDB.getAnsweredCompulsoryQuestions());
     }
 }

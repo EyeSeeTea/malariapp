@@ -53,8 +53,11 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -239,9 +242,11 @@ public class SurveyFragment extends Fragment  {
     public void onPause() {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE,
+            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                    new SurveyAnsweredRatioRepository();
+            SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+            saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {

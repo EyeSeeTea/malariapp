@@ -34,6 +34,8 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
@@ -53,11 +55,27 @@ public class AssessmentUnsentAdapter extends
 
 
     @Override
-    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
-        createPie(mChart, getTotalStatus(survey));
-        mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
-        createPie(mChart, getMandatoryStatus(survey));
+    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
+        final PieChart externalPie = (PieChart) rowView.findViewById(R.id.external_chart);
+        final PieChart internalPie = (PieChart) rowView.findViewById(R.id.internal_chart);
+        getSurveyPercents(survey, new GetSurveyAnsweredRatioUseCase.Callback() {
+            @Override
+            public void nextProgressMessage() {
+                Log.d(getClass().getName(), "nextProgressMessage");
+            }
+
+            @Override
+            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                Log.d(getClass().getName(), "onComplete");
+                createPie(externalPie, surveyAnsweredRatio == null ? 0
+                        : surveyAnsweredRatio.isCompleted() ? 100 : Float.valueOf(
+                                100 * surveyAnsweredRatio.getRatio()).intValue());
+
+                createPie(internalPie, survey.isSent() ? 0
+                        : surveyAnsweredRatio.getTotalCompulsory() > 0 ? Float.valueOf(
+                                100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue() : 100);
+            }
+        });
     }
 
 
