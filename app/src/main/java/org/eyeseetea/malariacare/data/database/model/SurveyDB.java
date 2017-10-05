@@ -872,6 +872,12 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
+    public static SurveyDB getSurveyById(long id) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.id_survey.eq(id)).querySingle();
+    }
+
     public String getFullName() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getOrgUnit().getName());
