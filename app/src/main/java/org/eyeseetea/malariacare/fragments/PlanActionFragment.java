@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import static org.eyeseetea.malariacare.R.layout.survey;
 import static org.eyeseetea.malariacare.services.SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS;
 
 import android.app.Activity;
@@ -364,35 +365,55 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
 
     private void sharePlainText() {
         SurveyDB survey = Session.getSurveyByModule(moduleName);
+
+        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
+                survey.getId_survey());
+
+        List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+
+        String data = extractTextData(survey,criticalQuestions,compositeScoresTree);
+
+        System.out.println("data:"+data);
+        createTextIntent(getActivity(), data);
+    }
+
+    @NonNull
+    private String extractTextData(SurveyDB survey, List<QuestionDB> criticalQuestions,
+            List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n\n";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n\n";
+
         data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
+
         data += String.format(getString(R.string.plan_action_next_date),
                 EventExtended.format(survey.getScheduledDate(),
-                        EventExtended.EUROPEAN_DATE_FORMAT)) + "\n\n";
-        data += getString(R.string.plan_action_gasp_title) + " "
-                + mCustomGapsEditText.getText().toString() + "\n\n";
-        data += getString(R.string.plan_action_action_plan_title) + " "
-                + mCustomActionPlanEditText.getText().toString() + "\n\n";
-        if (!actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(0))) {
-            data += getString(R.string.plan_action_action_title) + " "
-                    + actionSpinner.getSelectedItem().toString() + "\n\n";
-        }
-        if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(1))) {
-            data += secondaryActionSpinner.getSelectedItem().toString() + "\n";
-        } else if (actionSpinner.getSelectedItem().equals(actionSpinner.getItemAtPosition(5))) {
-            data += mCustomActionOtherEditText.getText().toString() + "\n";
-        }
+                        EventExtended.EUROPEAN_DATE_FORMAT)) ;
 
-        List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
-                Session.getSurveyByModule(moduleName).getId_survey());
-        if (criticalQuestions != null && criticalQuestions.size() > 0) {
-            data += getString(R.string.critical_steps) + "\n\n";
+        data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
 
-            List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
+        if (mObsActionPlan.getGaps() != null && !mObsActionPlan.getGaps().isEmpty())
+            data += mObsActionPlan.getGaps();
+
+        data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " ";
+
+        if (mObsActionPlan.getAction_plan() != null && !mObsActionPlan.getAction_plan().isEmpty())
+            data += mObsActionPlan.getAction_plan();
+
+        data += "\n\n" + getString(R.string.plan_action_action_title) + " ";
+
+        if (mObsActionPlan.getAction1() != null && !mObsActionPlan.getAction1().isEmpty())
+            data += mObsActionPlan.getAction1();
+
+
+        if (mObsActionPlan.getAction2() != null && !mObsActionPlan.getAction2().isEmpty())
+            data += "\n" + mObsActionPlan.getAction2();
+
+        if(criticalQuestions!=null && criticalQuestions.size()>0) {
+            data += "\n\n" + getString(R.string.critical_steps) + "\n\n";
+
             //For each score add proper items
             for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
                     iterator.hasNext(); ) {
@@ -407,14 +428,14 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 }
             }
         }
-        data += "\n" + getString(R.string.see_full_assessment) + "\n";
+        data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
-        System.out.println("data:" + data);
-        createTextIntent(getActivity(), data);
+        System.out.println("data:"+data);
+        return data;
     }
 
 
@@ -474,40 +495,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         sendIntent.putExtra(Intent.EXTRA_TEXT, data);
         sendIntent.setType("text/plain");
         activity.startActivity(sendIntent);
-    }
-
-    private List<CompositeScoreDB> prepareCompositeScores(SurveyDB survey,
-            List<QuestionDB> criticalQuestions) {
-        //Calculate main score
-        List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(survey,
-                moduleName);
-        survey.setMainScore(
-                ScoreRegister.calculateMainScore(compositeScoreList, survey.getId_survey(),
-                        moduleName));
-
-        //Remove parents from list (to avoid showing the parent composite that is there just to
-        // push the overall score)
-        for (Iterator<CompositeScoreDB> iterator = compositeScoreList.iterator();
-                iterator.hasNext(); ) {
-            CompositeScoreDB compositeScore = iterator.next();
-            //Show only if a parent have questions.
-            if (compositeScore.getQuestions().size() < 1) {
-                if (!compositeScore.hasParent()) iterator.remove();
-            } else {
-                boolean isValid = false;
-                for (QuestionDB question : compositeScore.getQuestions()) {
-                    for (QuestionDB criticalQuestion : criticalQuestions) {
-                        if (question.getUid().equals(criticalQuestion.getUid())) {
-                            isValid = true;
-                        }
-                    }
-                }
-                if (!isValid) {
-                    if (!compositeScore.hasParent()) iterator.remove();
-                }
-            }
-        }
-        return compositeScoreList;
     }
 
     private void showFABMenu() {
