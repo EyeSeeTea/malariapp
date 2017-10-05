@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -384,8 +383,16 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void openActionPlan() {
+        ImproveModuleController improveModuleController =
+                (ImproveModuleController) dashboardController.getModuleByName(
+                        ImproveModuleController.getSimpleName());
+        improveModuleController.onPlanActionSelected(
+                Session.getSurveyByModule(improveModuleController.getName()));
+    }
+
+    public void openActionPlan(SurveyDB survey) {
         ImproveModuleController improveModuleController = (ImproveModuleController) dashboardController.getModuleByName(ImproveModuleController.getSimpleName());
-        improveModuleController.onPlanActionSelected(Session.getSurveyByModule(improveModuleController.getName()));
+        improveModuleController.onPlanActionSelected(survey);
     }
 
     public void onAssetsSelected(SurveyDB survey) {

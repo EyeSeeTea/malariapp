@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -39,9 +40,13 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -326,10 +331,13 @@ public class DashboardController {
 
         builder.setView(v);
 
+        DoublePieChart mChart = (DoublePieChart) v.findViewById(R.id.pie_chart);
         Button delete = (Button) v.findViewById(R.id.delete);
         Button cancel = (Button) v.findViewById(R.id.cancel);
         Button markComplete = (Button) v.findViewById(R.id.mark_completed);
         Button edit = (Button) v.findViewById(R.id.edit);
+        TextView overall = (TextView) v.findViewById(R.id.overall_percent);
+        TextView mandatory = (TextView) v.findViewById(R.id.mandatory_percent);
 
         final AlertDialog alertDialog = builder.create();
 
@@ -380,8 +388,89 @@ public class DashboardController {
                     }
                 }
         );
+        int mandatoryPercent = getMandatoryStatus(survey);
+        int overallPercent = getTotalStatus(survey);
+
+        overall.setText(overallPercent + dashboardActivity.getString(R.string.percent));
+        mandatory.setText(mandatoryPercent + dashboardActivity.getString(R.string.percent));
+        mChart.createDoublePie(mandatoryPercent, overallPercent);
+
         alertDialog.show();
         return alertDialog;
+    }
+
+    /**
+     * Returns the proper status value (% or ready to send) according to the level of completion of
+     * mandatory questions
+     */
+    protected int getMandatoryStatus(SurveyDB survey) {
+
+        if (survey.isSent()) {
+            //return getContext().getString(R.string.dashboard_info_sent);
+            return 0;
+        }
+
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase();
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
+                        Log.d(getClass().getName(), "onComplete");
+                    }
+                });
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(
+                survey.getId_survey());
+        if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
+            int value = Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
+            return value;
+        } else {
+            return 100;
+        }
+    }
+
+    /**
+     * Returns the proper status value (% or ready to send) according to the level of completion of
+     * the survey
+     */
+    protected int getTotalStatus(SurveyDB survey) {
+
+        if (survey.isSent()) {
+            //return getContext().getString(R.string.dashboard_info_sent);
+            return 0;
+        }
+
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase();
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
+                        Log.d(getClass().getName(), "onComplete");
+                    }
+                });
+        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(
+                survey.getId_survey());
+        if (surveyAnsweredRatio.isCompleted()) {
+            //return getContext().getString(R.string.dashboard_info_ready_to_upload);
+            return 100;
+        } else {
+            //return String.format("%d",Float.valueOf(100 * surveyAnsweredRatio.getRatio())
+            // .intValue());
+            return Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue();
+        }
     }
 
     /**
@@ -423,7 +512,7 @@ public class DashboardController {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //// TODO: 21/09/2017 Open plan action fragment
+                        DashboardActivity.dashboardActivity.openActionPlan(survey);
                         alertDialog.dismiss();
                     }
                 }
@@ -489,6 +578,13 @@ public class DashboardController {
 
         CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
         programTextView.setText(survey.getProgram().getName());
+
+        if (survey.isInProgress()) {
+            add.setText(R.string.option_edit);
+        } else {
+            add.setText(R.string.add);
+        }
+
         final AlertDialog alertDialog =builder.create();
         add.setOnClickListener(
                 new View.OnClickListener() {

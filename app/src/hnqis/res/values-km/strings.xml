@@ -265,4 +265,8 @@ evaluation"</string>
 <string name="get_db_file_dialog">សូមជ្រើសឯកសារមូលដ្ឋានទិន្នន័យដែលមានសុពលភាព</string>
 <string name="start">Start</string>
 <string name="on">"លើ"</string>
+
+    <string name="add">"បន្ថែម"</string>
+    <string name="change_date">"ផ្លាស់ប្ដូរកាលបរិច្ឆេទ"</string>
+    <string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
 </resources>
