@@ -23,9 +23,11 @@ import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -168,5 +170,17 @@ public class ProgramExtended implements VisitableFromSDK {
             extendedsList.add(new ProgramExtended(flowPojo));
         }
         return extendedsList;
+    }
+
+    public boolean isValidProgram() {
+        for(AttributeValueFlow attributeValueFlow : program.getAttributeValueFlow()){
+            if(attributeValueFlow.getAttribute().getCode().equals(PreferencesState.getInstance().getContext().getString(R.string.program_type_code))) {
+                if (PreferencesState.getInstance().getContext().getString(
+                        R.string.pull_program_code).equals(attributeValueFlow.getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

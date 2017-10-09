@@ -137,7 +137,9 @@ public class ConversionLocalDataSource {
         for (String assignedProgramID : assignedProgramsIDs) {
             ProgramExtended programExtended = new ProgramExtended(
                     SdkQueries.getProgram(assignedProgramID));
-            programExtended.accept(converter);
+            if(programExtended.isValidProgram()) {
+                programExtended.accept(converter);
+            }
         }
 
         //Convert Answers, Options
@@ -168,7 +170,15 @@ public class ConversionLocalDataSource {
 
         int count;
         //Dataelements ordered by program.
-        List<ProgramExtended> programs = ProgramExtended.getAllPrograms();
+        List<ProgramExtended> allDhisPrograms = ProgramExtended.getAllPrograms();
+
+        List<ProgramExtended> programs = new ArrayList<>();
+        for(ProgramExtended programExtended: allDhisPrograms){
+            if(programExtended.isValidProgram()){
+                programs.add(programExtended);
+            }
+        }
+        Log.d(TAG, allDhisPrograms.size()-programs.size() +" programs discarded");
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
         if (!PullController.PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {
@@ -362,6 +372,9 @@ public class ConversionLocalDataSource {
             for (ProgramExtended program : ProgramExtended.getExtendedList(
                     SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
                             ProgramType.WITHOUT_REGISTRATION))) {
+                if(!program.isValidProgram()){
+                    continue;
+                }
                 converter.actualProgram = program;
                 List<EventExtended> events = EventExtended.getExtendedList(
                         SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));

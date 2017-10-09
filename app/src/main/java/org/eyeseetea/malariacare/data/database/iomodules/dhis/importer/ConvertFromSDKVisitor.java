@@ -574,9 +574,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         for (ProgramExtended sdkProgramExtended : ProgramExtended.getExtendedList(
                 SdkQueries.getProgramsForOrganisationUnit(appOrgUnit.getUid(),
                         ProgramType.WITHOUT_REGISTRATION))) {
-            sdkProgramExtended.setAppProgram(programMapObjects.get(sdkProgramExtended.getUid()));
+            if(sdkProgramExtended.isValidProgram()) {
+                sdkProgramExtended.setAppProgram(
+                        programMapObjects.get(sdkProgramExtended.getUid()));
 
-            addOrgUnitProgramRelation(sdkOrganisationUnitExtended, sdkProgramExtended);
+                addOrgUnitProgramRelation(sdkOrganisationUnitExtended, sdkProgramExtended);
+            }
         }
     }
 
