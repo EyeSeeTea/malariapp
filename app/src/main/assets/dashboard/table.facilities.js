@@ -96,8 +96,12 @@ function buildRowFacility(facility){
 			average=average/facilityMonth.length;
 			average=Math.round(average);
 		}
+        if(facility.counter[i]>1){
+            showMultipleEventLegend();
+            asterisk = "*";
+        }
 
-        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average,facilityMonth)+"</span></div></td>";
+        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
 	}
 	//end row
 	row=row+"</tr>";
@@ -107,10 +111,6 @@ function buildRowFacility(facility){
 function buildColorXScore(value, listOfSurveys){
 	if(value==null){
 		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
-	}
-
-	if(listOfSurveys!=null){
-		listOfSurveys=JSON.stringify(listOfSurveys);
 	}
 	//fixme: is necessary escape the listOfSurveys before addded in the android_click onclick function.
 	if(value<50){

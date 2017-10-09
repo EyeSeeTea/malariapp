@@ -31,9 +31,11 @@ import com.raizlabs.android.dbflow.sql.language.NameAlias;
 
 public class AppDatabase {
     public static final String NAME = "EyeSeeTeaDB";
-    public static final int VERSION = 12;
+    public static final int VERSION = 14;
 
     // Aliases used for EyeSeeTea DB queries
+    public static final String obsActionPlanName = "oap";
+    public static final String surveyName = "s";
     public static final String matchName = "m";
     public static final String valueName = "v";
     public static final String questionName = "q";
@@ -45,7 +47,10 @@ public class AppDatabase {
     public static final String compositeScoreTwoName = "cs2";
     public static final String programName = "pg";
     public static final String orgUnitProgramRelationName = "oupr";
+    public static final String surveyProgramRelationName = "spr";
 
+    public static final NameAlias surveyAlias = NameAlias.builder(surveyName).build();
+    public static final NameAlias obsActionPlanAlias = NameAlias.builder(obsActionPlanName).build();
     public static final NameAlias questionAlias = NameAlias.builder(questionName).build();
     public static final NameAlias questionRelationAlias = NameAlias.builder(
             questionRelationName).build();
@@ -62,6 +67,8 @@ public class AppDatabase {
     public static final NameAlias programAlias = NameAlias.builder(programName).build();
     public static final NameAlias orgUnitProgramRelationAlias = NameAlias.builder(
             orgUnitProgramRelationName).build();
+    public static final NameAlias surveyProgramRelationAlias = NameAlias.builder(
+            surveyProgramRelationName).build();
 
 
     // Aliases used in DHIS2 DB wrappers
