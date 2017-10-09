@@ -87,6 +87,7 @@ function buildRowFacility(facility){
 	for(var i=0;i<facility.values.length;i++){
 		var facilityMonth=facility.values[i];
 		var average=0;
+		var asterisk = "";
 		if(facilityMonth==null){
 			var average=null;
 		}else{
@@ -95,11 +96,11 @@ function buildRowFacility(facility){
 			}
 			average=average/facilityMonth.length;
 			average=Math.round(average);
+            if(facilityMonth.length>1){
+                showMultipleEventLegend();
+                asterisk = "*";
+            }
 		}
-        if(facility.counter[i]>1){
-            showMultipleEventLegend();
-            asterisk = "*";
-        }
 
         row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
 	}
