@@ -22,8 +22,17 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -34,6 +43,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AssessmentUnsentAdapter extends ADashboardAdapter {
@@ -63,7 +73,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
     @Override
     protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
-        DoublePieChart doublePieChart =
+        final DoublePieChart doublePieChart =
                 (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
