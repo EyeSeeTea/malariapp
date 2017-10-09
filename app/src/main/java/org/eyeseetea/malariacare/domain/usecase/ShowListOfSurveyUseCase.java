@@ -20,7 +20,8 @@ public class ShowListOfSurveyUseCase {
     DashboardActivity mDashboardActivity;
     IMainExecutor mMainExecutor;
 
-    public ShowListOfSurveyUseCase(DashboardActivity dashboardActivity, IMainExecutor mainExecutor) {
+    public ShowListOfSurveyUseCase(DashboardActivity dashboardActivity,
+            IMainExecutor mainExecutor) {
         mDashboardActivity = dashboardActivity;
         mMainExecutor = mainExecutor;
     }
@@ -45,7 +46,8 @@ public class ShowListOfSurveyUseCase {
         listView.setAdapter(monitorAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position,
+                    long l) {
                 // call feedbackselected function(and it call surveyfragment)
                 alertDialog.dismiss();
                 mMainExecutor.run(new Runnable() {

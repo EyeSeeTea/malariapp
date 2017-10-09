@@ -46,8 +46,10 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
+        .SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
+        .SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
@@ -66,7 +68,7 @@ import java.util.List;
 /**
  * Created by ignac on 10/12/2015.
  */
-public class MonitorFragment extends Fragment implements IModuleFragment{
+public class MonitorFragment extends Fragment implements IModuleFragment {
     List<SurveyDB> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
     private SurveyReceiver surveyReceiver;
@@ -83,13 +85,14 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         if (container == null) {
             return null;
@@ -105,7 +108,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         //Loading...
         //setListShown(false);
@@ -115,14 +118,15 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         Log.d(TAG, "onStop");
         unregisterSurveysReceiver();
         stopMonitor();
         super.onStop();
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.d(TAG, "onPause");
         unregisterSurveysReceiver();
 
@@ -131,8 +135,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
 
     public void setFilterType(MonitorFilter monitorFilter) {
-        this.filterType=monitorFilter;
+        this.filterType = monitorFilter;
     }
+
     /**
      * Register a survey receiver to load surveys into the listadapter
      */
@@ -141,9 +146,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
         if (surveyReceiver == null) {
             surveyReceiver = new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_MONITOR_DATA_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver,
+                    new IntentFilter(SurveyService.ALL_MONITOR_DATA_ACTION));
         }
     }
+
     /**
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
@@ -154,30 +161,34 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             surveyReceiver = null;
         }
     }
+
     /**
      * load and reload sent surveys
      */
     public void reloadSentSurveys() {
-        BaseServiceBundle data= (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
-        if(data!=null) {
-            surveysForGraphic = (List<SurveyDB>)data.getModelList(SurveyDB.class.getName());
+        BaseServiceBundle data = (BaseServiceBundle) Session.popServiceValue(
+                SurveyService.ALL_MONITOR_DATA_ACTION);
+        if (data != null) {
+            surveysForGraphic = (List<SurveyDB>) data.getModelList(SurveyDB.class.getName());
             //Remove the bad surveys.
             Iterator<SurveyDB> iter = surveysForGraphic.iterator();
-            while(iter.hasNext()){
+            while (iter.hasNext()) {
                 SurveyDB survey = iter.next();
-                if(!survey.hasMainScore()) {
+                if (!survey.hasMainScore()) {
                     iter.remove();
                 }
             }
-            programs = (List<ProgramDB>)data.getModelList(ProgramDB.class.getName());
-            orgUnits = (List<OrgUnitDB>)data.getModelList(OrgUnitDB.class.getName());
+            programs = (List<ProgramDB>) data.getModelList(ProgramDB.class.getName());
+            orgUnits = (List<OrgUnitDB>) data.getModelList(OrgUnitDB.class.getName());
 
-            reloadSurveys(surveysForGraphic,programs,orgUnits);
+            reloadSurveys(surveysForGraphic, programs, orgUnits);
         }
     }
 
-    public void reloadSurveys(List<SurveyDB> newListSurveys,List<ProgramDB> newListPrograms, List<OrgUnitDB> newListOrgUnit) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+    public void reloadSurveys(List<SurveyDB> newListSurveys, List<ProgramDB> newListPrograms,
+            List<OrgUnitDB> newListOrgUnit) {
+        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): "
+                + newListSurveys.size());
         boolean hasSurveys = newListSurveys != null && newListSurveys.size() > 0;
         boolean hasPrograms = newListPrograms != null && newListPrograms.size() > 0;
         boolean hasOrgUnits = newListOrgUnit != null && newListOrgUnit.size() > 0;
@@ -191,6 +202,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
         //setListShownNoAnimation(false);
     }
+
     public void reloadMonitor() {
         webView = initMonitor();
         //onPageFinish load data
@@ -205,35 +217,39 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
                 new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
                 //Add line chart
-                if(isOrgUnitFilterActive()) {
-                    new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(), orgUnits).addDataInChart(view);
+                if (isOrgUnitFilterActive()) {
+                    new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
+                            orgUnits).addDataInChart(view);
                 }
-                if(isProgramFilterActive()) {
-                    new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(), programs).addDataInChart(view);
+                if (isProgramFilterActive()) {
+                    new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
+                            programs).addDataInChart(view);
                 }
 
                 //Show stats by program
                 SentSurveysBuilderBase.showData(view);
 
                 //Add line chart
-                if(isOrgUnitFilterActive()) {
+                if (isOrgUnitFilterActive()) {
                     new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
                 }
-                if(isProgramFilterActive()) {
+                if (isProgramFilterActive()) {
                     new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
                 }
                 //Render the table and pie.
                 PieBuilderBase.showPieTab(view);
 
                 //Add line chart
-                if(isOrgUnitFilterActive()) {
+                if (isOrgUnitFilterActive()) {
                     //facility by progam-> is a orgunit facility
-                    new FacilityTableBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                    new FacilityTableBuilderByProgram(surveysForGraphic,
+                            getActivity()).addDataInChart(view);
                     FacilityTableBuilderByOrgUnit.showFacilities(view);
                 }
-                if(isProgramFilterActive()) {
+                if (isProgramFilterActive()) {
                     //facility by orgunit-> is a program facility
-                    new FacilityTableBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                    new FacilityTableBuilderByOrgUnit(surveysForGraphic,
+                            getActivity()).addDataInChart(view);
                     FacilityTableBuilderByProgram.showFacilities(view);
                 }
 
@@ -257,7 +273,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     }
 
     private WebView initMonitor() {
-        Activity activity=getActivity();
+        Activity activity = getActivity();
         WebView webView = (WebView) activity.findViewById(R.id.dashboard_monitor);
         webView.setWebChromeClient(new MyWebChromeClient());
         //Init webView settings
@@ -269,19 +285,21 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             WebView.setWebContentsDebuggingEnabled(true);
         }
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new WebViewInterceptor(DashboardActivity.dashboardActivity, new UIThreadExecutor()), "Android");
+        webView.addJavascriptInterface(
+                new WebViewInterceptor(DashboardActivity.dashboardActivity, new UIThreadExecutor()),
+                "Android");
         return webView;
     }
 
     /**
      * Stops webView gracefully
      */
-    private void stopMonitor(){
-        try{
-            if(webView!=null){
+    private void stopMonitor() {
+        try {
+            if (webView != null) {
                 webView.stopLoading();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -291,10 +309,13 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
      */
     @Override
     public void reloadData() {
-            //Reload data using service
-            Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-            surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_MONITOR_DATA_ACTION);
-            PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        //Reload data using service
+        Intent surveysIntent = new Intent(
+                PreferencesState.getInstance().getContext().getApplicationContext(),
+                SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_MONITOR_DATA_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(
+                surveysIntent);
     }
 
 
@@ -317,8 +338,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
     private class MyWebChromeClient extends WebChromeClient {
         @Override
-        public boolean onConsoleMessage(ConsoleMessage cm)
-        {
+        public boolean onConsoleMessage(ConsoleMessage cm) {
             Log.d("Webview log", String.format("%s @ %d: %s",
                     cm.message(), cm.lineNumber(), cm.sourceId()));
             return true;

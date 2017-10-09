@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
-public class AMonitorDialogAdapter extends  ABaseAdapter{
+public class AMonitorDialogAdapter extends ABaseAdapter {
 
     public AMonitorDialogAdapter(Context context) {
         super(context);
@@ -22,15 +22,17 @@ public class AMonitorDialogAdapter extends  ABaseAdapter{
 
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
         org.eyeseetea.sdk.presentation.views.CustomTextView
-                id = (org.eyeseetea.sdk.presentation.views.CustomTextView) rowView.findViewById(R.id.idHeader);
+                id = (org.eyeseetea.sdk.presentation.views.CustomTextView) rowView.findViewById(
+                R.id.idHeader);
         org.eyeseetea.sdk.presentation.views.CustomTextView
-                score = (org.eyeseetea.sdk.presentation.views.CustomTextView) rowView.findViewById(R.id.scoreHeader);
-        if(survey.getEventUid()!=null) {
+                score = (org.eyeseetea.sdk.presentation.views.CustomTextView) rowView.findViewById(
+                R.id.scoreHeader);
+        if (survey.getEventUid() != null) {
             id.setText("Uid: " + survey.getEventUid());
-        }else{
+        } else {
             id.setText("Local Id: " + survey.getId_survey());
         }
-        score.setText("Score: "+survey.getMainScore());
+        score.setText("Score: " + survey.getMainScore());
         return rowView;
     }
 }
