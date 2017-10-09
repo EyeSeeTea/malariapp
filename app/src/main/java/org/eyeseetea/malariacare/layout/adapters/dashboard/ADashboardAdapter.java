@@ -175,18 +175,6 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         return rowView;
     }
 
-    /**
-     * Returns the proper status value (% or ready to send) according to the level of completion of mandatory questions
-     */
-    protected void getSurveyPercents(SurveyDB survey,
-            GetSurveyAnsweredRatioUseCase.Callback callback) {
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(), callback);
-    }
-
     public void remove(Object item) {
         this.items.remove(item);
     }

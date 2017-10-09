@@ -7,18 +7,16 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
-public class GetSurveyAnsweredRatioUseCase {
+public class GetSurveyAnsweredRatioUseCase{
+
     public interface Callback{
         void nextProgressMessage();
         void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
     }
 
+    private ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
 
-    /**
-     * Calculated answered ratio for this survey according to its values
-     */
-    SurveyAnsweredRatio answeredQuestionRatio;
-    ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
+    private SurveyAnsweredRatio answeredQuestionRatio;
 
     public GetSurveyAnsweredRatioUseCase(
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository) {
@@ -29,17 +27,17 @@ public class GetSurveyAnsweredRatioUseCase {
 
     SurveyDB surveyDB;
 
-    public void execute(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
+    public void execute(long idSurvey, Callback callback) {
+        final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
         callback.onComplete(surveyAnsweredRatio);
     }
 
-    private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
+            GetSurveyAnsweredRatioUseCase.Callback callback) {
         surveyDB = SurveyDB.findById(idSurvey);
             mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
         return mSurveyAnsweredRatio;
     }
-
 
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
