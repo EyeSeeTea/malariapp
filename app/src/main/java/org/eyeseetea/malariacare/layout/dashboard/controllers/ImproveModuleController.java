@@ -128,7 +128,7 @@ public class ImproveModuleController extends ModuleController {
             feedbackFragment.unregisterReceiver();
             feedbackFragment.getView().setVisibility(View.GONE);
         }else if(fragment instanceof PlanActionFragment){
-            replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
+            onFeedbackSelected(Session.getSurveyByModule(getSimpleName()));
         }
 
         //Reload improve fragment
