@@ -32,6 +32,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -255,6 +257,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     private WebView initMonitor() {
         Activity activity=getActivity();
         WebView webView = (WebView) activity.findViewById(R.id.dashboard_monitor);
+        webView.setWebChromeClient(new MyWebChromeClient());
         //Init webView settings
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
@@ -307,6 +310,16 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             if (SurveyService.ALL_MONITOR_DATA_ACTION.equals(intent.getAction())) {
                 reloadSentSurveys();
             }
+        }
+    }
+
+    private class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onConsoleMessage(ConsoleMessage cm)
+        {
+            Log.d("Webview log", String.format("%s @ %d: %s",
+                    cm.message(), cm.lineNumber(), cm.sourceId()));
+            return true;
         }
     }
 }
