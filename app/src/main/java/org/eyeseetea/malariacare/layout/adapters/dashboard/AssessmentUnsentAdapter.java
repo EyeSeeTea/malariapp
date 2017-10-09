@@ -34,34 +34,55 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssessmentUnsentAdapter extends
-        ADashboardAdapter {
+public class AssessmentUnsentAdapter extends ADashboardAdapter {
+    GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
 
-    ;
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
         this.headerLayout = R.layout.assessment_unsent_header;
         this.recordLayout = R.layout.assessment_unsent_record;
         this.footerLayout = R.layout.assessment_unsent_footer;
-    }
 
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+    }
 
     @Override
-    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
-        createPie(mChart, getTotalStatus(survey));
-        mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
-        createPie(mChart, getMandatoryStatus(survey));
+    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
+        final PieChart externalPie = (PieChart) rowView.findViewById(R.id.external_chart);
+        final PieChart internalPie = (PieChart) rowView.findViewById(R.id.internal_chart);
+
+
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+            @Override
+            public void nextProgressMessage() {
+                Log.d(getClass().getName(), "nextProgressMessage");
+            }
+
+            @Override
+            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                Log.d(getClass().getName(), "onComplete");
+                createPie(externalPie, surveyAnsweredRatio == null ? 0
+                        : surveyAnsweredRatio.getTotalStatus());
+
+                createPie(internalPie, surveyAnsweredRatio == null ? 0
+                        : surveyAnsweredRatio.getMandatoryStatus());
+            }
+        });
     }
-
-
-
 
 
     protected void createPie(PieChart mChart, int percentage) {
