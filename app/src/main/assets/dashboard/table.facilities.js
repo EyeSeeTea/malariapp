@@ -115,14 +115,14 @@ function buildColorXScore(value, listOfSurveys){
 	}
 	//fixme: is necessary escape the listOfSurveys before addded in the android_click onclick function.
 	if(value<50){
-		return "<td class='redcircle'   onclick=\"android_click("+listOfSurveys+")\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+		return "<td class='redcircle'   onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 	}
 
 	if(value<80){
-		return "<td class='ambercircle'  onclick=\"android_click("+listOfSurveys+")\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+		return "<td class='ambercircle'  onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 	}
 
-	return "<td class='greencircle'  onclick=\"android_click("+listOfSurveys+")\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	return "<td class='greencircle'  onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
 }
 
 function buildCellXScore(value){
@@ -132,8 +132,19 @@ function buildCellXScore(value){
 	return value;
 }
 
+function getListOfUids(listOfSurveys){
+	var uidList = '';
+	if(listOfSurveys!=null){
+		for(var i=0;i<listOfSurveys.length;i++){
+			uidList += listOfSurveys[i].id+";";
+		}
+		uidList = uidList.substring(0,uidList.lastIndexOf(";"));
+	}
+	return uidList;
+}
+
 function android_click(value){
     console.log(value);
-    Android.log();
-    Android.onClick(value);
+    Android.clickLog();
+    Android.passUidList(value);
 }
