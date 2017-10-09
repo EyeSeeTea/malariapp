@@ -27,23 +27,30 @@ import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.List;
 
-public class AssessmentUnsentAdapter extends
-        ADashboardAdapter {
+public class AssessmentUnsentAdapter extends ADashboardAdapter {
+    GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
 
-    ;
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
         this.headerLayout = R.layout.assessment_unsent_header;
         this.recordLayout = R.layout.assessment_unsent_record;
         this.footerLayout = R.layout.assessment_unsent_footer;
-    }
 
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+    }
     @Override
     protected void initMenu(final SurveyDB survey) {
         menuDots.setOnClickListener(new View.OnClickListener() {
@@ -55,10 +62,101 @@ public class AssessmentUnsentAdapter extends
     }
 
     @Override
-    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
+    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
         DoublePieChart doublePieChart =
                 (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
-        doublePieChart.createDoublePie(getMandatoryStatus(survey), getTotalStatus(survey));
+
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+            @Override
+            public void nextProgressMessage() {
+                Log.d(getClass().getName(), "nextProgressMessage");
+            }
+
+            @Override
+            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                Log.d(getClass().getName(), "onComplete");
+
+                if (surveyAnsweredRatio != null) {
+                    doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                            surveyAnsweredRatio.getTotalStatus());
+                }
+            }
+        });
+    }
+
+
+    protected void createPie(PieChart mChart, int percentage) {
+        Log.d("percentage", "percentage: "+percentage);
+        mChart.setUsePercentValues(true);
+        mChart.getDescription().setEnabled(false);
+
+        mChart.setDragDecelerationFrictionCoef(0.95f);
+
+        mChart.setDrawHoleEnabled(true);
+
+
+        mChart.setTransparentCircleColor(Color.RED);
+        mChart.setTransparentCircleAlpha(255);
+
+        mChart.setHoleRadius(0f);
+        mChart.setTransparentCircleRadius(0f);
+
+        mChart.setDrawCenterText(false);
+
+        // enable rotation of the chart by touch
+        mChart.setRotationEnabled(true);
+        mChart.setHighlightPerTapEnabled(true);
+
+        setData(mChart, percentage);
+
+        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);
+    }
+
+    private void setData(PieChart mChart, int percentage) {
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        if(percentage==0){
+            percentage++;
+        }
+        entries.add(new PieEntry((float) percentage));
+        entries.add(new PieEntry((float) (100-percentage)));
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+
+        dataSet.setDrawIcons(false);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors  = new ArrayList<Integer>();
+
+        if(percentage>90) {
+            colors.add(Color.GREEN);
+        }else if(percentage>50){
+            colors.add(Color.YELLOW);
+        }else{
+            colors.add(Color.RED);
+        }
+        colors.add(Color.TRANSPARENT);
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(dataSet);
+        data.setValueTextColor(Color.TRANSPARENT);
+
+        //hide legend
+        Legend l = mChart.getLegend();
+        l.setEnabled(false);
+
+        mChart.setData(data);
+
+        // undo all highlights
+        mChart.highlightValues(null);
+
+        mChart.invalidate();
     }
 
     @Override
