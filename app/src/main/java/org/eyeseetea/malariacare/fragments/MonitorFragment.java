@@ -37,6 +37,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
@@ -55,6 +56,7 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrg
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 
 import java.util.ArrayList;
@@ -267,7 +269,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             WebView.setWebContentsDebuggingEnabled(true);
         }
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new WebViewInterceptor(), "Android");
+        webView.addJavascriptInterface(new WebViewInterceptor(DashboardActivity.dashboardActivity, new UIThreadExecutor()), "Android");
         return webView;
     }
 
