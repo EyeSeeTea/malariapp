@@ -30,7 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/facilityDateContainer"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_gravity="center_vertical">
 
         <org.eyeseetea.malariacare.views.CustomCheckBox
@@ -59,9 +59,9 @@
         android:layout_marginBottom="@dimen/survey_row_marging">
 
         <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.5"
             android:id="@+id/dueDate"
             android:typeface="sans"
             android:textStyle="bold"
@@ -74,9 +74,9 @@
             app:tFontName="@string/medium_font_name"/>
 
         <org.eyeseetea.malariacare.views.CustomTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.5"
             android:id="@+id/schedule"
             android:gravity="center"
             android:typeface="sans"
@@ -89,4 +89,12 @@
             app:tFontName="@string/medium_font_name"/>
 
     </LinearLayout>
+    <ImageView
+        android:id="@+id/menu_dots"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.1"
+        android:src="@drawable/ic_action_more_vert"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal" />
 </TableRow>

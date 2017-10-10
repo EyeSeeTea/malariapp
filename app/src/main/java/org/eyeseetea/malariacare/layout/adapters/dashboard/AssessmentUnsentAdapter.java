@@ -19,6 +19,10 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import static android.view.View.GONE;
+
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -39,6 +43,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRat
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +63,20 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
     }
+    @Override
+    protected void initMenu(final SurveyDB survey) {
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardActivity.onAssetsSelected(survey);
+            }
+        });
+    }
 
     @Override
     protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
-        final PieChart externalPie = (PieChart) rowView.findViewById(R.id.external_chart);
-        final PieChart internalPie = (PieChart) rowView.findViewById(R.id.internal_chart);
-
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new GetSurveyAnsweredRatioUseCase.Callback() {
@@ -75,18 +88,19 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
             @Override
             public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                 Log.d(getClass().getName(), "onComplete");
-                createPie(externalPie, surveyAnsweredRatio == null ? 0
-                        : surveyAnsweredRatio.getTotalStatus());
 
-                createPie(internalPie, surveyAnsweredRatio == null ? 0
-                        : surveyAnsweredRatio.getMandatoryStatus());
+                if (surveyAnsweredRatio != null) {
+                    doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                            surveyAnsweredRatio.getTotalStatus());
+                }
             }
         });
     }
 
 
-    protected void createPie(PieChart mChart, int percentage) {
-        Log.d("percentage", "percentage: "+percentage);
+    protected void createPie(PieChart mChart, int percentage,
+            int highColor, int middleColor, int lowColor) {
+        Log.d("percentage", "percentage: " + percentage);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
 
@@ -107,23 +121,25 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         mChart.setRotationEnabled(true);
         mChart.setHighlightPerTapEnabled(true);
 
-        setData(mChart, percentage);
+        setData(mChart, percentage, highColor, middleColor, lowColor);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
     }
 
-    private void setData(PieChart mChart, int percentage) {
+    private void setData(PieChart mChart, int percentage,
+            int highColor, int middleColor, int lowColor) {
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // NOTE: The order of the entries when being added to the entries array determines their
+        // position around the center of
         // the chart.
-        if(percentage==0){
+        if (percentage == 0) {
             percentage++;
         }
         entries.add(new PieEntry((float) percentage));
-        entries.add(new PieEntry((float) (100-percentage)));
+        entries.add(new PieEntry((float) (100 - percentage)));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
 
@@ -131,15 +147,17 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
         // add a lot of colors
 
-        ArrayList<Integer> colors  = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if(percentage>90) {
-            colors.add(Color.GREEN);
-        }else if(percentage>50){
-            colors.add(Color.YELLOW);
-        }else{
-            colors.add(Color.RED);
+        if (percentage > 90) {
+            colors.add(highColor);
+        } else if (percentage > 50) {
+            colors.add(middleColor);
+        } else {
+            colors.add(lowColor);
         }
+
+
         colors.add(Color.TRANSPARENT);
         dataSet.setColors(colors);
 
@@ -170,7 +188,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
     @Override
     protected void hideFacility(CustomTextView facilityName, CustomTextView surveyType) {
-        facilityName.setVisibility(View.GONE);
+        facilityName.setVisibility(GONE);
         facilityName.setLayoutParams(
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0f));
         LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(

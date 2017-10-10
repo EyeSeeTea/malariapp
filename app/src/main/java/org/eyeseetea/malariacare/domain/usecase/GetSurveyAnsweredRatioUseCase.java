@@ -43,13 +43,13 @@ public class GetSurveyAnsweredRatioUseCase{
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
     public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+
+        answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(
+                idSurvey);
         if (answeredQuestionRatio == null) {
-            answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(
-                    idSurvey);
-            if (answeredQuestionRatio == null) {
-                answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
-            }
+            answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
         }
+
         return answeredQuestionRatio;
     }
 
