@@ -3,11 +3,16 @@ package org.eyeseetea.malariacare.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -22,6 +27,9 @@ import java.util.ArrayList;
 
 public class DoublePieChart extends FrameLayout {
     private PieChart centerPie, outsidePie;
+    private View doublePieContainer;
+    private int highColor, middleColor, lowColor,
+            mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor;
 
     public DoublePieChart(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -30,8 +38,23 @@ public class DoublePieChart extends FrameLayout {
 
     private void init(Context context, AttributeSet attributeSet) {
         inflate(context, R.layout.double_pie_chart, this);
+
         centerPie = (PieChart) findViewById(R.id.internal_chart);
         outsidePie = (PieChart) findViewById(R.id.external_chart);
+        doublePieContainer = (View) findViewById(R.id.double_pie_container);
+
+        highColor = ResourcesCompat.getColor(
+                getContext().getResources(), R.color.ratio_questions_high, null);
+        middleColor = ResourcesCompat.getColor(
+                getContext().getResources(), R.color.ratio_questions_middle, null);
+        lowColor = ResourcesCompat.getColor(
+                getContext().getResources(), R.color.ratio_questions_low, null);
+        mandatoryHighColor = ResourcesCompat.getColor(
+                getContext().getResources(), R.color.ratio_mandatory_questions_high, null);
+        mandatoryMiddleColor = ResourcesCompat.getColor(
+                getContext().getResources(), R.color.ratio_mandatory_questions_middle, null);
+        mandatoryLowColor = ResourcesCompat.getColor(
+                getContext().getResources(), R.color.ratio_mandatory_questions_low, null);
 
         int[] attrsArray = new int[]{
                 android.R.attr.layout_width,
@@ -48,12 +71,27 @@ public class DoublePieChart extends FrameLayout {
 
     }
 
-    public void createDoublePie(int internalPercentage, int externalPercentage) {
-        createPie(outsidePie, externalPercentage);
-        createPie(centerPie, internalPercentage);
+    public void createDoublePie(final int internalPercentage, int externalPercentage) {
+        createPie(outsidePie, externalPercentage, highColor, middleColor, lowColor);
+        createPie(centerPie, internalPercentage, mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor);
+        final ImageView mandatoryCheck = (ImageView) doublePieContainer.findViewById(
+                R.id.completed_mandatory_check);
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (internalPercentage == 100) {
+                    mandatoryCheck.setVisibility(View.VISIBLE);
+                } else {
+                    mandatoryCheck.setVisibility(GONE);
+                }
+            }
+        }, 1400);
     }
 
-    protected void createPie(PieChart mChart, int percentage) {
+    protected void createPie(PieChart mChart, int percentage,
+            int highColor, int middleColor, int lowColor) {
         Log.d("percentage", "percentage: " + percentage);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
@@ -75,13 +113,14 @@ public class DoublePieChart extends FrameLayout {
         mChart.setRotationEnabled(true);
         mChart.setHighlightPerTapEnabled(true);
 
-        setData(mChart, percentage);
+        setData(mChart, percentage, highColor, middleColor, lowColor);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
     }
 
-    private void setData(PieChart mChart, int percentage) {
+    private void setData(PieChart mChart, int percentage,
+            int highColor, int middleColor, int lowColor) {
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -103,11 +142,11 @@ public class DoublePieChart extends FrameLayout {
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
         if (percentage > 90) {
-            colors.add(Color.GREEN);
+            colors.add(highColor);
         } else if (percentage > 50) {
-            colors.add(Color.YELLOW);
+            colors.add(middleColor);
         } else {
-            colors.add(Color.RED);
+            colors.add(lowColor);
         }
         colors.add(Color.TRANSPARENT);
         dataSet.setColors(colors);
