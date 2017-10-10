@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -281,14 +280,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
     /**
-     * Handler that marks the given sucloseFeedbackFragmentrvey as completed.
-     * This includes a pair or corner cases
-     */
-    public void onMarkAsCompleted(SurveyDB survey) {
-        dashboardController.onMarkAsCompleted(survey);
-    }
-
-    /**
      * Handler that enter into the feedback for the given survey
      */
     public void onFeedbackSelected(SurveyDB survey) {
@@ -392,8 +383,28 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void openActionPlan() {
+        ImproveModuleController improveModuleController =
+                (ImproveModuleController) dashboardController.getModuleByName(
+                        ImproveModuleController.getSimpleName());
+        improveModuleController.onPlanActionSelected(
+                Session.getSurveyByModule(improveModuleController.getName()));
+    }
+
+    public void openActionPlan(SurveyDB survey) {
         ImproveModuleController improveModuleController = (ImproveModuleController) dashboardController.getModuleByName(ImproveModuleController.getSimpleName());
-        improveModuleController.onPlanActionSelected(Session.getSurveyByModule(improveModuleController.getName()));
+        improveModuleController.onPlanActionSelected(survey);
+    }
+
+    public void onAssetsSelected(SurveyDB survey) {
+        dashboardController.onAssetsSelected(survey);
+    }
+
+    public void openFeedback(SurveyDB survey) {
+        dashboardController.openFeedback(survey);
+    }
+
+    public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
+        dashboardController.onPlannedSurvey(survey, scheduleClickListener);
     }
 
 
