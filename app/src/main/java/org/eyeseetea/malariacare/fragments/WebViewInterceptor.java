@@ -1,20 +1,14 @@
 package org.eyeseetea.malariacare.fragments;
 
-import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.usecase.ShowListOfSurveyUseCase;
-
-import java.util.ArrayList;
-
 public class WebViewInterceptor {
 
-    DashboardActivity mDashboardActivity;
-    IMainExecutor mMainExecutor;
+    public interface BubbleClickListener{
+        void onClick(String uidList);
+    }
 
-    public WebViewInterceptor(DashboardActivity dashboardActivity, IMainExecutor mainExecutor) {
-        mDashboardActivity = dashboardActivity;
-        mMainExecutor = mainExecutor;
+    BubbleClickListener mBubbleClickListener;
+
+    public WebViewInterceptor() {
     }
 
     @android.webkit.JavascriptInterface
@@ -24,15 +18,13 @@ public class WebViewInterceptor {
 
     @android.webkit.JavascriptInterface
     public void passUidList(String uidList) {
-        ArrayList<SurveyDB> surveys = new ArrayList<>();
-        if (uidList.length() > 0) {
-            String uids[] = uidList.split(";");
-            for (String uid : uids) {
-                surveys.add(SurveyDB.findById(Long.parseLong(uid)));
-            }
+        if(mBubbleClickListener!=null) {
+            mBubbleClickListener.onClick(uidList);
         }
-        ShowListOfSurveyUseCase showListOfSurveyUseCase = new ShowListOfSurveyUseCase(
-                mDashboardActivity, mMainExecutor);
-        showListOfSurveyUseCase.execute(surveys);
+    }
+
+    public void setBubbleClickListener(
+            BubbleClickListener bubbleClickListener) {
+        mBubbleClickListener = bubbleClickListener;
     }
 }
