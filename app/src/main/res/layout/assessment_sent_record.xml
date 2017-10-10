@@ -24,11 +24,16 @@
     android:layout_height="wrap_content"
     android:id="@+id/assessment_row"
     android:background="@drawable/cell_borders">
-
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
+        android:layout_weight="0.9"
         android:id="@+id/facilityDateContainer"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/survey_row_marging"
@@ -91,10 +96,14 @@
                 app:tFontName="@string/medium_font_name" />
         </LinearLayout>
 
-
-
-
     </LinearLayout>
-
-
+    <ImageView
+        android:id="@+id/menu_dots"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.1"
+        android:src="@drawable/ic_action_more_vert"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal" />
+</LinearLayout>
 </TableRow>
