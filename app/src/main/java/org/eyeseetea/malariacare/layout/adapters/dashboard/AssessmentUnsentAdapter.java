@@ -21,14 +21,12 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import static android.view.View.GONE;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -45,14 +43,13 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRat
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AssessmentUnsentAdapter extends ADashboardAdapter {
     GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
-
-    ;
 
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
@@ -66,75 +63,38 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
     }
-
     @Override
-    protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-        renderQuestionsChart(survey, rowView);
+    protected void initMenu(final SurveyDB survey) {
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardActivity.onAssetsSelected(survey);
+            }
+        });
     }
 
-    private void renderQuestionsChart(SurveyDB survey, View rowView) {
-        // Normal questions pie definitions
-        final PieChart externalPie = (PieChart) rowView.findViewById(R.id.external_chart);
+    @Override
+    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
-        final int highColor = ResourcesCompat.getColor(
-                context.getResources(), R.color.ratio_questions_high, null);
-
-        final int middleColor = ResourcesCompat.getColor(
-                context.getResources(), R.color.ratio_questions_middle, null);
-
-        final int lowColor = ResourcesCompat.getColor(
-                context.getResources(), R.color.ratio_questions_low, null);
-
-
-        // Mandatory questions pie definitions
-        final View accesibleView = rowView;
-        final PieChart internalPie = (PieChart) rowView.findViewById(R.id.internal_chart);
-        final int mandatoryHighColor = ResourcesCompat.getColor(
-                context.getResources(), R.color.ratio_mandatory_questions_high, null);
-
-        final int mandatoryMiddleColor = ResourcesCompat.getColor(
-                context.getResources(), R.color.ratio_mandatory_questions_middle, null);
-
-        final int mandatoryLowColor = ResourcesCompat.getColor(
-                context.getResources(), R.color.ratio_mandatory_questions_low, null);
-
-        // Get ratios and build pies
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
+            @Override
+            public void nextProgressMessage() {
+                Log.d(getClass().getName(), "nextProgressMessage");
+            }
 
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        createPie(externalPie, surveyAnsweredRatio == null ? 0
-                                        : surveyAnsweredRatio.getTotalStatus(),
-                                highColor, middleColor, lowColor);
+            @Override
+            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                Log.d(getClass().getName(), "onComplete");
 
-                        final int mandatoryStatus = surveyAnsweredRatio.getMandatoryStatus();
-
-                        createPie(internalPie, surveyAnsweredRatio == null ? 0
-                                : mandatoryStatus,
-                                mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor);
-
-                        final ImageView mandatoryCheck = (ImageView) accesibleView.findViewById(
-                                R.id.completed_mandatory_check);
-
-                        final Handler handler = new Handler(Looper.getMainLooper());
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mandatoryStatus == 100) {
-                                    mandatoryCheck.setVisibility(View.VISIBLE);
-                                } else {
-                                    mandatoryCheck.setVisibility(GONE);
-                                }
-                            }
-                        }, 1400);
-                    }
-                });
+                if (surveyAnsweredRatio != null) {
+                    doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                            surveyAnsweredRatio.getTotalStatus());
+                }
+            }
+        });
     }
 
 
