@@ -286,6 +286,12 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onFeedbackSelected(survey);
     }
 
+
+
+    public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
+        dashboardController.onPlanPerOrgUnitMenuClicked(survey);
+    }
+
     /**
      * Moving into createSurvey fragment
      */
