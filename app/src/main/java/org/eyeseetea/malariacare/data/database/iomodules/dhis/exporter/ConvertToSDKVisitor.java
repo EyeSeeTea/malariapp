@@ -81,6 +81,7 @@ public class ConvertToSDKVisitor implements
     String createdOnCode;
     String updatedDateCode;
     String updatedUserCode;
+    String completionDateCode;
 
     //ObsActionPlan control dataelements
     String gapsCode;
@@ -149,6 +150,8 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.created_on_code));
         updatedDateCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.upload_date_code));
+        completionDateCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.completed_on_code));
         updatedUserCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.uploaded_by_code));
         gapsCode = ServerMetadataDB.findControlDataElementUid(
@@ -175,7 +178,7 @@ public class ConvertToSDKVisitor implements
         this.currentEvent = buildSentEvent();
         currentEvent.setCreationDate(survey.getCreationDate());
         currentEvent.setEventUid(survey.getEventUid());
-        currentEvent.setEventDate(new DateTime(currentSurvey.getCompletionDate()));
+        currentEvent.setEventDate(new DateTime(currentSurvey.getCreationDate()));
         currentEvent.save();
         if(obsActionPlan.getGaps()!=null) {
             if (controlDataElementExistsInServer(gapsCode)) {
@@ -384,7 +387,7 @@ public class ConvertToSDKVisitor implements
 
         // NOTE: do not try to set the event creation date. SDK will try to update the event in
         // the next push instead of creating it and that will crash
-        currentEvent.setEventDate(new DateTime(currentSurvey.getCompletionDate()));
+        currentEvent.setEventDate(new DateTime(currentSurvey.getCreationDate()));
         currentEvent.setDueDate(new DateTime(currentSurvey.getScheduledDate()));
         //Not used
         currentEvent.setLastUpdated(new DateTime(currentSurvey.getUploadDate()));
@@ -426,6 +429,13 @@ public class ConvertToSDKVisitor implements
         //Created date
         if (controlDataElementExistsInServer(createdOnCode)) {
             addOrUpdateDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(),
+                    EventExtended.DHIS2_GMT_DATE_FORMAT));
+        }
+
+        //It Checks if the dataelement exists, before build and save the datavalue
+        //Created date
+        if (controlDataElementExistsInServer(completionDateCode)) {
+            addOrUpdateDataValue(completionDateCode, EventExtended.format(survey.getCompletionDate(),
                     EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
