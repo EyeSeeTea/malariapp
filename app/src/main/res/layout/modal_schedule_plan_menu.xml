@@ -32,33 +32,11 @@
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
-        android:id="@+id/add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_below="@id/planned_program"
-        android:text="@string/add"
-        android:background="@color/dialog_button_text"
-        android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_regular" />
-    <org.eyeseetea.malariacare.views.CustomButton
-        android:id="@+id/change"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_below="@id/add"
-        android:text="@string/change_date"
-        android:background="@color/dialog_button_text"
-        android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
-    <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/show_historial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_below="@id/change"
+        android:layout_below="@id/planned_program"
         android:text="@string/show_history"
         android:background="@color/dialog_button_text"
         android:textColor="@android:color/white"

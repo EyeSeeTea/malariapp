@@ -266,7 +266,8 @@ evaluation"</string>
 <string name="start">Start</string>
 <string name="on">"លើ"</string>
 
-    <string name="add">"បន្ថែម"</string>
-    <string name="change_date">"ផ្លាស់ប្ដូរកាលបរិច្ឆេទ"</string>
-    <string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
+<string name="add">"បន្ថែម"</string>
+<string name="change_date">"ផ្លាស់ប្ដូរកាលបរិច្ឆេទ"</string>
+<string name="show_history">"កំណត់ប្រវត្តិសាស្រ្ត"</string>
+<string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
 </resources>
