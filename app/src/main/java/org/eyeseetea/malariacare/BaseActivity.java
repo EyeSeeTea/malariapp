@@ -39,15 +39,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
-import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;

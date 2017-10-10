@@ -319,24 +319,6 @@ public class SurveyService extends IntentService {
         //Select surveys from sql
         List<SurveyDB> surveys = SurveyDB.getAllInProgressSurveys();
 
-        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(SurveyDB survey:surveys){
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
-                        @Override
-                        public void nextProgressMessage() {
-                            Log.d(getClass().getName(), "nextProgressMessage");
-                        }
-
-                        @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            Log.d(getClass().getName(), "onComplete");
-                        }
-                    });
-        }
-
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION,surveys);
 
@@ -385,24 +367,6 @@ public class SurveyService extends IntentService {
 
         //Select surveys from sql
         List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
-
-        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(SurveyDB survey:surveys){
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
-                        @Override
-                        public void nextProgressMessage() {
-                            Log.d(getClass().getName(), "nextProgressMessage");
-                        }
-
-                        @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            Log.d(getClass().getName(), "onComplete");
-                        }
-                    });
-        }
 
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION,surveys);

@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.view.View;
 
@@ -47,6 +49,17 @@ public class AssessmentSentAdapter extends
         if (PreferencesState.getInstance().isVerticalDashboard()) {
             this.title = context.getString(R.string.assessment_sent_title_header);
         }
+    }
+
+
+    @Override
+    protected void initMenu(final SurveyDB survey) {
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardActivity.onFeedbackSelected(survey);
+            }
+        });
     }
 
     /**

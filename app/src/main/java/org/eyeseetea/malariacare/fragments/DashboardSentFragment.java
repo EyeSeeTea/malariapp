@@ -329,7 +329,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         }
 
         // call feedbackselected function(and it call surveyfragment)
-        dashboardActivity.onFeedbackSelected(oneSurveyForOrgUnit.get(position - 1));
+        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position - 1));
     }
 
     @Override
