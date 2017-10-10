@@ -113,7 +113,7 @@ function buildColorXScore(value, listOfSurveys){
 	if(value==null){
 		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
-	//fixme: is necessary escape the listOfSurveys before addded in the android_click onclick function.
+	
 	if(value<50){
 		return "<td class='redcircle'   onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 	}
