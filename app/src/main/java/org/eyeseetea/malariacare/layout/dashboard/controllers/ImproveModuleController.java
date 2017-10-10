@@ -113,11 +113,11 @@ public class ImproveModuleController extends ModuleController {
         }catch(Exception e){
             e.printStackTrace();
         }
-        mPlanActionFragment = new PlanActionFragment();
-        // Add the fragment to the activity, pushing this transaction
-        // on to the back stack.
-        mPlanActionFragment.setModuleName(getSimpleName());
+
+        mPlanActionFragment = PlanActionFragment.newInstance(survey.getId_survey());
+
         replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
+
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
