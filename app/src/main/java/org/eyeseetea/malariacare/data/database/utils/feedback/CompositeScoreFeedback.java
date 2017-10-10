@@ -62,6 +62,11 @@ public class CompositeScoreFeedback implements Feedback {
         return false;
     }
 
+    @Override
+    public boolean hasMedia() {
+        return true;
+    }
+
     /**
      * Returns the mark obtained for 'this' compositeScore
      * @return

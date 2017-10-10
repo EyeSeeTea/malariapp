@@ -74,6 +74,11 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      * Checkbox that toggle between all|failed questions
      */
     private CustomRadioButton chkFailed;
+
+    /**
+     * Checkbox that toggle between all|containing media questions
+     */
+    private CustomRadioButton chkMedia;
     /**
      * planAction that toggle between all|failed questions
      */
@@ -172,8 +177,19 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                                          @Override
                                          public void onClick(View v) {
                                              feedbackAdapter.toggleOnlyFailed();
-                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
+                                             ((CustomRadioButton) chkFailed).setChecked(feedbackAdapter
                                                      .isOnlyFailed());
+                                         }
+                                     }
+        );
+        chkMedia = (CustomRadioButton) llLayout.findViewById(R.id.chkMedia);
+        chkMedia.setChecked(false);
+        chkMedia.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             feedbackAdapter.toggleOnlyMedia();
+                                             ((CustomRadioButton) chkMedia).setChecked(feedbackAdapter
+                                                     .isOnlyMedia());
                                          }
                                      }
         );

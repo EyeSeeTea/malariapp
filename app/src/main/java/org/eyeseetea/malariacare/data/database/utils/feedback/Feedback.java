@@ -39,4 +39,10 @@ public interface Feedback {
      * @return true|false
      */
     boolean isPassed();
+
+    /**
+     * Returns if 'this' row has to hide according to its value
+     * @return true|false
+     */
+    boolean hasMedia();
 }
