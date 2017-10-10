@@ -3,7 +3,8 @@ package org.eyeseetea.malariacare.fragments;
 public class WebViewInterceptor {
 
     public interface BubbleClickListener{
-        void onClick(String uidList);
+        void onClickMultipleSurveys(String uidList);
+        void onClickSingleSurvey(String uidList);
     }
 
     BubbleClickListener mBubbleClickListener;
@@ -19,9 +20,17 @@ public class WebViewInterceptor {
     @android.webkit.JavascriptInterface
     public void passUidList(String uidList) {
         if(mBubbleClickListener!=null) {
-            mBubbleClickListener.onClick(uidList);
+            mBubbleClickListener.onClickMultipleSurveys(uidList);
         }
     }
+
+    @android.webkit.JavascriptInterface
+    public void moveToFeedback(String uidList) {
+        if(mBubbleClickListener!=null) {
+            mBubbleClickListener.onClickSingleSurvey(uidList);
+        }
+    }
+
 
     public void setBubbleClickListener(
             BubbleClickListener bubbleClickListener) {
