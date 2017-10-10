@@ -20,16 +20,12 @@
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatioCache;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -174,76 +170,6 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(this.backIndex));
         }
         return rowView;
-    }
-
-    /**
-     * Returns the proper status value (% or ready to send) according to the level of completion of
-     * the survey
-     */
-    protected int getTotalStatus(SurveyDB survey) {
-
-        if (survey.isSent()) {
-            //return getContext().getString(R.string.dashboard_info_sent);
-            return 0;
-        }
-
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
-                        Log.d(getClass().getName(), "onComplete");
-                    }
-                });
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
-        if (surveyAnsweredRatio.isCompleted()) {
-            //return getContext().getString(R.string.dashboard_info_ready_to_upload);
-            return 100;
-        } else {
-            //return String.format("%d",Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue());
-            return Float.valueOf(100 * surveyAnsweredRatio.getRatio()).intValue();
-        }
-    }
-
-
-    /**
-     * Returns the proper status value (% or ready to send) according to the level of completion of mandatory questions
-     */
-    protected int getMandatoryStatus(SurveyDB survey) {
-
-        if (survey.isSent()) {
-            //return getContext().getString(R.string.dashboard_info_sent);
-            return 0;
-        }
-
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatioResult) {
-                        Log.d(getClass().getName(), "onComplete");
-                    }
-                });
-        SurveyAnsweredRatio surveyAnsweredRatio = SurveyAnsweredRatioCache.get(survey.getId_survey());
-        if (surveyAnsweredRatio.getTotalCompulsory() > 0) {
-            int value = Float.valueOf(100 * surveyAnsweredRatio.getCompulsoryRatio()).intValue();
-            return  value;
-        }
-        else{
-            return 100;
-        }
     }
 
     public void remove(Object item) {

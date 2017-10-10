@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+
 public class Survey {
     private long id;
     private int status;

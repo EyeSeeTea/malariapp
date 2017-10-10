@@ -40,13 +40,17 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssessmentUnsentAdapter extends
-        ADashboardAdapter {
+public class AssessmentUnsentAdapter extends ADashboardAdapter {
+    GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
 
     ;
 
@@ -56,62 +60,81 @@ public class AssessmentUnsentAdapter extends
         this.headerLayout = R.layout.assessment_unsent_header;
         this.recordLayout = R.layout.assessment_unsent_record;
         this.footerLayout = R.layout.assessment_unsent_footer;
-    }
 
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+    }
 
     @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
-
-        renderMandatoryQuestionsChart(survey, rowView);
         renderQuestionsChart(survey, rowView);
     }
 
     private void renderQuestionsChart(SurveyDB survey, View rowView) {
-        int highColor = ResourcesCompat.getColor(
+        // Normal questions pie definitions
+        final PieChart externalPie = (PieChart) rowView.findViewById(R.id.external_chart);
+
+        final int highColor = ResourcesCompat.getColor(
                 context.getResources(), R.color.ratio_questions_high, null);
 
-        int middleColor = ResourcesCompat.getColor(
+        final int middleColor = ResourcesCompat.getColor(
                 context.getResources(), R.color.ratio_questions_middle, null);
 
-        int lowColor = ResourcesCompat.getColor(
+        final int lowColor = ResourcesCompat.getColor(
                 context.getResources(), R.color.ratio_questions_low, null);
 
-        PieChart mChart = (PieChart) rowView.findViewById(R.id.external_chart);
-        createPie(mChart, getTotalStatus(survey),
-                highColor, middleColor, lowColor);
-    }
 
-    private void renderMandatoryQuestionsChart(SurveyDB survey, View rowView) {
-        int mandatoryHighColor = ResourcesCompat.getColor(
+        // Mandatory questions pie definitions
+        final View accesibleView = rowView;
+        final PieChart internalPie = (PieChart) rowView.findViewById(R.id.internal_chart);
+        final int mandatoryHighColor = ResourcesCompat.getColor(
                 context.getResources(), R.color.ratio_mandatory_questions_high, null);
 
-        int mandatoryMiddleColor = ResourcesCompat.getColor(
+        final int mandatoryMiddleColor = ResourcesCompat.getColor(
                 context.getResources(), R.color.ratio_mandatory_questions_middle, null);
 
-        int mandatoryLowColor = ResourcesCompat.getColor(
+        final int mandatoryLowColor = ResourcesCompat.getColor(
                 context.getResources(), R.color.ratio_mandatory_questions_low, null);
 
-        final int mandatoryStatus = getMandatoryStatus(survey);
+        // Get ratios and build pies
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
 
-        PieChart mChart = (PieChart) rowView.findViewById(R.id.internal_chart);
-        createPie(mChart, mandatoryStatus,
-                mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor);
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                        createPie(externalPie, surveyAnsweredRatio == null ? 0
+                                        : surveyAnsweredRatio.getTotalStatus(),
+                                highColor, middleColor, lowColor);
 
-        final ImageView mandatoryCheck = (ImageView) rowView.findViewById(
-                R.id.completed_mandatory_check);
+                        final int mandatoryStatus = surveyAnsweredRatio.getMandatoryStatus();
 
-        final Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mandatoryStatus == 100) {
-                    mandatoryCheck.setVisibility(View.VISIBLE);
-                } else {
-                    mandatoryCheck.setVisibility(GONE);
-                }
-            }
-        }, 1400);
+                        createPie(internalPie, surveyAnsweredRatio == null ? 0
+                                : mandatoryStatus,
+                                mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor);
 
+                        final ImageView mandatoryCheck = (ImageView) accesibleView.findViewById(
+                                R.id.completed_mandatory_check);
+
+                        final Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mandatoryStatus == 100) {
+                                    mandatoryCheck.setVisibility(View.VISIBLE);
+                                } else {
+                                    mandatoryCheck.setVisibility(GONE);
+                                }
+                            }
+                        }, 1400);
+                    }
+                });
     }
 
 
