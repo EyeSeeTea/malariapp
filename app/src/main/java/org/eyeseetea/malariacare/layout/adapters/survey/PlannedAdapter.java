@@ -284,6 +284,13 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(AUtils.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
+        ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);
+        dotsMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DashboardActivity.dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(), new ScheduleListener(plannedSurvey.getSurvey(), context));
+            }
+        });
         //background color
         int colorId = plannedSurvey.getPlannedHeader().getSecondaryColor();
         int fixposition = itemOrder - 1;

@@ -22,13 +22,11 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -45,6 +43,8 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
      * List of surveys to show
      */
     List<SurveyDB> items;
+
+    ImageView menuDots;
 
     /**
      * Counter that helps with background calculation
@@ -91,6 +91,9 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         //Program
         CustomTextView surveyType = (CustomTextView) rowView.findViewById(R.id.survey_type);
 
+        menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
+
+        initMenu(survey);
 
         // show facility name (or not) and write survey type name
         if (hasToShowFacility(position, survey)) {
@@ -104,6 +107,8 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
 
         return rowView;
     }
+
+    protected abstract void initMenu(SurveyDB survey);
 
     /**
      * Each specific adapter must program its differences using this method

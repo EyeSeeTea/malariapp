@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/view_module_filter"/>
+        <include layout="@layout/view_module_filter" />
 
         <LinearLayout
             android:id="@+id/dashboard_planning_programs_header"
@@ -42,7 +42,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight=".36" />
+                android:layout_weight=".26" />
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/planning_prod"
@@ -97,6 +97,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight=".16" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight=".1" />
         </LinearLayout>
 
         <FrameLayout

@@ -399,6 +399,16 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
 
+        //-> completionOn
+        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(R.string.completed_on_code)))) {
+            survey.setCompletionDate(EventExtended.parseLongDate(dataValue.getValue()));
+            survey.save();
+            Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
+                    dataValue.getValue()));
+            return;
+        }
+
         //-> uploadedOn
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(

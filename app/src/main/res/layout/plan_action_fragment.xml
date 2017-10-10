@@ -95,7 +95,7 @@
             android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton">
 
             <org.eyeseetea.malariacare.views.CustomTextView
-                android:id="@+id/plan_completion_day"
+                android:id="@+id/completion_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
@@ -108,10 +108,10 @@
                 app:tFontName="@string/font_name_regular" />
 
             <org.eyeseetea.malariacare.views.CustomTextView
-                android:id="@+id/new_supervision_date"
+                android:id="@+id/next_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/plan_completion_day"
+                android:layout_toRightOf="@+id/completion_date"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
                 android:gravity="center_vertical"
