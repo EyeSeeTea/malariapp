@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.data.database.utils.planning;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -19,10 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by ina on 16/08/2016.
- */
 public class ScheduleListener implements View.OnClickListener {
+    private AlertDialog mAlertDialog;
     SurveyDB survey;
     Date newScheduledDate;
     Context context;
@@ -36,12 +35,19 @@ public class ScheduleListener implements View.OnClickListener {
         createScheduleDialog();
     }
 
+    public void addAlertDialog(AlertDialog alertDialog){
+        mAlertDialog = alertDialog;
+    }
+
     @Override
     public void onClick(View v){
         createScheduleDialog();
+        if(mAlertDialog!=null) {
+            mAlertDialog.dismiss();
+        }
     }
 
-    private void createScheduleDialog() {
+    public void createScheduleDialog() {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.planning_schedule_dialog);
         dialog.setTitle(R.string.planning_title_dialog);
