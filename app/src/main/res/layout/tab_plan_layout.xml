@@ -30,7 +30,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/view_module_filter" />
+        <org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView
+            android:id="@+id/org_unit_program_filter_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/dashboard_planning_programs_header"

@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.fragments;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,8 +42,11 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
+import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomSpinner;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
@@ -97,8 +102,11 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     public void reloadFilter(){
-        CustomSpinner programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.spinner_program_filter);
-        ProgramDB selectedProgram=(ProgramDB) programSpinner.getSelectedItem();
+        OrgUnitProgramFilterView orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
+                .findViewById(R.id.org_unit_program_filter_view);
+
+        ProgramDB selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
+
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);
         }
@@ -186,23 +194,12 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
             //Listening only intents from this method
             if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
                 PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
-                //Create the filters only the first time
-                if(programList==null && orgUnitList ==null) {
-                    createFilters(plannedServiceBundle);
-                }
+
                 prepareUI(plannedServiceBundle.getPlannedItems());
 
                 setListShown(true);
                 adapter.notifyDataSetChanged();
             }
         }
-
-        private void createFilters(PlannedServiceBundle plannedServiceBundle) {
-            programList=(List<ProgramDB>) plannedServiceBundle.getModelList(ProgramDB.class.getName());
-            orgUnitList=(List<OrgUnitDB>) plannedServiceBundle.getModelList(OrgUnitDB.class.getName());
-            DashboardActivity.dashboardActivity.preparePlanningFilters(programList,orgUnitList);
-        }
-
-
     }
 }

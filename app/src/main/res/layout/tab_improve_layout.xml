@@ -70,6 +70,8 @@
                 android:onClick="clickProgramSpinner"
                 android:src="@drawable/arrow_improve" />
         </LinearLayout>
+
+
         <LinearLayout
             android:id="@+id/layoutHeader"
             android:layout_width="match_parent"

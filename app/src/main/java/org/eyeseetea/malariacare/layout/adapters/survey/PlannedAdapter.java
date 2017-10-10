@@ -139,7 +139,7 @@ public class PlannedAdapter extends BaseAdapter {
                 //Surveys are shown
                 if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
                         PreferencesState.getInstance().getContext().getResources().getString(
-                                R.string.filter_all_org_assessments).toUpperCase()))
+                                R.string.filter_all_org_assessments)))
                         && plannedItem.isShownByHeader(currentHeader)) {
                     numItems++;
                 }
@@ -162,7 +162,7 @@ public class PlannedAdapter extends BaseAdapter {
             PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
             if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
                     PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments).toUpperCase())) {
+                            R.string.filter_all_org_assessments))) {
                 plannedSurvey.incHeaderCounter();
             }
         }
@@ -180,7 +180,7 @@ public class PlannedAdapter extends BaseAdapter {
 
             if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
                     PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments).toUpperCase()))
+                            R.string.filter_all_org_assessments)))
                     && plannedItem.isShownByHeader(currentHeader)) {
                 numShownItems++;
                 if (position == (numShownItems - 1)) {
