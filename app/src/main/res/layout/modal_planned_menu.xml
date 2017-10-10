@@ -54,7 +54,7 @@
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
-        android:id="@+id/show_historial"
+        android:id="@+id/show_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_below="@id/show_historial"
+        android:layout_below="@id/show_history"
         android:text="@string/cancel"
         android:background="@color/dialog_button_text"
         android:textColor="@android:color/white"
