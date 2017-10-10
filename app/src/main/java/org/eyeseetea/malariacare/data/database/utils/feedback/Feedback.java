@@ -41,7 +41,7 @@ public interface Feedback {
     boolean isPassed();
 
     /**
-     * Returns if 'this' row has to hide according to its value
+     * Returns if 'this' row has media according to its question
      * @return true|false
      */
     boolean hasMedia();
