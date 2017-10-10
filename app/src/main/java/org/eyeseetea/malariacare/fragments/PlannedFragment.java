@@ -97,7 +97,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     public void reloadFilter(){
-        CustomSpinner programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
+        CustomSpinner programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.spinner_program_filter);
         ProgramDB selectedProgram=(ProgramDB) programSpinner.getSelectedItem();
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);

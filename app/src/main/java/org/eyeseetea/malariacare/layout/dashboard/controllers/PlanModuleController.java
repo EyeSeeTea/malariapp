@@ -73,8 +73,8 @@ public class PlanModuleController extends ModuleController {
         programDefaultOption = new ProgramDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
         orgUnitDefaultOption = new OrgUnitDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_units).toUpperCase());
 
-        orgUnitSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_orgUnit);
-        programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
+        orgUnitSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.spinner_orgUnit_filter);
+        programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.spinner_program_filter);
     }
 
     public boolean isVisible(){
