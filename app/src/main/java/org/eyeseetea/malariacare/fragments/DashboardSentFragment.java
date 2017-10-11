@@ -100,9 +100,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      * Toggles the state of the flag that determines if only shown one or all the surveys
      */
 
-    OrgUnitProgramFilterView orgUnitProgramFilterView =
-            (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                    .findViewById(R.id.improve_org_unit_program_filter_view);
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public void toggleForceAllSurveys(){
         this.forceAllSurveys=!this.forceAllSurveys;
