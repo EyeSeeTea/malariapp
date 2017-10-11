@@ -91,17 +91,14 @@ function setAllOrgUnit(data){
 //change program and refresh table and graphics (or refresh principal table with all the stats)
 function changeProgram(){
 	hideMultipleEventLegend();
-    var myselect = document.getElementById("changeProgram");
-    selectedProgram=(myselect.options[myselect.selectedIndex].value);
 	if(selectedProgram===allAssessmentKey){
-		resetOrgUnitSpinner();
         showElement("tableCanvas");
         hideElement("graphicCanvas");
+        renderPieChartsByProgram();
 	}else{
-	    resetOrgUnitSpinner();
 		showProgram();
-		showElement("graphicCanvas");
 		hideElement("tableCanvas");
+		showElement("graphicCanvas");
 	}
 }
 
@@ -113,14 +110,11 @@ function resetProgramSpinner(){
 }
 //change orgUnit and refresh table and graphics (or refresh principal table with all the stats)
 function changeOrgUnit(){
-    var myselect = document.getElementById("changeOrgUnit");
-    selectedOrgUnit=(myselect.options[myselect.selectedIndex].value);
 	if(selectedOrgUnit===allOrgUnitKey){
-	    resetProgramSpinner();
+        renderPieChartsByProgram();
         showElement("tableCanvas");
         hideElement("graphicCanvas");
 	}else{
-	    resetProgramSpinner();
 		showOrgUnit();
 		showElement("graphicCanvas");
 		hideElement("tableCanvas");
@@ -211,11 +205,17 @@ function renderPieChartsByOrgUnit(){
 }
 
 function updateOrgUnitFilter(filter){
+    if(filter=="null"){
+        filter=allOrgUnitKey;
+    }
     selectedOrgUnit=filter;
-    renderPieChartsByOrgUnit();
+	changeOrgUnit();
 }
 
 function updateProgramFilter(filter){
+    if(filter=="null"){
+        filter=allAssessmentKey;
+    }
     selectedProgram=filter;
-    renderPieChartsByProgram();
+	changeProgram();
 }
