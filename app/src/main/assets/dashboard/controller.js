@@ -111,7 +111,7 @@ function resetProgramSpinner(){
 //change orgUnit and refresh table and graphics (or refresh principal table with all the stats)
 function changeOrgUnit(){
 	if(selectedOrgUnit===allOrgUnitKey){
-        renderPieChartsByProgram();
+        renderPieChartsByOrgUnit();
         showElement("tableCanvas");
         hideElement("graphicCanvas");
 	}else{
@@ -185,7 +185,7 @@ function renderPieChartsByProgram(){
 				break;
             }
         }
-        rebuildTableFacilities(programOrgUnit, inputDataTablesPerProgram, orgUnitFilter);
+        rebuildTableFacilities(programOrgUnit, inputDataTablesPerOrgUnit, orgUnitFilter);
     } 
 } 
 
@@ -200,26 +200,26 @@ function renderPieChartsByOrgUnit(){
 				break;
             }
         }
-        rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerOrgUnit, programFilter);
+        rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerProgram, programFilter);
     }   
 }
 
 function updateOrgUnitFilter(uid, name){
-    selectedOrgUnit = uid;
-    orgUnitFilter = name;
     if(uid=="null"){
         uid=allOrgUnitKey;
-		orgUnitFilter = "";
+		name = "";
     }
+    selectedOrgUnit = uid;
+    orgUnitFilter = name;
 	changeOrgUnit();
 }
 
 function updateProgramFilter(uid, name){
-    selectedProgram=uid;
-    programFilter = name;
     if(uid=="null"){
         uid=allAssessmentKey;
-		programFilter = "";
+		name = "";
     }
+    selectedProgram=uid;
+    programFilter = name;
 	changeProgram();
 }

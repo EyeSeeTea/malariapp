@@ -83,7 +83,7 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
         for(Map.Entry<ProgramDB,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
             ProgramDB program=tableEntry.getKey();
             FacilityTableDataByOrgUnit facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, String.valueOf(program.getId_program()), facilityTableData.getAsJSON());
+            inyectDataInChart(webView, String.valueOf(program.getUid()), facilityTableData.getAsJSON());
         }
 
     }
