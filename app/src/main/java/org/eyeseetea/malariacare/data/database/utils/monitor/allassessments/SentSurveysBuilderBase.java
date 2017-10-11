@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -84,7 +85,7 @@ public class SentSurveysBuilderBase {
      * @param webView
      */
     public static void injectChartTitle(WebView webView){
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHART,context.getString(R.string.dashboard_title_total_assessments));
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHART, PreferencesState.getInstance().getContext().getString(R.string.dashboard_title_total_assessments));
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }

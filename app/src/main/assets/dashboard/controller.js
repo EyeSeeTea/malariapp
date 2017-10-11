@@ -209,3 +209,13 @@ function renderPieChartsByOrgUnit(){
         rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerOrgUnit, orgUnitFilter);
     }   
 }
+
+function updateOrgUnitFilter(filter){
+    selectedOrgUnit=filter;
+    renderPieChartsByOrgUnit();
+}
+
+function updateProgramFilter(filter){
+    selectedProgram=filter;
+    renderPieChartsByProgram();
+}

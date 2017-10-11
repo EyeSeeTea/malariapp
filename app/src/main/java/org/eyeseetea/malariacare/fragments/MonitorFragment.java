@@ -113,18 +113,19 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        //TODO: show webview by Program issue
-                        //https://github.com/EyeSeeTea/malariapp/issues/1618
-
+                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s')";
+                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedProgramFilter.getUid());
+                        Log.d(TAG, updateChartJS);
+                        webView.loadUrl(updateChartJS);
                         saveCurrentFilters();
-
                     }
 
                     @Override
                     public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        //TODO: show webview by OrgUnit
-                        //https://github.com/EyeSeeTea/malariapp/issues/1618
-
+                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s')";
+                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedOrgUnitFilter.getUid());
+                        Log.d(TAG, updateChartJS);
+                        webView.loadUrl(updateChartJS);
                         saveCurrentFilters();
                     }
                 });
