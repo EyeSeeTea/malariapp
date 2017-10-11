@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
@@ -19,6 +18,7 @@ import java.util.List;
 
 public class OrgUnitProgramFilterView
         extends FrameLayout implements OrgUnitProgramFilterPresenter.View {
+
 
     public enum FilterType {EXCLUSIVE,NON_EXCLUSIVE}
 
@@ -132,6 +132,16 @@ public class OrgUnitProgramFilterView
         programFilterSpinner.setSelection(0,true,true);
     }
 
+    @Override
+    public void selectOrgUnitFilter(int indexToSelect) {
+        orgUnitFilterSpinner.setSelection(indexToSelect,true,true);
+    }
+
+    @Override
+    public void selectProgramFilter(int indexToSelect) {
+        programFilterSpinner.setSelection(indexToSelect,true,true);
+    }
+
     public ProgramDB getSelectedProgramFilter() {
         return presenter.getSelectedProgramFilter();
     }
@@ -146,5 +156,9 @@ public class OrgUnitProgramFilterView
             presenter.setExclusiveFilter(true);
         else
             presenter.setExclusiveFilter(false);
+    }
+
+    public void changeSelectedFilters(String programUidFilter, String orgUnitUidFilter) {
+        presenter.changeSelectedFilters(programUidFilter,orgUnitUidFilter);
     }
 }

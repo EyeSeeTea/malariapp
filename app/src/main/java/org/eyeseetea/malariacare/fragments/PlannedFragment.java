@@ -60,6 +60,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     private PlannedAdapter adapter;
 
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
+
 
     private List<ProgramDB> programList;
     private List<OrgUnitDB> orgUnitList;
@@ -84,6 +86,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
             return null;
         }
 
+        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
+                .findViewById(R.id.plan_org_unit_program_filter_view);
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -91,7 +96,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
     }
 
     private void prepareUI(List<PlannedItem> plannedItemList) {
@@ -102,8 +106,6 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     public void reloadFilter(){
-        OrgUnitProgramFilterView orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
-                .findViewById(R.id.plan_org_unit_program_filter_view);
 
         ProgramDB selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 
@@ -138,6 +140,15 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         super.onPause();
     }
 
+    private void updateSelectedFilters() {
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
+    }
+
     /**
      * Register a survey receiver to load plannedItems into the listadapter
      */
@@ -163,6 +174,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     @Override
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
@@ -199,6 +212,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
                 setListShown(true);
                 adapter.notifyDataSetChanged();
+
+                updateSelectedFilters();
             }
         }
     }

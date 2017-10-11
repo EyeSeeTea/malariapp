@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import static org.eyeseetea.malariacare.R.id.program;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,11 +34,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -52,8 +46,6 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -144,15 +136,24 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                     @Override
                     public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
                         reloadSentSurveys(surveys);
+                        saveCurrentFilters();
                     }
 
                     @Override
                     public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
                         reloadSentSurveys(surveys);
+                        saveCurrentFilters();
                     }
                 });
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void saveCurrentFilters() {
+        PreferencesState.getInstance().setProgramUidFilter(
+                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
     @Override
@@ -163,6 +164,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         initAdapter();
         initListView();
         resetList();
+    }
+
+    private void updateSelectedFilters() {
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter,orgUnitUidFilter);
     }
 
     private void initCheckBox(View view) {
@@ -417,6 +425,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     @Override
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
@@ -564,4 +574,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             }
         }
     }
+
+
 }

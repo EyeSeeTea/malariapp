@@ -81,6 +81,22 @@ public class OrgUnitProgramFilterPresenter {
         }
     }
 
+    private void notifySelectOrgUnit() {
+        int indexToSelect = orgUnits.indexOf(mSelectedOrgUnitFilter);
+
+        if (view != null) {
+            view.selectOrgUnitFilter(indexToSelect);
+        }
+    }
+
+    private void notifySelectProgram() {
+        int indexToSelect = programs.indexOf(mSelectedProgramFilter);;
+
+        if (view != null) {
+            view.selectProgramFilter(indexToSelect);
+        }
+    }
+
     public void onOrgUnitSelected(OrgUnitDB orgUnit) {
         if (!mSelectedOrgUnitFilter.equals(orgUnit)) {
             mSelectedOrgUnitFilter = orgUnit;
@@ -107,6 +123,24 @@ public class OrgUnitProgramFilterPresenter {
         mExclusiveFilter = exclusiveFilter;
     }
 
+    public void changeSelectedFilters(String programUidFilter, String orgUnitUidFilter) {
+        ProgramDB programToSelect = ProgramDB.getProgram(programUidFilter);
+        OrgUnitDB orgUnitToSelect = OrgUnitDB.getOrgUnit(orgUnitUidFilter);
+
+        if (programToSelect == null)
+            programToSelect = mProgramDefaultOption;
+
+        if (orgUnitToSelect == null )
+            orgUnitToSelect = mOrgUnitDefaultOption;
+
+
+        onOrgUnitSelected(orgUnitToSelect);
+        onProgramSelected(programToSelect);
+
+        notifySelectOrgUnit();
+        notifySelectProgram();
+    }
+
     public interface View{
         void renderPrograms(List<ProgramDB> programs);
         void renderOrgUnits(List<OrgUnitDB> orgUnits);
@@ -114,5 +148,8 @@ public class OrgUnitProgramFilterPresenter {
         void notifyOrgUnitFilterChange(OrgUnitDB orgUnitFilter);
         void unSelectOrgUnitFilter();
         void unSelectProgramFilter();
+
+        void selectOrgUnitFilter(int indexToSelect);
+        void selectProgramFilter(int indexToSelect);
     }
 }

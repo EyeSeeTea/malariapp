@@ -77,11 +77,16 @@ public class PlanModuleController extends ModuleController {
                         new OrgUnitProgramFilterView.FilterChangedListener() {
                             @Override
                             public void onProgramFilterChanged(ProgramDB programFilter) {
+                                saveCurrentFilters();
+
                                 DashboardActivity.dashboardActivity.onProgramSelected(programFilter);
+
                             }
 
                             @Override
                             public void onOrgUnitFilterChanged(OrgUnitDB orgUnitFilter) {
+                                saveCurrentFilters();
+
                                 if (orgUnitFilter.getName().equals(
                                         PreferencesState.getInstance().getContext().getResources()
                                                 .getString(R.string.filter_all_org_units))){
@@ -92,8 +97,17 @@ public class PlanModuleController extends ModuleController {
                                     DashboardActivity.dashboardActivity.onOrgUnitSelected(
                                             orgUnitFilter);
                                 }
+
+
                             }
                         });
+    }
+
+    private void saveCurrentFilters() {
+        PreferencesState.getInstance().setProgramUidFilter(
+                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
     public boolean isVisible(){
