@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class FacilityTableBuilderBase {
 
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTableFacilities('%s',%s)";
+    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTablesPerProgram('%s',%s)";
     private static final String TAG=".FacilityTableBuilder";
     public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
     public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";

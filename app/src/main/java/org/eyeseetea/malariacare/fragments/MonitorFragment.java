@@ -266,10 +266,13 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                     new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
                             orgUnits).addDataInChart(view);
                 }
+
                 if (isProgramFilterActive()) {
                     new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
                             programs).addDataInChart(view);
                 }
+                //Set chart title
+                SentSurveysBuilderBase.injectChartTitle(webView);
 
                 //Show stats by program
                 SentSurveysBuilderBase.showData(view);
