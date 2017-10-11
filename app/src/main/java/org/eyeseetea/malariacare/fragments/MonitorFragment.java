@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
@@ -54,14 +55,12 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByPro
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by ignac on 10/12/2015.
- */
 public class MonitorFragment extends Fragment implements IModuleFragment{
     List<SurveyDB> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
@@ -71,6 +70,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
     private List<OrgUnitDB> orgUnits;
     private WebView webView;
     public MonitorFilter filterType;
+
+    private OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public MonitorFragment() {
         this.surveys = new ArrayList();
@@ -90,6 +91,28 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
         if (container == null) {
             return null;
         }
+
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.monitor_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
+
+        orgUnitProgramFilterView.setFilterChangedListener(
+                new OrgUnitProgramFilterView.FilterChangedListener() {
+                    @Override
+                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
+                        //TODO: show webview by Program issue
+                        //https://github.com/EyeSeeTea/malariapp/issues/1618
+                    }
+
+                    @Override
+                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
+                        //TODO: show webview by OrgUnit
+                        //https://github.com/EyeSeeTea/malariapp/issues/1618
+                    }
+                });
+
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
