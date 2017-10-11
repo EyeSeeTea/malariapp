@@ -31,7 +31,7 @@
         android:orientation="vertical">
 
         <org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView
-            android:id="@+id/org_unit_program_filter_view"
+            android:id="@+id/plan_org_unit_program_filter_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

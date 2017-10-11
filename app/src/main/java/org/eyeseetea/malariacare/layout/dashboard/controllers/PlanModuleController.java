@@ -47,9 +47,6 @@ public class PlanModuleController extends ModuleController {
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
 
-    CustomSpinner orgUnitSpinner;
-    CustomSpinner programSpinner;
-
     public PlanModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_plan_layout;
@@ -70,9 +67,11 @@ public class PlanModuleController extends ModuleController {
 
     private void createFilters() {
 
-        final OrgUnitProgramFilterView orgUnitProgramFilterView =
+        orgUnitProgramFilterView =
                 (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.org_unit_program_filter_view);
+                        .findViewById(R.id.plan_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
 
         orgUnitProgramFilterView.setFilterChangedListener(
                         new OrgUnitProgramFilterView.FilterChangedListener() {

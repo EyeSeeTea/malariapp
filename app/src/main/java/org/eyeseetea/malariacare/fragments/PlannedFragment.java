@@ -103,7 +103,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
     public void reloadFilter(){
         OrgUnitProgramFilterView orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
-                .findViewById(R.id.org_unit_program_filter_view);
+                .findViewById(R.id.plan_org_unit_program_filter_view);
 
         ProgramDB selectedProgram = orgUnitProgramFilterView.getSelectedProgramFilter();
 

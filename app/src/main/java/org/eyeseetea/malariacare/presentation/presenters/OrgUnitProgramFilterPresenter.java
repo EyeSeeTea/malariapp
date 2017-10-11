@@ -15,6 +15,7 @@ public class OrgUnitProgramFilterPresenter {
     private OrgUnitDB mOrgUnitDefaultOption;
     private ProgramDB mSelectedProgramFilter;
     private OrgUnitDB mSelectedOrgUnitFilter;
+    private boolean mExclusiveFilter;
 
     public void attachView(View view){
         this.view = view;
@@ -54,23 +55,42 @@ public class OrgUnitProgramFilterPresenter {
     public void onProgramSelected(ProgramDB program) {
         if (!mSelectedProgramFilter.equals(program)) {
             mSelectedProgramFilter = program;
-            mSelectedOrgUnitFilter = mOrgUnitDefaultOption;
+
+            if (mExclusiveFilter)
+                unSelectOrgUnit();
 
             if (view != null) {
                 view.notifyProgramFilterChange(mSelectedProgramFilter);
-                view.unSelectOrgUnitFilter();
             }
+        }
+    }
+
+    private void unSelectOrgUnit() {
+        mSelectedOrgUnitFilter = mOrgUnitDefaultOption;
+
+        if (view != null) {
+            view.unSelectOrgUnitFilter();
+        }
+    }
+
+    private void unSelectProgram() {
+        mSelectedProgramFilter = mProgramDefaultOption;
+
+        if (view != null) {
+            view.unSelectProgramFilter();
         }
     }
 
     public void onOrgUnitSelected(OrgUnitDB orgUnit) {
         if (!mSelectedOrgUnitFilter.equals(orgUnit)) {
             mSelectedOrgUnitFilter = orgUnit;
-            mSelectedProgramFilter = mProgramDefaultOption;
+
+            if (mExclusiveFilter)
+                unSelectProgram();
 
             if (view != null) {
                 view.notifyOrgUnitFilterChange(mSelectedOrgUnitFilter);
-                view.unSelectProgramFilter();
+
             }
         }
     }
@@ -81,6 +101,10 @@ public class OrgUnitProgramFilterPresenter {
 
     public OrgUnitDB getSelectedOrgUnitFilter() {
         return mSelectedOrgUnitFilter;
+    }
+
+    public void setExclusiveFilter(boolean exclusiveFilter) {
+        mExclusiveFilter = exclusiveFilter;
     }
 
     public interface View{

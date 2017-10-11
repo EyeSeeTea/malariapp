@@ -20,6 +20,7 @@ import java.util.List;
 public class OrgUnitProgramFilterView
         extends FrameLayout implements OrgUnitProgramFilterPresenter.View {
 
+    public enum FilterType {EXCLUSIVE,NON_EXCLUSIVE}
 
     public interface FilterChangedListener {
         void onProgramFilterChanged(ProgramDB programFilter);
@@ -137,5 +138,13 @@ public class OrgUnitProgramFilterView
 
     public OrgUnitDB getSelectedOrgUnitFilter() {
         return presenter.getSelectedOrgUnitFilter();
+    }
+
+
+    public void setFilterType(FilterType filterType){
+        if (filterType == FilterType.EXCLUSIVE)
+            presenter.setExclusiveFilter(true);
+        else
+            presenter.setExclusiveFilter(false);
     }
 }
