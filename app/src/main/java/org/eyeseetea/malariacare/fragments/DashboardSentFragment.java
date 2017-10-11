@@ -34,11 +34,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -50,12 +46,11 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,25 +77,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     private List<SurveyDB> surveys;
     //oneSurveyForOrgUnit contains the filtered orgunit list
     List<SurveyDB> oneSurveyForOrgUnit;
-    //orgUnitList contains the list of all orgUnits
-    List<OrgUnitDB> orgUnitList;
-    //programList contains the list of all prgorams
-    List<ProgramDB> programList;
-    Spinner filterSpinnerOrgUnit;
-    Spinner filterSpinnerProgram;
-    //orgUnitFilter contains the selected orgUnit uid
-    String orgUnitFilter;
-    //programFilter contains the selected program name
-    String programFilter;
+
+
     //orderBy contains the selected order
     int orderBy=WITHOUT_ORDER;
     //reverse contains the selected order asc or desc
     static boolean reverse=false;
     DashboardActivity dashboardActivity;
-    /*
-    ** Flag to prevents the false click on filter creation.
-     */
-    boolean initiatingFilters =true;
 
     boolean forceAllSurveys;
 
@@ -108,6 +91,9 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     /**
      * Toggles the state of the flag that determines if only shown one or all the surveys
      */
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
+
     public void toggleForceAllSurveys(){
         this.forceAllSurveys=!this.forceAllSurveys;
     }
@@ -120,7 +106,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         oneSurveyForOrgUnit = new ArrayList<>();
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -131,8 +116,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        orgUnitFilter= PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
-        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
     }
 
     @Override
@@ -142,7 +125,35 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             return null;
         }
 
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.improve_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
+
+        orgUnitProgramFilterView.setFilterChangedListener(
+                new OrgUnitProgramFilterView.FilterChangedListener() {
+                    @Override
+                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
+                        reloadSentSurveys(surveys);
+                        saveCurrentFilters();
+                    }
+
+                    @Override
+                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
+                        reloadSentSurveys(surveys);
+                        saveCurrentFilters();
+                    }
+                });
+
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void saveCurrentFilters() {
+        PreferencesState.getInstance().setProgramUidFilter(
+                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
     @Override
@@ -153,6 +164,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         initAdapter();
         initListView();
         resetList();
+    }
+
+    private void updateSelectedFilters() {
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter,orgUnitUidFilter);
     }
 
     private void initCheckBox(View view) {
@@ -186,110 +204,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         //Listen for data
         registerSurveysReceiver();
         super.onResume();
-    }
-
-    private void initProgramFilters() {
-        initiatingFilters=true;
-        filterSpinnerProgram = (Spinner) getActivity().findViewById(R.id.filter_program);
-        List<ProgramDB> filterProgramList= programList;
-        ProgramDB defaultAllProgramFilter=new ProgramDB();
-        ImageView filterProgramButton =
-                (ImageView) getActivity().findViewById(R.id.filter_program_button);
-        filterProgramButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterSpinnerProgram.performClick();
-            }
-        });
-        defaultAllProgramFilter.setName(getActivity().getString(R.string.filter_all_org_assessments).toUpperCase());
-        filterProgramList.add(0, defaultAllProgramFilter);
-        if(programFilter ==null) {
-            programFilter = defaultAllProgramFilter.getUid();
-        }
-        filterSpinnerProgram.setAdapter(new FilterProgramArrayAdapter(this.getActivity().getApplicationContext(), filterProgramList));
-        filterSpinnerProgram.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                ProgramDB program = (ProgramDB) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if (program.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase())) {
-                    if (programFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) {
-                        programFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase();
-                        reload = true;
-                    }
-                } else {
-                    if (programFilter != program.getUid()) {
-                        programFilter = program.getUid();
-                        reload = true;
-                    }
-                }
-                if(reload && !initiatingFilters)
-                    reloadSentSurveys(surveys);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-        reloadSentSurveys(surveys);
-        initiatingFilters =false;
-    }
-
-    private void initOrgUnitFilters(){
-        initiatingFilters=true;
-        filterSpinnerOrgUnit = (Spinner) getActivity().findViewById(R.id.filter_orgunit);
-        ImageView filterOrgUnitButton =
-                (ImageView) getActivity().findViewById(R.id.filter_orgunit_button);
-        filterOrgUnitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterSpinnerOrgUnit.performClick();
-            }
-        });
-
-        //orgUnitList.add(0, new OrgUnit(getActivity().getString(R.string.filter_all_org_units).toUpperCase()));
-        filterSpinnerOrgUnit.setAdapter(new FilterOrgUnitArrayAdapter(getActivity().getApplicationContext(), orgUnitList));
-
-        if(orgUnitFilter==null)
-            orgUnitFilter=orgUnitList.get(0).getUid();
-        filterSpinnerOrgUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                OrgUnitDB orgUnit = (OrgUnitDB) parent.getItemAtPosition(position);
-                boolean reload = false;
-                if(orgUnit.getName().equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase())) {
-                    if (orgUnitFilter != PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) {
-                        orgUnitFilter = PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase();
-                        reload = true;
-                    }
-                } else {
-                    if (orgUnitFilter != orgUnit.getUid()) {
-                        orgUnitFilter = orgUnit.getUid();
-                        reload = true;
-                    }
-                }
-                if (reload && !initiatingFilters)
-                    reloadSentSurveys(surveys);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-        reloadSentSurveys(surveys);
-        initiatingFilters =false;
-    }
-
-    private void initFilters() {
-        initProgramFilters();
-        initOrgUnitFilters();
-        reloadSentSurveys(surveys);
     }
 
     /**
@@ -511,6 +425,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     @Override
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
@@ -621,13 +537,21 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     }
 
     private boolean isNotFilteredByOU(SurveyDB survey){
-        if(orgUnitFilter!=null && (orgUnitFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units).toUpperCase()) || orgUnitFilter.equals(survey.getOrgUnit().getUid())))
+        OrgUnitDB orgUnitDB = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+
+        if(orgUnitDB.getName().equals(PreferencesState.getInstance().getContext().getString(
+                        R.string.filter_all_org_units)) ||
+                orgUnitDB.getUid().equals(survey.getOrgUnit().getUid()))
             return true;
         return false;
     }
 
     private boolean isNotFilteredByProgram(SurveyDB survey){
-        if(programFilter.equals(PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments).toUpperCase()) || programFilter.equals(survey.getProgram().getUid()))
+        ProgramDB programDB = orgUnitProgramFilterView.getSelectedProgramFilter();
+
+        if(programDB.getName().equals(PreferencesState.getInstance().getContext().getString(
+                R.string.filter_all_org_assessments)) ||
+                programDB.getUid().equals(survey.getProgram().getUid()))
             return true;
         return false;
     }
@@ -645,11 +569,11 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             //Listening only intents from this method
             if (SurveyService.RELOAD_SENT_FRAGMENT_ACTION.equals(intent.getAction())) {
                 BaseServiceBundle sentDashboardBundle = (BaseServiceBundle) Session.popServiceValue(SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
-                orgUnitList = (List<OrgUnitDB>) sentDashboardBundle.getModelList(OrgUnitDB.class.getName());
-                programList = (List<ProgramDB>) sentDashboardBundle.getModelList(ProgramDB.class.getName());
                 surveys = (List<SurveyDB>) sentDashboardBundle.getModelList(SurveyDB.class.getName());
-                initFilters();
+                reloadSentSurveys(surveys);
             }
         }
     }
+
+
 }
