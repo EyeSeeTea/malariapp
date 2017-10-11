@@ -113,8 +113,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s')";
-                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedProgramFilter.getUid());
+                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s', '%s')";
+                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedProgramFilter.getUid(), selectedProgramFilter.getName());
                         Log.d(TAG, updateChartJS);
                         webView.loadUrl(updateChartJS);
                         saveCurrentFilters();
@@ -122,8 +122,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
                     @Override
                     public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s')";
-                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedOrgUnitFilter.getUid());
+                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s', '%s')";
+                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedOrgUnitFilter.getUid(), selectedOrgUnitFilter.getName());
                         Log.d(TAG, updateChartJS);
                         webView.loadUrl(updateChartJS);
                         saveCurrentFilters();

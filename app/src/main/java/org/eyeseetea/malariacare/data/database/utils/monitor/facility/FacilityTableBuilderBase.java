@@ -35,7 +35,6 @@ import java.util.List;
  */
 public class FacilityTableBuilderBase {
 
-    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTablesPerProgram('%s',%s)";
     private static final String TAG=".FacilityTableBuilder";
     public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
     public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
@@ -82,14 +81,5 @@ public class FacilityTableBuilderBase {
         //remove the first two characters(about alpha color).
         String colorRRGGBB="#"+color.substring(3,9);
         return colorRRGGBB;
-    }
-
-    void inyectDataInChart(WebView webView, String id, String json) {
-
-        //Inyect in browser
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
-        Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
-
     }
 }

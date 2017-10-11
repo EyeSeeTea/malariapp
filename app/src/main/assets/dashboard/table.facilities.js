@@ -1,10 +1,10 @@
 /*
 	Usage:
-		buildTableFacilities(
+		buildTablesPerProgram(
 			{
 				title:"Quality of care - Last 12 months"
 				months:['jan.','feb.','mar.','apr.','may.','jun.','jul.','aug.','sep','oct.','nov.','dec.']
-				facilities:[
+				tables:[
 					{
 						name:' Sample facility 1',
 						values:[
@@ -111,7 +111,7 @@ function buildTableHeader(tabGroupId,months){
 function buildTableBody(tabGroupId,facilities, filter){
 	var facilitiesBodyId="facilitiesBody";
 	for(var i=0;i<facilities.length;i++){
-		if(filter==undefined || filter==facilities.name){
+		if(filter=="" || filter==facilities[i].name){
 			var rowFacility=buildRowFacility(facilities[i]);
 			document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
 		}

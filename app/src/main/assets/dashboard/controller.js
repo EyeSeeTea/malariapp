@@ -131,7 +131,7 @@ function changePieAndTablesByProgram(){
 		}
 	}
     if(selectedProgram===allAssessmentKey){
-        rebuildTableFacilities(selectedProgram, inputDataTablesPerProgram, programFilter);
+        rebuildTableFacilities(selectedProgram, inputDataTablesPerProgram, orgUnitFilter);
     }else{
         renderPieChartsByProgram();
     }
@@ -147,7 +147,7 @@ function changePieAndTablesByOrgUnit(){
 		}
 	}
     if(selectedOrgUnit===allOrgUnitKey){
-        rebuildTableFacilities(selectedOrgUnit, inputDataTablesPerOrgUnit, orgUnitFilter)
+        rebuildTableFacilities(selectedOrgUnit, inputDataTablesPerOrgUnit, programFilter)
     }
 	else{
         renderPieChartsByOrgUnit();
@@ -185,7 +185,7 @@ function renderPieChartsByProgram(){
 				break;
             }
         }
-        rebuildTableFacilities(programOrgUnit, inputDataTablesPerProgram, programFilter);
+        rebuildTableFacilities(programOrgUnit, inputDataTablesPerProgram, orgUnitFilter);
     } 
 } 
 
@@ -200,22 +200,26 @@ function renderPieChartsByOrgUnit(){
 				break;
             }
         }
-        rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerOrgUnit, orgUnitFilter);
+        rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerOrgUnit, programFilter);
     }   
 }
 
-function updateOrgUnitFilter(filter){
-    if(filter=="null"){
-        filter=allOrgUnitKey;
+function updateOrgUnitFilter(uid, name){
+    selectedOrgUnit = uid;
+    orgUnitFilter = name;
+    if(uid=="null"){
+        uid=allOrgUnitKey;
+		orgUnitFilter = "";
     }
-    selectedOrgUnit=filter;
 	changeOrgUnit();
 }
 
-function updateProgramFilter(filter){
-    if(filter=="null"){
-        filter=allAssessmentKey;
+function updateProgramFilter(uid, name){
+    selectedProgram=uid;
+    programFilter = name;
+    if(uid=="null"){
+        uid=allAssessmentKey;
+		programFilter = "";
     }
-    selectedProgram=filter;
 	changeProgram();
 }
