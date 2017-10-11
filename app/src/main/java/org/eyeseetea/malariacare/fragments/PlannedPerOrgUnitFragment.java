@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBund
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomCheckBox;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,9 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     static Button scheduleButton;
     CustomCheckBox selectAllCheckbox;
     String filterOrgUnitUid;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
+
     public PlannedPerOrgUnitFragment() {
 
     }
@@ -83,8 +87,21 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             return null;
         }
 
+        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
+                .findViewById(R.id.plan_org_unit_program_filter_view);
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+    private void updateSelectedFilters() {
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -262,6 +279,8 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
