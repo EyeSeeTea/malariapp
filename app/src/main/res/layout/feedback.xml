@@ -48,9 +48,9 @@
     android:background="@color/assess_grey">
     <org.eyeseetea.malariacare.views.CustomRadioButton
         android:id="@+id/backToSentSurveys"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_weight="0.4"
         android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
         android:layout_marginLeft="@dimen/margin_lateral_feedback_radiobutton"
         android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
@@ -66,14 +66,29 @@
         app:tFontName="@string/medium_font_name" />
     <org.eyeseetea.malariacare.views.CustomRadioButton
         android:id="@+id/chkFailed"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
+        android:layout_weight="0.3"
         android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
         android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
         android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
         android:button="@drawable/radiobutton_feedback"
         android:text="@string/feedback_show_only_failed"
+        android:textColor="@color/white"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name"
+        android:gravity="right|center_vertical"
+        android:layout_gravity="center_vertical|right" />
+    <org.eyeseetea.malariacare.views.CustomRadioButton
+        android:id="@+id/chkMedia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
+        android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
+        android:button="@drawable/radiobutton_feedback"
+        android:text="@string/feedback_show_only_media"
         android:textColor="@color/white"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name"

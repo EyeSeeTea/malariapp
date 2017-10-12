@@ -121,6 +121,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
+<string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback per Program/OU"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
