@@ -1,15 +1,28 @@
 package org.eyeseetea.malariacare.data.remote.sdk;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
+
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -30,6 +43,8 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
@@ -42,7 +57,16 @@ public class SdkQueries {
 
     public static List<String> getAssignedPrograms() {
         List<String> uids = new ArrayList<>();
-        List<ProgramFlow> programsFlow = new Select().from(ProgramFlow.class).queryList();
+        List<ProgramFlow> programsFlow = new SQLite().select().from(ProgramFlow.class).as(programFlowName)
+                .join(AttributeValueFlow.class, Join.JoinType.INNER).as(attributeValueFlowName)
+                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
+                        ProgramFlow_Table.uId.withTable(programFlowAlias)))
+                .join(AttributeFlow.class, Join.JoinType.INNER).as(attributeFlowName)
+                .on(AttributeFlow_Table.uId.withTable(attributeFlowAlias).eq(
+                        AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
+                .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
+                .and(AttributeValueFlow_Table.value.is(PreferencesState.getInstance().getContext().getString(
+                        R.string.pull_program_code))).queryList();
         for (ProgramFlow programFlow : programsFlow) {
             uids.add(programFlow.getUId());
         }
@@ -90,7 +114,7 @@ public class SdkQueries {
                 .queryList();
     }
 
-    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId,
+    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId, String programAttribute,
             ProgramType... programType) {
 
         List<OrganisationUnitToProgramRelationFlow> organisationUnitProgramRelationships =
@@ -100,6 +124,9 @@ public class SdkQueries {
 
         List<ProgramFlow> programs = new ArrayList<ProgramFlow>();
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
+            if(!isValid(oupr.getProgram(), programAttribute)){
+                continue;
+            }
             if (programType != null) {
                 for (ProgramType kind : programType) {
                     if (oupr.getProgram() == null) {
@@ -114,6 +141,20 @@ public class SdkQueries {
             }
         }
         return programs;
+    }
+
+    private static boolean isValid(ProgramFlow program, String pullProgram) {
+        boolean isValid=true;
+        for(AttributeValueFlow attributeValue : program.getAttributeValueFlow()){
+            if(attributeValue.getAttribute().getCode().equals(PreferencesState.getInstance().getContext().getString(
+                    R.string.program_type_code))){
+                if(attributeValue.getValue().equals(pullProgram)){
+                    isValid=false;
+                    break;
+                }
+            }
+        }
+        return isValid;
     }
 
     public static List<EventFlow> getEvents(String organisationUnitUId, String programUId) {
@@ -175,4 +216,6 @@ public class SdkQueries {
                 .queryList();
         return programStageDataElements;
     }
+
+
 }

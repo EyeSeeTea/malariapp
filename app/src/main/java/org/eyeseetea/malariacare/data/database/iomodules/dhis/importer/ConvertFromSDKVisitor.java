@@ -29,16 +29,12 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Da
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .OrganisationUnitLevelExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .ProgramStageDataElementExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageDataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .ProgramStageSectionExtended;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageSectionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.AnswerDB;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
@@ -58,8 +54,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
-import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries
-        .ProgramStageSectionTabDict;
+import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
@@ -583,13 +578,12 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         //Each assigned program
         for (ProgramExtended sdkProgramExtended : ProgramExtended.getExtendedList(
                 SdkQueries.getProgramsForOrganisationUnit(appOrgUnit.getUid(),
-                        ProgramType.WITHOUT_REGISTRATION))) {
-            if(sdkProgramExtended.isValidProgram()) {
+                        PreferencesState.getInstance().getContext().getString(R.string.pull_program_code,
+                                ProgramType.WITHOUT_REGISTRATION)))) {
                 sdkProgramExtended.setAppProgram(
                         programMapObjects.get(sdkProgramExtended.getUid()));
 
                 addOrgUnitProgramRelation(sdkOrganisationUnitExtended, sdkProgramExtended);
-            }
         }
     }
 

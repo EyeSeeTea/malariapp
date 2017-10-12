@@ -19,8 +19,17 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
+
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.R;
@@ -29,6 +38,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.Visitable
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
@@ -133,9 +143,18 @@ public class ProgramExtended implements VisitableFromSDK {
         }
         return program;
     }
-    
+
     public static List<ProgramExtended> getAllPrograms(){
-        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).queryList();
+        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).as(programFlowName)
+                .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(attributeValueFlowName)
+                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
+                        ProgramFlow_Table.uId.withTable(programFlowAlias)))
+                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
+                .on(AttributeFlow_Table.uId.withTable(attributeFlowAlias).eq(
+                        AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
+                .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
+                .and(AttributeValueFlow_Table.value.is(PreferencesState.getInstance().getContext().getString(
+                        R.string.pull_program_code))).queryList();
         List<ProgramExtended> programsExtended = new ArrayList<>();
         for(ProgramFlow programFlow : programFlows){
             programsExtended.add(new ProgramExtended(programFlow));
@@ -170,17 +189,5 @@ public class ProgramExtended implements VisitableFromSDK {
             extendedsList.add(new ProgramExtended(flowPojo));
         }
         return extendedsList;
-    }
-
-    public boolean isValidProgram() {
-        for(AttributeValueFlow attributeValueFlow : program.getAttributeValueFlow()){
-            if(attributeValueFlow.getAttribute().getCode().equals(PreferencesState.getInstance().getContext().getString(R.string.program_type_code))) {
-                if (PreferencesState.getInstance().getContext().getString(
-                        R.string.pull_program_code).equals(attributeValueFlow.getValue())) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

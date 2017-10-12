@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
@@ -59,6 +60,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -137,9 +139,7 @@ public class ConversionLocalDataSource {
         for (String assignedProgramID : assignedProgramsIDs) {
             ProgramExtended programExtended = new ProgramExtended(
                     SdkQueries.getProgram(assignedProgramID));
-            if(programExtended.isValidProgram()) {
                 programExtended.accept(converter);
-            }
         }
 
         //Convert Answers, Options
@@ -170,15 +170,8 @@ public class ConversionLocalDataSource {
 
         int count;
         //Dataelements ordered by program.
-        List<ProgramExtended> allDhisPrograms = ProgramExtended.getAllPrograms();
+        List<ProgramExtended> programs = ProgramExtended.getAllPrograms();
 
-        List<ProgramExtended> programs = new ArrayList<>();
-        for(ProgramExtended programExtended: allDhisPrograms){
-            if(programExtended.isValidProgram()){
-                programs.add(programExtended);
-            }
-        }
-        Log.d(TAG, allDhisPrograms.size()-programs.size() +" programs discarded");
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
         if (!PullController.PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {
@@ -370,11 +363,9 @@ public class ConversionLocalDataSource {
                 SdkQueries.getAssignedOrganisationUnits())) {
             //Each assigned program
             for (ProgramExtended program : ProgramExtended.getExtendedList(
-                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
-                            ProgramType.WITHOUT_REGISTRATION))) {
-                if(!program.isValidProgram()){
-                    continue;
-                }
+                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(), PreferencesState.getInstance().getContext().getString(
+                                    R.string.pull_program_code,
+                                    ProgramType.WITHOUT_REGISTRATION)))) {
                 converter.actualProgram = program;
                 List<EventExtended> events = EventExtended.getExtendedList(
                         SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
