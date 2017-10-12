@@ -131,10 +131,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     private void updateSelectedFilters() {
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
 
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter,orgUnitUidFilter);
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
     }
 
     /**

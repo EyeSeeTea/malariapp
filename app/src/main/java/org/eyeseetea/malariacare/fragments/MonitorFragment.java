@@ -174,10 +174,12 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     private void updateSelectedFilters() {
-        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
 
-        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
     }
 
     public void setFilterType(MonitorFilter monitorFilter) {
