@@ -135,7 +135,19 @@ public class FeedbackAdapter extends BaseAdapter {
     private View getViewByCompositeScoreFeedback(CompositeScoreFeedback feedback, ViewGroup parent, String module){
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_composite_score_row, parent, false);
-
+        if(feedback.getFeedbackList().size()>0 && onlyFailed) {
+            int countOfHiddenQuestions=0;
+            for (QuestionFeedback questionFeedback : feedback.getFeedbackList()) {
+                if (questionFeedback.isPassed()) {
+                    countOfHiddenQuestions++;
+                }
+            }
+            if(countOfHiddenQuestions==feedback.getFeedbackList().size()){
+                rowLayout.findViewById(R.id.feedback_image).setVisibility(View.GONE);
+            }else{
+                rowLayout.findViewById(R.id.feedback_image).setVisibility(View.VISIBLE);
+            }
+        }
         if(!feedback.isShown()){
             rowLayout.setVisibility(View.GONE);
             View view = new View(parent.getContext());
