@@ -452,11 +452,12 @@ public class FeedbackAdapter extends BaseAdapter {
 
         for(int i=0;i<this.hiddenPositions.length;i++){
             //Passed items might get hidden
-            if(onlyFailed) {
-                this.hiddenPositions[i] = this.items.get(i).isPassed();
-            }
-            if(onlyMedia){
+            if(onlyFailed && onlyMedia) {
+                this.hiddenPositions[i] = (this.items.get(i).isPassed() || !this.items.get(i).hasMedia());
+            }else if(onlyMedia){
                 this.hiddenPositions[i] = !this.items.get(i).hasMedia();
+            }else if (onlyFailed){
+                this.hiddenPositions[i] = (this.items.get(i).isPassed());
             }
         }
     }

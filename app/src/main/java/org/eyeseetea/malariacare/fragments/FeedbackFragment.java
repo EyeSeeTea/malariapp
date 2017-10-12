@@ -177,7 +177,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                                          @Override
                                          public void onClick(View v) {
                                              feedbackAdapter.toggleOnlyFailed();
-                                             ((CustomRadioButton) chkFailed).setChecked(feedbackAdapter
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
                                                      .isOnlyFailed());
                                          }
                                      }
@@ -188,7 +188,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                                          @Override
                                          public void onClick(View v) {
                                              feedbackAdapter.toggleOnlyMedia();
-                                             ((CustomRadioButton) chkMedia).setChecked(feedbackAdapter
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
                                                      .isOnlyMedia());
                                          }
                                      }
