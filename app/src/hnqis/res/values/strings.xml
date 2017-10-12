@@ -260,9 +260,12 @@ evaluation"</string>
 <string name="date_month_text_format">"MMMM d',' YYYY"</string>
 
 
-    <string name="add">"Add"</string>
-    <string name="change_date">"Change date"</string>
-    <string name="mark_complete">"Mark complete"</string>
-    <string name="mandatory">Mandatory</string>
-    <string name="percent">&#37;</string>
+<string name="add">"Add"</string>
+<string name="change_date">"Change date"</string>
+<string name="show_history">"Schedule History"</string>
+<string name="comments">"Comments"</string>
+<string name="dates">"Previous dates"</string>
+<string name="mark_complete">"Mark complete"</string>
+<string name="mandatory">Mandatory</string>
+<string name="percent">&#37;</string>
 </resources>

@@ -1,12 +1,15 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -85,6 +88,15 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         rowView.setBackgroundColor(
                 PreferencesState.getInstance().getContext().getResources().getColor(
                         plannedSurvey.getHeader().getBackgroundColor()));
+
+        ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
+            }
+        });
+
         return rowView;
     }
 
