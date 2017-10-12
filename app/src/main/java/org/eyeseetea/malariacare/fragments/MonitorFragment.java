@@ -332,7 +332,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         mWebViewInterceptor = new WebViewInterceptor();
         mWebViewInterceptor.setBubbleClickListener(new WebViewInterceptor.BubbleClickListener() {
             @Override
-            public void onClick(String uidList) {
+            public void onClickMultipleSurveys(String uidList) {
                 ArrayList<SurveyDB> surveys = new ArrayList<>();
                 if (uidList.length() > 0) {
                     String uids[] = uidList.split(";");
@@ -342,6 +342,16 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 }
 
                 showListOfSurveys(surveys);
+            }
+
+            @Override
+            public void onClickSingleSurvey(final String uid) {
+                new UIThreadExecutor().run(new Runnable() {
+                    @Override
+                    public void run() {
+                        DashboardActivity.dashboardActivity.openFeedback(SurveyDB.findById(Long.parseLong(uid)));
+                    }
+                });
             }
         });
         webView.addJavascriptInterface(mWebViewInterceptor,

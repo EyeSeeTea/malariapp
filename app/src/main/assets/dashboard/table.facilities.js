@@ -113,16 +113,27 @@ function buildColorXScore(value, listOfSurveys){
 	if(value==null){
 		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
-	
 	if(value<50){
-		return "<td class='redcircle'   onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+	    if(listOfSurveys.length>1){
+		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+		}else{
+		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+		}
 	}
 
 	if(value<80){
-		return "<td class='ambercircle'  onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+	    if(listOfSurveys.length>1){
+		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+		}else{
+		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+		}
 	}
 
-	return "<td class='greencircle'  onclick=\"android_click(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	if(listOfSurveys.length>1){
+	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	}else{
+		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	}
 }
 
 function buildCellXScore(value){
@@ -143,8 +154,17 @@ function getListOfUids(listOfSurveys){
 	return uidList;
 }
 
-function android_click(value){
+function androidPassUids(value){
+    showLog(value);
+    Android.passUidList(value);
+}
+
+function androidMoveToFeedback(value){
+    showLog(value);
+    Android.moveToFeedback(value);
+}
+
+function showLog(value){
     console.log(value);
     Android.clickLog();
-    Android.passUidList(value);
 }
