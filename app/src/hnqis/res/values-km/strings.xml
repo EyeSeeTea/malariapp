@@ -262,4 +262,6 @@ evaluation"</string>
 <string name="url_not_available">URL មិនទាន់មានទេ</string>
 <string name="see_full_assessment">មើលការវាយតម្លៃពេញលេញនៅ</string>
 <string name="on">"លើ"</string>
+<string name="plain_text">"អត្ថបទធម្មតា "</string>
+<string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 </resources>
