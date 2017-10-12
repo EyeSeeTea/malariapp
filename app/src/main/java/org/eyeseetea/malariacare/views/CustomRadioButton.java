@@ -32,10 +32,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
-/**
- * Created by adrian on 30/05/15.
- */
-public class CustomRadioButton extends RadioButton implements IEyeSeeView {
+public class CustomRadioButton extends android.support.v7.widget.AppCompatRadioButton implements IEyeSeeView {
     private Context context = getContext();
     private String mfontName = context.getString(R.string.normal_font);
     private String mScale = context.getString(R.string.settings_array_values_font_sizes_def);

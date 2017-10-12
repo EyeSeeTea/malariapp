@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center_vertical"
+    android:layout_margin="20dp"
+    android:paddingBottom="20dp"
+    android:background="@android:color/white">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+    <org.eyeseetea.sdk.presentation.views.CustomTextView
+        android:id="@+id/org_unit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/darkGrey"
+        app:tDimension="@string/font_size_level4"
+        app:font_name="@string/font_name_medium" />
+
+    <org.eyeseetea.sdk.presentation.views.CustomTextView
+        android:id="@id/program"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:textColor="@color/darkGrey"
+        app:tDimension="@string/font_size_level4"
+        app:font_name="@string/font_name_medium" />
+    </LinearLayout>
+    <ListView
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/cancel"
+        android:id="@+id/surveys_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+    <org.eyeseetea.sdk.presentation.views.CustomButton
+        android:id="@id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/cancel"
+        android:background="@color/dialog_button_text"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:tDimension="@string/font_size_level4"
+        app:font_name="@string/font_name_medium" />
+
+</RelativeLayout>

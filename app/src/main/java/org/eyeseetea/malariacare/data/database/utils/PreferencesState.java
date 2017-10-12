@@ -462,4 +462,39 @@ public class PreferencesState {
         }
         return creedentials;
     }
+
+    public String getProgramUidFilter() {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+
+        return sharedPreferences.getString(
+                instance.getContext().getString(R.string.user_preference_program_filter), "");
+    }
+
+    public void setProgramUidFilter(String programUid) {
+        Log.d(TAG, "change user_preference_program_filter to "+ programUid);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(context.getResources().getString(R.string.user_preference_program_filter), programUid);
+        editor.commit();
+    }
+
+    public String getOrgUnitUidFilter() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+
+        return sharedPreferences.getString(
+                instance.getContext().getString(R.string.user_preference_org_unit_filter), "");
+    }
+
+    public void setOrgUnitUidFilter(String orgUnitUid) {
+        Log.d(TAG, "change user_preference_org_unit_filter to "+ orgUnitUid);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(context.getResources().getString(R.string.user_preference_org_unit_filter), orgUnitUid);
+        editor.commit();
+    }
 }
