@@ -14,8 +14,6 @@ var allAssessmentTitle="All Assessment";
 var allOrgUnitTitle="All Org Unit";
 var allAssessmentKey="AllAssessment";
 var allOrgUnitKey="AllOrgUnits";
-var orgUnitFilter = "";
-var programFilter = "";
 	
 //Save all the program stats data
 function setProgramData(data){
@@ -131,7 +129,7 @@ function changePieAndTablesByProgram(){
 		}
 	}
     if(selectedProgram===allAssessmentKey){
-        rebuildTableFacilities(selectedProgram, inputDataTablesPerProgram, orgUnitFilter);
+        rebuildTableFacilities(selectedProgram, inputDataTablesPerProgram);
     }else{
         renderPieChartsByProgram();
     }
@@ -147,7 +145,7 @@ function changePieAndTablesByOrgUnit(){
 		}
 	}
     if(selectedOrgUnit===allOrgUnitKey){
-        rebuildTableFacilities(selectedOrgUnit, inputDataTablesPerOrgUnit, programFilter)
+        rebuildTableFacilities(selectedOrgUnit, inputDataTablesPerOrgUnit)
     }
 	else{
         renderPieChartsByOrgUnit();
@@ -185,7 +183,7 @@ function renderPieChartsByProgram(){
 				break;
             }
         }
-        rebuildTableFacilities(programOrgUnit, inputDataTablesPerOrgUnit, orgUnitFilter);
+        rebuildTableFacilities(programOrgUnit, inputDataTablesPerOrgUnit);
     } 
 } 
 
@@ -200,26 +198,22 @@ function renderPieChartsByOrgUnit(){
 				break;
             }
         }
-        rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerProgram, programFilter);
+        rebuildTableFacilities(orgUnitPrograms, inputDataTablesPerProgram);
     }   
 }
 
-function updateOrgUnitFilter(uid, name){
+function updateOrgUnitFilter(uid){
     if(uid=="null"){
         uid=allOrgUnitKey;
-		name = "";
     }
     selectedOrgUnit = uid;
-    orgUnitFilter = name;
 	changeOrgUnit();
 }
 
-function updateProgramFilter(uid, name){
+function updateProgramFilter(uid){
     if(uid=="null"){
         uid=allAssessmentKey;
-		name = "";
     }
     selectedProgram=uid;
-    programFilter = name;
 	changeProgram();
 }

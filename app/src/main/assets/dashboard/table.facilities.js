@@ -69,7 +69,7 @@ function showMainTableByOrgUnit(){
 }
 
 //Build the correct table
-function rebuildTableFacilities(selectedUid, group, filter){
+function rebuildTableFacilities(selectedUid, group){
 	if(group==undefined){
 		return;
 	}
@@ -90,7 +90,7 @@ function rebuildTableFacilities(selectedUid, group, filter){
 			buildTableHeader(id,group[i].months);
 
 			//Add body
-			buildTableBody(id,group[i].tables, filter);
+			buildTableBody(id, group[i].tables);
 
 		}
 	}
@@ -108,13 +108,11 @@ function buildTableHeader(tabGroupId,months){
 	document.getElementById(facilitiesHeadId).insertAdjacentHTML("beforeend",rowsHeader);
 }
 
-function buildTableBody(tabGroupId,facilities, filter){
+function buildTableBody(tabGroupId, facilities){
 	var facilitiesBodyId="facilitiesBody";
 	for(var i=0;i<facilities.length;i++){
-		if(filter=="" || filter==facilities[i].name){
-			var rowFacility=buildRowFacility(facilities[i]);
-			document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
-		}
+		var rowFacility=buildRowFacility(facilities[i]);
+		document.getElementById(facilitiesBodyId).insertAdjacentHTML("beforeend",rowFacility);
 	}
 }
 
