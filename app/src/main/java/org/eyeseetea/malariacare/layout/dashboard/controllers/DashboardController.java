@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -38,6 +41,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
@@ -49,6 +53,7 @@ import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -484,6 +489,90 @@ public class DashboardController {
         return alertDialog;
     }
 
+
+    public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
+        scheduleHistoricLogDialog(survey);
+    }
+
+    public void scheduleHistoricLogDialog(final SurveyDB survey) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+
+            LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+
+            View v = inflater.inflate(R.layout.modal_schedule_plan_menu, null);
+
+            builder.setView(v);
+
+            builder.setCancelable(false);
+            Button showHistory = (Button) v.findViewById(R.id.show_history);
+            Button cancel = (Button) v.findViewById(R.id.cancel);
+
+
+            CustomTextView orgUnitTextView = (CustomTextView) v.findViewById(R.id.planned_org_unit);
+            orgUnitTextView.setText(survey.getOrgUnit().getName());
+
+            CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
+            programTextView.setText(survey.getProgram().getName());
+
+            final AlertDialog alertDialog =builder.create();
+            showHistory.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showHistory(survey);
+                            alertDialog.dismiss();
+                        }
+                    }
+            );
+            cancel.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    }
+
+            );
+            alertDialog.show();
+    }
+
+    private void showHistory(SurveyDB survey) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.dashboardActivity);
+        LayoutInflater inflater = DashboardActivity.dashboardActivity.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.historical_log_dialog, null);
+        builder.setView(v);
+        TextView orgUnit = (TextView) v.findViewById(R.id.org_unitName);
+        TextView program = (TextView) v.findViewById(R.id.programName);
+        program.setText(survey.getProgram().getName());
+        orgUnit.setText(survey.getOrgUnit().getName());
+        Button cancel = (Button) v.findViewById(R.id.cancel);
+        LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
+        View row = inflater.inflate(R.layout.historical_log_header, null);
+        linearLayout.addView(row);
+        for(SurveyScheduleDB surveyScheduleDB: survey.getSurveySchedules()){
+            row = inflater.inflate(R.layout.historical_log_row, null);
+            TextView comment = (TextView) row.findViewById(R.id.comment);
+            TextView date = (TextView) row.findViewById(R.id.date);
+            comment.setText(surveyScheduleDB.getComment());
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+            date.setText(format.format(surveyScheduleDB.getPrevious_date()));
+            linearLayout.addView(row );
+        }
+        final AlertDialog alertDialog = builder.create();
+        cancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                }
+        );
+
+        alertDialog.show();
+    }
+
+
     public void openFeedback(SurveyDB survey) {
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
@@ -524,6 +613,7 @@ public class DashboardController {
         Button add = (Button) v.findViewById(R.id.add);
         Button change = (Button) v.findViewById(R.id.change);
         Button cancel = (Button) v.findViewById(R.id.cancel);
+        Button showHistory = (Button) v.findViewById(R.id.show_history);
 
 
         CustomTextView orgUnitTextView = (CustomTextView) v.findViewById(R.id.planned_org_unit);
@@ -558,6 +648,15 @@ public class DashboardController {
                     }
                 }
 
+        );
+        showHistory.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showHistory(survey);
+                        alertDialog.dismiss();
+                    }
+                }
         );
         alertDialog.show();
         return alertDialog;
