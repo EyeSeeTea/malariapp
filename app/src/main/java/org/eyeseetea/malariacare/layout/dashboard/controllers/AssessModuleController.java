@@ -25,6 +25,8 @@ import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -45,6 +47,7 @@ import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -55,6 +58,8 @@ public class AssessModuleController extends ModuleController {
     SurveyFragment surveyFragment;
 
     CreateSurveyFragment createSurveyFragment;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public AssessModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
@@ -70,6 +75,13 @@ public class AssessModuleController extends ModuleController {
     public void init(DashboardActivity activity) {
         super.init(activity);
         fragment = new DashboardUnsentFragment();
+
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) dashboardActivity.findViewById(
+                        R.id.assess_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setVisibility(View.VISIBLE);
+
     }
 
     /**
@@ -140,6 +152,7 @@ public class AssessModuleController extends ModuleController {
 
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
+        orgUnitProgramFilterView.setVisibility(View.GONE);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
@@ -177,6 +190,7 @@ public class AssessModuleController extends ModuleController {
         if(createSurveyFragment==null) {
             createSurveyFragment = new CreateSurveyFragment();
         }
+        orgUnitProgramFilterView.setVisibility(View.GONE);
         replaceFragment(getLayout(), createSurveyFragment);
     }
 

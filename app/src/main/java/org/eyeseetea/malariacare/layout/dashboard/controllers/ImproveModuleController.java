@@ -24,7 +24,10 @@ import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
@@ -32,6 +35,7 @@ import org.eyeseetea.malariacare.fragments.PlanActionFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -40,6 +44,8 @@ public class ImproveModuleController extends ModuleController {
 
     FeedbackFragment feedbackFragment;
     PlanActionFragment mPlanActionFragment;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
@@ -113,11 +119,11 @@ public class ImproveModuleController extends ModuleController {
         }catch(Exception e){
             e.printStackTrace();
         }
-        mPlanActionFragment = new PlanActionFragment();
-        // Add the fragment to the activity, pushing this transaction
-        // on to the back stack.
-        mPlanActionFragment.setModuleName(getSimpleName());
+
+        mPlanActionFragment = PlanActionFragment.newInstance(survey.getId_survey());
+
         replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
+
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
