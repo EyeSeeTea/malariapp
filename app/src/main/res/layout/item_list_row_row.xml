@@ -18,7 +18,7 @@
         android:background="@color/light_grey"
         android:orientation="horizontal">
     <org.eyeseetea.sdk.presentation.views.CustomTextView
-        android:id="@+id/comment"
+        android:id="@+id/first_column"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -32,7 +32,7 @@
         app:tDimension="@string/font_size_level4" />
 
     <org.eyeseetea.sdk.presentation.views.CustomTextView
-        android:id="@+id/date"
+        android:id="@+id/second_column"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
