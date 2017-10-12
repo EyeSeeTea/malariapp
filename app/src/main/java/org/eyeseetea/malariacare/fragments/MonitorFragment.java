@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +35,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -55,8 +59,11 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.layout.adapters.dashboard.AMonitorDialogAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.sdk.presentation.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
@@ -72,6 +79,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     private List<OrgUnitDB> orgUnits;
     private WebView webView;
     public MonitorFilter filterType;
+    private WebViewInterceptor mWebViewInterceptor;
 
     private OrgUnitProgramFilterView orgUnitProgramFilterView;
 
@@ -319,8 +327,68 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             WebView.setWebContentsDebuggingEnabled(true);
         }
         webView.getSettings().setJavaScriptEnabled(true);
+        mWebViewInterceptor = new WebViewInterceptor();
+        mWebViewInterceptor.setBubbleClickListener(new WebViewInterceptor.BubbleClickListener() {
+            @Override
+            public void onClick(String uidList) {
+                ArrayList<SurveyDB> surveys = new ArrayList<>();
+                if (uidList.length() > 0) {
+                    String uids[] = uidList.split(";");
+                    for (String uid : uids) {
+                        surveys.add(SurveyDB.findById(Long.parseLong(uid)));
+                    }
+                }
 
+                showListOfSurveys(surveys);
+            }
+        });
+        webView.addJavascriptInterface(mWebViewInterceptor,
+                "Android");
         return webView;
+    }
+
+    public void showListOfSurveys(final ArrayList<SurveyDB> surveys) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.dashboardActivity);
+        LayoutInflater inflater = DashboardActivity.dashboardActivity.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.monitor_model_dialog, null);
+
+        builder.setView(v);
+        CustomTextView orgUnit = (CustomTextView) v.findViewById(R.id.org_unit);
+        CustomTextView program = (CustomTextView) v.findViewById(R.id.program);
+        program.setText(surveys.get(0).getProgram().getName());
+        orgUnit.setText(surveys.get(0).getOrgUnit().getName());
+        Button cancel = (Button) v.findViewById(R.id.cancel);
+        ListView listView = (ListView) v.findViewById(R.id.surveys_list);
+
+        final AlertDialog alertDialog = builder.create();
+        AMonitorDialogAdapter monitorAdapter = new AMonitorDialogAdapter(DashboardActivity.dashboardActivity);
+        monitorAdapter.setItems(surveys);
+        listView.setAdapter(monitorAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position,
+                    long l) {
+                // call feedbackselected function(and it call surveyfragment)
+                alertDialog.dismiss();
+                new UIThreadExecutor().run(new Runnable() {
+                    @Override
+                    public void run() {
+                        DashboardActivity.dashboardActivity.openFeedback(surveys.get(position));
+                    }
+                });
+            }
+        });
+        cancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                }
+        );
+
+        alertDialog.show();
     }
 
     /**
