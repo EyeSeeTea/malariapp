@@ -120,4 +120,7 @@
     <string name="show_announcement_key" translatable="false">show_announcement_key</string>
     <string name="user_accept_key" translatable="false">user_accept_key</string>
     <string name="api_data_elements" translatable="false">/api/dataElements/</string>
+
+    <string name="user_preference_program_filter" translatable="false">user_preference_program_filter</string>
+    <string name="user_preference_org_unit_filter" translatable="false">user_preference_org_unit_filter</string>
 </resources>

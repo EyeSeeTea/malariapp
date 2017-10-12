@@ -329,12 +329,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         });
     }
 
-    public void clickOrgUnitSpinner(View view) {
-    }
-
-    public void clickProgramSpinner(View view) {
-    }
-
     /**
      * Asks for location (required while starting to edit a survey)
      */

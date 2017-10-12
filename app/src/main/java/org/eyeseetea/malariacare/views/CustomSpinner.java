@@ -27,7 +27,7 @@ import android.widget.Spinner;
  * Created by idelcano on 20/09/2016.
  */
 
-public class CustomSpinner extends Spinner {
+public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
     public CustomSpinner(Context context) {
         super(context);
     }

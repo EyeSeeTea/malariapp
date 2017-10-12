@@ -37,19 +37,15 @@ import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapt
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.views.CustomSpinner;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
 
-/**
- * Created by idelcano on 25/02/2016.
- */
 public class PlanModuleController extends ModuleController {
     private static final String TAG = ".PlanModuleCOntroller";
     PlannedPerOrgUnitFragment plannedOrgUnitsFragment;
-    CustomSpinner orgUnitSpinner;
-    CustomSpinner programSpinner;
-    private ProgramDB programDefaultOption;
-    private OrgUnitDB orgUnitDefaultOption;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public PlanModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
@@ -70,11 +66,48 @@ public class PlanModuleController extends ModuleController {
     }
 
     private void createFilters() {
-        programDefaultOption = new ProgramDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_assessments).toUpperCase());
-        orgUnitDefaultOption = new OrgUnitDB(PreferencesState.getInstance().getContext().getResources().getString(R.string.filter_all_org_units).toUpperCase());
 
-        orgUnitSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_orgUnit);
-        programSpinner = (CustomSpinner) DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_spinner_program);
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.plan_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
+
+        orgUnitProgramFilterView.setFilterChangedListener(
+                        new OrgUnitProgramFilterView.FilterChangedListener() {
+                            @Override
+                            public void onProgramFilterChanged(ProgramDB programFilter) {
+                                saveCurrentFilters();
+
+                                DashboardActivity.dashboardActivity.onProgramSelected(programFilter);
+
+                            }
+
+                            @Override
+                            public void onOrgUnitFilterChanged(OrgUnitDB orgUnitFilter) {
+                                saveCurrentFilters();
+
+                                if (orgUnitFilter.getName().equals(
+                                        PreferencesState.getInstance().getContext().getResources()
+                                                .getString(R.string.filter_all_org_units))){
+                                    DashboardActivity.dashboardActivity.onProgramSelected(
+                                            orgUnitProgramFilterView.getSelectedProgramFilter()
+                                    );
+                                }else {
+                                    DashboardActivity.dashboardActivity.onOrgUnitSelected(
+                                            orgUnitFilter);
+                                }
+
+
+                            }
+                        });
+    }
+
+    private void saveCurrentFilters() {
+        PreferencesState.getInstance().setProgramUidFilter(
+                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
     public boolean isVisible(){
@@ -83,61 +116,6 @@ public class PlanModuleController extends ModuleController {
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
-    public void prepareFilters(final List<ProgramDB> programList, final List<OrgUnitDB> orgUnitList) {
-        //Populate Program View DDL
-        if (!programList.contains(programDefaultOption))
-            programList.add(0, programDefaultOption);
-        programSpinner.setAdapter(new FilterProgramArrayAdapter(DashboardActivity.dashboardActivity, programList));
-        //Apply filter to listview
-        programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                CustomSpinner spinner = ((CustomSpinner) parent);
-                ProgramDB selectedProgram = (ProgramDB) spinner.getItemAtPosition(position);
-
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-                if(selectedProgram==null)
-                    return;
-                //Set orgUnit to "All org units"
-                orgUnitSpinner.setSelection(0,true,true);
-                DashboardActivity.dashboardActivity.onProgramSelected(selectedProgram);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        //Populate Program View DDL
-        if(!orgUnitList.contains(orgUnitDefaultOption))
-            orgUnitList.add(0, orgUnitDefaultOption);
-        orgUnitSpinner.setAdapter(new FilterOrgUnitArrayAdapter(DashboardActivity.dashboardActivity, orgUnitList));
-        //Apply filter to listview
-        orgUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //Set programSpinner to "All assessments"
-                CustomSpinner spinner=((CustomSpinner) parent);
-                OrgUnitDB selectedOrgUnit=position==0?null:(OrgUnitDB)spinner.getItemAtPosition(position);
-
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
-
-                if(selectedOrgUnit==null)
-                    return;
-                programSpinner.setSelection(0,true,true);
-                DashboardActivity.dashboardActivity.onOrgUnitSelected(selectedOrgUnit);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
 
     public void onOrgUnitSelected(OrgUnitDB orgUnit) {
         Log.d(TAG, "onOrgUnitSelected");
@@ -187,13 +165,5 @@ public class PlanModuleController extends ModuleController {
     private void orgUnitVisibility(int visibility) {
         DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(visibility);
         DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit_header).setVisibility(visibility);
-    }
-
-    public void clickOrgProgramSpinner() {
-        programSpinner.performClick();
-    }
-
-    public void clickOrgUnitSpinner() {
-        orgUnitSpinner.performClick();
     }
 }
