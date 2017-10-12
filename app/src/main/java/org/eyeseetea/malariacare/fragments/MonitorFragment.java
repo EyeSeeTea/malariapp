@@ -113,25 +113,33 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s', '%s')";
-                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedProgramFilter.getUid(), selectedProgramFilter.getName());
-                        Log.d(TAG, updateChartJS);
-                        webView.loadUrl(updateChartJS);
+                        pushProgramFilterToJavascript(selectedProgramFilter.getUid());
                         saveCurrentFilters();
                     }
 
                     @Override
                     public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s', '%s')";
-                        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER,selectedOrgUnitFilter.getUid(), selectedOrgUnitFilter.getName());
-                        Log.d(TAG, updateChartJS);
-                        webView.loadUrl(updateChartJS);
+                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter.getUid());
                         saveCurrentFilters();
                     }
                 });
 
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void pushOrgUnitFilterToJavascript(String selectedOrgUnitFilter) {
+        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s')";
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER, selectedOrgUnitFilter);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
+    }
+
+    private void pushProgramFilterToJavascript(String selectedProgramFilter) {
+        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s')";
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER, selectedProgramFilter);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
     }
 
     private void saveCurrentFilters() {
@@ -177,7 +185,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         if (orgUnitProgramFilterView != null) {
             String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
             String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
             orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
         }
     }
@@ -287,26 +294,32 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 if (isProgramFilterActive()) {
                     new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
                 }
-                //Render the table and pie.
-                PieBuilderBase.showPieTab(view);
 
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
                     //facility by progam-> is a orgunit facility
                     new FacilityTableBuilderByProgram(surveysForGraphic,
                             getActivity()).addDataInChart(view);
-                    FacilityTableBuilderByOrgUnit.showFacilities(view);
                 }
                 if (isProgramFilterActive()) {
                     //facility by orgunit-> is a program facility
                     new FacilityTableBuilderByOrgUnit(surveysForGraphic,
                             getActivity()).addDataInChart(view);
-                    FacilityTableBuilderByProgram.showFacilities(view);
                 }
 
                 //Draw facility main table
                 //Set the colors of red/green/yellow pie and table
                 FacilityTableBuilderBase.setColor(view);
+
+                String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+                String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+                if(!programUidFilter.equals("")){
+                    pushOrgUnitFilterToJavascript(orgUnitUidFilter);
+                }else if(!orgUnitUidFilter.equals("")){
+                    pushOrgUnitFilterToJavascript(orgUnitUidFilter);
+                }else{
+                    FacilityTableBuilderByProgram.showFacilities(view);
+                }
             }
         });
         //Load html
