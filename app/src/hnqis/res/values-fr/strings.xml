@@ -246,10 +246,6 @@ Mensuelle"</string>
 <string name="url_not_available">"L'URL n'est pas encore disponible"</string>
 <string name="see_full_assessment">"Voir l'évaluation complète à:"</string>
 <string name="on">"à"</string>
-
-<string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
-<string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
-<string name="start">"Début"</string>
 <string name="plain_text">"Texte en clair "</string>
 <string name="html_text">"Texte formaté "</string>
 </resources>
