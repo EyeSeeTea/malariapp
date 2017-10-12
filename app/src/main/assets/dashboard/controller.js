@@ -108,6 +108,7 @@ function resetProgramSpinner(){
 }
 //change orgUnit and refresh table and graphics (or refresh principal table with all the stats)
 function changeOrgUnit(){
+    hideMultipleEventLegend();
 	if(selectedOrgUnit===allOrgUnitKey){
         renderPieChartsByOrgUnit();
         showElement("tableCanvas");
