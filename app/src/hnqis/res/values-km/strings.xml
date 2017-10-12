@@ -272,4 +272,6 @@ evaluation"</string>
 <string name="comments">"យោបល់"</string>
 <string name="dates">"កាលបរិច្ឆេទពីមុន"</string>
 <string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
+<string name="plain_text">"អត្ថបទធម្មតា "</string>
+<string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 </resources>
