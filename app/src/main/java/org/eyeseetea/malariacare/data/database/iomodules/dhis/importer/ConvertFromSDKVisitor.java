@@ -579,7 +579,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         for (ProgramExtended sdkProgramExtended : ProgramExtended.getExtendedList(
                 SdkQueries.getProgramsForOrganisationUnit(appOrgUnit.getUid(),
                         PreferencesState.getInstance().getContext().getString(R.string.pull_program_code,
-                                ProgramType.WITHOUT_REGISTRATION)))) {
+                                ProgramType.WITHOUT_REGISTRATION), ProgramType.WITHOUT_REGISTRATION))) {
                 sdkProgramExtended.setAppProgram(
                         programMapObjects.get(sdkProgramExtended.getUid()));
 
