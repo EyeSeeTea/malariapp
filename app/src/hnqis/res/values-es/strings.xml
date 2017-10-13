@@ -252,4 +252,6 @@ clínica"</string>
 <string name="url_not_available">URL aún no disponible</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
 <string name="on">"en"</string>
+<string name="plain_text">Texto sin formato </string>
+<string name="html_text">Texto con formato </string>
 </resources>

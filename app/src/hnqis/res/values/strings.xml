@@ -252,5 +252,7 @@ evaluation"</string>
 <string name="url_not_available">"URL not yet available"</string>
 <string name="see_full_assessment">"See full assessment at:"</string>
 <string name="on">"on"</string>
-<string name="date_month_text_format">"MMMM d',' YYYY"</string>
+
+<string name="plain_text">Plain text </string>
+<string name="html_text">Formatted text </string>
 </resources>
