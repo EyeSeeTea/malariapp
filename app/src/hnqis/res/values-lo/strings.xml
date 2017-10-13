@@ -264,7 +264,10 @@
 <string name="see_full_assessment">ເບິ່ງການປະເມີນຜົນເຕັມທີ່ຢູ່</string>
 <string name="on">""</string>
 
-    <string name="add">"ຕື່ມຂໍ້ມູນ"</string>
-    <string name="change_date">"ປ່ຽນວັນທີ"</string>
-    <string name="mark_complete">"Mark ແລ້ວສົມບູນ"</string>
+<string name="add">"ຕື່ມຂໍ້ມູນ"</string>
+<string name="change_date">"ປ່ຽນວັນທີ"</string>
+<string name="show_history">"ປະຫວັດການຈັດຕາຕະລາງ"</string>
+<string name="comments">"ຄວາມຄິດເຫັນ"</string>
+<string name="dates">"ວັນທີ່ຜ່ານມາ"</string>
+<string name="mark_complete">"Mark ແລ້ວສົມບູນ"</string>
 </resources>
