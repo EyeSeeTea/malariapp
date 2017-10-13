@@ -23,6 +23,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView
+        android:id="@+id/monitor_org_unit_program_filter_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <FrameLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"

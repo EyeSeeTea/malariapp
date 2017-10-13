@@ -179,8 +179,8 @@ evaluation"</string>
 <string name="improve">"Improve"</string>
 <string name="monitor">"Monitor"</string>
 
-<string name="filter_all_org_units">"all org units"</string>
-<string name="filter_all_org_assessments">"all assessments"</string>
+<string name="filter_all_org_units">"All Org Units"</string>
+<string name="filter_all_org_assessments">"All Assessments"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
@@ -260,9 +260,14 @@ evaluation"</string>
 <string name="date_month_text_format">"MMMM d',' YYYY"</string>
 
 
-    <string name="add">"Add"</string>
-    <string name="change_date">"Change date"</string>
-    <string name="mark_complete">"Mark complete"</string>
-    <string name="mandatory">Mandatory</string>
-    <string name="percent">&#37;</string>
+<string name="add">"Add"</string>
+<string name="change_date">"Change date"</string>
+<string name="show_history">"Schedule History"</string>
+<string name="comments">"Comments"</string>
+<string name="dates">"Previous dates"</string>
+<string name="mark_complete">"Mark complete"</string>
+<string name="mandatory">Mandatory</string>
+<string name="percent">&#37;</string>
+<string name="plain_text">Plain text </string>
+<string name="html_text">Formatted text </string>
 </resources>

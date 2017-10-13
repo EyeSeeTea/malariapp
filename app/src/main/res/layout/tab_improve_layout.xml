@@ -25,51 +25,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/filters_sentSurveys">
-
-        <LinearLayout
+        <org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView
+            android:id="@+id/improve_org_unit_program_filter_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/assess_grey"
-            android:paddingTop="5dip"
-            android:paddingBottom="5dip"
-            android:weightSum="1">
-            <org.eyeseetea.malariacare.views.CustomSpinner
-                android:id="@+id/filter_program"
-                android:layout_width="0dp"
-                android:layout_weight="0.44"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"/>
+            android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:id="@+id/filter_program_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.06"
-                android:onClick="clickProgramSpinner"
-                android:src="@drawable/arrow_improve" />
-            <org.eyeseetea.malariacare.views.CustomSpinner
-                android:id="@+id/filter_orgunit"
-                android:layout_width="0dp"
-                android:layout_weight="0.44"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"/>
-
-            <ImageView
-                android:id="@+id/filter_orgunit_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.06"
-                android:onClick="clickProgramSpinner"
-                android:src="@drawable/arrow_improve" />
-        </LinearLayout>
         <LinearLayout
             android:id="@+id/layoutHeader"
             android:layout_width="match_parent"

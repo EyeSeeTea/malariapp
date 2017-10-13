@@ -286,6 +286,12 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onFeedbackSelected(survey);
     }
 
+
+
+    public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
+        dashboardController.onPlanPerOrgUnitMenuClicked(survey);
+    }
+
     /**
      * Moving into createSurvey fragment
      */
@@ -359,27 +365,6 @@ public class DashboardActivity extends BaseActivity {
                 });
             }
         }, 1000);
-    }
-
-    public void preparePlanningFilters(List<ProgramDB> programList, List<OrgUnitDB> orgUnitList) {
-        ((PlanModuleController) dashboardController.getModuleByName(
-                PlanModuleController.getSimpleName())).prepareFilters(programList, orgUnitList);
-    }
-
-    @Override
-    public void clickOrgUnitSpinner(View v) {
-        PlanModuleController planModuleController =
-                (PlanModuleController) dashboardController.getModuleByName(
-                        PlanModuleController.getSimpleName());
-        planModuleController.clickOrgUnitSpinner();
-    }
-
-    @Override
-    public void clickProgramSpinner(View v) {
-        PlanModuleController planModuleController =
-                (PlanModuleController) dashboardController.getModuleByName(
-                        PlanModuleController.getSimpleName());
-        planModuleController.clickOrgProgramSpinner();
     }
 
     public void openActionPlan() {

@@ -257,7 +257,12 @@ clínica"</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
 <string name="on">"en"</string>
 
-    <string name="add">"Añadir"</string>
-    <string name="change_date">"Cambiar fecha"</string>
-    <string name="mark_complete">"Marcar completado"</string>
+<string name="add">"Añadir"</string>
+<string name="change_date">"Cambiar fecha"</string>
+<string name="show_history">"Historial de programación"</string>
+<string name="comments">"Comentarios"</string>
+<string name="dates">"Fechas anteriores"</string>
+<string name="mark_complete">"Marcar completado"</string>
+<string name="plain_text">Texto sin formato </string>
+<string name="html_text">Texto con formato </string>
 </resources>
