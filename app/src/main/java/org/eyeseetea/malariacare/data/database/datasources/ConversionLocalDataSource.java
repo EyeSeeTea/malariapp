@@ -135,11 +135,12 @@ public class ConversionLocalDataSource {
         //Convert Programs, Tabs
         callback.onStep(PullStep.PREPARING_PROGRAMS);
         System.out.printf("Converting programs and tabs...");
-        List<String> assignedProgramsIDs = SdkQueries.getAssignedPrograms();
+        List<String> assignedProgramsIDs = SdkQueries.getAssignedProgramUids(PreferencesState.getInstance().getContext().getString(
+                R.string.pull_program_code));
         for (String assignedProgramID : assignedProgramsIDs) {
             ProgramExtended programExtended = new ProgramExtended(
                     SdkQueries.getProgram(assignedProgramID));
-                programExtended.accept(converter);
+            programExtended.accept(converter);
         }
 
         //Convert Answers, Options
@@ -170,8 +171,8 @@ public class ConversionLocalDataSource {
 
         int count;
         //Dataelements ordered by program.
-        List<ProgramExtended> programs = ProgramExtended.getAllPrograms();
-
+        List<ProgramExtended> programs = ProgramExtended.getAllPrograms(PreferencesState.getInstance().getContext().getString(
+                R.string.pull_program_code));
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
         if (!PullController.PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {

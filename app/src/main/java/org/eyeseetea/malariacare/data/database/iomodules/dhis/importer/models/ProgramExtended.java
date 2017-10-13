@@ -129,7 +129,8 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public static ProgramExtended getProgramByDataElement(String dataElementUid) {
         ProgramExtended program = null;
-        List<ProgramExtended> programs = getAllPrograms();
+        List<ProgramExtended> programs = getAllPrograms(PreferencesState.getInstance().getContext().getString(
+                R.string.pull_program_code));
         for (ProgramExtended program1 : programs) {
             for (ProgramStageExtended programStage : program1.getProgramStages()) {
                 for (ProgramStageSectionExtended programStageSection : programStage.getProgramStageSections()) {
@@ -144,7 +145,7 @@ public class ProgramExtended implements VisitableFromSDK {
         return program;
     }
 
-    public static List<ProgramExtended> getAllPrograms(){
+    public static List<ProgramExtended> getAllPrograms(String pullProgramCode){
         List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).as(programFlowName)
                 .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(attributeValueFlowName)
                 .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
@@ -153,8 +154,7 @@ public class ProgramExtended implements VisitableFromSDK {
                 .on(AttributeFlow_Table.attributeUId.withTable(attributeFlowAlias).eq(
                         AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
                 .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
-                .and(AttributeValueFlow_Table.value.is(PreferencesState.getInstance().getContext().getString(
-                        R.string.pull_program_code))).queryList();
+                .and(AttributeValueFlow_Table.value.is(pullProgramCode)).queryList();
         List<ProgramExtended> programsExtended = new ArrayList<>();
         for(ProgramFlow programFlow : programFlows){
             programsExtended.add(new ProgramExtended(programFlow));

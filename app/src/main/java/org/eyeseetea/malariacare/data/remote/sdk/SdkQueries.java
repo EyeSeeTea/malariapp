@@ -19,6 +19,7 @@ import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
@@ -55,20 +56,11 @@ import java.util.List;
 
 public class SdkQueries {
 
-    public static List<String> getAssignedPrograms() {
+    public static List<String> getAssignedProgramUids(String pullProgramCode) {
         List<String> uids = new ArrayList<>();
-        List<ProgramFlow> programsFlow = new SQLite().select().from(ProgramFlow.class).as(programFlowName)
-                .join(AttributeValueFlow.class, Join.JoinType.INNER).as(attributeValueFlowName)
-                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
-                        ProgramFlow_Table.uId.withTable(programFlowAlias)))
-                .join(AttributeFlow.class, Join.JoinType.INNER).as(attributeFlowName)
-                .on(AttributeFlow_Table.attributeUId.withTable(attributeFlowAlias).eq(
-                        AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
-                .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
-                .and(AttributeValueFlow_Table.value.is(PreferencesState.getInstance().getContext().getString(
-                        R.string.pull_program_code))).queryList();
-        for (ProgramFlow programFlow : programsFlow) {
-            uids.add(programFlow.getUId());
+        List<ProgramExtended> programExtendeds = ProgramExtended.getAllPrograms(pullProgramCode);
+        for (ProgramExtended programExtended : programExtendeds) {
+            uids.add(programExtended.getUid());
         }
         return uids;
     }
@@ -122,12 +114,13 @@ public class SdkQueries {
                         OrganisationUnitToProgramRelationFlow_Table.organisationUnit.
                                 is(UId)).queryList();
 
+        List<String> assignedProgramUids = SdkQueries.getAssignedProgramUids(programAttribute);
         List<ProgramFlow> programs = new ArrayList<ProgramFlow>();
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
             if (oupr.getProgram() == null) {
                 continue;
             }
-            if(!isValid(oupr.getProgram(), programAttribute)){
+            if(!assignedProgramUids.contains(oupr.getProgram().getUId())){
                 continue;
             }
             if (programType != null) {
@@ -141,20 +134,6 @@ public class SdkQueries {
             }
         }
         return programs;
-    }
-
-    private static boolean isValid(ProgramFlow program, String pullProgram) {
-        boolean isValid=true;
-        for(AttributeValueFlow attributeValue : program.getAttributeValueFlow()){
-            if(attributeValue.getAttribute().getCode().equals(PreferencesState.getInstance().getContext().getString(
-                    R.string.program_type_code))){
-                if(attributeValue.getValue().equals(pullProgram)){
-                    isValid=false;
-                    break;
-                }
-            }
-        }
-        return isValid;
     }
 
     public static List<EventFlow> getEvents(String organisationUnitUId, String programUId) {
