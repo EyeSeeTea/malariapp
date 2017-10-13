@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.PlanActionFragment;
@@ -120,6 +121,8 @@ public class ImproveModuleController extends ModuleController {
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
+
+        UpdateFiltersBySurvey(survey);
     }
 
     public void onPlanActionSelected(SurveyDB survey){
@@ -136,8 +139,16 @@ public class ImproveModuleController extends ModuleController {
         replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
 
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
+
+        UpdateFiltersBySurvey(survey);
     }
 
+    private void UpdateFiltersBySurvey(SurveyDB survey) {
+        PreferencesState.getInstance().setProgramUidFilter(
+                survey.getProgram().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                survey.getOrgUnit().getUid());
+    }
 
     private void closeFeedbackFragment() {
         android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
