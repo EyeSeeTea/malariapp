@@ -358,7 +358,7 @@ public abstract class AUtils {
     }
 
     public static void checkUserClosed(UserDB user, Context context) {
-        if (user.getCloseDate() != null && user.getCloseDate().before(new Date())) {
+        if (isUserClosed(user)) {
             DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -370,6 +370,10 @@ public abstract class AUtils {
                     PreferencesState.getInstance().getContext().getString(R.string.user_close),
                     context, listener);
         }
+    }
+
+    private static boolean isUserClosed(UserDB user) {
+        return user.getCloseDate() != null && user.getCloseDate().before(new Date());
     }
 
     /**

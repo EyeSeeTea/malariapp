@@ -23,7 +23,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
-import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageDataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;

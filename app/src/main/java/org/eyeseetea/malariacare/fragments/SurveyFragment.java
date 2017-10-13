@@ -53,8 +53,11 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
@@ -121,7 +124,7 @@ public class SurveyFragment extends Fragment  {
     private TabAdaptersCache tabAdaptersCache = new TabAdaptersCache();
 
     /**
-     * Adapter for the tabs spinner
+     * Adapter for the tabs actionSpinner
      */
     private TabArrayAdapter tabAdapter;
 
@@ -239,9 +242,11 @@ public class SurveyFragment extends Fragment  {
     public void onPause() {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                    new SurveyAnsweredRatioRepository();
+            SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+            saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {
@@ -272,14 +277,14 @@ public class SurveyFragment extends Fragment  {
     }
 
     /**
-     * Adds the spinner and imagebutons for tabs
+     * Adds the actionSpinner and imagebutons for tabs
      */
     private void createMenu(final String moduleName) {
 
         Log.d(TAG, "createMenu");
         this.tabAdapter = new TabArrayAdapter(getActivity().getApplicationContext(), tabsList);
         spinner = (Spinner) llLayout.findViewById(R.id.tabSpinner);
-        //If the spinner is null, is a survey without header tabs)
+        //If the actionSpinner is null, is a survey without header tabs)
         if (spinner != null) {
             //Invisible until info ready
             spinner.setVisibility(View.GONE);
@@ -375,7 +380,7 @@ public class SurveyFragment extends Fragment  {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //spinner
+            //actionSpinner
             startProgress();
         }
 

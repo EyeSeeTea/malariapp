@@ -62,7 +62,7 @@ import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries
         .ProgramStageSectionTabDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
-import org.eyeseetea.malariacare.data.remote.SdkQueries;
+import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
@@ -393,6 +393,16 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
                 PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
             survey.setCreationDate(EventExtended.parseLongDate(dataValue.getValue()));
+            survey.save();
+            Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
+                    dataValue.getValue()));
+            return;
+        }
+
+        //-> completionOn
+        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
+                PreferencesState.getInstance().getContext().getString(R.string.completed_on_code)))) {
+            survey.setCompletionDate(EventExtended.parseLongDate(dataValue.getValue()));
             survey.save();
             Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
                     dataValue.getValue()));

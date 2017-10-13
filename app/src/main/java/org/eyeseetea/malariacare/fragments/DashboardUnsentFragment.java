@@ -20,37 +20,30 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
-import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,52 +51,64 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DashboardUnsentFragment extends ListFragment implements IModuleFragment{
-
+public class DashboardUnsentFragment extends ListFragment implements IModuleFragment {
 
     public static final String TAG = ".DetailsFragment";
     private SurveyReceiver surveyReceiver;
     private List<SurveyDB> surveys;
-    protected IDashboardAdapter adapter;
-    private static int selectedPosition=0;
+    protected AssessmentUnsentAdapter adapter;
+    private static int selectedPosition = 0;
     DashboardActivity dashboardActivity;
 
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
-    public DashboardUnsentFragment(){
-        this.adapter = Session.getAdapterUnsent();
+    public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
     }
 
-    public static DashboardUnsentFragment newInstance(int index) {
-        DashboardUnsentFragment f = new DashboardUnsentFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
-
-    public int getShownIndex() {
-        return getArguments().getInt("index", 0);
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         if (container == null) {
             return null;
         }
 
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.assess_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
+
+        orgUnitProgramFilterView.setFilterChangedListener(
+                new OrgUnitProgramFilterView.FilterChangedListener() {
+                    @Override
+                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
+                        reloadInProgressSurveys();
+                        saveCurrentFilters();
+                    }
+
+                    @Override
+                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
+                        reloadInProgressSurveys();
+                        saveCurrentFilters();
+                    }
+                });
+
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void saveCurrentFilters() {
+        PreferencesState.getInstance().setProgramUidFilter(
+                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
     @Override
@@ -125,67 +130,29 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         super.onResume();
     }
 
+    private void updateSelectedFilters() {
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
+    }
+
     /**
      * Inits adapter.
      * Most of times is just an AssessmentAdapter.
-     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the one in session is created.
+     * In a version with several adapters in dashboard (like in 'mock' branch) a new one like the
+     * one in session is created.
      */
-    private void initAdapter(){
-        IDashboardAdapter adapterInSession = Session.getAdapterUnsent();
-        if(adapterInSession == null){
-            adapterInSession = new AssessmentUnsentAdapter(this.surveys,getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(this.surveys,getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterUnsent(this.adapter);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        if(isPositionASurvey(selectedPosition)) {
-            MenuInflater inflater=getActivity().getMenuInflater();
-            inflater.inflate(R.menu.unsent_options,menu);
-        }
+    private void initAdapter() {
+        this.adapter = new AssessmentUnsentAdapter(this.surveys, getActivity());
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         dashboardActivity = (DashboardActivity) activity;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Log.d(TAG, "id" + item.getItemId());
-        final SurveyDB survey=(SurveyDB)adapter.getItem(selectedPosition-1);
-        switch (item.getItemId()) {
-            case R.id.option_edit:
-                dashboardActivity.onSurveySelected(survey);
-                return true;
-            case R.id.option_mark_completed:
-                dashboardActivity.onMarkAsCompleted(survey);
-                return true;
-            case R.id.option_delete:
-                Log.d(TAG, "removing item pos=" + selectedPosition);
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(getActivity().getString(R.string.dialog_title_delete_survey))
-                        .setMessage(String.format(getActivity().getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                                removeSurveyFromAdapter(survey);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null).create().show();
-
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
     }
 
     //Remove survey from the list and reload list.
@@ -196,6 +163,8 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     @Override
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
@@ -258,14 +227,17 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         ListView listView = getListView();
         listView.addHeaderView(header);
         listView.addFooterView(footer);
-        setListAdapter((BaseAdapter) adapter);
+        setListAdapter(adapter);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         //Discard clicks on header|footer (which is attendend on onNewSurvey via super)
         selectedPosition=position;
-        l.showContextMenuForChild(v);
+        if (isPositionASurvey(selectedPosition)) {
+            final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition - 1);
+            dashboardActivity.onSurveySelected(survey);
+        }
     }
 
     /**
@@ -293,7 +265,36 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
     public void reloadInProgressSurveys(){
         List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-        reloadSurveys(surveysInProgressFromService);
+
+        reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
+    }
+
+    private List<SurveyDB> getSurveysByOrgUnitAndProgram(List<SurveyDB> surveysInProgressFromService) {
+        List<SurveyDB> filteredSurveys = new ArrayList<>();
+
+        for (SurveyDB survey:surveysInProgressFromService) {
+            if (surveyHasOrgUnitFilter(survey) && surveyHasProgramFilter(survey)){
+                filteredSurveys.add(survey);
+            }
+        }
+
+        return filteredSurveys;
+    }
+
+    private boolean surveyHasOrgUnitFilter(SurveyDB survey) {
+        OrgUnitDB orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+
+        return survey.getOrgUnit().getUid().equals(orgUnitFilter.getUid())||
+        orgUnitFilter.getName().equals(PreferencesState.getInstance().getContext().getString(
+                R.string.filter_all_org_units));
+    }
+
+    private boolean surveyHasProgramFilter(SurveyDB survey) {
+        ProgramDB programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+
+        return survey.getProgram().getUid().equals(programFilter.getUid())||
+                programFilter.getName().equals(PreferencesState.getInstance().getContext().getString(
+                        R.string.filter_all_org_assessments));
     }
 
     public void reloadSurveys(List<SurveyDB> newListSurveys){

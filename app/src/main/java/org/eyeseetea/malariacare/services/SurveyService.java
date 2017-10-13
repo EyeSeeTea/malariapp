@@ -24,15 +24,12 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
-import org.eyeseetea.malariacare.data.database.model.TabDB_Table;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
@@ -40,7 +37,6 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -226,6 +222,27 @@ public class SurveyService extends IntentService {
         //Returning result to anyone listening
         Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+    }
+
+    private void reloadOnlyLastSentFragment() {
+        BaseServiceBundle sentDashboardBundle = new BaseServiceBundle();
+
+        Log.d(TAG,"getAllSentCompletedOrConflictSurveys (Thread:"+Thread.currentThread().getId()+")");
+
+        //Select surveys from sql
+        List<SurveyDB> sentSurveyList;
+
+        sentSurveyList = SurveyDB.getLastSentCompletedOrConflictSurveys();
+        sentDashboardBundle.addModelList(SurveyDB.class.getName(),sentSurveyList);
+        sentDashboardBundle.addModelList(OrgUnitDB.class.getName(),OrgUnitDB.getAllOrgUnit());
+        sentDashboardBundle.addModelList(ProgramDB.class.getName(),ProgramDB.getAllPrograms());
+
+        //Since intents does NOT admit NON serializable as values we use Session instead
+        Session.putServiceValue(RELOAD_SENT_FRAGMENT_ACTION, sentDashboardBundle);
+
+        //Returning result to anyone listening
+        Intent resultIntent= new Intent(RELOAD_SENT_FRAGMENT_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
 
     }
 
@@ -302,24 +319,6 @@ public class SurveyService extends IntentService {
         //Select surveys from sql
         List<SurveyDB> surveys = SurveyDB.getAllInProgressSurveys();
 
-        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(SurveyDB survey:surveys){
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
-                        @Override
-                        public void nextProgressMessage() {
-                            Log.d(getClass().getName(), "nextProgressMessage");
-                        }
-
-                        @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            Log.d(getClass().getName(), "onComplete");
-                        }
-                    });
-        }
-
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_IN_PROGRESS_SURVEYS_ACTION,surveys);
 
@@ -337,6 +336,7 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
+        reloadSentFragment();
         getAllCompletedSurveys();
         getAllCreateSurveyData();
         getAllInProgressSurveys();
@@ -368,24 +368,6 @@ public class SurveyService extends IntentService {
         //Select surveys from sql
         List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
 
-        //Load %completion in every survey (it takes a while so it can NOT be done in UI Thread)
-        for(SurveyDB survey:surveys){
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
-                        @Override
-                        public void nextProgressMessage() {
-                            Log.d(getClass().getName(), "nextProgressMessage");
-                        }
-
-                        @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            Log.d(getClass().getName(), "onComplete");
-                        }
-                    });
-        }
-
         //Since intents does NOT admit NON serializable as values we use Session instead
         Session.putServiceValue(ALL_COMPLETED_SURVEYS_ACTION,surveys);
 
@@ -409,7 +391,7 @@ public class SurveyService extends IntentService {
         //Get tabs for current program & register them (scores)
         List<TabDB> tabs = TabDB.getTabsBySession(module);
         //old List<Tab> allTabs = new Select().all().from(Tab.class).where(Condition.column(Tab$Table.ID_PROGRAM).eq(survey.getProgram().getId_program())).queryList();
-        List<TabDB> allTabs = new Select().from(TabDB.class).where(TabDB_Table.id_program_fk.eq(survey.getProgram().getId_program())).queryList();
+        List<TabDB> allTabs = TabDB.getAllTabsByProgram(survey.getProgram().getId_program());
         //register tabs scores for current survey and module
         ScoreRegister.registerTabScores(tabs, survey.getId_survey(), module);
 

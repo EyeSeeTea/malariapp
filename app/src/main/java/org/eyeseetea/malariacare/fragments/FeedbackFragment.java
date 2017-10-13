@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -45,6 +46,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -72,6 +74,10 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      * Checkbox that toggle between all|failed questions
      */
     private CustomRadioButton chkFailed;
+    /**
+     * planAction that toggle between all|failed questions
+     */
+    private CustomButton planAction;
 
     /**
      * List view adapter for items
@@ -156,6 +162,8 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                 Session.getSurveyByModule(module).getId_survey(), module);
         feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
+        feedbackListView.setDivider(null);
+        feedbackListView.setDividerHeight(0);
 
         //And checkbox listener
         chkFailed = (CustomRadioButton) llLayout.findViewById(R.id.chkFailed);
@@ -166,6 +174,14 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                                              feedbackAdapter.toggleOnlyFailed();
                                              ((CustomRadioButton) v).setChecked(feedbackAdapter
                                                      .isOnlyFailed());
+                                         }
+                                     }
+        );
+        planAction = (CustomButton) llLayout.findViewById(R.id.action_plan);
+        planAction.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             DashboardActivity.dashboardActivity.openActionPlan();
                                          }
                                      }
         );

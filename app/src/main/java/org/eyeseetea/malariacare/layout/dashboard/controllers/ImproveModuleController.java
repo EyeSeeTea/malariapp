@@ -24,13 +24,18 @@ import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
+import org.eyeseetea.malariacare.fragments.PlanActionFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -38,6 +43,9 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 public class ImproveModuleController extends ModuleController {
 
     FeedbackFragment feedbackFragment;
+    PlanActionFragment mPlanActionFragment;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
@@ -63,7 +71,7 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onExitTab(){
-        if(!isFragmentActive(FeedbackFragment.class)){
+        if(!isFragmentActive(FeedbackFragment.class) && !isFragmentActive(PlanActionFragment.class)){
             return;
         }
 
@@ -71,7 +79,7 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
-        if(isFragmentActive(FeedbackFragment.class)){
+        if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
            return;
         }
         super.onTabChanged();
@@ -103,19 +111,39 @@ public class ImproveModuleController extends ModuleController {
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
+    public void onPlanActionSelected(SurveyDB survey){
+        Session.setSurveyByModule(survey, getSimpleName());
+        try {
+            LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
+            filters.setVisibility(View.GONE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        mPlanActionFragment = PlanActionFragment.newInstance(survey.getId_survey());
+
+        replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
+
+        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
+    }
+
+
     private void closeFeedbackFragment() {
-
-        //Clear feedback fragment
-        //ScoreRegister.clear(Session.getSurveyByModule().getId_survey());
-
-        FeedbackFragment feedbackFragment = (FeedbackFragment) dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
-        feedbackFragment.unregisterReceiver();
-        feedbackFragment.getView().setVisibility(View.GONE);
+        android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
+        if(fragment instanceof  FeedbackFragment) {
+            feedbackFragment.unregisterReceiver();
+            feedbackFragment.getView().setVisibility(View.GONE);
+        }else if(fragment instanceof PlanActionFragment){
+            if (feedbackFragment != null)
+                replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
+            else
+                replaceFragment(R.id.dashboard_completed_container, super.fragment);
+        }
 
         //Reload improve fragment
         if (DashboardOrientation.VERTICAL.equals(dashboardController.getOrientation())) {
             dashboardController.reloadVertical();
-        }else{
+        } else if (fragment instanceof FeedbackFragment) {
             reloadFragment();
         }
 

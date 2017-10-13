@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -45,10 +44,10 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomCheckBox;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,11 +59,14 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
     private PlannedItemsReceiver plannedItemsReceiver;
-    protected IDashboardAdapter adapter;
+    protected PlanningPerOrgUnitAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
     static Button scheduleButton;
     CustomCheckBox selectAllCheckbox;
     String filterOrgUnitUid;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
+
     public PlannedPerOrgUnitFragment() {
 
     }
@@ -75,10 +77,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         PreferencesState.getInstance().initalizateActivityDependencies();
-
-        //get the org unit uid from dashboardactivity
-        //filterOrgUnitUid=getActivity().getIntent().getExtras().getString(getActivity().getApplicationContext().getResources().getString(R.string.organisation_unit));
-        this.adapter = Session.getAdapterSent();
         this.plannedSurveys = new ArrayList();
     }
 
@@ -89,8 +87,21 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
             return null;
         }
 
+        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
+                .findViewById(R.id.plan_org_unit_program_filter_view);
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+    private void updateSelectedFilters() {
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -192,13 +203,12 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         ListView listView = getListView();
         if(listView.getHeaderViewsCount()==0)
             listView.addHeaderView(header);
-        setListAdapter((BaseAdapter) adapter);
-        Session.listViewSent = listView;
+        setListAdapter(adapter);
     }
 
     private void checkAll(boolean value) {
         for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
-            plannedSurveyByOrgUnit.setChecked(value);
+                plannedSurveyByOrgUnit.setChecked(value);
         }
         this.adapter.setItems(plannedSurveys);
         this.adapter.notifyDataSetChanged();
@@ -217,14 +227,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      * @param plannedItems
      */
     private void initAdapter(List<PlannedSurveyByOrgUnit> plannedItems){
-        IDashboardAdapter adapterInSession = Session.getAdapterOrgUnit();
-        if(adapterInSession == null){
-            adapterInSession = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
-        }else{
-            adapterInSession = adapterInSession.newInstance(plannedItems, getActivity());
-        }
-        this.adapter = adapterInSession;
-        Session.setAdapterOrgUnit(this.adapter);
+        this.adapter  = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
     }
 
     @Override
@@ -276,6 +279,8 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);

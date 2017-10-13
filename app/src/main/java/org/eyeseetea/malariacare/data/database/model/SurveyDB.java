@@ -38,7 +38,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
-import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
@@ -48,8 +47,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
-import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -132,6 +129,8 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
      * Just a cached value from orgunitprogramproductivity
      */
     Integer productivity;
+
+    private SurveyAnsweredRatioDB mSurveyAnsweredRatio;
 
     public SurveyDB() {
         //Set dates
@@ -629,7 +628,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
         IConvertToSDKVisitor.visit(this);
     }
-
     /* Returns the last surveys (by date) with status Completed or sent
     * @return
          */
@@ -871,6 +869,12 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .where(SurveyDB_Table.status
                         .eq(Constants.SURVEY_IN_PROGRESS))
                 .querySingle();
+    }
+
+    public static SurveyDB getSurveyById(long id) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.id_survey.eq(id)).querySingle();
     }
 
     public String getFullName() {

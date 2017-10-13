@@ -47,12 +47,12 @@ import android.widget.Toast;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
-import org.eyeseetea.malariacare.network.PullClient;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -304,8 +304,7 @@ public class LoginActivity extends AbsLoginActivity {
         @Override
         protected Void doInBackground(LoginActivity... params) {
             loginActivity = params[0];
-            PullClient pullClient = new PullClient(PreferencesState.getInstance().getContext());
-            isUserClosed = pullClient.isUserClosed(Session.getUser().getUid());
+            isUserClosed = PullDhisApiDataSource.isUserClosed(Session.getUser().getUid());
             return null;
         }
 

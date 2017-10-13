@@ -1,12 +1,15 @@
 
 package org.eyeseetea.malariacare.layout.adapters.dashboard;
 
+import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -22,32 +25,15 @@ import java.util.List;
 /**
  * Created by idelcano on 09/08/2016.
  */
-public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDashboardAdapter {
-    List<PlannedSurveyByOrgUnit> items;
+public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
-    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> items, Context context) {
-        this.items= new ArrayList<>();
-        this.items = items;
+    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context) {
+        super(context);
+        items = newItems;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.headerLayout = R.layout.assessment_planning_header;
         this.recordLayout = R.layout.assessment_planning_record;
-    }
-
-    @Override
-    public IDashboardAdapter newInstance(List items, Context context) {
-        return new PlanningPerOrgUnitAdapter((List<PlannedSurveyByOrgUnit>) items, context);
-    }
-
-
-    @Override
-    public Object getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
     }
 
     @Override
@@ -65,9 +51,11 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
         final CheckBox surveyCheckBox = (CheckBox) rowView.findViewById(R.id.survey_type);
         surveyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                                       @Override
-                                                      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                      public void onCheckedChanged(CompoundButton
+                                                              buttonView, boolean isChecked) {
                                                           plannedSurvey.setChecked(isChecked);
-                                                          PlannedPerOrgUnitFragment.reloadButtonState(isChecked);
+                                                          PlannedPerOrgUnitFragment
+                                                                  .reloadButtonState(isChecked);
                                                       }
                                                   }
         );
@@ -80,9 +68,11 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd");
 
         //set schedule date
+        CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         if (survey.getScheduledDate() != null) {
-            CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
             schedule.setText(sdf.format(survey.getScheduledDate()));
+        } else {
+            schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
@@ -95,7 +85,18 @@ public class PlanningPerOrgUnitAdapter extends ADashboardAdapter implements IDas
         surveyCheckBox.setText(surveyDescription);
 
         //set background color from header(type of planning survey)
-        rowView.setBackgroundColor(PreferencesState.getInstance().getContext().getResources().getColor(plannedSurvey.getHeader().getBackgroundColor()));
+        rowView.setBackgroundColor(
+                PreferencesState.getInstance().getContext().getResources().getColor(
+                        plannedSurvey.getHeader().getBackgroundColor()));
+
+        ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
+            }
+        });
+
         return rowView;
     }
 

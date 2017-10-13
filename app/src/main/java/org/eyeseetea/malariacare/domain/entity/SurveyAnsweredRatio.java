@@ -19,11 +19,16 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
+
 /**
  * VO that holds the completion ratio of answered/expected questions
  * Created by arrizabalaga on 1/07/15.
  */
 public class SurveyAnsweredRatio {
+    /**
+     * Id of the related survey
+     */
+    private long surveyId;
     /**
      * Total number of questions to answer
      */
@@ -43,13 +48,21 @@ public class SurveyAnsweredRatio {
      */
     private int totalCompulsory;
 
-
-
-    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory, int compulsoryAnswered) {
+    public SurveyAnsweredRatio(long surveyId, int total, int answered, int totalCompulsory,
+            int compulsoryAnswered) {
+        this.surveyId = surveyId;
         this.total = total;
         this.answered = answered;
-        this.totalCompulsory=totalCompulsory;
+        this.totalCompulsory = totalCompulsory;
         this.compulsoryAnswered = compulsoryAnswered;
+    }
+
+    public long getSurveyId() {
+        return surveyId;
+    }
+
+    public void setSurveyId(long surveyId) {
+        this.surveyId = surveyId;
     }
 
     public int getAnswered() {
@@ -83,62 +96,83 @@ public class SurveyAnsweredRatio {
     public void setCompulsoryAnswered(int compulsoryAnswered) {
         this.compulsoryAnswered = compulsoryAnswered;
     }
+
     /**
      * Return the ratio of completion
+     *
      * @return answered/total
      */
-    public float getRatio(){
-        if (total==0){
+    public float getRatio() {
+        if (total == 0) {
             //Not correct from a math perspective but most practical approach
             return 0;
         }
 
-        if(isCompleted()){
+        if (isCompleted()) {
             return 1;
         }
 
-        return (float)answered/total;
+        return (float) answered / total;
     }
+
     /**
      * Return the ratio of completion compulsoryAnswered
+     *
      * @return answered/total
      */
-    public float getCompulsoryRatio(){
-        if (totalCompulsory==0){
+    public float getCompulsoryRatio() {
+        if (totalCompulsory == 0) {
             //Not correct from a math perspective but most practical approach
             return 0;
         }
 
-        if(isCompleted()){
+        if (isCompleted()) {
             return 1;
         }
 
-        return (float) compulsoryAnswered /totalCompulsory;
+        return (float) compulsoryAnswered / totalCompulsory;
     }
+
     /**
      * Checks if the related survey is completed or not.
      * If there are NO questions it returns false.
+     *
      * @return true|false
      */
-    public boolean isCompleted(){
-        if(total<=0){
+    public boolean isCompleted() {
+        if (total <= 0) {
             return false;
         }
 
-        return answered>=total;
+        return answered >= total;
     }
 
     /**
      * Checks if the related survey has every compulsory question completed.
-     * @return
      */
-    public boolean isCompulsoryCompleted(){
+    public boolean isCompulsoryCompleted() {
         //No compulsory -> ok
-        if(totalCompulsory==0){
+        if (totalCompulsory == 0) {
             return true;
         }
 
-        return compulsoryAnswered>=totalCompulsory;
+        return compulsoryAnswered >= totalCompulsory;
     }
 
+    public int getMandatoryStatus() {
+        if (getTotalCompulsory() > 0) {
+            int value = Float.valueOf(100 * getCompulsoryRatio()).intValue();
+            return value;
+        } else {
+            return 100;
+        }
+    }
+
+    public int getTotalStatus() {
+        if (isCompleted()) {
+            return 100;
+        } else {
+            return Float.valueOf(100 * getRatio()).intValue();
+        }
+    }
 }

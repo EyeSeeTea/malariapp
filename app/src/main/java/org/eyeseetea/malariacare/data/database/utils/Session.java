@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.location.Location;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -30,7 +29,6 @@ import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +53,6 @@ public class Session {
     */
     private static SurveyDB surveyFeedback;
     /**
-    /**
      * The current user
      */
     private static UserDB user;
@@ -71,13 +68,6 @@ public class Session {
     private static Map<String,Object> serviceValues = new HashMap<>();
 
     /**
-     * Adapters that hold dashboard sent and unset surveys adapters
-     */
-    private static IDashboardAdapter adapterUnsent, adapterSent, adapterOrgUnit;
-
-    public static ListView listViewUnsent, listViewSent;
-
-    /**
      * Cache containing the list of ordered items that compounds each tab
      */
     private static Map<Long, List<? extends BaseModel>> tabsCache = new HashMap<>();
@@ -91,6 +81,9 @@ public class Session {
 
 
     public static SurveyDB getSurveyByModule(String module) {
+        if(surveyMappedByModule==null){
+            return null;
+        }
         return surveyMappedByModule.get(module);
     }
 
@@ -126,30 +119,6 @@ public class Session {
         Session.credentials = credentials;
     }
 
-    public static IDashboardAdapter getAdapterOrgUnit() {
-        return adapterOrgUnit;
-    }
-
-    public static void setAdapterOrgUnit(IDashboardAdapter adapterOrgUnit) {
-        Session.adapterOrgUnit = adapterOrgUnit;
-    }
-
-    public static IDashboardAdapter getAdapterUnsent() {
-        return adapterUnsent;
-    }
-
-    public static void setAdapterUnsent(IDashboardAdapter adapterUnsent) {
-        Session.adapterUnsent = adapterUnsent;
-    }
-
-    public static IDashboardAdapter getAdapterSent() {
-        return adapterSent;
-    }
-
-    public static void setAdapterSent(IDashboardAdapter adapterSent) {
-        Session.adapterSent = adapterSent;
-    }
-
     public static Map<Long, List<? extends BaseModel>> getTabsCache() {
         return tabsCache;
     }
@@ -166,8 +135,12 @@ public class Session {
             user.delete();
             user=null;
         }
-        surveyMappedByModule=new HashMap<>();
-        adapterUnsent=null;
+        if(surveyMappedByModule!=null) {
+            surveyMappedByModule.clear();
+        }
+        if(tabsCache!=null){
+            tabsCache.clear();
+        }
         if(serviceValues!=null){
             serviceValues.clear();
         }

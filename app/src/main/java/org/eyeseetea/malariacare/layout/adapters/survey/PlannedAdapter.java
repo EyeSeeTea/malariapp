@@ -139,7 +139,7 @@ public class PlannedAdapter extends BaseAdapter {
                 //Surveys are shown
                 if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
                         PreferencesState.getInstance().getContext().getResources().getString(
-                                R.string.filter_all_org_assessments).toUpperCase()))
+                                R.string.filter_all_org_assessments)))
                         && plannedItem.isShownByHeader(currentHeader)) {
                     numItems++;
                 }
@@ -162,7 +162,7 @@ public class PlannedAdapter extends BaseAdapter {
             PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
             if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
                     PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments).toUpperCase())) {
+                            R.string.filter_all_org_assessments))) {
                 plannedSurvey.incHeaderCounter();
             }
         }
@@ -180,7 +180,7 @@ public class PlannedAdapter extends BaseAdapter {
 
             if ((plannedItem.isShownByProgram(programFilter) || programFilter.getName().equals(
                     PreferencesState.getInstance().getContext().getResources().getString(
-                            R.string.filter_all_org_assessments).toUpperCase()))
+                            R.string.filter_all_org_assessments)))
                     && plannedItem.isShownByHeader(currentHeader)) {
                 numShownItems++;
                 if (position == (numShownItems - 1)) {
@@ -284,6 +284,13 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(AUtils.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
+        ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);
+        dotsMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DashboardActivity.dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(), new ScheduleListener(plannedSurvey.getSurvey(), context));
+            }
+        });
         //background color
         int colorId = plannedSurvey.getPlannedHeader().getSecondaryColor();
         int fixposition = itemOrder - 1;

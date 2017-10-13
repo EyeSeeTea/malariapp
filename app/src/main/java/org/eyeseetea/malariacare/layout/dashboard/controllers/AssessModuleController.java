@@ -25,16 +25,20 @@ import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.utils.Action;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
 import org.eyeseetea.malariacare.fragments.SurveyFragment;
@@ -43,6 +47,7 @@ import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -53,6 +58,8 @@ public class AssessModuleController extends ModuleController {
     SurveyFragment surveyFragment;
 
     CreateSurveyFragment createSurveyFragment;
+
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public AssessModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
@@ -68,6 +75,13 @@ public class AssessModuleController extends ModuleController {
     public void init(DashboardActivity activity) {
         super.init(activity);
         fragment = new DashboardUnsentFragment();
+
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) dashboardActivity.findViewById(
+                        R.id.assess_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setVisibility(View.VISIBLE);
+
     }
 
     /**
@@ -86,7 +100,8 @@ public class AssessModuleController extends ModuleController {
             closeSurveyFragment();
             return;
         }
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.CHANGE_TAB).execute();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain
+                .utils.Action.CHANGE_TAB).execute();
 
     }
 
@@ -112,7 +127,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.showProgress();
         surveyFragment.nextProgressMessage();
         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, Action.PRESS_BACK_BUTTON).execute();
+        new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON).execute();
         //if the survey is opened in review mode exit.
     }
 
@@ -133,17 +148,20 @@ public class AssessModuleController extends ModuleController {
             dashboardActivity.prepareLocationListener(survey);
         }
         //Prepare survey fragment
-        surveyFragment = SurveyFragment.newInstance(1);
+        surveyFragment = new SurveyFragment();
 
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
+        orgUnitProgramFilterView.setVisibility(View.GONE);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
     public void onMarkAsCompleted(final SurveyDB survey) {
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
@@ -169,9 +187,10 @@ public class AssessModuleController extends ModuleController {
             sentTitle.setText("");
         }
 
-        if (createSurveyFragment == null) {
-            createSurveyFragment = CreateSurveyFragment.newInstance(1);
+        if(createSurveyFragment==null) {
+            createSurveyFragment = new CreateSurveyFragment();
         }
+        orgUnitProgramFilterView.setVisibility(View.GONE);
         replaceFragment(getLayout(), createSurveyFragment);
     }
 
@@ -249,9 +268,11 @@ public class AssessModuleController extends ModuleController {
                     public void onClick(DialogInterface dialog, int arg1) {
                         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
 
-                        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
+                        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                                new SurveyAnsweredRatioRepository();
+                        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
                         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                                GetSurveyAnsweredRatioUseCase.RecoveryFrom.MEMORY_FIRST,
                                 new GetSurveyAnsweredRatioUseCase.Callback() {
                                     @Override
                                     public void nextProgressMessage() {
@@ -372,7 +393,7 @@ public class AssessModuleController extends ModuleController {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 //Move to feedbackfragment
-                                dashboardActivity.onFeedbackSelected(survey);
+                                dashboardActivity.openFeedback(survey);
                             }
                         })
                 .setCancelable(true)
@@ -388,9 +409,9 @@ public class AssessModuleController extends ModuleController {
         SurveyAnsweredRatio mSurveyAnsweredRatio;
         SurveyFragment surveyFragment;
         SurveyDB survey;
-        Action action;
+        org.eyeseetea.malariacare.domain.utils.Action action;
 
-        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyDB survey, Action action) {
+        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyDB survey, org.eyeseetea.malariacare.domain.utils.Action action) {
             this.surveyFragment = surveyFragment;
             this.survey = survey;
             this.action = action;
@@ -407,9 +428,11 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected SurveyAnsweredRatio doInBackground(Void... voids) {
-            GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase = new GetSurveyAnsweredRatioUseCase();
-            getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    GetSurveyAnsweredRatioUseCase.RecoveryFrom.DATABASE,
+            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                    new SurveyAnsweredRatioRepository();
+            SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+            saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new GetSurveyAnsweredRatioUseCase.Callback() {
                         @Override
                         public void nextProgressMessage() {
@@ -426,7 +449,7 @@ public class AssessModuleController extends ModuleController {
 
         @Override
         protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
-            if(action.equals(Action.PRESS_BACK_BUTTON)) {
+            if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
                 surveyFragment.hideProgress();
                 boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
                 if(!isDialogShown){
@@ -441,7 +464,7 @@ public class AssessModuleController extends ModuleController {
                     }
                 }
             }
-            else if (action.equals(Action.CHANGE_TAB)){
+            else if (action.equals(org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)){
                 super.onPostExecute(surveyAnsweredRatio);
                 if (surveyAnsweredRatio.getCompulsoryAnswered()
                         == surveyAnsweredRatio.getTotalCompulsory()

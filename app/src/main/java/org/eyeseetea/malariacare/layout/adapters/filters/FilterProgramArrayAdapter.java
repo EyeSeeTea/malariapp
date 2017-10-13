@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.adapters.filters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.InputType;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
@@ -29,9 +30,6 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.List;
 
-/**
- * Created by adrian on 30/04/15.
- */
 public class FilterProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
 
     public FilterProgramArrayAdapter(Context context, List<ProgramDB> programs) {

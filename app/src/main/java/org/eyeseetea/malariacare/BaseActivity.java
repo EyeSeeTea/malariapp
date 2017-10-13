@@ -39,14 +39,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
-import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
@@ -95,6 +95,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         for (SurveyDB survey : surveys) {
             survey.setStatus(Constants.SURVEY_QUARANTINE);
             survey.save();
+        }
+        List<ObsActionPlanDB> obsActionPlens = ObsActionPlanDB.getAllSendingObsActionPlans();
+        for (ObsActionPlanDB obsActionPlan : obsActionPlens) {
+            //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
+            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+            obsActionPlan.save();
         }
     }
 
@@ -321,12 +327,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 Log.e("." + this.getClass().getSimpleName(), message);
             }
         });
-    }
-
-    public void clickOrgUnitSpinner(View view) {
-    }
-
-    public void clickProgramSpinner(View view) {
     }
 
     /**
