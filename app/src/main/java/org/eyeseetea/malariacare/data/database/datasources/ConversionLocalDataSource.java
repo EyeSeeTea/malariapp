@@ -364,9 +364,9 @@ public class ConversionLocalDataSource {
                 SdkQueries.getAssignedOrganisationUnits())) {
             //Each assigned program
             for (ProgramExtended program : ProgramExtended.getExtendedList(
-                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(), PreferencesState.getInstance().getContext().getString(
-                                    R.string.pull_program_code,
-                                    ProgramType.WITHOUT_REGISTRATION)))) {
+                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
+                            PreferencesState.getInstance().getContext().getString(R.string.pull_program_code),
+                                    ProgramType.WITHOUT_REGISTRATION))) {
                 converter.actualProgram = program;
                 List<EventExtended> events = EventExtended.getExtendedList(
                         SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
