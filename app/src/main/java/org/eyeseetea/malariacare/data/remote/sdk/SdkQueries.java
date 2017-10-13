@@ -62,7 +62,7 @@ public class SdkQueries {
                 .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
                         ProgramFlow_Table.uId.withTable(programFlowAlias)))
                 .join(AttributeFlow.class, Join.JoinType.INNER).as(attributeFlowName)
-                .on(AttributeFlow_Table.uId.withTable(attributeFlowAlias).eq(
+                .on(AttributeFlow_Table.attributeUId.withTable(attributeFlowAlias).eq(
                         AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
                 .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
                 .and(AttributeValueFlow_Table.value.is(PreferencesState.getInstance().getContext().getString(
@@ -124,14 +124,14 @@ public class SdkQueries {
 
         List<ProgramFlow> programs = new ArrayList<ProgramFlow>();
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
+            if (oupr.getProgram() == null) {
+                continue;
+            }
             if(!isValid(oupr.getProgram(), programAttribute)){
                 continue;
             }
             if (programType != null) {
                 for (ProgramType kind : programType) {
-                    if (oupr.getProgram() == null) {
-                        continue;
-                    }
                     List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
                             ProgramFlow_Table.uId.is(oupr.getProgram().getUId()))
                             .and(

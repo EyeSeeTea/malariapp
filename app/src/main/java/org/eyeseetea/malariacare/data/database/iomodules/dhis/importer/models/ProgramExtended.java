@@ -150,7 +150,7 @@ public class ProgramExtended implements VisitableFromSDK {
                 .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
                         ProgramFlow_Table.uId.withTable(programFlowAlias)))
                 .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
-                .on(AttributeFlow_Table.uId.withTable(attributeFlowAlias).eq(
+                .on(AttributeFlow_Table.attributeUId.withTable(attributeFlowAlias).eq(
                         AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
                 .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
                 .and(AttributeValueFlow_Table.value.is(PreferencesState.getInstance().getContext().getString(
