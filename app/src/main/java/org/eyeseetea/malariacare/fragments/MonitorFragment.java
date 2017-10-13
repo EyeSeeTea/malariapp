@@ -314,7 +314,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
                 String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
                 if(!programUidFilter.equals("")){
-                    pushOrgUnitFilterToJavascript(orgUnitUidFilter);
+                    pushProgramFilterToJavascript(programUidFilter);
                 }else if(!orgUnitUidFilter.equals("")){
                     pushOrgUnitFilterToJavascript(orgUnitUidFilter);
                 }else{
