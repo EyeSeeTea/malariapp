@@ -37,9 +37,8 @@ import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
-/**
- * Created by idelcano on 25/02/2016.
- */
+import java.util.List;
+
 public class ImproveModuleController extends ModuleController {
 
     FeedbackFragment feedbackFragment;
@@ -82,6 +81,18 @@ public class ImproveModuleController extends ModuleController {
         if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
            return;
         }
+
+        List<SurveyDB> surveys;
+
+        if(PreferencesState.getInstance().isLastForOrgUnit()) {
+            surveys = SurveyDB.getLastSentSurveysByProgramAndOrgUnit(
+                    PreferencesState.getInstance().getProgramUidFilter(),
+                    PreferencesState.getInstance().getOrgUnitUidFilter());
+
+            if (surveys.size() == 1)
+                onFeedbackSelected(surveys.get(0));
+        }
+
         super.onTabChanged();
     }
 
