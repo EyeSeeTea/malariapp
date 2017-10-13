@@ -31,38 +31,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-
         <org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView
             android:id="@+id/plan_org_unit_program_filter_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background_light_grey"
-            android:orientation="horizontal"
-            android:paddingBottom="5dip"
-            android:paddingTop="5dip">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.45"
-                android:background="@color/background_light_grey"
-                android:padding="@dimen/dashboard_row_padding"
-                android:orientation="vertical">
-
-                <org.eyeseetea.malariacare.views.CustomSpinner
-                    android:id="@+id/dashboard_planning_spinner_program"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    app:tDimension="@string/font_size_level1"
-                    app:tFontName="@string/font_name_light">
-
-                </org.eyeseetea.malariacare.views.CustomSpinner>
-
-                <include layout="@layout/spinner_stroke"></include>
-            </LinearLayout>
             android:layout_height="wrap_content"/>
 
         <LinearLayout
