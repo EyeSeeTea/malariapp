@@ -24,6 +24,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
+    <ImageButton
+        android:id="@+id/planning_survey_action"
+        android:layout_width="0dp"
+        android:layout_weight=".16"
+        android:layout_height="match_parent"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:paddingTop="@dimen/dashboard_planning_padding"
+        android:paddingBottom="@dimen/dashboard_planning_padding"
+        android:src="@drawable/ic_media_play"
+        android:background="@null"
+        android:tintMode="src_over" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
@@ -100,19 +112,6 @@
         app:tDimension="@string/font_size_level4"
         app:tFontName="@string/medium_font_name"
         />
-
-    <ImageButton
-        android:id="@+id/planning_survey_action"
-        android:layout_width="0dp"
-        android:layout_weight=".16"
-        android:layout_height="match_parent"
-        android:typeface="sans"
-        android:textStyle="bold"
-        android:paddingTop="@dimen/dashboard_planning_padding"
-        android:paddingBottom="@dimen/dashboard_planning_padding"
-        android:src="@drawable/ic_media_play"
-        android:background="@null"
-        android:tintMode="src_over" />
 
     <ImageView
         android:id="@+id/menu_dots"

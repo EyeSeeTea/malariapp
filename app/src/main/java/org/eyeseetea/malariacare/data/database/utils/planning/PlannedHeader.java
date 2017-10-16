@@ -110,8 +110,8 @@ public class PlannedHeader implements PlannedItem {
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_never),
                 R.color.red,
-                R.color.light_red,
-                R.color.gaudyYellow);
+                R.color.white_grey,
+                R.color.white);
     }
 
     /**
@@ -123,8 +123,8 @@ public class PlannedHeader implements PlannedItem {
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_overdue),
                 R.color.amber,
-                R.color.planLighYellow,
-                R.color.gaudyYellow);
+                R.color.white_grey,
+                R.color.white);
     }
 
     /**
@@ -136,8 +136,8 @@ public class PlannedHeader implements PlannedItem {
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_next_30),
                 R.color.green,
-                R.color.planLightGreen,
-                R.color.gaudyYellow);
+                R.color.white_grey,
+                R.color.white);
     }
 
     /**
@@ -149,8 +149,8 @@ public class PlannedHeader implements PlannedItem {
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_future),
                 R.color.scoreGrandson,
-                R.color.feedbackLightBlue,
-                R.color.gaudyYellow);
+                R.color.white_grey,
+                R.color.white);
     }
 
     @Override

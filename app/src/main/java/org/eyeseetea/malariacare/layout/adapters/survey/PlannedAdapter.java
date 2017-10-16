@@ -40,7 +40,6 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -219,22 +218,24 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(plannedHeader.getTitleHeader());
         ImageView img = (ImageView) rowLayout.findViewById(R.id.planning_image_cross);
 
+        int color  = PreferencesState.getInstance().getContext().getResources().getColor(
+                R.color.black);
         //Set image color
         if (plannedHeader.equals(currentHeader)) {
             img.setImageResource(R.drawable.ic_media_arrow_up);
             img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.white));
         } else {
-            if (plannedHeader.getCounter() == 0) {
-                img.setColorFilter(
-                        PreferencesState.getInstance().getContext().getResources().getColor(
-                                plannedHeader.getBackgroundColor()));
+            if (plannedHeader.getTitleHeader().contains(context.getString(R.string.dashboard_title_planned_type_never))) {
+                color  =  PreferencesState.getInstance().getContext().getResources().getColor(
+                        R.color.white);
             } else {
-                img.setColorFilter(
-                        PreferencesState.getInstance().getContext().getResources().getColor(
-                                R.color.white));
+                color  = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.black);
             }
         }
+        img.setColorFilter(color);
+        textView.setTextColor(color);
 /*
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
@@ -295,27 +296,24 @@ public class PlannedAdapter extends BaseAdapter {
         int colorId = plannedSurvey.getPlannedHeader().getSecondaryColor();
         int fixposition = itemOrder - 1;
         if (fixposition == 0 || fixposition % 2 == 0) {
-            rowLayout.setBackgroundColor(
-                    PreferencesState.getInstance().getContext().getResources().getColor(
-                            R.color.white));
+            colorId = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.white);
+            rowLayout.setBackgroundColor(colorId);
         } else {
-            rowLayout.setBackgroundColor(
-                    PreferencesState.getInstance().getContext().getResources().getColor(colorId));
+            colorId = PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.white_grey);
+            rowLayout.setBackgroundColor(colorId);
         }
         //Action
         ImageButton actionButton = (ImageButton) rowLayout.findViewById(
                 R.id.planning_survey_action);
-        colorId = plannedSurvey.getPlannedHeader().getBackgroundColor();
         if (plannedSurvey.getSurvey().isInProgress()) {
-            if (plannedSurvey.getSurvey().getStatus() != Constants.SURVEY_PLANNED) {
-                colorId = plannedSurvey.getPlannedHeader().getGaudyBackgroundColor();
-            }
             actionButton.setImageResource(R.drawable.ic_edit);
         } else {
             actionButton.setImageResource(R.drawable.red_circle_cross);
         }
-        actionButton.setColorFilter(
-                PreferencesState.getInstance().getContext().getResources().getColor(colorId));
+        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                R.color.plan_grey_light));
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
