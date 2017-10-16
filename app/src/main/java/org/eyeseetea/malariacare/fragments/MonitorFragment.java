@@ -26,6 +26,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -35,9 +36,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -59,13 +60,12 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.layout.adapters.dashboard.AMonitorDialogAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
-import org.eyeseetea.sdk.presentation.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -113,24 +113,33 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new OrgUnitProgramFilterView.FilterChangedListener() {
                     @Override
                     public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
-                        //TODO: show webview by Program issue
-                        //https://github.com/EyeSeeTea/malariapp/issues/1618
-
+                        pushProgramFilterToJavascript(selectedProgramFilter.getUid());
                         saveCurrentFilters();
-
                     }
 
                     @Override
                     public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
-                        //TODO: show webview by OrgUnit
-                        //https://github.com/EyeSeeTea/malariapp/issues/1618
-
+                        pushOrgUnitFilterToJavascript(selectedOrgUnitFilter.getUid());
                         saveCurrentFilters();
                     }
                 });
 
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void pushOrgUnitFilterToJavascript(String selectedOrgUnitFilter) {
+        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s')";
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER, selectedOrgUnitFilter);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
+    }
+
+    private void pushProgramFilterToJavascript(String selectedProgramFilter) {
+        String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s')";
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER, selectedProgramFilter);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
     }
 
     private void saveCurrentFilters() {
@@ -176,7 +185,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         if (orgUnitProgramFilterView != null) {
             String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
             String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
             orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
         }
     }
@@ -268,10 +276,13 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                     new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
                             orgUnits).addDataInChart(view);
                 }
+
                 if (isProgramFilterActive()) {
                     new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
                             programs).addDataInChart(view);
                 }
+                //Set chart title
+                SentSurveysBuilderBase.injectChartTitle(webView);
 
                 //Show stats by program
                 SentSurveysBuilderBase.showData(view);
@@ -283,26 +294,32 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 if (isProgramFilterActive()) {
                     new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
                 }
-                //Render the table and pie.
-                PieBuilderBase.showPieTab(view);
 
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
                     //facility by progam-> is a orgunit facility
                     new FacilityTableBuilderByProgram(surveysForGraphic,
                             getActivity()).addDataInChart(view);
-                    FacilityTableBuilderByOrgUnit.showFacilities(view);
                 }
                 if (isProgramFilterActive()) {
                     //facility by orgunit-> is a program facility
                     new FacilityTableBuilderByOrgUnit(surveysForGraphic,
                             getActivity()).addDataInChart(view);
-                    FacilityTableBuilderByProgram.showFacilities(view);
                 }
 
                 //Draw facility main table
                 //Set the colors of red/green/yellow pie and table
                 FacilityTableBuilderBase.setColor(view);
+
+                String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+                String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+                if(!programUidFilter.equals("")){
+                    pushProgramFilterToJavascript(programUidFilter);
+                }else if(!orgUnitUidFilter.equals("")){
+                    pushOrgUnitFilterToJavascript(orgUnitUidFilter);
+                }else{
+                    FacilityTableBuilderByProgram.showFacilities(view);
+                }
             }
         });
         //Load html
@@ -363,34 +380,48 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.dashboardActivity);
         LayoutInflater inflater = DashboardActivity.dashboardActivity.getLayoutInflater();
 
-        View v = inflater.inflate(R.layout.monitor_model_dialog, null);
-
+        View v = inflater.inflate(R.layout.historical_log_dialog, null);
         builder.setView(v);
-        CustomTextView orgUnit = (CustomTextView) v.findViewById(R.id.org_unit);
-        CustomTextView program = (CustomTextView) v.findViewById(R.id.program);
+        TextView orgUnit = (TextView) v.findViewById(R.id.org_unitName);
+        TextView program = (TextView) v.findViewById(R.id.programName);
         program.setText(surveys.get(0).getProgram().getName());
         orgUnit.setText(surveys.get(0).getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
-        ListView listView = (ListView) v.findViewById(R.id.surveys_list);
-
+        LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
+        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
+        ((TextView)row.findViewById(R.id.first_column)).setText(R.string.assessment_sent_date);
+        ((TextView)row.findViewById(R.id.second_column)).setText(R.string.score);
+        linearLayout.addView(row);
         final AlertDialog alertDialog = builder.create();
-        AMonitorDialogAdapter monitorAdapter = new AMonitorDialogAdapter(DashboardActivity.dashboardActivity);
-        monitorAdapter.setItems(surveys);
-        listView.setAdapter(monitorAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int position,
-                    long l) {
-                // call feedbackselected function(and it call surveyfragment)
-                alertDialog.dismiss();
-                new UIThreadExecutor().run(new Runnable() {
-                    @Override
-                    public void run() {
-                        DashboardActivity.dashboardActivity.openFeedback(surveys.get(position));
-                    }
-                });
+        for(final SurveyDB survey: surveys){
+            row = inflater.inflate(R.layout.item_list_row_row, null);
+            TextView completionDate = (TextView) row.findViewById(R.id.first_column);
+            TextView score = (TextView) row.findViewById(R.id.second_column);
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+            completionDate.setText(format.format(survey.getCompletionDate()));
+            score.setText(survey.getMainScore()+"");
+            Resources resources = getResources();
+            if(survey.isTypeA()){
+                score.setBackgroundColor(resources.getColor(R.color.lightGreen));
+            }else if (survey.isTypeB()){
+                score.setBackgroundColor(resources.getColor(R.color.assess_yellow));
+            }else if (survey.isTypeC()){
+                score.setBackgroundColor(resources.getColor(R.color.darkRed));
             }
-        });
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alertDialog.dismiss();
+                    new UIThreadExecutor().run(new Runnable() {
+                        @Override
+                        public void run() {
+                            DashboardActivity.dashboardActivity.openFeedback(survey);
+                        }
+                    });
+                }
+            });
+            linearLayout.addView(row );
+        }
         cancel.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

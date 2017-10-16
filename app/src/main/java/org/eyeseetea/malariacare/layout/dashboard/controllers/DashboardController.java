@@ -22,7 +22,6 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,8 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -548,12 +545,12 @@ public class DashboardController {
         orgUnit.setText(survey.getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
-        View row = inflater.inflate(R.layout.historical_log_header, null);
+        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
         linearLayout.addView(row);
         for(SurveyScheduleDB surveyScheduleDB: survey.getSurveySchedules()){
-            row = inflater.inflate(R.layout.historical_log_row, null);
-            TextView comment = (TextView) row.findViewById(R.id.comment);
-            TextView date = (TextView) row.findViewById(R.id.date);
+            row = inflater.inflate(R.layout.item_list_row_row, null);
+            TextView comment = (TextView) row.findViewById(R.id.first_column);
+            TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
             date.setText(format.format(surveyScheduleDB.getPrevious_date()));

@@ -269,4 +269,6 @@ evaluation"</string>
 <string name="mark_complete">"Mark complete"</string>
 <string name="mandatory">Mandatory</string>
 <string name="percent">&#37;</string>
+<string name="plain_text">Plain text </string>
+<string name="html_text">Formatted text </string>
 </resources>

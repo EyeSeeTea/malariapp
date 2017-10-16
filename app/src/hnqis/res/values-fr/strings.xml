@@ -259,4 +259,6 @@ Mensuelle"</string>
 <string name="dates">"Dates précédentes"</string>
 <string name="change_date">"Changer la date"</string>
 <string name="mark_complete">"Marque terminée"</string>
+<string name="plain_text">"Texte en clair "</string>
+<string name="html_text">"Texte formaté "</string>
 </resources>
