@@ -20,34 +20,30 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +60,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private static int selectedPosition = 0;
     DashboardActivity dashboardActivity;
 
+    OrgUnitProgramFilterView orgUnitProgramFilterView;
 
     public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
@@ -83,7 +80,35 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             return null;
         }
 
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.assess_org_unit_program_filter_view);
+
+        orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
+
+        orgUnitProgramFilterView.setFilterChangedListener(
+                new OrgUnitProgramFilterView.FilterChangedListener() {
+                    @Override
+                    public void onProgramFilterChanged(ProgramDB selectedProgramFilter) {
+                        reloadInProgressSurveys();
+                        saveCurrentFilters();
+                    }
+
+                    @Override
+                    public void onOrgUnitFilterChanged(OrgUnitDB selectedOrgUnitFilter) {
+                        reloadInProgressSurveys();
+                        saveCurrentFilters();
+                    }
+                });
+
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void saveCurrentFilters() {
+        PreferencesState.getInstance().setProgramUidFilter(
+                orgUnitProgramFilterView.getSelectedProgramFilter().getUid());
+        PreferencesState.getInstance().setOrgUnitUidFilter(
+                orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
     @Override
@@ -103,6 +128,15 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         //Listen for data
         registerSurveysReceiver();
         super.onResume();
+    }
+
+    private void updateSelectedFilters() {
+        if (orgUnitProgramFilterView != null) {
+            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+
+            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
     }
 
     /**
@@ -129,6 +163,8 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     @Override
     public void reloadData(){
+        updateSelectedFilters();
+
         //Reload data using service
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
@@ -229,7 +265,36 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
     public void reloadInProgressSurveys(){
         List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-        reloadSurveys(surveysInProgressFromService);
+
+        reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
+    }
+
+    private List<SurveyDB> getSurveysByOrgUnitAndProgram(List<SurveyDB> surveysInProgressFromService) {
+        List<SurveyDB> filteredSurveys = new ArrayList<>();
+
+        for (SurveyDB survey:surveysInProgressFromService) {
+            if (surveyHasOrgUnitFilter(survey) && surveyHasProgramFilter(survey)){
+                filteredSurveys.add(survey);
+            }
+        }
+
+        return filteredSurveys;
+    }
+
+    private boolean surveyHasOrgUnitFilter(SurveyDB survey) {
+        OrgUnitDB orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+
+        return survey.getOrgUnit().getUid().equals(orgUnitFilter.getUid())||
+        orgUnitFilter.getName().equals(PreferencesState.getInstance().getContext().getString(
+                R.string.filter_all_org_units));
+    }
+
+    private boolean surveyHasProgramFilter(SurveyDB survey) {
+        ProgramDB programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
+
+        return survey.getProgram().getUid().equals(programFilter.getUid())||
+                programFilter.getName().equals(PreferencesState.getInstance().getContext().getString(
+                        R.string.filter_all_org_assessments));
     }
 
     public void reloadSurveys(List<SurveyDB> newListSurveys){

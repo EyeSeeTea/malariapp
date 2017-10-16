@@ -1,10 +1,10 @@
 /*
 	Usage:
-		buildTableFacilities(
+		buildTablesPerProgram(
 			{
 				title:"Quality of care - Last 12 months"
 				months:['jan.','feb.','mar.','apr.','may.','jun.','jul.','aug.','sep','oct.','nov.','dec.']
-				facilities:[
+				tables:[
 					{
 						name:' Sample facility 1',
 						values:[
@@ -28,16 +28,54 @@
 			}
 		);
 */
-var inputDataFacilities=[];
+var inputDataTablesPerProgram=[];
+var inputDataTablesPerOrgUnit=[];
 //Save the table data
-function buildTableFacilities(tabGroupId,dataFacilities){
-	inputDataFacilities.push(dataFacilities);
+function buildTablesPerProgram(tabGroupId,dataFacilities){
+	inputDataTablesPerProgram.push(dataFacilities);
 }
+//Save the table data
+function buildTablesPerOrgUnit(tabGroupId,dataFacilities){
+	inputDataTablesPerOrgUnit.push(dataFacilities);
+} 
+
+
+//show the data in the table.
+function showMainTableByProgram(){
+	if(inputPrograms.length>1){
+		surveyXMonthChart = SentXMonthChart();
+		//Show main table by program
+		for(var i=0;i<allDataByProgram.length;i++){
+			surveyXMonthChart.addData([allDataByProgram[i][0], allDataByProgram[i][1]], allDataByProgram[i][4]); 
+		}
+	}
+	else{
+	    console.log("Not have surveys");
+	}
+}
+	
+//show the data in the table.
+function showMainTableByOrgUnit(){
+	if(inputOrgUnits.length>1){
+		surveyXMonthChart = SentXMonthChart();
+		//Show main table by orgunit
+		for(var i=0;i<allDataByOrgUnit.length;i++){ 
+			surveyXMonthChart.addData([allDataByOrgUnit[i][0], allDataByOrgUnit[i][1]], allDataByOrgUnit[i][4]); 
+		}
+	}
+	else{
+	    console.log("Not have surveys");
+	}
+}
+
 //Build the correct table
-function rebuildTableFacilities(selectedUid){
-	for(var i=0;i<inputDataFacilities.length;i++){
-		if(inputDataFacilities[i].tableuid==selectedUid){
-		    var id=inputDataFacilities[i].id;
+function rebuildTableFacilities(selectedUid, group){
+	if(group==undefined){
+		return;
+	}
+	for(var i=0;i<group.length;i++){
+		if(group[i].tableuid==selectedUid){
+		    var id=group[i].id;
 			var facilitiesHeadId="facilitiesHead";
 			var facilitiesBodyId="facilitiesBody";
 			var titleFacilitiesId="titleFacilities";
@@ -46,13 +84,13 @@ function rebuildTableFacilities(selectedUid){
 			document.getElementById(facilitiesBodyId).innerHTML='';
 
 			//Title to table
-			updateChartTitle(titleFacilitiesId,messages["qualityOfCare"]+inputDataFacilities[i].months.length+messages["months"]);
+			updateChartTitle(titleFacilitiesId,messages["qualityOfCare"]+group[i].months.length+messages["months"]);
 
 			//Add header
-			buildTableHeader(id,inputDataFacilities[i].months);
+			buildTableHeader(id,group[i].months);
 
 			//Add body
-			buildTableBody(id,inputDataFacilities[i].facilities);
+			buildTableBody(id, group[i].tables);
 
 		}
 	}
@@ -70,7 +108,7 @@ function buildTableHeader(tabGroupId,months){
 	document.getElementById(facilitiesHeadId).insertAdjacentHTML("beforeend",rowsHeader);
 }
 
-function buildTableBody(tabGroupId,facilities){
+function buildTableBody(tabGroupId, facilities){
 	var facilitiesBodyId="facilitiesBody";
 	for(var i=0;i<facilities.length;i++){
 		var rowFacility=buildRowFacility(facilities[i]);
@@ -87,6 +125,7 @@ function buildRowFacility(facility){
 	for(var i=0;i<facility.values.length;i++){
 		var facilityMonth=facility.values[i];
 		var average=0;
+		var asterisk = "";
 		if(facilityMonth==null){
 			var average=null;
 		}else{
@@ -95,34 +134,44 @@ function buildRowFacility(facility){
 			}
 			average=average/facilityMonth.length;
 			average=Math.round(average);
+            if(facilityMonth.length>1){
+                showMultipleEventLegend();
+                asterisk = "*";
+            }
 		}
 
-        var asterisk = "";
-        if(facility.counter[i]>1){
-            showMultipleEventLegend();
-            asterisk = "*";
-        }
-        row=row+""+buildColorXScore(average)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
+        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
 	}
 	//end row
 	row=row+"</tr>";
 	return row;
 }
 
-function buildColorXScore(value){
+function buildColorXScore(value, listOfSurveys){
 	if(value==null){
-		return "<td class='novisible'  ><div class='circlerow' ><span class='centerspan'>";
+		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
-
 	if(value<50){
-		return "<td class='redcircle'  ><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+	    if(listOfSurveys.length>1){
+		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+		}else{
+		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
+		}
 	}
 
 	if(value<80){
-		return "<td class='ambercircle' ><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+	    if(listOfSurveys.length>1){
+		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+		}else{
+		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
+		}
 	}
 
-	return "<td class='greencircle'  ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	if(listOfSurveys.length>1){
+	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	}else{
+		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+	}
 }
 
 function buildCellXScore(value){
@@ -130,4 +179,30 @@ function buildCellXScore(value){
 		return '';
 	}
 	return value;
+}
+
+function getListOfUids(listOfSurveys){
+	var uidList = '';
+	if(listOfSurveys!=null){
+		for(var i=0;i<listOfSurveys.length;i++){
+			uidList += listOfSurveys[i].id+";";
+		}
+		uidList = uidList.substring(0,uidList.lastIndexOf(";"));
+	}
+	return uidList;
+}
+
+function androidPassUids(value){
+    showLog(value);
+    Android.passUidList(value);
+}
+
+function androidMoveToFeedback(value){
+    showLog(value);
+    Android.moveToFeedback(value);
+}
+
+function showLog(value){
+    console.log(value);
+    Android.clickLog();
 }

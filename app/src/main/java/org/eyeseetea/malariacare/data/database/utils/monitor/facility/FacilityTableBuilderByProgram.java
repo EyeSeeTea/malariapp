@@ -33,6 +33,7 @@ import java.util.Map;
  * Created by idelcano on 23/08/2016.
  */
 public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
+    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTablesPerProgram('%s',%s)";
     private static final String TAG=".FacilityTableBuilderP";
     Map<String,FacilityTableDataByProgram> facilityTableDataMap;
     public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByProgram()";
@@ -88,5 +89,12 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
     public static void showFacilities(WebView webView) {
         Log.d(TAG, JAVASCRIPT_SHOW);
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
+    }
+
+    void inyectDataInChart(WebView webView, String id, String json) {
+        //Inyect in browser
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
     }
 }
