@@ -95,12 +95,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
 
         initMenu(survey);
 
-        // show facility name (or not) and write survey type name
-        if (hasToShowFacility(position, survey)) {
-            showFacility(facilityName, surveyType, survey);
-        } else {
-            hideFacility(facilityName, surveyType);
-        }
+        showFacility(facilityName, surveyType, survey);
 
         decorateSurveyType(surveyType, survey);
         rowView = decorateBackground(position, rowView);

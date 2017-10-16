@@ -101,7 +101,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                     }
                 });
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.assess_listview, null);
     }
 
     private void saveCurrentFilters() {
@@ -123,8 +123,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        //Loading...
-        setListShown(false);
         //Listen for data
         registerSurveysReceiver();
         super.onResume();
@@ -217,16 +215,10 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
-        View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
         if(PreferencesState.getInstance().isVerticalDashboard()) {
             CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
             title.setText(adapter.getTitle());
         }
-        ListView listView = getListView();
-        listView.addHeaderView(header);
-        listView.addFooterView(footer);
         setListAdapter(adapter);
     }
 
@@ -303,7 +295,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();
-            setListShown(true);
         }
     }
 

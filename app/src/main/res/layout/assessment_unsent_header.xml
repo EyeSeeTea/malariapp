@@ -18,43 +18,41 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-          android:orientation="horizontal"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent"
-          android:paddingTop="10dip"
-          android:paddingBottom="10dip"
-          android:background="@color/assess_yellow"
-          android:gravity="center">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:background="@color/planning_header_background"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/assessment_title_facility_date"
+    <org.eyeseetea.sdk.presentation.views.CustomTextView
         android:id="@+id/idHeader"
-        android:background="@color/assess_yellow"
-        android:textColor="@color/assess_grey"
-        android:gravity="center"
-        android:layout_weight="0.7"
-        android:layout_gravity="center"
-        app:tDimension="@string/font_size_level4"
-        app:tFontName="@string/condensed_font_name" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="@dimen/checkbox_left_padding"
+        android:text="@string/assessment_title_facility_date"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/planning_header_text"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/light_font" />
 
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+    <org.eyeseetea.sdk.presentation.views.CustomTextView
         android:text="@string/assessment_title_state"
         android:id="@+id/nameHeader"
-        android:background="@color/assess_yellow"
-        android:textColor="@color/assess_grey"
-        android:gravity="center"
-        android:layout_weight="0.3"
-        android:layout_gravity="center"
-        android:autoText="false"
-        app:tDimension="@string/font_size_level4"
-        app:tFontName="@string/condensed_font_name"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="2dp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/planning_header_text"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/light_font" />
 
-</TableRow>
+</RelativeLayout>

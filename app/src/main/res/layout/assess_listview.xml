@@ -1,0 +1,71 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:background="@color/planning_header_background"
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.eyeseetea.sdk.presentation.views.CustomTextView
+            android:id="@+id/idHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/assessment_title_facility_date"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/planning_header_text"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font" />
+
+        <org.eyeseetea.sdk.presentation.views.CustomTextView
+            android:text="@string/assessment_title_state"
+            android:id="@+id/nameHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/planning_header_text"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent"
+        android:gravity="center_horizontal"
+        android:src="@drawable/ic_add"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_text_size"
+        android:textStyle="bold"
+        app:fabSize="mini"
+        android:onClick="onNewSurvey"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp" />
+</RelativeLayout>

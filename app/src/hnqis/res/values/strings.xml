@@ -38,8 +38,8 @@
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
-<string name="assessment_title_facility_date">"Active surveys"</string>
-<string name="assessment_title_state">"% complete"</string>
+<string name="assessment_title_facility_date">"Facility / Survey"</string>
+<string name="assessment_title_state">"% Complete"</string>
 <string name="assessment_sent_date">"Completion date"</string>
 <string name="assessment_title_header">"Active Assessment(s)"</string>
 <string name="assessment_sent_title_header">"Previous Assessment(s)"</string>

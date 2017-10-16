@@ -54,9 +54,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
-        this.headerLayout = R.layout.assessment_unsent_header;
         this.recordLayout = R.layout.assessment_unsent_record;
-        this.footerLayout = R.layout.assessment_unsent_footer;
 
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
@@ -212,22 +210,11 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
      */
     @Override
     protected View decorateBackground(int position, View rowView) {
-
-        //Last survey
-        if (position == (this.items.size() - 1)) {
-            return setBackgroundWithBorder(position, rowView);
+        if(position==0 || position%2==0){
+            rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }else{
+            rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
         }
-
-        //Same orgUnit -> No border
-        if (this.items.get(position + 1).getOrgUnit().equals(
-                (this.items.get(position)).getOrgUnit())) {
-            return setBackground(position + 1, rowView);
-        }
-
-        //Different orgUnit -> With border, next background switches
-        rowView = setBackgroundWithBorder(position + 1, rowView);
-        this.backIndex++;
-
         return rowView;
     }
 
