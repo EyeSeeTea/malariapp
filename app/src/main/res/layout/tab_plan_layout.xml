@@ -41,55 +41,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
             </LinearLayout>
         </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/dashboard_planning_orgunit_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/planning_header_background"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <org.eyeseetea.malariacare.views.CustomButton
-                android:id="@+id/reschedule_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/imageView"
-                android:layout_alignEnd="@+id/imageView"
-                android:layout_alignRight="@+id/imageView"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="6dp"
-                android:background="@drawable/button_cancel_shape"
-                android:padding="12dp"
-                android:text="@string/header_reschedule"
-                android:textColor="@color/white"
-                android:textSize="@dimen/medium_text_size"
-                android:textStyle="bold"
-                app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/bold_font_name" />
-        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/dashboard_planning_orgunit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 

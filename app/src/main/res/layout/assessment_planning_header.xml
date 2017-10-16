@@ -18,82 +18,35 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-          android:orientation="horizontal"
+          android:orientation="vertical"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:paddingTop="10dip"
-          android:paddingBottom="10dip"
-          android:background="@color/planning_header_background"
-          android:gravity="center"
-          android:weightSum="1">
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:layout_gravity="center_vertical">
+          android:layout_height="wrap_content"
+    android:background="@color/planning_header_background"
+    android:layout_gravity="center_vertical"
+    android:layout_alignParentTop="true"
+          android:gravity="center" >
 
         <org.eyeseetea.malariacare.views.CustomCheckBox
             android:id="@+id/select_all_orgunits"
-            android:text="@string/select_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:typeface="sans"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/checkbox_text_top_padding"
-            android:paddingLeft="@dimen/dashboard_planning_padding"
-            android:textAllCaps="true"
-            app:tDimension="@string/font_size_level4"
-            app:tFontName="@string/medium_font_name"/>
+            android:text="@string/select_all"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/planning_header_text"
+            android:paddingLeft="2dp"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/statusContainer"
-        android:layout_weight="0.5"
-        android:layout_marginTop="@dimen/survey_row_marging"
-        android:layout_marginBottom="@dimen/survey_row_marging">
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/planing_due_date"
-        android:id="@+id/nameHeader"
-        android:gravity="center"
-        android:layout_weight="0.5"
-        android:typeface="sans"
-        android:textStyle="bold"
-        android:paddingLeft="@dimen/dashboard_planning_padding"
-        android:textColor="@color/planning_header_text"
-        android:textAllCaps="true"
-        app:tDimension="@string/font_size_level4"
-        app:tFontName="@string/medium_font_name"/>
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/planing_schedule"
-        android:id="@+id/nameHeader2"
-        android:textColor="@color/planning_header_text"
-        android:gravity="center"
-        android:layout_weight="0.5"
-        android:typeface="sans"
-        android:textStyle="bold"
-        android:paddingLeft="@dimen/dashboard_planning_padding"
-        android:textAllCaps="true"
-        app:tDimension="@string/font_size_level4"
-        app:tFontName="@string/medium_font_name"/>
-    </LinearLayout>
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.1"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal" />
-
-</TableRow>
+        <org.eyeseetea.sdk.presentation.views.CustomTextView
+            android:id="@+id/nameHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/planing_schedule"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/planning_header_text"
+            android:paddingRight="2dp"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font"/>
+    </RelativeLayout>
