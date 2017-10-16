@@ -55,6 +55,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -171,6 +172,11 @@ public abstract class AUtils {
         return stringBuilder;
     }
 
+
+    public static String getEuropeanFormatedDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+        return sdf.format(date);
+    }
 
     public static String formatDate(Date date) {
         if (date == null) {

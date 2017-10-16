@@ -16,9 +16,9 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
@@ -61,19 +61,17 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
             surveyCheckBox.setChecked(true);
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-
         //set schedule date
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         if (survey.getScheduledDate() != null) {
-            schedule.setText(sdf.format(survey.getScheduledDate()));
+            schedule.setText(AUtils.getEuropeanFormatedDate(survey.getScheduledDate()));
         } else {
             schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
             CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(sdf.format(survey.getCreationDate()));
+            dueDate.setText(AUtils.getEuropeanFormatedDate(survey.getCreationDate()));
         }
 
         //set row survey name

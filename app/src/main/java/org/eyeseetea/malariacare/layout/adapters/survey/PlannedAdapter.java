@@ -264,9 +264,6 @@ public class PlannedAdapter extends BaseAdapter {
         //OrgUnit
         TextView textView = (TextView) rowLayout.findViewById(R.id.planning_org_unit);
         textView.setText(plannedSurvey.getOrgUnit());
-        if (isSameOrgUnit(plannedSurvey, position)) {
-            textView.setVisibility(View.GONE);
-        }
 
         //Program
         textView = (TextView) rowLayout.findViewById(R.id.planning_program);
@@ -282,7 +279,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);
-        textView.setText(AUtils.formatDate(plannedSurvey.getNextAssesment()));
+        textView.setText(AUtils.getEuropeanFormatedDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);
