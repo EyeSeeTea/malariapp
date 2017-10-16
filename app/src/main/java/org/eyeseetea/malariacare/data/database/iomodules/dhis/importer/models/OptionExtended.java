@@ -91,7 +91,7 @@ public class OptionExtended implements VisitableFromSDK {
                 .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(
                         attributeFlowName)
                 .on(AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias).eq(
-                        AttributeFlow_Table.uId.withTable(attributeFlowAlias)))
+                        AttributeFlow_Table.attributeUId.withTable(attributeFlowAlias)))
                 .where(OptionFlow_Table.name.withTable(optionFlowAlias).is(name)).querySingle();
     }
 

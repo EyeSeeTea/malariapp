@@ -77,6 +77,7 @@
     <string name="action_plan_code" translatable="false">_ActionPlan</string>
     <string name="action1_code" translatable="false">_Action1</string>
     <string name="action2_code" translatable="false">_Action2</string>
+    <string name="program_type_code" translatable="false">PROGRAM_TYPE</string>
     <string name="no_previous_event_fakeuid" translatable="false">no_new_survey</string>
     <string name="settings_array_values_font_sizes_def" translatable="false">@string/font_size_level2</string>
     <string-array name="settings_array_titles_font_sizes" translatable="false">

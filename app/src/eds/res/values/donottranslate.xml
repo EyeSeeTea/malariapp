@@ -20,12 +20,7 @@
 
 <resources>
 
-    <!-- # general -->
-    <string name="app_name" translatable="false">Suvreillance</string>
-
-    <!-- default server url -->
-    <string name="login_info_dhis_default_server_url" translatable="false">https://</string>
-
     <!-- pull control codes -->
-    <string name="pull_program_code" translatable="false"></string>
+    <string name="pull_program_code" translatable="false">EDS</string>
+    
 </resources>
