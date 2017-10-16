@@ -124,7 +124,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         initAdapter(plannedItems);
         initScheduleButton();
         initListView();
-        //setListShown(true);
         //checks the allSelect checkbox looking the reloaded surveys.
         if(plannedItems.size()==countOfCheckedSurveys){
             setSelectAllCheckboxAs(true,false);
@@ -230,9 +229,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        //Loading...
-//        setListShown(false);
-        //Listen for data
         registerPlannedItemsReceiver();
         super.onResume();
     }

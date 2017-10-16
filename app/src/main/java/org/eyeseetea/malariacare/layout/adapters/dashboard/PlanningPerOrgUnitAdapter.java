@@ -19,14 +19,11 @@ import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by idelcano on 09/08/2016.
- */
 public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
+    public static boolean  greyBackground=false;
     public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context) {
         super(context);
         items = newItems;
@@ -65,7 +62,7 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
             surveyCheckBox.setChecked(true);
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
 
         //set schedule date
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
@@ -82,13 +79,22 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
         //set row survey name
         String surveyDescription = survey.getProgram().getName();
-        surveyCheckBox.setText(surveyDescription);
+        CustomTextView program = (CustomTextView) rowView.findViewById(R.id.program);
+        program.setText(survey.getProgram().getName());
+        CustomTextView orgUnit = (CustomTextView) rowView.findViewById(R.id.org_unit);
+        orgUnit.setText(survey.getOrgUnit().getName());
 
         //set background color from header(type of planning survey)
-        rowView.setBackgroundColor(
-                PreferencesState.getInstance().getContext().getResources().getColor(
-                        plannedSurvey.getHeader().getBackgroundColor()));
-
+        if(greyBackground) {
+            rowView.setBackgroundColor(
+                    PreferencesState.getInstance().getContext().getResources().getColor(
+                            R.color.white_grey));
+        }else{
+            rowView.setBackgroundColor(
+                    PreferencesState.getInstance().getContext().getResources().getColor(
+                            R.color.white));
+        }
+        greyBackground=!greyBackground;
         ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
         menuDots.setOnClickListener(new View.OnClickListener() {
             @Override
