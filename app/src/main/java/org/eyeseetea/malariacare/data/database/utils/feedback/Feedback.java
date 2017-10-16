@@ -39,4 +39,10 @@ public interface Feedback {
      * @return true|false
      */
     boolean isPassed();
+
+    /**
+     * Returns if 'this' row has media according to its question
+     * @return true|false
+     */
+    boolean hasMedia();
 }
