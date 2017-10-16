@@ -76,14 +76,15 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
             dueDate.setText(sdf.format(survey.getCreationDate()));
         }
 
-        //set row survey name 
+        //set row survey name
+        String surveyDescription = survey.getProgram().getName();
         CustomTextView program = (CustomTextView) rowView.findViewById(R.id.program);
         program.setText(survey.getProgram().getName());
         CustomTextView orgUnit = (CustomTextView) rowView.findViewById(R.id.org_unit);
         orgUnit.setText(survey.getOrgUnit().getName());
 
         //set background color from header(type of planning survey)
-        if(greyBackground) {
+        if(position==0 || position%2==0) {
             rowView.setBackgroundColor(
                     PreferencesState.getInstance().getContext().getResources().getColor(
                             R.color.white_grey));
