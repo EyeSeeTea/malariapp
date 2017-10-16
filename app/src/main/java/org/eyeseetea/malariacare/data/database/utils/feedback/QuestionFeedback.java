@@ -82,6 +82,12 @@ public class QuestionFeedback implements Feedback {
         return option.getFactor() == 1;
     }
 
+    @Override
+    public boolean hasMedia() {
+        return getMedia().size()>0;
+    }
+
+
     public QuestionDB getQuestion() {
         return this.question;
     }
