@@ -36,7 +36,7 @@
     <color name="appNameColor">@color/black</color>
     <color name="headerColor">@color/dark_navy_blue</color>
     <color name="evenRows">@color/light_grey</color>
-    <color name="planning_header_background">@color/custom_background_grey</color>
+    <color name="planning_header_background">@color/plan_grey</color>
     <color name="planning_header_text">@color/white</color>
     <color name="planning_row_text">@color/black</color>
     <color name="background_light_grey">#d9d9d9</color>
@@ -63,5 +63,7 @@
     <color name="ratio_questions_high">#98fb98</color>
     <color name="ratio_questions_middle">#ffff00</color>
     <color name="ratio_questions_low"> #ff0000</color>
+    <color name="plan_grey">#666666</color>
+    <color name="white_grey">#efefef</color>
 
 </resources>

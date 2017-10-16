@@ -236,7 +236,6 @@
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
-<string name="planing_schedule">"ວາງແຜນ"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>

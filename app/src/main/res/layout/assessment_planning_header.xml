@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2015.
   ~
   ~ This file is part of Facility QA Tool App.
@@ -20,33 +19,39 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-    android:background="@color/planning_header_background"
-    android:layout_gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-          android:gravity="center" >
+    android:layout_gravity="center_vertical"
+    android:background="@color/planning_header_background"
+    android:gravity="center"
+    android:orientation="vertical">
 
-        <org.eyeseetea.malariacare.views.CustomCheckBox
-            android:id="@+id/select_all_orgunits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_all"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/planning_header_text"
-            android:paddingLeft="2dp"
-            app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/light_font"/>
+    <org.eyeseetea.malariacare.views.CustomCheckBox
+        android:id="@+id/select_all_orgunits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="2dp"
+        android:text="@string/select_all"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/planning_header_text"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/light_font" />
 
-        <org.eyeseetea.sdk.presentation.views.CustomTextView
-            android:id="@+id/nameHeader2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/planing_schedule"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/planning_header_text"
-            android:paddingRight="2dp"
-            app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/light_font"/>
-    </RelativeLayout>
+    <org.eyeseetea.sdk.presentation.views.CustomTextView
+        android:id="@+id/nameHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="2dp"
+        android:text="@string/header_reschedule"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/planning_header_text"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/light_font" />
+</RelativeLayout>

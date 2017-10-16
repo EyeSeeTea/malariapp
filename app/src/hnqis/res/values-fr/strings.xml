@@ -220,7 +220,6 @@ Mensuelle"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
 
 <string name="header_reschedule">"Réprogrammer"</string>
-<string name="planing_schedule">"Programme"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN DE L'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
