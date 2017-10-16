@@ -210,7 +210,7 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private void hiddenArrowOnCompositeScoreWithNoVisibleQuestion(CompositeScoreFeedback feedback,
             LinearLayout rowLayout) {
-        if(feedback.getFeedbackList().size()>0 && onlyFailed || onlyMedia) {
+        if(feedback.getCompositeScoreFeedbackList().size()==0 && feedback.getFeedbackList().size()>0 && (onlyFailed || onlyMedia)) {
             int countOfHiddenQuestions=0;
             for (QuestionFeedback questionFeedback : feedback.getFeedbackList()) {
                 if(onlyFailed && onlyMedia) {
