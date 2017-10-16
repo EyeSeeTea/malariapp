@@ -32,7 +32,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -187,19 +186,13 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
-        LayoutInflater inflater = LayoutInflater.from(PreferencesState.getInstance().getContext().getApplicationContext());
-        View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
-        selectAllCheckbox=(CustomCheckBox) header.findViewById(R.id.select_all_orgunits);
+        selectAllCheckbox=(CustomCheckBox) getActivity().findViewById(R.id.select_all_orgunits);
         selectAllCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 checkAll(isChecked);
             }
         });
-        ListView listView = getListView();
-        if(listView.getHeaderViewsCount()==0)
-            listView.addHeaderView(header);
-        setListAdapter(adapter);
     }
 
     private void checkAll(boolean value) {
@@ -224,6 +217,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      */
     private void initAdapter(List<PlannedSurveyByOrgUnit> plannedItems){
         this.adapter  = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
+        setListAdapter(adapter);
     }
 
     @Override

@@ -29,7 +29,6 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         items = newItems;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.assessment_planning_header;
         this.recordLayout = R.layout.assessment_planning_record;
     }
 
@@ -77,8 +76,7 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
             dueDate.setText(sdf.format(survey.getCreationDate()));
         }
 
-        //set row survey name
-        String surveyDescription = survey.getProgram().getName();
+        //set row survey name 
         CustomTextView program = (CustomTextView) rowView.findViewById(R.id.program);
         program.setText(survey.getProgram().getName());
         CustomTextView orgUnit = (CustomTextView) rowView.findViewById(R.id.org_unit);
