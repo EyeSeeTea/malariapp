@@ -20,7 +20,7 @@
 <head>
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no">
     <script type = "text/javascript" src="Chart.min.js"> </script>
-<style>
+    <style>
         select{
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -153,31 +153,6 @@
         .show {
             display:block;
         }
-        #spinnerProgram{
-            top: -5px;
-            position: absolute;
-            width: 48.2%;
-            border-radius: 0px;
-        }
-        #spinnerOrgUnit {
-            top: -5px;
-            left: 50%;
-            position: absolute;
-            width: 48.2%;
-            border-radius: 0px;
-            display: inline-block;
-        }
-        #tableCanvas,#pieChartContent{
-            padding-top: 35px;
-        }
-        #spinnerProgram>select,#spinnerOrgUnit>select{
-            background-size: 32px 32px;
-            text-transform: uppercase;
-            padding: 12 0 12 20px!important;
-            font-size: 30px;
-            font-weight:bold;
-            font-family: "Roboto-Medium.ttf";
-        }
 
         .hidden{
             display:none!important;
@@ -190,11 +165,6 @@
     </style>
 </head>
 <body>
-<!--Legend for this chart-->
-<div id="selectBlock">
-    <div id="spinnerProgram" class="horizontal"></div>
-    <div id="spinnerOrgUnit" class="horizontal"></div>
-</div>
 <!--Sent surveys x month-->
 <div id="tableCanvas" class="show">
     <!--title of the chart-->
@@ -212,6 +182,10 @@
 
 <script type = "text/javascript" src="translated.messages.js"> </script>
 
+<script type = "text/javascript" src="html.nodes.modifications.js"> </script>
+
+<script type = "text/javascript" src="controller.js"> </script>
+
 <script type = "text/javascript" src="sent.month.js"> </script>
 
 <script type = "text/javascript" src="pie.tabgroup.js"> </script>
@@ -223,7 +197,7 @@
     <div id="graphicCanvas">
         <div style="display:inline;">
             <canvas id="tabgroupCanvas###" style="width: 60%; height: auto; left:0px; display:block;"></canvas>
-            <div id="tabgroupLegend###" class="chart-legend" style="display:block;right: 0px;position: absolute;top: 75px; padding-right:20%;">
+            <div id="tabgroupLegend###" class="chart-legend" style="display:block;right: 0px;position: absolute;top: 10%; padding-right:20%;">
                 <span id="tabgroupTip###" class="tip" style="display:none;"></span>
             </div>
         </div>

@@ -101,8 +101,6 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
      * @param entries List of entries for the chart
      */
     private void injectDataInChart(WebView webView, List<EntrySentSurveysChartByProgram> entries){
-        //Set chart title
-        injectChartTitle(webView);
 
         //Add data to the chart
         for(EntrySentSurveysChartByProgram entry:entries){

@@ -34,6 +34,7 @@ import java.util.Map;
  * Created by idelcano on 23/08/2016.
  */
 public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
+    public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:buildTablesPerOrgUnit('%s',%s)";
     private static final String TAG=".FacilityTableBuilderOU";
     Map<ProgramDB,FacilityTableDataByOrgUnit> facilityTableDataMap;
     public static final String JAVASCRIPT_SHOW = "javascript:renderPieChartsByOrgUnit()";
@@ -82,7 +83,7 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
         for(Map.Entry<ProgramDB,FacilityTableDataByOrgUnit> tableEntry: facilityTableDataMap.entrySet()){
             ProgramDB program=tableEntry.getKey();
             FacilityTableDataByOrgUnit facilityTableData=tableEntry.getValue();
-            inyectDataInChart(webView, String.valueOf(program.getId_program()), facilityTableData.getAsJSON());
+            inyectDataInChart(webView, String.valueOf(program.getUid()), facilityTableData.getAsJSON());
         }
 
     }
@@ -90,5 +91,12 @@ public class FacilityTableBuilderByOrgUnit extends  FacilityTableBuilderBase {
     public static void showFacilities(WebView webView) {
         Log.d(TAG, JAVASCRIPT_SHOW);
         webView.loadUrl(String.format(JAVASCRIPT_SHOW));
+    }
+
+    void inyectDataInChart(WebView webView, String id, String json) {
+        //Inyect in browser
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_TABLE,id,json);
+        Log.d(TAG, updateChartJS);
+        webView.loadUrl(updateChartJS);
     }
 }
