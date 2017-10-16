@@ -1,15 +1,29 @@
 package org.eyeseetea.malariacare.data.remote.sdk;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
+
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.Model;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
@@ -30,6 +44,8 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.ProgramStageSectionFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserAccountFlow;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
@@ -40,11 +56,11 @@ import java.util.List;
 
 public class SdkQueries {
 
-    public static List<String> getAssignedPrograms() {
+    public static List<String> getAssignedProgramUids(String pullProgramCode) {
         List<String> uids = new ArrayList<>();
-        List<ProgramFlow> programsFlow = new Select().from(ProgramFlow.class).queryList();
-        for (ProgramFlow programFlow : programsFlow) {
-            uids.add(programFlow.getUId());
+        List<ProgramExtended> programExtendeds = ProgramExtended.getAllPrograms(pullProgramCode);
+        for (ProgramExtended programExtended : programExtendeds) {
+            uids.add(programExtended.getUid());
         }
         return uids;
     }
@@ -90,7 +106,7 @@ public class SdkQueries {
                 .queryList();
     }
 
-    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId,
+    public static List<ProgramFlow> getProgramsForOrganisationUnit(String UId, String programAttribute,
             ProgramType... programType) {
 
         List<OrganisationUnitToProgramRelationFlow> organisationUnitProgramRelationships =
@@ -98,13 +114,17 @@ public class SdkQueries {
                         OrganisationUnitToProgramRelationFlow_Table.organisationUnit.
                                 is(UId)).queryList();
 
+        List<String> assignedProgramUids = SdkQueries.getAssignedProgramUids(programAttribute);
         List<ProgramFlow> programs = new ArrayList<ProgramFlow>();
         for (OrganisationUnitToProgramRelationFlow oupr : organisationUnitProgramRelationships) {
+            if (oupr.getProgram() == null) {
+                continue;
+            }
+            if(!assignedProgramUids.contains(oupr.getProgram().getUId())){
+                continue;
+            }
             if (programType != null) {
                 for (ProgramType kind : programType) {
-                    if (oupr.getProgram() == null) {
-                        continue;
-                    }
                     List<ProgramFlow> plist = new Select().from(ProgramFlow.class).where(
                             ProgramFlow_Table.uId.is(oupr.getProgram().getUId()))
                             .and(
@@ -175,4 +195,6 @@ public class SdkQueries {
                 .queryList();
         return programStageDataElements;
     }
+
+
 }

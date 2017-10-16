@@ -53,7 +53,7 @@ public class AttributeExtended {
     }
 
     public String getUid() {
-        return attributeFlow.getUId();
+        return attributeFlow.getAttributeUId();
     }
 
     public AttributeFlow getAttribute() {

@@ -21,15 +21,11 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.DataElementFlow;
-import org.hisp.dhis.client.sdk.models.attribute.AttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +90,7 @@ public class AttributeValueExtended {
         if(attributeValueList==null)
             return  null;
         for (AttributeValueFlow attributeValue : attributeValueList) {
-            if (attributeValue.getAttribute().getUId().equals(attribute.getUId())) {
+            if (attributeValue.getAttribute().getUId().equals(attribute.getAttributeUId())) {
                 return attributeValue;
             }
         }
