@@ -100,8 +100,6 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
      * @param entries List of entries for the chart
      */
     private void injectDataInChart(WebView webView, List<EntrySentSurveysChartByOrgUnit> entries){
-        //Set chart title
-        injectChartTitle(webView);
 
         //Add data to the chart
         for(EntrySentSurveysChartByOrgUnit entry:entries){

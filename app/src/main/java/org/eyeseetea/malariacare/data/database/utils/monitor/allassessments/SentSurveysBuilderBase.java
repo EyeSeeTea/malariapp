@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class SentSurveysBuilderBase {
     private static final String TAG=".SentSurveysBuilderBase";
     static final int EXPECTED_SENT_SURVEYS_PER_MONTH=30;
     public static final String JAVASCRIPT_UPDATE_CHART = "javascript:updateChartTitle('titleSent','%s')";
-    public static final String JAVASCRIPT_SHOW = "javascript:showMainTable()";
+    public static final String JAVASCRIPT_SHOW = "javascript:showMainTableByProgram()";
     static final int MAX_MONTHS=6;
 
     /**
@@ -83,8 +84,8 @@ public class SentSurveysBuilderBase {
      * Updates the title of the sent chart according to current language
      * @param webView
      */
-    void injectChartTitle(WebView webView){
-        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHART,context.getString(R.string.dashboard_title_total_assessments));
+    public static void injectChartTitle(WebView webView){
+        String updateChartJS=String.format(JAVASCRIPT_UPDATE_CHART, PreferencesState.getInstance().getContext().getString(R.string.dashboard_title_total_assessments));
         Log.d(TAG, updateChartJS);
         webView.loadUrl(updateChartJS);
     }
