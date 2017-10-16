@@ -24,13 +24,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -148,7 +146,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                     }
                 });
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.improve_listview, null);
     }
 
     private void saveCurrentFilters() {
@@ -294,12 +292,9 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View header = inflater.inflate(this.adapter.getHeaderLayout(),null,false);
-        View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-            header=initFilterOrder(header);
-        else
+        if(!PreferencesState.getInstance().isVerticalDashboard()) {
+            initFilterOrder(getView());
+        }else
         {
             CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
             title.setText(adapter.getTitle());
@@ -307,8 +302,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         ListView listView = getListView();
         if(!PreferencesState.getInstance().isVerticalDashboard())
             listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
-        listView.addHeaderView(header);
-        listView.addFooterView(footer);
         setListAdapter(adapter);
         if(PreferencesState.getInstance().isVerticalDashboard()){
 
@@ -414,17 +407,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-    }
-
-    public void reloadSurveys(List<SurveyDB> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        adapter.setItems(newListSurveys);
-        this.adapter.notifyDataSetChanged();
-        if(isAdded())
-            setListShown(true);
-        else{
-            reloadData();
-        }
     }
 
     @Override

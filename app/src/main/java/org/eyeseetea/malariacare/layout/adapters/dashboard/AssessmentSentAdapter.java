@@ -43,7 +43,6 @@ public class AssessmentSentAdapter extends
     public AssessmentSentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
-        this.headerLayout = R.layout.assessment_sent_header;
         this.recordLayout = R.layout.assessment_sent_record;
         this.footerLayout = R.layout.assessment_sent_footer;
         if (PreferencesState.getInstance().isVerticalDashboard()) {
@@ -134,8 +133,11 @@ public class AssessmentSentAdapter extends
      */
     @Override
     protected View decorateBackground(int position, View rowView) {
-        rowView.setBackgroundResource(R.drawable.background_odd_wo_border);
-
+        if(position==0 || position%2==0){
+            rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }else {
+            rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
+        }
         return rowView;
     }
 }
