@@ -66,6 +66,8 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private boolean onlyFailed;
 
+    private boolean onlyMedia;
+
     private boolean [] hiddenPositions;
 
     float idSurvey;
@@ -87,14 +89,17 @@ public class FeedbackAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        int hiddenItems=this.onlyFailed?countHiddenUpTo(this.items.size()):0;
+        int hiddenItems = 0;
+        if(onlyFailed || onlyMedia) {
+             hiddenItems = countHiddenUpTo(this.items.size());
+        }
         return this.items.size()-hiddenItems;
     }
 
     @Override
     public Object getItem(int position) {
         //Show all -> direct
-        if(!onlyFailed){
+        if(!onlyFailed && !onlyMedia){
             return this.items.get(position);
         }
 
@@ -206,7 +211,6 @@ public class FeedbackAdapter extends BaseAdapter {
         if(onlyFailed && feedback.isPassed()){
             return null;
         }
-
         LayoutInflater inflater=LayoutInflater.from(context);
         LinearLayout rowLayout = (LinearLayout)inflater.inflate(R.layout.feedback_question_row, parent, false);
         rowLayout.setTag(feedback);
@@ -419,11 +423,24 @@ public class FeedbackAdapter extends BaseAdapter {
      */
     public void toggleOnlyFailed(){
         this.onlyFailed=!this.onlyFailed;
+        reloadHiddenPositions();
         notifyDataSetChanged();
     }
 
     public boolean isOnlyFailed() {
         return onlyFailed;
+    }
+    /**
+     * Toggles the state of the flag that determines if only 'failed' questions are shown
+     */
+    public void toggleOnlyMedia(){
+        this.onlyMedia=!this.onlyMedia;
+        reloadHiddenPositions();
+        notifyDataSetChanged();
+    }
+
+    public boolean isOnlyMedia() {
+        return onlyMedia;
     }
 
     /**
@@ -435,7 +452,13 @@ public class FeedbackAdapter extends BaseAdapter {
 
         for(int i=0;i<this.hiddenPositions.length;i++){
             //Passed items might get hidden
-            this.hiddenPositions[i]=this.items.get(i).isPassed();
+            if(onlyFailed && onlyMedia) {
+                this.hiddenPositions[i] = (this.items.get(i).isPassed() || !this.items.get(i).hasMedia());
+            }else if(onlyMedia){
+                this.hiddenPositions[i] = !this.items.get(i).hasMedia();
+            }else if (onlyFailed){
+                this.hiddenPositions[i] = (this.items.get(i).isPassed());
+            }
         }
     }
 

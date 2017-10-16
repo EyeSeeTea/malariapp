@@ -6,10 +6,12 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.test.utils.ElapsedTimeIdlingResource;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -180,7 +182,8 @@ public class PullTranslationSDKToAppDBTest {
         programList = ProgramDB.getAllPrograms();
 
         orgUnitSdkList= OrganisationUnitExtended.getAllOrganisationUnits();
-        programsSdkList= ProgramExtended.getAllPrograms();
+        programsSdkList= ProgramExtended.getAllPrograms(PreferencesState.getInstance().getContext().getString(
+                R.string.pull_program_code));
 
         Espresso.unregisterIdlingResources(idlingResource);
     }
