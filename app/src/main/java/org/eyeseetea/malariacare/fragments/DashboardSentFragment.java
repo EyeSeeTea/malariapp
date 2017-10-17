@@ -300,8 +300,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             title.setText(adapter.getTitle());
         }
         ListView listView = getListView();
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-            listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
         setListAdapter(adapter);
         if(PreferencesState.getInstance().isVerticalDashboard()){
 

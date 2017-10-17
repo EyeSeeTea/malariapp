@@ -150,7 +150,7 @@ public class FeedbackAdapter extends BaseAdapter {
             rowLayout.setVisibility(View.VISIBLE);
         }
 
-        rowLayout.setBackgroundResource(feedback.getBackgroundColor());
+        rowLayout.findViewById(R.id.cs_header).setBackgroundResource(feedback.getBackgroundColor());
 
         ImageView imageView = (ImageView)rowLayout.findViewById(R.id.feedback_image);
         imageView.setBackgroundResource(feedback.getBackgroundColor());
@@ -252,6 +252,10 @@ public class FeedbackAdapter extends BaseAdapter {
         }
         //Option label
         textView=(TextView)rowLayout.findViewById(R.id.feedback_option_label);
+        if(!PreferencesState.getInstance().isVerticalDashboard())
+            textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
+        textView.setText(feedback.getOption());
+        textView=(TextView)rowLayout.findViewById(R.id.feedback_option_value);
         if(!PreferencesState.getInstance().isVerticalDashboard())
             textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
         textView.setText(feedback.getOption());
