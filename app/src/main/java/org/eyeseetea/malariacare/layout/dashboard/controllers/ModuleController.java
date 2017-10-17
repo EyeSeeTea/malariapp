@@ -32,6 +32,7 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
@@ -210,6 +211,10 @@ public abstract class ModuleController {
 
     public void setActionBarDashboard() {
         LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
+    }
+
+    public void setActionBarDashboardWithProgram() {
+        LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
     }
 
     public void replaceFragment(int layout, Fragment fragment) {
