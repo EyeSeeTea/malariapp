@@ -93,24 +93,20 @@ public class AssessmentSentAdapter extends
 
     private void decorateSentScore(SurveyDB survey, View rowView) {
 
-        int colorId;
         String scoreText;
         if (survey.hasConflict()) {
             scoreText = (getContext().getResources().getString(
                     R.string.feedback_info_conflict)).toUpperCase();
-            colorId = R.color.darkRed;
         } else {
             if (survey.hasMainScore()) {
                 scoreText = String.format(SCORE_FORMAT, survey.getMainScore());
             } else {
                 scoreText = "NaN";
             }
-            colorId = getColorByScore(survey);
         }
 
         CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
         sentScore.setText(scoreText);
-        sentScore.setTextColor(getContext().getResources().getColor(colorId));
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {

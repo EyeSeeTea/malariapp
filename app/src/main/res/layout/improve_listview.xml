@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:background="@color/assess_grey"
         android:orientation="horizontal">
 
@@ -18,10 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-            android:layout_marginLeft="150dp"
-            android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
             android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-            android:button="@drawable/radiobutton_feedback"
+            android:layout_marginLeft="@dimen/margin_feedback_top_bottom_radiobutton"
+            android:drawableRight="@drawable/radiobutton_feedback"
+            android:button="@null"
+            android:background="@null"
             android:gravity="right|center_vertical"
             android:text="@string/feedback_show_only_one_or_show_all"
             android:textColor="@color/white"
