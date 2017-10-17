@@ -26,9 +26,9 @@
             android:background="@null"
             android:gravity="right|center_vertical"
             android:text="@string/feedback_show_only_one_or_show_all"
-            android:textColor="@color/white"
+            android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
+            app:tFontName="@string/light_font" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,7 +54,7 @@
             android:layout_weight="0.4"
             android:text="@string/assessment_title_facility_date"
             android:textColor="@color/planning_header_text"
-            app:tDimension="@string/font_size_level2"
+            app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
 
         <org.eyeseetea.malariacare.views.CustomTextView
@@ -68,7 +68,7 @@
             android:text="@string/assessment_sent_date"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/condensed_font_name" />
+            app:tFontName="@string/light_font" />
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/scoreHeader"
@@ -81,7 +81,7 @@
             android:text="@string/assessment_sent_score"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/condensed_font_name" />
+            app:tFontName="@string/light_font" />
     </LinearLayout>
 
     <ListView
