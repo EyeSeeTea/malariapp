@@ -15,7 +15,7 @@
         android:paddingLeft="@dimen/question_padding_left"
         android:text="@string/widget_info_empty_statement"
         android:background="@color/assess_yellow"
-        android:textColor="@color/black"
+        android:textColor="@color/new_grey_text_color"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
 </LinearLayout>
