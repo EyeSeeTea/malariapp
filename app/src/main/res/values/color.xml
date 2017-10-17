@@ -66,5 +66,6 @@
     <color name="plan_grey">#666666</color>
     <color name="plan_grey_light">#c2c2c2</color>
     <color name="white_grey">#efefef</color>
+    <color name="feedback_subtitle">#b9e8e4</color>
 
 </resources>
