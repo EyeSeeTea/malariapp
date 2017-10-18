@@ -423,7 +423,7 @@ public class DashboardController {
                             alertDialog.show();
                         }
                     }
-                });
+                }, false);
 
         return alertDialog;
     }

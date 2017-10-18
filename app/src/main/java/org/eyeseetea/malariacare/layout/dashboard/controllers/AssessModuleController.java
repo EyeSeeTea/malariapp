@@ -284,7 +284,7 @@ public class AssessModuleController extends ModuleController {
                                         SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
                                         dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                                     }
-                                });
+                                }, false);
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         dashboardController.setNavigatingBackwards(false);

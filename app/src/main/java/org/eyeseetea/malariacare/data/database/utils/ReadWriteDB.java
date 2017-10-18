@@ -19,9 +19,11 @@
 
 package org.eyeseetea.malariacare.data.database.utils;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -86,6 +88,7 @@ public class ReadWriteDB {
         } else {
             if (value != null) value.delete();
         }
+        LayoutUtils.updateSurveyActionBarChart(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey());
     }
 
     public static void saveValuesText(QuestionDB question, String answer, String module) {
@@ -102,6 +105,7 @@ public class ReadWriteDB {
             value.setUploadDate(new Date());
             value.update();
         }
+        LayoutUtils.updateSurveyActionBarChart(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey());
     }
 
     public static void deleteValue(QuestionDB question, String module) {

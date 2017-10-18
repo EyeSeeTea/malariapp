@@ -216,7 +216,7 @@ public class LayoutUtils {
                                     surveyAnsweredRatio.getTotalStatus());
                         }
                     }
-                });
+                }, true);
     }
 
     public static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,

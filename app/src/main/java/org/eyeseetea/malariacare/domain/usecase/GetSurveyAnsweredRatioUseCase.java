@@ -27,25 +27,26 @@ public class GetSurveyAnsweredRatioUseCase{
 
     SurveyDB surveyDB;
 
-    public void execute(long idSurvey, Callback callback) {
-        final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
+    public void execute(long idSurvey, Callback callback, boolean forceUpdate) {
+        final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback, forceUpdate);
         callback.onComplete(surveyAnsweredRatio);
     }
 
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
-            GetSurveyAnsweredRatioUseCase.Callback callback) {
+            GetSurveyAnsweredRatioUseCase.Callback callback, boolean forceUpdate) {
         surveyDB = SurveyDB.findById(idSurvey);
-            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
+            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback, forceUpdate);
         return mSurveyAnsweredRatio;
     }
 
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
-
-        answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(
-                idSurvey);
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback, boolean forceUpdate) {
+        if(!forceUpdate) {
+            answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(
+                    idSurvey);
+        }
         if (answeredQuestionRatio == null) {
             answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
         }
