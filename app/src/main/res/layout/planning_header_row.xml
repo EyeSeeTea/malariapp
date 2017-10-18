@@ -34,14 +34,12 @@
         android:layout_height="wrap_content"
         android:typeface="sans"
         android:paddingLeft="@dimen/dashboard_planning_padding"
-        android:paddingTop="@dimen/dashboard_planning_padding"
-        android:paddingBottom="@dimen/dashboard_planning_padding"
         android:textColor="@color/planning_header_text"
         android:text="@string/lorem_ipsum"
         android:textAllCaps="true"
         android:textSize="12dp"
         app:tDimension="@string/font_size_level1"
-        app:tFontName="@string/medium_font_name"
+        app:tFontName="@string/light_font"
         />
 
     <ImageView
@@ -50,8 +48,6 @@
         android:layout_weight=".15"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dashboard_planning_padding"
-        android:paddingTop="@dimen/dashboard_planning_padding"
-        android:paddingBottom="@dimen/dashboard_planning_padding"
         android:src="@drawable/ic_media_arrow"/>
 
 </LinearLayout>
