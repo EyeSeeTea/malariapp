@@ -19,13 +19,8 @@
 
 package org.eyeseetea.malariacare.layout.adapters.filters;
 
-import static android.text.InputType.TYPE_TEXT_FLAG_CAP_WORDS;
-
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.InputType;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.layout.adapters.general.AddlArrayAdapter;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -39,16 +34,7 @@ public class FilterOrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
     }
 
     @Override public void drawText(CustomTextView customTextView, OrgUnitDB orgUnit) {
-        if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
-            customTextView.setTextSize(16);
         customTextView.setText(orgUnit.getName());
-        customTextView.setAlpha(1f);
-        customTextView.setmDimension(getContext().getResources().getString(R.string.font_size_level4));
-        customTextView.setmFontName(getContext().getResources().getString(R.string.medium_font_name));
-        customTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
-
-        customTextView.setTypeface(null, Typeface.BOLD);
     }
 
 
