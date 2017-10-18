@@ -153,7 +153,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         orgUnitProgramFilterView.setVisibility(View.GONE);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
+        LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity, survey);
     }
 
     public void onMarkAsCompleted(final SurveyDB survey) {

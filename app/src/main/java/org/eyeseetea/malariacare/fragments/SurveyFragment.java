@@ -161,17 +161,6 @@ public class SurveyFragment extends Fragment  {
 
     String moduleName = Constants.FRAGMENT_FEEDBACK_KEY;
 
-    public static SurveyFragment newInstance(int index) {
-        SurveyFragment f = new SurveyFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
