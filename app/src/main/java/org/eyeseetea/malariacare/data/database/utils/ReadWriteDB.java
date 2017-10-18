@@ -85,10 +85,13 @@ public class ReadWriteDB {
                 value.setUploadDate(new Date());
                 value.update();
             }
+            LayoutUtils.updateSurveyActionBarChartAddingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
         } else {
-            if (value != null) value.delete();
+            if (value != null) {
+                value.delete();
+                LayoutUtils.updateSurveyActionBarChartRemovingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
+            }
         }
-        LayoutUtils.updateSurveyActionBarChart(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey());
     }
 
     public static void saveValuesText(QuestionDB question, String answer, String module) {
@@ -105,15 +108,17 @@ public class ReadWriteDB {
             value.setUploadDate(new Date());
             value.update();
         }
-        LayoutUtils.updateSurveyActionBarChart(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey());
+        LayoutUtils.updateSurveyActionBarChartAddingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
     }
 
     public static void deleteValue(QuestionDB question, String module) {
 
         ValueDB value = question.getValueBySession(module);
 
-        if (value != null)
+        if (value != null) {
             value.delete();
+            LayoutUtils.updateSurveyActionBarChartRemovingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
+        }
     }
 
 }

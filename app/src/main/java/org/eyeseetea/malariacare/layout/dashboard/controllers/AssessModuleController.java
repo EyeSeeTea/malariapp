@@ -26,7 +26,6 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -284,7 +283,7 @@ public class AssessModuleController extends ModuleController {
                                         SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
                                         dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
                                     }
-                                }, false);
+                                }, GetSurveyAnsweredRatioUseCase.Action.GET);
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         dashboardController.setNavigatingBackwards(false);

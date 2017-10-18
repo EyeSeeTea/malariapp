@@ -9,10 +9,16 @@ import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
 public class GetSurveyAnsweredRatioUseCase{
 
+    public void save() {
+        mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(mSurveyAnsweredRatio);
+    }
+
     public interface Callback{
         void nextProgressMessage();
         void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
     }
+
+    public enum Action {FORCE_UPDATE, GET}
 
     private ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
 
@@ -27,27 +33,27 @@ public class GetSurveyAnsweredRatioUseCase{
 
     SurveyDB surveyDB;
 
-    public void execute(long idSurvey, Callback callback, boolean forceUpdate) {
-        final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback, forceUpdate);
+    public void execute(long idSurvey, Callback callback, Action action) {
+        final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback, action);
         callback.onComplete(surveyAnsweredRatio);
     }
 
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
-            GetSurveyAnsweredRatioUseCase.Callback callback, boolean forceUpdate) {
+            GetSurveyAnsweredRatioUseCase.Callback callback, Action action) {
         surveyDB = SurveyDB.findById(idSurvey);
-            mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback, forceUpdate);
+        mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback, action);
         return mSurveyAnsweredRatio;
     }
 
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback, boolean forceUpdate) {
-        if(!forceUpdate) {
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback, Action action) {
+        if(action.equals(Action.GET)) {
             answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(
                     idSurvey);
         }
-        if (answeredQuestionRatio == null) {
+        if (action.equals(Action.FORCE_UPDATE) || answeredQuestionRatio == null) {
             answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
         }
 

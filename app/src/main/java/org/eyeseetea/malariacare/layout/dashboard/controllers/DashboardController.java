@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
@@ -314,6 +315,23 @@ public class DashboardController {
         //Replace new survey
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
         assessModuleController.onNewSurvey();
+        long surveyId = Session.getSurveyByModule(assessModuleController.getSimpleName()).getId_survey();
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        getSurveyAnsweredRatioUseCase.execute(surveyId,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                    }
+                }, GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE);
     }
 
     /**
@@ -423,7 +441,7 @@ public class DashboardController {
                             alertDialog.show();
                         }
                     }
-                }, false);
+                }, GetSurveyAnsweredRatioUseCase.Action.GET);
 
         return alertDialog;
     }

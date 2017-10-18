@@ -115,7 +115,7 @@ public class DoublePieChart extends FrameLayout {
 
         setData(mChart, percentage, highColor, middleColor, lowColor);
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        mChart.animateY(100, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
     }
 
