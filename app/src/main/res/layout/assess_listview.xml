@@ -26,6 +26,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/assessment_title_facility_date"
+            android:paddingLeft="@dimen/row_left_padding"
             android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level2"
             app:tFontName="@string/light_font" />
@@ -38,6 +39,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
+            android:paddingRight="50dp"
             android:text="@string/assessment_title_state"
             android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level2"

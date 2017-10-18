@@ -93,4 +93,7 @@
     <dimen name="standard_45">45dp</dimen>
     <dimen name="standard_21">25dp</dimen>
     <dimen name="header_min_height">30dp</dimen>
+    <dimen name="row_min_height">56dp</dimen>
+    <dimen name="row_left_padding">10dp</dimen>
+    <dimen name="row_right_padding">10dp</dimen>
 </resources>

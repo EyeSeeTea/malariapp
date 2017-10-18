@@ -148,7 +148,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         if (survey.isCompleted()) {
             surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
         } else {
-            surveyDescription = SENT_SURVEY_MARK + survey.getProgram().getName();
+            surveyDescription = survey.getProgram().getName();
         }
         surveyType.setText(surveyDescription);
         return surveyType;

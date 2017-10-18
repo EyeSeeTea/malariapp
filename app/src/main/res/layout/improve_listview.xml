@@ -41,7 +41,6 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
-        android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:weightSum="1">
 
@@ -49,22 +48,21 @@
             android:id="@+id/idHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="0.4"
             android:text="@string/assessment_title_facility_date"
             android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
-
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/statusHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:autoText="false"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/assessment_sent_date"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
@@ -74,14 +72,17 @@
             android:id="@+id/scoreHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:gravity="center|left"
             android:layout_weight="0.2"
             android:autoText="false"
             android:text="@string/assessment_sent_score"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"></View>
     </LinearLayout>
 
     <ListView
