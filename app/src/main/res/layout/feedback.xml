@@ -35,9 +35,8 @@
         android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:minHeight="@dimen/header_min_height"
         android:background="@color/assess_grey"
         android:orientation="horizontal">
 
@@ -52,6 +51,7 @@
             android:drawableRight="@drawable/radiobutton_feedback"
             android:gravity="right|center_vertical"
             android:text="@string/feedback_show_only_failed"
+            android:textSize="12dp"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
@@ -67,6 +67,7 @@
             android:drawableRight="@drawable/radiobutton_feedback"
             android:gravity="right|center_vertical"
             android:text="@string/feedback_show_only_media"
+            android:textSize="12dp"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
@@ -77,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutHeader"
+        android:minHeight="@dimen/header_min_height"
         android:background="@color/feedback_subtitle"
         android:orientation="horizontal"
         android:paddingTop="10dp">
@@ -135,7 +137,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
         android:background="@color/transparent"
         android:gravity="center_horizontal"
         android:padding="12dp"

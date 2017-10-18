@@ -92,5 +92,5 @@
     <dimen name="standard_50">50dp</dimen>
     <dimen name="standard_45">45dp</dimen>
     <dimen name="standard_21">25dp</dimen>
-
+    <dimen name="header_min_height">30dp</dimen>
 </resources>

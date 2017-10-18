@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:minHeight="@dimen/header_min_height"
         android:background="@color/assess_grey"
         android:orientation="horizontal">
 
@@ -18,8 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
-            android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-            android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
             android:layout_marginLeft="@dimen/margin_feedback_top_bottom_radiobutton"
             android:drawableRight="@drawable/radiobutton_feedback"
             android:button="@null"
@@ -36,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/extra_options"
+        android:minHeight="@dimen/header_min_height"
         android:layout_gravity="center"
         android:background="@color/planning_header_background"
         android:gravity="center"
