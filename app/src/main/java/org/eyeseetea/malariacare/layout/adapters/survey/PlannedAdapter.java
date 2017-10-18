@@ -267,7 +267,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Program
         textView = (TextView) rowLayout.findViewById(R.id.planning_program);
-        textView.setText(String.format("   - %s", plannedSurvey.getProgram()));
+        textView.setText(String.format("%s", plannedSurvey.getProgram()));
 
         //Productivity
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_prod);
