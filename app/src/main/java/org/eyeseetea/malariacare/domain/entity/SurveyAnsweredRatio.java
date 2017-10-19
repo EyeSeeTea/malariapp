@@ -175,4 +175,36 @@ public class SurveyAnsweredRatio {
             return Float.valueOf(100 * getRatio()).intValue();
         }
     }
+
+    public void incrementTotalCompulsory() {
+        totalCompulsory++;
+    }
+
+    public void decrementTotalCompulsory() {
+        totalCompulsory--;
+    }
+
+    public void incrementTotal() {
+        total++;
+    }
+
+    public void decrementTotal() {
+        total--;
+    }
+
+    public void incrementAnswered() {
+        answered++;
+    }
+
+    public void decrementAnswered() {
+        answered--;
+    }
+
+    public void incrementCompulsoryAnswered() {
+        compulsoryAnswered++;
+    }
+
+    public void decrementCompulsoryAnswered() {
+        compulsoryAnswered--;
+    }
 }

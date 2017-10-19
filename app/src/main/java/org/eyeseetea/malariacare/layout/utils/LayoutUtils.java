@@ -190,99 +190,6 @@ public class LayoutUtils {
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
-
-    public static void updateSurveyActionBarChartAddingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        if(question.getCompulsory()){
-                            surveyAnsweredRatio.setCompulsoryAnswered(surveyAnsweredRatio.getCompulsoryAnswered() + 1);
-                        }else{
-                            surveyAnsweredRatio.setAnswered(surveyAnsweredRatio.getAnswered() + 1);
-                        }
-                        getSurveyAnsweredRatioUseCase.save();
-                        if (surveyAnsweredRatio != null) {
-                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-                        }
-                    }
-                }, GetSurveyAnsweredRatioUseCase.Action.GET);
-    }
-    public static void updateSurveyActionBarChartRemovingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        if(question.getCompulsory()){
-                            surveyAnsweredRatio.setCompulsoryAnswered(surveyAnsweredRatio.getCompulsoryAnswered()-1);
-                        }else{
-                            surveyAnsweredRatio.setAnswered(surveyAnsweredRatio.getAnswered()-1);
-                        }
-                        getSurveyAnsweredRatioUseCase.save();
-                        if (surveyAnsweredRatio != null) {
-                            getSurveyAnsweredRatioUseCase.save();
-                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-                        }
-                    }
-                }, GetSurveyAnsweredRatioUseCase.Action.GET);
-    }
-
-    public static void updateSurveyActionBarChart(ActionBar actionBar, long surveyId){
-
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
-                new GetSurveyAnsweredRatioUseCase.Callback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-
-                        if (surveyAnsweredRatio != null) {
-                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-                        }
-                    }
-                }, GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE);
-    }
-
     public static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,
             String subtitle, long surveyId) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
@@ -360,9 +267,7 @@ public class LayoutUtils {
         return String.format("%X", appNameColor).substring(2);
     }
 
-    public static void updateActionBarChartCompletionCount(ActionBar actionBar, Long surveyId,
-            final QuestionDB question, final boolean visible) {
-
+    public static void updateSurveyActionBarChartAddingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
         final DoublePieChart doublePieChart =
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
@@ -380,26 +285,94 @@ public class LayoutUtils {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-                        if(question.getCompulsory()){
-                            if(visible) {
-                                surveyAnsweredRatio.setTotalCompulsory(
-                                        surveyAnsweredRatio.getTotalCompulsory()+1);
-                            }else{
-                                surveyAnsweredRatio.setTotalCompulsory(
-                                        surveyAnsweredRatio.getTotalCompulsory()-1);
-                            }
-                        }else{
-                            if(visible) {
-                                surveyAnsweredRatio.setTotal(surveyAnsweredRatio.getTotal()+1);
-                            }else{
-                                surveyAnsweredRatio.setTotal(surveyAnsweredRatio.getTotal()-1);
-                            }
-                        }
-                        getSurveyAnsweredRatioUseCase.save();
+                        getSurveyAnsweredRatioUseCase.addQuestion(question);
                         if (surveyAnsweredRatio != null) {
-                            getSurveyAnsweredRatioUseCase.save();
-                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
+                            updateChart(surveyAnsweredRatio, doublePieChart);
+                        }
+                    }
+                }, GetSurveyAnsweredRatioUseCase.Action.GET);
+    }
+    public static void updateSurveyActionBarChartRemovingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
+        doublePieChart.setVisibility(View.VISIBLE);
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        getSurveyAnsweredRatioUseCase.execute(surveyId,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                        getSurveyAnsweredRatioUseCase.removeQuestion(question);
+                        if (surveyAnsweredRatio != null) {
+                            updateChart(surveyAnsweredRatio, doublePieChart);
+                        }
+                    }
+                }, GetSurveyAnsweredRatioUseCase.Action.GET);
+    }
+
+    private static void updateChart(SurveyAnsweredRatio surveyAnsweredRatio,
+            DoublePieChart doublePieChart) {
+        doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                surveyAnsweredRatio.getTotalStatus());
+    }
+
+    public static void updateSurveyActionBarChart(ActionBar actionBar, long surveyId){
+
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
+        doublePieChart.setVisibility(View.VISIBLE);
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        getSurveyAnsweredRatioUseCase.execute(surveyId,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+
+                        if (surveyAnsweredRatio != null) {
+                            updateChart(surveyAnsweredRatio, doublePieChart);
+                        }
+                    }
+                }, GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE);
+    }
+
+    public static void updateActionBarChartCompletionCount(ActionBar actionBar, Long surveyId,
+            final QuestionDB question, final boolean visible) {
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
+        doublePieChart.setVisibility(View.VISIBLE);
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        getSurveyAnsweredRatioUseCase.execute(surveyId,
+                new GetSurveyAnsweredRatioUseCase.Callback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                        getSurveyAnsweredRatioUseCase.fixTotalQuestion(question, visible);
+                        if (surveyAnsweredRatio != null) {
+                            updateChart(surveyAnsweredRatio, doublePieChart);
                         }
                     }
                 }, GetSurveyAnsweredRatioUseCase.Action.GET);

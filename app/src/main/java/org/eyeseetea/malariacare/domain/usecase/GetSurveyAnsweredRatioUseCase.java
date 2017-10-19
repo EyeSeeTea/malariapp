@@ -13,6 +13,42 @@ public class GetSurveyAnsweredRatioUseCase{
         mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(mSurveyAnsweredRatio);
     }
 
+    public void fixTotalQuestion(QuestionDB question, boolean visible) {
+        if(question.getCompulsory()){
+            if(visible) {
+                mSurveyAnsweredRatio.incrementTotalCompulsory();
+            }else{
+                mSurveyAnsweredRatio.decrementTotalCompulsory();
+            }
+        }else{
+            if(visible) {
+                mSurveyAnsweredRatio.incrementTotal();
+            }else{
+                mSurveyAnsweredRatio.decrementTotal();
+            }
+        }
+        save();
+    }
+
+    public void removeQuestion(QuestionDB question) {
+        if(question.getCompulsory()){
+            mSurveyAnsweredRatio.decrementCompulsoryAnswered();
+        }else{
+            mSurveyAnsweredRatio.decrementAnswered();
+        }
+        save();
+    }
+
+
+    public void addQuestion(QuestionDB question) {
+        if(question.getCompulsory()){
+            mSurveyAnsweredRatio.incrementCompulsoryAnswered();
+        }else{
+            mSurveyAnsweredRatio.incrementAnswered();
+        }
+        save();
+    }
+
     public interface Callback{
         void nextProgressMessage();
         void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
