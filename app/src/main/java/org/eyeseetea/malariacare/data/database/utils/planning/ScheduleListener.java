@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.sdk.presentation.views.CustomEditText;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class ScheduleListener implements View.OnClickListener {
         dialog.setTitle(R.string.planning_title_dialog);
 
         //Set current date
-        final Button scheduleDatePickerButton=(Button)dialog.findViewById(R.id.planning_dialog_picker_button);
+        final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
         scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduledDate()));
         //On Click open an specific DatePickerDialog
         scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {

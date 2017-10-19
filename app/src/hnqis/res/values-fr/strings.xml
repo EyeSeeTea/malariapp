@@ -165,7 +165,7 @@ Mensuelle"</string>
 <string name="progress_pull_done">"Terminé"</string>
 <string name="dialog_push_success">"Téléchargement du rapport dans le serveur dhis réussi"</string>
 <string name="planning_title_dialog">"Programmer un rapport"</string>
-<string name="planning_label_comment">"* Commentaire"</string>
+<string name="planning_label_comment">"Commentaire"</string>
 <string name="planning_label_schedule_date">"* Date programmée"</string>
 <string name="option_edit">"Modifier"</string>
 <string name="option_mark_completed">"Marquer comme terminée"</string>
@@ -260,4 +260,6 @@ Mensuelle"</string>
 <string name="mark_complete">"Marque terminée"</string>
 <string name="plain_text">"Texte en clair "</string>
 <string name="html_text">"Texte formaté "</string>
+<string name="schedule_title">"Calendrier de l'enquête"</string>
+<string name="save">"enregistrer"</string>
 </resources>

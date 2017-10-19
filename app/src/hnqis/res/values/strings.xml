@@ -168,7 +168,7 @@ evaluation"</string>
 <string name="progress_pull_done">"Done"</string>
 <string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_comment">"* Comment"</string>
+<string name="planning_label_comment">"Comment"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
 <string name="option_edit">"Edit"</string>
 <string name="option_mark_completed">"Mark as completed"</string>
@@ -270,4 +270,6 @@ evaluation"</string>
 <string name="percent">&#37;</string>
 <string name="plain_text">Plain text </string>
 <string name="html_text">Formatted text </string>
+<string name="schedule_title">Schedule survey</string>
+<string name="save">"Save"</string>
 </resources>
