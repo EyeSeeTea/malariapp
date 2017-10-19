@@ -92,7 +92,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                             surveyAnsweredRatio.getTotalStatus());
                 }
             }
-        }, GetSurveyAnsweredRatioUseCase.Action.GET);
+        });
     }
 
 

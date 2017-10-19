@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
@@ -284,7 +285,7 @@ public class LayoutUtils {
                             updateChart(surveyAnsweredRatio, doublePieChart);
                         }
                     }
-                }, GetSurveyAnsweredRatioUseCase.Action.GET);
+                });
     }
     public static void updateSurveyActionBarChartRemovingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
         final DoublePieChart doublePieChart =
@@ -309,7 +310,7 @@ public class LayoutUtils {
                             updateChart(surveyAnsweredRatio, doublePieChart);
                         }
                     }
-                }, GetSurveyAnsweredRatioUseCase.Action.GET);
+                });
     }
 
     private static void updateChart(SurveyAnsweredRatio surveyAnsweredRatio,
@@ -325,9 +326,9 @@ public class LayoutUtils {
         doublePieChart.setVisibility(View.VISIBLE);
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        saveSurveyAnsweredRatioUseCase.execute(surveyId,
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
@@ -342,7 +343,7 @@ public class LayoutUtils {
                             updateChart(surveyAnsweredRatio, doublePieChart);
                         }
                     }
-                }, GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE);
+                });
     }
 
     public static void updateActionBarChartCompletionCount(ActionBar actionBar, Long surveyId,
@@ -369,6 +370,6 @@ public class LayoutUtils {
                             updateChart(surveyAnsweredRatio, doublePieChart);
                         }
                     }
-                }, GetSurveyAnsweredRatioUseCase.Action.GET);
+                });
     }
 }

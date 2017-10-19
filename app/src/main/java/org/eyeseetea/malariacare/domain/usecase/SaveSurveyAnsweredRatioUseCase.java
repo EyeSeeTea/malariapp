@@ -17,6 +17,16 @@ public class SaveSurveyAnsweredRatioUseCase {
 
     public void execute(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
         SurveyAnsweredRatio surveyAnsweredRatio = reloadSurveyAnsweredRatio(idSurvey, callback);
+        save(callback, surveyAnsweredRatio);
+    }
+
+    public void execute(GetSurveyAnsweredRatioUseCase.Callback callback, SurveyAnsweredRatio surveyAnsweredRatio) {
+        save(callback, surveyAnsweredRatio);
+    }
+
+    private void save(GetSurveyAnsweredRatioUseCase.Callback callback,
+            SurveyAnsweredRatio surveyAnsweredRatio) {
+        mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         callback.onComplete(surveyAnsweredRatio);
     }
 
@@ -44,7 +54,6 @@ public class SaveSurveyAnsweredRatioUseCase {
                 numRequired + numOptional,
                 numAnswered, numCompulsory + numActiveChildrenCompulsory,
                 numCompulsoryAnswered);
-        mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
 

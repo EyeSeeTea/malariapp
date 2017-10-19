@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -318,9 +319,9 @@ public class DashboardController {
         long surveyId = Session.getSurveyByModule(assessModuleController.getSimpleName()).getId_survey();
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
-        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
+        final SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+        saveSurveyAnsweredRatioUseCase.execute(surveyId,
                 new GetSurveyAnsweredRatioUseCase.Callback() {
                     @Override
                     public void nextProgressMessage() {
@@ -331,7 +332,7 @@ public class DashboardController {
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
                     }
-                }, GetSurveyAnsweredRatioUseCase.Action.FORCE_UPDATE);
+                });
     }
 
     /**
@@ -441,7 +442,7 @@ public class DashboardController {
                             alertDialog.show();
                         }
                     }
-                }, GetSurveyAnsweredRatioUseCase.Action.GET);
+                });
 
         return alertDialog;
     }
