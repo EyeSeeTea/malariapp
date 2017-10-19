@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -229,6 +230,8 @@ public class PlannedAdapter extends BaseAdapter {
             if (plannedHeader.getTitleHeader().contains(context.getString(R.string.dashboard_title_planned_type_never))) {
                 color  =  PreferencesState.getInstance().getContext().getResources().getColor(
                         R.color.white);
+                Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/"+context.getString(R.string.medium_font_name));
+                textView.setTypeface(font);
             } else {
                 color  = PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.black);

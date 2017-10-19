@@ -167,7 +167,7 @@ clínica"</string>
 <string name="progress_pull_done">"Hecho"</string>
 <string name="dialog_push_success">"Encuestra correctamente subida al servidor Dhis"</string>
 <string name="planning_title_dialog">"Planificar evaluación"</string>
-<string name="planning_label_comment">"* Comentario"</string>
+<string name="planning_label_comment">"Comentario"</string>
 <string name="planning_label_schedule_date">"* Fecha planificada"</string>
 <string name="option_edit">"Editar"</string>
 <string name="option_mark_completed">"Marcar como completa"</string>
@@ -265,4 +265,6 @@ clínica"</string>
 <string name="mark_complete">"Marcar completado"</string>
 <string name="plain_text">Texto sin formato </string>
 <string name="html_text">Texto con formato </string>
+<string name="schedule_title">Programación de encuesta</string>
+<string name="save">"salvar"</string>
 </resources>

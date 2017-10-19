@@ -180,8 +180,21 @@ public class SurveyFragment extends Fragment  {
         registerReceiver();
         createMenu(moduleName);
         createProgress();
+        createBackButton();
         prepareSurveyInfo();
         return llLayout;
+    }
+
+    private void createBackButton() {
+        ImageButton goback = (ImageButton) llLayout.findViewById(
+                R.id.backToSentSurveys);
+        goback.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          getActivity().onBackPressed();
+                                      }
+                                  }
+        );
     }
 
     @Override

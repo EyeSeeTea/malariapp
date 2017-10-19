@@ -272,4 +272,6 @@
 <string name="mark_complete">"Mark ແລ້ວສົມບູນ"</string>
 <string name="plain_text">"ຂໍ້ຄວາມທົ່ງພຽງ "</string>
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
+<string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
+<string name="save">"save"</string>
 </resources>

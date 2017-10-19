@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/form_header"
-    android:background="@color/assess_grey"
+    android:background="@color/plan_grey"
     android:gravity="center_horizontal">
     <ImageButton
         android:layout_width="wrap_content"
@@ -16,6 +16,8 @@
         android:background="@color/transparent"
         android:alpha="0"
         android:src="@drawable/arrow_to_left"
+        android:backgroundTint="@color/white"
+        android:backgroundTintMode="src_in"
         android:gravity="center_horizontal"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"

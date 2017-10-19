@@ -167,7 +167,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="progress_pull_done">"Feito"</string>
 <string name="dialog_push_success">"Pesquisa empurrou com êxito para o servidor dhis"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_comment">"* Comente"</string>
+<string name="planning_label_comment">"Comente"</string>
 <string name="planning_label_schedule_date">"* Data calendário"</string>
 <string name="option_edit">"Editar"</string>
 <string name="option_mark_completed">"Marcar como concluída"</string>
@@ -261,4 +261,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="mark_complete">"Marcar completo"</string>
 <string name="plain_text">"Texto simples "</string>
 <string name="html_text">"Texto formatado "</string>
+<string name="schedule_title">"Agendar pesquisa"</string>
+<string name="save">"Salvar"</string>
 </resources>

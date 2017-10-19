@@ -69,8 +69,8 @@
 
 
     <!-- Arrow padding !-->
-    <dimen name="left_padding_arrow">30dip</dimen>
-    <dimen name="right_padding_arrow">30dip</dimen>
+    <dimen name="left_padding_arrow">50dip</dimen>
+    <dimen name="right_padding_arrow">50dip</dimen>
 
     <!--Text size for age and phone-->
     <dimen name="input_number_edit_text">32dp</dimen>
@@ -96,4 +96,6 @@
     <dimen name="row_min_height">56dp</dimen>
     <dimen name="row_left_padding">10dp</dimen>
     <dimen name="row_right_padding">10dp</dimen>
+    <dimen name="planing_text_size">14dp</dimen>
+    <dimen name="planing_text_first_title_size">15dp</dimen>
 </resources>
