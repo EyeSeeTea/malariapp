@@ -42,11 +42,11 @@
             android:paddingTop="@dimen/dashboard_row_padding"
             android:text="@string/lorem_ipsum"
             android:textColor="@color/white"
-            android:textSize="@dimen/medium_xsmall_text_size"
             android:textStyle="bold"
             android:typeface="sans"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
+            android:textSize="18dp"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/condensed_font_name" />
 
         <ImageView
             android:id="@+id/feedback_image"
@@ -75,10 +75,10 @@
         android:paddingLeft="@dimen/dashboard_row_padding"
         android:paddingTop="@dimen/dashboard_row_padding"
         android:text="@string/lorem_ipsum"
+        android:textSize="16dp"
         android:textColor="@color/white"
-        android:textSize="@dimen/medium_xsmall_text_size"
         android:textStyle="bold"
         android:typeface="sans"
-        app:tDimension="@string/font_size_level1"
+        app:tDimension="@string/font_size_level2"
         app:tFontName="@string/medium_font_name" />
 </LinearLayout>
