@@ -144,26 +144,20 @@ public class LayoutUtils {
     }
 
     public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
-            SurveyDB survey) {
+            SurveyDB survey, String moduleName) {
         String title = "";
-        String subtitle = "";
-        int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
-        String appNameColorString = String.format("%X", appNameColor).substring(2);
-        ProgramDB program = survey.getProgram();
-        if (survey.getOrgUnit().getName() != null) {
-            title = survey.getOrgUnit().getName();
+        if (survey.getProgram().getName() != null) {
+            title = survey.getProgram().getName();
         }
-        if (program.getName() != null) {
-            subtitle = program.getName();
-        }
-        if (PreferencesState.getInstance().isVerticalDashboard()) {
-            setActionbarVerticalSurvey(dashboardActivity, title, subtitle);
-        } else {
-            Spanned spannedTitle = Html.fromHtml(
-                    String.format("<font color=\"#%s\"><b>", appNameColorString) + title
-                            + "</b></font>");
-            setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey());
-        }
+        //Get Tab + User
+        title = getCapitalizeName(title);
+        String subtitle = getCurrentUsername();
+        String appNameColorString = getAppNameColorString();
+        String appName = getAppName();
+        Spanned spannedTitle = Html.fromHtml(
+                String.format("<font color=\"#%s\"><b>%s</b></font> - %s", appNameColorString,
+                        appName +" - " + moduleName, title));
+        setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey());
     }
     public static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
             String subtitle) {

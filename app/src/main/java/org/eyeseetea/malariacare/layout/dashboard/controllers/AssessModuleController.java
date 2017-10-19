@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 
@@ -152,7 +150,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         orgUnitProgramFilterView.setVisibility(View.GONE);
-        LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity, survey);
+        LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity, survey, getTitle());
     }
 
     public void onMarkAsCompleted(final SurveyDB survey) {
@@ -207,25 +205,7 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void setActionBarDashboard() {
-        if (!isFragmentActive(SurveyFragment.class)) {
-            super.setActionBarDashboard();
-            return;
-        }
-
-        //In survey -> custom action bar
-        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-        String appNameColorString = LayoutUtils.getAppNameColorString();
-        String title = getActionBarTitleBySurvey(survey);
-        String subtitle = getActionBarSubTitleBySurvey(survey);
-
-        if (PreferencesState.getInstance().isVerticalDashboard()) {
-            LayoutUtils.setActionbarVerticalSurvey(dashboardActivity, title, subtitle);
-        } else {
-            Spanned spannedTitle = Html.fromHtml(
-                    String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString,
-                            title));
-            LayoutUtils.setActionbarTitle(dashboardActivity, spannedTitle, subtitle);
-        }
+        super.setActionBarDashboard();
     }
 
     /**

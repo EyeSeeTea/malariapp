@@ -24,10 +24,7 @@ import android.widget.LinearLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
@@ -123,8 +120,6 @@ public class ImproveModuleController extends ModuleController {
         mPlanActionFragment = PlanActionFragment.newInstance(survey.getId_survey());
 
         replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
-
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
     }
 
 
