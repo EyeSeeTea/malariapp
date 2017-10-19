@@ -29,7 +29,7 @@
             android:paddingLeft="@dimen/row_left_padding"
             android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/light_font" />
+            app:tFontName="@string/medium_font_name" />
 
         <org.eyeseetea.sdk.presentation.views.CustomTextView
             android:id="@+id/nameHeader"
@@ -43,7 +43,7 @@
             android:text="@string/assessment_title_state"
             android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/light_font" />
+            app:tFontName="@string/medium_font_name" />
     </RelativeLayout>
 
     <ListView

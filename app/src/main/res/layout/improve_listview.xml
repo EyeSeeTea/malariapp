@@ -26,19 +26,24 @@
             android:gravity="right|center_vertical"
             android:text="@string/feedback_show_only_one_or_show_all"
             android:textColor="@color/planning_header_text"
+            android:textSize="12dp"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/light_font" />
+            app:tFontName="@string/condensed_font_name" />
     </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/header"
+    android:layout_below="@id/extra_options"
+    android:minHeight="@dimen/header_min_height"
+    android:background="@color/planning_header_background"
+    android:orientation="horizontal"
+    android:weightSum="1">
     <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/extra_options"
+        android:layout_weight="0.9"
         android:minHeight="@dimen/header_min_height"
-        android:layout_gravity="center"
-        android:background="@color/planning_header_background"
-        android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
         android:paddingTop="2dp"
@@ -48,25 +53,28 @@
             android:id="@+id/idHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_gravity="left|center"
+            android:gravity="left|center"
             android:layout_weight="0.4"
+            android:paddingLeft="@dimen/row_left_padding"
             android:text="@string/assessment_title_facility_date"
+            android:textSize="@dimen/planing_text_size"
             android:textColor="@color/planning_header_text"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/light_font" />
+            app:tFontName="@string/medium_font_name"  />
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/statusHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:autoText="false"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_gravity="left|center"
+            android:gravity="left|center"
             android:text="@string/assessment_sent_date"
             android:textColor="@color/white"
+            android:textSize="@dimen/planing_text_size"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/light_font" />
+            app:tFontName="@string/medium_font_name" />
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/scoreHeader"
@@ -74,16 +82,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:autoText="false"
+            android:layout_gravity="left|center"
+            android:gravity="left|center"
             android:text="@string/assessment_sent_score"
             android:textColor="@color/white"
+            android:textSize="@dimen/planing_text_size"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/light_font" />
-
+            app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"></View>
-    </LinearLayout>
+</LinearLayout>
 
     <ListView
         android:id="@id/android:list"
