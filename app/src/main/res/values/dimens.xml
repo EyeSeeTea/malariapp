@@ -92,10 +92,14 @@
     <dimen name="standard_50">50dp</dimen>
     <dimen name="standard_45">45dp</dimen>
     <dimen name="standard_21">25dp</dimen>
-    <dimen name="header_min_height">30dp</dimen>
+    <dimen name="header_min_height">50dp</dimen>
     <dimen name="row_min_height">56dp</dimen>
     <dimen name="row_left_padding">10dp</dimen>
     <dimen name="row_right_padding">10dp</dimen>
     <dimen name="planing_text_size">14dp</dimen>
+    <dimen name="planing_per_org_text_size">14dp</dimen>
+    <dimen name="planing_per_org_text_light_size">14dp</dimen>
     <dimen name="planing_text_first_title_size">15dp</dimen>
+    <dimen name="header_light_text_size">18dp</dimen>
+    <dimen name="header_bold_text_size">18dp</dimen>
 </resources>

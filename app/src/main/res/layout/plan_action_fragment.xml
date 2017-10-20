@@ -29,7 +29,8 @@
                 android:minHeight="@dimen/header_min_height"
                 android:text="@string/feedback_return"
                 android:textAllCaps="true"
-                android:textColor="@color/white"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_bold_text_size"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/medium_font_name" />
 
@@ -45,7 +46,7 @@
                 android:minHeight="@dimen/header_min_height"
                 android:text="@string/plan_action_title"
                 android:textColor="@color/new_grey_text_color"
-                android:textSize="16dp"
+                android:textSize="@dimen/header_bold_text_size"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/font_name_regular" />
 

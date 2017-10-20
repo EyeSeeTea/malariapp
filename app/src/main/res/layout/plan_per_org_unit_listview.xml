@@ -12,7 +12,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center_vertical"
             android:minHeight="@dimen/header_min_height"
-            android:paddingRight="5dp"
+            android:padding="8dp"
             android:background="@color/planning_header_background"
             android:gravity="center"
             android:orientation="vertical">
@@ -28,6 +28,7 @@
                 android:paddingLeft="@dimen/checkbox_left_padding"
                 android:text="@string/select_all"
                 android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
                 app:tDimension="@string/font_size_level2"
                 app:tFontName="@string/light_font" />
 
@@ -42,6 +43,7 @@
                 android:paddingRight="2dp"
                 android:text="@string/header_reschedule"
                 android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
                 app:tDimension="@string/font_size_level2"
                 app:tFontName="@string/light_font" />
         </RelativeLayout>
