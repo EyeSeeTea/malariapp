@@ -60,7 +60,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="4dp"
         android:background="@color/transparent"
         android:gravity="center_horizontal"
         android:onClick="onNewSurvey"
@@ -68,5 +68,5 @@
         android:textColor="@color/white"
         android:textSize="@dimen/medium_text_size"
         android:textStyle="bold"
-        app:fabSize="mini" />
+        app:fabSize="normal" />
 </RelativeLayout>
