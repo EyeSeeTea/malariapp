@@ -63,7 +63,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/transparent"
             android:gravity="center_horizontal"
-            android:padding="12dp"
+            android:padding="16dp"
             android:src="@drawable/ic_calendar"
             android:textColor="@color/white"
             android:textSize="@dimen/medium_text_size"

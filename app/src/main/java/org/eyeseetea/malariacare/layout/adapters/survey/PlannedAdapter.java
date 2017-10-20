@@ -317,6 +317,7 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
+        rowLayout.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
 
         return rowLayout;
     }
