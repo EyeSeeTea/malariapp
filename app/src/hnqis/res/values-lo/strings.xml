@@ -190,7 +190,7 @@
 <string name="improve">"ປັບປູງ"</string>
 <string name="monitor">"ຕິດຕາມ"</string>
 <string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
-<string name="filter_all_org_assessments">"ການປະເມີນຜົນທັງໝົດ"</string>
+<string name="filter_all_org_assessments">"All Assessed"</string>
 <string name="dialog_content_dhis_preference_login">"ການປ່ຽນເຂົ້າໄປສູ່ລະບົບຈະຕ້ອງໄດ້ອອກ ແລະ ເຂົ້າໃໝ່. ທຸກໆຂໍ້ມູນການສຳຫຼວດທີ່ຍັງບໍ່ທັນສົ່ງຈະຖືກລຶບອອກ. ເຈົ້າຕ້ອງການຈະດຳເນີດການຕໍ່ບໍ? "</string>
 <string name="lastcommit">"ລຸ້ນທີ %s"</string>
 <string name="unavailable">"ບໍ່ມີ"</string>
