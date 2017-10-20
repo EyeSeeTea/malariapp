@@ -356,8 +356,8 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/standard_21"
-            android:background="@color/new_blue"
-            app:backgroundTint="@color/new_blue"
+            android:background="@color/share_fab_background"
+            app:backgroundTint="@color/share_fab_background"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_mail_white_48dp" />
 
@@ -382,8 +382,8 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/standard_21"
-            android:background="@color/new_blue"
-            app:backgroundTint="@color/new_blue"
+            android:background="@color/share_fab_background"
+            app:backgroundTint="@color/share_fab_background"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_text_format_white_48dp" />
 
@@ -394,8 +394,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/standard_21"
-            android:background="@color/new_blue"
-            app:backgroundTint="@color/new_blue"
+            android:background="@color/share_fab_background"
+            app:backgroundTint="@color/share_fab_background"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_share_white_48dp" />
 
@@ -408,8 +408,8 @@
             android:layout_marginBottom="@dimen/standard_21"
             android:layout_marginRight="@dimen/standard_45"
             android:layout_marginTop="@dimen/standard_21"
-            android:background="@color/new_blue"
-            app:backgroundTint="@color/new_blue"
+            android:background="@color/share_fab_background"
+            app:backgroundTint="@color/share_fab_background"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_action_uncheck" />
     </RelativeLayout>
