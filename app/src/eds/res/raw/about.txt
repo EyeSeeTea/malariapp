@@ -44,11 +44,3 @@
 <p>An international nonprofit organization, we save lives and improve health, especially among women and children. </p>
 
 <p><a href="http://www.path.org">www.path.org</a></p>
-
-<p><b><i>KnowTechTure (KTT)</i></b></p>
-
-<p><i>Development contribution</i></p>
-
-<p>KTT specializes in DHIS architecture, custom development and deployment.</p>
-
-<p><a href="http://www.knowtechture.com">www.knowtechture.com</a></p>

@@ -44,11 +44,3 @@
 <p> Une organisation internationale sans but lucratif, nous sauvons des vies et d'améliorer la santé, en particulier chez les femmes et les enfants. </ P>
 
 <p> <a href="http://www.path.org"> www.path.org </a> </p>
-
-<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
-
-<p> <i> contribution au développement </i> </p>
-
-<p> KTT se spécialise dans l'architecture DHIS, développement personnalisé et le déploiement. </ P>
-
-<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>
