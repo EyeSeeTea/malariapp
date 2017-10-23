@@ -55,7 +55,6 @@
             android:gravity="right|center_vertical"
             android:lines="2"
             android:text="@string/feedback_show_only_failed"
-            android:textSize="12dp"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
@@ -71,7 +70,6 @@
             android:drawableRight="@drawable/radiobutton_feedback"
             android:gravity="right|center_vertical"
             android:text="@string/feedback_show_only_media"
-            android:textSize="12dp"
             android:textColor="@color/white"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
@@ -143,7 +141,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/transparent"
         android:gravity="center_horizontal"
-        android:padding="12dp"
+        android:padding="18dp"
         android:src="@drawable/ic_back" />
 
     <ListView

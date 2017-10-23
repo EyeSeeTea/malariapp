@@ -14,7 +14,7 @@
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
     <color name="custom_blue_light">@color/navy_blue</color>
-    <color name="custom_background_grey">#3e3e3f</color>
+    <color name="custom_background_grey">#f7f7f7</color>
     <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
     <color name="scoreGrandson">#6fa8dc</color>
@@ -68,5 +68,6 @@
     <color name="plan_grey_light">#d9d9d9</color>
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
+    <color name="share_fab_background">#7790fd</color>
 
 </resources>

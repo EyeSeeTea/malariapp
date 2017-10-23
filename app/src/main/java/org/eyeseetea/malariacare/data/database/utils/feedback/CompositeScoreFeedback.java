@@ -142,7 +142,11 @@ public class CompositeScoreFeedback implements Feedback {
         }
 
         for(CompositeScoreFeedback compositeScoreFeedback : getCompositeScoreFeedbackList()){
-            compositeScoreFeedback.toggleShown();
+            if(forceHide){
+                compositeScoreFeedback.setShown(false);
+            }else {
+                compositeScoreFeedback.toggleShown();
+            }
             if(!compositeScoreFeedback.isShown()){
                 compositeScoreFeedback.toggleChildrenShown(true);
             }

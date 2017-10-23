@@ -188,8 +188,8 @@ evaluation"</string>
 <string name="assess">"Assess - active surveys"</string>
 <string name="improve">"Improve"</string>
 <string name="monitor">"Monitor"</string>
-<string name="filter_all_org_units">"all org units"</string>
-<string name="filter_all_org_assessments">"all assessments"</string>
+<string name="filter_all_org_units">"គ្រឿងអេកូទាំងអស់"</string>
+<string name="filter_all_org_assessments">"ទាំងអស់វាយតម្លៃ"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
