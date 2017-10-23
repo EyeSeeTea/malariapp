@@ -27,4 +27,6 @@
     <string name="login_info_dhis_default_server_url" translatable="false">https://data.psi-mis.org</string>
     <string name="assessment_no_schedule_date" translatable="false">"-"</string>
 
+    <!-- pull control codes -->
+    <string name="pull_program_code" translatable="false">HNQIS</string>
 </resources>

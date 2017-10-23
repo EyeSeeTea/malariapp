@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:textSize="18dp"
-        android:background="@color/light_grey"
+        android:background="@color/plan_grey_light"
         android:textColor="@color/darkGrey"
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />

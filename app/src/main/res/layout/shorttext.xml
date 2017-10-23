@@ -15,7 +15,7 @@
             android:paddingLeft="@dimen/question_padding_left"
             android:text="@string/widget_info_empty_statement"
             android:id="@+id/statement"
-            android:textColor="@color/black"
+            android:textColor="@color/new_grey_text_color"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 
@@ -30,7 +30,7 @@
             android:text=""
             android:id="@+id/answer"
             android:background="@drawable/background_textfield"
-            android:textColor="@color/darkGrey"
+            android:textColor="@color/new_grey_text_color"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 

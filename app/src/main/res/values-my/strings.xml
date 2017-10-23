@@ -131,6 +131,7 @@
 <string name="dashboard_title_planned_next_qa"></string>
 <string name="assessment_sent_score"></string>
 <string name="feedback_show_only_failed"></string>
+<string name="feedback_show_only_media"></string>
 <string name="feedback_show_only_one_or_show_all"></string>
 <string name="feedback_return"></string>
 <string name="quality_of_care"></string>

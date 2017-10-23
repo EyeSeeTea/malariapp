@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/form_header"
-    android:background="@color/assess_grey"
+    android:background="@color/plan_grey"
     android:gravity="center_horizontal">
     <ImageButton
         android:layout_width="wrap_content"
@@ -16,10 +16,12 @@
         android:background="@color/transparent"
         android:alpha="0"
         android:src="@drawable/arrow_to_left"
+        android:backgroundTint="@color/white"
+        android:backgroundTintMode="src_in"
         android:gravity="center_horizontal"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"  />
 
     <Spinner
         android:layout_width="match_parent"
@@ -33,9 +35,9 @@
         android:paddingStart="2dip"
         android:paddingLeft="2dip"
         android:paddingRight="2dip"
+        android:background="@null"
         android:layout_toRightOf="@+id/previous_tab"
-        android:layout_toLeftOf="@+id/next_tab"
-        android:layout_toStartOf="@+id/next_tab" />
+        android:layout_toLeftOf="@+id/next_tab"  />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -49,5 +51,6 @@
         android:alpha="0"
         android:gravity="center_horizontal"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         />
 </RelativeLayout>

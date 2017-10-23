@@ -118,6 +118,7 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_next_qa">"Prochaine évaluation"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Afficher uniquement les questions ratées"</string>
+<string name="feedback_show_only_media">"Afficher uniquement les questions contenant des vidéos / images"</string>
 <string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par programme/OU"</string>
 <string name="feedback_return">"Retour à Fiches d'évaluation"</string>
 <string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
@@ -164,7 +165,7 @@ Mensuelle"</string>
 <string name="progress_pull_done">"Terminé"</string>
 <string name="dialog_push_success">"Téléchargement du rapport dans le serveur dhis réussi"</string>
 <string name="planning_title_dialog">"Programmer un rapport"</string>
-<string name="planning_label_comment">"* Commentaire"</string>
+<string name="planning_label_comment">"Commentaire"</string>
 <string name="planning_label_schedule_date">"* Date programmée"</string>
 <string name="option_edit">"Modifier"</string>
 <string name="option_mark_completed">"Marquer comme terminée"</string>
@@ -176,7 +177,7 @@ Mensuelle"</string>
 <string name="improve">"Améliorer"</string>
 <string name="monitor">"Contrôle"</string>
 <string name="filter_all_org_units">"Etablissements"</string>
-<string name="filter_all_org_assessments">"Fiches d'évaluation"</string>
+<string name="filter_all_org_assessments">"Tous évalués"</string>
 <string name="dialog_content_dhis_preference_login">"Pour modifier le serveur il faut se reconnecter. Tout rapport non envoyé sera supprimé. Souhaitez-vous vraiment continuer ?"</string>
 <string name="lastcommit">"Version : %s"</string>
 <string name="unavailable">"Indisponible"</string>
@@ -219,7 +220,6 @@ Mensuelle"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
 
 <string name="header_reschedule">"Réprogrammer"</string>
-<string name="planing_schedule">"Programme"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN DE L'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
@@ -260,4 +260,6 @@ Mensuelle"</string>
 <string name="mark_complete">"Marque terminée"</string>
 <string name="plain_text">"Texte en clair "</string>
 <string name="html_text">"Texte formaté "</string>
+<string name="schedule_title">"Calendrier de l'enquête"</string>
+<string name="save">"enregistrer"</string>
 </resources>

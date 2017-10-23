@@ -30,7 +30,7 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".70">
+            android:layout_weight=".80">
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_question_label"
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:paddingBottom="5dip"
                 android:text="@string/lorem_ipsum"
                 app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/medium_font_name"
+                app:tFontName="@string/light_font"
                 />
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_uid"
@@ -52,22 +52,21 @@
                 android:text="@string/empty_string"
                 android:visibility="gone"
                 app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/medium_font_name"
+                app:tFontName="@string/light_font"
                 />
         </LinearLayout>
         <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/feedback_option_label"
+            android:id="@+id/feedback_option_value"
             android:layout_width="0dp"
-            android:layout_weight=".20"
+            android:layout_weight=".10"
             android:layout_height="wrap_content"
             android:paddingLeft="10dip"
             android:paddingTop="5dip"
+            android:capitalize="words"
             android:paddingBottom="5dip"
-            android:text="@string/lorem_ipsum"
-            android:textSize="@dimen/medium_small_text_size"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
-             />
+            />
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_score_label"
             android:layout_width="0dp"
@@ -76,7 +75,8 @@
             android:paddingLeft="10dip"
             android:paddingTop="5dip"
             android:paddingBottom="5dip"
-            android:textSize="@dimen/medium_small_text_size"
+            android:capitalize="words"
+            android:textSize="14dp"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
              />
@@ -89,8 +89,8 @@
         <View
             android:id="@+id/feedback_separator"
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#ffffff"/>
+            android:layout_height="1dp"
+            android:background="@color/darkGrey"/>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_feedback_html"
             android:layout_width="match_parent"
@@ -102,10 +102,13 @@
             android:text="@string/lorem_ipsum"
             android:background="@color/white"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name"
+            app:tFontName="@string/light_font"
             />
     </LinearLayout>
 
-
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/darkGrey"></View>
 </LinearLayout>
 

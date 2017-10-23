@@ -43,7 +43,6 @@ public class AssessmentSentAdapter extends
     public AssessmentSentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
-        this.headerLayout = R.layout.assessment_sent_header;
         this.recordLayout = R.layout.assessment_sent_record;
         this.footerLayout = R.layout.assessment_sent_footer;
         if (PreferencesState.getInstance().isVerticalDashboard()) {
@@ -94,24 +93,20 @@ public class AssessmentSentAdapter extends
 
     private void decorateSentScore(SurveyDB survey, View rowView) {
 
-        int colorId;
         String scoreText;
         if (survey.hasConflict()) {
             scoreText = (getContext().getResources().getString(
                     R.string.feedback_info_conflict)).toUpperCase();
-            colorId = R.color.darkRed;
         } else {
             if (survey.hasMainScore()) {
                 scoreText = String.format(SCORE_FORMAT, survey.getMainScore());
             } else {
                 scoreText = "NaN";
             }
-            colorId = getColorByScore(survey);
         }
 
         CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
         sentScore.setText(scoreText);
-        sentScore.setTextColor(getContext().getResources().getColor(colorId));
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {
@@ -134,8 +129,11 @@ public class AssessmentSentAdapter extends
      */
     @Override
     protected View decorateBackground(int position, View rowView) {
-        rowView.setBackgroundResource(R.drawable.background_odd_wo_border);
-
+        if(position==0 || position%2==0){
+            rowView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }else {
+            rowView.setBackgroundColor(context.getResources().getColor(R.color.white_grey));
+        }
         return rowView;
     }
 }

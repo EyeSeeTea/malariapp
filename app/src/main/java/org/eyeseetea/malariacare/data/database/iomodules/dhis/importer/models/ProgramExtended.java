@@ -19,14 +19,26 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.attributeValueFlowName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.optionFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programFlowName;
+
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow_Table;
@@ -117,7 +129,8 @@ public class ProgramExtended implements VisitableFromSDK {
 
     public static ProgramExtended getProgramByDataElement(String dataElementUid) {
         ProgramExtended program = null;
-        List<ProgramExtended> programs = getAllPrograms();
+        List<ProgramExtended> programs = getAllPrograms(PreferencesState.getInstance().getContext().getString(
+                R.string.pull_program_code));
         for (ProgramExtended program1 : programs) {
             for (ProgramStageExtended programStage : program1.getProgramStages()) {
                 for (ProgramStageSectionExtended programStageSection : programStage.getProgramStageSections()) {
@@ -131,9 +144,17 @@ public class ProgramExtended implements VisitableFromSDK {
         }
         return program;
     }
-    
-    public static List<ProgramExtended> getAllPrograms(){
-        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).queryList();
+
+    public static List<ProgramExtended> getAllPrograms(String pullProgramCode){
+        List<ProgramFlow>  programFlows = new Select().from(ProgramFlow.class).as(programFlowName)
+                .join(AttributeValueFlow.class, Join.JoinType.LEFT_OUTER).as(attributeValueFlowName)
+                .on(AttributeValueFlow_Table.reference.withTable(attributeValueFlowAlias).eq(
+                        ProgramFlow_Table.uId.withTable(programFlowAlias)))
+                .join(AttributeFlow.class, Join.JoinType.LEFT_OUTER).as(attributeFlowName)
+                .on(AttributeFlow_Table.attributeUId.withTable(attributeFlowAlias).eq(
+                        AttributeValueFlow_Table.attribute.withTable(attributeValueFlowAlias)))
+                .where(AttributeFlow_Table.code.withTable(attributeFlowAlias).is(PreferencesState.getInstance().getContext().getString(R.string.program_type_code)))
+                .and(AttributeValueFlow_Table.value.is(pullProgramCode)).queryList();
         List<ProgramExtended> programsExtended = new ArrayList<>();
         for(ProgramFlow programFlow : programFlows){
             programsExtended.add(new ProgramExtended(programFlow));

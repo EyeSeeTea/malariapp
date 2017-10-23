@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
+<merge xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dip"
-        android:paddingTop="5dip">
-        <org.eyeseetea.malariacare.views.CustomSpinner
-            android:id="@+id/spinner_program_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown"/>
+        android:background="@color/plan_grey_light"
+        android:padding="15dip">
 
-        <org.eyeseetea.malariacare.views.CustomSpinner
-            android:id="@+id/spinner_orgUnit_filter"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown" />
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <org.eyeseetea.malariacare.views.CustomSpinner
+                android:id="@+id/spinner_program_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/plan_grey"></View>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <org.eyeseetea.malariacare.views.CustomSpinner
+                android:id="@+id/spinner_orgUnit_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/plan_grey"></View>
+        </LinearLayout>
     </LinearLayout>
 </merge>
 

@@ -39,7 +39,7 @@
 
 <string name="assessment_title_facility_date">"Cabinet médical / Rapport"</string>
 <string name="assessment_title_state">"État"</string>
-<string name="assessment_sent_date">"Date de achèvement"</string>
+<string name="assessment_sent_date">"Date de achèv"</string>
 <string name="assessment_title_header">"Rapport(s) actif(s)"</string>
 <string name="assessment_sent_title_header">"Rapport(s) antérieur(s)"</string>
 

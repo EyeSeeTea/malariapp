@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -74,6 +75,11 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      * Checkbox that toggle between all|failed questions
      */
     private CustomRadioButton chkFailed;
+
+    /**
+     * Checkbox that toggle between all|containing media questions
+     */
+    private CustomRadioButton chkMedia;
     /**
      * planAction that toggle between all|failed questions
      */
@@ -177,6 +183,17 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                                          }
                                      }
         );
+        chkMedia = (CustomRadioButton) llLayout.findViewById(R.id.chkMedia);
+        chkMedia.setChecked(false);
+        chkMedia.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             feedbackAdapter.toggleOnlyMedia();
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
+                                                     .isOnlyMedia());
+                                         }
+                                     }
+        );
         planAction = (CustomButton) llLayout.findViewById(R.id.action_plan);
         planAction.setOnClickListener(new View.OnClickListener() {
                                          @Override
@@ -185,7 +202,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
                                          }
                                      }
         );
-        CustomRadioButton goback = (CustomRadioButton) llLayout.findViewById(
+        ImageButton goback = (ImageButton) llLayout.findViewById(
                 R.id.backToSentSurveys);
         goback.setOnClickListener(new View.OnClickListener() {
                                       @Override

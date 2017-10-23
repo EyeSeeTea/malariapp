@@ -134,6 +134,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
+<string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
@@ -176,7 +177,7 @@ evaluation"</string>
 <string name="progress_pull_done">"រួចរាល់"</string>
 <string name="dialog_push_success">"ការស្ទង់មតិបានបញ្ជូនចូលទៅកាន់ម៉ាស៊ីនបម្រើ DHIS ដោយជោគជ័យ"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_comment">"* Comment"</string>
+<string name="planning_label_comment">"Comment"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
 <string name="option_edit">"Edit"</string>
 <string name="option_mark_completed">"Mark as completed"</string>
@@ -187,8 +188,8 @@ evaluation"</string>
 <string name="assess">"Assess - active surveys"</string>
 <string name="improve">"Improve"</string>
 <string name="monitor">"Monitor"</string>
-<string name="filter_all_org_units">"all org units"</string>
-<string name="filter_all_org_assessments">"all assessments"</string>
+<string name="filter_all_org_units">"គ្រឿងអេកូទាំងអស់"</string>
+<string name="filter_all_org_assessments">"ទាំងអស់វាយតម្លៃ"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
@@ -274,4 +275,5 @@ evaluation"</string>
 <string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
+<string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
 </resources>

@@ -95,12 +95,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
 
         initMenu(survey);
 
-        // show facility name (or not) and write survey type name
-        if (hasToShowFacility(position, survey)) {
-            showFacility(facilityName, surveyType, survey);
-        } else {
-            hideFacility(facilityName, surveyType);
-        }
+        showFacility(facilityName, surveyType, survey);
 
         decorateSurveyType(surveyType, survey);
         rowView = decorateBackground(position, rowView);
@@ -153,7 +148,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         if (survey.isCompleted()) {
             surveyDescription = COMPLETED_SURVEY_MARK + survey.getProgram().getName();
         } else {
-            surveyDescription = SENT_SURVEY_MARK + survey.getProgram().getName();
+            surveyDescription = survey.getProgram().getName();
         }
         surveyType.setText(surveyDescription);
         return surveyType;

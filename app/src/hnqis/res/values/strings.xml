@@ -38,9 +38,9 @@
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
-<string name="assessment_title_facility_date">"Active surveys"</string>
-<string name="assessment_title_state">"% complete"</string>
-<string name="assessment_sent_date">"Completion date"</string>
+<string name="assessment_title_facility_date">"Facility / Survey"</string>
+<string name="assessment_title_state">"% Complete"</string>
+<string name="assessment_sent_date">"Comp date"</string>
 <string name="assessment_title_header">"Active Assessment(s)"</string>
 <string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
 
@@ -121,13 +121,14 @@ evaluation"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
+<string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback per Program/OU"</string>
 <string name="feedback_return">"Return to all assessments"</string>
 <string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
-<string name="feedback_info_passed">"PASS"</string>
-<string name="feedback_info_failed">"FAIL"</string>
-<string name="feedback_info_not_answered">"NA"</string>
+<string name="feedback_info_passed">"Pass"</string>
+<string name="feedback_info_failed">"Fail"</string>
+<string name="feedback_info_not_answered">"Na"</string>
 <string name="feedback_info_no_feedback">"No feedback"</string>
 <string name="feedback_info_conflict">"Conflict"</string>
 <string name="settings_checkbox_location_required">"Location required"</string>
@@ -167,7 +168,7 @@ evaluation"</string>
 <string name="progress_pull_done">"Done"</string>
 <string name="dialog_push_success">"Survey successfully pushed to dhis server"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_comment">"* Comment"</string>
+<string name="planning_label_comment">"Comment"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
 <string name="option_edit">"Edit"</string>
 <string name="option_mark_completed">"Mark as completed"</string>
@@ -180,7 +181,7 @@ evaluation"</string>
 <string name="monitor">"Monitor"</string>
 
 <string name="filter_all_org_units">"All Org Units"</string>
-<string name="filter_all_org_assessments">"All Assessments"</string>
+<string name="filter_all_org_assessments">"All Assessed"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
@@ -225,7 +226,6 @@ evaluation"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
 
 <string name="header_reschedule">"Reschedule"</string>
-<string name="planing_schedule">"Schedule"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
@@ -270,4 +270,6 @@ evaluation"</string>
 <string name="percent">&#37;</string>
 <string name="plain_text">Plain text </string>
 <string name="html_text">Formatted text </string>
+<string name="schedule_title">Schedule survey</string>
+<string name="save">"Save"</string>
 </resources>

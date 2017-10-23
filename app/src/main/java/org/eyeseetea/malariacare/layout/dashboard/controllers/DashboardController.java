@@ -589,6 +589,7 @@ public class DashboardController {
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
         improveModuleController.onFeedbackSelected(survey);
+        improveModuleController.setActionBarDashboardWithProgram();
     }
 
 

@@ -14,17 +14,17 @@
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
     <color name="custom_blue_light">@color/navy_blue</color>
-    <color name="custom_background_grey">#3e3e3f</color>
+    <color name="custom_background_grey">#f7f7f7</color>
     <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="lightGreen">#adda19</color>
     <color name="darkRed">#d1213c</color>
-    <color name="feedbackDarkBlue">#00b4e3</color>
-    <color name="feedbackLightBlue">#aae0f4</color>
+    <color name="feedbackDarkBlue">#6ca9d8</color>
+    <color name="feedbackLightBlue">#6bcdfd</color>
     <color name="assess_yellow">#dbe444</color>
     <color name="assess_grey">#4f4c4c</color>
-    <color name="background">#e5e5e5</color>
+    <color name="background">@color/plan_grey_light</color>
     <color name="tab_orange_plan">#f38b00</color>
     <color name="tab_yellow_assess">#dce442</color>
     <color name="tab_green_monitor">#799900</color>
@@ -36,9 +36,13 @@
     <color name="appNameColor">@color/black</color>
     <color name="headerColor">@color/dark_navy_blue</color>
     <color name="evenRows">@color/light_grey</color>
-    <color name="planning_header_background">@color/custom_background_grey</color>
+    <color name="planning_header_background">@color/plan_grey</color>
     <color name="planning_header_text">@color/white</color>
     <color name="planning_row_text">@color/black</color>
+    <color name="background_light_grey">#d9d9d9</color>
+    <color name="text_dark_grey">#808080</color>
+    <color name="stroke_dark_grey">#8c8080</color>
+    <!-- from old SDK-->
     <color name="assess_darkyellow">#9FA631</color>
     <color name="assess_lightyellow">#DBE444</color>
     <color name="clear_gray">#e3e4e4</color>
@@ -59,5 +63,11 @@
     <color name="ratio_questions_high">#98fb98</color>
     <color name="ratio_questions_middle">#ffff00</color>
     <color name="ratio_questions_low"> #ff0000</color>
+    <color name="plan_grey">#666666</color>
+    <color name="plan_grey_survey_text">#7f7f7f</color>
+    <color name="plan_grey_light">#d9d9d9</color>
+    <color name="white_grey">#efefef</color>
+    <color name="feedback_subtitle">#b9e8e4</color>
+    <color name="share_fab_background">#7790fd</color>
 
 </resources>
