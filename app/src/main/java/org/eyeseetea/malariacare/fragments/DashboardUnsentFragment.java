@@ -121,7 +121,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         Log.d(TAG, "onResume");
         //Listen for data
         registerSurveysReceiver();
@@ -160,24 +160,28 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     @Override
-    public void reloadData(){
+    public void reloadData() {
         updateSelectedFilters();
 
         //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
+        Intent surveysIntent = new Intent(
+                PreferencesState.getInstance().getContext().getApplicationContext(),
+                SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
-        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(
+                surveysIntent);
     }
 
-    public void reloadToSend(){
+    public void reloadToSend() {
         //Reload data using service
-        Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
+        Intent surveysIntent = new Intent(getActivity(), SurveyService.class);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD,
+                SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
         getActivity().startService(surveysIntent);
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.d(TAG, "onPause");
         unregisterSurveysReceiver();
 
@@ -185,51 +189,25 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     /**
-     * Checks if the given position points to a real survey instead of a footer or header of the listview.
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionASurvey(int position){
-        return !isPositionFooter(position) && !isPositionHeader(position);
-    }
-
-    /**
-     * Checks if the given position is the header of the listview instead of a real survey
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionHeader(int position){
-        return position<=0;
-    }
-
-    /**
-     * Checks if the given position is the footer of the listview instead of a real survey
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionFooter(int position){
-        return position==(this.surveys.size()+1);
-    }
-
-    /**
      * Initializes the listview component, adding a listener for swiping right
      */
-    private void initListView(){
-        if(PreferencesState.getInstance().isVerticalDashboard()) {
-            CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleInProgress);
+    private void initListView() {
+        if (PreferencesState.getInstance().isVerticalDashboard()) {
+            CustomTextView title = (CustomTextView) getActivity().findViewById(
+                    R.id.titleInProgress);
             title.setText(adapter.getTitle());
         }
         setListAdapter(adapter);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
+    public void onListItemClick(ListView l, View v, int position, long id) {
         //Discard clicks on header|footer (which is attendend on onNewSurvey via super)
-        selectedPosition=position;
-        if (isPositionASurvey(selectedPosition)) {
-            final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition - 1);
-            dashboardActivity.onSurveySelected(survey);
-        }
+        selectedPosition = position;
+
+        final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition);
+        dashboardActivity.onSurveySelected(survey);
+
     }
 
     /**
@@ -238,9 +216,10 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private void registerSurveysReceiver() {
         Log.d(TAG, "registerSurveysReceiver");
 
-        if(surveyReceiver==null){
-            surveyReceiver=new SurveyReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver, new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
+        if (surveyReceiver == null) {
+            surveyReceiver = new SurveyReceiver();
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(surveyReceiver,
+                    new IntentFilter(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION));
         }
     }
 
@@ -248,24 +227,27 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
      * Unregisters the survey receiver.
      * It really important to do this, otherwise each receiver will invoke its code.
      */
-    public void unregisterSurveysReceiver(){
+    public void unregisterSurveysReceiver() {
         Log.d(TAG, "unregisterSurveysReceiver");
-        if(surveyReceiver!=null){
+        if (surveyReceiver != null) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(surveyReceiver);
-            surveyReceiver=null;
+            surveyReceiver = null;
         }
     }
-    public void reloadInProgressSurveys(){
-        List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
+
+    public void reloadInProgressSurveys() {
+        List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(
+                SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
 
         reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
     }
 
-    private List<SurveyDB> getSurveysByOrgUnitAndProgram(List<SurveyDB> surveysInProgressFromService) {
+    private List<SurveyDB> getSurveysByOrgUnitAndProgram(
+            List<SurveyDB> surveysInProgressFromService) {
         List<SurveyDB> filteredSurveys = new ArrayList<>();
 
-        for (SurveyDB survey:surveysInProgressFromService) {
-            if (surveyHasOrgUnitFilter(survey) && surveyHasProgramFilter(survey)){
+        for (SurveyDB survey : surveysInProgressFromService) {
+            if (surveyHasOrgUnitFilter(survey) && surveyHasProgramFilter(survey)) {
                 filteredSurveys.add(survey);
             }
         }
@@ -276,22 +258,25 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private boolean surveyHasOrgUnitFilter(SurveyDB survey) {
         OrgUnitDB orgUnitFilter = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
 
-        return survey.getOrgUnit().getUid().equals(orgUnitFilter.getUid())||
-        orgUnitFilter.getName().equals(PreferencesState.getInstance().getContext().getString(
-                R.string.filter_all_org_units));
+        return survey.getOrgUnit().getUid().equals(orgUnitFilter.getUid()) ||
+                orgUnitFilter.getName().equals(
+                        PreferencesState.getInstance().getContext().getString(
+                                R.string.filter_all_org_units));
     }
 
     private boolean surveyHasProgramFilter(SurveyDB survey) {
         ProgramDB programFilter = orgUnitProgramFilterView.getSelectedProgramFilter();
 
-        return survey.getProgram().getUid().equals(programFilter.getUid())||
-                programFilter.getName().equals(PreferencesState.getInstance().getContext().getString(
-                        R.string.filter_all_org_assessments));
+        return survey.getProgram().getUid().equals(programFilter.getUid()) ||
+                programFilter.getName().equals(
+                        PreferencesState.getInstance().getContext().getString(
+                                R.string.filter_all_org_assessments));
     }
 
-    public void reloadSurveys(List<SurveyDB> newListSurveys){
-        if(newListSurveys!=null) {
-            Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
+    public void reloadSurveys(List<SurveyDB> newListSurveys) {
+        if (newListSurveys != null) {
+            Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): "
+                    + newListSurveys.size());
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();
@@ -301,14 +286,15 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     /**
      * Inner private class that receives the result from the service
      */
-    private class SurveyReceiver extends BroadcastReceiver{
-        private SurveyReceiver(){}
+    private class SurveyReceiver extends BroadcastReceiver {
+        private SurveyReceiver() {
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION.equals(intent.getAction())) {
+            if (SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION.equals(intent.getAction())) {
                 reloadInProgressSurveys();
             }
         }

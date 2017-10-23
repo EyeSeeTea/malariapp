@@ -239,13 +239,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        //Discard clicks on header|footer (which is attended on onNewSurvey via super)
-        if(!isPositionASurvey(position)){
-            return;
-        }
-
-        // call feedbackselected function(and it call surveyfragment)
-        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position - 1));
+        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position));
     }
 
     @Override
@@ -260,32 +254,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         unregisterSurveysReceiver();
 
         super.onPause();
-    }
-    /**
-     * Checks if the given position points to a real survey instead of a footer or header of the listview.
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionASurvey(int position){
-        return !isPositionFooter(position) && !isPositionHeader(position);
-    }
-
-    /**
-     * Checks if the given position is the header of the listview instead of a real survey
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionHeader(int position){
-        return position<=0;
-    }
-
-    /**
-     * Checks if the given position is the footer of the listview instead of a real survey
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionFooter(int position){
-        return position==(this.surveys.size()+1);
     }
 
     /**
