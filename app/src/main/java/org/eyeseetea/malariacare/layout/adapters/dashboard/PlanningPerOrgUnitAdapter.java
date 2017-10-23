@@ -16,23 +16,19 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by idelcano on 09/08/2016.
- */
 public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
+    public static boolean  greyBackground=false;
     public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context) {
         super(context);
         items = newItems;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
-        this.headerLayout = R.layout.assessment_planning_header;
         this.recordLayout = R.layout.assessment_planning_record;
     }
 
@@ -65,30 +61,37 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
             surveyCheckBox.setChecked(true);
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd");
-
         //set schedule date
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         if (survey.getScheduledDate() != null) {
-            schedule.setText(sdf.format(survey.getScheduledDate()));
+            schedule.setText(AUtils.getEuropeanFormatedDate(survey.getScheduledDate()));
         } else {
             schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
             CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(sdf.format(survey.getCreationDate()));
+            dueDate.setText(AUtils.getEuropeanFormatedDate(survey.getCreationDate()));
         }
 
         //set row survey name
         String surveyDescription = survey.getProgram().getName();
-        surveyCheckBox.setText(surveyDescription);
+        CustomTextView program = (CustomTextView) rowView.findViewById(R.id.program);
+        program.setText(survey.getProgram().getName());
+        CustomTextView orgUnit = (CustomTextView) rowView.findViewById(R.id.org_unit);
+        orgUnit.setText(survey.getOrgUnit().getName());
 
         //set background color from header(type of planning survey)
-        rowView.setBackgroundColor(
-                PreferencesState.getInstance().getContext().getResources().getColor(
-                        plannedSurvey.getHeader().getBackgroundColor()));
-
+        if(position==0 || position%2==0) {
+            rowView.setBackgroundColor(
+                    PreferencesState.getInstance().getContext().getResources().getColor(
+                            R.color.white_grey));
+        }else{
+            rowView.setBackgroundColor(
+                    PreferencesState.getInstance().getContext().getResources().getColor(
+                            R.color.white));
+        }
+        greyBackground=!greyBackground;
         ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
         menuDots.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -38,8 +38,8 @@
 <string name="create_info_survey">"Formulario"</string>
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
 
-<string name="assessment_title_facility_date">"Encuestas activas"</string>
-<string name="assessment_title_state">"Estado"</string>
+<string name="assessment_title_facility_date">"Instalación / Encuesta</string>
+<string name="assessment_title_state">"% Completo"</string>
 <string name="assessment_sent_date">"Fecha de llenado"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
 <string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
@@ -167,7 +167,7 @@ clínica"</string>
 <string name="progress_pull_done">"Hecho"</string>
 <string name="dialog_push_success">"Encuestra correctamente subida al servidor Dhis"</string>
 <string name="planning_title_dialog">"Planificar evaluación"</string>
-<string name="planning_label_comment">"* Comentario"</string>
+<string name="planning_label_comment">"Comentario"</string>
 <string name="planning_label_schedule_date">"* Fecha planificada"</string>
 <string name="option_edit">"Editar"</string>
 <string name="option_mark_completed">"Marcar como completa"</string>
@@ -179,7 +179,7 @@ clínica"</string>
 <string name="improve">"Mejora"</string>
 <string name="monitor">"Monitorización"</string>
 <string name="filter_all_org_units">"todas las unidades organizativas"</string>
-<string name="filter_all_org_assessments">"todas las evaluaciones"</string>
+<string name="filter_all_org_assessments">"Todos evaluados"</string>
 <string name="dialog_content_dhis_preference_login">"Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?"</string>
 <string name="lastcommit">"Versión %s"</string>
 <string name="unavailable">"No disponible"</string>
@@ -229,7 +229,6 @@ clínica"</string>
 <string name="start">Comenzar</string>
 
 <string name="header_reschedule">"Reprogramar"</string>
-<string name="planing_schedule">"Programar"</string>
 <string name="planing_due_date">"Fecha de vencimiento"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
@@ -266,4 +265,6 @@ clínica"</string>
 <string name="mark_complete">"Marcar completado"</string>
 <string name="plain_text">Texto sin formato </string>
 <string name="html_text">Texto con formato </string>
+<string name="schedule_title">Programación de encuesta</string>
+<string name="save">"salvar"</string>
 </resources>

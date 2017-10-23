@@ -23,6 +23,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/assessment_row"
+    android:minHeight="@dimen/row_min_height"
     android:background="@drawable/cell_borders">
 
     <LinearLayout
@@ -30,6 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:id="@+id/facilityDateContainer"
+        android:paddingLeft="@dimen/row_left_padding"
         android:layout_weight="0.7"
         android:layout_gravity="center">
 
@@ -41,8 +43,10 @@
             android:id="@+id/facility"
             android:layout_gravity="center_vertical"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:tDimension="@string/font_size_level1"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/new_grey_text_color"
+            app:tDimension="@string/font_size_level2"
             app:tFontName="@string/medium_font_name" />
 
         <org.eyeseetea.malariacare.views.CustomTextView
@@ -51,9 +55,12 @@
             android:layout_weight="0.5"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/survey_type"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/new_grey_text_color"
             android:layout_gravity="center_vertical"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font" />
 
     </LinearLayout>
     <LinearLayout

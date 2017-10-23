@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2015.
   ~
@@ -33,32 +32,37 @@
         android:id="@+id/facilityDateContainer"
         android:layout_weight="0.7"
         android:layout_gravity="center">
-
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/facility"
             android:layout_gravity="center_vertical"
+            android:typeface="sans"
             android:textStyle="bold"
+            android:gravity="left|center"
             android:textColor="@color/black"
+            android:paddingTop="@dimen/planning_padding"
+            android:paddingBottom="@dimen/planning_padding"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
-
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/medium_font_name"/>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/survey_type"
-            android:layout_gravity="center_vertical"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:gravity="center"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
+            android:paddingTop="@dimen/planning_padding"
+            android:paddingBottom="@dimen/planning_padding"
+            android:textSize="10dp"
             app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
+            app:tFontName="@string/medium_font_name"/>
 
     </LinearLayout>
 

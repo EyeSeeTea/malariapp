@@ -146,7 +146,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                     }
                 });
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.improve_listview, null);
     }
 
     private void saveCurrentFilters() {
@@ -239,13 +239,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        //Discard clicks on header|footer (which is attended on onNewSurvey via super)
-        if(!isPositionASurvey(position)){
-            return;
-        }
-
-        // call feedbackselected function(and it call surveyfragment)
-        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position - 1));
+        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position));
     }
 
     @Override
@@ -261,52 +255,19 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
         super.onPause();
     }
-    /**
-     * Checks if the given position points to a real survey instead of a footer or header of the listview.
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionASurvey(int position){
-        return !isPositionFooter(position) && !isPositionHeader(position);
-    }
-
-    /**
-     * Checks if the given position is the header of the listview instead of a real survey
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionHeader(int position){
-        return position<=0;
-    }
-
-    /**
-     * Checks if the given position is the footer of the listview instead of a real survey
-     * @param position
-     * @return true|false
-     */
-    private boolean isPositionFooter(int position){
-        return position==(this.surveys.size()+1);
-    }
 
     /**
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View header = inflater.inflate(this.adapter.getHeaderLayout(),null,false);
-        View footer = inflater.inflate(this.adapter.getFooterLayout(), null, false);
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-            header=initFilterOrder(header);
-        else
+        if(!PreferencesState.getInstance().isVerticalDashboard()) {
+            initFilterOrder(getView());
+        }else
         {
             CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
             title.setText(adapter.getTitle());
         }
         ListView listView = getListView();
-        if(!PreferencesState.getInstance().isVerticalDashboard())
-            listView.setBackgroundColor(getResources().getColor(R.color.feedbackDarkBlue));
-        listView.addHeaderView(header);
-        listView.addFooterView(footer);
         setListAdapter(adapter);
         if(PreferencesState.getInstance().isVerticalDashboard()){
 
@@ -412,17 +373,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-    }
-
-    public void reloadSurveys(List<SurveyDB> newListSurveys) {
-        Log.d(TAG, "reloadSurveys (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
-        adapter.setItems(newListSurveys);
-        this.adapter.notifyDataSetChanged();
-        if(isAdded())
-            setListShown(true);
-        else{
-            reloadData();
-        }
     }
 
     @Override

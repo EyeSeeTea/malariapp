@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
@@ -47,7 +48,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomEditText;
-import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.sdk.common.FileUtils;
@@ -66,11 +66,12 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
 
     private CustomTextView mTotalScoreTextView;
+    private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
     private View otherView;
     private View secondaryView;
-    private CustomRadioButton mGoBack;
+    private ImageButton mGoBack;
 
     private FloatingActionButton fabHtmlOption;
     private CustomTextView mTextViewHtml;
@@ -139,7 +140,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private void initEditTexts() {
         mCustomGapsEditText = (CustomEditText) mRootView.findViewById(
                 R.id.plan_action_gasp_edit_text);
-
         mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -198,7 +198,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initBackButton() {
-        mGoBack = (CustomRadioButton) mRootView.findViewById(
+        mGoBack = (ImageButton) mRootView.findViewById(
                 R.id.backToSentSurveys);
 
         mGoBack.setOnClickListener(new View.OnClickListener() {
@@ -346,6 +346,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     private void initLayoutHeaders() {
         mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
+        mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
+                R.id.org_unit);
         mCompletionDateTextView = (CustomTextView) mRootView.findViewById(
                 R.id.completion_date);
         mNextDateTextView = (CustomTextView) mRootView.findViewById(R.id.next_date);
@@ -424,7 +426,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     public void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
             String nextDate) {
 
-        mGoBack.setText(orgUnitName);
+        mOrgUnitTextView.setText(orgUnitName);
 
         if (mainScore > 0f) {
             mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));

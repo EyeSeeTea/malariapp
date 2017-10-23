@@ -34,35 +34,12 @@
             android:id="@+id/improve_org_unit_program_filter_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/layoutHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/assess_grey">
-            <org.eyeseetea.malariacare.views.CustomRadioButton
-                android:id="@+id/check_show_all_surveys"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="150dp"
-                android:layout_marginTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:layout_marginRight="@dimen/margin_lateral_feedback_radiobutton"
-                android:layout_marginBottom="@dimen/margin_feedback_top_bottom_radiobutton"
-                android:button="@drawable/radiobutton_feedback"
-                android:text="@string/feedback_show_only_one_or_show_all"
-                android:textColor="@color/white"
-                app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/medium_font_name"
-                android:gravity="right|center_vertical"
-                android:layout_gravity="center_vertical|right" />
-        </LinearLayout>
     </LinearLayout>
+
     <FrameLayout
-        android:orientation="vertical"
+        android:id="@+id/dashboard_completed_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/dashboard_completed_container">
-    </FrameLayout>
+        android:orientation="vertical"></FrameLayout>
     <!-- list view will be automatically added here by the list fragment -->
 </LinearLayout>

@@ -25,15 +25,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ListView;
+import android.widget.ImageButton;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -61,7 +59,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private PlannedItemsReceiver plannedItemsReceiver;
     protected PlanningPerOrgUnitAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
-    static Button scheduleButton;
+    static ImageButton scheduleButton;
     CustomCheckBox selectAllCheckbox;
     String filterOrgUnitUid;
 
@@ -90,7 +88,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
                 .findViewById(R.id.plan_org_unit_program_filter_view);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.plan_per_org_unit_listview, null);
     }
 
     private void updateSelectedFilters() {
@@ -125,7 +123,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         initAdapter(plannedItems);
         initScheduleButton();
         initListView();
-        setListShown(true);
         //checks the allSelect checkbox looking the reloaded surveys.
         if(plannedItems.size()==countOfCheckedSurveys){
             setSelectAllCheckboxAs(true,false);
@@ -156,7 +153,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     private void initScheduleButton() {
-        scheduleButton = (Button) getActivity().findViewById(R.id.reschedule_button);
+        scheduleButton = (ImageButton) getActivity().findViewById(R.id.reschedule_button);
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,11 +174,9 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
     public static void enableScheduleButton(){
         scheduleButton.setEnabled(true);
-        scheduleButton.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.dark_navy_blue));
     }
     public static void disableScheduleButton(){
         scheduleButton.setEnabled(false);
-        scheduleButton.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.common_plus_signin_btn_text_light_disabled));
     }
 
     public void resetList() {
@@ -191,19 +186,13 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
-        LayoutInflater inflater = LayoutInflater.from(PreferencesState.getInstance().getContext().getApplicationContext());
-        View header = inflater.inflate(this.adapter.getHeaderLayout(), null, false);
-        selectAllCheckbox=(CustomCheckBox) header.findViewById(R.id.select_all_orgunits);
+        selectAllCheckbox=(CustomCheckBox) getActivity().findViewById(R.id.select_all_orgunits);
         selectAllCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 checkAll(isChecked);
             }
         });
-        ListView listView = getListView();
-        if(listView.getHeaderViewsCount()==0)
-            listView.addHeaderView(header);
-        setListAdapter(adapter);
     }
 
     private void checkAll(boolean value) {
@@ -228,14 +217,12 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      */
     private void initAdapter(List<PlannedSurveyByOrgUnit> plannedItems){
         this.adapter  = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
+        setListAdapter(adapter);
     }
 
     @Override
     public void onResume(){
         Log.d(TAG, "onResume");
-        //Loading...
-        setListShown(false);
-        //Listen for data
         registerPlannedItemsReceiver();
         super.onResume();
     }

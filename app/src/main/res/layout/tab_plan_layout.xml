@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2016.
   ~
   ~ This file is part of QA App.
@@ -35,132 +36,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:id="@+id/dashboard_planning_programs_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/assess_grey"
-            android:visibility="visible">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight=".26" />
-
-            <org.eyeseetea.malariacare.views.CustomTextView
-                android:id="@+id/planning_prod"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".16"
-                android:gravity="center"
-                android:paddingBottom="@dimen/dashboard_planning_padding"
-                android:paddingTop="@dimen/dashboard_planning_padding"
-                android:text="Prd"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:typeface="sans"
-                app:tDimension="@string/font_size_level4"
-                app:tFontName="@string/medium_font_name" />
-
-            <org.eyeseetea.malariacare.views.CustomTextView
-                android:id="@+id/planning_qoc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".16"
-                android:gravity="center"
-                android:paddingBottom="@dimen/dashboard_planning_padding"
-                android:paddingTop="@dimen/dashboard_planning_padding"
-                android:text="QoC"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:typeface="sans"
-                app:tDimension="@string/font_size_level4"
-                app:tFontName="@string/medium_font_name" />
-
-            <org.eyeseetea.malariacare.views.CustomTextView
-                android:id="@+id/planning_next"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".16"
-                android:gravity="center"
-                android:paddingBottom="@dimen/dashboard_planning_padding"
-                android:paddingTop="@dimen/dashboard_planning_padding"
-                android:text="Next QA"
-                android:textAllCaps="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:typeface="sans"
-                app:tDimension="@string/font_size_level4"
-                app:tFontName="@string/medium_font_name" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight=".16" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight=".1" />
-        </LinearLayout>
-
         <FrameLayout
             android:id="@+id/dashboard_planning_init"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
             </LinearLayout>
         </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/dashboard_planning_orgunit_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/planning_header_background"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <org.eyeseetea.malariacare.views.CustomButton
-                android:id="@+id/reschedule_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/imageView"
-                android:layout_alignEnd="@+id/imageView"
-                android:layout_alignRight="@+id/imageView"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="6dp"
-                android:background="@drawable/button_cancel_shape"
-                android:padding="12dp"
-                android:text="@string/header_reschedule"
-                android:textColor="@color/white"
-                android:textSize="@dimen/medium_text_size"
-                android:textStyle="bold"
-                app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/bold_font_name" />
-        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/dashboard_planning_orgunit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 

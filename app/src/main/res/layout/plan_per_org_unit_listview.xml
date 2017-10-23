@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:minHeight="@dimen/header_min_height"
+            android:padding="8dp"
+            android:background="@color/planning_header_background"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <org.eyeseetea.malariacare.views.CustomCheckBox
+                android:id="@+id/select_all_orgunits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/checkbox_left_padding"
+                android:text="@string/select_all"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/light_font" />
+
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/nameHeader2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:paddingRight="2dp"
+                android:text="@string/header_reschedule"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/light_font" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/header" />
+
+        <ImageButton
+            android:id="@+id/reschedule_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/transparent"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:src="@drawable/ic_calendar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text_size"
+            android:textStyle="bold" />
+</RelativeLayout>

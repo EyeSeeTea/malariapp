@@ -20,11 +20,8 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.FragmentTransaction;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -33,13 +30,8 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.fragments.PlannedFragment;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
-import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
-
-import java.util.List;
 
 public class PlanModuleController extends ModuleController {
     private static final String TAG = ".PlanModuleCOntroller";
@@ -47,12 +39,12 @@ public class PlanModuleController extends ModuleController {
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
 
-    public PlanModuleController(ModuleSettings moduleSettings){
+    public PlanModuleController(ModuleSettings moduleSettings) {
         super(moduleSettings);
-        this.tabLayout=R.id.tab_plan_layout;
+        this.tabLayout = R.id.tab_plan_layout;
     }
 
-    public static String getSimpleName(){
+    public static String getSimpleName() {
         return PlanModuleController.class.getSimpleName();
     }
 
@@ -62,7 +54,7 @@ public class PlanModuleController extends ModuleController {
         createFilters();
         orgUnitVisibility(View.GONE);
         programVisibility(View.VISIBLE);
-        fragment= new PlannedFragment();
+        fragment = new PlannedFragment();
     }
 
     private void createFilters() {
@@ -110,9 +102,11 @@ public class PlanModuleController extends ModuleController {
                 orgUnitProgramFilterView.getSelectedOrgUnitFilter().getUid());
     }
 
-    public boolean isVisible(){
-        if(PreferencesState.getInstance().isHidePlanningTab())
-            DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(View.GONE);
+    public boolean isVisible() {
+        if (PreferencesState.getInstance().isHidePlanningTab()) {
+            DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(
+                    View.GONE);
+        }
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
@@ -123,7 +117,7 @@ public class PlanModuleController extends ModuleController {
         programVisibility(View.GONE);
         orgUnitVisibility(View.VISIBLE);
 
-        if(plannedOrgUnitsFragment==null) {
+        if (plannedOrgUnitsFragment == null) {
             plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
         }
         plannedOrgUnitsFragment.setOrgUnitFilter(orgUnit.getUid());
@@ -136,34 +130,36 @@ public class PlanModuleController extends ModuleController {
 
     public void onProgramSelected(ProgramDB program) {
         Log.d(TAG, "onProgramSelected");
-        if (DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
+        if (DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
             //hide plannedFragment layout and show plannedOrgUnitsFragment
             orgUnitVisibility(View.GONE);
             programVisibility(View.VISIBLE);
 
 
-            if (fragment == null)
+            if (fragment == null) {
                 fragment = new PlannedFragment();
+            }
 
             FragmentTransaction ft = getFragmentTransaction();
             ft.replace(R.id.dashboard_planning_init, fragment);
             ft.commit();
-            if(program!=null){
-                ((PlannedFragment)fragment).reloadFilter();
+            if (program != null) {
+                ((PlannedFragment) fragment).reloadFilter();
             }
+        } else {
+            ((PlannedFragment) fragment).reloadFilter();
         }
-        else
-            ((PlannedFragment)fragment).reloadFilter();
 
     }
 
     private void programVisibility(int visibility) {
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_init).setVisibility(visibility);
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_programs_header).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_init).setVisibility(visibility);
     }
 
     private void orgUnitVisibility(int visibility) {
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit).setVisibility(visibility);
-        DashboardActivity.dashboardActivity.findViewById(R.id.dashboard_planning_orgunit_header).setVisibility(visibility);
+        DashboardActivity.dashboardActivity.findViewById(
+                R.id.dashboard_planning_orgunit).setVisibility(visibility);
     }
 }

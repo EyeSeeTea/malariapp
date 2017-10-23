@@ -39,7 +39,7 @@
 
 <string name="assessment_title_facility_date">"Centro de salud/ Fecha"</string>
 <string name="assessment_title_state">"Estado"</string>
-<string name="assessment_sent_date">"Fecha de llenado"</string>
+<string name="assessment_sent_date">"Fecha de Compl"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
 <string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
 
