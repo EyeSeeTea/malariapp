@@ -21,12 +21,19 @@ package org.eyeseetea.malariacare.data.database.model;
 
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.matchName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.programName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyProgramRelationAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
@@ -35,8 +42,13 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.BaseModelQueriable;
+import com.raizlabs.android.dbflow.sql.language.BaseQueriable;
+import com.raizlabs.android.dbflow.sql.language.Condition;
+import com.raizlabs.android.dbflow.sql.language.ConditionGroup;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
+import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -663,6 +675,44 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .having(SurveyDB_Table.completion_date.eq(Method.max(SurveyDB_Table.completion_date)))
                 .queryList();
     }
+
+    /**
+     * Returns the last survey by each program and orgunit combination ordered by completiondate
+     */
+    public static List<SurveyDB> getLastSentSurveysByProgramAndOrgUnit(
+            String programUid, String orgUnitUid) {
+
+        ConditionGroup conditionHavingGroup = ConditionGroup.clause().and(
+                SurveyDB_Table.completion_date.eq(Method.max(SurveyDB_Table.completion_date)));
+
+        if (programUid != null && programUid.isEmpty() == false)
+            conditionHavingGroup.and(ProgramDB_Table.uid_program.withTable(programAlias).eq(programUid));
+
+        if (orgUnitUid != null && orgUnitUid.isEmpty() == false)
+            conditionHavingGroup.and(OrgUnitDB_Table.uid_org_unit.withTable(orgUnitAlias).eq(orgUnitUid));
+
+
+        BaseModelQueriable<SurveyDB> query =  new Select().from(SurveyDB.class).as(surveyName)
+                .join(ProgramDB.class, Join.JoinType.LEFT_OUTER).as(programName)
+                .on(SurveyDB_Table.id_program_fk.withTable(surveyAlias)
+                        .eq(ProgramDB_Table.id_program.withTable(programAlias)))
+                .join(OrgUnitDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitName)
+                .on(SurveyDB_Table.id_org_unit_fk.withTable(surveyAlias)
+                        .eq(OrgUnitDB_Table.id_org_unit.withTable(orgUnitAlias)))
+                .where(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENT))
+                .or(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_COMPLETED))
+                .or(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_CONFLICT))
+                .or(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_QUARANTINE))
+                .or(SurveyDB_Table.status.withTable(surveyAlias).eq(Constants.SURVEY_SENDING))
+                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
+                .groupBy(SurveyDB_Table.id_org_unit_fk, SurveyDB_Table.id_program_fk)
+                .having(conditionHavingGroup);
+
+        Log.d("",query.toString());
+
+        return query.queryList();
+    }
+
     /**
      * Returns all the surveys with status put to "Sent" or completed or Conflict
      */
