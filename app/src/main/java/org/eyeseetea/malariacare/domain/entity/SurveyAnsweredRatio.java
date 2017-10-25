@@ -20,6 +20,9 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+
 /**
  * VO that holds the completion ratio of answered/expected questions
  * Created by arrizabalaga on 1/07/15.
@@ -206,5 +209,37 @@ public class SurveyAnsweredRatio {
 
     public void decrementCompulsoryAnswered() {
         compulsoryAnswered--;
+    }
+
+    public void fixTotalQuestion(QuestionDB question, boolean visible) {
+        if(question.getCompulsory()){
+            if(visible) {
+                incrementTotalCompulsory();
+            }else{
+                decrementTotalCompulsory();
+            }
+        }else{
+            if(visible) {
+                incrementTotal();
+            }else{
+                decrementTotal();
+            }
+        }
+    }
+
+    public void removeQuestion(QuestionDB question) {
+        if(question.getCompulsory()){
+            decrementCompulsoryAnswered();
+        }else{
+            decrementAnswered();
+        }
+    }
+
+    public void addQuestion(QuestionDB question) {
+        if(question.getCompulsory()){
+            incrementCompulsoryAnswered();
+        }else{
+            incrementAnswered();
+        }
     }
 }

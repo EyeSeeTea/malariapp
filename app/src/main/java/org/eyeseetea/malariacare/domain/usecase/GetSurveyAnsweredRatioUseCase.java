@@ -18,7 +18,7 @@ public class GetSurveyAnsweredRatioUseCase{
         mSurveyAnsweredRatioRepository = surveyAnsweredRatioRepository;
     }
 
-    SurveyAnsweredRatio mSurveyAnsweredRatio;
+    public SurveyAnsweredRatio mSurveyAnsweredRatio;
 
     SurveyDB surveyDB;
 
@@ -71,59 +71,5 @@ public class GetSurveyAnsweredRatioUseCase{
                 numCompulsoryAnswered);
         mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         return surveyAnsweredRatio;
-    }
-
-
-
-    public void fixTotalQuestion(QuestionDB question, boolean visible) {
-        if(question.getCompulsory()){
-            if(visible) {
-                mSurveyAnsweredRatio.incrementTotalCompulsory();
-            }else{
-                mSurveyAnsweredRatio.decrementTotalCompulsory();
-            }
-        }else{
-            if(visible) {
-                mSurveyAnsweredRatio.incrementTotal();
-            }else{
-                mSurveyAnsweredRatio.decrementTotal();
-            }
-        }
-        save();
-    }
-
-    public void removeQuestion(QuestionDB question) {
-        if(question.getCompulsory()){
-            mSurveyAnsweredRatio.decrementCompulsoryAnswered();
-        }else{
-            mSurveyAnsweredRatio.decrementAnswered();
-        }
-        save();
-    }
-
-
-    public void addQuestion(QuestionDB question) {
-        if(question.getCompulsory()){
-            mSurveyAnsweredRatio.incrementCompulsoryAnswered();
-        }else{
-            mSurveyAnsweredRatio.incrementAnswered();
-        }
-        save();
-    }
-
-    public void save() {
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(mSurveyAnsweredRatioRepository);
-        saveSurveyAnsweredRatioUseCase.execute(
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-
-                    }
-                }, mSurveyAnsweredRatio);
     }
 }
