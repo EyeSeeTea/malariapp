@@ -263,53 +263,10 @@ public class LayoutUtils {
     }
 
     public static void updateSurveyActionBarChartAddingQuestion(ActionBar actionBar, long surveyId, final boolean compulsory){
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
-        final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        surveyAnsweredRatio.addQuestion(compulsory);
-                        saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
-                                doublePieChart);
-                    }
-                });
     }
 
     public static void updateSurveyActionBarChartRemovingQuestion(ActionBar actionBar, long surveyId, final boolean compulsory){
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
-        final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
 
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        surveyAnsweredRatio.removeQuestion(compulsory);
-                        saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
-                                doublePieChart);
-                    }
-                });
     }
 
     private static void updateChart(SurveyAnsweredRatio surveyAnsweredRatio,
@@ -371,7 +328,7 @@ public class LayoutUtils {
                 });
     }
 
-    private static void saveAndShowPie(SurveyAnsweredRatio surveyAnsweredRatio,
+    public static void saveAndShowPie(SurveyAnsweredRatio surveyAnsweredRatio,
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository,
             final DoublePieChart doublePieChart) {
         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);

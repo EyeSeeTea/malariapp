@@ -61,6 +61,7 @@ import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventSubscriber;
 import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
@@ -72,6 +73,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,14 +188,16 @@ public class SurveyFragment extends Fragment {
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu(moduleName);
-        createObservable();
+        subscribeFragmentToValueChanges();
         createProgress();
         createBackButton();
         prepareSurveyInfo();
         return llLayout;
     }
 
-    private void createObservable() {
+    private void subscribeFragmentToValueChanges() {
+        DomainEventPublisher.instance().unSubscribe(
+                new ValueChangedEvent());
         DomainEventPublisher.instance().subscribe(
                 createValueSubscriber());
     }
@@ -202,26 +206,66 @@ public class SurveyFragment extends Fragment {
     private DomainEventSubscriber<ValueChangedEvent> createValueSubscriber() {
         return new DomainEventSubscriber<ValueChangedEvent>() {
             @Override
-            public void handleEvent(ValueChangedEvent valueChangedEvent) {
+            public void handleEvent(final ValueChangedEvent valueChangedEvent) {
+                final DoublePieChart doublePieChart =
+                        (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar().getCustomView().findViewById(R.id.action_bar_chart);
+                doublePieChart.setVisibility(View.VISIBLE);
+                final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                        new SurveyAnsweredRatioRepository();
+                final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                        new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+
                 if (valueChangedEvent.getAction().equals(
                         ValueChangedEvent.Action.SAVE)) {
-                    LayoutUtils.updateSurveyActionBarChartAddingQuestion(
-                            DashboardActivity.dashboardActivity.getSupportActionBar(),
-                            valueChangedEvent.getIdSurvey(),
-                            valueChangedEvent.isCompulsory());
+                    getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
+                            new ISurveyAnsweredRatioCallback() {
+                                @Override
+                                public void nextProgressMessage() {
+                                    Log.d(getClass().getName(), "nextProgressMessage");
+                                }
+
+                                @Override
+                                public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                    Log.d(getClass().getName(), "onComplete");
+                                    surveyAnsweredRatio.addQuestion(valueChangedEvent.isCompulsory());
+                                    LayoutUtils.saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
+                                            doublePieChart);
+                                }
+                            });
                 } else if (valueChangedEvent.getAction().equals(
                         ValueChangedEvent.Action.DELETE)) {
-                    LayoutUtils.updateSurveyActionBarChartRemovingQuestion(
-                            DashboardActivity.dashboardActivity.getSupportActionBar(),
-                            valueChangedEvent.getIdSurvey(),
-                            valueChangedEvent.isCompulsory());
+                    getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
+                            new ISurveyAnsweredRatioCallback() {
+                                @Override
+                                public void nextProgressMessage() {
+                                    Log.d(getClass().getName(), "nextProgressMessage");
+                                }
+
+                                @Override
+                                public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                    Log.d(getClass().getName(), "onComplete");
+                                    surveyAnsweredRatio.removeQuestion(valueChangedEvent.isCompulsory());
+                                    LayoutUtils.saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
+                                            doublePieChart);
+                                }
+                            });
                 } else if (valueChangedEvent.getAction().equals(
                         ValueChangedEvent.Action.TOGGLE)) {
-                    LayoutUtils.updateActionBarChartCompletionCount(
-                            DashboardActivity.dashboardActivity.getSupportActionBar(),
-                            valueChangedEvent.getIdSurvey(),
-                            valueChangedEvent.isCompulsory(),
-                            valueChangedEvent.isVisible());
+                    getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
+                            new ISurveyAnsweredRatioCallback() {
+                                @Override
+                                public void nextProgressMessage() {
+                                    Log.d(getClass().getName(), "nextProgressMessage");
+                                }
+
+                                @Override
+                                public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                    Log.d(getClass().getName(), "onComplete");
+                                    surveyAnsweredRatio.fixTotalQuestion(valueChangedEvent.isCompulsory(), valueChangedEvent.isVisible());
+                                    LayoutUtils.saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
+                                            doublePieChart);
+                                }
+                            });
                 }
             }
 

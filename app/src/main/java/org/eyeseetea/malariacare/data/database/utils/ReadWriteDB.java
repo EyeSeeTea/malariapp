@@ -88,7 +88,7 @@ public class ReadWriteDB {
                 value.setUploadDate(new Date());
                 value.update();
             }
-                   } else {
+        } else {
             if (value != null) {
                 value.delete();
                 DomainEventPublisher
@@ -125,7 +125,7 @@ public class ReadWriteDB {
             value.delete();
             DomainEventPublisher
                     .instance()
-                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.SAVE));
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.DELETE));
         }
     }
 

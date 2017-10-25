@@ -208,35 +208,32 @@ public class SurveyAnsweredRatio {
         compulsoryAnswered--;
     }
 
-    public void fixTotalQuestion(boolean visible, boolean isCompulsory) {
+    public void fixTotalQuestion(boolean isCompulsory, boolean visible) {
         if(isCompulsory){
             if(visible) {
                 incrementTotalCompulsory();
             }else{
                 decrementTotalCompulsory();
             }
+        }
+        if(visible) {
+            incrementTotal();
         }else{
-            if(visible) {
-                incrementTotal();
-            }else{
-                decrementTotal();
-            }
+            decrementTotal();
         }
     }
 
     public void removeQuestion(boolean isCompulsory) {
         if(isCompulsory){
             decrementCompulsoryAnswered();
-        }else{
-            decrementAnswered();
         }
+        decrementAnswered();
     }
 
     public void addQuestion(boolean isCompulsory) {
         if(isCompulsory){
             incrementCompulsoryAnswered();
-        }else{
-            incrementAnswered();
         }
+        incrementAnswered();
     }
 }
