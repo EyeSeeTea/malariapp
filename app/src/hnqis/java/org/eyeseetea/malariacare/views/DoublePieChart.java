@@ -72,8 +72,8 @@ public class DoublePieChart extends FrameLayout {
     }
 
     public void createDoublePie(final int internalPercentage, int externalPercentage) {
-        createPie(outsidePie, externalPercentage, highColor, middleColor, lowColor);
-        createPie(centerPie, internalPercentage, mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor);
+        createPie(outsidePie, externalPercentage, highColor, middleColor, lowColor, true);
+        createPie(centerPie, internalPercentage, mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor, false);
         final ImageView mandatoryCheck = (ImageView) doublePieContainer.findViewById(
                 R.id.completed_mandatory_check);
 
@@ -91,22 +91,22 @@ public class DoublePieChart extends FrameLayout {
     }
 
     protected void createPie(PieChart mChart, int percentage,
-            int highColor, int middleColor, int lowColor) {
+            int highColor, int middleColor, int lowColor, boolean hole) {
         Log.d("percentage", "percentage: " + percentage);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
-        mChart.setDrawHoleEnabled(true);
+        mChart.setDrawHoleEnabled(hole);
 
 
-        mChart.setTransparentCircleColor(Color.RED);
-        mChart.setTransparentCircleAlpha(255);
 
-        mChart.setHoleRadius(0f);
-        mChart.setTransparentCircleRadius(0f);
-
+        float radio = 0;
+        if(hole) {
+            radio = 50f;
+        }
+        mChart.setHoleRadius(radio);
         mChart.setDrawCenterText(false);
 
         // enable rotation of the chart by touch
