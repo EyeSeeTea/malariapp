@@ -15,16 +15,16 @@ public class SaveSurveyAnsweredRatioUseCase {
         mSurveyAnsweredRatioRepository = surveyAnsweredRatioRepository;
     }
 
-    public void execute(long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public void execute(long idSurvey, ISurveyAnsweredRatioCallback callback) {
         SurveyAnsweredRatio surveyAnsweredRatio = reloadSurveyAnsweredRatio(idSurvey, callback);
         save(callback, surveyAnsweredRatio);
     }
 
-    public void execute(GetSurveyAnsweredRatioUseCase.Callback callback, SurveyAnsweredRatio surveyAnsweredRatio) {
+    public void execute(ISurveyAnsweredRatioCallback callback, SurveyAnsweredRatio surveyAnsweredRatio) {
         save(callback, surveyAnsweredRatio);
     }
 
-    private void save(GetSurveyAnsweredRatioUseCase.Callback callback,
+    private void save(ISurveyAnsweredRatioCallback callback,
             SurveyAnsweredRatio surveyAnsweredRatio) {
         mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         callback.onComplete(surveyAnsweredRatio);
@@ -36,7 +36,7 @@ public class SaveSurveyAnsweredRatioUseCase {
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
     public SurveyAnsweredRatio reloadSurveyAnsweredRatio(long idSurvey,
-            GetSurveyAnsweredRatioUseCase.Callback callback) {
+            ISurveyAnsweredRatioCallback callback) {
         SurveyDB surveyDB = SurveyDB.findById(idSurvey);
         SurveyAnsweredRatio surveyAnsweredRatio = null;
         ProgramDB surveyProgram = surveyDB.getProgram();

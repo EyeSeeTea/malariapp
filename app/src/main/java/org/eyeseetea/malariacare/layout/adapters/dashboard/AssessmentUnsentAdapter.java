@@ -42,6 +42,7 @@ import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -77,7 +78,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new GetSurveyAnsweredRatioUseCase.Callback() {
+                new ISurveyAnsweredRatioCallback() {
             @Override
             public void nextProgressMessage() {
                 Log.d(getClass().getName(), "nextProgressMessage");

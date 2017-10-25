@@ -56,7 +56,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
@@ -249,7 +249,7 @@ public class SurveyFragment extends Fragment  {
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                     new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
             saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                    new ISurveyAnsweredRatioCallback() {
                         @Override
                         public void nextProgressMessage() {
                             Log.d(getClass().getName(), "nextProgressMessage");

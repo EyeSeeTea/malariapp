@@ -9,11 +9,6 @@ import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
 public class GetSurveyAnsweredRatioUseCase{
 
-    public interface Callback{
-        void nextProgressMessage();
-        void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
-    }
-
     private ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
 
     private SurveyAnsweredRatio answeredQuestionRatio;
@@ -27,13 +22,13 @@ public class GetSurveyAnsweredRatioUseCase{
 
     SurveyDB surveyDB;
 
-    public void execute(long idSurvey, Callback callback) {
+    public void execute(long idSurvey, ISurveyAnsweredRatioCallback callback) {
         final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
         callback.onComplete(surveyAnsweredRatio);
     }
 
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
-            GetSurveyAnsweredRatioUseCase.Callback callback) {
+            ISurveyAnsweredRatioCallback callback) {
         surveyDB = SurveyDB.findById(idSurvey);
         mSurveyAnsweredRatio = getAnsweredQuestionRatio(idSurvey, callback);
         return mSurveyAnsweredRatio;
@@ -42,7 +37,7 @@ public class GetSurveyAnsweredRatioUseCase{
     /**
      * Ratio of completion is cached into answeredQuestionRatio in order to speed up loading
      */
-    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatio getAnsweredQuestionRatio(Long idSurvey, ISurveyAnsweredRatioCallback callback) {
         answeredQuestionRatio = mSurveyAnsweredRatioRepository.getSurveyAnsweredRatioBySurveyId(idSurvey);
         if (answeredQuestionRatio == null) {
             answeredQuestionRatio = reloadSurveyAnsweredRatio(callback);
@@ -56,7 +51,7 @@ public class GetSurveyAnsweredRatioUseCase{
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(ISurveyAnsweredRatioCallback callback) {
         //TODO Review
         SurveyAnsweredRatio surveyAnsweredRatio =null;
         ProgramDB surveyProgram = surveyDB.getProgram();
@@ -119,7 +114,7 @@ public class GetSurveyAnsweredRatioUseCase{
     public void save() {
         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(mSurveyAnsweredRatioRepository);
         saveSurveyAnsweredRatioUseCase.execute(
-                new Callback() {
+                new ISurveyAnsweredRatioCallback() {
                     @Override
                     public void nextProgressMessage() {
 

@@ -35,6 +35,7 @@ import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
 import org.eyeseetea.malariacare.fragments.DashboardUnsentFragment;
@@ -159,7 +160,7 @@ public class AssessModuleController extends ModuleController {
         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                 new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
         saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new GetSurveyAnsweredRatioUseCase.Callback() {
+                new ISurveyAnsweredRatioCallback() {
                     @Override
                     public void nextProgressMessage() {
                     }
@@ -252,7 +253,7 @@ public class AssessModuleController extends ModuleController {
                         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
                                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
                         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                                new GetSurveyAnsweredRatioUseCase.Callback() {
+                                new ISurveyAnsweredRatioCallback() {
                                     @Override
                                     public void nextProgressMessage() {
                                         Log.d(getClass().getName(), "nextProgressMessage");
@@ -412,7 +413,7 @@ public class AssessModuleController extends ModuleController {
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                     new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
             saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                    new ISurveyAnsweredRatioCallback() {
                         @Override
                         public void nextProgressMessage() {
                             surveyFragment.nextProgressMessage();
