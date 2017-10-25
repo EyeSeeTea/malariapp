@@ -56,8 +56,4 @@ public class SaveSurveyAnsweredRatioUseCase {
                 numCompulsoryAnswered);
         return surveyAnsweredRatio;
     }
-
-    public interface Callback {
-        void onComplete(SurveyAnsweredRatio surveyAnsweredRatio);
-    }
 }
