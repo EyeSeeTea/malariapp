@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ import android.widget.Spinner;
 
 import com.google.common.collect.Iterables;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -56,6 +58,9 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventSubscriber;
+import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
@@ -78,7 +83,7 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment  {
+public class SurveyFragment extends Fragment {
     private String TAG = ".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
@@ -161,6 +166,8 @@ public class SurveyFragment extends Fragment  {
 
     String moduleName = Constants.FRAGMENT_FEEDBACK_KEY;
 
+    boolean isSubscribed;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -179,10 +186,50 @@ public class SurveyFragment extends Fragment  {
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu(moduleName);
+        createObservable();
         createProgress();
         createBackButton();
         prepareSurveyInfo();
         return llLayout;
+    }
+
+    private void createObservable() {
+        DomainEventPublisher.instance().subscribe(
+                createValueSubscriber());
+    }
+
+    @NonNull
+    private DomainEventSubscriber<ValueChangedEvent> createValueSubscriber() {
+        return new DomainEventSubscriber<ValueChangedEvent>() {
+            @Override
+            public void handleEvent(ValueChangedEvent valueChangedEvent) {
+                if (valueChangedEvent.getAction().equals(
+                        ValueChangedEvent.Action.SAVE)) {
+                    LayoutUtils.updateSurveyActionBarChartAddingQuestion(
+                            DashboardActivity.dashboardActivity.getSupportActionBar(),
+                            valueChangedEvent.getIdSurvey(),
+                            valueChangedEvent.isCompulsory());
+                } else if (valueChangedEvent.getAction().equals(
+                        ValueChangedEvent.Action.DELETE)) {
+                    LayoutUtils.updateSurveyActionBarChartRemovingQuestion(
+                            DashboardActivity.dashboardActivity.getSupportActionBar(),
+                            valueChangedEvent.getIdSurvey(),
+                            valueChangedEvent.isCompulsory());
+                } else if (valueChangedEvent.getAction().equals(
+                        ValueChangedEvent.Action.TOGGLE)) {
+                    LayoutUtils.updateActionBarChartCompletionCount(
+                            DashboardActivity.dashboardActivity.getSupportActionBar(),
+                            valueChangedEvent.getIdSurvey(),
+                            valueChangedEvent.isCompulsory(),
+                            valueChangedEvent.isVisible());
+                }
+            }
+
+            @Override
+            public Class<ValueChangedEvent> subscribedToEventType() {
+                return ValueChangedEvent.class;
+            }
+        };
     }
 
     private void createBackButton() {
@@ -191,6 +238,8 @@ public class SurveyFragment extends Fragment  {
         goback.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
+                                          DomainEventPublisher.instance().unSubscribe(
+                                                  createValueSubscriber());
                                           getActivity().onBackPressed();
                                       }
                                   }
@@ -212,14 +261,14 @@ public class SurveyFragment extends Fragment  {
 
     public void nextProgressMessage() {
         runOnUiThread(new Runnable() {
-                public void run() {
-                    if (messageIterator != null) {
-                        if (messageIterator.hasNext()) {
-                            progressText.setText(messageIterator.next());
-                        }
+            public void run() {
+                if (messageIterator != null) {
+                    if (messageIterator.hasNext()) {
+                        progressText.setText(messageIterator.next());
                     }
                 }
-            });
+            }
+        });
     }
 
     public static int progressMessagesCount() {
@@ -451,6 +500,7 @@ public class SurveyFragment extends Fragment  {
         progressText = (CustomTextView) llLayout.findViewById(R.id.progress_text);
         createProgressMessages();
     }
+
     /**
      * Stops progress view and shows real form
      */
@@ -701,8 +751,9 @@ public class SurveyFragment extends Fragment  {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<CompositeScoreDB> compositeScores = (List<CompositeScoreDB>) Session.popServiceValue(
-                    SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
+            List<CompositeScoreDB> compositeScores =
+                    (List<CompositeScoreDB>) Session.popServiceValue(
+                            SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
             List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
                     SurveyService.PREPARE_SURVEY_ACTION_TABS);
 

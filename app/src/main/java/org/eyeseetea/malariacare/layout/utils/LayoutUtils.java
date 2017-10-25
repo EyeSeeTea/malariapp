@@ -31,7 +31,6 @@ import android.view.View;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -263,7 +262,7 @@ public class LayoutUtils {
         return String.format("%X", appNameColor).substring(2);
     }
 
-    public static void updateSurveyActionBarChartAddingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
+    public static void updateSurveyActionBarChartAddingQuestion(ActionBar actionBar, long surveyId, final boolean compulsory){
         final DoublePieChart doublePieChart =
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
@@ -281,13 +280,14 @@ public class LayoutUtils {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-                        surveyAnsweredRatio.addQuestion(question);
+                        surveyAnsweredRatio.addQuestion(compulsory);
                         saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
                                 doublePieChart);
                     }
                 });
     }
-    public static void updateSurveyActionBarChartRemovingQuestion(ActionBar actionBar, long surveyId, final QuestionDB question){
+
+    public static void updateSurveyActionBarChartRemovingQuestion(ActionBar actionBar, long surveyId, final boolean compulsory){
         final DoublePieChart doublePieChart =
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
@@ -305,7 +305,7 @@ public class LayoutUtils {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-                        surveyAnsweredRatio.removeQuestion(question);
+                        surveyAnsweredRatio.removeQuestion(compulsory);
                         saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
                                 doublePieChart);
                     }
@@ -346,7 +346,7 @@ public class LayoutUtils {
     }
 
     public static void updateActionBarChartCompletionCount(ActionBar actionBar, Long surveyId,
-            final QuestionDB question, final boolean visible) {
+            final boolean isCompulsory, final boolean visible) {
         final DoublePieChart doublePieChart =
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
@@ -364,7 +364,7 @@ public class LayoutUtils {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-                        surveyAnsweredRatio.fixTotalQuestion(question, visible);
+                        surveyAnsweredRatio.fixTotalQuestion(isCompulsory, visible);
                         saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
                                 doublePieChart);
                     }

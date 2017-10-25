@@ -19,11 +19,11 @@
 
 package org.eyeseetea.malariacare.data.database.utils;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
+import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -79,17 +79,21 @@ public class ReadWriteDB {
             if (value == null) {
                 value = new ValueDB(option, question, Session.getSurveyByModule(module));
                 value.save();
+                DomainEventPublisher
+                        .instance()
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.SAVE));
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
                 value.setUploadDate(new Date());
                 value.update();
             }
-            LayoutUtils.updateSurveyActionBarChartAddingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
-        } else {
+                   } else {
             if (value != null) {
                 value.delete();
-                LayoutUtils.updateSurveyActionBarChartRemovingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
+                DomainEventPublisher
+                        .instance()
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.DELETE));
             }
         }
     }
@@ -102,13 +106,15 @@ public class ReadWriteDB {
         if (value == null) {
             value = new ValueDB(answer, question, Session.getSurveyByModule(module));
             value.save();
+            DomainEventPublisher
+                    .instance()
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.SAVE));
         } else {
             value.setOption((Long)null);
             value.setValue(answer);
             value.setUploadDate(new Date());
             value.update();
         }
-        LayoutUtils.updateSurveyActionBarChartAddingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
     }
 
     public static void deleteValue(QuestionDB question, String module) {
@@ -117,7 +123,9 @@ public class ReadWriteDB {
 
         if (value != null) {
             value.delete();
-            LayoutUtils.updateSurveyActionBarChartRemovingQuestion(DashboardActivity.dashboardActivity.getSupportActionBar(), Session.getSurveyByModule(module).getId_survey(), question);
+            DomainEventPublisher
+                    .instance()
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.SAVE));
         }
     }
 

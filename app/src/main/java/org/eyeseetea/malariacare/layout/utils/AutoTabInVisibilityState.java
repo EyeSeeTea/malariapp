@@ -21,11 +21,12 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import com.google.common.primitives.Booleans;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
+import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
 import java.util.Arrays;
@@ -162,9 +163,9 @@ public class AutoTabInVisibilityState {
             HeaderDB childHeader = childQuestion.getHeader();
             visible=!childQuestion.isHiddenBySurvey(idSurvey);
             if(visible || elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true) {
-                LayoutUtils.updateActionBarChartCompletionCount(
-                        DashboardActivity.dashboardActivity.getSupportActionBar(),
-                        Session.getSurveyByModule(module).getId_survey(), childQuestion, visible);
+                DomainEventPublisher
+                        .instance()
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), childQuestion.getCompulsory(), visible, ValueChangedEvent.Action.TOGGLE));
             }
 
             this.updateVisibility(childQuestion,visible);
