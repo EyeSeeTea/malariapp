@@ -163,8 +163,10 @@ public class AssessModuleController extends ModuleController {
     public void onMarkAsCompleted(final SurveyDB survey) {
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
         saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
@@ -418,8 +420,10 @@ public class AssessModuleController extends ModuleController {
         protected SurveyAnsweredRatio doInBackground(Void... voids) {
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                     new SurveyAnsweredRatioRepository();
+            IAsyncExecutor asyncExecutor = new AsyncExecutor();
+            IMainExecutor mainExecutor = new UIThreadExecutor();
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
             saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new ISurveyAnsweredRatioCallback() {
                         @Override

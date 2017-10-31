@@ -324,8 +324,10 @@ public class DashboardController {
         long surveyId = Session.getSurveyByModule(assessModuleController.getSimpleName()).getId_survey();
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
         final SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
         saveSurveyAnsweredRatioUseCase.execute(surveyId,
                 new ISurveyAnsweredRatioCallback() {
                     @Override

@@ -353,8 +353,10 @@ public class SurveyFragment extends Fragment {
         if (survey != null) {
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                     new SurveyAnsweredRatioRepository();
+            IAsyncExecutor asyncExecutor = new AsyncExecutor();
+            IMainExecutor mainExecutor = new UIThreadExecutor();
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
             saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new ISurveyAnsweredRatioCallback() {
                         @Override
