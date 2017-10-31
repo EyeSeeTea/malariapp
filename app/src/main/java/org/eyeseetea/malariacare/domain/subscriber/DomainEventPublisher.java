@@ -1,6 +1,8 @@
 package org.eyeseetea.malariacare.domain.subscriber;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class DomainEventPublisher {
     }
 
     public <T> void unSubscribe(final T aDomainEvent) {
+        Log.d("Subscriber", "unSuscribe");
         if (this.hasSubscribers()) {
             Class<?> eventType = aDomainEvent.getClass();
 
@@ -72,6 +75,7 @@ public class DomainEventPublisher {
 
     @SuppressWarnings("unchecked")
     public <T> void subscribe(DomainEventSubscriber<T> aSubscriber) {
+        Log.d("Subscriber", "suscribe");
         if (!this.isPublishing()) {
             this.ensureSubscribersList();
 

@@ -93,8 +93,6 @@ public class AssessModuleController extends ModuleController {
         if (!isFragmentActive(SurveyFragment.class)) {
             return;
         }
-        DomainEventPublisher.instance().unSubscribe(
-                new ValueChangedEvent());
 
         SurveyDB survey = Session.getSurveyByModule(getSimpleName());
         if (survey.isCompleted() || survey.isSent()) {

@@ -196,8 +196,6 @@ public class SurveyFragment extends Fragment {
     }
 
     private void subscribeFragmentToValueChanges() {
-        DomainEventPublisher.instance().unSubscribe(
-                new ValueChangedEvent());
         DomainEventPublisher.instance().subscribe(
                 createValueSubscriber());
     }
@@ -282,12 +280,22 @@ public class SurveyFragment extends Fragment {
         goback.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
-                                          DomainEventPublisher.instance().unSubscribe(
-                                                  createValueSubscriber());
                                           getActivity().onBackPressed();
                                       }
                                   }
         );
+    }
+
+    private void unSubscribeFragment() {
+        DomainEventPublisher.instance().unSubscribe(
+                createValueSubscriber());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Subscriber onDestroy");
+        unSubscribeFragment();
     }
 
     @Override
