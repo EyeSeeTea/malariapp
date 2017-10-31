@@ -34,11 +34,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:src="@drawable/point_line" />
+                <include layout="@layout/point_line"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -51,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:text="80%"
                         android:textColor="@color/black"
-                        android:textSize="30sp"
+                        android:textSize="28sp"
                         app:font_name="@string/font_name_medium" />
 
                     <org.eyeseetea.malariacare.views.CustomTextView
@@ -70,11 +66,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:src="@drawable/point_line" />
+                <include layout="@layout/point_line"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -87,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:text="100%"
                         android:textColor="@color/black"
-                        android:textSize="30sp"
+                        android:textSize="28sp"
                         app:font_name="@string/font_name_medium" />
 
                     <org.eyeseetea.malariacare.views.CustomTextView
