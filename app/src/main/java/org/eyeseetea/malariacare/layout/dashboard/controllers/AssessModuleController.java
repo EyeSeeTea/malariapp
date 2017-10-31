@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import static android.R.attr.action;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -98,15 +100,61 @@ public class AssessModuleController extends ModuleController {
             return;
         }
 
-        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
+        final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
         if (survey.isCompleted() || survey.isSent()) {
             dashboardController.setNavigatingBackwards(false);
             closeSurveyFragment();
             return;
         }
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain
-                .utils.Action.CHANGE_TAB).execute();
 
+        surveyFragment.showProgress();
+        closeSurveyFragment(survey, org.eyeseetea.malariacare.domain
+                .utils.Action.CHANGE_TAB);
+    }
+
+    private void closeSurveyFragment(final SurveyDB survey,final org.eyeseetea.malariacare.domain.utils.Action action) {
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage()                                                                                                                               {
+                        surveyFragment.nextProgressMessage();
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
+                            surveyFragment.hideProgress();
+                            boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
+                            if(!isDialogShown){
+                                //Confirm closing
+                                if (survey.isCompleted() || survey.isSent()) {
+                                    dashboardController.setNavigatingBackwards(false);
+                                    surveyFragment.hideProgress();
+                                    closeSurveyFragment();
+                                    return;
+                                }else{
+                                    askToCloseSurvey();
+                                }
+                            }
+                        }
+                        else if (action.equals(org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)){
+                            if (surveyAnsweredRatio.getCompulsoryAnswered()
+                                    == surveyAnsweredRatio.getTotalCompulsory()
+                                    && surveyAnsweredRatio.getTotalCompulsory() != 0) {
+                                askToSendCompulsoryCompletedSurvey();
+                            }
+                            surveyFragment.hideProgress();
+                            closeSurveyFragment();
+
+                        }
+                    }
+                });
     }
 
     public void onBackPressed() {
@@ -129,9 +177,10 @@ public class AssessModuleController extends ModuleController {
         }
 
         surveyFragment.showProgress();
-        surveyFragment.nextProgressMessage();
         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-        new AsyncOnCloseSurveyFragment(surveyFragment, survey, org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON).execute();
+
+        closeSurveyFragment(survey, org.eyeseetea.malariacare.domain
+                .utils.Action.PRESS_BACK_BUTTON);
         //if the survey is opened in review mode exit.
     }
 
@@ -254,27 +303,6 @@ public class AssessModuleController extends ModuleController {
                 .setMessage(R.string.survey_info_exit).setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-
-                        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-                        IMainExecutor mainExecutor = new UIThreadExecutor();
-                        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                                new SurveyAnsweredRatioRepository();
-                        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-                        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                                new ISurveyAnsweredRatioCallback() {
-                                    @Override
-                                    public void nextProgressMessage() {
-                                        Log.d(getClass().getName(), "nextProgressMessage");
-                                    }
-
-                                    @Override
-                                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                        SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
-                                        dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
-                                    }
-                                });
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         dashboardController.setNavigatingBackwards(false);
@@ -393,81 +421,6 @@ public class AssessModuleController extends ModuleController {
     private SurveyFragment getSurveyFragment() {
         return (SurveyFragment) dashboardActivity.getFragmentManager().findFragmentById(
                 R.id.dashboard_details_container);
-    }
-
-    public class AsyncOnCloseSurveyFragment extends AsyncTask<Void, Integer, SurveyAnsweredRatio> {
-        SurveyAnsweredRatio mSurveyAnsweredRatio;
-        SurveyFragment surveyFragment;
-        SurveyDB survey;
-        org.eyeseetea.malariacare.domain.utils.Action action;
-
-        public AsyncOnCloseSurveyFragment(SurveyFragment surveyFragment, SurveyDB survey, org.eyeseetea.malariacare.domain.utils.Action action) {
-            this.surveyFragment = surveyFragment;
-            this.survey = survey;
-            this.action = action;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //spinner
-            surveyFragment.showProgress();
-            surveyFragment.nextProgressMessage();
-        }
-
-
-        @Override
-        protected SurveyAnsweredRatio doInBackground(Void... voids) {
-            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                    new SurveyAnsweredRatioRepository();
-            IAsyncExecutor asyncExecutor = new AsyncExecutor();
-            IMainExecutor mainExecutor = new UIThreadExecutor();
-            SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-            saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    new ISurveyAnsweredRatioCallback() {
-                        @Override
-                        public void nextProgressMessage() {
-                            surveyFragment.nextProgressMessage();
-                        }
-
-                        @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            mSurveyAnsweredRatio = surveyAnsweredRatio;
-                        }
-                    });
-            return mSurveyAnsweredRatio;
-        }
-
-        @Override
-        protected void onPostExecute(SurveyAnsweredRatio surveyAnsweredRatio) {
-            if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
-                surveyFragment.hideProgress();
-                boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
-                if(!isDialogShown){
-                    //Confirm closing
-                    if (survey.isCompleted() || survey.isSent()) {
-                        dashboardController.setNavigatingBackwards(false);
-                        surveyFragment.hideProgress();
-                        closeSurveyFragment();
-                        return;
-                    }else{
-                        askToCloseSurvey();
-                    }
-                }
-            }
-            else if (action.equals(org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)){
-                super.onPostExecute(surveyAnsweredRatio);
-                if (surveyAnsweredRatio.getCompulsoryAnswered()
-                        == surveyAnsweredRatio.getTotalCompulsory()
-                        && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-                    askToSendCompulsoryCompletedSurvey();
-                }
-                surveyFragment.hideProgress();
-                closeSurveyFragment();
-
-            }
-        }
     }
 
 }

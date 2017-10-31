@@ -15,6 +15,7 @@ public class SaveSurveyAnsweredRatioUseCase implements UseCase{
     private IAsyncExecutor mAsyncExecutor;
     private ISurveyAnsweredRatioCallback mCallback;
     private SurveyAnsweredRatio mSurveyAnsweredRatio;
+    private long idSurvey;
 
     public SaveSurveyAnsweredRatioUseCase(
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository,
@@ -25,20 +26,16 @@ public class SaveSurveyAnsweredRatioUseCase implements UseCase{
         mSurveyAnsweredRatioRepository = surveyAnsweredRatioRepository;
     }
 
-    public void execute(final long idSurvey, final ISurveyAnsweredRatioCallback callback) {
-        mAsyncExecutor.run(new Runnable() {
-            @Override
-            public void run() {
-                mSurveyAnsweredRatio = reloadSurveyAnsweredRatio(idSurvey, callback);
-                execute(callback, mSurveyAnsweredRatio);
-            }
-        });
+    public void execute(long idSurvey, final ISurveyAnsweredRatioCallback callback) {
+        this.idSurvey=idSurvey;
+        mCallback = callback;
+        run();
     }
 
     public void execute(ISurveyAnsweredRatioCallback callback, SurveyAnsweredRatio surveyAnsweredRatio) {
         mSurveyAnsweredRatio = surveyAnsweredRatio;
         mCallback = callback;
-        mAsyncExecutor.run(this);
+        run();
     }
 
     private void save(SurveyAnsweredRatio surveyAnsweredRatio) {
@@ -50,19 +47,25 @@ public class SaveSurveyAnsweredRatioUseCase implements UseCase{
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(long idSurvey,
-            ISurveyAnsweredRatioCallback callback) {
+    private SurveyAnsweredRatio reloadSurveyAnsweredRatio(long idSurvey) {
         SurveyDB surveyDB = SurveyDB.findById(idSurvey);
         SurveyAnsweredRatio surveyAnsweredRatio = null;
         ProgramDB surveyProgram = surveyDB.getProgram();
         int numRequired = QuestionDB.countRequiredByProgram(surveyProgram);
         int numCompulsory = QuestionDB.countCompulsoryByProgram(surveyProgram);
         int numOptional = (int) surveyDB.countNumOptionalQuestionsToAnswer();
-        if (callback != null) {
-            callback.nextProgressMessage();
+        if (mCallback != null) {
+            notifyProgressMessage();
         }
         int numActiveChildrenCompulsory = QuestionDB.countChildrenCompulsoryBySurvey(
-                surveyDB.getId_survey(), callback);
+                surveyDB.getId_survey(), new IProgressCallback() {
+                    @Override
+                    public void onProgressMessage() {
+                        if (mCallback != null) {
+                            notifyProgressMessage();
+                        }
+                    }
+                });
         int numAnswered = ValueDB.countBySurvey(surveyDB);
         int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
         surveyAnsweredRatio = new SurveyAnsweredRatio(surveyDB.getId_survey(),
@@ -72,18 +75,31 @@ public class SaveSurveyAnsweredRatioUseCase implements UseCase{
         return surveyAnsweredRatio;
     }
 
+    private void notifyProgressMessage() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.nextProgressMessage();
+            }
+        });
+    }
+
     @Override
     public void run() {
         mAsyncExecutor.run(new Runnable() {
             @Override
             public void run() {
+                if(mSurveyAnsweredRatio==null) {
+                    notifyProgressMessage();
+                    mSurveyAnsweredRatio = reloadSurveyAnsweredRatio(idSurvey);
+                }
                 save(mSurveyAnsweredRatio);
-                notifySucessSave();
-            }
-        });
+                notifySuccessSave();
+                }
+            });
     }
 
-    private void notifySucessSave() {
+    private void notifySuccessSave() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {

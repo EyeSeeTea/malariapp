@@ -304,11 +304,10 @@ public class LayoutUtils {
     }
 
     public static void saveAndShowPie(SurveyAnsweredRatio surveyAnsweredRatio,
-            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository,
             final DoublePieChart doublePieChart) {
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
         IMainExecutor mainExecutor = new UIThreadExecutor();
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(new SurveyAnsweredRatioRepository(), mainExecutor, asyncExecutor);
         saveSurveyAnsweredRatioUseCase.execute(new ISurveyAnsweredRatioCallback() {
             @Override
             public void nextProgressMessage() {

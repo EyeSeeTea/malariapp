@@ -81,7 +81,7 @@ public class ReadWriteDB {
                 value.save();
                 DomainEventPublisher
                         .instance()
-                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.SAVE));
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.INSERT));
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
@@ -108,7 +108,7 @@ public class ReadWriteDB {
             value.save();
             DomainEventPublisher
                     .instance()
-                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.SAVE));
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), question.getCompulsory(),ValueChangedEvent.Action.INSERT));
         } else {
             value.setOption((Long)null);
             value.setValue(answer);

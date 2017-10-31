@@ -70,11 +70,18 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
         int numRequired = QuestionDB.countRequiredByProgram(surveyProgram);
         int numCompulsory = QuestionDB.countCompulsoryByProgram(surveyProgram);
         int numOptional = (int) surveyDB.countNumOptionalQuestionsToAnswer();
-        if(callback!=null) {
-            callback.nextProgressMessage();
+        if(mCallback!=null) {
+            notifyProgressMessage();
         }
         int numActiveChildrenCompulsory = QuestionDB.countChildrenCompulsoryBySurvey(
-                surveyDB.getId_survey(), callback);
+                surveyDB.getId_survey(), new IProgressCallback() {
+                    @Override
+                    public void onProgressMessage() {
+                        if(mCallback!=null) {
+                            notifyProgressMessage();
+                        }
+                    }
+                });
         int numAnswered = ValueDB.countBySurvey(surveyDB);
         int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
         surveyAnsweredRatio = new SurveyAnsweredRatio(surveyDB.getId_survey(),
@@ -90,7 +97,7 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
         mAsyncExecutor.run(new Runnable() {
             @Override
             public void run() {
-                final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, mCallback);
+                SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, mCallback);
                 onGetSurveyComplete(surveyAnsweredRatio);
             }
         });
@@ -102,6 +109,16 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
             @Override
             public void run() {
                 mCallback.onComplete(surveyAnsweredRatio);
+            }
+        });
+    }
+
+
+    private void notifyProgressMessage() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.nextProgressMessage();
             }
         });
     }

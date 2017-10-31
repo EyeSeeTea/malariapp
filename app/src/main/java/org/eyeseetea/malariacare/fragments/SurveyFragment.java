@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import static com.google.android.gms.internal.zzir.runOnUiThread;
-
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -149,7 +147,6 @@ public class SurveyFragment extends Fragment {
      */
     public static CustomTextView progressText;
     public static Iterator<String> messageIterator;
-    public static int messagesCount = 4;
     private static ListView listView;
     /**
      * Progress dialog shown while loading
@@ -171,8 +168,6 @@ public class SurveyFragment extends Fragment {
     RelativeLayout llLayout;
 
     String moduleName = Constants.FRAGMENT_FEEDBACK_KEY;
-
-    boolean isSubscribed;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -209,68 +204,60 @@ public class SurveyFragment extends Fragment {
         return new DomainEventSubscriber<ValueChangedEvent>() {
             @Override
             public void handleEvent(final ValueChangedEvent valueChangedEvent) {
+                Log.d(TAG, "handleEvent");
                 final DoublePieChart doublePieChart =
-                        (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar().getCustomView().findViewById(R.id.action_bar_chart);
+                        (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
+                                ().getCustomView().findViewById(
+                                R.id.action_bar_chart);
                 doublePieChart.setVisibility(View.VISIBLE);
-                final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                         new SurveyAnsweredRatioRepository();
                 IAsyncExecutor asyncExecutor = new AsyncExecutor();
                 IMainExecutor mainExecutor = new UIThreadExecutor();
-                final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                        new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+                GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                        new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository,
+                                mainExecutor, asyncExecutor);
+                getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
+                        new ISurveyAnsweredRatioCallback() {
+                            @Override
+                            public void nextProgressMessage() {
+                                Log.d(getClass().getName(), "nextProgressMessage");
+                            }
 
-                if (valueChangedEvent.getAction().equals(
-                        ValueChangedEvent.Action.SAVE)) {
-                    getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
-                            new ISurveyAnsweredRatioCallback() {
-                                @Override
-                                public void nextProgressMessage() {
-                                    Log.d(getClass().getName(), "nextProgressMessage");
-                                }
-
-                                @Override
-                                public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                    Log.d(getClass().getName(), "onComplete");
-                                    surveyAnsweredRatio.addQuestion(valueChangedEvent.isCompulsory());
-                                    LayoutUtils.saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
-                                            doublePieChart);
-                                }
-                            });
-                } else if (valueChangedEvent.getAction().equals(
-                        ValueChangedEvent.Action.DELETE)) {
-                    getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
-                            new ISurveyAnsweredRatioCallback() {
-                                @Override
-                                public void nextProgressMessage() {
-                                    Log.d(getClass().getName(), "nextProgressMessage");
-                                }
-
-                                @Override
-                                public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                    Log.d(getClass().getName(), "onComplete");
-                                    surveyAnsweredRatio.removeQuestion(valueChangedEvent.isCompulsory());
-                                    LayoutUtils.saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
-                                            doublePieChart);
-                                }
-                            });
-                } else if (valueChangedEvent.getAction().equals(
-                        ValueChangedEvent.Action.TOGGLE)) {
-                    getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
-                            new ISurveyAnsweredRatioCallback() {
-                                @Override
-                                public void nextProgressMessage() {
-                                    Log.d(getClass().getName(), "nextProgressMessage");
+                            @Override
+                            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                Log.d(getClass().getName(), "onComplete");
+                                if (valueChangedEvent.getAction().equals(
+                                        ValueChangedEvent.Action.INSERT)) {
+                                    for (ValueChangedEvent.ValueChangesContainer
+                                            valueChangesContainer : valueChangedEvent
+                                            .getValueChangesContainers()) {
+                                        surveyAnsweredRatio.addQuestion(
+                                                valueChangesContainer.isCompulsory());
+                                    }
+                                } else if (valueChangedEvent.getAction().equals(
+                                        ValueChangedEvent.Action.DELETE)) {
+                                    for (ValueChangedEvent.ValueChangesContainer
+                                            valueChangesContainer : valueChangedEvent
+                                            .getValueChangesContainers()) {
+                                        surveyAnsweredRatio.removeQuestion(
+                                                valueChangesContainer.isCompulsory());
+                                    }
+                                } else if (valueChangedEvent.getAction().equals(
+                                        ValueChangedEvent.Action.TOGGLE)) {
+                                    for (ValueChangedEvent.ValueChangesContainer
+                                            valueChangesContainer : valueChangedEvent
+                                            .getValueChangesContainers()) {
+                                        surveyAnsweredRatio.fixTotalQuestion(
+                                                valueChangesContainer.isCompulsory(),
+                                                valueChangesContainer.isVisible());
+                                    }
                                 }
 
-                                @Override
-                                public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                    Log.d(getClass().getName(), "onComplete");
-                                    surveyAnsweredRatio.fixTotalQuestion(valueChangedEvent.isCompulsory(), valueChangedEvent.isVisible());
-                                    LayoutUtils.saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
-                                            doublePieChart);
-                                }
-                            });
-                }
+                                LayoutUtils.saveAndShowPie(surveyAnsweredRatio,
+                                        doublePieChart);
+                            }
+                        });
             }
 
             @Override
@@ -318,19 +305,11 @@ public class SurveyFragment extends Fragment {
     }
 
     public void nextProgressMessage() {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                if (messageIterator != null) {
-                    if (messageIterator.hasNext()) {
-                        progressText.setText(messageIterator.next());
-                    }
-                }
+        if (messageIterator != null) {
+            if (messageIterator.hasNext()) {
+                progressText.setText(messageIterator.next());
             }
-        });
-    }
-
-    public static int progressMessagesCount() {
-        return messagesCount;
+        }
     }
 
     private void createProgressMessages() {
@@ -356,7 +335,8 @@ public class SurveyFragment extends Fragment {
             IAsyncExecutor asyncExecutor = new AsyncExecutor();
             IMainExecutor mainExecutor = new UIThreadExecutor();
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
+                            asyncExecutor);
             saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                     new ISurveyAnsweredRatioCallback() {
                         @Override

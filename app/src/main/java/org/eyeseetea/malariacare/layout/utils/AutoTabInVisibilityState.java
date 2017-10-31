@@ -29,6 +29,7 @@ import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
 import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -159,13 +160,12 @@ public class AutoTabInVisibilityState {
 
     private void recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion) {
         boolean visible;
+        List<ValueChangedEvent.ValueChangesContainer> valueChangesContainers = new ArrayList<>();
         for (QuestionDB childQuestion : parentQuestion.getChildren()) {
             HeaderDB childHeader = childQuestion.getHeader();
             visible=!childQuestion.isHiddenBySurvey(idSurvey);
             if(visible || elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true) {
-                DomainEventPublisher
-                        .instance()
-                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), childQuestion.getCompulsory(), visible, ValueChangedEvent.Action.TOGGLE));
+                valueChangesContainers.add(new ValueChangedEvent.ValueChangesContainer(childQuestion.getCompulsory(), visible));
             }
 
             this.updateVisibility(childQuestion,visible);
@@ -194,6 +194,11 @@ public class AutoTabInVisibilityState {
             this.updateHeaderVisibility(childHeader);
             if(childQuestion.hasChildren())
                 recursiveToggleChildrenVisibility(idSurvey, module, childQuestion);
+        }
+        if(valueChangesContainers.size()>0){
+            DomainEventPublisher
+                    .instance()
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), valueChangesContainers, ValueChangedEvent.Action.TOGGLE));
         }
     }
 
