@@ -46,6 +46,7 @@ public class AppDatabase {
     public static final String compositeScoreName = "cs";
     public static final String compositeScoreTwoName = "cs2";
     public static final String programName = "pg";
+    public static final String orgUnitName = "ou";
     public static final String orgUnitProgramRelationName = "oupr";
     public static final String surveyProgramRelationName = "spr";
 
@@ -69,6 +70,7 @@ public class AppDatabase {
             orgUnitProgramRelationName).build();
     public static final NameAlias surveyProgramRelationAlias = NameAlias.builder(
             surveyProgramRelationName).build();
+    public static final NameAlias orgUnitAlias = NameAlias.builder(orgUnitName).build();
 
 
     // Aliases used in DHIS2 DB wrappers
