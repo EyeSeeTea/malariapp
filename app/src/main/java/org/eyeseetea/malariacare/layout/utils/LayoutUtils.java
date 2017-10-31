@@ -302,32 +302,6 @@ public class LayoutUtils {
                 });
     }
 
-    public static void updateActionBarChartCompletionCount(ActionBar actionBar, Long surveyId,
-            final boolean isCompulsory, final boolean visible) {
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
-        final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
-        getSurveyAnsweredRatioUseCase.execute(surveyId,
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        surveyAnsweredRatio.fixTotalQuestion(isCompulsory, visible);
-                        saveAndShowPie(surveyAnsweredRatio, surveyAnsweredRatioRepository,
-                                doublePieChart);
-                    }
-                });
-    }
-
     public static void saveAndShowPie(SurveyAnsweredRatio surveyAnsweredRatio,
             ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository,
             final DoublePieChart doublePieChart) {
