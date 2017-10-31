@@ -253,9 +253,22 @@ public class SurveyFragment extends Fragment {
                                                 valueChangesContainer.isVisible());
                                     }
                                 }
+                                IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                                IMainExecutor mainExecutor = new UIThreadExecutor();
+                                SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(new SurveyAnsweredRatioRepository(), mainExecutor, asyncExecutor);
+                                saveSurveyAnsweredRatioUseCase.execute(new ISurveyAnsweredRatioCallback() {
+                                    @Override
+                                    public void nextProgressMessage() {
 
-                                LayoutUtils.saveAndShowPie(surveyAnsweredRatio,
-                                        doublePieChart);
+                                    }
+
+                                    @Override
+                                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                        if (surveyAnsweredRatio != null) {
+                                            LayoutUtils.updateChart(surveyAnsweredRatio, doublePieChart);
+                                        }
+                                    }
+                                }, surveyAnsweredRatio);
                             }
                         });
             }

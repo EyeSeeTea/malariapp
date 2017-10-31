@@ -268,14 +268,13 @@ public class LayoutUtils {
         return String.format("%X", appNameColor).substring(2);
     }
 
-    private static void updateChart(SurveyAnsweredRatio surveyAnsweredRatio,
+    public static void updateChart(SurveyAnsweredRatio surveyAnsweredRatio,
             DoublePieChart doublePieChart) {
         doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
                 surveyAnsweredRatio.getTotalStatus());
     }
 
     private static void updateSurveyActionBarChart(ActionBar actionBar, long surveyId){
-
         final DoublePieChart doublePieChart =
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
@@ -295,31 +294,10 @@ public class LayoutUtils {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-
                         if (surveyAnsweredRatio != null) {
                             updateChart(surveyAnsweredRatio, doublePieChart);
                         }
                     }
                 });
-    }
-
-    public static void saveAndShowPie(SurveyAnsweredRatio surveyAnsweredRatio,
-            final DoublePieChart doublePieChart) {
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(new SurveyAnsweredRatioRepository(), mainExecutor, asyncExecutor);
-        saveSurveyAnsweredRatioUseCase.execute(new ISurveyAnsweredRatioCallback() {
-            @Override
-            public void nextProgressMessage() {
-
-            }
-
-            @Override
-            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                if (surveyAnsweredRatio != null) {
-                    updateChart(surveyAnsweredRatio, doublePieChart);
-                }
-            }
-        }, surveyAnsweredRatio);
     }
 }
