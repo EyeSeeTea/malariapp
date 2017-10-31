@@ -56,6 +56,8 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
@@ -69,6 +71,8 @@ import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -210,8 +214,10 @@ public class SurveyFragment extends Fragment {
                 doublePieChart.setVisibility(View.VISIBLE);
                 final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                         new SurveyAnsweredRatioRepository();
+                IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                IMainExecutor mainExecutor = new UIThreadExecutor();
                 final GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                        new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                        new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
 
                 if (valueChangedEvent.getAction().equals(
                         ValueChangedEvent.Action.SAVE)) {

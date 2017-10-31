@@ -39,10 +39,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -59,8 +63,10 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
         getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
     }
     @Override
     protected void initMenu(final SurveyDB survey) {

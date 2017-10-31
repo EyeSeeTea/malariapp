@@ -4,17 +4,28 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 
-public class GetSurveyAnsweredRatioUseCase{
+public class GetSurveyAnsweredRatioUseCase implements UseCase{
 
     private ISurveyAnsweredRatioRepository mSurveyAnsweredRatioRepository;
 
     private SurveyAnsweredRatio answeredQuestionRatio;
 
+    private IMainExecutor mMainExecutor;
+    private IAsyncExecutor mAsyncExecutor;
+    private ISurveyAnsweredRatioCallback mCallback;
+    private long idSurvey;
+
     public GetSurveyAnsweredRatioUseCase(
-            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository) {
+            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository,
+            IMainExecutor mainExecutor,
+            IAsyncExecutor asyncExecutor) {
+        mMainExecutor = mainExecutor;
+        mAsyncExecutor = asyncExecutor;
         mSurveyAnsweredRatioRepository = surveyAnsweredRatioRepository;
     }
 
@@ -23,8 +34,9 @@ public class GetSurveyAnsweredRatioUseCase{
     SurveyDB surveyDB;
 
     public void execute(long idSurvey, ISurveyAnsweredRatioCallback callback) {
-        final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, callback);
-        callback.onComplete(surveyAnsweredRatio);
+        this.idSurvey=idSurvey;
+        mCallback = callback;
+        mAsyncExecutor.run(this);
     }
 
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
@@ -72,4 +84,26 @@ public class GetSurveyAnsweredRatioUseCase{
         mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
+
+    @Override
+    public void run() {
+        mAsyncExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                final SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, mCallback);
+                onGetSurveyComplete(surveyAnsweredRatio);
+            }
+        });
+    }
+
+
+    private void onGetSurveyComplete(final SurveyAnsweredRatio surveyAnsweredRatio) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onComplete(surveyAnsweredRatio);
+            }
+        });
+    }
+
 }

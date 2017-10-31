@@ -32,6 +32,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
@@ -45,6 +47,8 @@ import org.eyeseetea.malariacare.fragments.SurveyFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
@@ -250,10 +254,12 @@ public class AssessModuleController extends ModuleController {
                     public void onClick(DialogInterface dialog, int arg1) {
                         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
 
+                        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                        IMainExecutor mainExecutor = new UIThreadExecutor();
                         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                                 new SurveyAnsweredRatioRepository();
                         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
                         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                                 new ISurveyAnsweredRatioCallback() {
                                     @Override
