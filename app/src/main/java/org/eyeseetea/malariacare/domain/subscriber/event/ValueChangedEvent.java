@@ -14,13 +14,36 @@
 
 package org.eyeseetea.malariacare.domain.subscriber.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ValueChangedEvent {
 
-    public enum Action {SAVE, DELETE, TOGGLE}
+    public static class ValueChangesContainer{
+        private Boolean isCompulsory;
+        private Boolean isVisible;
+
+        public ValueChangesContainer(boolean isCompulsory){
+            this.isCompulsory = isCompulsory;
+        }
+
+        public ValueChangesContainer(boolean isCompulsory, boolean isVisible){
+            this.isCompulsory = isCompulsory;
+            this.isVisible = isVisible;
+        }
+
+        public Boolean isCompulsory() {
+            return isCompulsory;
+        }
+
+        public Boolean isVisible() {
+            return isVisible;
+        }
+    }
+    private List<ValueChangesContainer> mValueChangesContainers;
+    public enum Action {INSERT, DELETE, TOGGLE}
     private Action action;
     private long idSurvey;
-    private boolean isCompulsory;
-    private boolean isVisible;
 
     public ValueChangedEvent() {
     }
@@ -28,14 +51,14 @@ public class ValueChangedEvent {
     public ValueChangedEvent(long idSurvey, boolean isCompulsory, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
-        this.isCompulsory = isCompulsory;
+        mValueChangesContainers = new ArrayList<>();
+        mValueChangesContainers.add(new ValueChangesContainer(isCompulsory));
     }
 
-    public ValueChangedEvent(long idSurvey, boolean isCompulsory, boolean isVisible, Action action) {
+    public ValueChangedEvent(long idSurvey, List<ValueChangesContainer> valueChangesContainers, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
-        this.isCompulsory = isCompulsory;
-        this.isVisible = isVisible;
+        mValueChangesContainers = valueChangesContainers;
     }
 
     public Action getAction() {
@@ -46,11 +69,7 @@ public class ValueChangedEvent {
         return idSurvey;
     }
 
-    public boolean isCompulsory() {
-        return isCompulsory;
+    public List<ValueChangesContainer> getValueChangesContainers() {
+        return mValueChangesContainers;
     }
-
-    public boolean isVisible(){
-        return isVisible;
-    };
 }
