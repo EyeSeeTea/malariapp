@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,7 +86,7 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends Fragment implements DomainEventSubscriber<ValueChangedEvent> {
     private String TAG = ".SurveyFragment";
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
@@ -187,97 +186,13 @@ public class SurveyFragment extends Fragment {
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu(moduleName);
-        subscribeFragmentToValueChanges();
         createProgress();
         createBackButton();
         prepareSurveyInfo();
+
+        DomainEventPublisher.instance().subscribe(this);
+
         return llLayout;
-    }
-
-    private void subscribeFragmentToValueChanges() {
-        DomainEventPublisher.instance().subscribe(
-                createValueSubscriber());
-    }
-
-    @NonNull
-    private DomainEventSubscriber<ValueChangedEvent> createValueSubscriber() {
-        return new DomainEventSubscriber<ValueChangedEvent>() {
-            @Override
-            public void handleEvent(final ValueChangedEvent valueChangedEvent) {
-                Log.d(TAG, "handleEvent");
-                final DoublePieChart doublePieChart =
-                        (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
-                                ().getCustomView().findViewById(
-                                R.id.action_bar_chart);
-                doublePieChart.setVisibility(View.VISIBLE);
-                ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                        new SurveyAnsweredRatioRepository();
-                IAsyncExecutor asyncExecutor = new AsyncExecutor();
-                IMainExecutor mainExecutor = new UIThreadExecutor();
-                GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                        new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository,
-                                mainExecutor, asyncExecutor);
-                getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
-                        new ISurveyAnsweredRatioCallback() {
-                            @Override
-                            public void nextProgressMessage() {
-                                Log.d(getClass().getName(), "nextProgressMessage");
-                            }
-
-                            @Override
-                            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                Log.d(getClass().getName(), "onComplete");
-                                if (valueChangedEvent.getAction().equals(
-                                        ValueChangedEvent.Action.INSERT)) {
-                                    for (ValueChangedEvent.ValueChangesContainer
-                                            valueChangesContainer : valueChangedEvent
-                                            .getValueChangesContainers()) {
-                                        surveyAnsweredRatio.addQuestion(
-                                                valueChangesContainer.isCompulsory());
-                                    }
-                                } else if (valueChangedEvent.getAction().equals(
-                                        ValueChangedEvent.Action.DELETE)) {
-                                    for (ValueChangedEvent.ValueChangesContainer
-                                            valueChangesContainer : valueChangedEvent
-                                            .getValueChangesContainers()) {
-                                        surveyAnsweredRatio.removeQuestion(
-                                                valueChangesContainer.isCompulsory());
-                                    }
-                                } else if (valueChangedEvent.getAction().equals(
-                                        ValueChangedEvent.Action.TOGGLE)) {
-                                    for (ValueChangedEvent.ValueChangesContainer
-                                            valueChangesContainer : valueChangedEvent
-                                            .getValueChangesContainers()) {
-                                        surveyAnsweredRatio.fixTotalQuestion(
-                                                valueChangesContainer.isCompulsory(),
-                                                valueChangesContainer.isVisible());
-                                    }
-                                }
-                                IAsyncExecutor asyncExecutor = new AsyncExecutor();
-                                IMainExecutor mainExecutor = new UIThreadExecutor();
-                                SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase = new SaveSurveyAnsweredRatioUseCase(new SurveyAnsweredRatioRepository(), mainExecutor, asyncExecutor);
-                                saveSurveyAnsweredRatioUseCase.execute(new ISurveyAnsweredRatioCallback() {
-                                    @Override
-                                    public void nextProgressMessage() {
-
-                                    }
-
-                                    @Override
-                                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                        if (surveyAnsweredRatio != null) {
-                                            LayoutUtils.updateChart(surveyAnsweredRatio, doublePieChart);
-                                        }
-                                    }
-                                }, surveyAnsweredRatio);
-                            }
-                        });
-            }
-
-            @Override
-            public Class<ValueChangedEvent> subscribedToEventType() {
-                return ValueChangedEvent.class;
-            }
-        };
     }
 
     private void createBackButton() {
@@ -292,16 +207,11 @@ public class SurveyFragment extends Fragment {
         );
     }
 
-    private void unSubscribeFragment() {
-        DomainEventPublisher.instance().unSubscribe(
-                createValueSubscriber());
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Subscriber onDestroy");
-        unSubscribeFragment();
+        DomainEventPublisher.instance().unSubscribe(this);
     }
 
     @Override
@@ -469,6 +379,85 @@ public class SurveyFragment extends Fragment {
             preLoadService.putExtra("tab", tab.getId_tab());
             getActivity().getApplicationContext().startService(preLoadService);
         }
+    }
+
+    @Override
+    public void handleEvent(final ValueChangedEvent valueChangedEvent) {
+        Log.d(TAG, "handleEvent");
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
+                        ().getCustomView().findViewById(
+                        R.id.action_bar_chart);
+        doublePieChart.setVisibility(View.VISIBLE);
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository,
+                        mainExecutor, asyncExecutor);
+        getSurveyAnsweredRatioUseCase.execute(valueChangedEvent.getIdSurvey(),
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                        if (valueChangedEvent.getAction().equals(
+                                ValueChangedEvent.Action.INSERT)) {
+                            for (ValueChangedEvent.ValueChangesContainer
+                                    valueChangesContainer : valueChangedEvent
+                                    .getValueChangesContainers()) {
+                                surveyAnsweredRatio.addQuestion(
+                                        valueChangesContainer.isCompulsory());
+                            }
+                        } else if (valueChangedEvent.getAction().equals(
+                                ValueChangedEvent.Action.DELETE)) {
+                            for (ValueChangedEvent.ValueChangesContainer
+                                    valueChangesContainer : valueChangedEvent
+                                    .getValueChangesContainers()) {
+                                surveyAnsweredRatio.removeQuestion(
+                                        valueChangesContainer.isCompulsory());
+                            }
+                        } else if (valueChangedEvent.getAction().equals(
+                                ValueChangedEvent.Action.TOGGLE)) {
+                            for (ValueChangedEvent.ValueChangesContainer
+                                    valueChangesContainer : valueChangedEvent
+                                    .getValueChangesContainers()) {
+                                surveyAnsweredRatio.fixTotalQuestion(
+                                        valueChangesContainer.isCompulsory(),
+                                        valueChangesContainer.isVisible());
+                            }
+                        }
+                        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+                        IMainExecutor mainExecutor = new UIThreadExecutor();
+                        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                                new SaveSurveyAnsweredRatioUseCase(
+                                        new SurveyAnsweredRatioRepository(), mainExecutor,
+                                        asyncExecutor);
+                        saveSurveyAnsweredRatioUseCase.execute(new ISurveyAnsweredRatioCallback() {
+                            @Override
+                            public void nextProgressMessage() {
+
+                            }
+
+                            @Override
+                            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                                if (surveyAnsweredRatio != null) {
+                                    LayoutUtils.updateChart(surveyAnsweredRatio, doublePieChart);
+                                }
+                            }
+                        }, surveyAnsweredRatio);
+                    }
+                });
+    }
+
+    @Override
+    public Class<ValueChangedEvent> subscribedToEventType() {
+        return ValueChangedEvent.class;
     }
 
     public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
