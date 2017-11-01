@@ -176,38 +176,6 @@ public class SurveyAnsweredRatio {
         }
     }
 
-    public void incrementTotalCompulsory() {
-        totalCompulsory++;
-    }
-
-    public void decrementTotalCompulsory() {
-        totalCompulsory--;
-    }
-
-    public void incrementTotal() {
-        total++;
-    }
-
-    public void decrementTotal() {
-        total--;
-    }
-
-    public void incrementAnswered() {
-        answered++;
-    }
-
-    public void decrementAnswered() {
-        answered--;
-    }
-
-    public void incrementCompulsoryAnswered() {
-        compulsoryAnswered++;
-    }
-
-    public void decrementCompulsoryAnswered() {
-        compulsoryAnswered--;
-    }
-
     public void fixTotalQuestion(boolean isCompulsory, boolean visible) {
         if(isCompulsory){
             if(visible) {
@@ -235,5 +203,37 @@ public class SurveyAnsweredRatio {
             incrementCompulsoryAnswered();
         }
         incrementAnswered();
+    }
+
+    private void incrementTotalCompulsory() {
+        totalCompulsory++;
+    }
+
+    private void decrementTotalCompulsory() {
+        totalCompulsory--;
+    }
+
+    private void incrementTotal() {
+        total++;
+    }
+
+    private void decrementTotal() {
+        total--;
+    }
+
+    private void incrementAnswered() {
+        answered++;
+    }
+
+    private void decrementAnswered() {
+        answered--;
+    }
+
+    private void incrementCompulsoryAnswered() {
+        compulsoryAnswered++;
+    }
+
+    private void decrementCompulsoryAnswered() {
+        compulsoryAnswered--;
     }
 }
