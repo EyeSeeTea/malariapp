@@ -339,15 +339,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 }
             }
         }
-        data += getString(R.string.see_full_assessment)+ "</p>";
-        if(survey.isSent()) {
-            data += "<a href=https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
-                    +
-                    ">https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
-                    + "</a></p>";
-        }else{
-            data += getString(R.string.url_not_available) + "</p>";
-        }
         data += "</body>"
                 + "</html>";
         File attached = null;
@@ -405,12 +396,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                     }
                 }
             }
-        }
-        data += "\n" + getString(R.string.see_full_assessment) + "\n";
-        if (survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
-        } else {
-            data += getString(R.string.url_not_available) + "\n";
         }
         System.out.println("data:"+data);
         createTextIntent(getActivity(), data);

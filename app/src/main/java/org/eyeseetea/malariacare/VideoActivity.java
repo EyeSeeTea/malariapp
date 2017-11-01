@@ -53,15 +53,5 @@ public class VideoActivity extends Activity {
         super.onRestoreInstanceState(savedInstanceState);
         mVideoView.seekTo(savedInstanceState.getInt("video", 0));
     }
-
-    /**
-     * Go back
-     */
-    @Override
-    public void onBackPressed() {
-        Intent returnIntent=new Intent(this, DashboardActivity.class);
-        returnIntent.putExtra(getString(R.string.show_announcement_key), false);
-        startActivity(returnIntent);
-    }
 }
 
