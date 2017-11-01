@@ -39,6 +39,12 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
         mAsyncExecutor.run(this);
     }
 
+    @Override
+    public void run() {
+        SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, mCallback);
+        onGetSurveyComplete(surveyAnsweredRatio);
+    }
+
     private SurveyAnsweredRatio getSurveyWithStatusAndAnsweredRatio(long idSurvey,
             ISurveyAnsweredRatioCallback callback) {
         surveyDB = SurveyDB.findById(idSurvey);
@@ -90,17 +96,6 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
                 numCompulsoryAnswered);
         mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         return surveyAnsweredRatio;
-    }
-
-    @Override
-    public void run() {
-        mAsyncExecutor.run(new Runnable() {
-            @Override
-            public void run() {
-                SurveyAnsweredRatio surveyAnsweredRatio = getSurveyWithStatusAndAnsweredRatio(idSurvey, mCallback);
-                onGetSurveyComplete(surveyAnsweredRatio);
-            }
-        });
     }
 
 
