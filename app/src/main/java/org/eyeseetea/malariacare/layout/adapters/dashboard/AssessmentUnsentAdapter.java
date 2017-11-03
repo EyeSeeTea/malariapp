@@ -39,9 +39,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -49,17 +54,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssessmentUnsentAdapter extends ADashboardAdapter {
-    GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
 
     public AssessmentUnsentAdapter(List<SurveyDB> items, Context context) {
         super(context);
         this.items = items;
         this.recordLayout = R.layout.assessment_unsent_record;
 
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
     }
     @Override
     protected void initMenu(final SurveyDB survey) {
@@ -76,8 +76,14 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         final DoublePieChart doublePieChart =
                 (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new GetSurveyAnsweredRatioUseCase.Callback() {
+                new ISurveyAnsweredRatioCallback() {
             @Override
             public void nextProgressMessage() {
                 Log.d(getClass().getName(), "nextProgressMessage");

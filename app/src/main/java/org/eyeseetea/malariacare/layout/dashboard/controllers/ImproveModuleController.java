@@ -136,8 +136,6 @@ public class ImproveModuleController extends ModuleController {
 
         replaceFragment(R.id.dashboard_completed_container, mPlanActionFragment);
 
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
-
         UpdateFiltersBySurvey(survey);
     }
 

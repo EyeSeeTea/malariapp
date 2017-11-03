@@ -34,8 +34,10 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.DoublePieChart;
 
 public class LayoutUtils {
 
@@ -136,7 +138,24 @@ public class LayoutUtils {
         }
     }
 
-    public static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
+    public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
+            SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
+        String title = "";
+        if (survey.getProgram().getName() != null) {
+            title = survey.getProgram().getName();
+        }
+        //Get Tab + User
+        title = getCapitalizeName(title);
+        String subtitle = getCurrentUsername();
+        String appNameColorString = getAppNameColorString();
+        String appName = getAppName();
+        Spanned spannedTitle = Html.fromHtml(
+                String.format("<font color=\"#%s\"><b>%s</b></font> - %s", appNameColorString,
+                        appName +" - " + moduleName, title));
+        setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey(), surveyAnsweredRatio);
+    }
+
+    private static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
@@ -146,7 +165,7 @@ public class LayoutUtils {
         actionBar.setTitle(title);
     }
 
-    public static void setActionbarTitle(ActionBarActivity activity, Spanned title,
+    private static void setActionbarTitle(ActionBarActivity activity, Spanned title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -162,8 +181,27 @@ public class LayoutUtils {
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
+    private static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,
+            String subtitle, long surveyId, SurveyAnsweredRatio surveyAnsweredRatio) {
+        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        if(PreferencesState.getInstance().isDevelopOptionActive()) {
+            actionBar.setCustomView(R.layout.dev_custom_action_bar);
+            String server = PreferencesState.getInstance().getServerUrl();
+            ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
+        }else {
+            actionBar.setCustomView(R.layout.custom_action_bar_with_chart);
+        }
+        updateSurveyActionBarChart(actionBar, surveyAnsweredRatio);
+        String server = PreferencesState.getInstance().getServerUrl();
+        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
+    }
 
-    public static void setActionbarAppName(ActionBarActivity activity) {
+
+
+    private static void setActionbarAppName(ActionBarActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -190,18 +228,18 @@ public class LayoutUtils {
     }
 
 
-    public static String getAppName() {
+    private static String getAppName() {
         return PreferencesState.getInstance().getContext().getResources().getString(
                 R.string.app_name);
     }
 
-    public static String getCapitalizeName(String title) {
+    private static String getCapitalizeName(String title) {
         StringBuilder tabtemp = new StringBuilder(title);
         tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
         return tabtemp.toString();
     }
 
-    public static String getCurrentUsername() {
+    private static String getCurrentUsername() {
         UserDB user = Session.getUser();
         if (user == null) {
             return "";
@@ -214,9 +252,22 @@ public class LayoutUtils {
     }
 
 
-    public static String getAppNameColorString() {
+    private static String getAppNameColorString() {
         int appNameColor = PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.appNameColor);
         return String.format("%X", appNameColor).substring(2);
+    }
+
+    public static void updateChart(SurveyAnsweredRatio surveyAnsweredRatio,
+            DoublePieChart doublePieChart) {
+        doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                surveyAnsweredRatio.getTotalStatus());
+    }
+
+    private static void updateSurveyActionBarChart(ActionBar actionBar, SurveyAnsweredRatio surveyAnsweredRatio){
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
+        doublePieChart.setVisibility(View.VISIBLE);
+        updateChart(surveyAnsweredRatio, doublePieChart);
     }
 }

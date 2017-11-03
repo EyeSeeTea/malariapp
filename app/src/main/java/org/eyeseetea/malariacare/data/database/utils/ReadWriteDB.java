@@ -22,6 +22,9 @@ package org.eyeseetea.malariacare.data.database.utils;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.entity.Question;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
+import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -77,6 +80,9 @@ public class ReadWriteDB {
             if (value == null) {
                 value = new ValueDB(option, question, Session.getSurveyByModule(module));
                 value.save();
+                DomainEventPublisher
+                        .instance()
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), new Question(question.getId_question(), question.getCompulsory()),ValueChangedEvent.Action.INSERT));
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
@@ -84,7 +90,12 @@ public class ReadWriteDB {
                 value.update();
             }
         } else {
-            if (value != null) value.delete();
+            if (value != null) {
+                value.delete();
+                DomainEventPublisher
+                        .instance()
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), new Question(question.getId_question(), question.getCompulsory()),ValueChangedEvent.Action.DELETE));
+            }
         }
     }
 
@@ -96,6 +107,9 @@ public class ReadWriteDB {
         if (value == null) {
             value = new ValueDB(answer, question, Session.getSurveyByModule(module));
             value.save();
+            DomainEventPublisher
+                    .instance()
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),  new Question(question.getId_question(), question.getCompulsory()) ,ValueChangedEvent.Action.INSERT));
         } else {
             value.setOption((Long)null);
             value.setValue(answer);
@@ -104,12 +118,27 @@ public class ReadWriteDB {
         }
     }
 
-    public static void deleteValue(QuestionDB question, String module) {
+    public static boolean deleteValue(QuestionDB question, String module) {
+        return deleteValue(question, module, true);
+    }
+
+    public static boolean deleteValue(QuestionDB question, String module, boolean notifiyValueChanged) {
 
         ValueDB value = question.getValueBySession(module);
 
-        if (value != null)
+        if (value != null) {
             value.delete();
+            if(notifiyValueChanged) {
+                DomainEventPublisher
+                        .instance()
+                        .publish(new ValueChangedEvent(
+                                Session.getSurveyByModule(module).getId_survey(),
+                                new Question(question.getId_question(), question.getCompulsory()),
+                                ValueChangedEvent.Action.DELETE));
+            }
+            return true;
+        }
+        return false;
     }
 
 }

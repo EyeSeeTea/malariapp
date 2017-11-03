@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import static com.google.android.gms.internal.zzir.runOnUiThread;
-
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -46,6 +44,7 @@ import android.widget.Spinner;
 
 import com.google.common.collect.Iterables;
 
+import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
@@ -54,19 +53,29 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventSubscriber;
+import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.adapters.general.TabArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.ITabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,8 +87,16 @@ import java.util.Set;
 /**
  * Created by ignac on 05/01/2016.
  */
-public class SurveyFragment extends Fragment  {
+public class SurveyFragment extends Fragment implements DomainEventSubscriber<ValueChangedEvent> {
     private String TAG = ".SurveyFragment";
+
+
+    ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+            new SurveyAnsweredRatioRepository();
+    IAsyncExecutor asyncExecutor;
+    IMainExecutor mainExecutor;
+    SurveyAnsweredRatio mSurveyAnsweredRatio;
+
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
     private static final int ORDER_C1_CLINICAL = 3;
@@ -138,7 +155,6 @@ public class SurveyFragment extends Fragment  {
      */
     public static CustomTextView progressText;
     public static Iterator<String> messageIterator;
-    public static int messagesCount = 4;
     private static ListView listView;
     /**
      * Progress dialog shown while loading
@@ -161,17 +177,6 @@ public class SurveyFragment extends Fragment  {
 
     String moduleName = Constants.FRAGMENT_FEEDBACK_KEY;
 
-    public static SurveyFragment newInstance(int index) {
-        SurveyFragment f = new SurveyFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", index);
-        f.setArguments(args);
-
-        return f;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -182,18 +187,49 @@ public class SurveyFragment extends Fragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+            final Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         if (container == null) {
             return null;
         }
+
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu(moduleName);
         createProgress();
         createBackButton();
         prepareSurveyInfo();
+        DomainEventPublisher.instance().subscribe(this);
+
+        initializeSurvey();
+
         return llLayout;
+    }
+
+    private void initializeSurvey() {
+        final SurveyDB survey = Session.getSurveyByModule(moduleName);
+
+        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
+        asyncExecutor = new AsyncExecutor();
+        mainExecutor = new UIThreadExecutor();
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository,
+                        mainExecutor, asyncExecutor);
+
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                        mSurveyAnsweredRatio = surveyAnsweredRatio;
+                        tabAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private void createBackButton() {
@@ -209,6 +245,13 @@ public class SurveyFragment extends Fragment  {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Subscriber onDestroy");
+        DomainEventPublisher.instance().unSubscribe(this);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
@@ -217,24 +260,14 @@ public class SurveyFragment extends Fragment  {
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
-
-        this.tabAdapter.notifyDataSetChanged();
     }
 
     public void nextProgressMessage() {
-        runOnUiThread(new Runnable() {
-                public void run() {
-                    if (messageIterator != null) {
-                        if (messageIterator.hasNext()) {
-                            progressText.setText(messageIterator.next());
-                        }
-                    }
-                }
-            });
-    }
-
-    public static int progressMessagesCount() {
-        return messagesCount;
+        if (messageIterator != null) {
+            if (messageIterator.hasNext()) {
+                progressText.setText(messageIterator.next());
+            }
+        }
     }
 
     private void createProgressMessages() {
@@ -255,12 +288,11 @@ public class SurveyFragment extends Fragment  {
     public void onPause() {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                    new SurveyAnsweredRatioRepository();
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository);
+                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
+                            asyncExecutor);
             saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    new GetSurveyAnsweredRatioUseCase.Callback() {
+                    new ISurveyAnsweredRatioCallback() {
                         @Override
                         public void nextProgressMessage() {
                             Log.d(getClass().getName(), "nextProgressMessage");
@@ -380,63 +412,122 @@ public class SurveyFragment extends Fragment  {
         }
     }
 
-    public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
-
-        private TabDB tab;
-
-        String module;
-
-        public AsyncChangeTab(TabDB tab) {
-            this.tab = tab;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //actionSpinner
-            startProgress();
-        }
-
-        @Override
-        protected View doInBackground(Void... params) {
-            Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..");
-            View view = null;
-            try {
-                if (tab.isGeneralScore()) {
-                    showGeneralScores();
-                } else {
-                    view = prepareTab(tab, moduleName);
-                }
-            } catch (Exception e) {
+    @Override
+    public void handleEvent(final ValueChangedEvent valueChangedEvent) {
+        Log.d(TAG, "handleEvent");
+        mainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                runChartUpdate(valueChangedEvent);
             }
-            Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..DONE");
-            return view;
+        });
+    }
+
+    private void runChartUpdate(final ValueChangedEvent valueChangedEvent) {
+        final DoublePieChart doublePieChart =
+                (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
+                        ().getCustomView().findViewById(
+                        R.id.action_bar_chart);
+        doublePieChart.setVisibility(View.VISIBLE);
+        for (Question question : valueChangedEvent.getQuestions()) {
+            if (valueChangedEvent.getAction().equals(
+                    ValueChangedEvent.Action.INSERT)) {
+                mSurveyAnsweredRatio.addQuestion(question.isCompulsory());
+            } else if (valueChangedEvent.getAction().equals(
+                    ValueChangedEvent.Action.DELETE)) {
+                mSurveyAnsweredRatio.removeQuestion(question.isCompulsory());
+            } else if (valueChangedEvent.getAction().equals(
+                    ValueChangedEvent.Action.TOGGLE)) {
+                mSurveyAnsweredRatio.fixTotalQuestion(question.isCompulsory(), question.isCachedVisibility());
+                if(question.isRemoved()){
+                    mSurveyAnsweredRatio.removeQuestion(question.isCompulsory());
+                }
+            }
         }
 
-        @Override
-        protected void onPostExecute(View viewContent) {
-            super.onPostExecute(viewContent);
-            try {
-                content.removeAllViews();
-                content.addView(viewContent);
-                ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
-                if (tab.getType() == Constants.TAB_AUTOMATIC ||
-                        tab.getType() == Constants.TAB_ADHERENCE ||
-                        tab.getType() == Constants.TAB_IQATAB ||
-                        tab.getType() == Constants.TAB_REPORTING ||
-                        tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
-                    tabAdapter.initializeSubscore();
-                }
-                listView = (ListView) llLayout.findViewById(R.id.listView);
-                listView.setAdapter((BaseAdapter) tabAdapter);
-                listView.setOnScrollListener(new UnfocusScrollListener());
-                stopProgress();
-                checkArrows();
-            } catch (Exception e) {
-                e.printStackTrace();
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(
+                        new SurveyAnsweredRatioRepository(), mainExecutor,
+                        asyncExecutor);
+        saveSurveyAnsweredRatioUseCase.execute(
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage() {
+                    }
+
+                    @Override
+                    public void onComplete(
+                            SurveyAnsweredRatio surveyAnsweredRatio) {
+                        if (surveyAnsweredRatio != null) {
+                            LayoutUtils.updateChart(mSurveyAnsweredRatio,
+                                    doublePieChart);
+                        }
+                    }
+                }, mSurveyAnsweredRatio);
+        }
+
+@Override
+public Class<ValueChangedEvent> subscribedToEventType(){
+        return ValueChangedEvent.class;
+    }
+
+public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
+
+    private TabDB tab;
+
+    String module;
+
+    public AsyncChangeTab(TabDB tab) {
+        this.tab = tab;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        //actionSpinner
+        startProgress();
+    }
+
+    @Override
+    protected View doInBackground(Void... params) {
+        Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..");
+        View view = null;
+        try {
+            if (tab.isGeneralScore()) {
+                showGeneralScores();
+            } else {
+                view = prepareTab(tab, moduleName);
             }
+        } catch (Exception e) {
+        }
+        Log.d(TAG, "doInBackground(" + Thread.currentThread().getId() + ")..DONE");
+        return view;
+    }
+
+    @Override
+    protected void onPostExecute(View viewContent) {
+        super.onPostExecute(viewContent);
+        try {
+            content.removeAllViews();
+            content.addView(viewContent);
+            ITabAdapter tabAdapter = tabAdaptersCache.findAdapter(tab);
+            if (tab.getType() == Constants.TAB_AUTOMATIC ||
+                    tab.getType() == Constants.TAB_ADHERENCE ||
+                    tab.getType() == Constants.TAB_IQATAB ||
+                    tab.getType() == Constants.TAB_REPORTING ||
+                    tab.getType() == Constants.TAB_COMPOSITE_SCORE) {
+                tabAdapter.initializeSubscore();
+            }
+            listView = (ListView) llLayout.findViewById(R.id.listView);
+            listView.setAdapter((BaseAdapter) tabAdapter);
+            listView.setOnScrollListener(new UnfocusScrollListener());
+            stopProgress();
+            checkArrows();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+}
 
     //Show and hide the arrows alpha=0f == transparent alpha 1f 100% visible
     private void checkArrows() {
@@ -462,6 +553,7 @@ public class SurveyFragment extends Fragment  {
         progressText = (CustomTextView) llLayout.findViewById(R.id.progress_text);
         createProgressMessages();
     }
+
     /**
      * Stops progress view and shows real form
      */
@@ -669,159 +761,160 @@ public class SurveyFragment extends Fragment  {
         Log.d(TAG, "reloadTabs(" + tabs.size() + ")..DONE");
     }
 
-    /*
-    * ScrollListener added to avoid bug ocurred when checkbox pressed in a listview after this
-    * view is gone out from the focus
-    * see more here: http://stackoverflow
-    * .com/questions/7100555/preventing-catching-illegalargumentexception-parameter-must-be-a
-    * -descendant-of
-    */
-    protected class UnfocusScrollListener implements AbsListView.OnScrollListener {
+/*
+* ScrollListener added to avoid bug ocurred when checkbox pressed in a listview after this
+* view is gone out from the focus
+* see more here: http://stackoverflow
+* .com/questions/7100555/preventing-catching-illegalargumentexception-parameter-must-be-a
+* -descendant-of
+*/
+protected class UnfocusScrollListener implements AbsListView.OnScrollListener {
 
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-                int visibleItemCount, int totalItemCount) {
-            // do nothing
-        }
-
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
-                View currentFocus = getActivity().getCurrentFocus();
-                if (currentFocus != null) {
-                    currentFocus.clearFocus();
-                    // Remove the virtual keyboard from the screen
-                    InputMethodManager imm =
-                            (InputMethodManager) getActivity().getApplicationContext()
-                                    .getSystemService(
-                                            Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-            }
-        }
-
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem,
+            int visibleItemCount, int totalItemCount) {
+        // do nothing
     }
 
-    /**
-     * Inner private class that receives the result from the service
-     */
-    private class SurveyReceiver extends BroadcastReceiver {
-        private SurveyReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive");
-            List<CompositeScoreDB> compositeScores = (List<CompositeScoreDB>) Session.popServiceValue(
-                    SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
-            List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
-                    SurveyService.PREPARE_SURVEY_ACTION_TABS);
-
-            tabAdaptersCache.reloadAdapters(tabs, compositeScores);
-            reloadTabs(tabs);
-            stopProgress();
-            allTabs = (List<TabDB>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
-            // After loading first tab we start the individual services that preload the items
-            // for the rest of tabs
-            preLoadItems();
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+            View currentFocus = getActivity().getCurrentFocus();
+            if (currentFocus != null) {
+                currentFocus.clearFocus();
+                // Remove the virtual keyboard from the screen
+                InputMethodManager imm =
+                        (InputMethodManager) getActivity().getApplicationContext()
+                                .getSystemService(
+                                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 
+}
+
+/**
+ * Inner private class that receives the result from the service
+ */
+private class SurveyReceiver extends BroadcastReceiver {
+    private SurveyReceiver() {
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceive");
+        List<CompositeScoreDB> compositeScores =
+                (List<CompositeScoreDB>) Session.popServiceValue(
+                        SurveyService.PREPARE_SURVEY_ACTION_COMPOSITE_SCORES);
+        List<TabDB> tabs = (List<TabDB>) Session.popServiceValue(
+                SurveyService.PREPARE_SURVEY_ACTION_TABS);
+
+        tabAdaptersCache.reloadAdapters(tabs, compositeScores);
+        reloadTabs(tabs);
+        stopProgress();
+        allTabs = (List<TabDB>) Session.popServiceValue(SurveyService.PREPARE_ALL_TABS);
+        // After loading first tab we start the individual services that preload the items
+        // for the rest of tabs
+        preLoadItems();
+    }
+}
+
+/**
+ * Inner class that resolves each Tab as it is required (lazy manner) instead of loading all of
+ * them at once.
+ */
+private class TabAdaptersCache {
+
     /**
-     * Inner class that resolves each Tab as it is required (lazy manner) instead of loading all of
-     * them at once.
+     * Cache of {tab: adapter} for each tab in the survey
      */
-    private class TabAdaptersCache {
+    private Map<TabDB, ITabAdapter> adapters = new HashMap<>();
 
-        /**
-         * Cache of {tab: adapter} for each tab in the survey
-         */
-        private Map<TabDB, ITabAdapter> adapters = new HashMap<>();
+    /**
+     * List of composite scores of the current survey
+     */
+    private List<CompositeScoreDB> compositeScores;
 
-        /**
-         * List of composite scores of the current survey
-         */
-        private List<CompositeScoreDB> compositeScores;
+    /**
+     * Flag that optimizes the load of compositeScore the next time
+     */
+    private boolean compositeScoreTabShown = false;
 
-        /**
-         * Flag that optimizes the load of compositeScore the next time
-         */
-        private boolean compositeScoreTabShown = false;
-
-        /**
-         * Finds the right adapter according to the selected tab.
-         * Tabs are lazy trying to speed up the first load
-         *
-         * @param tab Tab whose adapter is searched.
-         * @return The right adapter to deal with that Tab
-         */
-        public ITabAdapter findAdapter(TabDB tab) {
-            ITabAdapter adapter = adapters.get(tab);
-            if (adapter == null) {
-                adapter = buildAdapter(tab);
-                //The 'Score' tab has no adapter
-                if (adapter != null) {
-                    this.adapters.put(tab, adapter);
-                }
+    /**
+     * Finds the right adapter according to the selected tab.
+     * Tabs are lazy trying to speed up the first load
+     *
+     * @param tab Tab whose adapter is searched.
+     * @return The right adapter to deal with that Tab
+     */
+    public ITabAdapter findAdapter(TabDB tab) {
+        ITabAdapter adapter = adapters.get(tab);
+        if (adapter == null) {
+            adapter = buildAdapter(tab);
+            //The 'Score' tab has no adapter
+            if (adapter != null) {
+                this.adapters.put(tab, adapter);
             }
-            return adapter;
         }
+        return adapter;
+    }
 
-        public List<TabDB> getNotLoadedTabs() {
-            List<TabDB> notLoadedTabs = new ArrayList<>();
-            //If has already been shown NOTHING to reload
-            if (compositeScoreTabShown) {
-                return notLoadedTabs;
-            }
-
-            compositeScoreTabShown = true;
-            notLoadedTabs = new ArrayList<>(tabsList);
-            Set<TabDB> loadedTabs = adapters.keySet();
-            notLoadedTabs.removeAll(loadedTabs);
+    public List<TabDB> getNotLoadedTabs() {
+        List<TabDB> notLoadedTabs = new ArrayList<>();
+        //If has already been shown NOTHING to reload
+        if (compositeScoreTabShown) {
             return notLoadedTabs;
         }
 
-        /**
-         * Resets the state of the cache.
-         * Called form the receiver once data is ready.
-         */
-        public void reloadAdapters(List<TabDB> tabs, List<CompositeScoreDB> compositeScores) {
-            TabDB firstTab = tabs.get(0);
-            this.adapters.clear();
-            this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
-                    Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
-            this.compositeScores = compositeScores;
+        compositeScoreTabShown = true;
+        notLoadedTabs = new ArrayList<>(tabsList);
+        Set<TabDB> loadedTabs = adapters.keySet();
+        notLoadedTabs.removeAll(loadedTabs);
+        return notLoadedTabs;
+    }
+
+    /**
+     * Resets the state of the cache.
+     * Called form the receiver once data is ready.
+     */
+    public void reloadAdapters(List<TabDB> tabs, List<CompositeScoreDB> compositeScores) {
+        TabDB firstTab = tabs.get(0);
+        this.adapters.clear();
+        this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
+                Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+        this.compositeScores = compositeScores;
+    }
+
+    /**
+     * Returns the list of adapters.
+     * Puts every adapter (for every tab) into the cache if is not already there.
+     */
+    public List<ITabAdapter> list() {
+        //The cache only has loaded Tabs
+        if (this.adapters.size() < tabsList.size()) {
+            cacheAllTabs();
         }
+        //Return full list of adapters
+        return new ArrayList<>(this.adapters.values());
 
-        /**
-         * Returns the list of adapters.
-         * Puts every adapter (for every tab) into the cache if is not already there.
-         */
-        public List<ITabAdapter> list() {
-            //The cache only has loaded Tabs
-            if (this.adapters.size() < tabsList.size()) {
-                cacheAllTabs();
-            }
-            //Return full list of adapters
-            return new ArrayList<>(this.adapters.values());
+    }
 
-        }
-
-        /**
-         * Puts every adapter (for every tab) into the cache if is not already there.
-         */
-        public void cacheAllTabs() {
-            for (TabDB tab : tabsList) {
-                findAdapter(tab);
-            }
-        }
-
-        /**
-         * Builds the right adapter for the given tab
-         */
-        private ITabAdapter buildAdapter(TabDB tab) {
-            return AutoTabAdapter.build(tab, getActivity(),
-                    Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+    /**
+     * Puts every adapter (for every tab) into the cache if is not already there.
+     */
+    public void cacheAllTabs() {
+        for (TabDB tab : tabsList) {
+            findAdapter(tab);
         }
     }
+
+    /**
+     * Builds the right adapter for the given tab
+     */
+    private ITabAdapter buildAdapter(TabDB tab) {
+        return AutoTabAdapter.build(tab, getActivity(),
+                Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+    }
+}
 }

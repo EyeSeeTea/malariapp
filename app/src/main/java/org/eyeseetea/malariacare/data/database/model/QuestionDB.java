@@ -51,7 +51,9 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.IProgressCallback;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
+import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -733,7 +735,7 @@ public class QuestionDB extends BaseModel {
     /**
      * Gets all the children compulsory questions, and returns the  number of active children
      */
-    public static int countChildrenCompulsoryBySurvey(Long id_survey, GetSurveyAnsweredRatioUseCase.Callback callback) {
+    public static int countChildrenCompulsoryBySurvey(Long id_survey, IProgressCallback callback) {
         int numActiveChildrens=0;
         //This query returns a list of children compulsory questions
         // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
@@ -770,7 +772,7 @@ public class QuestionDB extends BaseModel {
                     || i == (Math.round((Float.parseFloat(questions.size()+"")*0.5)))
                     || i == (Math.round((Float.parseFloat(questions.size()+"")*0.75)))){
                 if (callback != null) {
-                    callback.nextProgressMessage();
+                    callback.onProgressMessage();
                 }
             }
         }

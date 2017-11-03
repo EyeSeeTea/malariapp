@@ -175,4 +175,65 @@ public class SurveyAnsweredRatio {
             return Float.valueOf(100 * getRatio()).intValue();
         }
     }
+
+    public void fixTotalQuestion(boolean isCompulsory, boolean visible) {
+        if(isCompulsory){
+            if(visible) {
+                incrementTotalCompulsory();
+            }else{
+                decrementTotalCompulsory();
+            }
+        }
+        if(visible) {
+            incrementTotal();
+        }else{
+            decrementTotal();
+        }
+    }
+
+    public void removeQuestion(boolean isCompulsory) {
+        if(isCompulsory){
+            decrementCompulsoryAnswered();
+        }
+        decrementAnswered();
+    }
+
+    public void addQuestion(boolean isCompulsory) {
+        if(isCompulsory){
+            incrementCompulsoryAnswered();
+        }
+        incrementAnswered();
+    }
+
+    private void incrementTotalCompulsory() {
+        totalCompulsory++;
+    }
+
+    private void decrementTotalCompulsory() {
+        totalCompulsory--;
+    }
+
+    private void incrementTotal() {
+        total++;
+    }
+
+    private void decrementTotal() {
+        total--;
+    }
+
+    private void incrementAnswered() {
+        answered++;
+    }
+
+    private void decrementAnswered() {
+        answered--;
+    }
+
+    private void incrementCompulsoryAnswered() {
+        compulsoryAnswered++;
+    }
+
+    private void decrementCompulsoryAnswered() {
+        compulsoryAnswered--;
+    }
 }

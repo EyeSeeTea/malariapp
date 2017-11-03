@@ -24,8 +24,13 @@ import com.google.common.primitives.Booleans;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Question;
+import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
+import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -149,31 +154,48 @@ public class AutoTabInVisibilityState {
      */
     public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         QuestionDB question = autoTabSelectedItem.getQuestion();
+        List<Question> toggledQuestions= new ArrayList<>();
         if(question.hasChildren()) {
-            recursiveToggleChildrenVisibility(idSurvey, module, question);
+            recursiveToggleChildrenVisibility(idSurvey, module, question, toggledQuestions);
+        }
+        if(toggledQuestions.size()>0){
+            DomainEventPublisher
+                    .instance()
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), toggledQuestions, ValueChangedEvent.Action.TOGGLE));
         }
     }
 
-    private void recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion) {
+    private List<Question> recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion, List<Question> toggledQuestions) {
         boolean visible;
         for (QuestionDB childQuestion : parentQuestion.getChildren()) {
+            Question toggledQuestion = null;
             HeaderDB childHeader = childQuestion.getHeader();
             visible=!childQuestion.isHiddenBySurvey(idSurvey);
-            this.updateVisibility(childQuestion,visible);
+            if(visible || elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true) {
+                toggledQuestion = new Question(childQuestion.getId_question(), childQuestion.getCompulsory(), visible);
+            }
 
+            this.updateVisibility(childQuestion,visible);
             //Show child -> Show header, Update scores
             if(visible){
                 Float num = ScoreRegister.calcNum(childQuestion, idSurvey);
                 Float denum = (num == null) ? 0f: ScoreRegister.calcDenum(childQuestion, idSurvey);;
                 ScoreRegister.addRecord(childQuestion, 0f, denum, idSurvey, module);
                 this.setInvisible(childHeader,false);
+                if(toggledQuestion!=null){
+                    toggledQuestions.add(toggledQuestion);
+                }
                 continue;
             }
 
             //Hide child ...
             //-> Remove value
-            ReadWriteDB.deleteValue(childQuestion, module);
+            boolean isRemoved = ReadWriteDB.deleteValue(childQuestion, module, false);
 
+            if(toggledQuestion!=null){
+                toggledQuestion.setRemoved(isRemoved);
+                toggledQuestions.add(toggledQuestion);
+            }
             //-> Remove score
             if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
                 ScoreRegister.deleteRecord(childQuestion, idSurvey, module);
@@ -185,8 +207,9 @@ public class AutoTabInVisibilityState {
             //-> Check header visibility
             this.updateHeaderVisibility(childHeader);
             if(childQuestion.hasChildren())
-                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion);
+                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion, toggledQuestions);
         }
+        return toggledQuestions;
     }
 
     /**
