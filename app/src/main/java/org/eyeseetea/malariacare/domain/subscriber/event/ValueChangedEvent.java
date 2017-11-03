@@ -14,51 +14,29 @@
 
 package org.eyeseetea.malariacare.domain.subscriber.event;
 
+import org.eyeseetea.malariacare.domain.entity.Question;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValueChangedEvent {
 
-    public static class ValueChangesContainer{
-        private Boolean isCompulsory;
-        private Boolean isVisible;
-
-        public ValueChangesContainer(boolean isCompulsory){
-            this.isCompulsory = isCompulsory;
-        }
-
-        public ValueChangesContainer(boolean isCompulsory, boolean isVisible){
-            this.isCompulsory = isCompulsory;
-            this.isVisible = isVisible;
-        }
-
-        public Boolean isCompulsory() {
-            return isCompulsory;
-        }
-
-        public Boolean isVisible() {
-            return isVisible;
-        }
-    }
-    private List<ValueChangesContainer> mValueChangesContainers;
+    List<Question> mQuestions;
     public enum Action {INSERT, DELETE, TOGGLE}
     private Action action;
     private long idSurvey;
 
-    public ValueChangedEvent() {
-    }
-
-    public ValueChangedEvent(long idSurvey, boolean isCompulsory, Action action) {
+    public ValueChangedEvent(long idSurvey, Question question, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
-        mValueChangesContainers = new ArrayList<>();
-        mValueChangesContainers.add(new ValueChangesContainer(isCompulsory));
+        mQuestions = new ArrayList<>();
+        mQuestions.add(question);
     }
 
-    public ValueChangedEvent(long idSurvey, List<ValueChangesContainer> valueChangesContainers, Action action) {
+    public ValueChangedEvent(long idSurvey, List<Question> questions, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
-        mValueChangesContainers = valueChangesContainers;
+        mQuestions = questions;
     }
 
     public Action getAction() {
@@ -69,7 +47,7 @@ public class ValueChangedEvent {
         return idSurvey;
     }
 
-    public List<ValueChangesContainer> getValueChangesContainers() {
-        return mValueChangesContainers;
+    public List<Question> getQuestions() {
+        return mQuestions;
     }
 }

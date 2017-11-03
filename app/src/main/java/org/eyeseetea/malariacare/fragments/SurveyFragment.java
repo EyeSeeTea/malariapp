@@ -56,6 +56,7 @@ import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
 import org.eyeseetea.malariacare.domain.subscriber.DomainEventSubscriber;
@@ -412,22 +413,27 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-                        for (ValueChangedEvent.ValueChangesContainer
-                                valueChangesContainer : valueChangedEvent
-                                .getValueChangesContainers()) {
+                        for (Question
+                                question : valueChangedEvent
+                                .getQuestions()) {
                             if (valueChangedEvent.getAction().equals(
                                     ValueChangedEvent.Action.INSERT)) {
                                 surveyAnsweredRatio.addQuestion(
-                                        valueChangesContainer.isCompulsory());
+                                        question.isCompulsory());
                             } else if (valueChangedEvent.getAction().equals(
                                     ValueChangedEvent.Action.DELETE)) {
                                 surveyAnsweredRatio.removeQuestion(
-                                        valueChangesContainer.isCompulsory());
+                                        question.isCompulsory());
                             } else if (valueChangedEvent.getAction().equals(
                                     ValueChangedEvent.Action.TOGGLE)) {
                                 surveyAnsweredRatio.fixTotalQuestion(
-                                        valueChangesContainer.isCompulsory(),
-                                        valueChangesContainer.isVisible());
+                                        question.isCompulsory(),
+                                        question.isCachedVisibility());
+                                //if(question.isRemoved()){
+                                    //surveyAnsweredRatio.removeQuestion(
+                                      //      question.isCompulsory());
+                                //}
+
                             }
                         }
                         asyncExecutor = new AsyncExecutor();
