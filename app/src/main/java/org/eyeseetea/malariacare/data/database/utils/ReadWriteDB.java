@@ -128,14 +128,14 @@ public class ReadWriteDB {
 
         if (value != null) {
             value.delete();
-            //if(notifiyValueChanged) {
+            if(notifiyValueChanged) {
                 DomainEventPublisher
                         .instance()
                         .publish(new ValueChangedEvent(
                                 Session.getSurveyByModule(module).getId_survey(),
                                 new Question(question.getId_question(), question.getCompulsory()),
                                 ValueChangedEvent.Action.DELETE));
-            //}
+            }
             return true;
         }
         return false;

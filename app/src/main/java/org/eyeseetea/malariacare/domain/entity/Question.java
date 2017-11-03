@@ -5,7 +5,6 @@ public class Question {
     private boolean cachedVisibility;
     private boolean isCompulsory;
     private boolean removed;
-    private boolean inserted;
 
     public Question() {
     }
@@ -41,14 +40,6 @@ public class Question {
         this.removed = removed;
     }
 
-    public boolean isInserted() {
-        return inserted;
-    }
-
-    public void setInserted(boolean inserted) {
-        this.inserted = inserted;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,7 +50,6 @@ public class Question {
         if (id != question.id) return false;
         if (cachedVisibility != question.cachedVisibility) return false;
         if (removed != question.removed) return false;
-        if (inserted != question.inserted) return false;
         return isCompulsory == question.isCompulsory;
 
     }
@@ -69,8 +59,7 @@ public class Question {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (cachedVisibility ? 1 : 0);
         result = 31 * result + (isCompulsory ? 1 : 0);
-        result = 31 * result + (inserted ? 1 : 0);
-        result = 31 * result + (isCompulsory ? 1 : 0);
+        result = 31 * result + (removed ? 1 : 0);
         return result;
     }
 
@@ -80,8 +69,7 @@ public class Question {
                 "id=" + id +
                 ", cachedVisibility=" + cachedVisibility +
                 ", isCompulsory=" + isCompulsory +
-                ", removed=" + removed +
-                ", inserted=" + inserted +
+                ", isremoved=" + removed +
                 '}';
     }
 }
