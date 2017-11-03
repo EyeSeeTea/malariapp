@@ -25,7 +25,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -35,16 +34,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
-import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
@@ -149,7 +139,7 @@ public class LayoutUtils {
     }
 
     public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
-            SurveyDB survey, String moduleName) {
+            SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
         String title = "";
         if (survey.getProgram().getName() != null) {
             title = survey.getProgram().getName();
@@ -162,7 +152,7 @@ public class LayoutUtils {
         Spanned spannedTitle = Html.fromHtml(
                 String.format("<font color=\"#%s\"><b>%s</b></font> - %s", appNameColorString,
                         appName +" - " + moduleName, title));
-        setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey());
+        setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey(), surveyAnsweredRatio);
     }
 
     private static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
@@ -192,7 +182,7 @@ public class LayoutUtils {
     }
 
     private static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,
-            String subtitle, long surveyId) {
+            String subtitle, long surveyId, SurveyAnsweredRatio surveyAnsweredRatio) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -203,7 +193,7 @@ public class LayoutUtils {
         }else {
             actionBar.setCustomView(R.layout.custom_action_bar_with_chart);
         }
-        updateSurveyActionBarChart(actionBar, surveyId);
+        updateSurveyActionBarChart(actionBar, surveyAnsweredRatio);
         String server = PreferencesState.getInstance().getServerUrl();
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
@@ -274,30 +264,10 @@ public class LayoutUtils {
                 surveyAnsweredRatio.getTotalStatus());
     }
 
-    private static void updateSurveyActionBarChart(ActionBar actionBar, long surveyId){
+    private static void updateSurveyActionBarChart(ActionBar actionBar, SurveyAnsweredRatio surveyAnsweredRatio){
         final DoublePieChart doublePieChart =
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-        saveSurveyAnsweredRatioUseCase.execute(surveyId,
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        if (surveyAnsweredRatio != null) {
-                            updateChart(surveyAnsweredRatio, doublePieChart);
-                        }
-                    }
-                });
+        updateChart(surveyAnsweredRatio, doublePieChart);
     }
 }

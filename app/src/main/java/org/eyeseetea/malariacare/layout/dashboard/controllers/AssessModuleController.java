@@ -19,11 +19,9 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
-import static android.R.attr.action;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
@@ -38,9 +36,6 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.subscriber.DomainEventPublisher;
-import org.eyeseetea.malariacare.domain.subscriber.event.ValueChangedEvent;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
@@ -206,7 +201,30 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         orgUnitProgramFilterView.setVisibility(View.GONE);
-        LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity, survey, getTitle());
+
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+        final SurveyDB finalSurvey = survey;
+        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+                        if (surveyAnsweredRatio != null) {
+                            LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity,
+                                    finalSurvey, getTitle(), surveyAnsweredRatio);
+                        }
+                    }
+                });
     }
 
     public void onMarkAsCompleted(final SurveyDB survey) {

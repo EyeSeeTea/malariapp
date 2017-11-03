@@ -88,6 +88,13 @@ import java.util.Set;
  */
 public class SurveyFragment extends Fragment implements DomainEventSubscriber<ValueChangedEvent> {
     private String TAG = ".SurveyFragment";
+
+
+    ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+            new SurveyAnsweredRatioRepository();
+    IAsyncExecutor asyncExecutor = new AsyncExecutor();
+    IMainExecutor mainExecutor = new UIThreadExecutor();
+
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
     private static final int ORDER_C1_CLINICAL = 3;
@@ -183,6 +190,10 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         if (container == null) {
             return null;
         }
+
+        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
+        asyncExecutor = new AsyncExecutor();
+        mainExecutor = new UIThreadExecutor();
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu(moduleName);
@@ -253,10 +264,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     public void onPause() {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
         if (survey != null) {
-            ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                    new SurveyAnsweredRatioRepository();
-            IAsyncExecutor asyncExecutor = new AsyncExecutor();
-            IMainExecutor mainExecutor = new UIThreadExecutor();
             SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                     new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
                             asyncExecutor);
@@ -389,10 +396,9 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                         ().getCustomView().findViewById(
                         R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
+        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
+        asyncExecutor = new AsyncExecutor();
+        mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository,
                         mainExecutor, asyncExecutor);
@@ -406,34 +412,26 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         Log.d(getClass().getName(), "onComplete");
-                        if (valueChangedEvent.getAction().equals(
-                                ValueChangedEvent.Action.INSERT)) {
-                            for (ValueChangedEvent.ValueChangesContainer
-                                    valueChangesContainer : valueChangedEvent
-                                    .getValueChangesContainers()) {
+                        for (ValueChangedEvent.ValueChangesContainer
+                                valueChangesContainer : valueChangedEvent
+                                .getValueChangesContainers()) {
+                            if (valueChangedEvent.getAction().equals(
+                                    ValueChangedEvent.Action.INSERT)) {
                                 surveyAnsweredRatio.addQuestion(
                                         valueChangesContainer.isCompulsory());
-                            }
-                        } else if (valueChangedEvent.getAction().equals(
-                                ValueChangedEvent.Action.DELETE)) {
-                            for (ValueChangedEvent.ValueChangesContainer
-                                    valueChangesContainer : valueChangedEvent
-                                    .getValueChangesContainers()) {
+                            } else if (valueChangedEvent.getAction().equals(
+                                    ValueChangedEvent.Action.DELETE)) {
                                 surveyAnsweredRatio.removeQuestion(
                                         valueChangesContainer.isCompulsory());
-                            }
-                        } else if (valueChangedEvent.getAction().equals(
-                                ValueChangedEvent.Action.TOGGLE)) {
-                            for (ValueChangedEvent.ValueChangesContainer
-                                    valueChangesContainer : valueChangedEvent
-                                    .getValueChangesContainers()) {
+                            } else if (valueChangedEvent.getAction().equals(
+                                    ValueChangedEvent.Action.TOGGLE)) {
                                 surveyAnsweredRatio.fixTotalQuestion(
                                         valueChangesContainer.isCompulsory(),
                                         valueChangesContainer.isVisible());
                             }
                         }
-                        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-                        IMainExecutor mainExecutor = new UIThreadExecutor();
+                        asyncExecutor = new AsyncExecutor();
+                        mainExecutor = new UIThreadExecutor();
                         SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
                                 new SaveSurveyAnsweredRatioUseCase(
                                         new SurveyAnsweredRatioRepository(), mainExecutor,
