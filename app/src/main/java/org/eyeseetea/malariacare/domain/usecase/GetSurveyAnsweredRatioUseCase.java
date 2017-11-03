@@ -69,7 +69,7 @@ public class GetSurveyAnsweredRatioUseCase implements UseCase{
      *
      * @return SurveyAnsweredRatio that hold the total & answered questions.
      */
-    public SurveyAnsweredRatio reloadSurveyAnsweredRatio(ISurveyAnsweredRatioCallback callback) {
+    private SurveyAnsweredRatio reloadSurveyAnsweredRatio(ISurveyAnsweredRatioCallback callback) {
         //TODO Review
         SurveyAnsweredRatio surveyAnsweredRatio =null;
         ProgramDB surveyProgram = surveyDB.getProgram();

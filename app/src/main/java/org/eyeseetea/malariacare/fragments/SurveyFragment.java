@@ -93,8 +93,8 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
 
     ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
             new SurveyAnsweredRatioRepository();
-    IAsyncExecutor asyncExecutor = new AsyncExecutor();
-    IMainExecutor mainExecutor = new UIThreadExecutor();
+    IAsyncExecutor asyncExecutor;
+    IMainExecutor mainExecutor;
     SurveyAnsweredRatio mSurveyAnsweredRatio;
 
     //FIXME Better than a bunch of 'ifs' worse than it should
@@ -193,22 +193,29 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
             return null;
         }
 
-
-        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
-        asyncExecutor = new AsyncExecutor();
-        mainExecutor = new UIThreadExecutor();
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
         registerReceiver();
         createMenu(moduleName);
         createProgress();
         createBackButton();
         prepareSurveyInfo();
+        DomainEventPublisher.instance().subscribe(this);
+
+        initializeSurvey();
+
+        return llLayout;
+    }
+
+    private void initializeSurvey() {
+        final SurveyDB survey = Session.getSurveyByModule(moduleName);
 
         surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
+        asyncExecutor = new AsyncExecutor();
+        mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository,
                         mainExecutor, asyncExecutor);
-        final SurveyDB survey = Session.getSurveyByModule(moduleName);
+
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
@@ -223,10 +230,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                         tabAdapter.notifyDataSetChanged();
                     }
                 });
-
-        DomainEventPublisher.instance().subscribe(this);
-
-        return llLayout;
     }
 
     private void createBackButton() {
