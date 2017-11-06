@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -580,8 +581,7 @@ public class DashboardController {
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            date.setText(format.format(surveyScheduleDB.getPrevious_date()));
+            date.setText(AUtils.getEuropeanFormatedDate(surveyScheduleDB.getPrevious_date()));
             linearLayout.addView(row );
         }
         final AlertDialog alertDialog = builder.create();

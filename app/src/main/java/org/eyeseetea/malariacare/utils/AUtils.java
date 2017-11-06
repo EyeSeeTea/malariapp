@@ -174,7 +174,10 @@ public abstract class AUtils {
 
 
     public static String getEuropeanFormatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        if(date==null){
+            return "";
+        }
         return sdf.format(date);
     }
 
