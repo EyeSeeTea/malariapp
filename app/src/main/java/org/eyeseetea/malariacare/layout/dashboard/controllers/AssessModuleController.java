@@ -345,7 +345,11 @@ public class AssessModuleController extends ModuleController {
                     public void onClick(DialogInterface dialog, int arg1) {
                         SurveyDB survey = Session.getSurveyByModule(getSimpleName());
                         survey.setCompleteSurveyState(getSimpleName());
-                        alertOnComplete(survey);
+
+                        if (!survey.isInProgress()) {
+                            alertOnCompleteGoToFeedback(survey);
+                        }
+
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         if (DashboardOrientation.VERTICAL.equals(
