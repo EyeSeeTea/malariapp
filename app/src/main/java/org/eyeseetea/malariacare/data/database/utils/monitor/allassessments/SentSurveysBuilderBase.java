@@ -40,7 +40,6 @@ import java.util.List;
 public class SentSurveysBuilderBase {
 
     private static final String TAG=".SentSurveysBuilderBase";
-    static final int EXPECTED_SENT_SURVEYS_PER_MONTH=30;
     public static final String JAVASCRIPT_UPDATE_CHART = "javascript:updateChartTitle('titleSent','%s')";
     public static final String JAVASCRIPT_SHOW = "javascript:showMainTableByProgram()";
     static final int MAX_MONTHS=6;
