@@ -155,6 +155,7 @@
 <string name="server_url">"ເຊີເວີຂອງລະບົບ DHIS"</string>
 <string name="settings_text_dhis_password">"ລະຫັດຜ່ານເຂົ້ານຳໃຊ້ລະບົບ DHIS"</string>
 <string name="settings_text_dhis_max_items">"ຈຳນວນຫຼາຍສຸດຂອງຂໍ້ມູນທີ່ລະບົບ dhis ສາມາດຮອງຮັບໄດ້"</string>
+<string name="settings_monitoring_target">"ເປົ້າຫມາຍການຕິດຕາມ"</string>
 <string name="dialog_error_push_uids">"ລະຫັດ  UIDs  ບໍ່ຖືກ "</string>
 <string name="dialog_error_push_no_location_and_required">"ຈຸດທີ່ຕັ້ງບໍ່ເຫັນ, ກະລຸນາຕືມຂໍ້ມູນໃສ່"</string>
 <string name="dialog_info_push_imported">"ນຳເຂົ້າ"</string>

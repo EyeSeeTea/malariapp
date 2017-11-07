@@ -127,32 +127,34 @@ public class AssessModuleController extends ModuleController {
                 .utils.Action.CHANGE_TAB);
     }
 
-    private void closeSurveyFragment(final SurveyDB survey,final org.eyeseetea.malariacare.domain.utils.Action action) {
-        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+    private void closeSurveyFragment(final SurveyDB survey,
+            final org.eyeseetea.malariacare.domain.utils.Action action) {
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
-                    public void nextProgressMessage()                                                                                                                               {
+                    public void nextProgressMessage() {
                         surveyFragment.nextProgressMessage();
                     }
 
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
+                        if (action.equals(
+                                org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
                             surveyFragment.hideProgress();
                             boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
-                            if(!isDialogShown){
+                            if (!isDialogShown) {
                                 //Confirm closing
                                 if (survey.isCompleted() || survey.isSent()) {
                                     dashboardController.setNavigatingBackwards(false);
                                     surveyFragment.hideProgress();
                                     closeSurveyFragment();
                                     return;
-                                }else{
+                                } else {
                                     askToCloseSurvey();
                                 }
                             }
-                        }
-                        else if (action.equals(org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)){
+                        } else if (action.equals(
+                                org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)) {
                             if (surveyAnsweredRatio.getCompulsoryAnswered()
                                     == surveyAnsweredRatio.getTotalCompulsory()
                                     && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -219,22 +221,36 @@ public class AssessModuleController extends ModuleController {
         orgUnitProgramFilterView.setVisibility(View.GONE);
 
         final SurveyDB finalSurvey = survey;
-        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
                     public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
+
                     }
 
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        if (surveyAnsweredRatio != null) {
-                            LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity,
-                                    finalSurvey, getTitle(), surveyAnsweredRatio);
+                        saveSurveyAnsweredRatioUseCase.execute(
+                                new ISurveyAnsweredRatioCallback() {
+                                    @Override
+                                    public void nextProgressMessage() {
+                                        Log.d(getClass().getName(), "nextProgressMessage");
+                                        surveyFragment.nextProgressMessage();
+                                    }
 
-                            initializeStatusChart();
-                        }
+                                    @Override
+                                    public void onComplete(
+                                            SurveyAnsweredRatio surveyAnsweredRatio) {
+                                        Log.d(getClass().getName(), "onComplete");
+                                        if (surveyAnsweredRatio != null) {
+                                            LayoutUtils.setActionBarTitleForSurveyAndChart(
+                                                    dashboardActivity, finalSurvey, getTitle(),
+                                                    surveyAnsweredRatio);
+
+                                            initializeStatusChart();
+                                        }
+                                    }
+                                }, surveyAnsweredRatio);
                     }
                 });
     }
@@ -268,11 +284,12 @@ public class AssessModuleController extends ModuleController {
     }
 
     public void onMarkAsCompleted(final SurveyDB survey) {
-        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
                     public void nextProgressMessage() {
                     }
+
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         //This cannot be mark as completed
@@ -294,7 +311,7 @@ public class AssessModuleController extends ModuleController {
             sentTitle.setText("");
         }
 
-        if(createSurveyFragment==null) {
+        if (createSurveyFragment == null) {
             createSurveyFragment = new CreateSurveyFragment();
         }
         orgUnitProgramFilterView.setVisibility(View.GONE);
@@ -379,7 +396,11 @@ public class AssessModuleController extends ModuleController {
                     public void onClick(DialogInterface dialog, int arg1) {
                         SurveyDB survey = Session.getSurveyByModule(getSimpleName());
                         survey.setCompleteSurveyState(getSimpleName());
-                        alertOnComplete(survey);
+
+                        if (!survey.isInProgress()) {
+                            alertOnCompleteGoToFeedback(survey);
+                        }
+
                         dashboardController.setNavigatingBackwards(true);
                         closeSurveyFragment();
                         if (DashboardOrientation.VERTICAL.equals(

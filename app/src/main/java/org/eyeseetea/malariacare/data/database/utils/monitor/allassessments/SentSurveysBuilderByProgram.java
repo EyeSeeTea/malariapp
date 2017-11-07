@@ -25,6 +25,7 @@ import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,7 +88,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
             EntrySentSurveysChartByProgram entryMonth=sentSurveysChartMap.get(currentMonth+program.getUid());
             //No entry for this month ->0
             if(entryMonth==null){
-                entryMonth=new EntrySentSurveysChartByProgram(EXPECTED_SENT_SURVEYS_PER_MONTH,iMonth,program);
+                entryMonth=new EntrySentSurveysChartByProgram(PreferencesState.getInstance().getMonitoringTarget(),iMonth,program);
             }
             //Whatever was calculated
             last6entries.add(0,entryMonth);
@@ -125,7 +126,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
 
                 //First time no entry
                 if (entrySentSurveysChartByProgram == null) {
-                    entrySentSurveysChartByProgram = new  EntrySentSurveysChartByProgram(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), program);
+                    entrySentSurveysChartByProgram = new  EntrySentSurveysChartByProgram(PreferencesState.getInstance().getMonitoringTarget(), survey.getCompletionDate(), program);
                     sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChartByProgram);
                 }
                 entrySentSurveysChartByProgram.incSent();

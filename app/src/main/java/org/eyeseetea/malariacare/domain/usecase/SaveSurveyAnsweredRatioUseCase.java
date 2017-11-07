@@ -1,9 +1,6 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
@@ -51,29 +48,8 @@ public class SaveSurveyAnsweredRatioUseCase implements UseCase{
      */
     private SurveyAnsweredRatio reloadSurveyAnsweredRatio(long idSurvey) {
         SurveyDB surveyDB = SurveyDB.findById(idSurvey);
-        SurveyAnsweredRatio surveyAnsweredRatio = null;
-        ProgramDB surveyProgram = surveyDB.getProgram();
-        int numRequired = QuestionDB.countRequiredByProgram(surveyProgram);
-        int numCompulsory = QuestionDB.countCompulsoryByProgram(surveyProgram);
-        int numOptional = (int) surveyDB.countNumOptionalQuestionsToAnswer();
-        if (mCallback != null) {
-            notifyProgressMessage();
-        }
-        int numActiveChildrenCompulsory = QuestionDB.countChildrenCompulsoryBySurvey(
-                surveyDB.getId_survey(), new IProgressCallback() {
-                    @Override
-                    public void onProgressMessage() {
-                        if (mCallback != null) {
-                            notifyProgressMessage();
-                        }
-                    }
-                });
-        int numAnswered = ValueDB.countBySurvey(surveyDB);
-        int numCompulsoryAnswered = ValueDB.countCompulsoryBySurvey(surveyDB);
-        surveyAnsweredRatio = new SurveyAnsweredRatio(surveyDB.getId_survey(),
-                numRequired + numOptional,
-                numAnswered, numCompulsory + numActiveChildrenCompulsory,
-                numCompulsoryAnswered);
+        SurveyAnsweredRatio surveyAnsweredRatio = mSurveyAnsweredRatioRepository.loadSurveyAnsweredRatio(mCallback, surveyDB);
+        mSurveyAnsweredRatioRepository.saveSurveyAnsweredRatio(surveyAnsweredRatio);
         return surveyAnsweredRatio;
     }
 
