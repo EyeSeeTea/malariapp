@@ -82,7 +82,8 @@
         android:inputType="number"
         android:numeric="integer"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:maxLength="4"/>
 
     <EditTextPreference
         android:key="@string/monitoring_target"
@@ -92,7 +93,8 @@
         android:inputType="number"
         android:numeric="integer"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:maxLength="4"/>
 
     <CheckBoxPreference
         android:key="@string/hide_planning_tab_key"
