@@ -214,6 +214,7 @@ public class AssessModuleController extends ModuleController {
                     @Override
                     public void nextProgressMessage() {
                         Log.d(getClass().getName(), "nextProgressMessage");
+                        surveyFragment.nextProgressMessage();
                     }
 
                     @Override
