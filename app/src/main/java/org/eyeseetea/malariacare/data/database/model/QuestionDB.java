@@ -654,7 +654,7 @@ public class QuestionDB extends BaseModel {
     /**
      * Counts the number of required questions (without a parent question).
      */
-    public static int countRequiredByProgram(ProgramDB program) {
+    public static int countActiveTotalQuestionsByProgram(ProgramDB program) {
         if (program == null || program.getId_program() == null) {
             return 0;
         }
@@ -671,10 +671,9 @@ public class QuestionDB extends BaseModel {
                 .where(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(TabDB_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program())).count();
 
-        // Count children questions from the given taggroup
-        long numChildrenQuestion = SQLite.selectCountOf()
-                .from(QuestionRelationDB.class).as(questionRelationName)
-                .join(QuestionDB.class, Join.JoinType.LEFT_OUTER).as(questionName)
+        List<QuestionDB> childrenQuestionDB = new Select().distinct()
+                .from(QuestionDB.class).as(questionName)
+                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                 .on(QuestionRelationDB_Table.id_question_fk.withTable(questionRelationAlias)
                         .eq(QuestionDB_Table.id_question.withTable(questionAlias)))
                 .join(HeaderDB.class, Join.JoinType.LEFT_OUTER).as(headerName)
@@ -685,22 +684,21 @@ public class QuestionDB extends BaseModel {
                         .eq(TabDB_Table.id_tab.withTable(tabAlias)))
                 .where(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(TabDB_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program()))
-                .and(QuestionRelationDB_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_PARENT)).count();
-
+                .and(QuestionRelationDB_Table.operation.withTable(questionRelationAlias).eq(Constants.OPERATION_TYPE_PARENT)).groupBy(QuestionDB_Table.id_question).queryList();
         // Return number of parents (total - children)
-        return (int) (totalAnswerableQuestions - numChildrenQuestion);
+        return (int) (totalAnswerableQuestions - childrenQuestionDB.size());
     }
 
     /**
      * Counts the number of compulsory questions (without a parent question).
      */
-    public static int countCompulsoryByProgram(ProgramDB program) {
+    public static int countActiveTotalCompulsoryByProgram(ProgramDB program) {
         if (program == null || program.getId_program() == null) {
             return 0;
         }
 
         // Count all the quesions that may have an answer
-        long totalAnswerableQuestions = SQLite.selectCountOf()
+        long totalCompulsoryQuestions = SQLite.selectCountOf()
                 .from(QuestionDB.class).as(questionName)
                 .join(HeaderDB.class, Join.JoinType.LEFT_OUTER).as(headerName)
                 .on(QuestionDB_Table.id_header_fk.withTable(questionAlias)
@@ -727,18 +725,37 @@ public class QuestionDB extends BaseModel {
                 .and(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
                 .and(TabDB_Table.id_program_fk.withTable(tabAlias).eq(program.getId_program()))
                 .and(QuestionRelationDB_Table.operation.withTable(questionRelationAlias)
-                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(  QuestionDB_Table.uid_question.withTable(questionAlias)).queryList();
+                        .eq(Constants.OPERATION_TYPE_PARENT)).groupBy(QuestionDB_Table.uid_question.withTable(questionAlias)).queryList();
         // Return number of parents (total - children)
-        return (int) (totalAnswerableQuestions - questionsChild.size());
+        return (int) (totalCompulsoryQuestions - questionsChild.size());
     }
 
     /**
      * Gets all the children compulsory questions, and returns the  number of active children
      */
-    public static int countChildrenCompulsoryBySurvey(Long id_survey, IProgressCallback callback) {
-        int numActiveChildrens=0;
-        //This query returns a list of children compulsory questions
-        // But the id_question is not correct, because is the the parent id_questions from the questionOption relation.
+    public static List<QuestionDB> getChildrenCompulsoryBySurvey(Long id_survey) {
+        List<QuestionDB> questions2 =new Select().from(QuestionDB.class).as(questionName)
+                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(QuestionDB_Table.id_question.withTable(questionAlias)
+                        .eq(QuestionRelationDB_Table.id_question_fk.withTable(questionRelationAlias)))
+                .join(MatchDB.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)
+                        .eq(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)))
+                .join(QuestionOptionDB.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                .on(MatchDB_Table.id_match.withTable(matchAlias)
+                        .eq(QuestionOptionDB_Table.id_match_fk.withTable(questionOptionAlias)))
+                .join(ValueDB.class, Join.JoinType.LEFT_OUTER).as(valueName)
+                .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
+                                .eq(QuestionOptionDB_Table.id_question_fk.withTable(questionOptionAlias)),
+                        ValueDB_Table.id_option_fk.withTable(valueAlias)
+                                .eq(QuestionOptionDB_Table.id_option_fk.withTable(questionOptionAlias)))
+                //Parent Child relationship
+                .where(QuestionRelationDB_Table.operation.withTable(questionRelationAlias).eq(1))
+                //For the given survey
+                .and(ValueDB_Table.id_survey_fk.withTable(valueAlias).eq(id_survey.longValue()))
+                //The child question requires an answer
+                .and(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
+                .and(QuestionDB_Table.compulsory.withTable(questionAlias).eq(true)).queryList();
         List<QuestionDB> questions =new Select().from(QuestionDB.class).as(questionName)
                 .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
                 .on(QuestionDB_Table.id_question.withTable(questionAlias)
@@ -760,24 +777,8 @@ public class QuestionDB extends BaseModel {
                 .and(ValueDB_Table.id_survey_fk.withTable(valueAlias).eq(id_survey.longValue()))
                 //The child question requires an answer
                 .and(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
-                .and(QuestionDB_Table.compulsory.withTable(questionAlias).eq(true)).queryList();
-
-        //checks if the children questions are active by UID
-        // Note: the question id_question is wrong because dbflow query overwrites the children id_question with the parent id_question.
-        for(int i=0; i<questions.size();i++) {
-            if(questions.get(i).getCompulsory() && !QuestionDB.isHiddenQuestionByUidAndSurvey(questions.get(i).getUid(), id_survey)) {
-                numActiveChildrens++;
-            }
-            if(i == (Math.round((Float.parseFloat(questions.size()+"")*0.25)))
-                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.5)))
-                    || i == (Math.round((Float.parseFloat(questions.size()+"")*0.75)))){
-                if (callback != null) {
-                    callback.onProgressMessage();
-                }
-            }
-        }
-        // Return number of active compulsory children
-        return numActiveChildrens;
+                .and(QuestionDB_Table.compulsory.withTable(questionAlias).eq(true)).groupBy(QuestionDB_Table.id_question).queryList();
+        return questions;
     }
 
 
