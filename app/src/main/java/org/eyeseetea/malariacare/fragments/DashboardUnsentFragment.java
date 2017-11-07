@@ -174,10 +174,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     public void reloadToSend() {
         //Reload data using service
-        Intent surveysIntent = new Intent(getActivity(), SurveyService.class);
+        Intent surveysIntent = new Intent(PreferencesState.getInstance().getContext().getApplicationContext()
+                , SurveyService.class);
         surveysIntent.putExtra(SurveyService.SERVICE_METHOD,
                 SurveyService.ALL_COMPLETED_SURVEYS_ACTION);
-        getActivity().startService(surveysIntent);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(
+                surveysIntent);
     }
 
     @Override
