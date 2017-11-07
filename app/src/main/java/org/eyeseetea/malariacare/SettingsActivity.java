@@ -144,6 +144,8 @@ public class SettingsActivity extends PreferenceActivity implements
                 findPreference(getApplicationContext().getString(R.string.font_sizes)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.dhis_max_items)));
 
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.monitoring_target)));
+
         Preference serverUrlPreference = (Preference) findPreference(
                 getResources().getString(R.string.dhis_url));
         Preference userPreference = (Preference) findPreference(

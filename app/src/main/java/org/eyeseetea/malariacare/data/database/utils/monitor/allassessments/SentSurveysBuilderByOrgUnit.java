@@ -24,6 +24,7 @@ import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +72,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
             EntrySentSurveysChartByOrgUnit entryMonth=sentSurveysChartMap.get(currentMonth+orgUnit.getUid());
             //No entry for this month ->0
             if(entryMonth==null){
-                entryMonth=new EntrySentSurveysChartByOrgUnit(EXPECTED_SENT_SURVEYS_PER_MONTH,iMonth, orgUnit);
+                entryMonth=new EntrySentSurveysChartByOrgUnit(PreferencesState.getInstance().getMonitoringTarget(),iMonth, orgUnit);
             }
             //Whatever was calculated
             last6entries.add(0,entryMonth);
@@ -123,7 +124,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
                 //Get the entry for that month
                 EntrySentSurveysChartByOrgUnit entrySentSurveysChartByOrgUnit = sentSurveysChartMap.get(month+orgUnit.getUid());
                 if (entrySentSurveysChartByOrgUnit == null) {
-                    entrySentSurveysChartByOrgUnit = new EntrySentSurveysChartByOrgUnit(EXPECTED_SENT_SURVEYS_PER_MONTH, survey.getCompletionDate(), orgUnit);
+                    entrySentSurveysChartByOrgUnit = new EntrySentSurveysChartByOrgUnit(PreferencesState.getInstance().getMonitoringTarget(), survey.getCompletionDate(), orgUnit);
                     sentSurveysChartMap.put(month+orgUnit.getUid(), entrySentSurveysChartByOrgUnit);
                 }
                 entrySentSurveysChartByOrgUnit.incSent();

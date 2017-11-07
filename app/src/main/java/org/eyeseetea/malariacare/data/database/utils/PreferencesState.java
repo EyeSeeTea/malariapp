@@ -83,6 +83,10 @@ public class PreferencesState {
      */
     private int maxEvents;
     /**
+     * Sets the monitoring target of events
+     */
+    private int monitoringTarget;
+    /**
      * Active language code;
      */
     private static String languageCode;
@@ -121,12 +125,13 @@ public class PreferencesState {
         locationRequired = initLocationRequired();
         hidePlanningTab = initHidePlanningTab();
         maxEvents = initMaxEvents();
+        monitoringTarget = initMonitoringTarget();
         languageCode = initLanguageCode();
         userAccept = initUserAccept();
         Log.d(TAG, String.format(
                 "reloadPreferences: scale: %s | locationRequired: %b | "
-                        + "maxEvents: %d | largeTextOption: %b ",
-                scale, locationRequired, maxEvents, showLargeText));
+                        + "maxEvents: %d | largeTextOption: %b  | target: %d",
+                scale, locationRequired, maxEvents, showLargeText, monitoringTarget));
     }
 
     /**
@@ -207,6 +212,18 @@ public class PreferencesState {
     }
 
     /**
+     * Inits target settings
+     */
+    private int initMonitoringTarget() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        String maxValue = sharedPreferences.getString(
+                instance.getContext().getString(R.string.monitoring_target),
+                instance.getContext().getString(R.string.default_monitoring_target));
+        return Integer.valueOf(maxValue);
+    }
+
+    /**
      * Inits maps of dimensions
      */
     private Map<String, Map<String, Float>> initScaleDimensionsMap() {
@@ -282,6 +299,14 @@ public class PreferencesState {
 
     public void setMaxEvents(int maxEvents) {
         this.maxEvents = maxEvents;
+    }
+
+    public int getMonitoringTarget() {
+        return monitoringTarget;
+    }
+
+    public void setMonitoringTarget(int monitoringTarget) {
+        this.monitoringTarget = monitoringTarget;
     }
 
     public Float getFontSize(String scale, String dimension) {
