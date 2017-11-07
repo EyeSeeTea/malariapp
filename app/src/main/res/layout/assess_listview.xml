@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="1">
-                    <org.eyeseetea.sdk.presentation.views.CustomTextView
+                    <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/idHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                         android:layout_weight="0.2">
                     </View>
 
-                    <org.eyeseetea.sdk.presentation.views.CustomTextView
+                    <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/nameHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
