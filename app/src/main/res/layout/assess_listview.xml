@@ -16,36 +16,47 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+                    <org.eyeseetea.sdk.presentation.views.CustomTextView
+                        android:id="@+id/idHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/assessment_title_facility_date"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:paddingLeft="@dimen/row_left_padding"
+                        android:textColor="@color/planning_header_text"
+                        android:textSize="@dimen/header_light_text_size"
+                        app:tDimension="@string/font_size_level2"
+                        app:tFontName="@string/medium_font_name" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/circle_stroke_width"
+                        android:layout_weight="0.2">
+                    </View>
 
-        <org.eyeseetea.sdk.presentation.views.CustomTextView
-            android:id="@+id/idHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/assessment_title_facility_date"
-            android:paddingLeft="@dimen/row_left_padding"
-            android:textColor="@color/planning_header_text"
-            android:textSize="@dimen/header_light_text_size"
-            app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/medium_font_name" />
-
-        <org.eyeseetea.sdk.presentation.views.CustomTextView
-            android:id="@+id/nameHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingRight="50dp"
-            android:text="@string/assessment_title_state"
-            android:textColor="@color/planning_header_text"
-            android:textSize="@dimen/header_light_text_size"
-            app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/medium_font_name" />
+                    <org.eyeseetea.sdk.presentation.views.CustomTextView
+                        android:id="@+id/nameHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:gravity="center"
+                        android:paddingRight="50dp"
+                        android:text="@string/assessment_title_state"
+                        android:textColor="@color/planning_header_text"
+                        android:textSize="@dimen/header_light_text_size"
+                        app:tDimension="@string/font_size_level2"
+                        app:tFontName="@string/medium_font_name" />
+            </LinearLayout>
     </RelativeLayout>
 
     <ListView
@@ -63,7 +74,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@color/transparent"
         android:gravity="center_horizontal"
         android:onClick="onNewSurvey"

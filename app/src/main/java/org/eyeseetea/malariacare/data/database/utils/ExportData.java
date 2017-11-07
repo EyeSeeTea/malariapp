@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.sdk.common.DatabaseUtils;
 import org.eyeseetea.sdk.common.FileUtils;
+import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,12 +42,13 @@ public class ExportData {
      */
     private final static String EXTRA_INFO = "extrainfo.txt";
     /**
+     * Databases folder
+     */
+    private final static String DATABASE_FOLDER = "databases/";
+    /**
      * Shared preferences folder
      */
     private final static String SHAREDPREFERENCES_FOLDER = "shared_prefs/";
-
-    private static String DHIS_DATABASE_NAME = "dhis";
-
     /**
      * This method create the dump and returns the intent
      */
@@ -56,7 +58,7 @@ public class ExportData {
         tempFolder.mkdir();
         //copy databases
         dumpDatabase(AppDatabase.NAME + ".db", tempFolder);
-        dumpDatabase(DHIS_DATABASE_NAME + ".db", tempFolder);
+        dumpDatabase(DbDhis.NAME + ".db", tempFolder);
         //Copy the sharedPreferences
         dumpSharedPreferences(tempFolder);
 
@@ -149,7 +151,7 @@ public class ExportData {
     private static void dumpDatabase(String dbName, File tempFolder) {
         File backupDB = null;
         if (tempFolder.canWrite()) {
-            File currentDB = new File(DatabaseUtils.getDatabasesFolder(AppDatabase.NAME), dbName);
+            File currentDB = new File(getDatabasesFolder(), dbName);
             backupDB = new File(tempFolder, dbName);
             try {
                 FileUtils.copyFile(currentDB, backupDB);
@@ -185,11 +187,28 @@ public class ExportData {
     }
 
     /**
+     * This method returns the app path
+     */
+    private static String getAppPath() {
+        return "/data/data/" + PreferencesState.getInstance().getContext().getPackageName() + "/";
+
+    }
+
+    /**
      * This method returns the sharedPreferences app folder
      */
     private static File getSharedPreferencesFolder() {
         String sharedPreferencesPath = DatabaseUtils.getAppPath(PreferencesState.getInstance().getContext().getPackageName()) + SHAREDPREFERENCES_FOLDER;
         File file = new File(sharedPreferencesPath);
+        return file;
+    }
+
+    /**
+     * This method returns the databases app folder
+     */
+    private static File getDatabasesFolder() {
+        String databasesPath = getAppPath() + DATABASE_FOLDER;
+        File file = new File(databasesPath);
         return file;
     }
 
