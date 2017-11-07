@@ -9,6 +9,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -164,5 +166,28 @@ public class DoublePieChart extends FrameLayout {
         mChart.highlightValues(null);
 
         mChart.invalidate();
+    }
+
+    private OnClickListener listener;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            if(listener != null) listener.onClick(this);
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getAction() == KeyEvent.ACTION_UP && (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER || event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+            if(listener != null) listener.onClick(this);
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
     }
 }

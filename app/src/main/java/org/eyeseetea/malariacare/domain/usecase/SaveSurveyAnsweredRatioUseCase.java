@@ -27,12 +27,14 @@ public class SaveSurveyAnsweredRatioUseCase implements UseCase{
     }
 
     public void execute(long idSurvey, final ISurveyAnsweredRatioCallback callback) {
+        mSurveyAnsweredRatio = null;
         this.idSurvey=idSurvey;
         mCallback = callback;
         run();
     }
 
     public void execute(ISurveyAnsweredRatioCallback callback, SurveyAnsweredRatio surveyAnsweredRatio) {
+        idSurvey = 0;
         mSurveyAnsweredRatio = surveyAnsweredRatio;
         mCallback = callback;
         run();
