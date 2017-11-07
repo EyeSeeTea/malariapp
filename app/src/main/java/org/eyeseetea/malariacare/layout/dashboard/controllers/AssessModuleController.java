@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.fragments.CreateSurveyFragment;
@@ -107,38 +108,41 @@ public class AssessModuleController extends ModuleController {
                 .utils.Action.CHANGE_TAB);
     }
 
-    private void closeSurveyFragment(final SurveyDB survey,final org.eyeseetea.malariacare.domain.utils.Action action) {
+    private void closeSurveyFragment(final SurveyDB survey,
+            final org.eyeseetea.malariacare.domain.utils.Action action) {
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
         IMainExecutor mainExecutor = new UIThreadExecutor();
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
+                        asyncExecutor);
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
-                    public void nextProgressMessage()                                                                                                                               {
+                    public void nextProgressMessage() {
                         surveyFragment.nextProgressMessage();
                     }
 
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        if(action.equals(org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
+                        if (action.equals(
+                                org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
                             surveyFragment.hideProgress();
                             boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
-                            if(!isDialogShown){
+                            if (!isDialogShown) {
                                 //Confirm closing
                                 if (survey.isCompleted() || survey.isSent()) {
                                     dashboardController.setNavigatingBackwards(false);
                                     surveyFragment.hideProgress();
                                     closeSurveyFragment();
                                     return;
-                                }else{
+                                } else {
                                     askToCloseSurvey();
                                 }
                             }
-                        }
-                        else if (action.equals(org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)){
+                        } else if (action.equals(
+                                org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)) {
                             if (surveyAnsweredRatio.getCompulsoryAnswered()
                                     == surveyAnsweredRatio.getTotalCompulsory()
                                     && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -202,27 +206,46 @@ public class AssessModuleController extends ModuleController {
         replaceFragment(R.id.dashboard_details_container, surveyFragment);
         orgUnitProgramFilterView.setVisibility(View.GONE);
 
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+        final ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+        final IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        final IMainExecutor mainExecutor = new UIThreadExecutor();
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
+                        asyncExecutor);
         final SurveyDB finalSurvey = survey;
-        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
                     public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
+
                     }
 
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                        if (surveyAnsweredRatio != null) {
-                            LayoutUtils.setActionBarTitleForSurveyAndChart(dashboardActivity,
-                                    finalSurvey, getTitle(), surveyAnsweredRatio);
-                        }
+                        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
+                                new SaveSurveyAnsweredRatioUseCase(
+                                        surveyAnsweredRatioRepository, mainExecutor,
+                                        asyncExecutor);
+                        saveSurveyAnsweredRatioUseCase.execute(
+                                new ISurveyAnsweredRatioCallback() {
+                                    @Override
+                                    public void nextProgressMessage() {
+                                        Log.d(getClass().getName(), "nextProgressMessage");
+                                        surveyFragment.nextProgressMessage();
+                                    }
+
+                                    @Override
+                                    public void onComplete(
+                                            SurveyAnsweredRatio surveyAnsweredRatio) {
+                                        Log.d(getClass().getName(), "onComplete");
+                                        if (surveyAnsweredRatio != null) {
+                                            LayoutUtils.setActionBarTitleForSurveyAndChart(
+                                                    dashboardActivity, finalSurvey, getTitle(),
+                                                    surveyAnsweredRatio);
+                                        }
+                                    }
+                                }, surveyAnsweredRatio);
                     }
                 });
     }
@@ -232,13 +255,15 @@ public class AssessModuleController extends ModuleController {
                 new SurveyAnsweredRatioRepository();
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
         IMainExecutor mainExecutor = new UIThreadExecutor();
-        SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-        saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
+                        asyncExecutor);
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
                     public void nextProgressMessage() {
                     }
+
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         //This cannot be mark as completed
@@ -260,7 +285,7 @@ public class AssessModuleController extends ModuleController {
             sentTitle.setText("");
         }
 
-        if(createSurveyFragment==null) {
+        if (createSurveyFragment == null) {
             createSurveyFragment = new CreateSurveyFragment();
         }
         orgUnitProgramFilterView.setVisibility(View.GONE);

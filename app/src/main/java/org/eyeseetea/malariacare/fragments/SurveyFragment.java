@@ -286,25 +286,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
 
     @Override
     public void onPause() {
-        final SurveyDB survey = Session.getSurveyByModule(moduleName);
-        if (survey != null) {
-            SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                    new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor,
-                            asyncExecutor);
-            saveSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                    new ISurveyAnsweredRatioCallback() {
-                        @Override
-                        public void nextProgressMessage() {
-                            Log.d(getClass().getName(), "nextProgressMessage");
-                        }
-
-                        @Override
-                        public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                            SurveyDB dbSurvey = SurveyDB.findById(survey.getId_survey());
-                            dbSurvey.updateSurveyStatus(surveyAnsweredRatio);
-                        }
-                    });
-        }
         unregisterReceiver();
         super.onPause();
     }

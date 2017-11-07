@@ -170,8 +170,8 @@ public class AutoTabInVisibilityState {
         for (QuestionDB childQuestion : parentQuestion.getChildren()) {
             Question toggledQuestion = null;
             HeaderDB childHeader = childQuestion.getHeader();
-            visible=!childQuestion.isHiddenBySurvey(idSurvey);
-            if(visible || elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true) {
+            visible=!childQuestion.isHiddenBySurvey(idSurvey);boolean isAlreadyVisible=(elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true);
+            if(visible || isAlreadyVisible) {
                 toggledQuestion = new Question(childQuestion.getId_question(), childQuestion.getCompulsory(), visible);
             }
 
@@ -182,8 +182,8 @@ public class AutoTabInVisibilityState {
                 Float denum = (num == null) ? 0f: ScoreRegister.calcDenum(childQuestion, idSurvey);;
                 ScoreRegister.addRecord(childQuestion, 0f, denum, idSurvey, module);
                 this.setInvisible(childHeader,false);
-                if(toggledQuestion!=null){
-                    toggledQuestions.add(toggledQuestion);
+                if(toggledQuestion!=null && isAlreadyVisible==false){
+                    toggledQuestions.add(toggledQuestion);//Added new visible child question
                 }
                 continue;
             }
@@ -193,8 +193,8 @@ public class AutoTabInVisibilityState {
             boolean isRemoved = ReadWriteDB.deleteValue(childQuestion, module, false);
 
             if(toggledQuestion!=null){
-                toggledQuestion.setRemoved(isRemoved);
-                toggledQuestions.add(toggledQuestion);
+                toggledQuestion.setRemoved(isRemoved);//Set question as removed if it is necessary to removes the answered question ratio
+                toggledQuestions.add(toggledQuestion);//Add not visible child to be removed from total question list
             }
             //-> Remove score
             if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
