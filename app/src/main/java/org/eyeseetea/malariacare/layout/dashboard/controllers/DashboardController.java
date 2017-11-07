@@ -39,7 +39,6 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
@@ -49,7 +48,6 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRat
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
-import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -321,25 +319,6 @@ public class DashboardController {
         //Replace new survey
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
         assessModuleController.onNewSurvey();
-        long surveyId = Session.getSurveyByModule(assessModuleController.getSimpleName()).getId_survey();
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        final SaveSurveyAnsweredRatioUseCase saveSurveyAnsweredRatioUseCase =
-                new SaveSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-        saveSurveyAnsweredRatioUseCase.execute(surveyId,
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-                    }
-                });
     }
 
     /**
