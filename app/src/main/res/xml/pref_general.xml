@@ -84,6 +84,16 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <EditTextPreference
+        android:key="@string/monitoring_target"
+        android:title="@string/settings_monitoring_target"
+        android:defaultValue="@string/default_monitoring_target"
+        android:selectAllOnFocus="true"
+        android:inputType="number"
+        android:numeric="integer"
+        android:singleLine="true"
+        android:maxLines="1" />
+
     <CheckBoxPreference
         android:key="@string/hide_planning_tab_key"
         android:title="@string/hide_planning_tab_title"

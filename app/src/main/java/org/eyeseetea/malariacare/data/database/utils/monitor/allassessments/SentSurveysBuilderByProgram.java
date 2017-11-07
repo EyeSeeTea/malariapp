@@ -88,7 +88,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
             EntrySentSurveysChartByProgram entryMonth=sentSurveysChartMap.get(currentMonth+program.getUid());
             //No entry for this month ->0
             if(entryMonth==null){
-                entryMonth=new EntrySentSurveysChartByProgram(PreferencesState.getInstance().getMaxEvents(),iMonth,program);
+                entryMonth=new EntrySentSurveysChartByProgram(PreferencesState.getInstance().getMonitoringTarget(),iMonth,program);
             }
             //Whatever was calculated
             last6entries.add(0,entryMonth);
@@ -126,7 +126,7 @@ public class SentSurveysBuilderByProgram extends  SentSurveysBuilderBase {
 
                 //First time no entry
                 if (entrySentSurveysChartByProgram == null) {
-                    entrySentSurveysChartByProgram = new  EntrySentSurveysChartByProgram(PreferencesState.getInstance().getMaxEvents(), survey.getCompletionDate(), program);
+                    entrySentSurveysChartByProgram = new  EntrySentSurveysChartByProgram(PreferencesState.getInstance().getMonitoringTarget(), survey.getCompletionDate(), program);
                     sentSurveysChartMap.put(month+program.getUid(), entrySentSurveysChartByProgram);
                 }
                 entrySentSurveysChartByProgram.incSent();

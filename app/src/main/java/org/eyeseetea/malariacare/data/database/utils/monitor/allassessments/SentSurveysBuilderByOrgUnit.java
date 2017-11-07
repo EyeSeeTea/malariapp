@@ -72,7 +72,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
             EntrySentSurveysChartByOrgUnit entryMonth=sentSurveysChartMap.get(currentMonth+orgUnit.getUid());
             //No entry for this month ->0
             if(entryMonth==null){
-                entryMonth=new EntrySentSurveysChartByOrgUnit(PreferencesState.getInstance().getMaxEvents(),iMonth, orgUnit);
+                entryMonth=new EntrySentSurveysChartByOrgUnit(PreferencesState.getInstance().getMonitoringTarget(),iMonth, orgUnit);
             }
             //Whatever was calculated
             last6entries.add(0,entryMonth);
@@ -124,7 +124,7 @@ public class SentSurveysBuilderByOrgUnit extends SentSurveysBuilderBase {
                 //Get the entry for that month
                 EntrySentSurveysChartByOrgUnit entrySentSurveysChartByOrgUnit = sentSurveysChartMap.get(month+orgUnit.getUid());
                 if (entrySentSurveysChartByOrgUnit == null) {
-                    entrySentSurveysChartByOrgUnit = new EntrySentSurveysChartByOrgUnit(PreferencesState.getInstance().getMaxEvents(), survey.getCompletionDate(), orgUnit);
+                    entrySentSurveysChartByOrgUnit = new EntrySentSurveysChartByOrgUnit(PreferencesState.getInstance().getMonitoringTarget(), survey.getCompletionDate(), orgUnit);
                     sentSurveysChartMap.put(month+orgUnit.getUid(), entrySentSurveysChartByOrgUnit);
                 }
                 entrySentSurveysChartByOrgUnit.incSent();

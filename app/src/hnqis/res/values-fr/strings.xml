@@ -138,6 +138,7 @@ Mensuelle"</string>
 <string name="server_url">"Serveur DHIS2"</string>
 <string name="settings_text_dhis_password">"Mot de passe DHIS2"</string>
 <string name="settings_text_dhis_max_items">"Nombre max de rapports DHIS2 téléchargés"</string>
+<string name="settings_monitoring_target">"Objectif de surveillance"</string>
 <string name="dialog_error_push_uids">"Identifiant incorrect pour l'envoi"</string>
 <string name="dialog_error_push_no_location_and_required">"Aucune localisation disponible et c'est un champ obligatoire"</string>
 <string name="dialog_error_attribute_null">"Attribut avec id %s est nulle, s'il vous plaît contacter votre admin serveur."</string>

@@ -154,6 +154,7 @@ evaluation"</string>
 <string name="server_url">"DHIS2 server"</string>
 <string name="settings_text_dhis_password">"DHIS password"</string>
 <string name="settings_text_dhis_max_items">"DHIS max loaded surveys"</string>
+<string name="settings_monitoring_target">"គោលដៅតាមដាន"</string>
 <string name="dialog_error_push_uids">"Incorrect UIDs found in push"</string>
 <string name="dialog_error_push_no_location_and_required">"No location available and it is a required field"</string>
 <string name="dialog_info_push_imported">"Imported"</string>
