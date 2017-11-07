@@ -35,7 +35,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -54,6 +53,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.LanguageContextWrapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,7 +73,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferencesState.getInstance().initalizateActivityDependencies();
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
@@ -397,5 +397,13 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         alarmPush.cancelPushAlarm(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String currentLanguage = PreferencesState.getInstance().getCurrentLocale();
+        Context context = LanguageContextWrapper.wrap(newBase, currentLanguage);
+        PreferencesState.getInstance().setContext(context);
+        super.attachBaseContext(context);
     }
 }

@@ -181,7 +181,6 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().initalizateActivityDependencies();
 
     }
 

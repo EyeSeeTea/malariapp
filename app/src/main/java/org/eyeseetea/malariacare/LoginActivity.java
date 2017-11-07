@@ -55,6 +55,7 @@ import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
 
@@ -80,7 +81,6 @@ public class LoginActivity extends AbsLoginActivity {
         super.onCreate(savedInstanceState);
         mLoginActivity = this;
         requestPermissions();
-        PreferencesState.getInstance().initalizateActivityDependencies();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mLoginActivityStrategy.onCreate();
         if (UserDB.getLoggedUser() != null && !ProgressActivity.PULL_CANCEL
@@ -294,6 +294,13 @@ public class LoginActivity extends AbsLoginActivity {
         if (!EyeSeeTeaApplication.permissions.areAllPermissionsGranted()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String currentLanguage = PreferencesState.getInstance().getCurrentLocale();
+        Context context = LanguageContextWrapper.wrap(newBase, currentLanguage);
+        super.attachBaseContext(context);
     }
 
     public class AsyncPullAnnouncement extends AsyncTask<LoginActivity, Void, Void> {

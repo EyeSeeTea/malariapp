@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.downloaded_media.DownloadedMediaAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 
@@ -20,7 +19,6 @@ public class DownloadedMediaActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.EyeSeeTheme);
         setActivityActionBar();
-        PreferencesState.getInstance().initalizateActivityDependencies();
         setContentView(R.layout.downloaded_media_activity);
         List<MediaDB> mediaList = MediaDB.getAllInLocal();
         RecyclerView list = (RecyclerView) findViewById(R.id.downloaded_media_list);

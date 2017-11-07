@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.utils.LanguageContextWrapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +72,8 @@ public class SettingsActivity extends PreferenceActivity implements
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().initalizateActivityDependencies();
+//        PreferencesState.getInstance().setContext(this);
+//        PreferencesState.getInstance().initalizateActivityDependencies();
     }
 
     @Override
@@ -206,10 +208,7 @@ public class SettingsActivity extends PreferenceActivity implements
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         Resources r = context.getResources();
         Configuration c = r.getConfiguration();
-        Locale currentLocale = c.locale;
-        if (currentLocale.getLanguage().isEmpty()) {
-            currentLocale = new Locale(PreferencesState.getInstance().getPhoneLanguage());
-        }
+        Locale currentLocale = new Locale(PreferencesState.getInstance().getCurrentLocale());
         String[] loc = r.getAssets().getLocales();
         for (int i = 0; i < loc.length; i++) {
             c.locale = new Locale(loc[i]);
@@ -369,7 +368,6 @@ public class SettingsActivity extends PreferenceActivity implements
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            PreferencesState.getInstance().initalizateActivityDependencies();
             addPreferencesFromResource(R.xml.pref_general);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -454,6 +452,12 @@ public class SettingsActivity extends PreferenceActivity implements
         return callerActivity;
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String currentLanguage = PreferencesState.getInstance().getCurrentLocale();
+        Context context = LanguageContextWrapper.wrap(newBase, currentLanguage);
+        super.attachBaseContext(context);
+    }
 }
 
 /**

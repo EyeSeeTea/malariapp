@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,7 +47,7 @@ import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.Calendar;
 
-public class ProgressActivity extends Activity {
+public class ProgressActivity extends BaseActivity {
 
     public static final int NUMBER_OF_MONTHS = 6;
     /**
@@ -107,7 +106,6 @@ public class ProgressActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-        PreferencesState.getInstance().initalizateActivityDependencies();
         initializeDependencies();
         setContentView(R.layout.activity_progress);
         PULL_CANCEL = false;
@@ -226,7 +224,7 @@ public class ProgressActivity extends Activity {
                                 .setNeutralButton(android.R.string.ok,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface arg0, int arg1) {
-                                                executeLogout();
+                                                Logout();
                                             }
                                         }).create().show();
                     }
@@ -236,7 +234,7 @@ public class ProgressActivity extends Activity {
         new Thread(runnable).start();
     }
 
-    private void executeLogout() {
+    private void Logout() {
         Log.d(TAG, "Logging out...");
         UserAccountRepository userAccountRepository = new UserAccountRepository(this);
         LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);

@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -106,10 +105,16 @@ public class PreferencesState {
     }
 
     public void init(Context context) {
-        phoneLanguage = Locale.getDefault().getLanguage();
+        if (phoneLanguage == null) {
+            phoneLanguage = Locale.getDefault().getLanguage();
+        }
         this.context = context;
         scaleDimensionsMap = initScaleDimensionsMap();
         reloadPreferences();
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public Context getContext() {
@@ -127,6 +132,14 @@ public class PreferencesState {
                 "reloadPreferences: scale: %s | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b ",
                 scale, locationRequired, maxEvents, showLargeText));
+    }
+
+    public String getCurrentLocale() {
+        String temLanguageCode = languageCode;
+        if (temLanguageCode.equals("")) {
+            temLanguageCode = phoneLanguage;
+        }
+        return temLanguageCode;
     }
 
     /**
@@ -399,30 +412,6 @@ public class PreferencesState {
         return userAccept;
     }
 
-    public void initalizateActivityDependencies() {
-        loadsLanguageInActivity();
-    }
-
-    public void loadsLanguageInActivity() {
-        String temLanguageCode = languageCode;
-        if (languageCode.equals("")) {
-            temLanguageCode = phoneLanguage;
-        }
-        Resources res = context.getResources();
-        // Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(new Locale(temLanguageCode));
-        } else {
-            conf.locale = new Locale(temLanguageCode);
-        }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            res.updateConfiguration(conf, dm);
-        } else {
-            context.createConfigurationContext(conf);
-        }
-    }
 
     public String getServerUrl(){
         if(serverUrl == null || serverUrl.equals("")) {

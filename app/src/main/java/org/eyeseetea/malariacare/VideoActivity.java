@@ -1,17 +1,14 @@
 package org.eyeseetea.malariacare;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.sdk.common.FileUtils;
 
 import java.io.File;
 
-public class VideoActivity extends Activity {
+public class VideoActivity extends BaseActivity {
 
     public static final String VIDEO_PATH_PARAM = "videoPathParam";
     VideoView mVideoView;
@@ -19,7 +16,6 @@ public class VideoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().initalizateActivityDependencies();
         setContentView(R.layout.video_activity);
 
         //Displays a video file.

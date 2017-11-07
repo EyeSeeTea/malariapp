@@ -74,7 +74,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        PreferencesState.getInstance().initalizateActivityDependencies();
         this.plannedSurveys = new ArrayList();
     }
 
