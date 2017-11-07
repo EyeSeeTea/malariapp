@@ -63,6 +63,7 @@ import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.text.SimpleDateFormat;
@@ -397,8 +398,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             row = inflater.inflate(R.layout.item_list_row_row, null);
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
             TextView score = (TextView) row.findViewById(R.id.second_column);
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            completionDate.setText(format.format(survey.getCompletionDate()));
+            completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
             score.setText(survey.getMainScore()+"");
             Resources resources = getResources();
             if(survey.isTypeA()){

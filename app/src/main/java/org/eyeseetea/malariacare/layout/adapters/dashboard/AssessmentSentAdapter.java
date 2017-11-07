@@ -27,6 +27,7 @@ import android.view.View;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
@@ -37,7 +38,6 @@ import java.util.List;
 public class AssessmentSentAdapter extends
         ADashboardAdapter {
 
-    private static final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
     public static final String SCORE_FORMAT = "%.1f %%";
 
     public AssessmentSentAdapter(List<SurveyDB> items, Context context) {
@@ -116,7 +116,7 @@ public class AssessmentSentAdapter extends
 
     private String decorateCompletionDate(SurveyDB survey) {
         Date completionDate = survey.getCompletionDate();
-        return format.format(completionDate);
+        return AUtils.getEuropeanFormatedDate(completionDate);
     }
 
     private int getColorByScore(SurveyDB survey) {
