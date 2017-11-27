@@ -17,15 +17,16 @@
 
         <org.eyeseetea.malariacare.views.DoublePieChart
             android:id="@+id/pie_chart"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/double_pie_chart_dialog_size"
+            android:layout_height="@dimen/double_pie_chart_dialog_size"
             android:layout_alignParentLeft="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="-48dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/margin_top_text_chart"
             android:layout_toRightOf="@+id/pie_chart"
             android:orientation="vertical">
 

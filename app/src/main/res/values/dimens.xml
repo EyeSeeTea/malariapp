@@ -102,4 +102,7 @@
     <dimen name="planing_text_first_title_size">15dp</dimen>
     <dimen name="header_light_text_size">18dp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
+    <dimen name="double_pie_chart_row_size">48dp</dimen>
+    <dimen name="double_pie_chart_dialog_size">100dp</dimen>
+    <dimen name="margin_top_text_chart">6dp</dimen>
 </resources>
