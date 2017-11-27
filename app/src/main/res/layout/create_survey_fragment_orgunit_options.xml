@@ -55,18 +55,22 @@
             android:id="@+id/org_unit"
             android:spinnerMode="dropdown"
             android:backgroundTintMode="add"
-            android:paddingLeft="2dip"
-            android:paddingTop="2dip"
-            android:paddingBottom="2dip"
             android:background="@null"
             android:gravity="right"/>
         <ImageView
-            android:src="@drawable/arrow_assess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"  />
-
+            android:src="@drawable/ic_media_arrow"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginRight="-17dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/new_grey"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="100dp"
+            android:layout_below="@+id/org_unit"/>
     </RelativeLayout>
 </merge>

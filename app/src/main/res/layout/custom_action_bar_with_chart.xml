@@ -54,7 +54,7 @@
 
         <org.eyeseetea.malariacare.views.DoublePieChart
             android:id="@+id/action_bar_chart"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
     </LinearLayout>
 </LinearLayout>
