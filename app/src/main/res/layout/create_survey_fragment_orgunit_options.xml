@@ -29,10 +29,10 @@
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_height="32dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/create_info_organization_unit"
-            app:tDimension="@string/font_size_level4"
+            app:tDimension="@string/font_size_level3"
             app:tFontName="@string/medium_font_name"
             android:textAllCaps="true"
             android:id="@+id/textView2"
@@ -45,6 +45,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:paddingRight="20dp"
         android:background="@drawable/background_textfield">
 
         <Spinner
@@ -56,7 +57,6 @@
             android:backgroundTintMode="add"
             android:paddingLeft="2dip"
             android:paddingTop="2dip"
-            android:paddingRight="20dip"
             android:paddingBottom="2dip"
             android:background="@null"
             android:gravity="right"/>
@@ -65,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="2dip"
-            android:paddingRight="20dip"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"  />
+
     </RelativeLayout>
 </merge>
