@@ -68,7 +68,7 @@ public class ActionBarStrategy extends LayoutUtils {
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
-    public static void setActionBarDashboard(ActionBarActivity activity, String title, String module) {
+    public static void setActionBarDashboard(ActionBarActivity activity, String title) {
             //Get Tab + User
             title = getCapitalizeName(title);
             String user = getCurrentUsername();
@@ -76,9 +76,8 @@ public class ActionBarStrategy extends LayoutUtils {
         String moduleColorString = getModuleColorString();
             String appName = getAppName();
         Spanned spannedTitle = Html.fromHtml(
-                String.format("<font color=\"#%s\"><b>%s</b></font> <font color=\"#%s\"><b"
-                                + ">%s</b></font>", appNameColorString,
-                        appName, moduleColorString, title));
+                String.format("<font color=\"#%s\"><b>%s</b></font>", appNameColorString,
+                        appName));
         Spanned spannedSubTitle = Html.fromHtml(
                 String.format("<font color=\"#%s\"><b"
                                 + ">%s</b></font>", moduleColorString, title));
@@ -99,7 +98,6 @@ public class ActionBarStrategy extends LayoutUtils {
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setCustomView(R.layout.custom_action_bar);
         ((Toolbar)actionBar.getCustomView().getParent()).setBackgroundResource(R.drawable.actionbar_gradient);
-        ((ActionBarContainer)actionBar.getCustomView().getParent().getParent()).setBackgroundResource(R.drawable.actionbar_gradient);
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
         ((CustomTextView) activity.findViewById(R.id.action_bar_user)).setText(user);
