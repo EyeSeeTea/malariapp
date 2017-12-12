@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green_light">#76AD0C</color>
+    <color name="green_middle">#558c08</color>
+    <color name="green_dark">#417505</color>
+    <color name="white_grey">#D8D8D8</color>
+    <color name="white_light">#EDEDED</color>
+    <color name="grey_dark">#4A4A4A</color>
+    <color name="grey_light">#9B9B9B</color>
+
+
+    <color name="color_primary_dark">@color/green_dark</color>
+    <color name="color_primary_light">@color/green_light</color>
+    <color name="color_primary_default">@color/green_light</color>
+    <color name="button_login_state_enabled_false">@color/green_light</color>
+    <color name="button_login_state_unpressed">@color/green_middle</color>
+    <color name="button_login_state_pressed">@color/green_dark</color>
+    <color name="quest_mark_text">@color/grey_dark</color>
+    <color name="quest_mark_tab_top">@color/green_light</color>
+    <color name="quest_mark_tab_bottom">@color/green_dark</color>
+    <color name="quest_mark_tab_icons_and_text">@color/black</color>
+
+    <color name="quest_mark_actionbar_menu">@color/grey_light</color>
+    <color name="quest_mark_actionbar_top">@color/white</color>
+    <color name="quest_mark_actionbar_bottom">@color/white_grey</color>
+    <color name="quest_mark_actionbar_title_text">@color/green_dark</color>
+    <color name="quest_mark_actionbar_subtitle_text">@color/grey_dark</color>
+
+    <color name="quest_mark_header_tab_top">@color/green_light</color>
+    <color name="quest_mark_header_tab_bottom">@color/green_dark</color>
+    <color name="header_text">@color/green_dark</color>
+    <color name="header_background">@color/green_dark</color>
+    <color name="event_row">@color/white_light</color>
+    <color name="un_event_row">@color/white_grey</color>
+    <color name="event_text">@color/black</color>
+
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">@color/green_middle</color>
+    <color name="windowBackground">@color/green_dark</color>
+
+
+    <color name="appNameColor">@color/green_dark</color>
+
+</resources>

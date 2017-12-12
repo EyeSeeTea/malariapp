@@ -70,4 +70,12 @@
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
 
+    <color name="colorPrimary">@color/navy_blue</color>
+    <color name="colorPrimaryDark">@color/dark_navy_blue</color>
+    <color name="windowBackground">@color/dark_navy_blue</color>
+
+
+
+
+
 </resources>

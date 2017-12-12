@@ -36,6 +36,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.views.ActionBarStrategy;
 
 /**
  * Created by idelcano on 25/02/2016.
@@ -210,11 +211,11 @@ public abstract class ModuleController {
     }
 
     public void setActionBarDashboard() {
-        LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle());
+        ActionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle());
     }
 
     public void setActionBarDashboardWithProgram() {
-        LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
+        ActionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
     }
 
     public void replaceFragment(int layout, Fragment fragment) {

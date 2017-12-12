@@ -26,5 +26,5 @@
     <item android:state_enabled="true"
         android:state_selected="true" android:drawable="@color/custom_blue_light" />
     <item
-        android:drawable="@drawable/button_blue_selector" />
+        android:drawable="@drawable/button_demo_selector" />
 </selector>

@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
@@ -243,7 +244,7 @@ public class AssessModuleController extends ModuleController {
                                             SurveyAnsweredRatio surveyAnsweredRatio) {
                                         Log.d(getClass().getName(), "onComplete");
                                         if (surveyAnsweredRatio != null) {
-                                            LayoutUtils.setActionBarTitleForSurveyAndChart(
+                                            ActionBarStrategy.setActionBarTitleForSurveyAndChart(
                                                     dashboardActivity, finalSurvey, getTitle(),
                                                     surveyAnsweredRatio);
 
@@ -305,7 +306,7 @@ public class AssessModuleController extends ModuleController {
 
     public void onNewSurvey() {
         if (PreferencesState.getInstance().isVerticalDashboard()) {
-            LayoutUtils.setActionBarBackButton(dashboardActivity);
+            ActionBarStrategy.setActionBarBackButton(dashboardActivity);
             CustomTextView sentTitle = (CustomTextView) dashboardActivity.findViewById(
                     R.id.titleCompleted);
             sentTitle.setText("");

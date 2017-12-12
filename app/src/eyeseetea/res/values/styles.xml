@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Widget.AppCompat.Spinner.EyeSeeSpinner">
         <item name="android:textSize">12sp</item>
@@ -6,14 +7,18 @@
     <!-- Base application theme. -->
     <style name="EyeSeeTheme" parent="Theme.AppCompat.Light">
         <!--<item name="windowActionBar">false</item>-->
-        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/light_grey</item>
         <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
         <item name="logo">@drawable/qualityapp_logo</item>
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionOverflowButtonStyle">@style/EyeSeeTheme.OverFlow</item>
     </style>
 
+    <style name="EyeSeeTheme.OverFlow">
+        <item name="android:src">@drawable/burger_btn</item>
+    </style>
     <style name="LoginScreenTheme" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -39,5 +44,4 @@
     <style name="EyeSeeTextExtra">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
-
 </resources>

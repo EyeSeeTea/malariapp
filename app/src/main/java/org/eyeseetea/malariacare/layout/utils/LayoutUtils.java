@@ -155,7 +155,8 @@ public class LayoutUtils {
         setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey(), surveyAnsweredRatio);
     }
 
-    private static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
+    protected static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity,
+            String title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
@@ -165,7 +166,7 @@ public class LayoutUtils {
         actionBar.setTitle(title);
     }
 
-    private static void setActionbarTitle(ActionBarActivity activity, Spanned title,
+    protected static void setActionbarTitle(ActionBarActivity activity, Spanned title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -201,7 +202,7 @@ public class LayoutUtils {
 
 
 
-    private static void setActionbarAppName(ActionBarActivity activity) {
+    protected static void setActionbarAppName(ActionBarActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -228,18 +229,18 @@ public class LayoutUtils {
     }
 
 
-    private static String getAppName() {
+    protected static String getAppName() {
         return PreferencesState.getInstance().getContext().getResources().getString(
                 R.string.app_name);
     }
 
-    private static String getCapitalizeName(String title) {
+    protected static String getCapitalizeName(String title) {
         StringBuilder tabtemp = new StringBuilder(title);
         tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
         return tabtemp.toString();
     }
 
-    private static String getCurrentUsername() {
+    protected static String getCurrentUsername() {
         UserDB user = Session.getUser();
         if (user == null) {
             return "";
@@ -252,7 +253,7 @@ public class LayoutUtils {
     }
 
 
-    private static String getAppNameColorString() {
+    protected static String getAppNameColorString() {
         int appNameColor = PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.appNameColor);
         return String.format("%X", appNameColor).substring(2);

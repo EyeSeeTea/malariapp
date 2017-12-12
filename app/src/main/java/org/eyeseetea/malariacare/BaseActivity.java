@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.ActionBarStrategy;
 
 import java.io.IOException;
 import java.util.List;
@@ -110,7 +111,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void initView(Bundle savedInstanceState) {
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
+        ActionBarStrategy.setActionBarLogo(actionBar);
 
         if (savedInstanceState == null) {
             initTransition();
