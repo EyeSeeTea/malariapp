@@ -185,10 +185,10 @@ evaluation"</string>
 <string name="option_delete">"Delete"</string>
 <string name="hide_planning_tab_title">"Hide planning tab"</string>
 <string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
-<string name="plan">"Plan"</string>
-<string name="assess">"Assess - active surveys"</string>
-<string name="improve">"Improve"</string>
-<string name="monitor">"Monitor"</string>
+<string name="plan">"Assessments"</string>
+<string name="assess">"Survey"</string>
+<string name="improve">"Statistics"</string>
+<string name="monitor">"Reports"</string>
 <string name="filter_all_org_units">"គ្រឿងអេកូទាំងអស់"</string>
 <string name="filter_all_org_assessments">"ទាំងអស់វាយតម្លៃ"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>

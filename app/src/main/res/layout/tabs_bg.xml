@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabsLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="56dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <ImageView
+        android:id="@+id/tabsImage"
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:padding="10dp"
+        android:scaleType="fitCenter" />
+
+    <org.eyeseetea.sdk.presentation.views.CustomTextView
+        android:id="@+id/tabsText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="10dip"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/light_font"  />
+</LinearLayout>

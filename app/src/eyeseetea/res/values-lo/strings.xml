@@ -186,10 +186,10 @@
 <string name="option_delete">"ລຶບ"</string>
 <string name="hide_planning_tab_title">"ເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
 <string name="hide_planning_tab_summary">"ໝາຍເອົາຫ້ອງນີ້ເພື່ອເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
-<string name="plan">"ການວາງແຜນ"</string>
-<string name="assess">"ປະເມີນຜົນ - ການສຳຫຼວດທີ່ກຳລັງດຳເນີນ"</string>
-<string name="improve">"ປັບປູງ"</string>
-<string name="monitor">"ຕິດຕາມ"</string>
+<string name="plan">"ການປະເມີນຜົນ"</string>
+<string name="assess">"ການສໍາຫຼວດ"</string>
+<string name="improve">"ສະຖິຕິ"</string>
+<string name="monitor">"ບົດລາຍງານ"</string>
 <string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
 <string name="filter_all_org_assessments">"All Assessed"</string>
 <string name="dialog_content_dhis_preference_login">"ການປ່ຽນເຂົ້າໄປສູ່ລະບົບຈະຕ້ອງໄດ້ອອກ ແລະ ເຂົ້າໃໝ່. ທຸກໆຂໍ້ມູນການສຳຫຼວດທີ່ຍັງບໍ່ທັນສົ່ງຈະຖືກລຶບອອກ. ເຈົ້າຕ້ອງການຈະດຳເນີດການຕໍ່ບໍ? "</string>

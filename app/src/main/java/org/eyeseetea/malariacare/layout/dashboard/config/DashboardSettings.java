@@ -58,6 +58,10 @@ public class DashboardSettings {
      * Boolean to hide or shown the developer options
      */
     boolean developerOptions;
+    /**
+     * Boolean to hide or shown the tab title
+     */
+    boolean tabTitleVisible;
 
     List<ModuleSettings> modules;
 
@@ -101,6 +105,13 @@ public class DashboardSettings {
     public void setDeveloperOptions(boolean developerOptions){
         this.developerOptions =developerOptions;
     }
+    public boolean isTabTitleVisible(){
+        return tabTitleVisible;
+    }
+
+    public void setTabTitleVisible(boolean tabTitleVisible){
+        this.tabTitleVisible =tabTitleVisible;
+    }
 
     public List<ModuleSettings> getModules() {
         return modules;
@@ -133,6 +144,7 @@ public class DashboardSettings {
                 ", modules=" + modules +
                 ", list filter=" + listFilter +
                 ", developerOptions=" + developerOptions +
+                ", tabTitleVisible=" + tabTitleVisible +
                 '}';
     }
 }

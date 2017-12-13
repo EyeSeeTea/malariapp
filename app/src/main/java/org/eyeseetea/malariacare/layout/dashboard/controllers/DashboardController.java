@@ -20,15 +20,19 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -39,6 +43,7 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
@@ -48,6 +53,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRat
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
@@ -206,6 +212,7 @@ public class DashboardController {
     private void onCreateTabHost(Bundle savedInstanceState) {
         tabHost = (TabHost)dashboardActivity.findViewById(R.id.tabHost);
         tabHost.setup();
+        tabHost.setBackgroundResource(R.drawable.tab_background);
 
         //Add visible modules to tabhost
         for(ModuleController moduleController: this.getModules()){
@@ -216,6 +223,7 @@ public class DashboardController {
         }
 
         ModuleController firstModuleController=getFirstVisibleModule();
+
         tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
         currentTab = firstModuleController.getName();
         currentTabTitle = firstModuleController.getTitle();
@@ -230,7 +238,9 @@ public class DashboardController {
 
                 //Reset tab colors
                 resetTabBackground();
+
                 tabHost.getCurrentTabView().setBackgroundColor(nextModuleController.getBackgroundColor());
+                tabHost.setBackgroundResource(R.drawable.tab_background);
 
                 //Update next Tab and title
                 currentTab = tabId;
@@ -690,12 +700,27 @@ public class DashboardController {
         //Add tab to tabhost
         TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
         tab.setContent(moduleController.getTabLayout());
-        tab.setIndicator("", moduleController.getIcon());
+        String title = "";
+        if(AppSettingsBuilder.isTabTitleVisible()) {
+            View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon());
+            tab = tabHost.newTabSpec(tabName).setIndicator(tabview).setContent(moduleController.getTabLayout());
+
+        }else {
+            tab.setIndicator(title, moduleController.getIcon());
+        }
         tabHost.addTab(tab);
 
         addTagToLastTab(tabName);
     }
 
+    private static View createTabView(final Context context, final String text, Drawable icon) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        tv.setText(text);
+        ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        imageView.setImageDrawable(icon);
+        return view;
+    }
     /**
      * Last current tab is tagged with the given tabName
      * @param tabName
@@ -703,7 +728,7 @@ public class DashboardController {
     private void addTagToLastTab(String tabName){
         TabWidget tabWidget=tabHost.getTabWidget();
         int numTabs=tabWidget.getTabCount();
-        LinearLayout tabIndicator=(LinearLayout)tabWidget.getChildTabViewAt(numTabs - 1);
+        ViewGroup tabIndicator=(ViewGroup)tabWidget.getChildTabViewAt(numTabs - 1);
 
         ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
         imageView.setTag(tabName);

@@ -10,6 +10,7 @@
     "layout": "tab_dashboard",
     "listFilter": "lastForOU",
     "developerOptions": true,
+    "tabTitleVisible": false,
     "modules": [{
       "title": "plan",
       "icon": "tab_plan",

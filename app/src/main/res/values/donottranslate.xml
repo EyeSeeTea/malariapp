@@ -59,6 +59,7 @@
     <string name="tab_tag_monitor" translatable="false">tab_monitor</string>
     <string name="hide_planning_tab_key" translatable="false">tab_hide</string>
     <string name="developer_option" translatable="false">show_dev_options</string>
+    <string name="tab_title_visibility" translatable="false">tab_title_visibility</string>
     <string name="export_data_option" translatable="false">export_data_option</string>
     <string name="import_data_option" translatable="false">import_data_option</string>
     <string name="overall_score_code" translatable="false">_Overall Score</string>

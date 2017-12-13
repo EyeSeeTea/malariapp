@@ -40,5 +40,6 @@
 
 
     <color name="appNameColor">@color/green_dark</color>
+    <color name="tab_green_monitor">@color/green_middle</color>
 
 </resources>

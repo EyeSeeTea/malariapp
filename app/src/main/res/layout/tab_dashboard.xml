@@ -20,7 +20,6 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/dashboard_scroll"
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -41,8 +40,8 @@
                     android:id="@android:id/tabs"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/custom_background_grey"></TabWidget>
+                    android:background="@drawable/tab_background"
+                    android:layout_alignParentBottom="true"></TabWidget>
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"

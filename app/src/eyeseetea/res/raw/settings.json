@@ -10,22 +10,23 @@
     "layout": "tab_dashboard",
     "listFilter": "lastForOU",
     "developerOptions": true,
+    "tabTitleVisible": true,
     "modules": [{
       "title": "plan",
       "icon": "tab_plan",
-      "backgroundColor": "tab_orange_plan",
+      "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_planning_init",
       "controller": "PlanModuleController"
     }, {
       "title": "assess",
       "icon": "tab_assess",
-      "backgroundColor": "tab_yellow_assess",
+      "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_details_container",
       "controller": "AssessModuleController"
     },{
       "title": "improve",
       "icon": "tab_improve",
-      "backgroundColor": "tab_blue_improve",
+      "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_completed_container",
       "controller": "ImproveModuleController"
     },{

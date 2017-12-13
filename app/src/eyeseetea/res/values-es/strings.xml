@@ -175,10 +175,10 @@ clínica"</string>
 <string name="option_delete">"Borrar"</string>
 <string name="hide_planning_tab_title">"Ocultar ficha planificación"</string>
 <string name="hide_planning_tab_summary">"Marque esta casilla para ocultar ficha de planificación"</string>
-<string name="plan">"Planificación"</string>
-<string name="assess">"Evaluación - encuestas activas"</string>
-<string name="improve">"Mejora"</string>
-<string name="monitor">"Monitorización"</string>
+<string name="plan">"Evaluaciones"</string>
+<string name="assess">"Encuesta"</string>
+<string name="improve">"Estadísticas"</string>
+<string name="monitor">"Informes"</string>
 <string name="filter_all_org_units">"todas las unidades organizativas"</string>
 <string name="filter_all_org_assessments">"Todos evaluados"</string>
 <string name="dialog_content_dhis_preference_login">"Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?"</string>
