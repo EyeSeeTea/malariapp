@@ -7,8 +7,12 @@
     <color name="white_light">#EDEDED</color>
     <color name="grey_dark">#4A4A4A</color>
     <color name="grey_light">#9B9B9B</color>
+    <color name="shadow">#ffffff</color>
+    <color name="border">#B7B7B7</color>
 
 
+    <color name="button_shadow">@color/shadow</color>
+    <color name="button_border">@color/border</color>
     <color name="color_primary_dark">@color/green_dark</color>
     <color name="color_primary_light">@color/green_light</color>
     <color name="color_primary_default">@color/green_light</color>

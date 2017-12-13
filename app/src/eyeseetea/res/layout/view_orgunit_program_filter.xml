@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filter_background"
+        android:padding="15dip">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <org.eyeseetea.malariacare.views.CustomSpinner
+                android:id="@+id/spinner_program_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:padding="10dp"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <org.eyeseetea.malariacare.views.CustomSpinner
+                android:id="@+id/spinner_orgUnit_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:padding="10dp"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>
+
