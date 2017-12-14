@@ -5,7 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/filter_background"
-        android:padding="15dip">
+        android:paddingTop="@dimen/filter_top_padding"
+        android:paddingRight="@dimen/filter_right_padding"
+        android:paddingLeft="@dimen/filter_left_padding"
+        android:paddingBottom="@dimen/filter_bottom_padding">
 
         <LinearLayout
             android:layout_width="0dp"

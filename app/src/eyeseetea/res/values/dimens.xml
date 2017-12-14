@@ -3,4 +3,9 @@
     <dimen name="header_survey_margin_top">0dp</dimen>
     <dimen name="header_top_padding">1dp</dimen>
     <dimen name="header_bottom_padding">5dp</dimen>
+    <dimen name="filter_top_padding">0dp</dimen>
+    <dimen name="filter_right_padding">0dp</dimen>
+    <dimen name="filter_left_padding">0dp</dimen>
+    <dimen name="filter_bottom_padding">15dp</dimen>
+
 </resources>
