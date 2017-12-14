@@ -224,7 +224,7 @@ public class AutoTabLayoutUtils {
         List<OptionDB> optionList = new ArrayList<>(question.getAnswer().getOptions());
         optionList.add(0, new OptionDB(Constants.DEFAULT_SELECT_OPTION));
         Spinner spinner = (Spinner) viewHolder.component;
-        spinner.setAdapter(new OptionArrayAdapter(context, optionList));
+        spinner.setAdapter(new OptionArrayAdapter(context, R.layout.simple_old_spinner_item, optionList));
         return rowView;
     }
 

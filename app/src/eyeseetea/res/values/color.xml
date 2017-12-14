@@ -11,6 +11,8 @@
     <color name="border">#B7B7B7</color>
 
 
+    <color name="parentColor">@color/white_grey</color>
+    <color name="headerColor">@color/green_dark</color>
     <color name="button_shadow">@color/shadow</color>
     <color name="button_border">@color/border</color>
     <color name="color_primary_dark">@color/green_dark</color>
@@ -35,7 +37,10 @@
     <color name="header_text">@color/green_dark</color>
     <color name="header_background">@color/green_dark</color>
     <color name="event_row">@color/white_light</color>
-    <color name="un_event_row">@color/white_grey</color>
+
+    <color name="evenRows">@color/white_grey</color>
+    <color name="event_row_odd">@color/white_light</color>
+
     <color name="event_text">@color/black</color>
 
     <color name="colorPrimary">@color/white</color>

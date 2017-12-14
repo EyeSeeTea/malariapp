@@ -281,6 +281,12 @@ public class AutoTabAdapter extends ATabAdapter {
                 ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
+            case Constants.PHONE:
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.phone, parent, question, viewHolder, position, getInflater());
+                //Add main component, set filters and listener
+                ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
+                ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
+                break;
             case Constants.INT:
                 rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
                 //Add main component, set filters and listener
@@ -376,6 +382,12 @@ public class AutoTabAdapter extends ATabAdapter {
                     viewHolder.addColumnComponent(customEditText);
                     break;
                 case Constants.INT:
+                    customEditText= addEditIntViewToRow(row, question, columnWeight);
+                    customEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
+                    customEditText.addTextChangedListener(new TextViewListener(question));
+                    viewHolder.addColumnComponent(customEditText);
+                    break;
+                case Constants.PHONE:
                     customEditText= addEditIntViewToRow(row, question, columnWeight);
                     customEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                     customEditText.addTextChangedListener(new TextViewListener(question));
@@ -528,6 +540,7 @@ public class AutoTabAdapter extends ATabAdapter {
             case Constants.INT:
             case Constants.LONG_TEXT:
             case Constants.POSITIVE_INT:
+            case Constants.PHONE:
                 viewHolder.setText(ReadWriteDB.readValueQuestion(question, module));
                 break;
             case Constants.DROPDOWN_LIST:
