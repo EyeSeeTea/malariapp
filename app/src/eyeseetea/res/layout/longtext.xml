@@ -5,6 +5,7 @@
     android:background="@drawable/background_textfield"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="@dimen/question_padding_all"
     android:paddingTop="@dimen/question_padding_all"
     android:paddingBottom="@dimen/question_padding_all">
 

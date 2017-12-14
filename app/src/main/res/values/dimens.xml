@@ -104,4 +104,7 @@
     <dimen name="header_bold_text_size">18dp</dimen>
 
     <dimen name="row_size">35dp</dimen>
+    <dimen name="header_survey_margin_top">20dp</dimen>
+    <dimen name="header_top_padding">0dp</dimen>
+    <dimen name="header_bottom_padding">0dp</dimen>
 </resources>

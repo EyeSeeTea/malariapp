@@ -261,7 +261,9 @@ public class AssessModuleController extends ModuleController {
                 (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
                         ().getCustomView().findViewById(
                         R.id.action_bar_chart);
-
+        if(doublePieChart==null){
+            return;
+        }
         doublePieChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

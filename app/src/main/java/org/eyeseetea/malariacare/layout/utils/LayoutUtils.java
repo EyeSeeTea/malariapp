@@ -43,12 +43,8 @@ public class LayoutUtils {
 
     public static final int[] rowBackgrounds =
             {R.drawable.background_even, R.drawable.background_odd};
-    public static final int[] rowBackgroundsNoBorder =
-            {R.drawable.background_even_wo_border, R.drawable.background_odd_wo_border};
     public static final int[] rowBackgroundsImprove =
             {R.drawable.background_even_improve, R.drawable.background_odd};
-    public static final int[] rowBackgroundsNoBorderImprove =
-            {R.drawable.background_even_wo_border_improve, R.drawable.background_odd_wo_border};
 
     // Given a index, this method return a background color
     public static int calculateBackgrounds(int index) {

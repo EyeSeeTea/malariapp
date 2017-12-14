@@ -35,37 +35,11 @@ public class ActionBarStrategy extends LayoutUtils {
 
     public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
             SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
-        String title = "";
-        if (survey.getProgram().getName() != null) {
-            title = survey.getProgram().getName();
-        }
-        //Get Tab + User
-        title = getCapitalizeName(title);
-        String subtitle = getCurrentUsername();
-        String appNameColorString = getAppNameColorString();
-        String appName = getAppName();
-        Spanned spannedTitle = Html.fromHtml(
-                String.format("<font color=\"#%s\"><b>%s</b></font> - %s", appNameColorString,
-                        appName +" - " + moduleName, title));
-        setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey());
     }
 
 
     private static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,
             String subtitle, long surveyId) {
-        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            actionBar.setCustomView(R.layout.dev_custom_action_bar);
-            String server = PreferencesState.getInstance().getServerUrl();
-            ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
-        }else {
-            actionBar.setCustomView(R.layout.custom_action_bar_with_chart);
-        }
-        String server = PreferencesState.getInstance().getServerUrl();
-        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
-        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
     public static void setActionBarDashboard(ActionBarActivity activity, String title) {

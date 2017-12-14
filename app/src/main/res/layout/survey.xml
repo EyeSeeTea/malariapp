@@ -19,7 +19,6 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -55,8 +54,6 @@
         android:layout_width="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:background="@color/assess_yellow"
         layout="@layout/main_header"/>
 
     <include
@@ -72,8 +69,8 @@
         android:layout_above="@id/form_footer_layout"
         android:layout_below="@id/header_layout"
         android:id="@+id/content"
-        android:background="@color/white"
-        android:layout_marginTop="20dp"
+        android:background="@color/green_dark"
+        android:layout_marginTop="@dimen/header_survey_margin_top"
         android:orientation="vertical"
         android:gravity="top" />
     <ImageButton

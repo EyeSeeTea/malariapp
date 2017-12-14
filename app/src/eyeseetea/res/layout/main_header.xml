@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/form_header"
+    android:background="@drawable/tab_background"
+    android:gravity="center_horizontal">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:paddingLeft="@dimen/left_padding_arrow"
+        android:paddingRight="@dimen/right_padding_arrow"
+        android:layout_marginLeft="6dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/previous_tab"
+        android:background="@color/transparent"
+        android:alpha="0"
+        android:src="@drawable/arrow_to_left"
+        android:backgroundTint="@color/white"
+        android:backgroundTintMode="src_in"
+        android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"  />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabSpinner"
+        android:spinnerMode="dialog"
+        android:layoutMode="clipBounds"
+        android:gravity="right"
+        android:paddingTop="0dip"
+        android:paddingBottom="0dip"
+        android:paddingStart="2dip"
+        android:paddingLeft="2dip"
+        android:paddingRight="2dip"
+        android:background="@null"
+        android:layout_toRightOf="@+id/previous_tab"
+        android:layout_toLeftOf="@+id/next_tab"  />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/left_padding_arrow"
+        android:paddingRight="@dimen/right_padding_arrow"
+        android:id="@+id/next_tab"
+        android:src="@drawable/arrow_to_right"
+        android:background="@color/transparent"
+        android:layout_alignParentRight="true"
+        android:alpha="0"
+        android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
+</RelativeLayout>

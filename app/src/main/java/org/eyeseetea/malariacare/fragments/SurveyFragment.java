@@ -409,6 +409,9 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                 (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
                         ().getCustomView().findViewById(
                         R.id.action_bar_chart);
+        if(doublePieChart==null){
+            return;
+        }
         doublePieChart.setVisibility(View.VISIBLE);
         for (Question question : valueChangedEvent.getQuestions()) {
             if (valueChangedEvent.getAction().equals(
@@ -500,6 +503,7 @@ public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
                 tabAdapter.initializeSubscore();
             }
             listView = (ListView) llLayout.findViewById(R.id.listView);
+            SurveyFragmentStrategy.modifyListviewBorder(listView);
             listView.setAdapter((BaseAdapter) tabAdapter);
             listView.setOnScrollListener(new UnfocusScrollListener());
             stopProgress();

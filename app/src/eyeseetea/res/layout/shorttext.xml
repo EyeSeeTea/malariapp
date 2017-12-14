@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="@dimen/question_padding_all"
     android:paddingTop="@dimen/question_padding_all"
     android:paddingBottom="@dimen/question_padding_all">
         <org.eyeseetea.malariacare.views.CustomTextView
