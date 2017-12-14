@@ -69,7 +69,7 @@
         android:layout_above="@id/form_footer_layout"
         android:layout_below="@id/header_layout"
         android:id="@+id/content"
-        android:background="@color/green_dark"
+        android:background="@color/survey_background"
         android:layout_marginTop="@dimen/header_survey_margin_top"
         android:orientation="vertical"
         android:gravity="top" />
