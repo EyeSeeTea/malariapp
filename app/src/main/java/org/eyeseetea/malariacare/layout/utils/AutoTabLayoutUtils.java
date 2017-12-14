@@ -237,13 +237,33 @@ public class AutoTabLayoutUtils {
 
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+        viewHolder.component = rowView.findViewById(R.id.answer);
+        viewHolder.component = rowView.findViewById(R.id.answer);
+        viewHolder.parentImage = rowView.findViewById(R.id.parent_img);
+        viewHolder.childrenImage = rowView.findViewById(R.id.child_img);
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
+        //SurveyFragmentStrategy.cosmetic()
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             questionUId = " <a href=\"" + PreferencesState.getInstance().getServerUrl()
                     + PreferencesState.getInstance().getContext().getString(
                     R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
                     + ")</a>";
+        }
+
+        if(viewHolder.parentImage!=null){
+            if(question.hasChildren()){
+                viewHolder.parentImage.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.parentImage.setVisibility(View.GONE);
+            }
+        }
+        if(viewHolder.childrenImage!=null){
+            if(question.hasParent()){
+                viewHolder.childrenImage.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.childrenImage.setVisibility(View.GONE);
+            }
         }
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);

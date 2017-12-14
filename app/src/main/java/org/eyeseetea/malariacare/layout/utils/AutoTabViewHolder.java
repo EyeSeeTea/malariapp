@@ -21,10 +21,12 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomEditText;
@@ -45,6 +47,10 @@ public class AutoTabViewHolder {
     // Main component in the row: Spinner, EditText or RadioGroup
     public View component;
 
+    public View parentImage;
+
+    public View childrenImage;
+
     private List<View> columnComponents;
 
     public CustomTextView num;
@@ -57,6 +63,8 @@ public class AutoTabViewHolder {
     public AutoTabViewHolder(View component) {
         this();
         this.component = component;
+        this.parentImage = ((ViewGroup)component.getParent()).findViewById(R.id.parent_img);
+        this.childrenImage = ((ViewGroup)component.getParent()).findViewById(R.id.child_img);
     }
 
     public void addColumnComponent(View component) {

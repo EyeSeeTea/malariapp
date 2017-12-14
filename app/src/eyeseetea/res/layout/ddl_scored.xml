@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/parent_child_images"></include>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/statement"
             android:layout_width="0dip"

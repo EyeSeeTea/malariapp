@@ -7,6 +7,7 @@
     android:paddingRight="@dimen/question_padding_all"
     android:paddingTop="@dimen/question_padding_all"
     android:paddingBottom="@dimen/question_padding_all">
+        <include layout="@layout/parent_child_images"></include>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"

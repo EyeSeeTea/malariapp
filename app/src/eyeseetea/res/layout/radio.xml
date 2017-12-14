@@ -25,6 +25,7 @@
     android:paddingRight="@dimen/question_padding_all"
     android:orientation="horizontal">
 
+    <include layout="@layout/parent_child_images"></include>
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/statement"
         android:layout_width="0dip"
