@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
@@ -66,7 +65,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -266,60 +264,64 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                //Update hardcoded messages
-                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+                if (isAdded()) {
+                    //Update hardcoded messages
+                    new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
-                //Update hardcoded messages
-                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+                    //Update hardcoded messages
+                    new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
-                //Add line chart
-                if (isOrgUnitFilterActive()) {
-                    new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
-                            orgUnits).addDataInChart(view);
-                }
+                    //Add line chart
+                    if (isOrgUnitFilterActive()) {
+                        new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
+                                orgUnits).addDataInChart(view);
+                    }
 
-                if (isProgramFilterActive()) {
-                    new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
-                            programs).addDataInChart(view);
-                }
-                //Set chart title
-                SentSurveysBuilderBase.injectChartTitle(webView);
+                    if (isProgramFilterActive()) {
+                        new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
+                                programs).addDataInChart(view);
+                    }
+                    //Set chart title
+                    SentSurveysBuilderBase.injectChartTitle(webView);
 
-                //Show stats by program
-                SentSurveysBuilderBase.showData(view);
+                    //Show stats by program
+                    SentSurveysBuilderBase.showData(view);
 
-                //Add line chart
-                if (isOrgUnitFilterActive()) {
-                    new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
-                }
-                if (isProgramFilterActive()) {
-                    new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
-                }
+                    //Add line chart
+                    if (isOrgUnitFilterActive()) {
+                        new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(
+                                view);
+                    }
+                    if (isProgramFilterActive()) {
+                        new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(
+                                view);
+                    }
 
-                //Add line chart
-                if (isOrgUnitFilterActive()) {
-                    //facility by progam-> is a orgunit facility
-                    new FacilityTableBuilderByProgram(surveysForGraphic,
-                            getActivity()).addDataInChart(view);
-                }
-                if (isProgramFilterActive()) {
-                    //facility by orgunit-> is a program facility
-                    new FacilityTableBuilderByOrgUnit(surveysForGraphic,
-                            getActivity()).addDataInChart(view);
-                }
+                    //Add line chart
+                    if (isOrgUnitFilterActive()) {
+                        //facility by progam-> is a orgunit facility
+                        new FacilityTableBuilderByProgram(surveysForGraphic,
+                                getActivity()).addDataInChart(view);
+                    }
+                    if (isProgramFilterActive()) {
+                        //facility by orgunit-> is a program facility
+                        new FacilityTableBuilderByOrgUnit(surveysForGraphic,
+                                getActivity()).addDataInChart(view);
+                    }
 
-                //Draw facility main table
-                //Set the colors of red/green/yellow pie and table
-                FacilityTableBuilderBase.setColor(view);
+                    //Draw facility main table
+                    //Set the colors of red/green/yellow pie and table
+                    FacilityTableBuilderBase.setColor(view);
 
-                String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-                String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-                if(!programUidFilter.equals("")){
-                    pushProgramFilterToJavascript(programUidFilter);
-                }else if(!orgUnitUidFilter.equals("")){
-                    pushOrgUnitFilterToJavascript(orgUnitUidFilter);
-                }else{
-                    FacilityTableBuilderByProgram.showFacilities(view);
+                    String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+                    String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+                    if (!programUidFilter.equals("")) {
+                        pushProgramFilterToJavascript(programUidFilter);
+                    } else if (!orgUnitUidFilter.equals("")) {
+                        pushOrgUnitFilterToJavascript(orgUnitUidFilter);
+                    } else {
+                        FacilityTableBuilderByProgram.showFacilities(view);
+                    }
                 }
             }
         });
