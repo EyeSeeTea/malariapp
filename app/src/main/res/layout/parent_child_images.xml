@@ -5,12 +5,24 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:src="@drawable/ic_parent"/>
+        android:scaleType="center"
+        android:padding="5dp"
+        android:src="@drawable/ic_icn_plus"/>
+    <ImageView
+        android:id="@+id/parent_hide_img"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:scaleType="center"
+        android:padding="5dp"
+        android:src="@drawable/ic_icn_minus"/>
     <ImageView
         android:id="@+id/child_img"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:src="@drawable/ic_child"/>
+        android:scaleType="center"
+        android:padding="15dp"
+        android:src="@drawable/ic_icn_follow_up"/>
 
 </merge>

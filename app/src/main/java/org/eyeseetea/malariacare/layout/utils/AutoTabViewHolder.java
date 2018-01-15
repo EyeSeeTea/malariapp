@@ -49,6 +49,8 @@ public class AutoTabViewHolder {
 
     public View parentImage;
 
+    public View parentImageShown;
+
     public View childrenImage;
 
     private List<View> columnComponents;

@@ -961,6 +961,44 @@ public class QuestionDB extends BaseModel {
                 output == Constants.RADIO_GROUP_VERTICAL;
     }
 
+
+    public boolean areChildrenVisible(float idSurvey) {
+        if(!hasChildren()){
+            return false;
+        }
+        if(getValueBySurvey(idSurvey)==null || getValueBySurvey(idSurvey).getOption()==null ) {
+            return false;
+        }
+
+        long optionId = (long) getValueBySurvey(idSurvey).getOption().getId_option();
+        long numberOfChildrenActive = new Select().distinct().from(ValueDB.class).as(valueName)
+                .join(QuestionOptionDB.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
+                                .eq(QuestionOptionDB_Table.id_question_fk.withTable(questionOptionAlias)))
+
+                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)
+                        .eq(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)))
+
+                .join(MatchDB.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionOptionDB_Table.id_match_fk.withTable(questionOptionAlias)
+                        .eq(MatchDB_Table.id_match.withTable(matchAlias)))
+
+                //Parent child relationship
+                .where(QuestionRelationDB_Table.operation.eq(1))
+                //For the given survey
+                .and(ValueDB_Table.id_survey_fk.withTable(valueAlias)
+                        .eq((long)idSurvey))
+                //and question
+                .and(ValueDB_Table.id_question_fk.withTable(valueAlias)
+                        .eq(id_question))
+                //and option
+                .and(ValueDB_Table.id_option_fk.withTable(valueAlias)
+                        .eq((long)optionId))
+                .count();
+        System.out.println("query: numberOfChildrenActive" + numberOfChildrenActive );
+        return numberOfChildrenActive>1;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -211,13 +211,13 @@ public class AutoTabLayoutUtils {
         return hiddens;
     }
 
-    public static View initialiseDropDown(int position, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context) {
+    public static View initialiseDropDown(int position, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context, float idSurvey) {
         View rowView;
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
+            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater, idSurvey);
             initialiseScorableComponent(rowView, viewHolder);
         }else{
-            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
+            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater, idSurvey);
         }
 
         // In case the option is selected, we will need to show num/dems
@@ -228,7 +228,7 @@ public class AutoTabLayoutUtils {
         return rowView;
     }
 
-    public static View initialiseView(int resource, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater) {
+    public static View initialiseView(int resource, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater, float idSurvey) {
         View rowView = lInflater.inflate(resource, parent, false);
         if (question.hasChildren())
             rowView.setBackgroundResource(R.drawable.background_parent);
@@ -240,6 +240,7 @@ public class AutoTabLayoutUtils {
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.parentImage = rowView.findViewById(R.id.parent_img);
+        viewHolder.parentImageShown = rowView.findViewById(R.id.parent_hide_img);
         viewHolder.childrenImage = rowView.findViewById(R.id.child_img);
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
@@ -252,10 +253,13 @@ public class AutoTabLayoutUtils {
         }
 
         if(viewHolder.parentImage!=null){
+            viewHolder.parentImageShown.setVisibility(View.GONE);
             if(question.hasChildren()){
                 viewHolder.parentImage.setVisibility(View.VISIBLE);
-            }else{
-                viewHolder.parentImage.setVisibility(View.GONE);
+                if (question.areChildrenVisible(idSurvey)) {
+                    viewHolder.parentImageShown.setVisibility(View.VISIBLE);
+                    viewHolder.parentImage.setVisibility(View.GONE);
+                }
             }
         }
         if(viewHolder.childrenImage!=null){
