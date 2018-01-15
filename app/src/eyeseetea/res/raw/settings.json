@@ -14,25 +14,25 @@
     "modules": [{
       "title": "plan",
       "icon": "tab_plan",
-      "backgroundColor": "tab_green_monitor",
+      "backgroundColor": "transparent",
       "layout": "dashboard_planning_init",
       "controller": "PlanModuleController"
     }, {
       "title": "assess",
       "icon": "tab_assess",
-      "backgroundColor": "tab_green_monitor",
+      "backgroundColor": "transparent",
       "layout": "dashboard_details_container",
       "controller": "AssessModuleController"
     },{
       "title": "improve",
       "icon": "tab_improve",
-      "backgroundColor": "tab_green_monitor",
+      "backgroundColor": "transparent",
       "layout": "dashboard_completed_container",
       "controller": "ImproveModuleController"
     },{
       "title": "monitor",
       "icon": "tab_monitor",
-      "backgroundColor": "tab_green_monitor",
+      "backgroundColor": "transparent",
       "layout": "dashboard_charts_container",
       "controller": "MonitorModuleController",
       "monitorFilter": "all"

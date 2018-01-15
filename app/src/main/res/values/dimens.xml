@@ -112,4 +112,6 @@
     <dimen name="filter_right_padding">0dp</dimen>
     <dimen name="filter_left_padding">0dp</dimen>
     <dimen name="filter_bottom_padding">15dp</dimen>
+
+    <dimen name="planning_titles">18dp</dimen>
 </resources>

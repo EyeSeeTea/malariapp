@@ -42,9 +42,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_media_play"
-            android:background="@null"
-            android:tintMode="src_over" />
+            android:background="@null"/>
 
     </LinearLayout>
 

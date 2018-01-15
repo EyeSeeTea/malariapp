@@ -8,4 +8,19 @@
     <dimen name="filter_left_padding">0dp</dimen>
     <dimen name="filter_bottom_padding">15dp</dimen>
 
+
+    <dimen name="roboto_10">10dp</dimen>
+    <dimen name="roboto_11">11dp</dimen>
+    <dimen name="roboto_12">12dp</dimen>
+    <dimen name="roboto_13">13dp</dimen>
+    <dimen name="roboto_14">14dp</dimen>
+    <dimen name="roboto_16">16dp</dimen>
+    <dimen name="roboto_18">18dp</dimen>
+    <dimen name="roboto_20">20dp</dimen>
+
+
+    <dimen name="dropdown_title">@dimen/roboto_13</dimen>
+    <dimen name="headers_title_size">12dp</dimen>
+    <dimen name="planning_titles">@dimen/roboto_20</dimen>
+
 </resources>

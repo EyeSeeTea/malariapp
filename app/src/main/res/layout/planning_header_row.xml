@@ -35,7 +35,7 @@
         android:typeface="sans"
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:textColor="@color/planning_header_text"
-        android:textSize="18dp"
+        android:textSize="@dimen/planning_titles"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/light_font"
         />
@@ -46,6 +46,7 @@
         android:layout_weight=".15"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dashboard_planning_padding"
+        android:paddingRight="@dimen/dashboard_planning_padding"
         android:src="@drawable/ic_media_arrow"/>
 
 </LinearLayout>

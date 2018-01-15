@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -222,21 +221,7 @@ public class PlannedAdapter extends BaseAdapter {
         int color  = PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.black);
         //Set image color
-        if (plannedHeader.equals(currentHeader)) {
-            img.setImageResource(R.drawable.ic_media_arrow_up);
-            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.white));
-        } else {
-            if (plannedHeader.getTitleHeader().contains(context.getString(R.string.dashboard_title_planned_type_never))) {
-                color  =  PreferencesState.getInstance().getContext().getResources().getColor(
-                        R.color.white);
-                Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/"+context.getString(R.string.medium_font_name));
-                textView.setTypeface(font);
-            } else {
-                color  = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.black);
-            }
-        }
+        color = new PlannedStyleStrategy(plannedHeader, textView, img, color).draw(currentHeader);
         img.setColorFilter(color);
         textView.setTextColor(color);
 /*
@@ -301,7 +286,7 @@ public class PlannedAdapter extends BaseAdapter {
             rowLayout.setBackgroundColor(colorId);
         } else {
             colorId = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.white_grey);
+                    R.color.even_row_background);
             rowLayout.setBackgroundColor(colorId);
         }
         //Action
@@ -310,7 +295,7 @@ public class PlannedAdapter extends BaseAdapter {
         if (plannedSurvey.getSurvey().isInProgress()) {
             actionButton.setImageResource(R.drawable.ic_edit);
         } else {
-            actionButton.setImageResource(R.drawable.red_circle_cross);
+            actionButton.setImageResource(R.drawable.icn_plus);
         }
         actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.plan_grey_light));
@@ -386,6 +371,4 @@ public class PlannedAdapter extends BaseAdapter {
             toggleSection(plannedHeader);
         }
     }
-
-
 }

@@ -42,6 +42,9 @@
     <color name="background_light_grey">#d9d9d9</color>
     <color name="text_dark_grey">#808080</color>
     <color name="stroke_dark_grey">#8c8080</color>
+
+    <color name="even_row_background">@color/white_grey</color>
+
     <!-- from old SDK-->
     <color name="assess_darkyellow">#9FA631</color>
     <color name="assess_lightyellow">#DBE444</color>
@@ -82,5 +85,9 @@
 
     <color name="survey_background">@color/white</color>
 
+    <color name="never_assessed_background">@color/red</color>
+    <color name="overdue_background">@color/amber</color>
+    <color name="next_30_days_background">@color/green</color>
+    <color name="future_background">@color/scoreGrandson</color>
 
 </resources>
