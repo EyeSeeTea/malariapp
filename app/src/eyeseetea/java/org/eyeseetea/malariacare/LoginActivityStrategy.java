@@ -17,20 +17,25 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.strategies;
+package org.eyeseetea.malariacare;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import org.eyeseetea.malariacare.DashboardActivity;
-import org.eyeseetea.malariacare.LoginActivity;
-import org.eyeseetea.malariacare.ProgressActivity;
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
@@ -72,11 +77,8 @@ public class LoginActivityStrategy {
     }
 
     private void addDemoButton() {
-        ViewGroup loginViewsContainer = (ViewGroup) loginActivity.findViewById(
-                R.id.layout_login_views);
 
-        loginActivity.getLayoutInflater().inflate(R.layout.demo_login_button, loginViewsContainer,
-                true);
+        LoginActivityStrategy.customStyle(loginActivity);
 
         FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
 
@@ -110,6 +112,49 @@ public class LoginActivityStrategy {
                         });
             }
         });
+    }
+
+    private static void customStyle(LoginActivity loginActivity) {
+        ViewGroup loginViewsContainer = (ViewGroup) loginActivity.findViewById(
+                R.id.layout_content);
+
+        TextView loginTextView = (TextView) loginActivity.findViewById(
+                R.id.title);
+
+        loginTextView.setVisibility(View.VISIBLE);
+        loginTextView.setText(R.string.login_title);
+
+        TextInputLayout textInputLayout = (TextInputLayout) loginActivity.findViewById(
+                R.id.edittext_username_input_layout);
+        modifyEditTextStyle(textInputLayout);
+        textInputLayout = (TextInputLayout) loginActivity.findViewById(
+                R.id.edittext_password_input_layout);
+        modifyEditTextStyle(textInputLayout);
+        textInputLayout = (TextInputLayout) loginActivity.findViewById(
+                R.id.edittext_server_url_input_layout);
+        modifyEditTextStyle(textInputLayout);
+        loginTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, PreferencesState.getInstance().getContext().getResources().getDimensionPixelSize(R.dimen.roboto_10));
+
+        loginTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, PreferencesState.getInstance().getContext().getResources().getDimensionPixelSize(R.dimen.roboto_10));
+        //button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, PreferencesState.getInstance().getContext().getResources().getDimensionPixelSize(R.dimen.roboto_16));
+        loginActivity.getLayoutInflater().inflate(R.layout.demo_login_button, loginViewsContainer,
+                true);
+        Button button = (Button)loginViewsContainer.findViewById(R.id.button_log_in);
+        LinearLayout.LayoutParams params  = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        button.setLayoutParams(params);
+        button.setBackgroundColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.green_button));
+        button.setTextColor(ContextCompat.getColor(PreferencesState.getInstance().getContext(),R.color.white));
+        //button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, PreferencesState.getInstance().getContext().getResources().getDimensionPixelSize(R.dimen.roboto_16));
+
+
+    }
+
+    private static void modifyEditTextStyle(TextInputLayout parent) {
+        parent.getEditText().setHighlightColor(
+                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.login_field));
+        parent.getEditText().setHintTextColor(
+                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.login_field));
     }
 
     private void executeDemo() {

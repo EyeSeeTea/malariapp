@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.eyeseetea.malariacare">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission
+        android:name="android.permission.USE_CREDENTIALS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="remove" />
+
+    <application
+        android:name=".EyeSeeTeaApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/qualityapp_logo"
+        android:label="@string/app_name"
+        android:theme="@style/EyeSeeTheme"
+        tools:replace="android:icon,android:theme">
+
+        <activity
+            android:name=".DashboardActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity
+            android:name=".VideoActivity"
+            android:label="@string/feedback_media"/>
+        <activity
+            android:name=".DownloadedMediaActivity"
+            android:label="@string/downloaded_media_menu"/>
+
+        <service
+            android:name=".services.SurveyService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.PushService"
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+
+        <activity
+            android:name=".ProgressActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/settings_menu_pull"/>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity" />
+        </activity>
+
+        <receiver android:name="org.eyeseetea.malariacare.receivers.AlarmPushReceiver"/>
+
+        <meta-data
+            android:name="nextClassName"
+            android:value="org.eyeseetea.malariacare.DashboardActivity" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0ff574d40926a9541f1c04cdd0a1ce3c03140d51" />
+
+        <provider
+            android:name="org.eyeseetea.malariacare.utils.DBProvider"
+            android:authorities="${applicationId}.data.database.utils.ExportData"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <provider
+            android:name="org.eyeseetea.malariacare.utils.VideoProvider"
+            android:authorities="${applicationId}.layout.adapters.survey.FeedbackAdapter"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:readPermission="true"
+            android:writePermission="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

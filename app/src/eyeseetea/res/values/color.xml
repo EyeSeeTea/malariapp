@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="grey_light_qm">#325058</color>
-    <color name="green_middle">@color/green_box</color>
+    <color name="green_middle">#4B6033</color>
     <color name="green_dark">#417505</color>
     <color name="white_grey">#D8D8D8</color>
     <color name="white_light">#EDEDED</color>
@@ -14,7 +14,7 @@
     <color name="filter_gradient_end">#B5B5B5</color>
 
     <color name="grey_line">#979797</color>
-    <color name="green_button">#4B6033</color>
+    <color name="green_button">@color/green_middle</color>
     <color name="green_light_tic">#7ED321</color>
     <color name="blue_background_tic">@color/blue_qm</color>
     <color name="blue_title_text">@color/blue_qm</color>
@@ -52,9 +52,9 @@
     <color name="color_primary_dark">@color/tab_gradient_start</color>
     <color name="color_primary_light">@color/tab_gradient_end</color>
     <color name="color_primary_default">@color/grey_light_qm</color>
-    <color name="button_login_state_enabled_false">@color/grey_light_qm</color>
-    <color name="button_login_state_unpressed">@color/green_middle</color>
-    <color name="button_login_state_pressed">@color/green_dark</color>
+    <color name="button_login_state_enabled_false">@color/transparent</color>
+    <color name="button_login_state_unpressed">@color/transparent</color>
+    <color name="button_login_state_pressed">@color/transparent</color>
     <color name="quest_mark_text">@color/grey_dark</color>
     <color name="quest_mark_tab_top">@color/grey_light_qm</color>
     <color name="quest_mark_tab_bottom">@color/green_dark</color>
@@ -94,4 +94,8 @@
     <color name="overdue_background">@color/orange_plan_block</color>
     <color name="next_30_days_background">@color/green_plan_block</color>
     <color name="future_background">@color/blue_plan_block</color>
+
+    <color name="login_field">@color/grey_dark</color>
+    <color name="login_input">@color/grey_dark</color>
+
 </resources>

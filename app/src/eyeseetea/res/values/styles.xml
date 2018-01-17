@@ -14,6 +14,10 @@
         <item name="logo">@drawable/qualityapp_logo</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionOverflowButtonStyle">@style/EyeSeeTheme.OverFlow</item>
+
+        <item name="colorControlNormal">#4A4A4A</item>
+        <item name="colorControlActivated">#979797</item>
+        <item name="colorControlHighlight">#4A4A4A</item>
     </style>
 
     <style name="EyeSeeTheme.OverFlow">
