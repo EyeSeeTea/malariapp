@@ -8,7 +8,7 @@
         android:paddingTop="@dimen/filter_top_padding"
         android:paddingRight="@dimen/filter_right_padding"
         android:paddingLeft="@dimen/filter_left_padding"
-        android:paddingBottom="@dimen/filter_bottom_padding">
+        android:paddingBottom="@dimen/filter_left_padding">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -21,6 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:padding="10dp"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/light_font" />
@@ -37,6 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:padding="10dp"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/light_font" />

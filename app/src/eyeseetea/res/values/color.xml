@@ -10,8 +10,8 @@
     <color name="shadow">#ffffff</color>
     <color name="border">#B7B7B7</color>
     <color name="blue_qm">#325058</color>
-    <color name="filter_gradient_start">#B5B5B5</color>
-    <color name="filter_gradient_end">#818181</color>
+    <color name="filter_gradient_start">#818181</color>
+    <color name="filter_gradient_end">#B5B5B5</color>
 
     <color name="grey_line">#979797</color>
     <color name="green_button">#4B6033</color>
@@ -42,6 +42,8 @@
     <color name="plan_grey_light">#4A4A4A</color>
     <color name="planning_header_text">@color/white</color>
     <color name="planning_header_background">@color/plan_grey_light</color>
+    <color name="filter_border">#858484</color>
+    <color name="filter_border_bottom">#959595</color>
 
     <color name="parentColor">@color/white_grey</color>
     <color name="headerColor">@color/green_dark</color>
