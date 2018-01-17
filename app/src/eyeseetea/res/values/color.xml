@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="grey_light_qm">#325058</color>
-    <color name="green_middle">#558c08</color>
+    <color name="green_middle">@color/green_box</color>
     <color name="green_dark">#417505</color>
     <color name="white_grey">#D8D8D8</color>
     <color name="white_light">#EDEDED</color>
@@ -26,6 +26,8 @@
     <color name="green_box">#417505</color>
     <color name="orange_box">#E2A42E</color>
     <color name="red_box">#9B1323</color>
+    <color name="amber">@color/orange_box</color>
+    <color name="darkRed">@color/red_box</color>
 
     <color name="green_plan_block">#4B6033</color>
     <color name="orange_plan_block">#9C773C</color>
@@ -38,6 +40,8 @@
     <color name="even_row_background">@color/even_background</color>
 
     <color name="plan_grey_light">#4A4A4A</color>
+    <color name="planning_header_text">@color/white</color>
+    <color name="planning_header_background">@color/plan_grey_light</color>
 
     <color name="parentColor">@color/white_grey</color>
     <color name="headerColor">@color/green_dark</color>

@@ -80,4 +80,13 @@ public class PlannedStyleStrategy {
         }
         return mColor;
     }
+
+    public static void drawQualityOfCare(View rowLayout, PlannedSurvey plannedSurvey) {
+        TextView textView = (TextView) rowLayout.findViewById(R.id.planning_survey_qoc);
+        textView.setText(plannedSurvey.getQualityOfCare());
+    }
+
+    public static String formatDate(Date date) {
+        return AUtils.getEuropeanFormatedDate(date);
+    }
 }

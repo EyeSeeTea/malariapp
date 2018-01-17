@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -157,6 +158,9 @@ public class PlannedAdapter extends BaseAdapter {
                 ((PlannedHeader) plannedItem).resetCounter();
                 continue;
             }
+            if (plannedItem instanceof PlannedSurveyHeader) {
+                continue;
+            }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
             if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
@@ -202,9 +206,19 @@ public class PlannedAdapter extends BaseAdapter {
         if (plannedItem instanceof PlannedHeader) {
             itemOrder = 0;
             return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
+        } else if (plannedItem instanceof PlannedSurveyHeader) {
+            return getViewByPlannedSurveyHeader((PlannedSurveyHeader) plannedItem, parent);
         } else {
             return getViewByPlannedSurvey(position, (PlannedSurvey) plannedItem, parent);
         }
+    }
+
+    private View getViewByPlannedSurveyHeader(PlannedSurveyHeader plannedHeader, ViewGroup parent) {
+        itemOrder++;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_survey_header_row,
+                parent, false);
+        return rowLayout;
     }
 
     private View getViewByPlannedHeader(PlannedHeader plannedHeader, ViewGroup parent) {
@@ -262,12 +276,11 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(plannedSurvey.getProductivity());
 
         //QualityOfCare
-        textView = (TextView) rowLayout.findViewById(R.id.planning_survey_qoc);
-        textView.setText(plannedSurvey.getQualityOfCare());
+        PlannedStyleStrategy.drawQualityOfCare(rowLayout, plannedSurvey);
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);
-        textView.setText(AUtils.getEuropeanFormatedDate(plannedSurvey.getNextAssesment()));
+        textView.setText(PlannedStyleStrategy.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);

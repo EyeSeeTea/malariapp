@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/assessment_row"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/cell_borders"
+    android:minHeight="@dimen/row_min_height">
+
+    <LinearLayout
+        android:id="@+id/facilityDateContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight=".16"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/planning_survey_action"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:gravity="center"
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.9"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.45"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.5"
+                android:gravity="left|center_vertical"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/planning_padding"
+                android:paddingTop="@dimen/planning_padding">
+
+                <org.eyeseetea.malariacare.views.CustomTextView
+                    android:id="@+id/planning_program"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:ellipsize="end"
+                    android:gravity="left|bottom"
+                    android:lines="1"
+                    android:text="@string/lorem_ipsum"
+                    android:textSize="@dimen/roboto_11"
+                    android:typeface="sans"
+                    app:tDimension="@string/font_size_level2"
+                    app:tFontName="@string/medium_font_name" />
+
+                <org.eyeseetea.malariacare.views.CustomTextView
+                    android:id="@+id/planning_org_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:ellipsize="end"
+                    android:gravity="left|top"
+                    android:lines="1"
+                    android:text="@string/lorem_ipsum"
+                    android:textSize="@dimen/roboto_11"
+                    android:textStyle="bold"
+                    android:typeface="sans"
+                    app:tDimension="@string/font_size_level2"
+                    app:tFontName="@string/light_font"/>
+            </LinearLayout>
+
+
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/planning_survey_prod"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight=".12"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/dashboard_title_planned_productivity"
+                android:textSize="@dimen/roboto_13"
+                android:textStyle="bold"
+                android:typeface="sans"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
+
+            <org.eyeseetea.sdk.presentation.views.DoubleRectChart
+                android:id="@+id/planning_survey_qoc"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight=".17"
+                android:layout_alignParentLeft="true" />
+
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/planning_survey_schedule_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="2dp"
+                android:layout_weight=".24"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/dashboard_title_planned_next_qa"
+                android:textSize="@dimen/roboto_12"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/medium_font_name" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/menu_dots"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.1"
+        android:gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:src="@drawable/ic_action_more_vert" />
+</TableRow>

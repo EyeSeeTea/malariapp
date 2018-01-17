@@ -19,34 +19,22 @@
 
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.Typeface;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
-import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
-import java.util.List;
+import java.util.Date;
 
 public class PlannedStyleStrategy {
     private PlannedHeader mPlannedHeader;
@@ -74,5 +62,31 @@ public class PlannedStyleStrategy {
 
             mTextView.setTypeface(font);
         return mColor;
+    }
+
+    public static void drawQualityOfCare(View rowLayout, PlannedSurvey plannedSurvey) {
+        DoubleRectChart doubleRectChart = (DoubleRectChart) rowLayout.findViewById(R.id.planning_survey_qoc);
+        float score;
+        try{
+            score = Float.parseFloat(plannedSurvey.getQualityOfCare());
+        }catch (NumberFormatException e){
+            score = 0;
+        }
+        int color = LayoutUtils.trafficColor(score);
+        String scoreText;
+        if(plannedSurvey.getQualityOfCare().equals("-") || plannedSurvey.getQualityOfCare().equals("NaN")){
+            scoreText = "-";
+        }else {
+            scoreText = plannedSurvey.getQualityOfCare() + ".0";
+        }
+        doubleRectChart.createDoubleRectChart(scoreText, (int)score,ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
+                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.white),
+                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.black),
+                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.white));
+
+    }
+
+    public static String formatDate(Date date) {
+        return AUtils.getEuropeanFormatedDateWithShortYear(date);
     }
 }

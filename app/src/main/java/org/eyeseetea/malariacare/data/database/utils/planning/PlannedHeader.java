@@ -44,7 +44,7 @@ public class PlannedHeader implements PlannedItem {
         this.backgroundColor = backgroundColor;
         this.secondaryColor = secondaryColor;
         this.gaudyBackgroundColor = gaudyBackgroundColor;
-        this.counter=0;
+        this.counter=1;
     }
 
     public Integer getGaudyBackgroundColor() {

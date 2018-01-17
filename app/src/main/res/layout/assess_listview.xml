@@ -32,7 +32,7 @@
                         android:lines="1"
                         android:paddingLeft="@dimen/row_left_padding"
                         android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/header_light_text_size"
+                        android:textSize="@dimen/roboto_12"
                         app:tDimension="@string/font_size_level2"
                         app:tFontName="@string/medium_font_name" />
                     <View
@@ -53,9 +53,9 @@
                         android:paddingRight="50dp"
                         android:text="@string/assessment_title_state"
                         android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/header_light_text_size"
+                        android:textSize="@dimen/roboto_12"
                         app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name" />
+                        app:tFontName="@string/medium_font_name"/>
             </LinearLayout>
     </RelativeLayout>
 
