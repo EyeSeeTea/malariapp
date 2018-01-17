@@ -32,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -43,7 +42,6 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
@@ -62,7 +60,6 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,6 +222,8 @@ public class DashboardController {
         ModuleController firstModuleController=getFirstVisibleModule();
 
         tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
+
+        setPrimaryIconActive(tabHost.getTabWidget().getChildAt(0));
         currentTab = firstModuleController.getName();
         currentTabTitle = firstModuleController.getTitle();
 
@@ -244,6 +243,13 @@ public class DashboardController {
 
                 //Update next Tab and title
                 currentTab = tabId;
+                for(int i=0; i<tabHost.getTabWidget().getTabCount();i++){
+                    if((tabHost.getTabWidget().getChildAt(i).findViewById(R.id.tabsLayout)).getTag().toString().equals(nextModuleController.getName())){
+                        setPrimaryIconActive(tabHost.getTabWidget().getChildAt(i));
+                    }else {
+                        setSecondaryIconActive(tabHost.getTabWidget().getChildAt(i));
+                    }
+                }
                 currentTabTitle = nextModuleController.getTitle();
 
                 //Before leaving current tab
@@ -256,6 +262,21 @@ public class DashboardController {
         });
     }
 
+    private void setPrimaryIconActive(View view) {
+        changeActiveIcon(view, View.VISIBLE, View.GONE);
+    }
+
+    private void setSecondaryIconActive(View view) {
+        changeActiveIcon(view, View.GONE, View.VISIBLE);
+    }
+
+    private void changeActiveIcon(View view, int primary, int secondary){
+        ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        imageView.setVisibility(primary);
+        imageView = (ImageView) view.findViewById(R.id.tabSecundaryImage);
+        imageView.setVisibility(secondary);
+
+    }
     /**
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */
@@ -702,7 +723,8 @@ public class DashboardController {
         tab.setContent(moduleController.getTabLayout());
         String title = "";
         if(AppSettingsBuilder.isTabTitleVisible()) {
-            View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon());
+            View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon(), moduleController.getSecondaryIcon());
+            tabview.setTag(moduleController.getName());
             tab = tabHost.newTabSpec(tabName).setIndicator(tabview).setContent(moduleController.getTabLayout());
 
         }else {
@@ -713,12 +735,16 @@ public class DashboardController {
         addTagToLastTab(tabName);
     }
 
-    private static View createTabView(final Context context, final String text, Drawable icon) {
+    private static View createTabView(final Context context, final String text, Drawable icon, Drawable secondaryIcon) {
         View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
         TextView tv = (TextView) view.findViewById(R.id.tabsText);
         tv.setText(text);
         ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        imageView.setVisibility(View.GONE);
         imageView.setImageDrawable(icon);
+        imageView = (ImageView) view.findViewById(R.id.tabSecundaryImage);
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setImageDrawable(secondaryIcon);
         return view;
     }
     /**

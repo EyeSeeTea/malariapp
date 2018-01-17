@@ -10,6 +10,14 @@
     <ImageView
         android:id="@+id/tabsImage"
         android:layout_width="fill_parent"
+        android:visibility="visible"
+        android:layout_height="36dp"
+        android:padding="10dp"
+        android:scaleType="fitCenter" />
+    <ImageView
+        android:id="@+id/tabSecundaryImage"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
         android:layout_height="36dp"
         android:padding="10dp"
         android:scaleType="fitCenter" />

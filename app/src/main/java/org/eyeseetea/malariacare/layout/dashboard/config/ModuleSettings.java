@@ -45,6 +45,11 @@ public class ModuleSettings {
      */
     String icon;
     /**
+     * Key in the drawable resources to get the Drawable for the tabs (Ex: R.drawable.tab_assess -> 'tab_assess')
+     */
+    String secondaryIcon;
+
+    /**
      * Key in the color resources to get the int (color) for the tabs (Ex: R.drawable.tab_yellow_assess -> 'tab_yellow_assess')
      */
     String backgroundColor;
@@ -67,6 +72,11 @@ public class ModuleSettings {
      *  The int value of the icon property under the generated R.drawable class
      */
     int resIcon;
+    /**
+     *  The int value of the secondary icon property under the generated R.drawable class
+     */
+    int resSecondaryIcon;
+
     /**
      * The int value of the backgroundColor property under the generated R.color class
      */
@@ -107,9 +117,18 @@ public class ModuleSettings {
         return icon;
     }
 
+    public String getSecondaryIcon() {
+        return secondaryIcon;
+    }
+
     public void setIcon(String icon) {
         this.icon = icon;
         this.resIcon = resolve(R.drawable.class,icon);
+    }
+
+    public void setSecondaryIcon(String icon) {
+        this.secondaryIcon = icon;
+        this.resSecondaryIcon = resolve(R.drawable.class,icon);
     }
 
     public String getBackgroundColor() {
@@ -145,6 +164,9 @@ public class ModuleSettings {
 
     public int getResIcon() {
         return resIcon;
+    }
+    public int getResSecondaryIcon() {
+        return resSecondaryIcon;
     }
 
     public int getResBackgroundColor() {

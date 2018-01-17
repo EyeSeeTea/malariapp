@@ -188,7 +188,7 @@
 <string name="hide_planning_tab_summary">"ໝາຍເອົາຫ້ອງນີ້ເພື່ອເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
 <string name="plan">"ການປະເມີນຜົນ"</string>
 <string name="assess">"ການສໍາຫຼວດ"</string>
-<string name="improve">"ສະຖິຕິ"</string>
+<string name="improve">"ຄໍາຕອບ"</string>
 <string name="monitor">"ບົດລາຍງານ"</string>
 <string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
 <string name="filter_all_org_assessments">"All Assessed"</string>

@@ -178,7 +178,7 @@ evaluation"</string>
 <string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
 <string name="plan">"Assessments"</string>
 <string name="assess">"Survey"</string>
-<string name="improve">"Statistics"</string>
+<string name="improve">"Feedback"</string>
 <string name="monitor">"Reports"</string>
 
 <string name="filter_all_org_units">"All Org Units"</string>

@@ -108,6 +108,9 @@ public abstract class ModuleController {
     public Drawable getIcon() {
         return dashboardActivity.getResources().getDrawable(moduleSettings.getResIcon());
     }
+    public Drawable getSecondaryIcon() {
+        return dashboardActivity.getResources().getDrawable(moduleSettings.getResSecondaryIcon());
+    }
 
     public int getBackgroundColor() {
         return dashboardActivity.getResources().getColor(moduleSettings.getResBackgroundColor());
@@ -180,7 +183,7 @@ public abstract class ModuleController {
      * Invoked whenever a tab loses its focus
      */
     public void onExitTab() {
-
+        //dashboardController.setTabIcon(getIcon(),getTabLayout());
     }
 
     /**

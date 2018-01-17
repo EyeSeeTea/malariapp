@@ -177,7 +177,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="hide_planning_tab_summary">"Marque esta caixa para ocultar a guia de planejamento"</string>
 <string name="plan">"Avaliações"</string>
 <string name="assess">"Inquérito"</string>
-<string name="improve">"Estatísticas"</string>
+<string name="improve">"Comentários"</string>
 <string name="monitor">"Relatórios"</string>
 <string name="filter_all_org_units">"todas as unidades de organização"</string>
 <string name="filter_all_org_assessments">"Todos avaliados"</string>

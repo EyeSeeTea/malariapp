@@ -12,12 +12,14 @@
     "modules": [{
       "title": "assess",
       "icon": "tab_assess",
+      "secondaryIcon": "tab_assess",
       "backgroundColor": "tab_yellow_assess",
       "layout": "dashboard_details_container",
       "controller": "AssessModuleController"
     },{
       "title": "improve",
       "icon": "tab_improve",
+      "secondaryIcon": "tab_assess",
       "backgroundColor": "tab_blue_improve",
       "layout": "dashboard_completed_container",
       "controller": "ImproveModuleController"
