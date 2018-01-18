@@ -203,7 +203,7 @@ evaluation"</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-<string name="select_all">"Select all"</string>
+<string name="select_all">"Select all Surveys"</string>
 <string name="demo_login">"Demo Mode"</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>

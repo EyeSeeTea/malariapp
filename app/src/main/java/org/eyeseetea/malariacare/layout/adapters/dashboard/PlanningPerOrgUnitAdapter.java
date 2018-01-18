@@ -36,12 +36,9 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final PlannedSurveyByOrgUnit plannedSurvey = (PlannedSurveyByOrgUnit) getItem(position);
         SurveyDB survey = plannedSurvey.getSurvey();
-        float density = getContext().getResources().getDisplayMetrics().density;
-        int paddingDp = (int) (5 * density);
 
         // Get the row layout
         View rowView = this.lInflater.inflate(getRecordLayout(), parent, false);
-        rowView.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
 
         //config row checkbox
         final CheckBox surveyCheckBox = (CheckBox) rowView.findViewById(R.id.survey_type);

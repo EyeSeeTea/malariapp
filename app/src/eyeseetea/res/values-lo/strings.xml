@@ -218,7 +218,7 @@
 <string name="admin_announcement">"ການແຈ້ງການຈາກຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="user_close">"ຜູ້ໃຊ້ນີ້ຖືກປິດໂດຍຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="dialog_demo_pull_success">"ໂຄງຮ່າງຂອງລະບົບ dhis ໄດ້ຖືກນຳເຂົ້າມາຈາກຂໍ້ມູນການສຳຫຼວດສຳເລັດແລ້ວ"</string>
-<string name="select_all">"ເລືອກທັງໝົດ"</string>
+<string name="select_all">"ເລືອກເອົາການສໍາຫຼວດທັງຫມົດ"</string>
 <string name="demo_login">"Demo mode"</string>
 <string name="system_defined">"ລະບົບທີ່ໄດ້ຮັບການກວດກາແລ້ວ"</string>
 <string name="settings_select_language">"ພາສາ"</string>
