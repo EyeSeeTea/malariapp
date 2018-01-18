@@ -39,6 +39,7 @@
         <FrameLayout
             android:id="@+id/dashboard_planning_init"
             android:layout_width="match_parent"
+            android:background="@color/plan_listview_background"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <LinearLayout

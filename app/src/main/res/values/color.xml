@@ -56,7 +56,7 @@
     <color name="button_login_state_pressed">#FF0C243C</color>
     <color name="new_grey">#cccccc</color>
     <color name="new_blue">#6ca9d8</color>
-    <color name="new_grey_text_color">#434343</color>
+    <color name="new_grey_text_color">#4A4A4A</color>
 
     <!-- ratio questions percentage-->
     <color name="ratio_mandatory_questions_high"> #0f7f12</color>
@@ -89,5 +89,8 @@
     <color name="overdue_background">@color/amber</color>
     <color name="next_30_days_background">@color/green</color>
     <color name="future_background">@color/scoreGrandson</color>
+    <color name="plan_listview_background">@color/transparent</color>
+    <color name="assets_listview_background">@color/white</color>
+    <color name="improve_listview_background">@color/white</color>
 
 </resources>

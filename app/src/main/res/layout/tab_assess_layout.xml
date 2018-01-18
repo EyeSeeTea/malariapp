@@ -42,6 +42,7 @@
             <ListView
                 android:id="@+id/dashboard_details_list"
                 android:layout_width="fill_parent"
+                android:background="@color/assets_listview_background"
                 android:layout_height="wrap_content" />
 
         </TableLayout>

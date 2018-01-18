@@ -35,7 +35,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.ActionBarStrategy;
 
 /**
@@ -183,7 +182,6 @@ public abstract class ModuleController {
      * Invoked whenever a tab loses its focus
      */
     public void onExitTab() {
-        //dashboardController.setTabIcon(getIcon(),getTabLayout());
     }
 
     /**

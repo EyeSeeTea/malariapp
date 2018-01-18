@@ -210,6 +210,40 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
     }
 
+    @Override
+    protected void decorateSurveyCompletion(View rowView, SurveyDB survey) {
+        final CustomTextView surveyCompletion = (CustomTextView) rowView.findViewById(R.id.survey_completion);
+        final CustomTextView surveyMandatoryCompletion = (CustomTextView) rowView.findViewById(R.id.survey_mandatory_completion);
+
+        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
+                new SurveyAnsweredRatioRepository();
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
+                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
+
+                        if (surveyAnsweredRatio != null) {
+                            if(surveyCompletion!=null) {
+                                surveyCompletion.setText(surveyAnsweredRatio.getAnswered() + "%");
+                            }
+                            if(surveyMandatoryCompletion!=null) {
+                                surveyMandatoryCompletion.setText(surveyAnsweredRatio.getCompulsoryAnswered() + "%");
+                            }
+                        }
+                    }
+                });
+    }
+
     /**
      * Calculate proper background according to the following rule:
      * -Same orgunit same background

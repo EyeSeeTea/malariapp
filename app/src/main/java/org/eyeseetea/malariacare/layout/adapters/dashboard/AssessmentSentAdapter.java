@@ -86,6 +86,11 @@ public class AssessmentSentAdapter extends
     }
 
     @Override
+    protected void decorateSurveyCompletion(View rowView, SurveyDB survey) {
+
+    }
+
+    @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
         decorateSentDate(survey, rowView);
         decorateSentScore(survey, rowView);

@@ -458,7 +458,6 @@ public class DashboardController {
 
                             mChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
                                     surveyAnsweredRatio.getTotalStatus());
-
                             alertDialog.show();
                         }
                     }

@@ -244,7 +244,6 @@ public class AutoTabLayoutUtils {
         viewHolder.childrenImage = rowView.findViewById(R.id.child_img);
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
-        //SurveyFragmentStrategy.cosmetic()
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             questionUId = " <a href=\"" + PreferencesState.getInstance().getServerUrl()
                     + PreferencesState.getInstance().getContext().getString(
