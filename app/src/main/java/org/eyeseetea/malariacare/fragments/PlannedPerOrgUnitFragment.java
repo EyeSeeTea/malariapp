@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
@@ -59,7 +60,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private PlannedItemsReceiver plannedItemsReceiver;
     protected PlanningPerOrgUnitAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
-    static ImageButton scheduleButton;
+    static View scheduleButton;
     CustomCheckBox selectAllCheckbox;
     String filterOrgUnitUid;
 
@@ -153,7 +154,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     private void initScheduleButton() {
-        scheduleButton = (ImageButton) getActivity().findViewById(R.id.reschedule_button);
+        scheduleButton = getActivity().findViewById(R.id.reschedule_button);
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

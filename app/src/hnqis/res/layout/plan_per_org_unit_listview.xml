@@ -53,6 +53,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/header" />
+
+        <ImageButton
+            android:id="@+id/reschedule_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/transparent"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:src="@drawable/ic_calendar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text_size"
+            android:textStyle="bold" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,13 +78,13 @@
         android:background="@drawable/fab_background"
         android:padding="3dp">
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/reschedule_button"
+            android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@color/transparent"
             android:onClick="onNewSurvey"
-            android:src="@drawable/ic_icn_assessment_on"
+            android:src="@drawable/ic_add"
             android:textColor="@color/white"
             android:textSize="@dimen/medium_text_size"
             android:backgroundTint="@color/grey_light_qm"
