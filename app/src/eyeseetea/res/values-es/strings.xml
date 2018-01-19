@@ -264,8 +264,12 @@ clínica"</string>
 <string name="comments">"Comentarios"</string>
 <string name="dates">"Fechas anteriores"</string>
 <string name="mark_complete">"Marcar completado"</string>
-<string name="plain_text">Texto sin formato </string>
-<string name="html_text">Texto con formato </string>
+<string name="plain_text">Texto largo </string>
+<string name="html_text">Texto corto </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="completed_title">"Completado"</string>
+<string name="completed_next">"Próxima"</string>
+<string name="plan_action_edit_text_hint">"Toque para escribir"</string>
+
 </resources>

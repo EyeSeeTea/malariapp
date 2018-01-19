@@ -82,7 +82,7 @@
         android:layout_gravity="center_vertical"
         android:background="@color/transparent"
         android:onClick="onNewSurvey"
-        android:src="@drawable/ic_add"
+        app:srcCompat="@drawable/ic_add"
         android:textColor="@color/white"
         android:textSize="@dimen/medium_text_size"
         android:backgroundTint="@color/grey_light_qm"

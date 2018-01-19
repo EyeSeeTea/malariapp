@@ -93,4 +93,5 @@
     <color name="assets_listview_background">@color/white</color>
     <color name="improve_listview_background">@color/white</color>
 
+    <color name="action_plan_hint">#9B9B9B</color>
 </resources>

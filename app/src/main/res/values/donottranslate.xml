@@ -32,6 +32,8 @@
     <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
     <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
     <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
+    <string name="roboto_regular" translatable="false">Roboto-Light.ttf</string>
+    <string name="roboto_medium" translatable="false">Roboto-Medium.ttf</string>
     <string name="font_size_level0" translatable="false">xsmall</string>
     <string name="font_size_level1" translatable="false">small</string>
     <string name="font_size_level2" translatable="false">medium</string>

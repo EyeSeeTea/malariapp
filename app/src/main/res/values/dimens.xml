@@ -105,6 +105,10 @@
     <dimen name="planing_text_first_title_size">15dp</dimen>
     <dimen name="header_light_text_size">18dp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
+    <dimen name="header_big_text_size">18dp</dimen>
+    <dimen name="header_medium_text_size">14dp</dimen>
+    <dimen name="header_medium_right_text_size">13dp</dimen>
+    <dimen name="header_small_text_size">10dp</dimen>
 
     <dimen name="row_size">35dp</dimen>
     <dimen name="header_survey_margin_top">20dp</dimen>
@@ -128,4 +132,9 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
+
+    <dimen name="plan_action_text_title_size">@dimen/roboto_14</dimen>
+    <dimen name="plan_action_text_size">@dimen/roboto_13</dimen>
+    <dimen name="plan_action_button_text_size">@dimen/roboto_16</dimen>
+
 </resources>

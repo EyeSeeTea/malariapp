@@ -103,4 +103,7 @@
     <color name="nan_color">#999899</color>
 
 
+    <color name="plan_action_title_background_color">#d7d7d7</color>
+    <color name="plan_action_title_color">#4A4A4A</color>
+    <color name="spinner_border">#d7d7d7</color>
 </resources>
