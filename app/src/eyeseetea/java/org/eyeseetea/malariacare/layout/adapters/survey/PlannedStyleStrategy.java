@@ -79,11 +79,21 @@ public class PlannedStyleStrategy {
         }else {
             scoreText = plannedSurvey.getQualityOfCare() + ".0";
         }
-        doubleRectChart.createDoubleRectChart(scoreText, (int)score,ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
-                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.white),
-                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.black),
-                ContextCompat.getColor(PreferencesState.getInstance().getContext(), R.color.white));
-
+        if(scoreText.equals("-")){
+            doubleRectChart.createNaNDoubleRectChart(scoreText,
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.nan_color),ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.white));
+        }else {
+            doubleRectChart.createDoubleRectChart(scoreText, (int) score,
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.white),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.black),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.white));
+        }
     }
 
     public static String formatDate(Date date) {

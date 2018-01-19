@@ -16,6 +16,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
+import org.eyeseetea.malariacare.layout.adapters.survey.PlannedStyleStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -61,14 +62,14 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         //set schedule date
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         if (survey.getScheduledDate() != null) {
-            schedule.setText(AUtils.getEuropeanFormatedDate(survey.getScheduledDate()));
+            schedule.setText(PlannedStyleStrategy.formatDate(survey.getScheduledDate()));
         } else {
             schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
             CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(AUtils.getEuropeanFormatedDate(survey.getCreationDate()));
+            dueDate.setText(PlannedStyleStrategy.formatDate(survey.getCreationDate()));
         }
 
         //set row survey name

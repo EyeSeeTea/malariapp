@@ -211,7 +211,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
     }
 
     @Override
-    protected void decorateSurveyCompletion(View rowView, SurveyDB survey) {
+    protected void decorateSurveyChart(View rowView, SurveyDB survey) {
         final CustomTextView surveyCompletion = (CustomTextView) rowView.findViewById(R.id.survey_completion);
         final CustomTextView surveyMandatoryCompletion = (CustomTextView) rowView.findViewById(R.id.survey_mandatory_completion);
 

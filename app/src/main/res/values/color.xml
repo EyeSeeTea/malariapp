@@ -60,7 +60,7 @@
 
     <!-- ratio questions percentage-->
     <color name="ratio_mandatory_questions_high"> #0f7f12</color>
-    <color name="ratio_mandatory_questions_middle">#fecb2f</color>
+    <color name="ratio_mandatory_questions_middle">@color/transparent</color>
     <color name="ratio_mandatory_questions_low"> #890309</color>
 
     <color name="ratio_questions_high">#98fb98</color>

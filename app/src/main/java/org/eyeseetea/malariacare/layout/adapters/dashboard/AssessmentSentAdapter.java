@@ -22,14 +22,27 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
+import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
+import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.views.DoublePieChart;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,8 +99,42 @@ public class AssessmentSentAdapter extends
     }
 
     @Override
-    protected void decorateSurveyCompletion(View rowView, SurveyDB survey) {
+    protected void decorateSurveyChart(View rowView, SurveyDB survey) {
+        View view = rowView.findViewById(R.id.scoreChart);
+        if(view==null || !(view instanceof DoubleRectChart)){
+            return;
+        }
 
+        final DoubleRectChart doubleRectChart =
+                (DoubleRectChart) view;
+        if(doubleRectChart!=null){
+            Float score = survey.getMainScore();
+            int color = LayoutUtils.trafficColor(score);
+            String scoreText;
+            if(score==null){
+                scoreText = "NaN";
+            }else {
+                scoreText = Math.round(score) + ".0";
+            }
+
+            if(scoreText.equals("NaN")){
+                doubleRectChart.createNaNDoubleRectChart(scoreText,
+                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                                R.color.nan_color),
+                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                                R.color.white));
+            }else {
+                doubleRectChart.createDoubleRectChart(scoreText, score.intValue(),
+                        ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
+                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                                R.color.white),
+                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                                R.color.black),
+                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                                R.color.white));
+            }
+
+        }
     }
 
     @Override
@@ -110,8 +157,13 @@ public class AssessmentSentAdapter extends
             }
         }
 
-        CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
-        sentScore.setText(scoreText);
+        View sentScoreView = rowView.findViewById(R.id.score);
+        if(sentScoreView != null && sentScoreView instanceof CustomTextView) {
+            CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
+            if (sentScore != null) {
+                sentScore.setText(scoreText);
+            }
+        }
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {

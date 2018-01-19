@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="left|center"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:text="@string/assessment_title_facility_date"
             android:textColor="@color/planning_header_text"
             android:textSize="@dimen/roboto_12"
@@ -83,7 +83,7 @@
             android:id="@+id/scoreHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
             android:autoText="false"
             android:layout_gravity="left|center"
             android:gravity="left|center"
@@ -92,11 +92,12 @@
             android:textSize="@dimen/roboto_12"
             app:tDimension="@string/font_size_level2"
             app:tFontName="@string/medium_font_name" />
-    </LinearLayout>
-        <View
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.1"></View>
+            android:src="@drawable/no_video"
+            android:layout_weight="0.1"></ImageView>
+    </LinearLayout>
 </LinearLayout>
 
     <ListView

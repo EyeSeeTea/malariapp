@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 
@@ -99,7 +98,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
         showFacility(facilityName, surveyType, survey);
 
         decorateSurveyType(surveyType, survey);
-        decorateSurveyCompletion(rowView, survey);
+        decorateSurveyChart(rowView, survey);
         rowView = decorateBackground(position, rowView);
 
         return rowView;
@@ -125,7 +124,7 @@ public abstract class ADashboardAdapter extends ABaseAdapter {
     protected abstract void showFacility(CustomTextView facilityName, CustomTextView surveyType,
             SurveyDB survey);
 
-    protected abstract void decorateSurveyCompletion(View rowView, SurveyDB survey);
+    protected abstract void decorateSurveyChart(View rowView, SurveyDB survey);
     /**
      * Calculate proper background according to the following rule:
      * -Same orgunit same background

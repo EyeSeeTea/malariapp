@@ -100,6 +100,7 @@
     <color name="plan_listview_background">@color/app_background</color>
     <color name="assets_listview_background">@color/app_background</color>
     <color name="improve_listview_background">@color/app_background</color>
+    <color name="nan_color">#999899</color>
 
 
 </resources>
