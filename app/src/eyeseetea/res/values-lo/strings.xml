@@ -137,7 +137,7 @@
 <string name="feedback_show_only_media">"ສະແດງຄໍາຖາມເທົ່ານັ້ນທີ່ມີວິດີໂອ / ຮູບພາບ"</string>
 <string name="feedback_show_only_one_or_show_all">"ສະແດງໃຫ້ເຫັນຄວາມຄິດເຫັນຫຼ້າສຸດຕໍ່ໂຄງການ / OU"</string>
 <string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>
-<string name="quality_of_care">"ຄະແນນຄຸນນະພາບ"</string>
+<string name="quality_of_care">"Quality of Care  \n Overall Score:"</string>
 <string name="overall_quality_of_care">"ຜະລິດຕະພາບການດູແລສຸຂະພາບໂດຍລວມ (QoC):"</string>
 <string name="feedback_info_passed">"ຜ່ານ"</string>
 <string name="feedback_info_failed">"ບໍ່ຜ່ານ"</string>

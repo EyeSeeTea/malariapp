@@ -41,6 +41,7 @@ import android.widget.RelativeLayout;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
@@ -204,29 +205,19 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         );
         ImageButton goback = (ImageButton) llLayout.findViewById(
                 R.id.backToSentSurveys);
-        goback.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          getActivity().onBackPressed();
+        if(goback!=null) {
+            goback.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                              getActivity().onBackPressed();
+                                          }
                                       }
-                                  }
-        );
+            );
+        }
 
         //Set mainscore and color.
         SurveyDB survey = Session.getSurveyByModule(module);
-        if (survey.hasMainScore()) {
-            float average = survey.getMainScore();
-            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
-            item.setText(String.format("%.1f%%", average));
-            int colorId = LayoutUtils.trafficColor(average);
-            item.setTextColor(getResources().getColor(colorId));
-        } else {
-            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
-            item.setText(String.format("NaN"));
-            float average = 0;
-            int colorId = LayoutUtils.trafficColor(average);
-            item.setTextColor(getResources().getColor(colorId));
-        }
+        FeedbackFragmentStyleStrategy.drawScore(llLayout, survey, PreferencesState.getInstance().getContext());
     }
 
     private void loadItems(List<Feedback> items) {

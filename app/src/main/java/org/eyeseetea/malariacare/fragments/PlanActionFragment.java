@@ -438,30 +438,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
             }
         }else if (mDoubleRectChart!=null){
-            int color = LayoutUtils.trafficColor(mainScore);
-            String scoreText;
-            if(mainScore==null){
-                scoreText = "NaN";
-            }else {
-                scoreText = Math.round(mainScore) + ".0";
-            }
-
-            if(scoreText.equals("NaN")){
-                mDoubleRectChart.createNaNDoubleRectChart(scoreText,
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.nan_color),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.white));
-            }else {
-                mDoubleRectChart.createDoubleRectChart(scoreText, mainScore.intValue(),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.white),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.black),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.white));
-            }
+            LayoutUtils.drawScore(mainScore, mDoubleRectChart);
 
         }
 

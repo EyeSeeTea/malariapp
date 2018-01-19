@@ -108,31 +108,7 @@ public class AssessmentSentAdapter extends
         final DoubleRectChart doubleRectChart =
                 (DoubleRectChart) view;
         if(doubleRectChart!=null){
-            Float score = survey.getMainScore();
-            int color = LayoutUtils.trafficColor(score);
-            String scoreText;
-            if(score==null){
-                scoreText = "NaN";
-            }else {
-                scoreText = Math.round(score) + ".0";
-            }
-
-            if(scoreText.equals("NaN")){
-                doubleRectChart.createNaNDoubleRectChart(scoreText,
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.nan_color),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.white));
-            }else {
-                doubleRectChart.createDoubleRectChart(scoreText, score.intValue(),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.white),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.black),
-                        ContextCompat.getColor(PreferencesState.getInstance().getContext(),
-                                R.color.white));
-            }
+            LayoutUtils.drawScore(survey.getMainScore(), doubleRectChart);
 
         }
     }

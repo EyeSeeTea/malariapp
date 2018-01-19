@@ -263,4 +263,5 @@ Mensuelle"</string>
 <string name="html_text">"Texte formaté "</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
+<string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
 </resources>

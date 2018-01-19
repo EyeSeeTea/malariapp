@@ -268,4 +268,5 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
 </resources>

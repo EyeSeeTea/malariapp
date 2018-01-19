@@ -96,7 +96,9 @@
     <dimen name="row_min_height">56dp</dimen>
     <dimen name="row_left_padding">10dp</dimen>
     <dimen name="row_right_padding">10dp</dimen>
+    <dimen name="planing_small_text_size">@dimen/roboto_10</dimen>
     <dimen name="planing_text_size">@dimen/roboto_14</dimen>
+    <dimen name="planing_button_text_size">@dimen/roboto_14</dimen>
     <dimen name="planing_per_org_text_size">@dimen/roboto_14</dimen>
     <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="sent_header_rows_text_size">@dimen/roboto_14</dimen>
