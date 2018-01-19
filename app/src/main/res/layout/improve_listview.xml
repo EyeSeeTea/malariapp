@@ -41,15 +41,13 @@
     android:orientation="horizontal"
     android:weightSum="1">
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.9"
         android:minHeight="@dimen/header_min_height"
         android:padding="8dp"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        android:weightSum="1">
+        android:paddingTop="2dp" >
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/idHeader"
@@ -60,9 +58,16 @@
             android:layout_weight="0.5"
             android:text="@string/assessment_title_facility_date"
             android:textColor="@color/planning_header_text"
-            android:textSize="@dimen/roboto_12"
+            android:textSize="@dimen/sent_header_rows_text_size"
             app:tDimension="@string/font_size_level2"
             app:tFontName="@string/medium_font_name" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:weightSum="0.7"
+            android:id="@+id/dateContainer">
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/statusHeader"
             android:layout_width="0dp"
@@ -75,9 +80,9 @@
             android:gravity="left|center"
             android:text="@string/assessment_sent_date"
             android:textColor="@color/planning_header_text"
-            android:textSize="@dimen/roboto_12"
+            android:textSize="@dimen/sent_header_rows_text_size"
             app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/medium_font_name"   />
+            app:tFontName="@string/medium_font_name"  />
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/scoreHeader"
@@ -89,14 +94,17 @@
             android:gravity="left|center"
             android:text="@string/assessment_sent_score"
             android:textColor="@color/planning_header_text"
-            android:textSize="@dimen/roboto_12"
+            android:textSize="@dimen/sent_header_rows_text_size"
             app:tDimension="@string/font_size_level2"
             app:tFontName="@string/medium_font_name" />
         <ImageView
+            android:id="@+id/more_options"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/no_video"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_more_options"
             android:layout_weight="0.1"></ImageView>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
 

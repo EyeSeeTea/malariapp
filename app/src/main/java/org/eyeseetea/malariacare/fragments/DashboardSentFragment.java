@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramOUSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentSentAdapter;
+import org.eyeseetea.malariacare.layout.adapters.survey.PlannedStyleStrategy;
 import org.eyeseetea.malariacare.layout.listeners.SwipeDismissListViewTouchListener;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
@@ -176,21 +177,25 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     }
 
     private void initCheckBox(View view) {
+        DashboardSentFragmentStrategy.hideFilterSubHeader(view);
+
         customRadioButton = (CustomRadioButton) view.findViewById(
                 R.id.check_show_all_surveys);
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleForceAllSurveys();
+                PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
+                ((CustomRadioButton) customRadioButton).setChecked(!isForceAllSurveys());
+                reloadData();
+            }
+        };
         forceAllSurveys = false;
         PreferencesState.getInstance().setForceAllSentSurveys(forceAllSurveys);
         customRadioButton.setChecked(true);
-        customRadioButton.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                             toggleForceAllSurveys();
-                                                             PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
-                                                             ((CustomRadioButton) v).setChecked(!isForceAllSurveys());
-                                                             reloadData();
-                                                 }
-                                             }
-        );
+        customRadioButton.setOnClickListener(onClickListener);
+
+        DashboardSentFragmentStrategy.createOptionsDialog(view,onClickListener);
 
 
     }

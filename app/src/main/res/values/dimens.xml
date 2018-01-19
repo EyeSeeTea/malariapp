@@ -99,6 +99,7 @@
     <dimen name="planing_text_size">@dimen/roboto_14</dimen>
     <dimen name="planing_per_org_text_size">@dimen/roboto_14</dimen>
     <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
+    <dimen name="sent_header_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="planing_per_org_text_light_size">@dimen/roboto_14</dimen>
     <dimen name="planing_text_first_title_size">15dp</dimen>
