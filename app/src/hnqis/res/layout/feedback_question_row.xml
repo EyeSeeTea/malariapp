@@ -26,18 +26,11 @@
         android:layout_height="wrap_content"
         android:weightSum="1">
 
-        <ImageView
-            android:id="@+id/feedback_question_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_media_arrow"/>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".80">
-
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_question_label"
                 android:layout_width="wrap_content"
@@ -45,8 +38,9 @@
                 android:paddingLeft="10dip"
                 android:paddingTop="5dip"
                 android:paddingBottom="5dip"
-                android:textSize="@dimen/feedback_text_size"
-                app:tFontName="@string/roboto_medium"
+                android:text="@string/lorem_ipsum"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font"
                 />
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:id="@+id/feedback_uid"
@@ -72,7 +66,7 @@
             android:paddingBottom="5dip"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
-            />sd
+            />
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_score_label"
             android:layout_width="0dp"
@@ -90,7 +84,6 @@
     <LinearLayout
         android:id="@+id/feedback_container"
         android:layout_width="match_parent"
-        android:background="@color/feedback_background"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <View
@@ -107,10 +100,15 @@
             android:paddingBottom="5dip"
             android:textColor="@color/black"
             android:text="@string/lorem_ipsum"
-            android:background="@color/feedback_background"
-            android:textSize="@dimen/feedback_text_size"
-            app:tFontName="@string/roboto_regular"
+            android:background="@color/white"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/light_font"
             />
     </LinearLayout>
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/darkGrey"></View>
 </LinearLayout>
 

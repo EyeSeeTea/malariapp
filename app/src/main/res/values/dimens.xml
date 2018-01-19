@@ -138,5 +138,7 @@
     <dimen name="plan_action_text_title_size">@dimen/roboto_14</dimen>
     <dimen name="plan_action_text_size">@dimen/roboto_13</dimen>
     <dimen name="plan_action_button_text_size">@dimen/roboto_16</dimen>
+    <dimen name="cs_header_title_size">@dimen/roboto_14</dimen>
+    <dimen name="feedback_text_size">@dimen/roboto_12</dimen>
 
 </resources>

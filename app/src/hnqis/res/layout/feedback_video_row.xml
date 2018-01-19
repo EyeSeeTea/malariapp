@@ -19,11 +19,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/feedback_background"
+    android:background="@color/white"
     android:minHeight="@dimen/min_image_width"
     android:minWidth="@dimen/min_image_width"
     android:src="@drawable/preview"
     android:layout_marginTop="2dp">
+
+    <View
+        android:layout_alignParentTop="true"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#ffffff" />
 
     <ImageView
         android:id="@+id/feedback_media_preview"
@@ -32,5 +38,12 @@
         android:layout_centerVertical="true"
         android:minHeight="@dimen/min_image_width"
         android:minWidth="@dimen/min_image_width"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/preview" />
 </RelativeLayout>
 

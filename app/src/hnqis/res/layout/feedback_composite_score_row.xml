@@ -21,8 +21,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/feedbackLightBlue"
-    android:layout_gravity="center_vertical"
+    android:background="@color/white"
     android:orientation="horizontal"
     android:weightSum="1">
 
@@ -30,9 +29,8 @@
         android:id="@+id/cs_header"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".76"
-        android:weightSum=".74"
-        android:layout_gravity="center_vertical">
+        android:layout_weight=".74"
+        android:weightSum=".74">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_label"
@@ -40,12 +38,13 @@
             android:layout_height="wrap_content"
             android:layout_weight=".62"
             android:paddingBottom="@dimen/dashboard_row_padding"
-            android:layout_gravity="center_vertical"
             android:paddingLeft="@dimen/dashboard_row_padding"
             android:paddingTop="@dimen/dashboard_row_padding"
             android:text="@string/lorem_ipsum"
-            android:textColor="@color/feedback_cs_color"
-            android:textSize="@dimen/cs_header_title_size"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:textSize="18dp"
             app:tDimension="@string/font_size_level2"
             app:tFontName="@string/condensed_font_name" />
 
@@ -54,23 +53,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".12"
-            android:layout_gravity="center_vertical"
             android:background="@null"
             android:paddingBottom="@dimen/dashboard_row_padding"
+            android:paddingLeft="@dimen/dashboard_row_padding"
             android:paddingTop="@dimen/dashboard_row_padding"
-            android:src="@drawable/ic_media_arrow"   />
+            android:src="@drawable/ic_media_arrow"
+            android:textStyle="bold"
+            android:tintMode="src_over"
+            android:typeface="sans" />
     </LinearLayout>
 
-    <org.eyeseetea.sdk.presentation.views.DoubleRectChart
-        android:id="@+id/feedback_total_score"
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/feedback_score_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".20"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="15dp"
-        android:paddingLeft="15dp"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="right"
+        android:layout_weight=".22"
+        android:background="@color/white"
+        android:gravity="right"
+        android:paddingBottom="@dimen/dashboard_row_padding"
+        android:paddingLeft="@dimen/dashboard_row_padding"
+        android:paddingTop="@dimen/dashboard_row_padding"
+        android:text="@string/lorem_ipsum"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/medium_font_name" />
 </LinearLayout>

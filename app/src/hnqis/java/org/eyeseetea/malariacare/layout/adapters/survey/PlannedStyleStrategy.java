@@ -62,7 +62,7 @@ public class PlannedStyleStrategy {
     public int draw(PlannedHeader currentHeader) {
         Context context = PreferencesState.getInstance().getContext();
         if (mPlannedHeader.equals(currentHeader)) {
-            mImg.setImageResource(R.drawable.ic_media_arrow_up);
+            mImg.setImageResource(R.drawable.ic_plan_media_arrow_up);
             mImg.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.white));
         } else {

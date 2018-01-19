@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
@@ -47,6 +48,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.fragments.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.sdk.common.VideoUtils;
@@ -151,10 +153,9 @@ public class FeedbackAdapter extends BaseAdapter {
             rowLayout.setVisibility(View.VISIBLE);
         }
 
-        rowLayout.findViewById(R.id.cs_header).setBackgroundResource(feedback.getBackgroundColor());
+        FeedbackFragmentStyleStrategy.changeBackgroundColor(rowLayout, feedback);
 
         ImageView imageView = (ImageView)rowLayout.findViewById(R.id.feedback_image);
-        imageView.setBackgroundResource(feedback.getBackgroundColor());
         if(feedback.getFeedbackList().size()==0 && feedback.getCompositeScoreFeedbackList().size()==0){
             imageView.setVisibility(View.GONE);
         }else{
@@ -163,7 +164,7 @@ public class FeedbackAdapter extends BaseAdapter {
             {
                 imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
             }else{
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow));
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_down));
             }
 
         }
@@ -171,29 +172,10 @@ public class FeedbackAdapter extends BaseAdapter {
         //CompositeScore title
         TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_label);
         String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
-        if (!PreferencesState.getInstance().isVerticalDashboard())
-            if (feedback.getLabel().matches(pattern)) {
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkGrey));
-                //Calculate the size of the second header, with the pixels size between question label and header label.
-                LinearLayout questionLayout = (LinearLayout) inflater.inflate(R.layout.feedback_question_row, parent, false);
-                TextView questionTextView = (TextView) questionLayout.findViewById(R.id.feedback_question_label);
-                float size = (textView.getTextSize() + questionTextView.getTextSize()) / 2;
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-            }
         textView.setText(feedback.getLabel());
 
         //CompositeScore title
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-
-        if(!PreferencesState.getInstance().isVerticalDashboard()){
-            if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
-            else if(feedback.getScore(idSurvey, module)< Constants.MAX_AMBER)
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
-        }
-        textView.setText(feedback.getPercentageAsString(idSurvey, module));
+        FeedbackFragmentStyleStrategy.drawFeedbackScore(rowLayout, feedback, idSurvey, module);
 
         rowLayout.setTag(feedback);
         rowLayout.setOnClickListener(new View.OnClickListener() {
@@ -296,6 +278,8 @@ public class FeedbackAdapter extends BaseAdapter {
         String feedbackText=feedback.getFeedback();
         if(feedbackText==null){
             feedbackText=context.getString(R.string.feedback_info_no_feedback);
+            View view=rowLayout.findViewById(R.id.feedback_question_arrow);
+            view.setVisibility(View.GONE);
         }
         textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -430,6 +414,12 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private void toggleFeedback(LinearLayout rowLayout, boolean visible) {
         View separator = rowLayout.findViewById(R.id.feedback_container);
+        ImageView imageView = (ImageView) rowLayout.findViewById(R.id.feedback_question_arrow);
+        if(imageView!=null && visible) {
+            imageView.setImageDrawable(ContextCompat.getDrawable(PreferencesState.getInstance().getContext(), R.drawable.ic_media_arrow));
+        }else{
+            imageView.setImageDrawable(ContextCompat.getDrawable(PreferencesState.getInstance().getContext(), R.drawable.ic_media_arrow_down));
+        }
         separator.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 

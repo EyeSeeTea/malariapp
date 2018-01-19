@@ -96,7 +96,7 @@
     <color name="feedbackLightBlue">#d3d3d3</color>
     <color name="feedback_cs_color">#2F2F2F</color>
     <color name="feedback_background">#fdf8e3</color>
-    <color name="green_score_text">#417505</color>
+    <color name="green_score_text">@color/green</color>
     <color name="orange_score_text">#D99424</color>
-    <color name="red_score_text">#D0021B</color>
+    <color name="red_score_text">@color/red</color>
 </resources>
