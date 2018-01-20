@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.Utils;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -172,29 +173,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         feedbackListView.setDivider(null);
         feedbackListView.setDividerHeight(0);
 
-        //And checkbox listener
-        chkFailed = (CustomRadioButton) llLayout.findViewById(R.id.chkFailed);
-        chkFailed.setChecked(true);
-        chkFailed.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             feedbackAdapter.toggleOnlyFailed();
-                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
-                                                     .isOnlyFailed());
-                                         }
-                                     }
-        );
-        chkMedia = (CustomRadioButton) llLayout.findViewById(R.id.chkMedia);
-        chkMedia.setChecked(false);
-        chkMedia.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             feedbackAdapter.toggleOnlyMedia();
-                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
-                                                     .isOnlyMedia());
-                                         }
-                                     }
-        );
+        FeedbackFragmentStyleStrategy.showFilters(llLayout, chkFailed, chkMedia, feedbackAdapter);
         planAction = (CustomButton) llLayout.findViewById(R.id.action_plan);
         planAction.setOnClickListener(new View.OnClickListener() {
                                          @Override

@@ -277,4 +277,10 @@ evaluation"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
+<string name="apply_filters">"អនុវត្តតម្រង"</string>
+<string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ"</string>
+<string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
+<string name="apply_filters">"អនុវត្តតម្រង"</string>
+<string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ</string>
+<string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
 </resources>

@@ -439,10 +439,12 @@ public class FeedbackAdapter extends BaseAdapter {
     /**
      * Toggles the state of the flag that determines if only 'failed' questions are shown
      */
-    public void toggleOnlyFailed(){
+    public void toggleOnlyFailed(boolean notifyChanged){
         this.onlyFailed=!this.onlyFailed;
         reloadHiddenPositions();
-        notifyDataSetChanged();
+        if(notifyChanged) {
+            notifyDataSetChanged();
+        }
     }
 
     public boolean isOnlyFailed() {
@@ -451,10 +453,12 @@ public class FeedbackAdapter extends BaseAdapter {
     /**
      * Toggles the state of the flag that determines if only 'failed' questions are shown
      */
-    public void toggleOnlyMedia(){
+    public void toggleOnlyMedia(boolean notifyChanged){
         this.onlyMedia=!this.onlyMedia;
         reloadHiddenPositions();
-        notifyDataSetChanged();
+        if(notifyChanged) {
+            notifyDataSetChanged();
+        }
     }
 
     public boolean isOnlyMedia() {

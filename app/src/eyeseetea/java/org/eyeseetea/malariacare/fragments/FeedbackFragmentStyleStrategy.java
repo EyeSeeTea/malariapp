@@ -7,7 +7,10 @@ import android.widget.RelativeLayout;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
+import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class FeedbackFragmentStyleStrategy {
@@ -22,5 +25,16 @@ public class FeedbackFragmentStyleStrategy {
     public static void drawFeedbackScore(View rowLayout, CompositeScoreFeedback feedback, float idSurvey, String module) {
         DoubleRectChart doubleRectChart = (DoubleRectChart) rowLayout.findViewById(R.id.feedback_total_score);
         LayoutUtils.drawScore(feedback.getScore(idSurvey, module), doubleRectChart);
+    }
+
+    public static void showFilters(View view, final CustomRadioButton chkFailed, final CustomRadioButton chkMedia, final FeedbackAdapter feedbackAdapter) {
+        //And checkbox listener
+        View button = view.findViewById(R.id.filters_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.showFeedbackFilters(view.getContext(), chkFailed, chkMedia, feedbackAdapter);
+            }
+        });
     }
 }

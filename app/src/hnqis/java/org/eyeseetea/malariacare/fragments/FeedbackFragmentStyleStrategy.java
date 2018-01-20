@@ -49,4 +49,31 @@ public class FeedbackFragmentStyleStrategy {
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
     }
+
+
+    public static void showFilters(View view, CustomRadioButton chkFailed, CustomRadioButton chkMedia, final FeedbackAdapter feedbackAdapter) {
+        //And checkbox listener
+        chkFailed = (CustomRadioButton) view.findViewById(R.id.chkFailed);
+        chkFailed.setChecked(true);
+        chkFailed.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             feedbackAdapter.toggleOnlyFailed(true);
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
+                                                     .isOnlyFailed());
+                                         }
+                                     }
+        );
+        chkMedia = (CustomRadioButton) view.findViewById(R.id.chkMedia);
+        chkMedia.setChecked(false);
+        chkMedia.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            feedbackAdapter.toggleOnlyMedia(true);
+                                            ((CustomRadioButton) v).setChecked(feedbackAdapter
+                                                    .isOnlyMedia());
+                                        }
+                                    }
+        );
+    }
 }

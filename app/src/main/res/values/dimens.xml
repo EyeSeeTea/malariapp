@@ -140,5 +140,9 @@
     <dimen name="plan_action_button_text_size">@dimen/roboto_16</dimen>
     <dimen name="cs_header_title_size">@dimen/roboto_14</dimen>
     <dimen name="feedback_text_size">@dimen/roboto_12</dimen>
+    <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
+    <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
+    <dimen name="dialog_subttile_row_size">@dimen/roboto_16</dimen>
+    <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
 
 </resources>

@@ -267,4 +267,7 @@ Mensuelle"</string>
 <string name="completed_next">"Prochain"</string>
 <string name="plan_action_edit_text_hint">"appuyez pour écrire"</string>
 
+<string name="apply_filters">"Appliquer les filtres"</string>
+<string name="failed_video_image_question_only">"Video / Image questions seulement"</string>
+<string name="failed_questions_only">"Échec des questions seulement"</string>
 </resources>

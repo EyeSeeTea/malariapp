@@ -31,6 +31,9 @@ import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
+import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,6 +71,53 @@ public class Utils extends AUtils {
             }
         });
         //now that the dialog is set up, it's time to show it
+        dialog.show();
+    }
+
+    public static void showFeedbackFilters(Context context, CustomRadioButton chkFailed, CustomRadioButton chkMedia, final FeedbackAdapter feedbackAdapter) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_feedback_filters);
+        //dialog.setTitle(titleId);
+        dialog.setCancelable(false);
+        Button button = (Button) dialog.findViewById(R.id.apply_filter);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedbackAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        //now that the dialog is set up, it's time to show it
+
+        chkFailed = (CustomRadioButton) dialog.findViewById(R.id.chkFailed);
+        chkFailed.setText(context.getResources().getString(R.string.failed_questions_only)+"   ");
+        chkFailed.setChecked(true);
+        chkFailed.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             feedbackAdapter.toggleOnlyFailed(false);
+                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
+
+
+
+                                                                                            .isOnlyFailed());
+                                         }
+                                     }
+        );
+        chkMedia = (CustomRadioButton) dialog.findViewById(R.id.chkMedia);
+        chkMedia.setText(context.getResources().getString(R.string.failed_video_image_question_only)+"   ");
+        chkMedia.setChecked(false);
+        chkMedia.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            feedbackAdapter.toggleOnlyMedia(false);
+                                            ((CustomRadioButton) v).setChecked(feedbackAdapter
+                                                    .isOnlyMedia());
+                                        }
+                                    }
+        );
+
+
         dialog.show();
     }
 }
