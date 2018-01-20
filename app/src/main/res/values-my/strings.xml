@@ -179,6 +179,7 @@
 <string name="dialog_push_success"></string>
 <string name="planning_title_dialog"></string>
 <string name="planning_label_comment"></string>
+<string name="planning_label_date"></string>
 <string name="planning_label_schedule_date"></string>
 <string name="option_edit"></string>
 <string name="option_mark_completed"></string>

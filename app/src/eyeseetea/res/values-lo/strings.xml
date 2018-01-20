@@ -179,7 +179,8 @@
 <string name="progress_pull_done">"ສຳເລັດ"</string>
 <string name="dialog_push_success">"ຂໍ້ມູນການສຳຫຼວດໄດ້ນຳເຂົ້າສູ່ລະບົບ dhis ສຳເລັດແລ້ວ"</string>
 <string name="planning_title_dialog">"ເຮັດແຜນການສຳຫຼວດ"</string>
-<string name="planning_label_comment">"ຄຳເຫັນ"</string>
+<string name="planning_label_comment">"ວັນໃຫມ່"</string>
+<string name="planning_label_date">"ຄໍາເຫັນ"</string>
 <string name="planning_label_schedule_date">"ວັນທີສຳຫຼວດ"</string>
 <string name="option_edit">"ແກ້ໄຂ"</string>
 <string name="option_mark_completed">"ໃຫ້ໝາຍວ່າສຳເລັດແລ້ວ"</string>

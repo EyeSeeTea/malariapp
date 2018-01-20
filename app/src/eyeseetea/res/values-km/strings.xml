@@ -178,7 +178,8 @@ evaluation"</string>
 <string name="progress_pull_done">"រួចរាល់"</string>
 <string name="dialog_push_success">"ការស្ទង់មតិបានបញ្ជូនចូលទៅកាន់ម៉ាស៊ីនបម្រើ DHIS ដោយជោគជ័យ"</string>
 <string name="planning_title_dialog">"Schedule survey"</string>
-<string name="planning_label_comment">"Comment"</string>
+<string name="planning_label_comment">"Comments:"</string>
+<string name="planning_label_date">"New date:"</string>
 <string name="planning_label_schedule_date">"* Scheduled Date"</string>
 <string name="option_edit">"Edit"</string>
 <string name="option_mark_completed">"Mark as completed"</string>

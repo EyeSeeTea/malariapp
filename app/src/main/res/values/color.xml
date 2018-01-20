@@ -101,8 +101,9 @@
     <color name="green_score_text">#417505</color>
     <color name="orange_score_text">#D99424</color>
     <color name="red_score_text">#D0021B</color>
-    <color name="dialog_header_background">#d7d7d7</color>
+    <color name="dialog_header_background">#D8D8D8</color>
     <color name="dialog_even_row_background">#eae6e6</color>
     <color name="dialog_row_background">@color/white</color>
     <color name="dialog_red_button">#744442</color>
+    <color name="dialog_header_title_text">#4A4A4A</color>
 </resources>
