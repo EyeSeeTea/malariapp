@@ -185,6 +185,7 @@ public abstract class ModuleController {
      * Invoked whenever a tab gains focus
      */
     public void onTabChanged() {
+        // Extra check added to avoid the blank fragment bug
         if (fragment == null || !fragment.isAdded()) {
             reloadFragment();
         }
