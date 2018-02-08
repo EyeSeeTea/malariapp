@@ -205,48 +205,56 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                //Update hardcoded messages
-                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+                if (isAdded()) {
+                    //Update hardcoded messages
+                    new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
-                //Update hardcoded messages
-                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+                    //Update hardcoded messages
+                    new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
-                //Add line chart
-                if(isOrgUnitFilterActive()) {
-                    new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(), orgUnits).addDataInChart(view);
-                }
-                if(isProgramFilterActive()) {
-                    new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(), programs).addDataInChart(view);
-                }
+                    //Add line chart
+                    if (isOrgUnitFilterActive()) {
+                        new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
+                                orgUnits).addDataInChart(view);
+                    }
+                    if (isProgramFilterActive()) {
+                        new SentSurveysBuilderByProgram(surveysForGraphic, getActivity(),
+                                programs).addDataInChart(view);
+                    }
 
-                //Show stats by program
-                SentSurveysBuilderBase.showData(view);
+                    //Show stats by program
+                    SentSurveysBuilderBase.showData(view);
 
-                //Add line chart
-                if(isOrgUnitFilterActive()) {
-                    new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
-                }
-                if(isProgramFilterActive()) {
-                    new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
-                }
-                //Render the table and pie.
-                PieBuilderBase.showPieTab(view);
+                    //Add line chart
+                    if (isOrgUnitFilterActive()) {
+                        new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(
+                                view);
+                    }
+                    if (isProgramFilterActive()) {
+                        new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(
+                                view);
+                    }
+                    //Render the table and pie.
+                    PieBuilderBase.showPieTab(view);
 
-                //Add line chart
-                if(isOrgUnitFilterActive()) {
-                    //facility by progam-> is a orgunit facility
-                    new FacilityTableBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
-                    FacilityTableBuilderByOrgUnit.showFacilities(view);
-                }
-                if(isProgramFilterActive()) {
-                    //facility by orgunit-> is a program facility
-                    new FacilityTableBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
-                    FacilityTableBuilderByProgram.showFacilities(view);
-                }
+                    //Add line chart
+                    if (isOrgUnitFilterActive()) {
+                        //facility by progam-> is a orgunit facility
+                        new FacilityTableBuilderByProgram(surveysForGraphic,
+                                getActivity()).addDataInChart(view);
+                        FacilityTableBuilderByOrgUnit.showFacilities(view);
+                    }
+                    if (isProgramFilterActive()) {
+                        //facility by orgunit-> is a program facility
+                        new FacilityTableBuilderByOrgUnit(surveysForGraphic,
+                                getActivity()).addDataInChart(view);
+                        FacilityTableBuilderByProgram.showFacilities(view);
+                    }
 
-                //Draw facility main table
-                //Set the colors of red/green/yellow pie and table
-                FacilityTableBuilderBase.setColor(view);
+                    //Draw facility main table
+                    //Set the colors of red/green/yellow pie and table
+                    FacilityTableBuilderBase.setColor(view);
+                }
             }
         });
         //Load html

@@ -73,6 +73,9 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
+        if (fragment == null || !fragment.isAdded()) {
+            reloadFragment();
+        }
         if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
            return;
         }
