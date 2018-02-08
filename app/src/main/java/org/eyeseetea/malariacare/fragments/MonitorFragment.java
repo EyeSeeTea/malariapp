@@ -60,9 +60,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by ignac on 10/12/2015.
- */
 public class MonitorFragment extends Fragment implements IModuleFragment{
     List<Survey> surveysForGraphic;
     public static final String TAG = ".MonitorFragment";
@@ -205,6 +202,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                getFragmentManager().executePendingTransactions();
                 if (isAdded()) {
                     //Update hardcoded messages
                     new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
