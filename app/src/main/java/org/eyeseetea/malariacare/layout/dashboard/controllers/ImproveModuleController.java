@@ -73,6 +73,10 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
+        // Extra check added to avoid the blank fragment bug
+        if (fragment == null || !fragment.isAdded()) {
+            reloadFragment();
+        }
         if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
            return;
         }
