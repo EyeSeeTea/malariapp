@@ -202,7 +202,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                getFragmentManager().executePendingTransactions();
+                if (getFragmentManager()!=null) getFragmentManager().executePendingTransactions();
                 if (isAdded()) {
                     //Update hardcoded messages
                     new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
