@@ -29,6 +29,7 @@ import android.support.multidex.MultiDex;
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import org.eyeseetea.malariacare.data.database.model.User;
@@ -49,7 +50,15 @@ public class EyeSeeTeaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+
+        //Apply for Release build
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, new Crashlytics());
+        } else {
+            // Set to verbose logging of select and delete instructions in DBFlow
+            FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
+        }
+
         AppSettingsBuilder.getInstance().init(getApplicationContext());
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
