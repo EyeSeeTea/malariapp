@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.structure.Model;
@@ -64,6 +65,9 @@ import org.eyeseetea.malariacare.data.remote.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -338,7 +342,22 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         survey.setCreationDate(event.getEventDate());
         survey.setUploadDate(event.getEventDate());
         //Scheduled date == Due date
-        survey.setScheduledDate(event.getDueDate());
+        Context context = PreferencesState.getInstance().getContext();
+        String uidNextAssessment = ServerMetadata.findControlDataElementUid(
+                context.getString(R.string.next_assessment_code));
+        DataValueExtended dataValueNextAssessment = DataValueExtended.findByEventAndUID(
+                event.getEvent(), uidNextAssessment);
+
+        Date nextAssessmentDate = null;
+        if (dataValueNextAssessment.getDataValue() != null) {
+            if (dataValueNextAssessment.getValue() != null
+                    && !dataValueNextAssessment.getValue().isEmpty()) {
+                nextAssessmentDate = convertStringToDate("yyyy-MM-dd",
+                        dataValueNextAssessment.getValue());
+            }
+        }
+        survey.setScheduledDate(
+                nextAssessmentDate != null ? nextAssessmentDate : event.getDueDate());
         //Set fks
         survey.setOrgUnit(orgUnit);
         survey.setEventUid(event.getUid());
@@ -356,6 +375,17 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         //Once all the values are processed save common data across created surveys
         //eventToSurveyBuilder.saveCommonData();
+    }
+
+    private Date convertStringToDate(String format, String dateText) {
+        DateFormat df = new SimpleDateFormat(format);
+        try {
+            return df.parse(dateText);
+        } catch (ParseException e) {
+            Log.e(TAG, "Error converting date in pull: " + e.getMessage() + e);
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
