@@ -38,7 +38,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
-import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
@@ -56,6 +55,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -672,6 +672,14 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .or(Survey_Table.status.eq(Constants.SURVEY_CONFLICT))
                 .or(Survey_Table.status.eq(Constants.SURVEY_QUARANTINE))
                 .or(Survey_Table.status.eq(Constants.SURVEY_SENDING))
+                .orderBy(OrderBy.fromProperty(Survey_Table.completion_date)).queryList();
+    }
+
+    public static List<Survey> getAllSentCompletedOrConflictSurveysAfterDate(Date afterDate) {
+        return new Select().from(Survey.class)
+                .where(Survey_Table.status.isNot(Constants.SURVEY_HIDE))
+                .and(Survey_Table.status.isNot(Constants.SURVEY_IN_PROGRESS))
+                .and(Survey_Table.completion_date.greaterThan(afterDate))
                 .orderBy(OrderBy.fromProperty(Survey_Table.completion_date)).queryList();
     }
 
