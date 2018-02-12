@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -290,7 +291,10 @@ public class SurveyService extends IntentService {
     private void getAllMonitorData() {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
         List<Program> programList=Program.getAllPrograms();
-        List<Survey> sentSurveys=Survey.getAllSentCompletedOrConflictSurveys();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -6);
+        List<Survey> sentSurveys = Survey.getAllSentCompletedOrConflictSurveysAfterDate(
+                cal.getTime());
         List<OrgUnit> orgUnits=OrgUnit.list();
 
         BaseServiceBundle monitorMap=new BaseServiceBundle();
