@@ -53,6 +53,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:backgroundTint="@color/assess_yellow"
+                android:backgroundTintMode="add"
                 android:paddingBottom="2dip"
                 android:paddingLeft="2dip"
                 android:paddingTop="2dip"

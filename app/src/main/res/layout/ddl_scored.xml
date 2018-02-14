@@ -36,7 +36,7 @@
                     android:id="@+id/answer"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/headerColor"
+                    android:backgroundTint="@color/assess_yellow"
                     android:backgroundTintMode="add"
                     android:gravity="right"
                     android:paddingBottom="2dip"
