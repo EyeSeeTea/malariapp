@@ -264,4 +264,5 @@ evaluation"</string>
 <string name="on">"លើ"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
+<string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
 </resources>
