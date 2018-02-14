@@ -123,6 +123,8 @@
     <dimen name="filter_bottom_padding">15dp</dimen>
 
     <dimen name="planning_titles">18dp</dimen>
+    <dimen name="planning_title_number">20dp</dimen>
+
 
 
     <dimen name="roboto_10">10dp</dimen>

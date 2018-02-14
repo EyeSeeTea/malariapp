@@ -89,4 +89,8 @@ public class PlannedStyleStrategy {
     public static String formatDate(Date date) {
         return AUtils.getEuropeanFormatedDate(date);
     }
+
+    public static String getTitleHeader(String titleHeader, Integer counter) {
+        return String.format("%s (%d)",titleHeader,counter);
+    }
 }

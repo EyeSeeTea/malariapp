@@ -11,8 +11,10 @@
 
     <dimen name="dropdown_title">@dimen/roboto_13</dimen>
     <dimen name="headers_title_size">12dp</dimen>
-    <dimen name="planning_titles">@dimen/roboto_20</dimen>
     <dimen name="login_title_text">@dimen/roboto_28</dimen>
+    
+    <dimen name="planning_titles">@dimen/roboto_18</dimen>
+    <dimen name="planning_title_number">@dimen/roboto_20</dimen>
 
 
 </resources>

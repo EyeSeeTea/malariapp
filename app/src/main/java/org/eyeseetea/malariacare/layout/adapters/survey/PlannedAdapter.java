@@ -238,6 +238,8 @@ public class PlannedAdapter extends BaseAdapter {
         color = new PlannedStyleStrategy(plannedHeader, textView, img, color).draw(currentHeader);
         img.setColorFilter(color);
         textView.setTextColor(color);
+        textView = (TextView) rowLayout.findViewById(R.id.planning_number);
+        textView.setText(plannedHeader.getCounter()+"");
 /*
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);

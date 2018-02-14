@@ -58,10 +58,6 @@ public class PlannedStyleStrategy {
         Context context = PreferencesState.getInstance().getContext();
             mColor = PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.white);
-            Typeface font = Typeface.createFromAsset(context.getAssets(),
-                    "fonts/" + context.getString(R.string.medium_font_name));
-
-            mTextView.setTypeface(font);
         return mColor;
     }
 
@@ -99,5 +95,9 @@ public class PlannedStyleStrategy {
 
     public static String formatDate(Date date) {
         return AUtils.getEuropeanFormatedDateWithShortYear(date);
+    }
+
+    public static String getTitleHeader(String titleHeader, Integer counter) {
+        return String.format("%s",titleHeader,counter);
     }
 }

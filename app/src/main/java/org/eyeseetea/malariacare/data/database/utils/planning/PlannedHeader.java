@@ -23,6 +23,7 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.layout.adapters.survey.PlannedStyleStrategy;
 
 /**
  * Simple VO to model the headers  the planned listview
@@ -52,7 +53,7 @@ public class PlannedHeader implements PlannedItem {
     }
 
     public String getTitleHeader() {
-        return String.format("%s (%d)",titleHeader,counter);
+        return PlannedStyleStrategy.getTitleHeader(titleHeader, counter);
     }
 
     public Integer getCounter() {
