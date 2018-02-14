@@ -106,4 +106,7 @@
     <color name="dialog_row_background">@color/white</color>
     <color name="dialog_red_button">#744442</color>
     <color name="dialog_header_title_text">#4A4A4A</color>
+    <color name="tab_background">@color/app_background</color>
+    <color name="start_button_text">@color/white</color>
+    <color name="start_button">#3f7418</color>
 </resources>

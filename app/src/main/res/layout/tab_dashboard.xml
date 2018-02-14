@@ -48,6 +48,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_above="@android:id/tabs"
+                    android:background="@color/tab_background"
                     android:layout_alignParentTop="true">
 
                     <include layout="@layout/tab_plan_layout" />
