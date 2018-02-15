@@ -40,26 +40,28 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.35"
-        android:layout_margin="5dip">
+        android:layout_margin="5dip"
+        android:alpha="0.8"
+        android:background="@color/textFieldColor">
 
-        <LinearLayout
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/answer"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:alpha="0.8"
-            android:orientation="vertical"
-            android:background="@color/textFieldColor">
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/answer"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:backgroundTint="@color/assess_yellow"
-                android:backgroundTintMode="add"
-                android:paddingBottom="2dip"
-                android:paddingLeft="2dip"
-                android:paddingTop="2dip"
-                android:spinnerMode="dropdown" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:backgroundTint="@color/transparent"
+            android:paddingBottom="2dip"
+            android:paddingLeft="2dip"
+            android:paddingTop="2dip"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/assess_yellow"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_triangle_dropdown" />
 
     </RelativeLayout>
 
