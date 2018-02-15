@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/textFieldColor" />
+        </shape>
+    </item>
+    <item android:left="80dp">
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/assess_yellow" />
+            <size
+                android:width="20dp"
+                android:height="10dp" />
+        </shape>
+    </item>
+</layer-list>
