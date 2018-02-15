@@ -30,7 +30,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -41,10 +40,9 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
-import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,7 +138,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(PlannedSurveyService.PLANNED_SURVEYS_ACTION));
         }
     }
     /**
@@ -158,8 +156,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     @Override
     public void reloadData(){
         //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -186,8 +184,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
-                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
+            if(PlannedSurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
+                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(PlannedSurveyService.PLANNED_SURVEYS_ACTION);
                 //Create the filters only the first time
                 if(programList==null && orgUnitList ==null) {
                     createFilters(plannedServiceBundle);
