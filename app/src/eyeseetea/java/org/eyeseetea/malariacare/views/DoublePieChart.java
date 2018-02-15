@@ -67,9 +67,16 @@ public class DoublePieChart extends FrameLayout {
         int layout_height = ta.getDimensionPixelSize(1, ViewGroup.LayoutParams.MATCH_PARENT);
 
         outsidePie.setLayoutParams(new LayoutParams(layout_width, layout_height));
-        centerPie.setLayoutParams(
-                new LayoutParams((int) (layout_width * 0.8), (int) (layout_height * 0.8),
-                        Gravity.CENTER));
+
+        if(((String) outsidePie.getTag()).equals("internal_circle")){
+            centerPie.setLayoutParams(
+                    new LayoutParams((int) (layout_width * 0.55), (int) (layout_height * 0.55),
+                            Gravity.CENTER));
+        }else{
+            centerPie.setLayoutParams(
+                    new LayoutParams((int) (layout_width * 0.8), (int) (layout_height * 0.8),
+                            Gravity.CENTER));
+        }
 
     }
 
