@@ -144,11 +144,13 @@ function changeProgram(){
 		resetOrgUnitSpinner();
         showElement("tableCanvas");
         hideElement("graphicCanvas");
+        hideElement("noSurveysText");
 	}else{
 	    resetOrgUnitSpinner();
 		showProgram();
 		showElement("graphicCanvas");
 		hideElement("tableCanvas");
+		showElement("noSurveysText")
 	}
 }
 

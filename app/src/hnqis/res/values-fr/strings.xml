@@ -248,4 +248,5 @@ Mensuelle"</string>
 <string name="on">"à"</string>
 <string name="plain_text">"Texte en clair "</string>
 <string name="html_text">"Texte formaté "</string>
+<string name="monitor_no_surveys_to_show">"Aucune enquête à afficher"</string>
 </resources>

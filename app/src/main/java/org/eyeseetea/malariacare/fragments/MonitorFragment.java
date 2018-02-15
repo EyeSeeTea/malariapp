@@ -42,16 +42,18 @@ import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
+        .SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
+        .SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
+import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.IDashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -161,8 +163,10 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
             surveyReceiver = null;
         }
     }
+
     public void reloadSentSurveys() {
         BaseServiceBundle data= (BaseServiceBundle) Session.popServiceValue(SurveyService.ALL_MONITOR_DATA_ACTION);
+
         if(data!=null) {
             surveysForGraphic = (List<Survey>)data.getModelList(Survey.class.getName());
             //Remove the bad surveys.
@@ -178,6 +182,12 @@ public class MonitorFragment extends Fragment implements IModuleFragment{
 
             reloadSurveys(surveysForGraphic,programs,orgUnits);
         }
+        showMessageNoAddedSurveys((surveysForGraphic == null || surveysForGraphic.isEmpty()));
+    }
+
+    private void showMessageNoAddedSurveys(boolean show) {
+        getActivity().findViewById(R.id.monitor_no_surveys_message).setVisibility(
+                show ? View.VISIBLE : View.GONE);
     }
 
     public void reloadSurveys(List<Survey> newListSurveys,List<Program> newListPrograms, List<OrgUnit> newListOrgUnit) {
