@@ -59,9 +59,9 @@
     <color name="new_grey_text_color">#4A4A4A</color>
 
     <!-- ratio questions percentage-->
-    <color name="ratio_mandatory_questions_high"> #0f7f12</color>
-    <color name="ratio_mandatory_questions_middle">@color/transparent</color>
-    <color name="ratio_mandatory_questions_low"> #890309</color>
+    <color name="ratio_mandatory_questions_high">#417505</color>
+    <color name="ratio_mandatory_questions_middle">#D99424</color>
+    <color name="ratio_mandatory_questions_low">#D0021B</color>
 
     <color name="ratio_questions_high">#98fb98</color>
     <color name="ratio_questions_middle">#ffff00</color>
