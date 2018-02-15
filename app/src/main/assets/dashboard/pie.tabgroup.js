@@ -130,12 +130,21 @@ function setOrgUnitPieData(data){
 //event on click select/or in program "spinner" to change the selected program and reload.
 function changePieAndTablesByProgram(){
 	selectedPie="";
+	findProgram=false;
 	for(var i=0;i<Object.keys(piesDataByProgram).length;i++){
 		if(piesDataByProgram[i].uidprogram==selectedProgram){
 			selectedPie=piesDataByProgram[i].uidprogram;
+			findProgram=true;
 			break;
 		}
 	}
+     noSurveysId="noSurveysText";
+	 if(!findProgram){
+            updateChartTitle(noSurveysId,messages["noSurveys"]);
+        }else{
+            updateChartTitle(noSurveysId,"");
+        }
+
     if(selectedProgram===allAssessmentKey){
         rebuildTableFacilities(selectedOrgUnit);
     }else{

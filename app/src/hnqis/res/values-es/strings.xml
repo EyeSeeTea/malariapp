@@ -254,4 +254,5 @@ clínica"</string>
 <string name="on">"en"</string>
 <string name="plain_text">Texto sin formato </string>
 <string name="html_text">Texto con formato </string>
+<string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
 </resources>
