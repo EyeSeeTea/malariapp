@@ -33,7 +33,7 @@
 <string name="dashboard_info_ready_to_upload">"Prêt pour envoyer"</string>
 <string name="dashboard_info_sent">"Envoyé"</string>
 
-<string name="create_info_ok">"Commencer"</string>
+<string name="create_info_ok">"Commencer repport"</string>
 <string name="create_info_organization_unit">"Établissement"</string>
 <string name="create_info_survey">"Rapport"</string>
 <string name="create_info_tabs_group">"Groupe d'onglets"</string>

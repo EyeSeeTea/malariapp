@@ -33,7 +33,7 @@
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
 <string name="dashboard_info_sent">"Enviei"</string>
 
-<string name="create_info_ok">"Criar"</string>
+<string name="create_info_ok">"Criar pesquisa"</string>
 <string name="create_info_organization_unit">"Unidade da Organização – Unid. Org."</string>
 <string name="create_info_survey">"Inquérito"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>

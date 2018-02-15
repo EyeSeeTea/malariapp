@@ -38,7 +38,7 @@
 <string name="dashboard_info_sent">"ຂໍ້ມູນໄດ້ຖືກສົ່ງແລ້ວ"</string>
 
 <!-- create -->
-<string name="create_info_ok">"ເລີ່ມ"</string>
+<string name="create_info_ok">"ເລີ່ມ ການສໍາຫຼວດ"</string>
 <string name="create_info_organization_unit">"ຊື່ສະຖານທີ່"</string>
 <string name="create_info_survey">"ຂໍ້ມູນການສຳຫຼວດ"</string>
 <string name="create_info_tabs_group">"ກຸ່ມຂອງໜ້າຕ່າງ"</string>
