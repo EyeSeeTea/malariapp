@@ -50,8 +50,9 @@
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/background_textfield">
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_height="fill_parent" >
 
             <Spinner
                 android:dropDownWidth="match_parent"
@@ -60,20 +61,18 @@
                 android:id="@+id/program"
                 android:spinnerMode="dropdown"
                 android:backgroundTintMode="add"
-                android:paddingLeft="2dip"
-                android:paddingTop="2dip"
-                android:paddingRight="20dip"
-                android:paddingBottom="2dip"
-                android:background="@null"
+                android:background="@drawable/filter_create_org_background"
+                android:layout_margin="6dp"
                 android:gravity="right"
                 />
             <ImageView
-                android:src="@drawable/arrow_assess"
+                app:srcCompat="@drawable/ic_white_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dip"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:paddingRight="20dip"
-                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"  />
         </RelativeLayout>
     </LinearLayout>

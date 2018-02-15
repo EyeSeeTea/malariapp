@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.layout.adapters.general;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
@@ -34,6 +35,10 @@ public class ProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
 
     public ProgramArrayAdapter(Context context, List<ProgramDB> programs) {
         super(context, programs);
+    }
+
+    public ProgramArrayAdapter(Context context, Integer layout, List<ProgramDB> programs){
+        super(context, layout, programs);
     }
 
     @Override public void drawText(CustomTextView customTextView, ProgramDB program) {

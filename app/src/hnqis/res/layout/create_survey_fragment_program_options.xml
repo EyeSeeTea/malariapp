@@ -20,33 +20,32 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
+        android:background="@color/assess_grey"
         android:layout_height="fill_parent"
-        android:id="@+id/tab_group_container"
+        android:id="@+id/select_survey_view"
         android:visibility="gone">
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:gravity="center">
 
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/create_info_tabs_group"
-                android:id="@+id/textView4"
+                android:text="@string/create_info_survey"
+                android:id="@+id/textView3"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 app:tDimension="@string/font_size_level4"
                 app:tFontName="@string/medium_font_name"/>
         </LinearLayout>
+
 
         <RelativeLayout
             android:orientation="horizontal"
@@ -58,22 +57,23 @@
                 android:dropDownWidth="match_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tab_group"
+                android:id="@+id/program"
                 android:spinnerMode="dropdown"
                 android:backgroundTintMode="add"
                 android:paddingLeft="2dip"
                 android:paddingTop="2dip"
                 android:paddingRight="20dip"
                 android:paddingBottom="2dip"
-                android:background="@null"/>
+                android:background="@null"
+                android:gravity="right"
+                />
             <ImageView
-                app:srcCompat="@drawable/ic_white_arrow"
+                android:src="@drawable/arrow_assess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
+                android:paddingBottom="2dip"
                 android:paddingRight="20dip"
-                android:layout_centerVertical="true"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"  />
         </RelativeLayout>
     </LinearLayout>
