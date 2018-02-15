@@ -46,6 +46,9 @@
         <service
             android:name=".services.SurveyService"
             android:exported="false" />
+        <service
+            android:name=".services.PlannedSurveyService"
+            android:exported="false" />
 
         <service
             android:name=".services.PushService"
