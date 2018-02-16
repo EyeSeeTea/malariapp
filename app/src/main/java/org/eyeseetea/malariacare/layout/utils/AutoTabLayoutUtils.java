@@ -242,6 +242,7 @@ public class AutoTabLayoutUtils {
         viewHolder.parentImage = rowView.findViewById(R.id.parent_img);
         viewHolder.parentImageShown = rowView.findViewById(R.id.parent_hide_img);
         viewHolder.childrenImage = rowView.findViewById(R.id.child_img);
+        viewHolder.notChildParentSpace = rowView.findViewById(R.id.space_not_child_parent);
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
@@ -251,23 +252,8 @@ public class AutoTabLayoutUtils {
                     + ")</a>";
         }
 
-        if(viewHolder.parentImage!=null){
-            viewHolder.parentImageShown.setVisibility(View.GONE);
-            if(question.hasChildren()){
-                viewHolder.parentImage.setVisibility(View.VISIBLE);
-                if (question.areChildrenVisible(idSurvey)) {
-                    viewHolder.parentImageShown.setVisibility(View.VISIBLE);
-                    viewHolder.parentImage.setVisibility(View.GONE);
-                }
-            }
-        }
-        if(viewHolder.childrenImage!=null){
-            if(question.hasParent()){
-                viewHolder.childrenImage.setVisibility(View.VISIBLE);
-            }else{
-                viewHolder.childrenImage.setVisibility(View.GONE);
-            }
-        }
+        showOrHideChildParentImages(question, viewHolder, idSurvey);
+
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
@@ -284,6 +270,32 @@ public class AutoTabLayoutUtils {
 
 
         return rowView;
+    }
+
+    private static void showOrHideChildParentImages(QuestionDB question,
+            AutoTabViewHolder viewHolder, float idSurvey) {
+        if(viewHolder.notChildParentSpace!=null) {
+            viewHolder.notChildParentSpace.setVisibility(View.VISIBLE);
+        }
+        if(viewHolder.parentImage!=null){
+            viewHolder.parentImageShown.setVisibility(View.GONE);
+            if(question.hasChildren()){
+                viewHolder.notChildParentSpace.setVisibility(View.GONE);
+                viewHolder.parentImage.setVisibility(View.VISIBLE);
+                if (question.areChildrenVisible(idSurvey)) {
+                    viewHolder.parentImageShown.setVisibility(View.VISIBLE);
+                    viewHolder.parentImage.setVisibility(View.GONE);
+                }
+            }
+        }
+        if(viewHolder.childrenImage!=null){
+            if(question.hasParent()){
+                viewHolder.notChildParentSpace.setVisibility(View.GONE);
+                viewHolder.childrenImage.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.childrenImage.setVisibility(View.GONE);
+            }
+        }
     }
 
     public static void initialiseScorableComponent(View rowView, AutoTabViewHolder viewHolder) {

@@ -53,6 +53,8 @@ public class AutoTabViewHolder {
 
     public View childrenImage;
 
+    public View notChildParentSpace;
+
     private List<View> columnComponents;
 
     public CustomTextView num;

@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/parent_img"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
         android:visibility="gone"
-        android:scaleType="center"
-        android:padding="5dp"
-        android:src="@drawable/ic_icn_plus"/>
+        android:scaleType="centerInside"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        app:srcCompat="@drawable/ic_icn_plus"/>
     <ImageView
         android:id="@+id/parent_hide_img"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
         android:visibility="gone"
-        android:scaleType="center"
-        android:padding="5dp"
-        android:src="@drawable/ic_icn_minus"/>
+        android:scaleType="centerInside"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        app:srcCompat="@drawable/ic_icn_minus"/>
     <ImageView
         android:id="@+id/child_img"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
         android:visibility="gone"
-        android:scaleType="center"
-        android:padding="15dp"
-        android:src="@drawable/ic_icn_follow_up"/>
+        android:scaleType="centerInside"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        app:srcCompat="@drawable/ic_icn_follow_up"/>
+    <View
+        android:id="@+id/space_not_child_parent"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
+        android:visibility="gone"
+        android:paddingLeft="10dp"/>
 
 </merge>
