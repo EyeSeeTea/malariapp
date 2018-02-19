@@ -109,4 +109,5 @@
     <color name="tab_background">@color/app_background</color>
     <color name="start_button_text">@color/white</color>
     <color name="start_button">#3f7418</color>
+    <color name="pull_background">#325059</color>
 </resources>
