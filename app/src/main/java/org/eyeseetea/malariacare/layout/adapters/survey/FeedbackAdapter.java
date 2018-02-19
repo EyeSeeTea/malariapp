@@ -499,4 +499,7 @@ public class FeedbackAdapter extends BaseAdapter {
     }
 
 
+    public float getIdSurvey() {
+        return idSurvey;
+    }
 }

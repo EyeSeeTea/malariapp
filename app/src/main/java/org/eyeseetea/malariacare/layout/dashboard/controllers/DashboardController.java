@@ -51,6 +51,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRat
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
+import org.eyeseetea.malariacare.fragments.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
@@ -488,6 +489,14 @@ public class DashboardController {
         Button actionPlan = (Button) v.findViewById(R.id.action_plan);
         Button cancel = (Button) v.findViewById(R.id.cancel);
 
+        TextView orgUnitTextView = (TextView) v.findViewById(R.id.planned_org_unit);
+        TextView programTextView = (TextView) v.findViewById(R.id.planned_program);
+        if(survey.getOrgUnit()!=null  && survey.getOrgUnit().getName()!=null) {
+            orgUnitTextView.setText(survey.getOrgUnit().getName());
+        }
+        if(survey.getOrgUnit()!=null  && survey.getProgram().getName()!=null) {
+            programTextView.setText(survey.getProgram().getName());
+        }
         final AlertDialog alertDialog =builder.create();
         viewFeedback.setOnClickListener(
                 new View.OnClickListener() {

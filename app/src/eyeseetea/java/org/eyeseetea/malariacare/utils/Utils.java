@@ -30,6 +30,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
@@ -78,6 +79,9 @@ public class Utils extends AUtils {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_feedback_filters);
         //dialog.setTitle(titleId);
+
+        TextView title = (TextView) dialog.findViewById(R.id.programName);
+        title.setText(SurveyDB.findById((long) feedbackAdapter.getIdSurvey()).getProgram().getName());
         dialog.setCancelable(false);
         Button button = (Button) dialog.findViewById(R.id.apply_filter);
         button.setOnClickListener(new View.OnClickListener() {

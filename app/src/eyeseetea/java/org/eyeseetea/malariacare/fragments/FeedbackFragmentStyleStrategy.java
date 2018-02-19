@@ -3,6 +3,7 @@ package org.eyeseetea.malariacare.fragments;
 import android.content.Context;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
