@@ -20,9 +20,6 @@
 
     <color name="customBlue">#ccf2ff</color>
     <color name="scoreGrandson">#6fa8dc</color>
-    <color name="lightGreen">#adda19</color>
-    <color name="darkRed">#d1213c</color>
-    <color name="assess_yellow">#dbe444</color>
     <color name="assess_grey">#4f4c4c</color>
     <color name="background">@color/plan_grey_light</color>
     <color name="tab_orange_plan">#f38b00</color>
@@ -110,4 +107,7 @@
     <color name="start_button_text">@color/white</color>
     <color name="start_button">#3f7418</color>
     <color name="pull_background">#325059</color>
+    <color name="lightGreen">#adda19</color>
+    <color name="darkRed">#d1213c</color>
+    <color name="assess_yellow">#dbe444</color>
 </resources>

@@ -16,8 +16,8 @@ function SentXMonthChart(){
             {
                 label: messages["assesmentUnderTaken"],
                 fillColor: "rgba(132,180,103,0)",
-                strokeColor: "#81980d",
-                pointColor: "#81980d",
+                strokeColor: "#7ED321",
+                pointColor: "#7ED321",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(241,194,50,1)",
@@ -26,8 +26,8 @@ function SentXMonthChart(){
             {
                 label: messages["target"],
                 fillColor: "rgba(132,180,103,0)",
-                strokeColor: "#00b4e3",
-                pointColor: "#00b4e3",
+                strokeColor: "#4A90E2",
+                pointColor: "#4A90E2",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
@@ -39,7 +39,9 @@ function SentXMonthChart(){
         scaleFontSize: 18,
         scaleFontFamily: "'Roboto-Condensed'",
         scaleFontStyle: "bold",
-        scaleFontColor: "#000",
+        scaleFontColor: "#a9a8a9",
+	    datasetStrokeWidth : 6,
+	    scaleGridLineColor: "#353535",
     });
 
     //Adds legend to chart

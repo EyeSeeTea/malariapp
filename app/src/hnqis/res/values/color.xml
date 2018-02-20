@@ -106,4 +106,7 @@
     <color name="start_button">@color/assess_yellow</color>
 
     <color name="pull_background">#1C5187</color>
+    <color name="lightGreen">#adda19</color>
+    <color name="darkRed">#d1213c</color>
+    <color name="assess_yellow">#dbe444</color>
 </resources>
