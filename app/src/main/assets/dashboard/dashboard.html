@@ -45,18 +45,20 @@
         .line-title{
             float: left;
             font-size: 20px;
-            padding: 10px;
-            padding-left: 0px;
         }
 
         .tip{
             float:right;
         }
 
-        canvas, table{
-            margin: 5px;
+        body{
+            margin: 0px;
         }
 
+        canvas, table{
+			padding-top:25px;
+            margin-top: 5px;
+        }
         .chart-legend li span{
             display: inline-block;
             width: 12px;
@@ -126,6 +128,30 @@
             margin: auto;
             text-align: center;
             align-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .centerspanmultiple{
+            margin: auto;
+            text-align: center;
+            align-content: center;
+            position: absolute;
+            top: 40%;
+            left: 46%;
+            transform: translate(-50%, -50%);
+        }
+        .tr_header{
+            background:#d5d5d5;
+        }
+        .tr_row{
+            background:#d5d5d5;
+            border-bottom: 2px solid #272727;
+        }
+        .tr_row>td{
+            background:#d5d5d5;
+            border: 2px solid #d5d5d5;
         }
         td.ambercircle>div{
             margin: auto;
@@ -164,10 +190,22 @@
         }
 		.line-title{
 			color:#fff;
+			padding-left:10px;
+			padding-top:25px;
 		}
 		.line-legend>li{
 			color:#fff;
 		}
+		.circleContainer {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        .surveysContainer{
+             background-color:#81980d;
+            width:100%;
+            height: 2px;
+            }
     </style>
 </head>
 <body>
@@ -204,17 +242,15 @@
         <div style="display:inline;">
             <canvas id="tabgroupCanvas###" style="width: 60%; height: auto; left:0px; display:block;"></canvas>
             <div id="tabgroupLegend###" class="chart-legend" style="display:block;right: 0px;position: absolute;top: 10%; padding-right:20%;">
-                <span id="tabgroupTip###" class="tip" style="display:none;"></span>
+                <span id="tabgroupTip###" class="tip" style="display:none; color:#fff;"></span>
             </div>
         </div>
 
+    </div>
         <div>
             <span class="line-title" id="titleFacilities"></span>
-            <hr style="background-color:#81980d;
-			width:100%;
-            height: 2px;"/>
             <div>
-                <table>
+                <table style="color:#9B9B9B;">
                     <thead id="facilitiesHead">
                     </thead>
                     <tbody id="facilitiesBody">
@@ -222,7 +258,6 @@
                 </table>
             </div>
         </div>
-    </div>
 </script>
 <div  id="multipleEventLegend" style="display:none"><span class="line-title" id="titleFacilities">(*)More than one assessment exist on the same month</span></div>
 

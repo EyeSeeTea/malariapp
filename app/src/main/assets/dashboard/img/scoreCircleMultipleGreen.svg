@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="51px" viewBox="0 0 50 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>scoreCircleMultiplesvg</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="scoreCircleMultiple" sketch:type="MSArtboardGroup" fill="#417505">
+            <g id="Oval-57-Copy-6-+-Oval-57-Copy-8-+-Oval-57-Copy-7" sketch:type="MSLayerGroup" transform="translate(25.294679, 25.294679) rotate(-315.000000) translate(-25.294679, -25.294679) translate(-1.205321, 3.294679)">
+                <g sketch:type="MSShapeGroup">
+                    <path d="M32,43.7181421 C41.2569573,41.1052461 48.0465193,32.5320742 48.0465193,22.359071 C48.0465193,12.1860679 41.2569573,3.61289594 32,1 C40.2057431,4.55358496 45.9529635,12.7792164 45.9529635,22.359071 C45.9529635,31.9389257 40.2057431,40.1645571 32,43.7181421 Z" id="Oval-57-Copy-6"></path>
+                    <path d="M36,43.7181421 C45.2569573,41.1052461 52.0465193,32.5320742 52.0465193,22.359071 C52.0465193,12.1860679 45.2569573,3.61289594 36,1 C44.2057431,4.55358496 49.9529635,12.7792164 49.9529635,22.359071 C49.9529635,31.9389257 44.2057431,40.1645571 36,43.7181421 Z" id="Oval-57-Copy-8"></path>
+                    <circle id="Oval-57-Copy-7" cx="22" cy="22" r="22"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

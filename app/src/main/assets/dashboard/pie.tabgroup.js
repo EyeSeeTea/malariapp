@@ -20,20 +20,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var green;
 var yellow;
 var red;
+var greenOnLight;
+var yellowOnLight;
+var redOnLight;
+var emptyCircle;
 
 function setGreen(color){
     green=color["color"];
-    //console.log(green);
 }
 
 function setYellow(color){
     yellow=color["color"];
-    //console.log(yellow);
 }
 
 function setRed(color){
     red=color["color"];
-    //console.log(red);
+}
+
+function setGreenOnLight(color){
+    greenOnLight=color["color"];
+}
+
+function setYellowOnLight(color){
+    yellowOnLight=color["color"];
+}
+
+function setRedOnLight(color){
+    redOnLight=color["color"];
+}
+function setEmptyCircleOnLight(color){
+    emptyCircle=color["color"];
 }
 
 function pieXTabGroupChart(data){

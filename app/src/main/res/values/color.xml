@@ -107,7 +107,12 @@
     <color name="start_button_text">@color/white</color>
     <color name="start_button">#3f7418</color>
     <color name="pull_background">#325059</color>
-    <color name="lightGreen">#adda19</color>
-    <color name="darkRed">#d1213c</color>
-    <color name="assess_yellow">#dbe444</color>
+
+    <color name="lightGreen">#4E870C</color>
+    <color name="darkRed">#9B1323</color>
+    <color name="assess_yellow">#F5A623</color>
+    <color name="lightGreenOnLight">#417505</color>
+    <color name="darkRedOnLight">#9B1323</color>
+    <color name="assess_yellow_on_light">#D99424</color>
+    <color name="circle_background_on_light">#C0BFC1</color>
 </resources>
