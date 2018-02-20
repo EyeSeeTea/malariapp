@@ -20,10 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var green;
 var yellow;
 var red;
-var greenOnLight;
-var yellowOnLight;
-var redOnLight;
-var emptyCircle;
 
 function setGreen(color){
     green=color["color"];
@@ -35,21 +31,6 @@ function setYellow(color){
 
 function setRed(color){
     red=color["color"];
-}
-
-function setGreenOnLight(color){
-    greenOnLight=color["color"];
-}
-
-function setYellowOnLight(color){
-    yellowOnLight=color["color"];
-}
-
-function setRedOnLight(color){
-    redOnLight=color["color"];
-}
-function setEmptyCircleOnLight(color){
-    emptyCircle=color["color"];
 }
 
 function pieXTabGroupChart(data){
@@ -84,7 +65,9 @@ function pieXTabGroupChart(data){
                                        this.showTooltip(this.segments, true);
                                    },
                                    tooltipEvents: [],
-                                   showTooltips: true
+                                   showTooltips: true,
+	                               segmentStrokeWidth : 5,
+                                   segmentStrokeColor : "#4a494a"
                                }
                            );
     //Legend

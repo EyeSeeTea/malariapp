@@ -41,6 +41,7 @@ function SentXMonthChart(){
         scaleFontStyle: "bold",
         scaleFontColor: "#a9a8a9",
 	    datasetStrokeWidth : 6,
+	    pointDotRadius : 6,
 	    scaleGridLineColor: "#353535",
     });
 
