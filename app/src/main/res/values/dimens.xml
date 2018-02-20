@@ -146,6 +146,7 @@
     <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
     <dimen name="dialog_subttile_row_size">@dimen/roboto_16</dimen>
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
+    <dimen name="dialog_log_size">@dimen/roboto_14</dimen>
 
     <dimen name="child_parent_image_size">25dp</dimen>
     <dimen name="dialog_button_space">16dp</dimen>

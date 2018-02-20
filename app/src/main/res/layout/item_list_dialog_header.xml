@@ -15,37 +15,34 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal">
-
         <org.eyeseetea.sdk.presentation.views.CustomTextView
             android:id="@+id/first_column"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:layout_gravity="center"
             android:padding="20dp"
-            android:gravity="center"
             android:ellipsize="end"
-            android:lines="1"
             android:text="@string/comments"
-            android:textSize="@dimen/dialog_text_row_size"
-            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/dialog_log_size"
+            android:layout_gravity="center"
+            android:gravity="center"
             app:font_name="@string/roboto_medium"
+            android:textColor="@color/darkGrey"
             />
-
         <org.eyeseetea.sdk.presentation.views.CustomTextView
             android:id="@+id/second_column"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:padding="10dp"
             android:text="@string/dates"
             android:ellipsize="end"
             android:lines="1"
-            android:textSize="@dimen/dialog_text_row_size"
-            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/dialog_log_size"
+            android:layout_gravity="center"
+            android:gravity="center"
             app:font_name="@string/roboto_medium"
+            android:textColor="@color/darkGrey"
             />
     </LinearLayout>
 </LinearLayout>
