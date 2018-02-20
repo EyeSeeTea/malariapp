@@ -151,9 +151,9 @@ function buildColorXScore(value, listOfSurveys){
 	}
 	if(value<50){
 	    if(listOfSurveys.length>1){
-		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circleContainer'><img src='img/scoreCircleMultipleGreen.svg'/><span class='centerspanmultiple'>";
+		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circleContainer'><img src='img/scoreCircleMultipleRed.svg'/><span class='centerspanmultiple'>";
 		}else{
-		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleGreen.svg'/><span class='centerspan'>";
+		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleRed.svg'/><span class='centerspan'>";
 		}
 	}
 
@@ -166,9 +166,9 @@ function buildColorXScore(value, listOfSurveys){
 	}
 
 	if(listOfSurveys.length>1){
-	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleMultipleRed.svg'/><span class='centerspanmultiple'>";
+	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleMultipleGreen.svg'/><span class='centerspanmultiple'>";
 	}else{
-		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleRed.svg'/><span class='centerspan'>";
+		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleGreen.svg'/><span class='centerspan'>";
 	}
 }
 
