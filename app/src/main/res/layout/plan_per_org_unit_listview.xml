@@ -85,13 +85,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@color/transparent"
+            android:background="@color/grey_light_qm"
             android:onClick="onNewSurvey"
             app:srcCompat="@drawable/ic_icn_assessment_on"
-            android:textColor="@color/white"
-            android:textSize="@dimen/medium_text_size"
-            android:backgroundTint="@color/grey_light_qm"
-            android:textStyle="bold"
+            app:backgroundTint="@color/grey_light_qm"
             app:fabSize="normal" />
     </LinearLayout>
 </RelativeLayout>

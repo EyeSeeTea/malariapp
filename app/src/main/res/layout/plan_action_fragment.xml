@@ -396,7 +396,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/standard_21"
-            android:backgroundTint="@color/grey_light_qm"
+            app:backgroundTint="@color/grey_light_qm"
             app:fabSize="mini"/>
 
         <org.eyeseetea.malariacare.views.CustomTextView
@@ -429,7 +429,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/standard_21"
-            android:backgroundTint="@color/grey_light_qm"
+            app:backgroundTint="@color/grey_light_qm"
             app:fabSize="mini" />
 
         <android.support.design.widget.FloatingActionButton
@@ -439,7 +439,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/standard_21"
-            android:backgroundTint="@color/grey_light_qm"
+            app:backgroundTint="@color/grey_light_qm"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_share" />
 
@@ -452,7 +452,7 @@
             android:layout_marginBottom="@dimen/standard_21"
             android:layout_marginRight="@dimen/standard_45"
             android:layout_marginTop="@dimen/standard_21"
-            android:backgroundTint="@color/grey_light_qm"
+            app:backgroundTint="@color/grey_light_qm"
             app:fabSize="mini"
             app:srcCompat="@drawable/vct_action_uncheck" />
     </RelativeLayout>
