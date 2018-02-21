@@ -191,7 +191,6 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/button_demo_selector"
-                    android:visibility="gone"
                     android:orientation="vertical"
                     android:text="@string/advanced_options"
                     android:textColor="@color/advanced_options_text_color"
