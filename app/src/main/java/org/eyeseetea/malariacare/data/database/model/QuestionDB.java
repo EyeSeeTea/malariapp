@@ -38,6 +38,8 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.tabName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -971,18 +973,18 @@ public class QuestionDB extends BaseModel {
         }
 
         long optionId = (long) getValueBySurvey(idSurvey).getOption().getId_option();
-        long numberOfChildrenActive = new Select().distinct().from(ValueDB.class).as(valueName)
+        List<ValueDB> questionsMatches = new Select().from(ValueDB.class).as(valueName)
                 .join(QuestionOptionDB.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
                 .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
                                 .eq(QuestionOptionDB_Table.id_question_fk.withTable(questionOptionAlias)))
 
-                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)
-                        .eq(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)))
-
                 .join(MatchDB.class, Join.JoinType.LEFT_OUTER).as(matchName)
                 .on(QuestionOptionDB_Table.id_match_fk.withTable(questionOptionAlias)
                         .eq(MatchDB_Table.id_match.withTable(matchAlias)))
+
+                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)
+                        .eq(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)))
 
                 //Parent child relationship
                 .where(QuestionRelationDB_Table.operation.eq(1))
@@ -995,9 +997,13 @@ public class QuestionDB extends BaseModel {
                 //and option
                 .and(ValueDB_Table.id_option_fk.withTable(valueAlias)
                         .eq((long)optionId))
-                .count();
+                .and(QuestionOptionDB_Table.id_option_fk.withTable(questionOptionAlias).is(optionId)).queryList();
+        int numberOfChildrenActive = 0;
+        if(questionsMatches!=null){
+            numberOfChildrenActive = questionsMatches.size();
+        }
         System.out.println("query: numberOfChildrenActive" + numberOfChildrenActive );
-        return numberOfChildrenActive>1;
+        return numberOfChildrenActive>0;
     }
     @Override
     public boolean equals(Object o) {
