@@ -240,7 +240,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.HTML);
             }
         });
+        mTextViewHtml.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.HTML);
+            }
+        });
         fabPlainTextOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.TEXT);
+            }
+        });
+        mTextViewPlainText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.TEXT);
