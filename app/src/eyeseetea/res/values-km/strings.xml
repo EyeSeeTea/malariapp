@@ -284,4 +284,6 @@ evaluation"</string>
 <string name="apply_filters">"អនុវត្តតម្រង"</string>
 <string name="failed_video_image_question_only">"សំណួរវីដេអូ / រូបភាពប៉ុណ្ណោះ"</string>
 <string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
+<string name="advanced_options">"ជម្រើសកម្រិតខ្ពស់"</string>
+<string name="simple_options">"ជម្រើសសាមញ្ញ"</string>
 </resources>

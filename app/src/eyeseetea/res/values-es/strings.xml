@@ -275,4 +275,6 @@ clínica"</string>
 <string name="apply_filters">"Aplicar filtros"</string>
 <string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
 <string name="failed_questions_only">"Solo preguntas fallidas"</string>
+<string name="advanced_options">"Opciones avanzadas"</string>
+<string name="simple_options">"Opciones simples"</string>
 </resources>

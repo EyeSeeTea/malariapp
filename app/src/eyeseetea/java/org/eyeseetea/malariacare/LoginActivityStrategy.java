@@ -20,11 +20,12 @@
 package org.eyeseetea.malariacare;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -69,6 +70,7 @@ public class LoginActivityStrategy {
                 }
             });
         }
+        initAdvancedOptionsButton();
     }
 
 
@@ -203,4 +205,35 @@ public class LoginActivityStrategy {
         loginActivity.finish();
     }
 
+    private void initAdvancedOptionsButton() {
+        final TextView advancedOptions = (TextView) loginActivity.findViewById(R.id.demo_advanced_options);
+        advancedOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleVisibility(loginActivity.findViewById(R.id.edittext_server_url_input_layout));
+                toggleText(advancedOptions,R.string.advanced_options,R.string.simple_options);
+            }});
+    }
+
+    private static void toggleVisibility(View view) {
+        int visibility = View.VISIBLE;
+        if (view.getVisibility() == View.VISIBLE) {
+            visibility = View.GONE;
+        }
+        view.setVisibility(visibility);
+    }
+
+    private static void toggleText(@NonNull TextView textView, @StringRes int idFirstText,
+            @StringRes int idSecondText) {
+
+        Context context = textView.getContext();
+        String firstText = context.getString(idFirstText);
+        String actualText = textView.getText().toString();
+
+        if (actualText.equals(firstText)) {
+            textView.setText(idSecondText);
+        } else {
+            textView.setText(idFirstText);
+        }
+    }
 }

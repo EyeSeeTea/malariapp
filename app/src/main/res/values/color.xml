@@ -115,4 +115,7 @@
     <color name="darkRedOnLight">#9B1323</color>
     <color name="assess_yellow_on_light">#D99424</color>
     <color name="circle_background_on_light">#C0BFC1</color>
+    <color name="advanced_options_text_color">#4B6033</color>
+
+
 </resources>
