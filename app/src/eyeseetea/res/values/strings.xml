@@ -278,6 +278,7 @@ evaluation"</string>
 <string name="completed_next">"Next"</string>
 <string name="plan_action_edit_text_hint">"tap to write"</string>
 <string name="apply_filters">"Apply filters"</string>
+<string name="filter">"Filter"</string>
 <string name="failed_video_image_question_only">"Video/Image questions only"</string>
 <string name="failed_questions_only">"Failed questions only"</string>
 <string name="advanced_options">"Advanced options"</string>

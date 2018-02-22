@@ -86,7 +86,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     static boolean reverse=false;
     DashboardActivity dashboardActivity;
 
-    boolean forceAllSurveys;
+    public boolean forceAllSurveys;
 
     CustomRadioButton customRadioButton;
     /**
@@ -184,9 +184,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleForceAllSurveys();
-                PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
-                ((CustomRadioButton) customRadioButton).setChecked(!isForceAllSurveys());
+                clickOnFilter();
                 reloadData();
             }
         };
@@ -197,7 +195,13 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
         DashboardSentFragmentStrategy.createOptionsDialog(view,onClickListener);
 
+        FeedbackFragmentStyleStrategy.showImproveFilter(view, this);
+    }
 
+    public void clickOnFilter() {
+        toggleForceAllSurveys();
+        PreferencesState.getInstance().setForceAllSentSurveys(isForceAllSurveys());
+        ((CustomRadioButton) customRadioButton).setChecked(!isForceAllSurveys());
     }
 
     public void resetList() {

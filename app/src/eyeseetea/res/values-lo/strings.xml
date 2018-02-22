@@ -280,6 +280,7 @@
 <string name="completed_next">"ຕໍ່ໄປ"</string>
 <string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
 <string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
+<string name="filter">"ຕົວກອງ"</string>
 <string name="failed_video_image_question_only">"ຄໍາຖາມວິດີໂອ / ຮູບພາບເທົ່ານັ້ນ"</string>
 <string name="failed_questions_only">"ຄໍາຖາມບໍ່ເທົ່າທຽມ"</string>
 <string name="advanced_options">"ຕົວເລືອກຂັ້ນສູງ"</string>
