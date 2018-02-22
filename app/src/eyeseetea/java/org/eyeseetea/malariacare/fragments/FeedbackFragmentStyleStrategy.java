@@ -28,13 +28,13 @@ public class FeedbackFragmentStyleStrategy {
         LayoutUtils.drawScore(feedback.getScore(idSurvey, module), doubleRectChart);
     }
 
-    public static void showFilters(View view, final CustomRadioButton chkFailed, final CustomRadioButton chkMedia, final FeedbackAdapter feedbackAdapter) {
+    public static void showFilters(View view, final FeedbackAdapter feedbackAdapter) {
         //And checkbox listener
         View button = view.findViewById(R.id.filters_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.showFeedbackFilters(view.getContext(), chkFailed, chkMedia, feedbackAdapter);
+                Utils.showFeedbackFilters(view.getContext(), feedbackAdapter);
             }
         });
     }

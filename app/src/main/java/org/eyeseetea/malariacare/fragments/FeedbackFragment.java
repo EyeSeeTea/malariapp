@@ -174,7 +174,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         feedbackListView.setDivider(null);
         feedbackListView.setDividerHeight(0);
 
-        FeedbackFragmentStyleStrategy.showFilters(llLayout, chkFailed, chkMedia, feedbackAdapter);
+        FeedbackFragmentStyleStrategy.showFilters(llLayout, feedbackAdapter);
         planAction = (CustomButton) llLayout.findViewById(R.id.action_plan);
         planAction.setOnClickListener(new View.OnClickListener() {
                                          @Override

@@ -77,7 +77,7 @@ public class Utils extends AUtils {
         dialog.show();
     }
 
-    public static void showFeedbackFilters(Context context, CustomRadioButton chkFailed, CustomRadioButton chkMedia, final FeedbackAdapter feedbackAdapter) {
+    public static void showFeedbackFilters(Context context, final FeedbackAdapter feedbackAdapter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_feedback_filters);
         //dialog.setTitle(titleId);
@@ -95,24 +95,21 @@ public class Utils extends AUtils {
         });
         //now that the dialog is set up, it's time to show it
 
-        chkFailed = (CustomRadioButton) dialog.findViewById(R.id.chkFailed);
+        CustomRadioButton chkFailed = (CustomRadioButton) dialog.findViewById(R.id.chkFailed);
         chkFailed.setText(context.getResources().getString(R.string.failed_questions_only)+"   ");
-        chkFailed.setChecked(true);
+        chkFailed.setChecked(feedbackAdapter.isOnlyFailed());
         chkFailed.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
                                              feedbackAdapter.toggleOnlyFailed(false);
                                              ((CustomRadioButton) v).setChecked(feedbackAdapter
-
-
-
-                                                                                            .isOnlyFailed());
+                                                     .isOnlyFailed());
                                          }
                                      }
         );
-        chkMedia = (CustomRadioButton) dialog.findViewById(R.id.chkMedia);
+        CustomRadioButton chkMedia = (CustomRadioButton) dialog.findViewById(R.id.chkMedia);
         chkMedia.setText(context.getResources().getString(R.string.failed_video_image_question_only)+"   ");
-        chkMedia.setChecked(false);
+        chkMedia.setChecked(feedbackAdapter.isOnlyMedia());
         chkMedia.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
