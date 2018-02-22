@@ -191,7 +191,7 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:layout_weight="0.1"
-        android:src="@drawable/ic_action_more_vert"
+        app:srcCompat="@drawable/ic_action_more_vert"
         android:layout_gravity="center"
         android:gravity="center_horizontal" />
 </TableRow>
