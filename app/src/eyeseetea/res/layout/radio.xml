@@ -30,7 +30,7 @@
         android:id="@+id/statement"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="top|center_horizontal"
         android:layout_weight="0.5"
         android:padding="5dip"
         android:fontFamily="@string/normal_font"

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/header_top_padding"
     android:paddingBottom="@dimen/header_bottom_padding"
+    android:background="@color/survey_background"
     android:id="@+id/header">
 
     <org.eyeseetea.malariacare.views.CustomTextView
@@ -18,7 +19,7 @@
         android:paddingBottom="5dp"
         android:typeface="sans"
         android:textStyle="bold"
-        android:background="@color/survey_header_background"
+        android:background="@color/app_background"
         android:paddingLeft="10dip"
         android:textSize="18dp"
         app:tDimension="@string/font_size_level2"

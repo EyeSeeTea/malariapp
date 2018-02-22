@@ -37,6 +37,8 @@
     <color name="app_background">#272727</color>
     <color name="tab_gradient_start">#1A353D</color>
     <color name="tab_gradient_end">#325058</color>
+    <color name="tab_gradient_survey_start">#75ac0c</color>
+    <color name="tab_gradient_survey_end">#427605</color>
     <color name="even_row_background">@color/even_background</color>
 
     <color name="plan_grey_light">#4A4A4A</color>
