@@ -9,7 +9,7 @@
         android:scaleType="centerInside"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
-        android:src="@drawable/ic_icn_plus"/>
+        android:src="@drawable/icn_plus"/>
     <ImageView
         android:id="@+id/parent_hide_img"
         android:layout_width="@dimen/child_parent_image_size"

@@ -24,6 +24,7 @@ import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -99,5 +100,8 @@ public class PlannedStyleStrategy {
 
     public static String getTitleHeader(String titleHeader, Integer counter) {
         return String.format("%s",titleHeader,counter);
+    }
+
+    public static void drawActionButtonTint(ImageButton actionButton) {
     }
 }

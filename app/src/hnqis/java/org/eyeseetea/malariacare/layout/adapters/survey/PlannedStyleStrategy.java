@@ -93,4 +93,9 @@ public class PlannedStyleStrategy {
     public static String getTitleHeader(String titleHeader, Integer counter) {
         return String.format("%s (%d)",titleHeader,counter);
     }
+
+    public static void drawActionButtonTint(ImageButton actionButton) {
+        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                R.color.plan_grey_light));
+    }
 }

@@ -40,7 +40,6 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.utils.AUtils;
 
 import java.util.List;
 
@@ -308,12 +307,11 @@ public class PlannedAdapter extends BaseAdapter {
         ImageButton actionButton = (ImageButton) rowLayout.findViewById(
                 R.id.planning_survey_action);
         if (plannedSurvey.getSurvey().isInProgress()) {
-            actionButton.setImageResource(R.drawable.ic_edit);
+            actionButton.setImageResource(R.drawable.ic_edit_light);
         } else {
-            actionButton.setImageResource(R.drawable.icn_plus);
+            actionButton.setImageResource(R.drawable.ic_plus_light);
         }
-        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-                R.color.plan_grey_light));
+        PlannedStyleStrategy.drawActionButtonTint(actionButton);
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
