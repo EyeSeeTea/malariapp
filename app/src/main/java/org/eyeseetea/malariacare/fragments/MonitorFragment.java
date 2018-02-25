@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
@@ -66,7 +65,6 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -239,6 +237,12 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
             reloadSurveys(surveysForGraphic, programs, orgUnits);
         }
+        showMessageNoAddedSurveys((surveysForGraphic == null || surveysForGraphic.isEmpty()));
+    }
+
+    private void showMessageNoAddedSurveys(boolean show) {
+        getActivity().findViewById(R.id.monitor_no_surveys_message).setVisibility(
+                show ? View.VISIBLE : View.GONE);
     }
 
     public void reloadSurveys(List<SurveyDB> newListSurveys, List<ProgramDB> newListPrograms,
