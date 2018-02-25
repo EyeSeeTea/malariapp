@@ -6,47 +6,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/statement"
-            android:layout_width="0dip"
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/statement"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.5"
+        android:padding="5dip"
+        android:paddingLeft="@dimen/question_padding_left"
+        android:text="@string/widget_info_empty_statement"
+        android:textColor="@color/black"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/medium_font_name" />
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:layout_weight="0.35"
+        android:alpha="0.8"
+        android:background="@color/textFieldColor">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/answer"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.5"
-            android:padding="5dip"
-            android:paddingLeft="@dimen/question_padding_left"
-            android:text="@string/widget_info_empty_statement"
-            android:textColor="@color/new_grey_text_color"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name" />
+            android:backgroundTint="@color/transparent"
+            android:gravity="right"
+            android:paddingBottom="2dip"
+            android:paddingLeft="2dip"
+            android:paddingTop="2dip"
+            android:spinnerMode="dropdown" />
 
-        <RelativeLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:padding="5dip">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/assess_yellow"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_triangle_dropdown" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:alpha="0.8"
-                android:background="@color/textFieldColor"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:id="@+id/answer"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/headerColor"
-                    android:backgroundTintMode="add"
-                    android:gravity="right"
-                    android:paddingBottom="2dip"
-                    android:paddingLeft="2dip"
-                    android:paddingRight="20dip"
-                    android:paddingTop="2dip"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-
-        </RelativeLayout>
+    </RelativeLayout>
 
     <include layout="@layout/score"></include>
 </LinearLayout>
