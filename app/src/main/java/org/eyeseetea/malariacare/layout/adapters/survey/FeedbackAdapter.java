@@ -47,8 +47,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.sdk.common.VideoUtils;
 
 import java.io.File;
@@ -270,7 +270,9 @@ public class FeedbackAdapter extends BaseAdapter {
                     + "</b></font>";
         }
 
-        textView.setText(Html.fromHtml(compulsoryMark+feedback.getLabel()));
+        String label = replaceLessThanToEntityHTMLChars(feedback.getLabel());
+
+        textView.setText(Html.fromHtml(compulsoryMark + label));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
@@ -320,6 +322,13 @@ public class FeedbackAdapter extends BaseAdapter {
 
 
         return rowLayout;
+    }
+
+    private String replaceLessThanToEntityHTMLChars(String label) {
+        if (label.contains("<")) {
+            label = label.replace("<", "&lt;");
+        }
+        return label;
     }
 
     /**
