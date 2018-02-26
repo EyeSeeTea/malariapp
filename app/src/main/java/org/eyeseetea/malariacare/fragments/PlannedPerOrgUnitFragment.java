@@ -145,8 +145,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     private void setSelectAllCheckboxAs(final boolean value, final boolean isClicked) {
         selectAllCheckbox.post(new Runnable() {
             @Override
-            public void run() { 
-                CustomCheckBox selectAllCheckbox=(CustomCheckBox) getView().findViewById(R.id.select_all_orgunits);
+            public void run() {
                 selectAllCheckbox.setChecked(value,isClicked);
             }
         });
