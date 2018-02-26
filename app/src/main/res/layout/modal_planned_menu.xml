@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_below="@id/add"
-        android:text="@string/change_date"
+        android:text="@string/header_reschedule"
         android:background="@color/dialog_button_text"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
