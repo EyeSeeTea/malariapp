@@ -587,9 +587,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                         R.string.app_name) + "</b><br/>";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
                 + "/" + survey.getProgram().getName() + "<br/>";
+        String completionDate = "";
+        try{
+            completionDate = EventExtended.format
+                    (survey.getCompletionDate(), EventExtended.MONTH_DATE_FORMAT);
+        }catch (IllegalArgumentException e){
+            completionDate = EventExtended.format
+                    (survey.getCompletionDate(), EventExtended.EUROPEAN_DATE_FORMAT);
+        }
+
         data += getString(R.string.on) + " " + String.format(
-                getString(R.string.plan_action_next_date), EventExtended.format
-                        (survey.getCompletionDate(), getString(R.string.date_month_text_format)))
+                getString(R.string.plan_action_next_date), completionDate)
                 + "<br/>";
         data += getString(R.string.quality_of_care) + " <em style=\"color: #FFBF00;\">"
                 + Math.round(survey.getMainScore())
