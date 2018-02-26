@@ -253,7 +253,7 @@ Mensuelle"</string>
 <string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
 <string name="start">"Début"</string>
 
-<string name="add">"Démarrer l'évaluation"</string>
+<string name="add">"Démarrer enquête"</string>
 <string name="show_history">"Historique du calendrier"</string>
 <string name="comments">"Commentaires"</string>
 <string name="dates">"Dates précédentes"</string>

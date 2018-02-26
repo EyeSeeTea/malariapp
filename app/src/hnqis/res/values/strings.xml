@@ -261,7 +261,7 @@ evaluation"</string>
 <string name="date_month_text_format">"MMMM d',' YYYY"</string>
 
 
-<string name="add">"Start assessment"</string>
+<string name="add">"Start survey"</string>
 <string name="change_date">"Change date"</string>
 <string name="show_history">"Schedule history"</string>
 <string name="comments">"Comments"</string>
