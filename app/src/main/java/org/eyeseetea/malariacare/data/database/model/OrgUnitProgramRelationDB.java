@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.data.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -156,6 +158,39 @@ public class OrgUnitProgramRelationDB extends BaseModel {
         }
 
         return orgUnitProgramRelation.getProductivity();
+    }
+
+    public static boolean existProgramAndOrgUnitRelation(Long idProgram, Long idOrgUnit) {
+        OrgUnitProgramRelationDB
+                orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
+                .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(idOrgUnit))
+                .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(idProgram)).querySingle();
+        return (orgUnitProgramRelation != null);
+    }
+
+    public static int countNumberOfProgramsByOrgUnit(OrgUnitDB orgUnit) {
+        if (orgUnit == null) {
+            return 0;
+        }
+
+        return (int) SQLite.selectCountOf().from(OrgUnitProgramRelationDB.class)
+                .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
+                .count();
+    }
+
+    public static int countNumberOfOrgUnitByProgram(ProgramDB program) {
+        if (program == null) {
+            return 0;
+        }
+
+        return  (int) SQLite.selectCountOf().from(OrgUnitProgramRelationDB.class)
+                .where(OrgUnitProgramRelationDB_Table.id_program_fk.eq(program.getId_program()))
+                .count();
+    }
+
+    public static int countNumberOfRelations() {
+        return (int) SQLite.selectCountOf().from(OrgUnitProgramRelationDB.class)
+                .count();
     }
 
     public long getId_orgunit_program_relation() {
