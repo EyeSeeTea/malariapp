@@ -26,11 +26,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -61,6 +63,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     DashboardActivity dashboardActivity;
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
+    FloatingActionButton startButton;
 
     public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
@@ -100,8 +103,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                         saveCurrentFilters();
                     }
                 });
-
-        return inflater.inflate(R.layout.assess_listview, null);
+        View view =  inflater.inflate(R.layout.assess_listview, null);
+        startButton = (FloatingActionButton) view.findViewById(R.id.start_button);
+        return view;
     }
 
     private void saveCurrentFilters() {
@@ -134,6 +138,17 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
 
             orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        }
+    }
+
+    private void showOrHiddenButton() {
+        OrgUnitDB orgUnit = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+        ProgramDB program = orgUnitProgramFilterView.getSelectedProgramFilter();
+        SurveyDB survey = SurveyDB.getInProgressSurveys(orgUnit, program);
+        if (survey != null){
+            startButton.setVisibility(View.INVISIBLE);
+        }else{
+            startButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -242,6 +257,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
 
         reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
+        showOrHiddenButton();
     }
 
     private List<SurveyDB> getSurveysByOrgUnitAndProgram(
