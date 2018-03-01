@@ -189,6 +189,7 @@ clínica"</string>
 <string name="monitor_js_assessments" >Encuestas realizadas</string>
 <string name="monitor_js_target" >"Objetivo"</string>
 <string name="monitor_js_quality_of_care" >"Calidad de cuidados: Últimos "</string>
+
 <string name="monitor_js_months" >" meses"</string>
 
 
@@ -268,4 +269,5 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="plan_action_provider_title" >"Nombre del proveedor"</string>
 </resources>

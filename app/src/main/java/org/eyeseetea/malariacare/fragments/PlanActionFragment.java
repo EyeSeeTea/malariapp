@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
@@ -41,6 +42,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Ev
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -116,6 +118,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         long surveyId = getArguments().getLong(SURVEY_ID);
 
         initLayoutHeaders();
+        initProvider();
         initEditTexts();
         initActions();
         initSubActions();
@@ -124,6 +127,21 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         initPresenter(surveyId);
 
         return mRootView;
+    }
+
+    private void initProvider() {
+
+        String provider = ServerMetadataDB.findControlDataElementUid(
+                getString(R.string.provider_name));
+        if(provider!=null && !provider.isEmpty()) {
+            LinearLayout providerContainer = (LinearLayout) mRootView.findViewById(
+                    R.id.provider_container);
+            providerContainer.setVisibility(View.VISIBLE);
+            CustomTextView providerText = (CustomTextView) mRootView.findViewById(
+                    R.id.plan_action_provider_text);
+            providerText.setText(provider);
+
+        }
     }
 
     @Override
@@ -511,6 +529,12 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 EventExtended.format(survey.getScheduledDate(),
                         EventExtended.EUROPEAN_DATE_FORMAT));
 
+        String provider = ServerMetadataDB.findControlDataElementUid(
+                getString(R.string.provider_name));
+        if(provider!=null && !provider.isEmpty()) {
+            data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + provider;
+        }
+
         data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
 
         if (obsActionPlan.getGaps() != null && !obsActionPlan.getGaps().isEmpty()) {
@@ -598,6 +622,12 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 + String.format(
                 getString(R.string.plan_action_next_date), EventExtended.format
                         (survey.getScheduledDate(), EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
+
+        String provider = ServerMetadataDB.findControlDataElementUid(
+                getString(R.string.provider_name));
+        if(provider!=null && !provider.isEmpty()) {
+            data += "<p><b>" + getString(R.string.plan_action_provider_title) + "</b> " + provider + "</p>";
+        }
 
         if (obsActionPlan.getGaps() != null) {
             gasp = obsActionPlan.getGaps();
