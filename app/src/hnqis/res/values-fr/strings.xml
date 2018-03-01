@@ -263,5 +263,5 @@ Mensuelle"</string>
 <string name="html_text">"Texte formaté "</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
-<string name="plan_action_provider_title" >"Nom du fournisseur"</string>
+<string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
 </resources>

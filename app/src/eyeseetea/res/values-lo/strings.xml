@@ -275,5 +275,5 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
-<string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ"</string>
+<string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 </resources>
