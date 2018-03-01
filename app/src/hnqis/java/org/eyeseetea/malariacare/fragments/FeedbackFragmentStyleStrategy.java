@@ -1,14 +1,22 @@
 package org.eyeseetea.malariacare.fragments;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import android.view.View;
+import android.widget.TextView;
 
 public class FeedbackFragmentStyleStrategy {
     public static void drawScore(RelativeLayout llLayout, SurveyDB survey, Context context) {
@@ -30,8 +38,7 @@ public class FeedbackFragmentStyleStrategy {
     public static void changeBackgroundColor(View view, CompositeScoreFeedback feedback) {
         view.findViewById(R.id.cs_header).setBackgroundResource(feedback.getBackgroundColor());
 
-        ImageView imageView = (ImageView)view.findViewById(R.id.feedback_image);
-        FeedbackFragmentStyleStrategy.changeBackgroundColor(rowLayout, feedback);
+        ImageView imageView = (ImageView)view.findViewById(R.id.feedback_image); 
 
         imageView.setBackgroundResource(feedback.getBackgroundColor());
     }
@@ -51,9 +58,10 @@ public class FeedbackFragmentStyleStrategy {
     }
 
 
-    public static void showFilters(View view, CustomRadioButton chkFailed, CustomRadioButton chkMedia, final FeedbackAdapter feedbackAdapter) {
+    public static void showFilters(View view,
+            final FeedbackAdapter feedbackAdapter) {
         //And checkbox listener
-        chkFailed = (CustomRadioButton) view.findViewById(R.id.chkFailed);
+        CustomRadioButton chkFailed = (CustomRadioButton) view.findViewById(R.id.chkFailed);
         chkFailed.setChecked(true);
         chkFailed.setOnClickListener(new View.OnClickListener() {
                                          @Override
@@ -64,7 +72,7 @@ public class FeedbackFragmentStyleStrategy {
                                          }
                                      }
         );
-        chkMedia = (CustomRadioButton) view.findViewById(R.id.chkMedia);
+        CustomRadioButton chkMedia = (CustomRadioButton) view.findViewById(R.id.chkMedia);
         chkMedia.setChecked(false);
         chkMedia.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -75,5 +83,14 @@ public class FeedbackFragmentStyleStrategy {
                                         }
                                     }
         );
+    }
+
+    public static void showImproveFilter(View view, DashboardSentFragment dashboardSentFragment) {
+    }
+
+    public static void loadArrow(LinearLayout rowLayout) {
+    }
+
+    public static void toggleArrow(LinearLayout rowLayout, boolean visible) {
     }
 }

@@ -13,7 +13,6 @@ public class DashboardSentFragmentStrategy {
         ImageView extras = (ImageView) view.findViewById(
                 R.id.more_options);
         extras.setOnClickListener(onClickListener);
-        //todo create dialog?
     }
 
     public static void hideFilterSubHeader(View view) {

@@ -104,4 +104,16 @@ public class PlannedStyleStrategy {
 
     public static void drawActionButtonTint(ImageButton actionButton) {
     }
+
+    public static View getViewByPlannedSurveyHeader(ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_survey_header_row,
+                parent, false);
+        return rowLayout;
+    }
+
+    public static void drawNumber(LinearLayout rowLayout, Integer counter) {
+        TextView textView = (TextView) rowLayout.findViewById(R.id.planning_number);
+        textView.setText(counter+"");
+    }
 }

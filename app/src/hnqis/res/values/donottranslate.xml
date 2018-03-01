@@ -29,4 +29,7 @@
 
     <!-- pull control codes -->
     <string name="pull_program_code" translatable="false">HNQIS</string>
+
+    <!-- Not used strings -->
+    <string name="filter" translatable="false"></string>
 </resources>

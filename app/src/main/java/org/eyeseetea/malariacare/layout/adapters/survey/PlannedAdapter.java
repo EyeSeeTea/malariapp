@@ -206,18 +206,11 @@ public class PlannedAdapter extends BaseAdapter {
             itemOrder = 0;
             return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
         } else if (plannedItem instanceof PlannedSurveyHeader) {
-            return getViewByPlannedSurveyHeader((PlannedSurveyHeader) plannedItem, parent);
+            itemOrder++;
+            return PlannedStyleStrategy.getViewByPlannedSurveyHeader(parent);
         } else {
             return getViewByPlannedSurvey(position, (PlannedSurvey) plannedItem, parent);
         }
-    }
-
-    private View getViewByPlannedSurveyHeader(PlannedSurveyHeader plannedHeader, ViewGroup parent) {
-        itemOrder++;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_survey_header_row,
-                parent, false);
-        return rowLayout;
     }
 
     private View getViewByPlannedHeader(PlannedHeader plannedHeader, ViewGroup parent) {
@@ -237,8 +230,7 @@ public class PlannedAdapter extends BaseAdapter {
         color = new PlannedStyleStrategy(plannedHeader, textView, img, color).draw(currentHeader);
         img.setColorFilter(color);
         textView.setTextColor(color);
-        textView = (TextView) rowLayout.findViewById(R.id.planning_number);
-        textView.setText(plannedHeader.getCounter()+"");
+        PlannedStyleStrategy.drawNumber(rowLayout, plannedHeader.getCounter());
 /*
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
@@ -384,4 +376,6 @@ public class PlannedAdapter extends BaseAdapter {
             toggleSection(plannedHeader);
         }
     }
+
+
 }

@@ -27,6 +27,8 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.layout.adapters.survey.PlannedStyleStrategy;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +84,27 @@ public class PlannedItemBuilder {
     private void initBuilder(){
         surveyMap = new HashMap<>();
         Context ctx=PreferencesState.getInstance().getContext();
+        if(AppSettingsBuilder.isPlanInnerHeader()) {
+            buildPlannedItemsWithInnerHeaders(ctx);
+        }else{
+            buildPlannedItemsWithoutInnerHeaders(ctx);
+        }
+    }
+    public void buildPlannedItemsWithoutInnerHeaders(Context ctx){
+        never = new ArrayList<>();
+        never.add(PlannedHeader.buildNeverHeader(ctx));
 
+        overdue = new ArrayList<>();
+        overdue.add(PlannedHeader.buildOverdueHeader(ctx));
+
+        next30 = new ArrayList<>();
+        next30.add(PlannedHeader.buildNext30Header(ctx));
+
+        future = new ArrayList<>();
+        future.add(PlannedHeader.buildFutureHeader(ctx));
+    }
+
+    public void buildPlannedItemsWithInnerHeaders(Context ctx){
         never = new ArrayList<>();
         PlannedHeader plannedHeader = PlannedHeader.buildNeverHeader(ctx);
         never.add(plannedHeader);
@@ -103,7 +125,6 @@ public class PlannedItemBuilder {
         future.add(plannedHeader);
         future.add(new PlannedSurveyHeader(plannedHeader));
     }
-
     /**
      * Releases memory references
      */

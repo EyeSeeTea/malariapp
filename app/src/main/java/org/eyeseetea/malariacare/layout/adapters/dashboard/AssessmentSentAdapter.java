@@ -22,29 +22,17 @@ package org.eyeseetea.malariacare.layout.adapters.dashboard;
 import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

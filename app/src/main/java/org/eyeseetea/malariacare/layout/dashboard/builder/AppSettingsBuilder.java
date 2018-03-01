@@ -91,6 +91,10 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDashboardSettings().isTabTitleVisible();
     }
 
+    public static boolean isPlanInnerHeader() {
+        return getInstance().getSettings().getDashboardSettings().isPlanInnerHeader();
+    }
+
     public void init(Context context){
         settings = parse(R.raw.settings,context);
         dashboardController = build(settings);

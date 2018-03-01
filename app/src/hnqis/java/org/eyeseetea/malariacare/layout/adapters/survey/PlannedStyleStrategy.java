@@ -40,10 +40,13 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.utils.AUtils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class PlannedStyleStrategy {
     private PlannedHeader mPlannedHeader;
@@ -97,5 +100,16 @@ public class PlannedStyleStrategy {
     public static void drawActionButtonTint(ImageButton actionButton) {
         actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.plan_grey_light));
+    }
+
+    public static View getViewByPlannedSurveyHeader(ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_header_row,
+                parent, false);
+        rowLayout.setVisibility(View.GONE);
+        return rowLayout;
+    }
+
+    public static void drawNumber(LinearLayout rowLayout, Integer counter) {
     }
 }

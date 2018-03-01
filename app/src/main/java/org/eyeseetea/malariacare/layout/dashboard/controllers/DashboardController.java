@@ -221,7 +221,6 @@ public class DashboardController {
         }
 
         ModuleController firstModuleController=getFirstVisibleModule();
-
         tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
 
         setPrimaryIconActive(tabHost.getTabWidget().getChildAt(0));
@@ -238,7 +237,6 @@ public class DashboardController {
 
                 //Reset tab colors
                 resetTabBackground();
-
                 tabHost.getCurrentTabView().setBackgroundColor(nextModuleController.getBackgroundColor());
                 tabHost.setBackgroundResource(R.drawable.tab_background);
 
@@ -273,11 +271,17 @@ public class DashboardController {
 
     private void changeActiveIcon(View view, int primary, int secondary){
         ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
-        imageView.setVisibility(primary);
+        setVisibility(imageView, primary);
         imageView = (ImageView) view.findViewById(R.id.tabSecundaryImage);
-        imageView.setVisibility(secondary);
-
+        setVisibility(imageView, secondary);
     }
+
+    private void setVisibility(ImageView imageView, int visibility) {
+        if(imageView!=null) {
+            imageView.setVisibility(visibility);
+        }
+    }
+
     /**
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */
@@ -730,14 +734,9 @@ public class DashboardController {
         TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
         tab.setContent(moduleController.getTabLayout());
         String title = "";
-        if(AppSettingsBuilder.isTabTitleVisible()) {
-            View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon(), moduleController.getSecondaryIcon());
-            tabview.setTag(moduleController.getName());
-            tab = tabHost.newTabSpec(tabName).setIndicator(tabview).setContent(moduleController.getTabLayout());
-
-        }else {
-            tab.setIndicator(title, moduleController.getIcon());
-        }
+        View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon(), moduleController.getSecondaryIcon());
+        tabview.setTag(moduleController.getName());
+        tab = tabHost.newTabSpec(tabName).setIndicator(tabview).setContent(moduleController.getTabLayout());
         tabHost.addTab(tab);
 
         addTagToLastTab(tabName);
@@ -746,7 +745,11 @@ public class DashboardController {
     private static View createTabView(final Context context, final String text, Drawable icon, Drawable secondaryIcon) {
         View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
         TextView tv = (TextView) view.findViewById(R.id.tabsText);
-        tv.setText(text);
+        if(AppSettingsBuilder.isTabTitleVisible()){
+            tv.setText(text);
+        }else {
+            tv.setVisibility(View.GONE);
+        }
         ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
         imageView.setVisibility(View.GONE);
         imageView.setImageDrawable(icon);

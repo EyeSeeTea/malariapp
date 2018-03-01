@@ -95,6 +95,16 @@
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/light_font" />
 
+            <org.eyeseetea.sdk.presentation.views.DoubleRectChart
+                android:id="@+id/scoreChart"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.3"
+                android:visibility="gone"/>
+
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
@@ -115,8 +125,6 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="0.1"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
         android:src="@drawable/ic_action_more_vert"
         android:layout_gravity="center"
         android:gravity="center_horizontal" />

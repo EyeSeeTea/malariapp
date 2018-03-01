@@ -9,6 +9,7 @@
     "orientation": "horizontal",
     "layout": "tab_dashboard",
     "listFilter": "lastForOU",
+    "PlanInnerHeader": true,
     "developerOptions": true,
     "tabTitleVisible": true,
     "modules": [{

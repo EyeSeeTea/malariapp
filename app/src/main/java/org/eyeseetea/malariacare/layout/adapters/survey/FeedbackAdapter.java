@@ -24,12 +24,10 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -278,8 +276,7 @@ public class FeedbackAdapter extends BaseAdapter {
         String feedbackText=feedback.getFeedback();
         if(feedbackText==null){
             feedbackText=context.getString(R.string.feedback_info_no_feedback);
-            View view=rowLayout.findViewById(R.id.feedback_question_arrow);
-            view.setVisibility(View.GONE);
+            FeedbackFragmentStyleStrategy.loadArrow(rowLayout);
         }
         textView.setText( Html.fromHtml(feedbackText, new CustomParser(textView, this.context), new CustomParser(textView, this.context)));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -414,12 +411,7 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private void toggleFeedback(LinearLayout rowLayout, boolean visible) {
         View separator = rowLayout.findViewById(R.id.feedback_container);
-        ImageView imageView = (ImageView) rowLayout.findViewById(R.id.feedback_question_arrow);
-        if(imageView!=null && visible) {
-            imageView.setImageDrawable(ContextCompat.getDrawable(PreferencesState.getInstance().getContext(), R.drawable.ic_media_arrow));
-        }else{
-            imageView.setImageDrawable(ContextCompat.getDrawable(PreferencesState.getInstance().getContext(), R.drawable.ic_media_arrow_down));
-        }
+        FeedbackFragmentStyleStrategy.toggleArrow(rowLayout, visible);
         separator.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 

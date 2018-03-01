@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="app_background">#272727</color>
     <color name="green">#84b467</color>
     <color name="amber">#F1C232</color>
     <color name="red">#ff060D</color>
@@ -18,9 +19,6 @@
     <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
     <color name="scoreGrandson">#6fa8dc</color>
-    <color name="lightGreen">#adda19</color>
-    <color name="darkRed">#d1213c</color>
-    <color name="assess_yellow">#dbe444</color>
     <color name="assess_grey">#4f4c4c</color>
     <color name="background">@color/plan_grey_light</color>
     <color name="tab_orange_plan">#f38b00</color>
@@ -99,8 +97,6 @@
     <color name="green_score_text">@color/green</color>
     <color name="orange_score_text">#D99424</color>
     <color name="red_score_text">@color/red</color>
-    <color name="feedbackDarkBlue">#6ca9d8</color>
-    <color name="feedbackLightBlue">#6bcdfd</color>
     <color name="tab_background">@color/transparent</color>
     <color name="start_button_text">@color/assess_grey</color>
     <color name="start_button">@color/assess_yellow</color>

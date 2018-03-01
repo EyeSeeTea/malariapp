@@ -49,4 +49,20 @@ public class FeedbackFragmentStyleStrategy {
             }
         });
     }
+
+
+    public static void loadArrow(LinearLayout rowLayout) {
+        View view=rowLayout.findViewById(R.id.feedback_question_arrow);
+        view.setVisibility(View.GONE);
+    }
+
+    public static void toggleArrow(LinearLayout rowLayout, boolean visible) {
+        ImageView imageView = (ImageView) rowLayout.findViewById(R.id.feedback_question_arrow);
+        if(imageView!=null && visible) {
+            imageView.setImageDrawable(
+                    ContextCompat.getDrawable(PreferencesState.getInstance().getContext(), R.drawable.ic_media_arrow));
+        }else{
+            imageView.setImageDrawable(ContextCompat.getDrawable(PreferencesState.getInstance().getContext(), R.drawable.ic_media_arrow_down));
+        }
+    }
 }
