@@ -170,7 +170,7 @@
                 app:tFontName="@string/font_name_regular" />
             <LinearLayout
                 android:id="@+id/provider_container"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
@@ -183,7 +183,7 @@
                     android:paddingBottom="@dimen/margin_feedback_top_bottom_radiobutton"
                     android:paddingLeft="@dimen/margin_lateral_feedback_radiobutton"
                     android:paddingTop="@dimen/margin_feedback_top_bottom_radiobutton"
-                    android:text="@string/plan_action_gasp_title"
+                    android:text="@string/plan_action_provider_title"
                     android:textColor="@color/white"
                     android:textSize="18dp"
                     android:textStyle="bold"
@@ -207,7 +207,7 @@
                     android:background="@android:color/transparent"
                     android:gravity="top"
                     android:inputType="textMultiLine"
-                    android:minLines="5"
+                    android:minLines="1"
                     android:scrollbars="none"/>
             </LinearLayout>
 
