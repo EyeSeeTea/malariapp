@@ -38,7 +38,7 @@ public class FeedbackFragmentStyleStrategy {
     public static void changeBackgroundColor(View view, CompositeScoreFeedback feedback) {
         view.findViewById(R.id.cs_header).setBackgroundResource(feedback.getBackgroundColor());
 
-        ImageView imageView = (ImageView)view.findViewById(R.id.feedback_image); 
+        ImageView imageView = (ImageView)view.findViewById(R.id.feedback_image);
 
         imageView.setBackgroundResource(feedback.getBackgroundColor());
     }
