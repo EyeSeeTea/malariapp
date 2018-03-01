@@ -44,9 +44,14 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/assess_grey"
                     android:id="@+id/org_unit_container">
                         <include layout="@layout/create_survey_fragment_orgunit_options"/>
+                    <Space
+                        android:background="@color/assess_grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/create_survey_title_extra_bottom_marging" />
                 </LinearLayout>
 
                 <LinearLayout

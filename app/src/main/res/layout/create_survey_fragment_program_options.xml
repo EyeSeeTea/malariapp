@@ -75,5 +75,8 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"  />
         </RelativeLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/create_survey_title_extra_bottom_marging" />
     </LinearLayout>
 </merge>
