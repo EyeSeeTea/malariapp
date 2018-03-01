@@ -120,8 +120,8 @@
             <org.eyeseetea.sdk.presentation.views.DoubleRectChart
                 android:id="@+id/planning_survey_qoc"
                 android:layout_height="match_parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:layout_width="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight=".17"
