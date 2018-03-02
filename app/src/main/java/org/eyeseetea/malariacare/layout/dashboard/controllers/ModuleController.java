@@ -26,6 +26,7 @@ import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.view.View;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -105,10 +106,11 @@ public abstract class ModuleController {
     }
 
     public Drawable getIcon() {
-        return dashboardActivity.getResources().getDrawable(moduleSettings.getResIcon());
+        return VectorDrawableCompat.create(dashboardActivity.getResources(), moduleSettings.getResIcon(), dashboardActivity.getTheme());
     }
+
     public Drawable getSecondaryIcon() {
-        return dashboardActivity.getResources().getDrawable(moduleSettings.getResSecondaryIcon());
+        return VectorDrawableCompat.create(dashboardActivity.getResources(), moduleSettings.getResSecondaryIcon(), dashboardActivity.getTheme());
     }
 
     public int getBackgroundColor() {

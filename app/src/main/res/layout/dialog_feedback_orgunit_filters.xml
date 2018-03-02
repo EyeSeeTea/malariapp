@@ -41,9 +41,8 @@
                 android:gravity="right"
                 android:button="@null"
                 android:background="@null"
-                android:drawableRight="@drawable/filter_radio_button"
-                android:textColor="@color/darkGrey"
-                app:font_name="@string/roboto_medium" />
+                android:drawableRight="@drawable/filter_radio_svg_button_wrapper"
+                android:textColor="@color/darkGrey" />
         </LinearLayout>
     <org.eyeseetea.sdk.presentation.views.CustomButton
         android:id="@+id/apply_filter"

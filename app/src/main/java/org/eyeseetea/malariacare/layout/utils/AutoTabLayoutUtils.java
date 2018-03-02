@@ -235,9 +235,7 @@ public class AutoTabLayoutUtils {
         else
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
-        viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
-        viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.parentImage = rowView.findViewById(R.id.parent_img);
         viewHolder.parentImageShown = rowView.findViewById(R.id.parent_hide_img);
