@@ -65,6 +65,8 @@
     <dimen name="create_survey_title_extra_bottom_marging">18dip</dimen>
     <!-- left padding for button in feedbackfragment !-->
     <dimen name="margin_lateral_feedback_radiobutton">15dip</dimen>
+    <dimen name="margin_quality_of_care">6dip</dimen>
+
     <dimen name="margin_feedback_top_bottom_radiobutton">8dip</dimen>
     <dimen name="min_image_width">200dip</dimen>
 
