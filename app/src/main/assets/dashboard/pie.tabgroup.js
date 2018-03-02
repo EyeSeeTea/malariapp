@@ -52,15 +52,15 @@ function pieXTabGroupChart(data){
                                [{
                                    value: data.valueA,
                                    color: green,
-                                   label: "A (>80)"
+                                   label: "A (>90)"
                                }, {
                                    value: data.valueB,
                                    color: yellow,
-                                   label: "B (50-80)"
+                                   label: "B (80-90)"
                                }, {
                                    value: data.valueC,
                                    color: red,
-                                   label: "C (<50)"
+                                   label: "C (<80)"
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

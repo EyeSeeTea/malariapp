@@ -113,7 +113,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:tDimension="@string/font_size_level1"
+            app:tDimension="@string/font_size_level2"
             app:tFontName="@string/medium_font_name" />
 
         <org.eyeseetea.malariacare.views.CustomButton
