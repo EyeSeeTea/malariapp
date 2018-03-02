@@ -84,6 +84,7 @@
             android:text="@string/two"
             android:textColor="@android:color/white"
             android:layout_below="@id/layout_dhis_logo"
+            android:paddingBottom="14dp"
             android:textSize="@dimen/login_title_text"
             app:font="@string/font_name_regular"/>
 
@@ -119,6 +120,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:hint="@string/server_url"
+                        android:textColor="@color/new_grey_text_color"
                         android:inputType="textUri"
                         android:singleLine="true"
                         app:font="@string/font_name_regular" />
@@ -138,6 +140,7 @@
                         android:hint="@string/username"
                         android:inputType="text"
                         android:singleLine="true"
+                        android:textColor="@color/new_grey_text_color"
                         app:font="@string/font_name_regular" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -180,6 +183,7 @@
                     android:text="@string/clear_and_logout"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
+                    android:inputType="textCapWords"
                     android:textSize="17sp"
                     android:visibility="gone"
                     app:font="@string/font_name_medium" />
@@ -192,9 +196,11 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/button_demo_selector"
                     android:orientation="vertical"
+                    android:paddingTop="14dp"
                     android:text="@string/advanced_options"
                     android:textColor="@color/advanced_options_text_color"
-                    android:textSize="@dimen/roboto_14"
+                    android:textSize="@dimen/roboto_16"
+                    android:inputType="textCapWords"
                     android:layout_below="@+id/layout_login_views"
                     android:layout_centerHorizontal="true"
                     app:font="@string/roboto_medium" />

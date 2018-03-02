@@ -11,6 +11,7 @@
     android:text="@string/demo_login"
     android:textColor="@color/blue_demo_mode"
     android:textSize="@dimen/roboto_14"
+    android:inputType="textCapWords"
     android:layout_below="@+id/layout_login_views"
     android:layout_centerHorizontal="true"
     app:font="@string/font_name_regular" />
