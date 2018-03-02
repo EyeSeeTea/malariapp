@@ -89,7 +89,7 @@
     <color name="spinner_border">#d7d7d7</color>
 
     <!-- moved colors from eyeseetea variant to main-->
-    
+
     <color name="grey_light_qm">#325058</color>
     <color name="green_middle">#4B6033</color>
     <color name="green_dark">#417505</color>

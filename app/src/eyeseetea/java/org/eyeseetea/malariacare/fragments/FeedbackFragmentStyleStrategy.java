@@ -57,7 +57,7 @@ public class FeedbackFragmentStyleStrategy {
 
     public static void loadArrow(LinearLayout rowLayout) {
         View view=rowLayout.findViewById(R.id.feedback_question_arrow);
-        view.setVisibility(View.GONE);
+        view.setVisibility(View.INVISIBLE);
     }
 
     public static void toggleArrow(LinearLayout rowLayout, boolean visible) {
