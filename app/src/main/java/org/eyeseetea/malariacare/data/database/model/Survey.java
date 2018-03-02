@@ -55,7 +55,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -851,6 +850,28 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .groupBy( Survey_Table.id_program_fk , Survey_Table.id_org_unit_fk)
                 .having(Survey_Table.completion_date.eq(Method.max(Survey_Table.completion_date)))
                 .querySingle();
+    }
+
+    public static Survey getNextSurvey(Survey oldSurvey) {
+        if (oldSurvey != null) {
+            List<Survey> surveys = SQLite.select()
+                    .from(Survey.class)
+                    .where(Survey_Table.id_program_fk.eq(oldSurvey.getProgram().getId_program()))
+                    .and(Survey_Table.id_org_unit_fk.eq(oldSurvey.getOrgUnit().getId_org_unit()))
+                    .orderBy(Survey_Table.creation_date, true)
+                    .queryList();
+            int i = 0;
+            for (Survey survey : surveys) {
+                if (survey.getId_survey().equals(oldSurvey.getId_survey())) {
+                    i++;
+                    break;
+                }
+            }
+            if (i < surveys.size()) {
+                return surveys.get(i);
+            }
+        }
+        return null;
     }
 
     /**

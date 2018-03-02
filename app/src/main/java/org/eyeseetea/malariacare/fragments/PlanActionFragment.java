@@ -657,8 +657,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         CustomTextView completionDate = (CustomTextView) llLayout.findViewById(
                 R.id.new_supervision_date);
         String formattedNextDate = "NaN";
-        if (survey.getScheduledDate() != null) {
-            formattedNextDate = EventExtended.format(survey.getScheduledDate(),
+        Survey nextSurvey = survey.getNextSurvey(survey);
+        if (nextSurvey != null && nextSurvey.getScheduledDate() != null) {
+            formattedNextDate = EventExtended.format(nextSurvey.getScheduledDate(),
                     EventExtended.EUROPEAN_DATE_FORMAT);
         }
         completionDate.setText(
