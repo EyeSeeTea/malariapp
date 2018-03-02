@@ -119,5 +119,7 @@
 
     <color name="grey_light_qm">#325058</color>
     <color name="nan_color">#999899</color>
+    <color name="dots_tint">#818181</color>
+    <color name="spinner_border">#d7d7d7</color>
 
 </resources>

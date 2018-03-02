@@ -84,7 +84,7 @@
                 android:textSize="@dimen/sent_rows_text_size"
                 android:textColor="@color/new_grey_text_color"
                 app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/medium_font_name" />
+                app:tFontName="@string/roboto_regular" />
 
             <org.eyeseetea.sdk.presentation.views.DoubleRectChart
                 android:id="@+id/scoreChart"
@@ -100,9 +100,10 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0.1"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:src="@drawable/ic_action_more_vert"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:tint="@color/dots_tint"
+                app:srcCompat="@drawable/ic_action_more_vert"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal" />
         </LinearLayout>
