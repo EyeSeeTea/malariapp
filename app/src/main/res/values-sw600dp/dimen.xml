@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="double_pie_chart_row_size">85dp</dimen>
+    <dimen name="double_pie_chart_dialog_size">150dp</dimen>
+    <dimen name="margin_top_text_chart">20dp</dimen>
+</resources>
