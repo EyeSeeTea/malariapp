@@ -135,10 +135,8 @@
 <string name="assessment_sent_score">"ຄະແນນ"</string>
 <string name="feedback_show_only_failed">"ສະແດງສະເພາະຄຳຖາມທີ່ຕອບຜິດ"</string>
 <string name="feedback_show_only_media">"ສະແດງຄໍາຖາມເທົ່ານັ້ນທີ່ມີວິດີໂອ / ຮູບພາບ"</string>
-<string name="feedback_show_only_one_or_show_all">"ສະແດງໃຫ້ເຫັນຄວາມຄິດເຫັນຫຼ້າສຸດຕໍ່ໂຄງການ / OU"</string>
 <string name="feedback_return">"ກັບຄືນສູ່ການປະເມີນຜົນທັງໝົດ"</string>
 <string name="quality_of_care">"ຄະແນນຄຸນນະພາບ"</string>
-<string name="overall_quality_of_care">"ຜະລິດຕະພາບການດູແລສຸຂະພາບໂດຍລວມ (QoC):"</string>
 <string name="feedback_info_passed">"ຜ່ານ"</string>
 <string name="feedback_info_failed">"ບໍ່ຜ່ານ"</string>
 <string name="feedback_info_not_answered">"
@@ -170,7 +168,7 @@
 <string name="dialog_pull_success">"ຊຸດຂໍ້ມູນໂຄງຮ່າງໄດ້ໂຫຼດມາຈາກລະບົບສຳເລັດແລ້ວ"</string>
 <string name="dialog_title_pull_response">"ສະຖານະການໂຫຼດ"</string>
 <string name="progress_pull_connecting">"ກຳລັງເຊື່ອມຕໍ່ກັບລະບົບ DHIS "</string>
-<string name="progress_pull_downloading">"ກຳລັງປັບປຸງລບົບໂຄງຮ່າງຂໍ້ມູນ (ອາດຈະໃໍຊ້ເວລາສອງສາມນາທີ)..."</string>
+<string name="progress_pull_downloading">"ກຳລັງປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນ (ອາດຈະໃໍຊ້ເວລາສອງສາມນາທີ)..."</string>
 <string name="progress_pull_preparing_program">"ກຳລັງໂຫຼດໂປຣແກຣມ..."</string>
 <string name="progress_pull_preparing_answers">"ກຳລັງໂຫຼດຄຳຕອບ..."</string>
 <string name="progress_pull_preparing_orgs">"ກຳລັງໂຫຼດສະຖານທີ..."</string>
@@ -191,15 +189,15 @@
 <string name="improve">"ປັບປູງ"</string>
 <string name="monitor">"ຕິດຕາມ"</string>
 <string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
-<string name="filter_all_org_assessments">"All Assessments"</string>
+<string name="filter_all_org_assessments">"ການປະເມີນຜົນທັງໝົດ"</string>
 <string name="dialog_content_dhis_preference_login">"ການປ່ຽນເຂົ້າໄປສູ່ລະບົບຈະຕ້ອງໄດ້ອອກ ແລະ ເຂົ້າໃໝ່. ທຸກໆຂໍ້ມູນການສຳຫຼວດທີ່ຍັງບໍ່ທັນສົ່ງຈະຖືກລຶບອອກ. ເຈົ້າຕ້ອງການຈະດຳເນີດການຕໍ່ບໍ? "</string>
 <string name="lastcommit">"ລຸ້ນທີ %s"</string>
 <string name="unavailable">"ບໍ່ມີ"</string>
 <string name="error_message_push">"ຂໍ້ມູນສຳຫຼວດທີ່ມີລະຫັດ UID: %s ນີ້, ຖືກໂຫຼດເຂົ້າໃສ່ລະບົບໂດຍບໍ່ມີວັນທີ. ກະລຸນາຕິດຕໍ່ຫາຜູ້ຄວບຄຸມລະບົບ."</string>
 <string name="monitor_js_assessments">"ການປະເມີນທີ່ກຳລັງດຳເນີດການ"</string>
 <string name="monitor_js_target">"ເປົ້າໝາຍ"</string>
-<string name="monitor_js_quality_of_care">"ຄຸນນະພາບຂອງການບໍລິການ: ຜ່ານມາ"</string>
-<string name="monitor_js_months">"ເດຶອນ"</string>
+<string name="monitor_js_quality_of_care">"ຄຸນນະພາບຂອງການບໍລິການ: .....ຜ່ານມາ"</string>
+<string name="monitor_js_months">"...ເດືອນ"</string>
 <string name="dialog_error_attribute_null">"\" ຂໍ້ມູນຂອງ id %s ນີ້ບໍ່ມີ. ກະລຸນາຕິດຫາຜູ້ຄວບຄຸມລະບົບ\""</string>
 <string name="progress_pull_relationships">"ການສ້າງຄວາມເຊື່ອມໂຍງຂອງຄຳຖາມ"</string>
 <string name="create">"ສ້າງ"</string>
@@ -238,14 +236,16 @@
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
-<string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
-<string name="plan_action_title">"Observations &amp; Action Plan"</string>
-<string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
-<string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
-<string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
-<string name="plan_action_action_title">ການປະຕິບັດ:</string>
+<string name="feedback_show_only_one_or_show_all">"ສະແດງສະເພາະຄວາມເຫັນທີ່ກ່ຽວຂ້ອງ"</string>
+<string name="overall_quality_of_care">"ຄະແນນລວມຄຸນນະພາບຂອງການບໍລິການ"</string>
+<string name="action_button_text">"ແຜນການປະຕິບັດງານ"</string>
+<string name="plan_action_title">"ການສັງເກດການ &amp; ແຜນການປະຕິບັດງານ"</string>
+<string name="plan_action_today_date">"ສຳເລັດແລ້ວ: %s"</string>
+<string name="plan_action_next_date">"ວັນທີ່ລົງຕິດຕາມຊຸກຍູ້ຄັ້ງຕໍ່ໄປ"</string>
+<string name="plan_action_description">"ບັນຍາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນລະຫວ່າງການລົງຍຽມຍາມລະບຸແຜນການແກ້ໄຂຊ່ອງວ່າງຕ່າງໆ. ພ້ອມທັງບັນທຶກການປັບປຸງຂໍ້ບົກຜ່ອງທີ່ພົບເຫັນໃນການລົງຍຽມຍາມຄັ້ງທີ່ຜ່ານມາ."</string>
+<string name="plan_action_gasp_title">"ຊ່ອງວ່າງ"</string>
+<string name="plan_action_action_plan_title">"ແຜນການປະຕິບັດງານ"</string>
+<string name="plan_action_action_title">"ການປະຕິບັດງານ"</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>ການຝຶກອົບຮົມທົບທວນໄລຍະ SSV</item>
