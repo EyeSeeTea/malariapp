@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="green">#84b467</color>
-    <color name="amber">#F1C232</color>
     <color name="red">#ff060D</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
@@ -9,7 +8,6 @@
     <color name="navy_blue">#FF1F70C3</color>
     <color name="dark_navy_blue">#FF1D5288</color>
     <color name="light_grey">#FFE5E5E5</color>
-    <color name="parentColor">#d8dac1</color>
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
     <color name="formFooter">#429470</color>
@@ -24,23 +22,15 @@
     <color name="background">@color/plan_grey_light</color>
     <color name="tab_orange_plan">#f38b00</color>
     <color name="tab_yellow_assess">#dce442</color>
-    <color name="tab_green_monitor">#799900</color>
     <color name="tab_blue_improve">#00b3e3</color>
     <color name="gaudyYellow">#bcd200</color>
     <color name="light_red">#f8cdc6</color>
     <color name="planLightGreen">#dbf67c</color>
     <color name="planLighYellow">#f4f8ac</color>
-    <color name="appNameColor">@color/black</color>
-    <color name="headerColor">@color/dark_navy_blue</color>
-    <color name="evenRows">@color/light_grey</color>
-    <color name="planning_header_background">@color/plan_grey</color>
-    <color name="planning_header_text">@color/white</color>
     <color name="planning_row_text">@color/black</color>
     <color name="background_light_grey">#d9d9d9</color>
     <color name="text_dark_grey">#808080</color>
     <color name="stroke_dark_grey">#8c8080</color>
-
-    <color name="even_row_background">@color/white_grey</color>
 
     <!-- from old SDK-->
     <color name="assess_darkyellow">#9FA631</color>
@@ -48,9 +38,7 @@
     <color name="clear_gray">#e3e4e4</color>
 
 
-    <color name="button_login_state_enabled_false">#FF223F5C</color>
-    <color name="button_login_state_unpressed">#FF113151</color>
-    <color name="button_login_state_pressed">#FF0C243C</color>
+
     <color name="new_grey">#cccccc</color>
     <color name="new_blue">#6ca9d8</color>
     <color name="new_grey_text_color">#4A4A4A</color>
@@ -60,35 +48,15 @@
     <color name="ratio_mandatory_questions_middle">#D99424</color>
     <color name="ratio_mandatory_questions_low">#D0021B</color>
 
-    <color name="ratio_questions_high">#98fb98</color>
-    <color name="ratio_questions_middle">#ffff00</color>
-    <color name="ratio_questions_low"> #ff0000</color>
+    <color name="ratio_questions_high">#417505</color>
+    <color name="ratio_questions_middle">#D99424</color>
+    <color name="ratio_questions_low"> #D0021B</color>
+
     <color name="plan_grey">#666666</color>
     <color name="plan_grey_survey_text">#7f7f7f</color>
-    <color name="plan_grey_light">#d9d9d9</color>
-    <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
 
-    <color name="colorPrimary">@color/navy_blue</color>
-    <color name="colorPrimaryDark">@color/dark_navy_blue</color>
-    <color name="windowBackground">@color/dark_navy_blue</color>
-
-    <color name="event_row_odd">@color/white</color>
-    <color name="survey_header_background">@color/assess_yellow</color>
-    <color name="survey_header_text">@color/plan_grey_survey_text</color>
-    <color name="label_background">@color/assess_yellow</color>
-    <color name="label_text">@color/new_grey_text_color</color>
-
-    <color name="survey_background">@color/white</color>
-
-    <color name="never_assessed_background">@color/red</color>
-    <color name="overdue_background">@color/amber</color>
-    <color name="next_30_days_background">@color/green</color>
-    <color name="future_background">@color/scoreGrandson</color>
-    <color name="plan_listview_background">@color/transparent</color>
-    <color name="assets_listview_background">@color/white</color>
-    <color name="improve_listview_background">@color/white</color>
 
     <color name="action_plan_hint">#9B9B9B</color>
     <color name="feedbackDarkBlue">#9B9B9B</color>
@@ -109,7 +77,6 @@
     <color name="pull_background">#325059</color>
 
     <color name="lightGreen">#4E870C</color>
-    <color name="darkRed">#9B1323</color>
     <color name="assess_yellow">#F5A623</color>
     <color name="lightGreenOnLight">#417505</color>
     <color name="darkRedOnLight">#9B1323</color>
@@ -117,9 +84,117 @@
     <color name="circle_background_on_light">#C0BFC1</color>
     <color name="advanced_options_text_color">#4B6033</color>
 
-    <color name="grey_light_qm">#325058</color>
     <color name="nan_color">#999899</color>
     <color name="dots_tint">#818181</color>
     <color name="spinner_border">#d7d7d7</color>
+
+    <!-- moved colors from eyeseetea variant to main-->
+    
+    <color name="grey_light_qm">#325058</color>
+    <color name="green_middle">#4B6033</color>
+    <color name="green_dark">#417505</color>
+    <color name="white_grey">#D8D8D8</color>
+    <color name="white_light">#EDEDED</color>
+    <color name="grey_dark">#4A4A4A</color>
+    <color name="grey_light">#D8D8D8</color>
+    <color name="shadow">#ffffff</color>
+    <color name="border">#B7B7B7</color>
+    <color name="blue_qm">#325058</color>
+    <color name="filter_gradient_start">#818181</color>
+    <color name="filter_gradient_end">#B5B5B5</color>
+
+    <color name="grey_line">#979797</color>
+    <color name="green_button">@color/green_middle</color>
+    <color name="green_light_tic">#7ED321</color>
+    <color name="blue_background_tic">@color/blue_qm</color>
+    <color name="blue_title_text">@color/blue_qm</color>
+    <color name="blue_demo_mode">#87B9C6</color>
+    <color name="header_titles_background">#4A4A4A</color>
+    <color name="even_background">#EEEBEB</color>
+    <color name="icon_color">#ABABAB</color>
+
+    <color name="green_box">#417505</color>
+    <color name="orange_box">#E2A42E</color>
+    <color name="red_box">#9B1323</color>
+    <color name="amber">@color/orange_box</color>
+    <color name="darkRed">@color/red_box</color>
+
+    <color name="green_plan_block">#4B6033</color>
+    <color name="orange_plan_block">#9C773C</color>
+    <color name="red_plan_block">#672B32</color>
+    <color name="blue_plan_block">#304E71</color>
+
+    <color name="app_background">#272727</color>
+    <color name="tab_gradient_start">#1A353D</color>
+    <color name="tab_gradient_end">#325058</color>
+    <color name="tab_gradient_survey_start">#75ac0c</color>
+    <color name="tab_gradient_survey_end">#427605</color>
+    <color name="even_row_background">@color/even_background</color>
+
+    <color name="plan_grey_light">#4A4A4A</color>
+    <color name="planning_header_text">@color/white</color>
+    <color name="planning_header_background">@color/plan_grey_light</color>
+    <color name="filter_border">#858484</color>
+    <color name="filter_border_bottom">#959595</color>
+
+    <color name="parentColor">@color/white_grey</color>
+    <color name="headerColor">@color/green_dark</color>
+    <color name="button_shadow">@color/shadow</color>
+    <color name="button_border">@color/border</color>
+    <color name="color_primary_dark">@color/tab_gradient_start</color>
+    <color name="color_primary_light">@color/tab_gradient_end</color>
+    <color name="color_primary_default">@color/grey_light_qm</color>
+    <color name="button_login_state_enabled_false">@color/transparent</color>
+    <color name="button_login_state_unpressed">@color/transparent</color>
+    <color name="button_login_state_pressed">@color/transparent</color>
+    <color name="quest_mark_text">@color/grey_dark</color>
+    <color name="quest_mark_tab_top">@color/grey_light_qm</color>
+    <color name="quest_mark_tab_bottom">@color/green_dark</color>
+    <color name="quest_mark_tab_icons_and_text">@color/black</color>
+
+    <color name="quest_mark_actionbar_menu">@color/grey_light</color>
+    <color name="quest_mark_actionbar_top">#FFFFFF</color>
+    <color name="quest_mark_actionbar_bottom">@color/white_grey</color>
+    <color name="quest_mark_actionbar_title_text">@color/green_dark</color>
+    <color name="quest_mark_actionbar_subtitle_text">@color/grey_dark</color>
+
+    <color name="quest_mark_header_tab_top">@color/grey_light_qm</color>
+    <color name="quest_mark_header_tab_bottom">@color/green_dark</color>
+    <color name="header_text">@color/green_dark</color>
+    <color name="header_background">@color/green_dark</color>
+    <color name="event_row">@color/white_light</color>
+
+    <color name="evenRows">@color/white_grey</color>
+    <color name="event_row_odd">@color/white_light</color>
+
+    <color name="event_text">@color/black</color>
+
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">@color/green_middle</color>
+    <color name="windowBackground">@color/green_dark</color>
+
+
+    <color name="appNameColor">@color/green_dark</color>
+    <color name="tab_green_monitor">@color/green_middle</color>
+    <color name="survey_header_background">@color/white</color>
+    <color name="survey_header_text">@color/header_text</color>
+    <color name="label_background">@color/green_dark</color>
+    <color name="label_text">@color/white</color>
+    <color name="survey_background">@color/green_dark</color>
+
+    <color name="never_assessed_background">@color/red_plan_block</color>
+    <color name="overdue_background">@color/orange_plan_block</color>
+    <color name="next_30_days_background">@color/green_plan_block</color>
+    <color name="future_background">@color/blue_plan_block</color>
+
+    <color name="login_field">@color/grey_dark</color>
+    <color name="login_input">@color/grey_dark</color>
+    <color name="plan_listview_background">@color/app_background</color>
+    <color name="assets_listview_background">@color/app_background</color>
+    <color name="improve_listview_background">@color/app_background</color>
+
+
+    <color name="plan_action_title_background_color">#d7d7d7</color>
+    <color name="plan_action_title_color">#4A4A4A</color>
 
 </resources>
