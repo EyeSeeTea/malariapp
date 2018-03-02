@@ -78,8 +78,7 @@
                     android:gravity="left|bottom"
                     android:lines="1"
                     android:text="@string/lorem_ipsum"
-                    android:textSize="@dimen/roboto_11"
-                    android:typeface="sans"
+                    android:textSize="@dimen/planing_text_size"
                     app:tDimension="@string/font_size_level2"
                     app:tFontName="@string/medium_font_name" />
 
@@ -93,9 +92,7 @@
                     android:gravity="left|top"
                     android:lines="1"
                     android:text="@string/lorem_ipsum"
-                    android:textSize="@dimen/roboto_11"
-                    android:textStyle="bold"
-                    android:typeface="sans"
+                    android:textSize="@dimen/planing_text_size"
                     app:tDimension="@string/font_size_level2"
                     app:tFontName="@string/light_font"/>
             </LinearLayout>
@@ -114,7 +111,7 @@
                 android:textSize="@dimen/planing_text_size"
                 android:textStyle="bold"
                 android:typeface="sans"
-                app:tDimension="@string/font_size_level1"
+                app:tDimension="@string/font_size_level2"
                 app:tFontName="@string/medium_font_name" />
 
             <org.eyeseetea.sdk.presentation.views.DoubleRectChart
@@ -139,7 +136,7 @@
                 android:lines="1"
                 android:text="@string/dashboard_title_planned_next_qa"
                 android:textSize="@dimen/planing_text_size"
-                app:tDimension="@string/font_size_level1"
+                app:tDimension="@string/font_size_level2"
                 app:tFontName="@string/medium_font_name" />
 
         </LinearLayout>
@@ -155,5 +152,5 @@
         android:scaleType="fitCenter"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
-        android:src="@drawable/ic_action_more_vert" />
+        app:srcCompat="@drawable/ic_action_more_vert" />
 </TableRow>
