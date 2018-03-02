@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/margin_quality_of_care" 
+            android:layout_marginLeft="@dimen/margin_quality_of_care"
             android:lines="2"
             android:text="@string/quality_of_care"
             android:textColor="@color/white"
