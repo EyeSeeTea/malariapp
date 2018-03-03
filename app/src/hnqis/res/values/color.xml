@@ -72,6 +72,9 @@
     <color name="colorPrimary">@color/navy_blue</color>
     <color name="colorPrimaryDark">@color/dark_navy_blue</color>
     <color name="windowBackground">@color/dark_navy_blue</color>
+    <color name="color_primary_dark">#FF194261</color>
+    <color name="color_primary_default">#FF276696</color>
+    <color name="color_primary_light">#FF3284C3</color>
 
     <color name="event_row_odd">@color/white</color>
     <color name="survey_header_background">@color/assess_yellow</color>
