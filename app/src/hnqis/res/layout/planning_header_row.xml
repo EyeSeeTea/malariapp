@@ -23,6 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
+    android:minHeight="@dimen/row_min_height"
     android:weightSum="1">
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planning_title"
@@ -45,6 +46,6 @@
         android:layout_weight=".15"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dashboard_planning_padding"
-        android:src="@drawable/ic_media_arrow"/>
+        android:src="@drawable/ic_plan_media_arrow"/>
 
 </LinearLayout>
