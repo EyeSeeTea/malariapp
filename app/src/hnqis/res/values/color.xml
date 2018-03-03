@@ -110,39 +110,5 @@
     <!-- moved colors from main to hnqis variant -->
 
 
-    <color name="amber">#F1C232</color>
-    <color name="parentColor">#d8dac1</color>
-    <color name="tab_green_monitor">#799900</color>
-    <color name="appNameColor">@color/black</color>
-    <color name="headerColor">@color/dark_navy_blue</color>
-    <color name="evenRows">@color/light_grey</color>
-    <color name="planning_header_background">@color/plan_grey</color>
-    <color name="planning_header_text">@color/white</color>
-    <color name="even_row_background">@color/white_grey</color>
-    <color name="button_login_state_enabled_false">#FF223F5C</color>
-    <color name="button_login_state_unpressed">#FF113151</color>
-    <color name="button_login_state_pressed">#FF0C243C</color>
-    <color name="plan_grey_light">#d9d9d9</color>
-    <color name="white_grey">#efefef</color>
-    <color name="colorPrimary">@color/navy_blue</color>
-    <color name="colorPrimaryDark">@color/dark_navy_blue</color>
-    <color name="windowBackground">@color/dark_navy_blue</color>
-
-    <color name="event_row_odd">@color/white</color>
-    <color name="survey_header_background">@color/assess_yellow</color>
-    <color name="survey_header_text">@color/plan_grey_survey_text</color>
-    <color name="label_background">@color/assess_yellow</color>
-    <color name="label_text">@color/new_grey_text_color</color>
-
-    <color name="survey_background">@color/white</color>
-
-    <color name="never_assessed_background">@color/red</color>
-    <color name="overdue_background">@color/amber</color>
-    <color name="next_30_days_background">@color/green</color>
-    <color name="future_background">@color/scoreGrandson</color>
-    <color name="plan_listview_background">@color/transparent</color>
-    <color name="assets_listview_background">@color/white</color>
-    <color name="improve_listview_background">@color/white</color>
-    <color name="darkRed">#9B1323</color>
     <color name="grey_light_qm">#325058</color>
 </resources>
