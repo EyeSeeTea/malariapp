@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/extra_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:minHeight="@dimen/header_min_height"
+        android:background="@color/assess_grey"
+        android:padding="8dp"
+        android:orientation="horizontal">
+
+        <org.eyeseetea.malariacare.views.CustomRadioButton
+            android:id="@+id/check_show_all_surveys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginLeft="@dimen/margin_feedback_top_bottom_radiobutton"
+            android:drawableRight="@drawable/radiobutton_feedback"
+            android:button="@null"
+            android:background="@null"
+            android:gravity="right|center_vertical"
+            android:text="@string/feedback_show_only_one_or_show_all"
+            android:textColor="@color/planning_header_text"
+            android:textSize="@dimen/header_bold_text_size"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header"
+        android:layout_below="@id/extra_options"
+        android:minHeight="@dimen/header_min_height"
+        android:background="@color/planning_header_background"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:minHeight="@dimen/header_min_height"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:weightSum="1">
+
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/idHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:gravity="left|center"
+                android:layout_weight="0.4"
+                android:text="@string/assessment_title_facility_date"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name"  />
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/statusHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:autoText="false"
+                android:layout_gravity="left|center"
+                android:gravity="left|center"
+                android:text="@string/assessment_sent_date"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name"   />
+
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/scoreHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:autoText="false"
+                android:layout_gravity="left|center"
+                android:gravity="left|center"
+                android:text="@string/assessment_sent_score"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name"  />
+        </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"></View>
+    </LinearLayout>
+
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:background="@color/white" />
+</RelativeLayout>

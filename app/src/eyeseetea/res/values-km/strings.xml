@@ -287,4 +287,5 @@ evaluation"</string>
 <string name="failed_questions_only">"បានបរាជ័យតែប៉ុណ្ណោះសំណួរ"</string>
 <string name="advanced_options">"ជម្រើសកម្រិតខ្ពស់"</string>
 <string name="simple_options">"ជម្រើសសាមញ្ញ"</string>
+<string name="dashboard_title_planned_next_qa">"Next Eval."</string>
 </resources>

@@ -214,7 +214,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
     protected void decorateSurveyChart(View rowView, SurveyDB survey) {
         AssessmentUnsentAdapterCosmeticsStrategy assessmentUnsentAdapterCosmeticsStrategy =
                 new AssessmentUnsentAdapterCosmeticsStrategy();
-        assessmentUnsentAdapterCosmeticsStrategy.decorateSurveyChart(rowView, survey);
+        assessmentUnsentAdapterCosmeticsStrategy.decorateUnsentSurveyChart(rowView, survey);
     }
 
     /**

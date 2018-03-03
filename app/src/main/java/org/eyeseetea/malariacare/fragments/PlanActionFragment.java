@@ -362,7 +362,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     private void initLayoutHeaders() {
         mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
-        mDoubleRectChart = (DoubleRectChart) mRootView.findViewById(R.id.scoreChart);
+        mDoubleRectChart = PlannedStyleStrategy.loadDoubleRectChart(mRootView);
         mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
                 R.id.org_unit);
         mCompletionDateTextView = (CustomTextView) mRootView.findViewById(

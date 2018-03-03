@@ -283,5 +283,6 @@ evaluation"</string>
 <string name="failed_questions_only">"Failed questions only"</string>
 <string name="advanced_options">"Advanced options"</string>
 <string name="simple_options">"Simple Options"</string>
+<string name="dashboard_title_planned_next_qa">"Next Eval."</string>
 
 </resources>

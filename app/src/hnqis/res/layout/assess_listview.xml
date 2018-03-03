@@ -16,47 +16,47 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp">
-            <LinearLayout
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/idHeader"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:weightSum="1">
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:id="@+id/idHeader"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/assessment_title_facility_date"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:paddingLeft="@dimen/row_left_padding"
-                        android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/roboto_12"
-                        app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name" />
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/circle_stroke_width"
-                        android:layout_weight="0.2">
-                    </View>
+                android:layout_weight="0.4"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/assessment_title_facility_date"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingLeft="@dimen/row_left_padding"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/circle_stroke_width"
+                android:layout_weight="0.2">
+            </View>
 
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:id="@+id/nameHeader"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:gravity="center"
-                        android:paddingRight="50dp"
-                        android:text="@string/assessment_title_state"
-                        android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/roboto_12"
-                        app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name"/>
-            </LinearLayout>
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/nameHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:lines="1"
+                android:gravity="center"
+                android:paddingRight="50dp"
+                android:text="@string/assessment_title_state"
+                android:textColor="@color/planning_header_text"
+                android:textSize="@dimen/header_light_text_size"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name" />
+        </LinearLayout>
     </RelativeLayout>
 
     <ListView
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        android:background="@color/assets_listview_background" />
+        android:background="@color/white" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/start_button"
@@ -78,7 +78,7 @@
         android:background="@color/transparent"
         android:gravity="center_horizontal"
         android:onClick="onNewSurvey"
-        android:src="@drawable/ic_add"
+        app:srcCompat="@drawable/ic_add"
         android:textColor="@color/white"
         android:textSize="@dimen/medium_text_size"
         android:textStyle="bold"

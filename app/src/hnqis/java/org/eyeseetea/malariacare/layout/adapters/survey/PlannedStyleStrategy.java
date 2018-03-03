@@ -30,6 +30,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -43,6 +44,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Date;
 import java.util.List;
@@ -111,5 +113,9 @@ public class PlannedStyleStrategy {
     }
 
     public static void drawNumber(LinearLayout rowLayout, Integer counter) {
+    }
+
+    public static DoubleRectChart loadDoubleRectChart(RelativeLayout rootView) {
+        return null;
     }
 }

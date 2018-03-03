@@ -118,4 +118,8 @@ public class PlannedStyleStrategy {
         TextView textView = (TextView) rowLayout.findViewById(R.id.planning_number);
         textView.setText(counter+"");
     }
+
+    public static DoubleRectChart loadDoubleRectChart(RelativeLayout rootView) {
+        return (DoubleRectChart) rootView.findViewById(R.id.scoreChart);
+    }
 }

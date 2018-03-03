@@ -15,9 +15,11 @@ import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class AssessmentUnsentAdapterCosmeticsStrategy {
-    public void decorateSurveyChart(View rowView, SurveyDB survey) {
+    public void decorateUnsentSurveyChart(View rowView, SurveyDB survey) {
         final CustomTextView surveyCompletion = (CustomTextView) rowView.findViewById(R.id.survey_completion);
         final CustomTextView surveyMandatoryCompletion = (CustomTextView) rowView.findViewById(R.id.survey_mandatory_completion);
 
@@ -48,5 +50,19 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
                         }
                     }
                 });
+    }
+
+    public static void decorateSentSurveyChart(View rowView, SurveyDB survey) {
+        View view = rowView.findViewById(R.id.scoreChart);
+        if(view==null || !(view instanceof DoubleRectChart)){
+            return;
+        }
+
+        final DoubleRectChart doubleRectChart =
+                (DoubleRectChart) view;
+        if(doubleRectChart!=null){
+            LayoutUtils.drawScore(survey.getMainScore(), doubleRectChart);
+
+        }
     }
 }

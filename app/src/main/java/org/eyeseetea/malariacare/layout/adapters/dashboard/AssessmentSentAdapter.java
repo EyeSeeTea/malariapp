@@ -88,17 +88,7 @@ public class AssessmentSentAdapter extends
 
     @Override
     protected void decorateSurveyChart(View rowView, SurveyDB survey) {
-        View view = rowView.findViewById(R.id.scoreChart);
-        if(view==null || !(view instanceof DoubleRectChart)){
-            return;
-        }
-
-        final DoubleRectChart doubleRectChart =
-                (DoubleRectChart) view;
-        if(doubleRectChart!=null){
-            LayoutUtils.drawScore(survey.getMainScore(), doubleRectChart);
-
-        }
+        AssessmentUnsentAdapterCosmeticsStrategy.decorateSentSurveyChart(rowView, survey);
     }
 
     @Override

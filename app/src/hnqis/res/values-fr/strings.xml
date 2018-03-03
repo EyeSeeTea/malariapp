@@ -115,7 +115,6 @@ Mensuelle"</string>
 <string name="dashboard_title_planned_type_future">"Futurs"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Proch. éval."</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Afficher uniquement les questions ratées"</string>
 <string name="feedback_show_only_media">"Afficher uniquement les questions contenant des vidéos / images"</string>
@@ -266,4 +265,5 @@ Mensuelle"</string>
 <string name="apply_filters">"Appliquer les filtres"</string>
 <string name="failed_video_image_question_only">"Video / Image questions seulement"</string>
 <string name="failed_questions_only">"Échec des questions seulement"</string>
+<string name="dashboard_title_planned_next_qa">"Next QA."</string>
 </resources>

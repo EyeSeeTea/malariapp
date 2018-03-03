@@ -117,7 +117,7 @@ clínica"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Próx. eval."</string>
+<string name="dashboard_title_planned_next_qa">"Next QA."</string>
 <string name="assessment_sent_score">"Puntos"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>
 <string name="feedback_show_only_media">"Mostrar sólo las preguntas que contienen vídeo / imagen"</string>
