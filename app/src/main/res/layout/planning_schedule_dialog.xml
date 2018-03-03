@@ -6,6 +6,7 @@
     android:layout_centerHorizontal="true"
     android:gravity="center"
     android:layout_gravity="center"
+    android:layout_margin="20dp"
     android:background="@android:color/white">
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/schedule_title"
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@color/transparent"
-        android:drawableRight="@drawable/ic_pencil_edit"
+        android:drawableRight="@drawable/ic_pencil_edit_wrapped"
         android:editable="false"
         android:gravity="center"
         android:layout_gravity="center"
@@ -101,7 +102,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dashboard_planning_padding"
             android:layout_centerHorizontal="true"
-            android:drawableRight="@drawable/ic_pencil_edit"
+            android:drawableRight="@drawable/ic_pencil_edit_wrapped"
             android:lines="3"
             android:hint="@string/plan_action_edit_text_hint"
             android:textSize="@dimen/dialog_tile_row_size"

@@ -44,6 +44,8 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import io.fabric.sdk.android.Fabric;
 
 public class EyeSeeTeaApplication extends Application {
+    //this is necessary to make work the radio button states with vectors in 4.4.2
+    static { AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);}
 
     public static Permissions permissions;
 

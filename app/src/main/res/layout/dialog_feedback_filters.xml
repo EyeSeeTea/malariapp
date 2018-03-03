@@ -41,7 +41,7 @@
                 android:gravity="right"
                 android:button="@null"
                 android:background="@null"
-                android:drawableRight="@drawable/filter_radio_button"
+                android:drawableRight="@drawable/filter_radio_button_wrapped"
                 android:textColor="@color/darkGrey"
                 app:font_name="@string/roboto_medium" />
             <org.eyeseetea.malariacare.views.CustomRadioButton
@@ -57,7 +57,7 @@
                 android:gravity="right"
                 android:button="@null"
                 android:background="@null"
-                android:drawableRight="@drawable/filter_radio_button"
+                android:drawableRight="@drawable/filter_radio_button_wrapped"
                 android:textSize="@dimen/dialog_text_row_size"
                 app:font_name="@string/roboto_medium"/>
         </LinearLayout>
