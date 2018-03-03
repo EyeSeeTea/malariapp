@@ -52,6 +52,7 @@
     <color name="ratio_questions_middle">#D99424</color>
     <color name="ratio_questions_low"> #D0021B</color>
 
+    <color name="survey_tab_header_container">@color/transparent</color>
     <color name="plan_grey">#666666</color>
     <color name="plan_grey_survey_text">#7f7f7f</color>
     <color name="feedback_subtitle">#b9e8e4</color>
