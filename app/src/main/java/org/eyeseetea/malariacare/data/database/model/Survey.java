@@ -852,28 +852,6 @@ public class Survey extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
-    public static Survey getNextSurvey(Survey oldSurvey) {
-        if (oldSurvey != null) {
-            List<Survey> surveys = SQLite.select()
-                    .from(Survey.class)
-                    .where(Survey_Table.id_program_fk.eq(oldSurvey.getProgram().getId_program()))
-                    .and(Survey_Table.id_org_unit_fk.eq(oldSurvey.getOrgUnit().getId_org_unit()))
-                    .orderBy(Survey_Table.creation_date, true)
-                    .queryList();
-            int i = 0;
-            for (Survey survey : surveys) {
-                if (survey.getId_survey().equals(oldSurvey.getId_survey())) {
-                    i++;
-                    break;
-                }
-            }
-            if (i < surveys.size()) {
-                return surveys.get(i);
-            }
-        }
-        return null;
-    }
-
     /**
      * Get event from a survey if exists.
      */
