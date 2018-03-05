@@ -55,7 +55,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

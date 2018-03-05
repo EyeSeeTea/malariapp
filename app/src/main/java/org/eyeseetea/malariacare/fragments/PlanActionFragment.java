@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.observables.ObservablePush;
@@ -657,10 +658,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         CustomTextView completionDate = (CustomTextView) llLayout.findViewById(
                 R.id.new_supervision_date);
         String formattedNextDate = "NaN";
-        if (survey.getScheduledDate() != null) {
-            formattedNextDate = EventExtended.format(survey.getScheduledDate(),
+
+        formattedNextDate = EventExtended.format(
+                SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                     EventExtended.EUROPEAN_DATE_FORMAT);
-        }
         completionDate.setText(
                 String.format(getString(R.string.plan_action_next_date), formattedNextDate));
     }
