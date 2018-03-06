@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -553,10 +552,10 @@ public class DashboardController {
         orgUnit.setText(survey.getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
-        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
+        View row = inflater.inflate(R.layout.log_list_dialog_header, null);
         linearLayout.addView(row);
         for(SurveyScheduleDB surveyScheduleDB: survey.getSurveySchedules()){
-            row = inflater.inflate(R.layout.item_list_row_row, null);
+            row = inflater.inflate(R.layout.log_list_row, null);
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
