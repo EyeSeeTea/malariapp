@@ -23,14 +23,17 @@ var red;
 
 function setGreen(color){
     green=color["color"];
+    //console.log(green);
 }
 
 function setYellow(color){
     yellow=color["color"];
+    //console.log(yellow);
 }
 
 function setRed(color){
     red=color["color"];
+    //console.log(red);
 }
 
 function pieXTabGroupChart(data){
@@ -65,9 +68,7 @@ function pieXTabGroupChart(data){
                                        this.showTooltip(this.segments, true);
                                    },
                                    tooltipEvents: [],
-                                   showTooltips: true,
-	                               segmentStrokeWidth : 5,
-                                   segmentStrokeColor : "#4a494a"
+                                   showTooltips: true
                                }
                            );
     //Legend

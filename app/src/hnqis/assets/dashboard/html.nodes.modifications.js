@@ -7,7 +7,7 @@ function hideMultipleEventLegend(){
     document.getElementById('multipleEventLegend').style.display = 'none';
 }
 function showMultipleEventLegend(){
-    //document.getElementById('multipleEventLegend').style.display = 'block';
+    document.getElementById('multipleEventLegend').style.display = 'block';
 }
 
 function hideElement(idElement){

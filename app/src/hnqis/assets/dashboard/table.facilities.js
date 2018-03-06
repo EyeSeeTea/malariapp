@@ -118,13 +118,14 @@ function buildTableBody(tabGroupId, facilities){
 
 function buildRowFacility(facility){
 	//start row
-	var row="<tr class='tr_header'>";
+	var row="<tr>";
 	//name
-	row=row+"<td class='tr_title' colspan='"+facility.values.length+"  ' >"+facility.name+"</td></tr><tr class='tr_row'>";
+	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var facilityMonth=facility.values[i];
 		var average=0;
+		var asterisk = "";
 		if(facilityMonth==null){
 			var average=null;
 		}else{
@@ -135,10 +136,11 @@ function buildRowFacility(facility){
 			average=Math.round(average);
             if(facilityMonth.length>1){
                 showMultipleEventLegend();
+                asterisk = "*";
             }
 		}
 
-        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div></td>";
+        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
 	}
 	//end row
 	row=row+"</tr>";
@@ -147,28 +149,28 @@ function buildRowFacility(facility){
 
 function buildColorXScore(value, listOfSurveys){
 	if(value==null){
-		return "<td class='novisible' ><div class='circleContainer' ><img src='img/scoreCircleGrey.svg'/><span class='centerspan'>";
+		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
 	if(value<50){
 	    if(listOfSurveys.length>1){
-		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circleContainer'><img src='img/scoreCircleMultipleRed.svg'/><span class='centerspanmultiple'>";
+		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 		}else{
-		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleRed.svg'/><span class='centerspan'>";
+		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 		}
 	}
 
 	if(value<80){
 	    if(listOfSurveys.length>1){
-		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circleContainer'><img src='img/scoreCircleMultipleYellow.svg'/><span class='centerspanmultiple'>";
+		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 		}else{
-		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleYellow.svg'/><span class='centerspan'>";
+		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 		}
 	}
 
 	if(listOfSurveys.length>1){
-	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleMultipleGreen.svg'/><span class='centerspanmultiple'>";
+	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
 	}else{
-		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleGreen.svg'/><span class='centerspan'>";
+		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
 	}
 }
 
