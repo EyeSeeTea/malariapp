@@ -70,5 +70,10 @@
     <color name="lightGreen">#4E870C</color>
     <color name="assess_yellow">#F5A623</color>
     <color name="darkRed">#9B1323</color>
+    <color name="dialog_header_background">#D8D8D8</color>
+    <color name="dialog_header_title_text">#4A4A4A</color>
+    <color name="dialog_row_background">@color/white</color>
+    <color name="dialog_red_button">#744442</color>
+    <color name="nan_color">#999899</color>
 
 </resources>
