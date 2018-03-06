@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:alpha="0.8"
-    android:gravity="center"
+    android:gravity="left|center_vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textColor="@color/darkGrey"
-    app:tDimension="@string/font_size_level1"
+    app:tDimension="@string/font_size_level4"
+    app:tScale="@string/font_size_level1"
     app:tFontName="@string/medium_font_name" />

@@ -112,6 +112,7 @@
         android:layout_below="@+id/chart_container"
         android:text="@string/option_edit"
         android:textColor="@android:color/white"
+        android:textAllCaps="false"
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
@@ -125,6 +126,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/edit"
+        android:textAllCaps="false"
         android:text="@string/mark_complete"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
@@ -138,6 +140,7 @@
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
         android:layout_marginTop="8dp"
+        android:textAllCaps="false"
         android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/mark_completed"
         android:text="@string/option_delete"
@@ -152,6 +155,7 @@
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
+        android:textAllCaps="false"
         android:layout_marginTop="8dp"
         android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/delete"
