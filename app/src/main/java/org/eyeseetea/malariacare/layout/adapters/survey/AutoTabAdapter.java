@@ -268,51 +268,51 @@ public class AutoTabAdapter extends ATabAdapter {
         switch (question.getOutput()) {
 
             case Constants.LONG_TEXT:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.longtext, parent, question, viewHolder, position, getInflater(), idSurvey);
                 //Add main component and listener
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
             case Constants.NO_ANSWER:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.label, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.label, parent, question, viewHolder, position, getInflater(), idSurvey);
                 break;
             case Constants.POSITIVE_INT:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater(), idSurvey);
                 //Add main component, set filters and listener
                 ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS),new MinMaxInputFilter(1, null)});
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
             case Constants.INT:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.integer, parent, question, viewHolder, position, getInflater(), idSurvey);
                 //Add main component, set filters and listener
                 ((CustomEditText) viewHolder.component).setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.MAX_INT_CHARS)});
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
             case Constants.DATE:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.date, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.date, parent, question, viewHolder, position, getInflater(), idSurvey);
                 //Add main component and listener
                 ((CustomButton) viewHolder.component).setOnClickListener(new DatePickerListener(question, viewHolder));
                 break;
             case Constants.SHORT_TEXT:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.shorttext, parent, question, viewHolder, position, getInflater(), idSurvey);
                 //Add main component and listener
                 ((CustomEditText) viewHolder.component).addTextChangedListener(new TextViewListener(question));
                 break;
             case Constants.DROPDOWN_LIST:
-                rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
+                rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext(), idSurvey);
                 // Initialise Listener
                 ((Spinner) viewHolder.component).setOnItemSelectedListener(new SpinnerListener(question, viewHolder));
                 break;
             case Constants.DROPDOWN_LIST_DISABLED:
-                rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext());
+                rowView = AutoTabLayoutUtils.initialiseDropDown(position, parent, question, viewHolder, getInflater(), getContext(), idSurvey);
                 // Initialise value depending on match question
                 AutoTabLayoutUtils.autoFillAnswer(viewHolder, question, getContext(), inVisibilityState, this, idSurvey, module);
                 break;
             case Constants.RADIO_GROUP_HORIZONTAL:
                 if(PreferencesState.getInstance().isDevelopOptionActive()) {
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater(), idSurvey);
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                 }else{
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());                
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater(), idSurvey);
                 }
                 AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.HORIZONTAL, getInflater(), getContext());
                 //Add Listener
@@ -320,17 +320,17 @@ public class AutoTabAdapter extends ATabAdapter {
                 break;
             case Constants.RADIO_GROUP_VERTICAL:
                 if(PreferencesState.getInstance().isDevelopOptionActive()) {
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio_scored, parent, question, viewHolder, position, getInflater(), idSurvey);
                     AutoTabLayoutUtils.initialiseScorableComponent(rowView, viewHolder);
                 }else{
-                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater());
+                    rowView = AutoTabLayoutUtils.initialiseView(R.layout.radio, parent, question, viewHolder, position, getInflater(), idSurvey);
                 }
                 AutoTabLayoutUtils.createRadioGroupComponent(question, viewHolder, LinearLayout.VERTICAL, getInflater(), getContext());
                 //Add Listener
                 ((RadioGroup) viewHolder.component).setOnCheckedChangeListener(new RadioGroupListener(question, viewHolder));
                 break;
             case Constants.SWITCH_BUTTON:
-                rowView = AutoTabLayoutUtils.initialiseView(R.layout.switchbutton, parent, question, viewHolder, position, getInflater());
+                rowView = AutoTabLayoutUtils.initialiseView(R.layout.switchbutton, parent, question, viewHolder, position, getInflater(), idSurvey);
                 ((Switch)viewHolder.component).setOnCheckedChangeListener(new SwitchButtonListener(question,viewHolder));
 
             default:

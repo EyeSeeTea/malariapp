@@ -211,32 +211,36 @@ public class AutoTabLayoutUtils {
         return hiddens;
     }
 
-    public static View initialiseDropDown(int position, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context) {
+    public static View initialiseDropDown(int position, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context, float idSurvey) {
         View rowView;
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater);
+            rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater, idSurvey);
             initialiseScorableComponent(rowView, viewHolder);
         }else{
-            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater);
+            rowView = initialiseView(R.layout.ddl, parent, question, viewHolder, position, lInflater, idSurvey);
         }
 
         // In case the option is selected, we will need to show num/dems
         List<OptionDB> optionList = new ArrayList<>(question.getAnswer().getOptions());
         optionList.add(0, new OptionDB(Constants.DEFAULT_SELECT_OPTION));
         Spinner spinner = (Spinner) viewHolder.component;
-        spinner.setAdapter(new OptionArrayAdapter(context, optionList));
+        spinner.setAdapter(new OptionArrayAdapter(context, R.layout.simple_old_spinner_item, optionList));
         return rowView;
     }
 
-    public static View initialiseView(int resource, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater) {
+    public static View initialiseView(int resource, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater, float idSurvey) {
         View rowView = lInflater.inflate(resource, parent, false);
         if (question.hasChildren())
             rowView.setBackgroundResource(R.drawable.background_parent);
         else
             rowView.setBackgroundResource(LayoutUtils.calculateBackgrounds(position));
 
-        viewHolder.component = rowView.findViewById(R.id.answer);
         viewHolder.statement = (CustomTextView) rowView.findViewById(R.id.statement);
+        viewHolder.component = rowView.findViewById(R.id.answer);
+        viewHolder.parentImage = rowView.findViewById(R.id.parent_img);
+        viewHolder.parentImageShown = rowView.findViewById(R.id.parent_hide_img);
+        viewHolder.childrenImage = rowView.findViewById(R.id.child_img);
+        viewHolder.notChildParentSpace = rowView.findViewById(R.id.space_not_child_parent);
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
@@ -245,6 +249,9 @@ public class AutoTabLayoutUtils {
                     R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
                     + ")</a>";
         }
+
+        showOrHideChildParentImages(question, viewHolder, idSurvey);
+
         if(question.getCompulsory()){
             int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
@@ -261,6 +268,32 @@ public class AutoTabLayoutUtils {
 
 
         return rowView;
+    }
+
+    private static void showOrHideChildParentImages(QuestionDB question,
+            AutoTabViewHolder viewHolder, float idSurvey) {
+        if(viewHolder.notChildParentSpace!=null) {
+            viewHolder.notChildParentSpace.setVisibility(View.VISIBLE);
+        }
+        if(viewHolder.parentImage!=null){
+            viewHolder.parentImageShown.setVisibility(View.GONE);
+            if(question.hasChildren()){
+                viewHolder.notChildParentSpace.setVisibility(View.GONE);
+                viewHolder.parentImage.setVisibility(View.VISIBLE);
+                if (question.areChildrenVisible(idSurvey)) {
+                    viewHolder.parentImageShown.setVisibility(View.VISIBLE);
+                    viewHolder.parentImage.setVisibility(View.GONE);
+                }
+            }
+        }
+        if(viewHolder.childrenImage!=null){
+            if(question.hasParent()){
+                viewHolder.notChildParentSpace.setVisibility(View.GONE);
+                viewHolder.childrenImage.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.childrenImage.setVisibility(View.GONE);
+            }
+        }
     }
 
     public static void initialiseScorableComponent(View rowView, AutoTabViewHolder viewHolder) {
