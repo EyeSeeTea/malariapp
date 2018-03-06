@@ -26,6 +26,7 @@
     <string name="number_zero" translatable="false">0</string>
     <string name="number_zero_percentage" translatable="false">0 % </string>
     <string name="custom_info_one" translatable="false">1</string>
+    <string name="regular_font">Roboto-Regular.ttf</string>
     <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
     <string name="light_font" translatable="false">Roboto-Light.ttf</string>
     <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
