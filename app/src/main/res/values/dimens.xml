@@ -120,5 +120,6 @@
     <dimen name="header_bottom_padding">5dp</dimen>
     <dimen name="child_parent_image_size">35dp</dimen>
     <dimen name="row_size">35dp</dimen>
+    <dimen name="question_margin_right">10dp</dimen>
 
 </resources>

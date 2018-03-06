@@ -409,7 +409,9 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                 (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
                         ().getCustomView().findViewById(
                         R.id.action_bar_chart);
-        doublePieChart.setVisibility(View.VISIBLE);
+        if(doublePieChart!=null){
+            doublePieChart.setVisibility(View.VISIBLE);
+        }
         for (Question question : valueChangedEvent.getQuestions()) {
             if (valueChangedEvent.getAction().equals(
                     ValueChangedEvent.Action.INSERT)) {
@@ -440,8 +442,10 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                     public void onComplete(
                             SurveyAnsweredRatio surveyAnsweredRatio) {
                         if (surveyAnsweredRatio != null) {
-                            LayoutUtils.updateChart(mSurveyAnsweredRatio,
-                                    doublePieChart);
+                            if(doublePieChart!=null) {
+                                LayoutUtils.updateChart(mSurveyAnsweredRatio,
+                                        doublePieChart);
+                            }
                         }
                     }
                 }, mSurveyAnsweredRatio);
@@ -500,6 +504,7 @@ public class AsyncChangeTab extends AsyncTask<Void, Integer, View> {
                 tabAdapter.initializeSubscore();
             }
             listView = (ListView) llLayout.findViewById(R.id.listView);
+            SurveyFragmentStrategy.modifyListviewBorder(listView);
             listView.setAdapter((BaseAdapter) tabAdapter);
             listView.setOnScrollListener(new UnfocusScrollListener());
             stopProgress();

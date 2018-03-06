@@ -26,6 +26,9 @@
             android:layout_width="0dip"
             android:layout_height="@dimen/row_size"
             android:gravity="center"
+            android:layout_marginRight="@dimen/question_margin_right"
+            android:paddingRight="@dimen/question_padding_all"
+            android:paddingLeft="@dimen/question_padding_all"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.5"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -35,7 +38,7 @@
             android:singleLine="true"
             android:maxLines="1"
             android:drawableRight="@drawable/calendarlist_icn"
-            android:background="@drawable/background_textfield"
+            android:background="@color/white"
             android:stateListAnimator="@null"
             android:fontFamily="@string/normal_font" />
 

@@ -26,6 +26,7 @@
             android:layout_height="@dimen/row_size"
             android:layout_weight="0.5"
             android:gravity="center"
+            android:layout_marginRight="@dimen/question_margin_right"
             android:paddingRight="@dimen/question_padding_all"
             android:paddingLeft="@dimen/question_padding_all"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -36,7 +37,7 @@
             android:singleLine="true"
             android:maxLines="1"
             android:drawableRight="@drawable/editlist_icn"
-            android:background="@drawable/background_textfield"
+            android:background="@color/white"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 

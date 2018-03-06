@@ -7,4 +7,7 @@
     <color name="survey_tab_header_container">@color/plan_grey</color>
     <color name="label_background">@color/assess_yellow</color>
     <color name="label_text">@color/new_grey_text_color</color>
+    <color name="event_row_odd">@color/white</color>
+    <color name="evenRows">@color/light_grey</color>
+    <color name="headerColor">@color/dark_navy_blue</color>
 </resources>

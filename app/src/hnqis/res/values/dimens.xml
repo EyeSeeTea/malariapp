@@ -3,4 +3,5 @@
     <dimen name="header_survey_margin_top">20dp</dimen>
     <dimen name="header_top_padding">0dp</dimen>
     <dimen name="header_bottom_padding">0dp</dimen>
+    <dimen name="question_padding_right">5dp</dimen>
 </resources>

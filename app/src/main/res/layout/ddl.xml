@@ -31,41 +31,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.5"
-        android:padding="5dip"
         android:paddingLeft="@dimen/question_padding_left"
         android:text="@string/widget_info_empty_statement"
         android:textColor="@color/new_grey_text_color"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
-
-    <RelativeLayout
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:padding="2dip"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.5">
-
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="0dip"
             android:layout_height="@dimen/row_size"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_weight="0.5"
             android:background="@color/white"
-            android:padding="5dip"
+            android:layout_marginRight="@dimen/question_margin_right"
             android:orientation="vertical">
 
             <Spinner
                 android:id="@+id/answer"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="@dimen/row_size"
                 android:backgroundTint="@color/headerColor"
                 android:backgroundTintMode="add"
-                android:gravity="right"
-                android:paddingBottom="2dip"
-                android:paddingLeft="2dip"
-                android:paddingRight="20dip"
-                android:paddingTop="2dip"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
-
-    </RelativeLayout>
 
 </LinearLayout>
