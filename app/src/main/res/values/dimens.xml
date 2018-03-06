@@ -113,4 +113,10 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
+
+
+    <dimen name="header_top_padding">1dp</dimen>
+    <dimen name="header_survey_margin_top">0dp</dimen>
+    <dimen name="header_bottom_padding">5dp</dimen>
+
 </resources>

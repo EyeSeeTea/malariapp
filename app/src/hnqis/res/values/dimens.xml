@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="header_survey_margin_top">20dp</dimen>
+    <dimen name="header_top_padding">0dp</dimen>
+    <dimen name="header_bottom_padding">0dp</dimen>
+</resources>

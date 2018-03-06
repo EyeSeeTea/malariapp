@@ -70,4 +70,12 @@
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
 
+    <color name="green_dark">#417505</color>
+    <color name="app_background">#272727</color>
+    <color name="survey_header_text">@color/green_dark</color>
+    <color name="survey_background">@color/green_dark</color>
+    <color name="survey_header_background">@color/white</color>
+
+    <color name="tab_gradient_survey_start">#75ac0c</color>
+    <color name="tab_gradient_survey_end">#427605</color>
 </resources>

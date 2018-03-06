@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
@@ -43,6 +44,8 @@ import org.hisp.dhis.client.sdk.android.api.D2;
 import io.fabric.sdk.android.Fabric;
 
 public class EyeSeeTeaApplication extends Application {
+    //this is necessary to make work the radio button states with vectors in 4.4.2
+    static { AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);}
 
     public static Permissions permissions;
 

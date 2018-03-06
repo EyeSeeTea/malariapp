@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_background">#272727</color>
+    <color name="survey_header_text">@color/plan_grey_survey_text</color>
+    <color name="survey_background">@color/white</color>
+    <color name="survey_header_background">@color/assess_yellow</color>
+</resources>
