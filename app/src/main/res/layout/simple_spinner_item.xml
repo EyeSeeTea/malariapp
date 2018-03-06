@@ -10,6 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textColor="@color/darkGrey"
-    app:tDimension="@string/font_size_level4"
-    app:tScale="@string/font_size_level1"
+    android:textSize="18sp"
     app:tFontName="@string/medium_font_name" />
+<!--Putting text size in sp because tSize and tDimension not working well
+ in different phones-->
