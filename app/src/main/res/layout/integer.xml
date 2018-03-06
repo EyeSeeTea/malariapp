@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/question_padding_all"
     android:paddingBottom="@dimen/question_padding_all"
+    android:paddingRight="@dimen/question_padding_all"
     android:background="@drawable/background_textfield">
+        <include layout="@layout/parent_child_images"></include>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -22,7 +24,7 @@
 
         <org.eyeseetea.malariacare.views.CustomEditText
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/row_size"
             android:layout_weight="0.5"
             android:paddingRight="@dimen/question_padding_all"
             android:paddingLeft="@dimen/question_padding_all"
@@ -30,8 +32,12 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:inputType="number"
             android:id="@+id/answer"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/event_text"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:drawableRight="@drawable/editlist_icn"
             android:background="@drawable/background_textfield"
-            android:textColor="@color/darkGrey"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 

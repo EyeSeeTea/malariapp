@@ -2,19 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:background="@drawable/background_textfield"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="@dimen/question_padding_all"
     android:paddingTop="@dimen/question_padding_all"
-    android:paddingBottom="@dimen/question_padding_all">
-
-        <include layout="@layout/parent_child_images"></include>
+    android:paddingBottom="@dimen/question_padding_all"
+    android:baselineAligned="false">
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
             android:paddingRight="@dimen/question_padding_all"
             android:paddingLeft="@dimen/question_padding_left"
             android:text="@string/widget_info_empty_statement"
@@ -23,23 +20,18 @@
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name" />
 
-        <org.eyeseetea.malariacare.views.CustomEditText
+        <org.eyeseetea.malariacare.views.CustomButton
             android:layout_width="0dip"
-            android:layout_height="@dimen/row_size"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_weight="0.5"
             android:paddingRight="@dimen/question_padding_all"
             android:paddingLeft="@dimen/question_padding_all"
-            android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
+            android:text="@string/empty_string"
             android:id="@+id/answer"
-            android:textColor="@color/event_text"
-            android:layout_gravity="center_vertical"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:drawableRight="@drawable/editlist_icn"
             android:background="@drawable/background_textfield"
-            app:tDimension="@string/font_size_level1"
-            app:tFontName="@string/medium_font_name"/>
+            android:fontFamily="@string/normal_font" />
 
 </LinearLayout>

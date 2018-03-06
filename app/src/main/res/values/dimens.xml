@@ -118,5 +118,7 @@
     <dimen name="header_top_padding">1dp</dimen>
     <dimen name="header_survey_margin_top">0dp</dimen>
     <dimen name="header_bottom_padding">5dp</dimen>
+    <dimen name="child_parent_image_size">35dp</dimen>
+    <dimen name="row_size">35dp</dimen>
 
 </resources>

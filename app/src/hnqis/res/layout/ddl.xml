@@ -21,16 +21,14 @@
     android:id="@+id/ddl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="@dimen/question_padding_all"
     android:orientation="horizontal">
 
-    <include layout="@layout/parent_child_images"></include>
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/statement"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.5"
+        android:layout_weight="0.65"
         android:padding="5dip"
         android:paddingLeft="@dimen/question_padding_left"
         android:text="@string/widget_info_empty_statement"
@@ -41,21 +39,20 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:padding="2dip"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.5">
+        android:layout_weight="0.35"
+        android:padding="5dip">
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/row_size"
-            android:background="@color/white"
-            android:padding="5dip"
+            android:layout_height="fill_parent"
+            android:alpha="0.8"
+            android:background="@color/textFieldColor"
             android:orientation="vertical">
 
             <Spinner
                 android:id="@+id/answer"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@color/headerColor"
                 android:backgroundTintMode="add"
                 android:gravity="right"

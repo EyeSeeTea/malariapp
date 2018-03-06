@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ddl"
     android:orientation="horizontal"
-    android:paddingRight="@dimen/question_padding_all"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/parent_child_images"></include>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/statement"
             android:layout_width="0dip"
@@ -30,8 +28,8 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/white"
-                android:padding="5dip"
+                android:alpha="0.8"
+                android:background="@color/textFieldColor"
                 android:orientation="vertical">
 
                 <Spinner
@@ -47,6 +45,7 @@
                     android:paddingTop="2dip"
                     android:spinnerMode="dropdown" />
             </LinearLayout>
+
         </RelativeLayout>
 
     <include layout="@layout/score"></include>

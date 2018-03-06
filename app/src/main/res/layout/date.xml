@@ -4,9 +4,11 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="@dimen/question_padding_all"
     android:paddingTop="@dimen/question_padding_all"
     android:paddingBottom="@dimen/question_padding_all"
     android:baselineAligned="false">
+        <include layout="@layout/parent_child_images"></include>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -22,16 +24,19 @@
 
         <org.eyeseetea.malariacare.views.CustomButton
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/row_size"
             android:gravity="center"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.5"
-            android:paddingRight="@dimen/question_padding_all"
-            android:paddingLeft="@dimen/question_padding_all"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/empty_string"
             android:id="@+id/answer"
+            android:textColor="@color/event_text"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:drawableRight="@drawable/calendarlist_icn"
             android:background="@drawable/background_textfield"
+            android:stateListAnimator="@null"
             android:fontFamily="@string/normal_font" />
 
 </LinearLayout>

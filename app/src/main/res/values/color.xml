@@ -78,4 +78,6 @@
 
     <color name="tab_gradient_survey_start">#75ac0c</color>
     <color name="tab_gradient_survey_end">#427605</color>
+
+    <color name="event_text">@color/black</color>
 </resources>
