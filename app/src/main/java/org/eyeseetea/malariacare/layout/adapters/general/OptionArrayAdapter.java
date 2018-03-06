@@ -31,6 +31,9 @@ import java.util.List;
  */
 public class OptionArrayAdapter extends AddlArrayAdapter<OptionDB> {
 
+    public OptionArrayAdapter(Context context, Integer layout, List<OptionDB> options) {
+        super(context, layout, options);
+    }
     public OptionArrayAdapter(Context context, List<OptionDB> options) {
         super(context, options);
     }
