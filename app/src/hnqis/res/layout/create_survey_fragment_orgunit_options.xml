@@ -24,7 +24,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="@dimen/create_survey_title_top_marging"
         android:background="@color/assess_grey"
         android:gravity="center">
 
@@ -46,24 +45,28 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/assess_grey">
+        android:background="@drawable/background_textfield">
 
         <Spinner
             android:dropDownWidth="match_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/filter_create_org_background"
             android:id="@+id/org_unit"
             android:spinnerMode="dropdown"
-            android:layout_margin="6dip"/>
+            android:backgroundTintMode="add"
+            android:paddingLeft="2dip"
+            android:paddingTop="2dip"
+            android:paddingRight="20dip"
+            android:paddingBottom="2dip"
+            android:background="@null"
+            android:gravity="right"/>
         <ImageView
-            app:srcCompat="@drawable/ic_white_arrow"
+            android:src="@drawable/arrow_assess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:paddingBottom="2dip"
             android:paddingRight="20dip"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"  />
     </RelativeLayout>
 </merge>

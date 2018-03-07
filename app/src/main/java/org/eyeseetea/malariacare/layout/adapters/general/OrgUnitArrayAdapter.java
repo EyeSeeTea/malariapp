@@ -32,6 +32,10 @@ import java.util.List;
  */
 public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
 
+    public OrgUnitArrayAdapter(Context context, Integer layout, List<OrgUnitDB> orgUnits) {
+        super(context, layout, orgUnits);
+    }
+
     public OrgUnitArrayAdapter(Context context, List<OrgUnitDB> orgUnits) {
         super(context, orgUnits);
     }

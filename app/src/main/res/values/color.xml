@@ -69,5 +69,6 @@
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
+    <color name="start_button_text">@color/white</color>
 
 </resources>

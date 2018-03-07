@@ -18,18 +18,16 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <Spinner
-        android:dropDownWidth="match_parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/org_unit_item_spinner"
-        android:spinnerMode="dropdown"
-        android:backgroundTintMode="add"
-        android:background="@drawable/filter_create_org_background"
-        android:paddingLeft="2dip"
-        android:paddingTop="2dip"
-        android:paddingRight="20dip"
-        android:paddingBottom="2dip"/>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.eyeseetea.malariacare.views.CustomButton
+        android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
+        android:layout_width="170dp" android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" android:text="@string/create_info_ok"
+        android:textColor="@color/start_button_text"
+        android:background="@drawable/button_round_border"
+        app:bDimension="@string/font_size_level2"
+        app:bFontName="@string/medium_font_name"
+        android:layout_gravity="center_horizontal"
+        />
 </merge>

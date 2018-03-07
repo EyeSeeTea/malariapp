@@ -218,7 +218,7 @@ public class CreateSurveyFragment extends Fragment {
         List<ProgramDB> initProgram=new ArrayList<>();
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
+        programView.setAdapter(new ProgramArrayAdapter(getActivity(), R.layout.create_survey_simple_spinner_item, initProgram));
 
         //set the first orgUnit saved
         if(orgUnitHierarchy.getSavedUidsList().length()>1) {
@@ -382,7 +382,7 @@ public class CreateSurveyFragment extends Fragment {
                         orgUnitList.add(0, orgUnitDefaultOption);
                     }
                     Spinner spinner = ((Spinner) subViewHolder.component);
-                    spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), orgUnitList));
+                    spinner.setAdapter(new OrgUnitArrayAdapter(getActivity(), R.layout.create_survey_simple_spinner_item, orgUnitList));
                     spinner.setOnItemSelectedListener(new OrgUnitSpinnerListener(subViewHolder));
 
                     //Loads the saved org units and remove the list when the last was selected
@@ -461,7 +461,7 @@ public class CreateSurveyFragment extends Fragment {
         }
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
+        programView.setAdapter(new ProgramArrayAdapter(getActivity(), R.layout.create_survey_simple_spinner_item, initProgram));
         ProgramDB lastSelectedProgram= getLastSelectedProgram();
         if(lastSelectedProgram!=null){
             programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));

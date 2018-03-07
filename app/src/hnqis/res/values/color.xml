@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="start_button_text">@color/assess_grey</color>
+</resources>

@@ -102,4 +102,6 @@
     <dimen name="planing_text_first_title_size">15dp</dimen>
     <dimen name="header_light_text_size">18dp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
+
+    <dimen name="create_survey_title_extra_bottom_marging">18dip</dimen>
 </resources>

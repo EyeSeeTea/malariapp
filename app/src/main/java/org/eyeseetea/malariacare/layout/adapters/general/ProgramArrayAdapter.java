@@ -32,6 +32,10 @@ import java.util.List;
  */
 public class ProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
 
+    public ProgramArrayAdapter(Context context, Integer layout, List<ProgramDB> programs) {
+        super(context, layout, programs);
+    }
+
     public ProgramArrayAdapter(Context context, List<ProgramDB> programs) {
         super(context, programs);
     }
