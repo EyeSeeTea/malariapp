@@ -60,7 +60,6 @@ import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,7 +272,7 @@ public class DashboardController {
     private void changeActiveIcon(View view, int primary, int secondary){
         ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
         setVisibility(imageView, primary);
-        imageView = (ImageView) view.findViewById(R.id.tabSecundaryImage);
+        imageView = (ImageView) view.findViewById(R.id.tabSecondaryImage);
         setVisibility(imageView, secondary);
     }
 
@@ -747,7 +746,7 @@ public class DashboardController {
         ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
         imageView.setVisibility(View.GONE);
         imageView.setImageDrawable(icon);
-        imageView = (ImageView) view.findViewById(R.id.tabSecundaryImage);
+        imageView = (ImageView) view.findViewById(R.id.tabSecondaryImage);
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageDrawable(secondaryIcon);
         return view;

@@ -2,30 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabsLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="56dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/tab_host_padding">
+    android:orientation="vertical">
     <ImageView
         android:id="@+id/tabsImage"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:maxHeight="46dp"
         android:visibility="visible"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/tab_host_padding"
-        android:scaleType="fitCenter" />
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_height="56dp" />
     <ImageView
         android:id="@+id/tabSecondaryImage"
         android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/tab_host_padding"
-        android:scaleType="fitCenter" />
+        android:layout_width="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_height="56dp" />
 
     <org.eyeseetea.sdk.presentation.views.CustomTextView
         android:id="@+id/tabsText"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:visibility="gone"
         android:layout_gravity="center"
         android:gravity="center"
         android:text=""

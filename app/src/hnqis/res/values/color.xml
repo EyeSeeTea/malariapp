@@ -3,5 +3,5 @@
     <color name="color_primary_dark">#FF194261</color>
     <color name="color_primary_default">#FF276696</color>
     <color name="color_primary_light">#FF3284C3</color>
-    <color name="tab_background">@color/transparent</color>
+    <color name="tab_background">#3e3e3f</color>
 </resources>
