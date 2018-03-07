@@ -18,49 +18,49 @@
       ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
       -->
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/dashboard_scroll"
-        android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dashboard_scroll"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <TabHost
+        android:id="@+id/tabHost"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true">
+        android:layout_height="fill_parent">
 
-        <TabHost
-            android:id="@+id/tabHost"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_background"
+                android:layout_alignParentBottom="true"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:layout_above="@android:id/tabs"
+                android:background="@color/tab_background"
+                android:layout_alignParentTop="true">
 
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/custom_background_grey"></TabWidget>
+                <include layout="@layout/tab_plan_layout" />
 
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_above="@android:id/tabs"
-                    android:layout_alignParentTop="true">
+                <include layout="@layout/tab_assess_layout"/>
 
-                    <include layout="@layout/tab_plan_layout" />
+                <include layout="@layout/tab_improve_layout"/>
 
-                    <include layout="@layout/tab_assess_layout"/>
+                <include layout="@layout/tab_monitor_layout"/>
 
-                    <include layout="@layout/tab_improve_layout"/>
+            </FrameLayout>
+        </RelativeLayout>
+    </TabHost>
 
-                    <include layout="@layout/tab_monitor_layout"/>
-
-                </FrameLayout>
-             </RelativeLayout>
-         </TabHost>
-
-     </LinearLayout>
+</LinearLayout>

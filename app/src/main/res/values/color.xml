@@ -70,4 +70,12 @@
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
 
+    <color name="grey_light_qm">#325058</color>
+    <color name="tab_gradient_start">#1A353D</color>
+    <color name="tab_gradient_end">#325058</color>
+    <color name="app_background">#272727</color>
+    <color name="color_primary_dark">@color/tab_gradient_start</color>
+    <color name="color_primary_light">@color/tab_gradient_end</color>
+    <color name="color_primary_default">@color/grey_light_qm</color>
+    <color name="tab_background">@color/app_background</color>
 </resources>
