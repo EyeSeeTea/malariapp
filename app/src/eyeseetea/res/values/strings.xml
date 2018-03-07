@@ -176,10 +176,10 @@ evaluation"</string>
 <string name="option_delete">"Delete"</string>
 <string name="hide_planning_tab_title">"Hide planning tab"</string>
 <string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
-<string name="plan">"Plan"</string>
-<string name="assess">"Assess - active surveys"</string>
-<string name="improve">"Improve"</string>
-<string name="monitor">"Monitor"</string>
+<string name="plan">"Assessments"</string>
+<string name="assess">"Survey"</string>
+<string name="improve">"Feedback"</string>
+<string name="monitor">"Reports"</string>
 
 <string name="filter_all_org_units">"All Org Units"</string>
 <string name="filter_all_org_assessments">"All Assessed"</string>
@@ -273,4 +273,5 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+
 </resources>

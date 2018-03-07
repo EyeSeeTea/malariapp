@@ -173,10 +173,10 @@ Mensuelle"</string>
 <string name="option_delete">"Effacer"</string>
 <string name="hide_planning_tab_title">"Masquer l'onglet Planification"</string>
 <string name="hide_planning_tab_summary">"Cochez cette case pour masquer l'onglet Planifier"</string>
-<string name="plan">"Programme"</string>
-<string name="assess">"Évaluation - rapports actifs"</string>
-<string name="improve">"Améliorer"</string>
-<string name="monitor">"Contrôle"</string>
+<string name="plan">"Évaluations"</string>
+<string name="assess">"Enquête"</string>
+<string name="improve">"Valorisation"</string>
+<string name="monitor">"Rapports"</string>
 <string name="filter_all_org_units">"Tous les établissements"</string>
 <string name="filter_all_org_assessments">"Tous les rapports"</string>
 <string name="dialog_content_dhis_preference_login">"Pour modifier le serveur il faut se reconnecter. Tout rapport non envoyé sera supprimé. Souhaitez-vous vraiment continuer ?"</string>
