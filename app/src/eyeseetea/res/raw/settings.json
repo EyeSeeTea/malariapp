@@ -10,33 +10,33 @@
     "layout": "tab_dashboard",
     "listFilter": "lastForOU",
     "developerOptions": true,
-    "tabTitleVisible": false,
+    "tabTitleVisible": true,
     "modules": [{
       "title": "plan",
-      "icon": "tab_plan",
-      "secondaryIcon": "tab_plan",
-      "backgroundColor": "tab_orange_plan",
+      "icon": "ic_icn_assessment_on",
+      "secondaryIcon": "ic_icn_assessment_off",
+      "backgroundColor": "transparent",
       "layout": "dashboard_planning_init",
       "controller": "PlanModuleController"
     }, {
       "title": "assess",
-      "icon": "tab_assess",
-      "secondaryIcon": "tab_assess",
-      "backgroundColor": "tab_yellow_assess",
+      "icon": "ic_survey_on",
+      "secondaryIcon": "ic_survey_off",
+      "backgroundColor": "transparent",
       "layout": "dashboard_details_container",
       "controller": "AssessModuleController"
     },{
       "title": "improve",
-      "icon": "tab_improve",
-      "secondaryIcon": "tab_improve",
-      "backgroundColor": "tab_blue_improve",
+      "icon": "ic_feedback_on",
+      "secondaryIcon": "ic_feedback_off",
+      "backgroundColor": "transparent",
       "layout": "dashboard_completed_container",
       "controller": "ImproveModuleController"
     },{
       "title": "monitor",
-      "icon": "tab_monitor",
-      "secondaryIcon": "tab_monitor",
-      "backgroundColor": "tab_green_monitor",
+      "icon": "ic_monitor_on",
+      "secondaryIcon": "ic_monitor_off",
+      "backgroundColor": "transparent",
       "layout": "dashboard_charts_container",
       "controller": "MonitorModuleController",
       "monitorFilter": "all"
