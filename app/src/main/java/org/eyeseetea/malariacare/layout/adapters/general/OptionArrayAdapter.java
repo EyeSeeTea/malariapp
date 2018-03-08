@@ -38,7 +38,8 @@ public class OptionArrayAdapter extends AddlArrayAdapter<OptionDB> {
         super(context, options);
     }
 
-    @Override public void drawText(CustomTextView customTextView, OptionDB option) {
+    @Override
+    public void drawText(CustomTextView customTextView, OptionDB option) {
         customTextView.setText(option.getName());
     }
 
