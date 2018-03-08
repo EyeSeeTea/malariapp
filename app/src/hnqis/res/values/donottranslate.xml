@@ -20,6 +20,7 @@
 
 <resources>
 
+    <string name="login_title" translatable="false"></string>
     <!-- # general -->
     <string name="app_name" translatable="false">HNQIS</string>
 

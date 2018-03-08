@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="button_login_state_enabled_false">#FF223F5C</color>
+    <color name="button_login_state_unpressed">#FF113151</color>
+    <color name="button_login_state_pressed">#FF0C243C</color>
+    <color name="headerColor">@color/dark_navy_blue</color>
+    <color name="color_primary_dark">#FF194261</color>
+    <color name="color_primary_default">#FF276696</color>
+    <color name="color_primary_light">#FF3284C3</color>
+    <color name="pull_background">#1C5187</color>
+</resources>
