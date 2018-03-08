@@ -35,7 +35,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -50,8 +49,8 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountReposi
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
+import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
@@ -110,7 +109,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void initView(Bundle savedInstanceState) {
         setTheme(R.style.EyeSeeTheme);
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        LayoutUtils.setActionBarLogo(actionBar);
+        ActionBarStrategy.setActionBarLogo(actionBar);
 
         if (savedInstanceState == null) {
             initTransition();

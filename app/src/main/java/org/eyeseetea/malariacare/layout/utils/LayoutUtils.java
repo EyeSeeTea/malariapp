@@ -228,18 +228,18 @@ public class LayoutUtils {
     }
 
 
-    private static String getAppName() {
+    protected static String getAppName() {
         return PreferencesState.getInstance().getContext().getResources().getString(
                 R.string.app_name);
     }
 
-    private static String getCapitalizeName(String title) {
+    protected static String getCapitalizeName(String title) {
         StringBuilder tabtemp = new StringBuilder(title);
         tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
         return tabtemp.toString();
     }
 
-    private static String getCurrentUsername() {
+    protected static String getCurrentUsername() {
         UserDB user = Session.getUser();
         if (user == null) {
             return "";
@@ -252,7 +252,7 @@ public class LayoutUtils {
     }
 
 
-    private static String getAppNameColorString() {
+    protected static String getAppNameColorString() {
         int appNameColor = PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.appNameColor);
         return String.format("%X", appNameColor).substring(2);

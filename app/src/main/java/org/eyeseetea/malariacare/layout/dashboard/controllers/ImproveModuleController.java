@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.fragments.PlanActionFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
@@ -118,7 +119,7 @@ public class ImproveModuleController extends ModuleController {
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
+        ActionBarStrategy.setActionBarForSurvey(dashboardActivity, survey);
 
         UpdateFiltersBySurvey(survey);
     }
