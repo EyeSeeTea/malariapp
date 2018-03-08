@@ -83,5 +83,6 @@
     <color name="color_primary_light">@color/tab_gradient_end</color>
     <color name="color_primary_default">@color/grey_light_qm</color>
     <color name="pull_background">#325059</color>
+    <color name="primary_dark">@color/black</color>
 
 </resources>
