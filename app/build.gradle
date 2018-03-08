@@ -43,6 +43,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
         useLibrary  'org.apache.http.legacy'
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

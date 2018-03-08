@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="start_button_text">@color/assess_grey</color>
+    <color name="tab_background">@color/transparent</color>
+    <color name="start_button_text">@color/assess_grey</color>
+    <color name="start_button">@color/assess_yellow</color>
+    <color name="survey_header_background">@color/assess_yellow</color>
 </resources>

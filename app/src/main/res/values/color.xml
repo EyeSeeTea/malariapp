@@ -69,6 +69,13 @@
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
+    <color name="app_background">#272727</color>
+
+    <color name="tab_background">@color/app_background</color>
     <color name="start_button_text">@color/white</color>
+    <color name="start_button">#3f7418</color>
+    <color name="survey_header_background">@color/white</color>
+    <color name="tab_gradient_survey_start">#75ac0c</color>
+    <color name="tab_gradient_survey_end">#427605</color>
 
 </resources>

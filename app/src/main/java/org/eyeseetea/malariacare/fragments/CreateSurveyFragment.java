@@ -183,7 +183,7 @@ public class CreateSurveyFragment extends Fragment {
         viewHolder.component = llLayout.findViewById(R.id.org_unit);
         orgUnitView = (Spinner) viewHolder.component;
         orgUnitView.setTag(orgUnitListFirstLevel.get(1).getOrgUnitLevel());
-        orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), orgUnitListFirstLevel));
+        orgUnitView.setAdapter(new OrgUnitArrayAdapter( getActivity(), R.layout.create_survey_simple_spinner_item, orgUnitListFirstLevel));
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
         View childView = llLayout.findViewById(R.id.org_unit_container);
@@ -218,7 +218,7 @@ public class CreateSurveyFragment extends Fragment {
         List<ProgramDB> initProgram=new ArrayList<>();
         initProgram.add(0, programDefaultOption);
         programView = (Spinner)  llLayout.findViewById(R.id.program);
-        programView.setAdapter(new ProgramArrayAdapter(getActivity(), R.layout.create_survey_simple_spinner_item, initProgram));
+        programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
 
         //set the first orgUnit saved
         if(orgUnitHierarchy.getSavedUidsList().length()>1) {
@@ -500,9 +500,9 @@ public class CreateSurveyFragment extends Fragment {
 
     //Sets the default program
     private void setLastSelectedProgram(String uid) {
-            SharedPreferences.Editor editor = getEditor();
-            editor.putString(getString(R.string.default_program), uid);
-            editor.commit();
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(getString(R.string.default_program), uid);
+        editor.commit();
     }
 
     /**
@@ -572,8 +572,8 @@ public class CreateSurveyFragment extends Fragment {
         public void addOrgUnit(OrgUnitDB orgUnit) {
             for (int i = selectedHierarchy.size()-1; i > 0; i--) {
                 //Remove the next levels from the active org unit selected list.
-                    if (selectedHierarchy.get(i).getOrgUnitLevel().getId_org_unit_level() >= orgUnit.getOrgUnitLevel().getId_org_unit_level())
-                        selectedHierarchy.remove(i);
+                if (selectedHierarchy.get(i).getOrgUnitLevel().getId_org_unit_level() >= orgUnit.getOrgUnitLevel().getId_org_unit_level())
+                    selectedHierarchy.remove(i);
             }
             //Save only the real org unit
             if(orgUnit.getUid()!=null)
