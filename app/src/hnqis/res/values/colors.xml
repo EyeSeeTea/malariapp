@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white_grey">#efefef</color>
+    <color name="quest_mark_actionbar_bottom">@color/white_grey</color>
+    <color name="colorPrimary">@color/navy_blue</color>
+    <color name="colorPrimaryDark">@color/dark_navy_blue</color>
+    <color name="windowBackground">@color/dark_navy_blue</color>
+</resources>
