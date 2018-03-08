@@ -53,7 +53,6 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountReposi
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
-import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
 import org.hisp.dhis.client.sdk.ui.activities.AbsLoginActivity;
@@ -78,6 +77,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         mLoginActivity = this;
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();
