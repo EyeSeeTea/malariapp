@@ -34,7 +34,7 @@
     <color name="planLightGreen">#dbf67c</color>
     <color name="planLighYellow">#f4f8ac</color>
     <color name="appNameColor">@color/black</color>
-    <color name="headerColor">@color/dark_navy_blue</color>
+    <color name="headerColor">@color/green_dark</color>
     <color name="evenRows">@color/light_grey</color>
     <color name="planning_header_background">@color/plan_grey</color>
     <color name="planning_header_text">@color/white</color>
@@ -47,10 +47,6 @@
     <color name="assess_lightyellow">#DBE444</color>
     <color name="clear_gray">#e3e4e4</color>
 
-
-    <color name="button_login_state_enabled_false">#FF223F5C</color>
-    <color name="button_login_state_unpressed">#FF113151</color>
-    <color name="button_login_state_pressed">#FF0C243C</color>
     <color name="new_grey">#cccccc</color>
     <color name="new_blue">#6ca9d8</color>
     <color name="new_grey_text_color">#434343</color>
@@ -69,5 +65,23 @@
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
+    <color name="advanced_options_text_color">#4B6033</color>
+    <color name="button_login_state_enabled_false">@color/transparent</color>
+    <color name="button_login_state_unpressed">@color/transparent</color>
+    <color name="button_login_state_pressed">@color/transparent</color>
+    <color name="green_middle">#4B6033</color>
+    <color name="grey_dark">#4A4A4A</color>
+    <color name="green_button">@color/green_middle</color>
+    <color name="login_field">@color/grey_dark</color>
+    <color name="login_input">@color/grey_dark</color>
+    <color name="blue_demo_mode">#87B9C6</color>
+    <color name="green_dark">#417505</color>
+    <color name="grey_light_qm">#325058</color>
+    <color name="tab_gradient_start">#1A353D</color>
+    <color name="tab_gradient_end">#325058</color>
+    <color name="color_primary_dark">@color/tab_gradient_start</color>
+    <color name="color_primary_light">@color/tab_gradient_end</color>
+    <color name="color_primary_default">@color/grey_light_qm</color>
+    <color name="pull_background">#325059</color>
 
 </resources>

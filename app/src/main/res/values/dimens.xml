@@ -113,4 +113,7 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
+
+
+    <dimen name="login_title_text">@dimen/roboto_28</dimen>
 </resources>

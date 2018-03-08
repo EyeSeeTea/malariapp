@@ -205,7 +205,7 @@ clínica"</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
 <string name="select_all">Seleccionar todos</string>
-<string name="demo_login">Demo</string>
+<string name="demo_login">Modo Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
 <string name="toast_push_in_progress">"Por favor, espere, ya hay una subida en curso"</string>
@@ -268,4 +268,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="advanced_options">"Opciones avanzadas"</string>
+<string name="simple_options">"Opciones simples"</string>
 </resources>

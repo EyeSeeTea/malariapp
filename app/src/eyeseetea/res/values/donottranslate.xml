@@ -20,8 +20,9 @@
 
 <resources>
 
+    <string name="login_title" translatable="false">QuestMark</string>
     <!-- # general -->
-    <string name="app_name" translatable="false">HNQIS</string>
+    <string name="app_name" translatable="false">QuestMark</string>
 
     <!-- default server url -->
     <string name="login_info_dhis_default_server_url" translatable="false">https://data.psi-mis.org</string>
