@@ -21,6 +21,7 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -38,6 +39,7 @@ import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class LayoutUtils {
 
@@ -269,5 +271,32 @@ public class LayoutUtils {
                 (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
         updateChart(surveyAnsweredRatio, doublePieChart);
+    }
+
+    //This is a common method to draw score with common cosmetics
+    public static void drawScore(Float score, DoubleRectChart doubleRectChart) {
+        int color = LayoutUtils.trafficColor(score);
+        String scoreText;
+        if(score==null){
+            scoreText = "NaN";
+        }else {
+            scoreText = Math.round(score) + ".0";
+        }
+        if(scoreText.equals("NaN")){
+            doubleRectChart.createNaNDoubleRectChart(scoreText,
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.nan_color),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.white));
+        }else {
+            doubleRectChart.createDoubleRectChart(scoreText, score.intValue(),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.white),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.black),
+                    ContextCompat.getColor(PreferencesState.getInstance().getContext(),
+                            R.color.white));
+        }
     }
 }

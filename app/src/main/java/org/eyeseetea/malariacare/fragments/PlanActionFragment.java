@@ -46,11 +46,12 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.strategies.PlanActionStyleStrategy;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.sdk.common.FileUtils;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +67,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private ArrayAdapter<CharSequence> mSubActionsAdapter;
 
     private CustomTextView mTotalScoreTextView;
+    private DoubleRectChart mDoubleRectChart;
     private CustomTextView mOrgUnitTextView;
     private CustomTextView mNextDateTextView;
     private CustomTextView mCompletionDateTextView;
@@ -236,7 +238,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.HTML);
             }
         });
+        mTextViewHtml.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.HTML);
+            }
+        });
         fabPlainTextOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.TEXT);
+            }
+        });
+        mTextViewPlainText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.TEXT);
@@ -346,6 +360,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     private void initLayoutHeaders() {
         mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
+        mDoubleRectChart = PlanActionStyleStrategy.loadDoubleRectChart(mRootView);
         mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
                 R.id.org_unit);
         mCompletionDateTextView = (CustomTextView) mRootView.findViewById(
@@ -412,13 +427,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void updateStatusView(Integer status) {
-        if (status.equals(Constants.SURVEY_IN_PROGRESS)) {
-            mFabComplete.setImageResource(R.drawable.ic_action_uncheck);
-        } else if (status == Constants.SURVEY_SENT) {
-            mFabComplete.setImageResource(R.drawable.ic_double_check);
-        }else {
-            mFabComplete.setImageResource(R.drawable.ic_action_check);
-        }
+        PlanActionStyleStrategy.fabIcons(mFabComplete, status);
 
     }
 
@@ -428,14 +437,19 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
         mOrgUnitTextView.setText(orgUnitName);
 
-        if (mainScore > 0f) {
-            mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
-            int colorId = LayoutUtils.trafficColor(mainScore);
-            mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
-        } else {
-            mTotalScoreTextView.setText(String.format("NaN"));
-            int colorId = LayoutUtils.trafficColor(mainScore);
-            mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
+        if(mTotalScoreTextView!=null) {
+            if (mainScore > 0f) {
+                mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
+                int colorId = LayoutUtils.trafficColor(mainScore);
+                mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
+            } else {
+                mTotalScoreTextView.setText(String.format("NaN"));
+                int colorId = LayoutUtils.trafficColor(mainScore);
+                mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
+            }
+        }else if (mDoubleRectChart!=null){
+            LayoutUtils.drawScore(mainScore, mDoubleRectChart);
+
         }
 
         mCompletionDateTextView.setText(
