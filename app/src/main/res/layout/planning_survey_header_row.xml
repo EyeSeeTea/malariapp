@@ -21,9 +21,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/assessment_row"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/cell_borders"
-    android:minHeight="@dimen/row_min_height">
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/header_min_height"
+    android:background="@color/plan_grey_light" >
 
     <LinearLayout
         android:id="@+id/facilityDateContainer"
@@ -34,8 +34,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/planning_survey_action"
+        <View
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -57,45 +56,22 @@
             android:layout_height="0dp"
             android:layout_weight="0.45"
             android:orientation="horizontal">
-
-            <LinearLayout
+            <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.5"
-                android:gravity="left|center_vertical"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/planning_padding"
-                android:paddingTop="@dimen/planning_padding">
-
-                <org.eyeseetea.malariacare.views.CustomTextView
-                    android:id="@+id/planning_program"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:ellipsize="end"
-                    android:gravity="left|bottom"
-                    android:lines="1"
-                    android:text="@string/lorem_ipsum"
-                    android:textSize="@dimen/planing_text_size"
-                    app:tDimension="@string/font_size_level2"
-                    app:tFontName="@string/medium_font_name" />
-
-                <org.eyeseetea.malariacare.views.CustomTextView
-                    android:id="@+id/planning_org_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:ellipsize="end"
-                    android:gravity="left|top"
-                    android:lines="1"
-                    android:text="@string/lorem_ipsum"
-                    android:textSize="@dimen/planing_text_size"
-                    app:tDimension="@string/font_size_level2"
-                    app:tFontName="@string/light_font"/>
-            </LinearLayout>
+                android:paddingTop="@dimen/planning_padding"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:lines="1"
+                android:text="@string/assessment_title_facility_date"
+                android:textColor="@color/white"
+                android:textSize="@dimen/roboto_12"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name" />
 
 
             <org.eyeseetea.malariacare.views.CustomTextView
@@ -108,24 +84,26 @@
                 android:gravity="center"
                 android:lines="1"
                 android:text="@string/dashboard_title_planned_productivity"
-                android:textSize="@dimen/planing_text_size"
-                android:textStyle="bold"
-                android:typeface="sans"
+                android:textColor="@color/white"
+                android:textSize="@dimen/roboto_12"
                 app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/medium_font_name" />
+                app:tFontName="@string/medium_font_name"  />
 
-            <org.eyeseetea.sdk.presentation.views.DoubleRectChart
-                android:id="@+id/planning_survey_qoc"
-                android:layout_height="match_parent"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight=".17"
-                android:layout_alignParentLeft="true" />
+                android:gravity="center"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/dashboard_title_planned_quality_of_care"
+                android:textColor="@color/white"
+                android:textSize="@dimen/roboto_12"
+                app:tDimension="@string/font_size_level2"
+                app:tFontName="@string/medium_font_name" />
 
             <org.eyeseetea.malariacare.views.CustomTextView
-                android:id="@+id/planning_survey_schedule_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -135,15 +113,15 @@
                 android:gravity="center"
                 android:lines="1"
                 android:text="@string/dashboard_title_planned_next_qa"
-                android:textSize="@dimen/planing_text_size"
+                android:textColor="@color/white"
+                android:textSize="@dimen/roboto_12"
                 app:tDimension="@string/font_size_level2"
-                app:tFontName="@string/medium_font_name" />
+                app:tFontName="@string/medium_font_name"  />
 
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/menu_dots"
+    <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -151,6 +129,5 @@
         android:gravity="center_horizontal"
         android:scaleType="fitCenter"
         android:paddingBottom="15dp"
-        android:paddingTop="15dp"
-        app:srcCompat="@drawable/ic_action_more_vert" />
+        android:paddingTop="15dp"/>
 </TableRow>
