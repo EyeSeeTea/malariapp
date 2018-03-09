@@ -4,8 +4,11 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/plan_grey_light"
-        android:padding="15dip">
+        android:background="@drawable/filter_background"
+        android:paddingTop="6dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="@dimen/filter_right_padding"
+        android:paddingLeft="@dimen/filter_left_padding">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -17,16 +20,12 @@
                 android:id="@+id/spinner_program_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@null"
+                android:padding="10dp"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/light_font" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/plan_grey"></View>
         </LinearLayout>
 
         <LinearLayout
@@ -39,16 +38,12 @@
                 android:id="@+id/spinner_orgUnit_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:padding="10dp"
                 app:tDimension="@string/font_size_level1"
                 app:tFontName="@string/light_font" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/plan_grey"></View>
         </LinearLayout>
     </LinearLayout>
 </merge>

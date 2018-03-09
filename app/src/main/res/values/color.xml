@@ -62,7 +62,7 @@
     <color name="ratio_questions_low"> #ff0000</color>
     <color name="plan_grey">#666666</color>
     <color name="plan_grey_survey_text">#7f7f7f</color>
-    <color name="plan_grey_light">#d9d9d9</color>
+    <color name="plan_grey_light">#4A4A4A</color>
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
@@ -71,5 +71,25 @@
     <color name="lightGreen">#4E870C</color>
     <color name="assess_yellow">#F5A623</color>
     <color name="darkRed">#9B1323</color>
+    <color name="dialog_button_background_text">#325058</color>
+    <color name="dialog_red_button">#744442</color>
+    <color name="dialog_even_row_background">#eae6e6</color>
+
+    <color name="green_plan_block">#4B6033</color>
+    <color name="orange_plan_block">#9C773C</color>
+    <color name="red_plan_block">#672B32</color>
+    <color name="blue_plan_block">#304E71</color>
+    <color name="even_background">#EEEBEB</color>
+
+    <color name="never_assessed_background">@color/red_plan_block</color>
+    <color name="overdue_background">@color/orange_plan_block</color>
+    <color name="next_30_days_background">@color/green_plan_block</color>
+    <color name="future_background">@color/blue_plan_block</color>
+    <color name="even_row_background">@color/even_background</color>
+    <color name="nan_color">#999899</color>
+    <color name="filter_border">#858484</color>
+    <color name="filter_border_bottom">#959595</color>
+    <color name="filter_gradient_start">#818181</color>
+    <color name="filter_gradient_end">#B5B5B5</color>
     <color name="plan_listview_background">@color/app_background</color>
 </resources>

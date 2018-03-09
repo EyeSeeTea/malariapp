@@ -86,6 +86,10 @@ public class AppSettingsBuilder {
     public static boolean isDeveloperOptionsActive(){
         return getInstance().getSettings().getDashboardSettings().isDeveloperOptions();
     }
+    
+    public static boolean isPlanInnerHeader() {
+        return getInstance().getSettings().getDashboardSettings().isPlanInnerHeader();
+    }
 
     public void init(Context context){
         settings = parse(R.raw.settings,context);

@@ -92,7 +92,7 @@
     <dimen name="standard_50">50dp</dimen>
     <dimen name="standard_45">45dp</dimen>
     <dimen name="standard_21">25dp</dimen>
-    <dimen name="header_min_height">50dp</dimen>
+    <dimen name="header_min_height">40dp</dimen>
     <dimen name="row_min_height">56dp</dimen>
     <dimen name="row_left_padding">10dp</dimen>
     <dimen name="row_right_padding">10dp</dimen>
@@ -113,4 +113,15 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
+
+    <dimen name="dialog_button_space">16dp</dimen>
+    <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
+    <dimen name="planning_title_number">@dimen/roboto_20</dimen>
+    <dimen name="planning_titles">@dimen/roboto_18</dimen>
+
+
+    <dimen name="filter_top_padding">0dp</dimen>
+    <dimen name="filter_right_padding">0dp</dimen>
+    <dimen name="filter_left_padding">0dp</dimen>
+    <dimen name="filter_bottom_padding">15dp</dimen>
 </resources>

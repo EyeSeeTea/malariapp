@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,8 +38,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.utils.AUtils;
+import org.eyeseetea.malariacare.strategies.PlannedStyleStrategy;
 
 import java.util.List;
 
@@ -158,6 +158,9 @@ public class PlannedAdapter extends BaseAdapter {
                 ((PlannedHeader) plannedItem).resetCounter();
                 continue;
             }
+            if (plannedItem instanceof PlannedSurveyHeader) {
+                continue;
+            }
             //Check match survey/program -> update header.counter
             PlannedSurvey plannedSurvey = (PlannedSurvey) plannedItem;
             if (plannedSurvey.isShownByProgram(programFilter) || programFilter.getName().equals(
@@ -203,6 +206,9 @@ public class PlannedAdapter extends BaseAdapter {
         if (plannedItem instanceof PlannedHeader) {
             itemOrder = 0;
             return getViewByPlannedHeader((PlannedHeader) plannedItem, parent);
+        } else if (plannedItem instanceof PlannedSurveyHeader) {
+            itemOrder++;
+            return PlannedStyleStrategy.getViewByPlannedSurveyHeader(parent);
         } else {
             return getViewByPlannedSurvey(position, (PlannedSurvey) plannedItem, parent);
         }
@@ -222,23 +228,10 @@ public class PlannedAdapter extends BaseAdapter {
         int color  = PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.black);
         //Set image color
-        if (plannedHeader.equals(currentHeader)) {
-            img.setImageResource(R.drawable.ic_media_arrow_up);
-            img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.white));
-        } else {
-            if (plannedHeader.getTitleHeader().contains(context.getString(R.string.dashboard_title_planned_type_never))) {
-                color  =  PreferencesState.getInstance().getContext().getResources().getColor(
-                        R.color.white);
-                Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/"+context.getString(R.string.medium_font_name));
-                textView.setTypeface(font);
-            } else {
-                color  = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.black);
-            }
-        }
+        color = new PlannedStyleStrategy(plannedHeader, textView, img, color).draw(currentHeader);
         img.setColorFilter(color);
         textView.setTextColor(color);
+        PlannedStyleStrategy.drawNumber(rowLayout, plannedHeader.getCounter());
 /*
         //Productivity
         textView=(TextView)rowLayout.findViewById(R.id.planning_prod);
@@ -277,12 +270,11 @@ public class PlannedAdapter extends BaseAdapter {
         textView.setText(plannedSurvey.getProductivity());
 
         //QualityOfCare
-        textView = (TextView) rowLayout.findViewById(R.id.planning_survey_qoc);
-        textView.setText(plannedSurvey.getQualityOfCare());
+        PlannedStyleStrategy.drawQualityOfCare(rowLayout, plannedSurvey);
 
         //ScheduledDate
         textView = (TextView) rowLayout.findViewById(R.id.planning_survey_schedule_date);
-        textView.setText(AUtils.getEuropeanFormatedDate(plannedSurvey.getNextAssesment()));
+        textView.setText(PlannedStyleStrategy.formatDate(plannedSurvey.getNextAssesment()));
         textView.setOnClickListener(new ScheduleListener(plannedSurvey.getSurvey(), context));
 
         ImageView dotsMenu = (ImageView) rowLayout.findViewById(R.id.menu_dots);
@@ -301,19 +293,18 @@ public class PlannedAdapter extends BaseAdapter {
             rowLayout.setBackgroundColor(colorId);
         } else {
             colorId = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.white_grey);
+                    R.color.even_row_background);
             rowLayout.setBackgroundColor(colorId);
         }
         //Action
         ImageButton actionButton = (ImageButton) rowLayout.findViewById(
                 R.id.planning_survey_action);
         if (plannedSurvey.getSurvey().isInProgress()) {
-            actionButton.setImageResource(R.drawable.ic_edit);
+            actionButton.setImageResource(R.drawable.ic_edit_light);
         } else {
-            actionButton.setImageResource(R.drawable.red_circle_cross);
+            actionButton.setImageResource(R.drawable.ic_plus_light);
         }
-        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-                R.color.plan_grey_light));
+        PlannedStyleStrategy.drawActionButtonTint(actionButton);
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
