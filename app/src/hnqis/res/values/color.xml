@@ -9,7 +9,5 @@
     <color name="next_30_days_background">@color/green</color>
     <color name="future_background">@color/scoreGrandson</color>
     <color name="even_row_background">@color/white_grey</color>
-
-    <dimen name="planning_title_number">20dp</dimen>
-    <dimen name="planning_titles">18dp</dimen>
+    <color name="plan_grey_light">#d9d9d9</color>
 </resources>
