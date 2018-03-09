@@ -273,4 +273,8 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="apply_filters">"Apply filters"</string>
+<string name="filter">"Filter"</string>
+<string name="failed_video_image_question_only">"Video/Image questions only"</string>
+<string name="failed_questions_only">"Failed questions only"</string>
 </resources>

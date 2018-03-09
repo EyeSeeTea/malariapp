@@ -275,4 +275,8 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+<string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
+<string name="filter">"ຕົວກອງ"</string>
+<string name="failed_video_image_question_only">"ຄໍາຖາມວິດີໂອ / ຮູບພາບເທົ່ານັ້ນ"</string>
+<string name="failed_questions_only">"ຄໍາຖາມບໍ່ເທົ່າທຽມ"</string>
 </resources>
