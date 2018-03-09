@@ -69,5 +69,11 @@
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
+    <color name="grey_light_qm">#325058</color>
+    <color name="action_plan_hint">#9B9B9B</color>
+    <color name="spinner_border">#d7d7d7</color>
+    <color name="plan_action_title_background_color">#d7d7d7</color>
+    <color name="plan_action_title_color">#4A4A4A</color>
+    <color name="nan_color">#999899</color>
 
 </resources>
