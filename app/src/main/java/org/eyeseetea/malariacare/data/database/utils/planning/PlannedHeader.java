@@ -23,6 +23,7 @@ import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.strategies.PlannedStyleStrategy;
 
 /**
  * Simple VO to model the headers  the planned listview
@@ -44,7 +45,7 @@ public class PlannedHeader implements PlannedItem {
         this.backgroundColor = backgroundColor;
         this.secondaryColor = secondaryColor;
         this.gaudyBackgroundColor = gaudyBackgroundColor;
-        this.counter=0;
+        this.counter=1;
     }
 
     public Integer getGaudyBackgroundColor() {
@@ -52,7 +53,7 @@ public class PlannedHeader implements PlannedItem {
     }
 
     public String getTitleHeader() {
-        return String.format("%s (%d)",titleHeader,counter);
+        return PlannedStyleStrategy.getTitleHeader(titleHeader, counter);
     }
 
     public Integer getCounter() {
@@ -109,7 +110,7 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildNeverHeader(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_never),
-                R.color.red,
+                R.color.never_assessed_background,
                 R.color.white_grey,
                 R.color.white);
     }
@@ -122,7 +123,7 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildOverdueHeader(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_overdue),
-                R.color.amber,
+                R.color.overdue_background,
                 R.color.white_grey,
                 R.color.white);
     }
@@ -135,7 +136,7 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildNext30Header(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_next_30),
-                R.color.green,
+                R.color.next_30_days_background,
                 R.color.white_grey,
                 R.color.white);
     }
@@ -148,7 +149,7 @@ public class PlannedHeader implements PlannedItem {
     public static PlannedHeader buildFutureHeader(Context ctx){
         return new PlannedHeader(
                 ctx.getString(R.string.dashboard_title_planned_type_future),
-                R.color.scoreGrandson,
+                R.color.future_background,
                 R.color.white_grey,
                 R.color.white);
     }
