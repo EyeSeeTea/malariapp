@@ -36,6 +36,10 @@ public class ProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
         super(context, programs);
     }
 
+    public ProgramArrayAdapter(Context context, Integer layout, List<ProgramDB> programs){
+        super(context, layout, programs);
+    }
+
     @Override public void drawText(CustomTextView customTextView, ProgramDB program) {
         if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
             customTextView.setTextSize(16);
