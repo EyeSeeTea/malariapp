@@ -204,7 +204,7 @@ clínica"</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
-<string name="select_all">Seleccionar todos</string>
+<string name="select_all">Seleccionar todas las encuestas</string>
 <string name="demo_login">Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
@@ -268,4 +268,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+
+<string name="scheduled">Programada</string>
 </resources>

@@ -10,4 +10,5 @@
     <color name="future_background">@color/scoreGrandson</color>
     <color name="even_row_background">@color/white_grey</color>
     <color name="plan_grey_light">#d9d9d9</color>
+    <color name="plan_listview_background">@color/transparent</color>
 </resources>

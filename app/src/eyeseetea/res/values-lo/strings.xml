@@ -218,7 +218,7 @@
 <string name="admin_announcement">"ການແຈ້ງການຈາກຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="user_close">"ຜູ້ໃຊ້ນີ້ຖືກປິດໂດຍຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="dialog_demo_pull_success">"ໂຄງຮ່າງຂອງລະບົບ dhis ໄດ້ຖືກນຳເຂົ້າມາຈາກຂໍ້ມູນການສຳຫຼວດສຳເລັດແລ້ວ"</string>
-<string name="select_all">"ເລືອກທັງໝົດ"</string>
+<string name="select_all">"ជ្រើសរើសស្ទង់មតិទាំងអស់"</string>
 <string name="demo_login">"ຕົວຢ່າງ"</string>
 <string name="system_defined">"ລະບົບທີ່ໄດ້ຮັບການກວດກາແລ້ວ"</string>
 <string name="settings_select_language">"ພາສາ"</string>
@@ -236,7 +236,7 @@
 <string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
-<string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
+<string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
@@ -275,4 +275,5 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+<string name="scheduled">"រំពឹងទុក"</string>
 </resources>

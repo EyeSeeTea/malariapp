@@ -5,28 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical"
-            android:minHeight="@dimen/header_min_height"
-            android:padding="8dp"
-            android:background="@color/planning_header_background"
-            android:gravity="center"
-            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:minHeight="@dimen/header_min_height"
+        android:background="@color/planning_header_background"
+        android:orientation="horizontal">
 
-            <org.eyeseetea.malariacare.views.CustomCheckBox
-                android:id="@+id/select_all_orgunits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/checkbox_left_padding"
-                android:text="@string/select_all"
+        <org.eyeseetea.malariacare.views.CustomCheckBox
+            android:id="@+id/select_all_orgunits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical"
+            android:text="@string/select_all"
+            android:textColor="@color/planning_header_text"
+            android:textSize="@dimen/header_light_text_size"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font" />
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical|left"
+            android:orientation="horizontal"
+            android:layout_weight="0.5">
+            <org.eyeseetea.sdk.presentation.views.CustomTextView
+                android:id="@+id/dueDate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:ellipsize="end"
+                android:gravity="center_vertical|left"
+                android:maxLines="1"
+                android:text="@string/duedate"
                 android:textColor="@color/planning_header_text"
                 android:textSize="@dimen/header_light_text_size"
                 app:tDimension="@string/font_size_level2"
@@ -34,38 +48,49 @@
 
             <org.eyeseetea.sdk.presentation.views.CustomTextView
                 android:id="@+id/nameHeader2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:paddingRight="2dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:layout_weight="0.3"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="@string/header_reschedule"
                 android:textColor="@color/planning_header_text"
                 android:textSize="@dimen/header_light_text_size"
                 app:tDimension="@string/font_size_level2"
                 app:tFontName="@string/light_font" />
-        </RelativeLayout>
-
-        <ListView
-            android:id="@id/android:list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/header" />
-
-        <ImageButton
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="0.1">
+            </View>
+        </LinearLayout>
+    </LinearLayout>
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_below="@id/header" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/fab_background"
+        android:padding="3dp">
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/reschedule_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/transparent"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:src="@drawable/ic_calendar"
-            android:textColor="@color/white"
-            android:textSize="@dimen/medium_text_size"
-            android:textStyle="bold" />
+            android:layout_gravity="center_vertical"
+            android:background="@color/grey_light_qm"
+            android:onClick="onNewSurvey"
+            app:srcCompat="@drawable/ic_icn_assessment_on"
+            app:backgroundTint="@color/grey_light_qm"
+            app:fabSize="normal" />
+    </LinearLayout>
 </RelativeLayout>

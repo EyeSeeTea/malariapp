@@ -66,6 +66,7 @@
     <color name="white_grey">#efefef</color>
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
+    <color name="app_background">#272727</color>
 
     <color name="lightGreen">#4E870C</color>
     <color name="assess_yellow">#F5A623</color>
@@ -90,4 +91,6 @@
     <color name="filter_border_bottom">#959595</color>
     <color name="filter_gradient_start">#818181</color>
     <color name="filter_gradient_end">#B5B5B5</color>
+    <color name="plan_listview_background">@color/app_background</color>
+    <color name="grey_light_qm">#325058</color>
 </resources>
