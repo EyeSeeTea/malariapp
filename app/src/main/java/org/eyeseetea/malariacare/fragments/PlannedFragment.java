@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
 import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.strategies.PlannedStyleStrategy;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
@@ -103,6 +104,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         this.setListAdapter(adapter);
 
         reloadFilter();
+        PlannedStyleStrategy.modifyListViewStyle(getListView());
     }
 
     public void reloadFilter(){

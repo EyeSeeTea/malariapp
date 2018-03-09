@@ -59,6 +59,11 @@ public class DashboardSettings {
      */
     boolean developerOptions;
 
+    /**
+     * Boolean to hide or shown the inner planning header
+     */
+    boolean planInnerHeader;
+
     List<ModuleSettings> modules;
 
     public DashboardSettings(){
@@ -101,6 +106,12 @@ public class DashboardSettings {
     public void setDeveloperOptions(boolean developerOptions){
         this.developerOptions =developerOptions;
     }
+    public boolean isPlanInnerHeader(){
+        return planInnerHeader;
+    }
+    public void setPlanInnerHeader(boolean planInnerHeader){
+        this.planInnerHeader = planInnerHeader;
+    }
 
     public List<ModuleSettings> getModules() {
         return modules;
@@ -133,6 +144,7 @@ public class DashboardSettings {
                 ", modules=" + modules +
                 ", list filter=" + listFilter +
                 ", developerOptions=" + developerOptions +
+                ", planInnerHeader=" + planInnerHeader +
                 '}';
     }
 }
