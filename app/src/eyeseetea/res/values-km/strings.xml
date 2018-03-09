@@ -239,8 +239,8 @@ evaluation"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
-<string name="plan_action_today_date">បានបញ្ចប់: %s</string>
-<string name="plan_action_next_date">បន្ទាប់: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
@@ -274,7 +274,11 @@ evaluation"</string>
 <string name="comments">"យោបល់"</string>
 <string name="dates">"កាលបរិច្ឆេទពីមុន"</string>
 <string name="mark_complete">"សម្គាល់បញ្ចប់"</string>
-<string name="plain_text">"អត្ថបទធម្មតា "</string>
-<string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
+<string name="plain_text">"អត្ថបទខ្លី "</string>
+<string name="html_text">"អត្ថបទវែង "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
+
+<string name="completed_title">"បានបញ្ចប់"</string>
+<string name="completed_next">"បន្ទាប់"</string>
+<string name="plan_action_edit_text_hint">"ប៉ះដើម្បីសរសេរ"</string>
 </resources>

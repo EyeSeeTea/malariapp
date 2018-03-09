@@ -224,8 +224,8 @@ Mensuelle"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN D'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
-<string name="plan_action_today_date">"Terminé: %s"</string>
-<string name="plan_action_next_date">"Suivante: %s"</string>
+<string name="plan_action_today_date">"%s"</string>
+<string name="plan_action_next_date">"%s"</string>
 <string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
 <string name="plan_action_gasp_title">Problèmes:</string>
 <string name="plan_action_action_plan_title">"Plan d'action:"</string>
@@ -263,4 +263,8 @@ Mensuelle"</string>
 <string name="html_text">"Texte formaté "</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
+
+<string name="completed_title">"Terminé"</string>
+<string name="completed_next">"Prochain"</string>
+<string name="plan_action_edit_text_hint">"appuyez pour écrire"</string>
 </resources>

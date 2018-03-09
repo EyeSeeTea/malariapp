@@ -230,8 +230,8 @@ evaluation"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
-<string name="plan_action_today_date">Completed: %s</string>
-<string name="plan_action_next_date">Next: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">Action plan:</string>
@@ -269,8 +269,11 @@ evaluation"</string>
 <string name="mark_complete">"Mark complete"</string>
 <string name="mandatory">Mandatory</string>
 <string name="percent">&#37;</string>
-<string name="plain_text">Plain text </string>
-<string name="html_text">Formatted text </string>
+<string name="plain_text">Long text </string>
+<string name="html_text">Short text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="completed_title">"Completed"</string>
+<string name="completed_next">"Next"</string>
+<string name="plan_action_edit_text_hint">"tap to write"</string>
 </resources>

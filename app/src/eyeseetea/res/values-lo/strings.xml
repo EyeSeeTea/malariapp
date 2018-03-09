@@ -240,8 +240,8 @@
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
-<string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
-<string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
@@ -271,8 +271,13 @@
 <string name="comments">"ຄວາມຄິດເຫັນ"</string>
 <string name="dates">"ວັນທີ່ຜ່ານມາ"</string>
 <string name="mark_complete">"Mark ແລ້ວສົມບູນ"</string>
-<string name="plain_text">"ຂໍ້ຄວາມທົ່ງພຽງ "</string>
-<string name="html_text">"ຮູບແບບຮູບແບບ "</string>
+<string name="plain_text">"ຂໍ້ຄວາມສັ້ນ "</string>
+<string name="html_text">"ຂໍ້ຄວາມຍາວ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+
+<string name="completed_title">"ແລ້ວສິ້ນ"</string>
+<string name="completed_next">"ຕໍ່ໄປ"</string>
+<string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
+
 </resources>
