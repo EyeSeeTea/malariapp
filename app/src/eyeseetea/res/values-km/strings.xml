@@ -219,7 +219,7 @@ evaluation"</string>
 <string name="admin_announcement">"សេចក្តីប្រកាស admin"</string>
 <string name="user_close">"អ្នកប្រើប្រាស់នេះត្រូវបានបិទដោយអ្នកគ្រប់គ្រង។"</string>
 <string name="dialog_demo_pull_success">"ទិន្នន័យមេតា Dhis បានផ្ទុកដោយជោគជ័យពីទិន្នន័យក្នុងស្រុក"</string>
-<string name="select_all">"ជ្រើស​យក​ទាំងអស់"</string>
+<string name="select_all">"ជ្រើសរើសទាំងអស់"</string>
 <string name="demo_login">"សាកល្បង"</string>
 <string name="system_defined">"ដែលបានកំណត់ប្រព័ន្ធ"</string>
 <string name="settings_select_language">"ភាសា"</string>
@@ -277,4 +277,7 @@ evaluation"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
+
+<string name="scheduled">"ព្រុយ"</string>
+<string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>
 </resources>
