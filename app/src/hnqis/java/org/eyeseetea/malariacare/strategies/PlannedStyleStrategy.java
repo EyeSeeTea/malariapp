@@ -17,17 +17,17 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.layout.adapters.survey;
+package org.eyeseetea.malariacare.strategies;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,74 +35,80 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurvey;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.Date;
 
-public PlannedStyleStrategy(PlannedHeader plannedHeader, TextView textView,
-        ImageView img, int color) {
+public class PlannedStyleStrategy {
+    private PlannedHeader mPlannedHeader;
+    private TextView mTextView;
+    private ImageView mImg;
+    private int mColor;
+
+    public PlannedStyleStrategy(PlannedHeader plannedHeader, TextView textView,
+            ImageView img, int color) {
         mPlannedHeader = plannedHeader;
         mTextView = textView;
         mImg = img;
         mColor = color;
-        }
+    }
 
     public int draw(PlannedHeader currentHeader) {
-            Context context = PreferencesState.getInstance().getContext();
-            if (mPlannedHeader.equals(currentHeader)) {
-            mImg.setImageResource(R.drawable.ic_plan_media_arrow_up);
+        Context context = PreferencesState.getInstance().getContext();
+        if (mPlannedHeader.equals(currentHeader)) {
+            mImg.setImageResource(R.drawable.ic_media_arrow_up);
             mImg.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-            R.color.white));
-            } else {
+                    R.color.white));
+        } else {
             if (mPlannedHeader.getTitleHeader().contains(
-            context.getString(R.string.dashboard_title_planned_type_never))) {
-            mColor = PreferencesState.getInstance().getContext().getResources().getColor(
-            R.color.white);
-            Typeface font = Typeface.createFromAsset(context.getAssets(),
-            "fonts/" + context.getString(R.string.medium_font_name));
-            mTextView.setTypeface(font);
+                    context.getString(R.string.dashboard_title_planned_type_never))) {
+                mColor = PreferencesState.getInstance().getContext().getResources().getColor(
+                        R.color.white);
+                Typeface font = Typeface.createFromAsset(context.getAssets(),
+                        "fonts/" + context.getString(R.string.medium_font_name));
+                mTextView.setTypeface(font);
             } else {
-            mColor = PreferencesState.getInstance().getContext().getResources().getColor(
-            R.color.black);
+                mColor = PreferencesState.getInstance().getContext().getResources().getColor(
+                        R.color.black);
             }
-            }
-            return mColor;
-            }
+        }
+        return mColor;
+    }
 
     public static void drawQualityOfCare(View rowLayout, PlannedSurvey plannedSurvey) {
-            TextView textView = (TextView) rowLayout.findViewById(R.id.planning_survey_qoc);
-            textView.setText(plannedSurvey.getQualityOfCare());
-            }
+        TextView textView = (TextView) rowLayout.findViewById(R.id.planning_survey_qoc);
+        textView.setText(plannedSurvey.getQualityOfCare());
+    }
 
     public static String formatDate(Date date) {
-            return AUtils.getEuropeanFormatedDate(date);
-            }
+        return AUtils.getEuropeanFormatedDate(date);
+    }
 
     public static String getTitleHeader(String titleHeader, Integer counter) {
-            return String.format("%s (%d)",titleHeader,counter);
-            }
+        return String.format("%s (%d)",titleHeader,counter);
+    }
 
     public static void drawActionButtonTint(ImageButton actionButton) {
-            actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-            R.color.plan_grey_light));
-            }
+        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                R.color.plan_grey_light));
+    }
 
     public static View getViewByPlannedSurveyHeader(ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_header_row,
-            parent, false);
-            rowLayout.setVisibility(View.GONE);
-            return rowLayout;
-            }
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LinearLayout rowLayout = (LinearLayout) inflater.inflate(R.layout.planning_header_row,
+                parent, false);
+        rowLayout.setVisibility(View.GONE);
+        return rowLayout;
+    }
 
     public static void drawNumber(LinearLayout rowLayout, Integer counter) {
-            }
+    }
 
     public static DoubleRectChart loadDoubleRectChart(RelativeLayout rootView) {
-            return null;
-            }
+        return null;
+    }
+
     public static void modifyListViewStyle(ListView listView) {
     }
 }
