@@ -275,4 +275,6 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+<string name="filter">"ຕົວກອງ"</string>
+<string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
 </resources>

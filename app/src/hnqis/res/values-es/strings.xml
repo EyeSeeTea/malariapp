@@ -268,4 +268,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="filter">"filtro"</string>
+<string name="apply_filters">"Aplicar filtros"</string>
 </resources>

@@ -263,4 +263,6 @@ Mensuelle"</string>
 <string name="html_text">"Texte formaté "</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
+<string name="filter">"filtre"</string>
+<string name="apply_filters">"Appliquer les filtres"</string>
 </resources>
