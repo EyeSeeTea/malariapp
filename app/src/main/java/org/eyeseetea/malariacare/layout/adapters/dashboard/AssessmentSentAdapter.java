@@ -27,11 +27,11 @@ import android.view.View;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
+import org.eyeseetea.malariacare.strategies.AssessmentUnsentAdapterCosmeticsStrategy;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +86,11 @@ public class AssessmentSentAdapter extends
     }
 
     @Override
+    protected void decorateSurveyChart(View rowView, SurveyDB survey) {
+        AssessmentUnsentAdapterCosmeticsStrategy.decorateSentSurveyChart(rowView, survey);
+    }
+
+    @Override
     protected void decorateCustomColumns(SurveyDB survey, View rowView) {
         decorateSentDate(survey, rowView);
         decorateSentScore(survey, rowView);
@@ -105,8 +110,13 @@ public class AssessmentSentAdapter extends
             }
         }
 
-        CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
-        sentScore.setText(scoreText);
+        View sentScoreView = rowView.findViewById(R.id.score);
+        if(sentScoreView != null && sentScoreView instanceof CustomTextView) {
+            CustomTextView sentScore = (CustomTextView) rowView.findViewById(R.id.score);
+            if (sentScore != null) {
+                sentScore.setText(scoreText);
+            }
+        }
     }
 
     private void decorateSentDate(SurveyDB survey, View rowView) {
