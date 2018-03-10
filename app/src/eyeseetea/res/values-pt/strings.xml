@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Nome da Franquia ou Inquérito"</string>
 <string name="assessment_title_state">"%Completo"</string>
-<string name="assessment_sent_date">"Data de concl"</string>
+<string name="assessment_sent_date">"Data"</string>
 <string name="assessment_title_header">"Avaliação activa"</string>
 <string name="assessment_sent_title_header">"Avaliação anterior(es)"</string>
 
