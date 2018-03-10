@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="green">#84b467</color>
-    <color name="amber">#F1C232</color>
+    <color name="amber">@color/orange_box</color>
     <color name="red">#ff060D</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
@@ -12,26 +12,22 @@
     <color name="parentColor">#d8dac1</color>
     <color name="textFieldColor">#BEBEBE</color>
     <color name="darkGrey">#565656</color>
+    <color name="green_dark">#417505</color>
     <color name="formFooter">#429470</color>
     <color name="custom_blue_light">@color/navy_blue</color>
     <color name="custom_background_grey">#f7f7f7</color>
-    <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
-    <color name="scoreGrandson">#6fa8dc</color>
-    <color name="feedbackDarkBlue">#6ca9d8</color>
-    <color name="feedbackLightBlue">#6bcdfd</color>
     <color name="assess_grey">#4f4c4c</color>
     <color name="background">@color/plan_grey_light</color>
     <color name="tab_orange_plan">#f38b00</color>
     <color name="tab_yellow_assess">#dce442</color>
-    <color name="tab_green_monitor">#799900</color>
+    <color name="tab_green_monitor">@color/green_middle</color>
     <color name="tab_blue_improve">#00b3e3</color>
     <color name="gaudyYellow">#bcd200</color>
     <color name="light_red">#f8cdc6</color>
     <color name="planLightGreen">#dbf67c</color>
     <color name="planLighYellow">#f4f8ac</color>
     <color name="appNameColor">@color/black</color>
-    <color name="headerColor">@color/dark_navy_blue</color>
     <color name="evenRows">@color/light_grey</color>
     <color name="planning_header_background">@color/plan_grey</color>
     <color name="planning_header_text">@color/white</color>
@@ -51,6 +47,10 @@
     <color name="new_grey">#cccccc</color>
     <color name="new_blue">#6ca9d8</color>
     <color name="new_grey_text_color">#434343</color>
+    <color name="green_plan_block">#4B6033</color>
+    <color name="orange_plan_block">#9C773C</color>
+    <color name="red_plan_block">#672B32</color>
+    <color name="blue_plan_block">#304E71</color>
 
     <!-- ratio questions percentage-->
     <color name="ratio_mandatory_questions_high"> #0f7f12</color>
@@ -67,8 +67,22 @@
     <color name="feedback_subtitle">#b9e8e4</color>
     <color name="share_fab_background">#7790fd</color>
 
-    <color name="lightGreen">#4E870C</color>
+    <color name="darkRed">@color/red_box</color>
     <color name="assess_yellow">#F5A623</color>
-    <color name="darkRed">#9B1323</color>
+    <color name="lightGreen">#4E870C</color>
+    <color name="green_box">#417505</color>
+    <color name="orange_box">#E2A42E</color>
+    <color name="red_box">#9B1323</color>
+    <color name="nan_color">#999899</color>
+    <color name="dialog_header_background">#D8D8D8</color>
+    <color name="dialog_button_background_text">#325058</color>
+    <color name="feedback_background">#fdf8e3</color>
+    <color name="feedback_cs_color">#2F2F2F</color>
+    <color name="headerColor">@color/green_dark</color>
+    <color name="scoreGrandson">#6fa8dc</color>
+    <color name="feedbackLightBlue">#d3d3d3</color>
+    <color name="feedbackDarkBlue">#9B9B9B</color>
+    <color name="green_middle">#4B6033</color>
+    <color name="dialog_button_text">@color/white</color>
 
 </resources>
