@@ -3,5 +3,15 @@
     <color name="lightGreen">#adda19</color>
     <color name="darkRed">#d1213c</color>
     <color name="assess_yellow">#dbe444</color>
+    <color name="headerColor">@color/dark_navy_blue</color>
+    <color name="scoreGrandson">#6fa8dc</color>
+    <color name="feedbackDarkBlue">#6ca9d8</color>
+    <color name="feedbackLightBlue">#6bcdfd</color>
+    <color name="tab_green_monitor">#799900</color>
+    <color name="amber">#F1C232</color>
+    <color name="dialog_button_text">#06988a</color>
+    <color name="improve_listview_background">@color/white</color>
+    <color name="planning_header_background">@color/plan_grey</color>
+    <color name="plan_grey_light">#d9d9d9</color>
     <color name="plan_listview_background">@color/transparent</color>
 </resources>
