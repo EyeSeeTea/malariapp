@@ -45,6 +45,13 @@ public class FeedbackFragmentStyleStrategy {
 
     public static void showImproveFilter(View view,
             final DashboardSentFragment dashboardSentFragment) {
+        View button = view.findViewById(R.id.more_options);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.showImproveFilter(view.getContext(), dashboardSentFragment);
+            }
+        });
     }
 
 

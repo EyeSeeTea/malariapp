@@ -123,5 +123,36 @@ public class Utils extends AUtils {
     }
 
     public static void showImproveFilter(Context context, final DashboardSentFragment dashboardSentFragment) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_feedback_orgunit_filters);
+        //dialog.setTitle(titleId);
+
+        TextView title = (TextView) dialog.findViewById(R.id.programName);
+        CustomRadioButton chkFailed = (CustomRadioButton) dialog.findViewById(R.id.chkFailed);
+
+        //title.setText(SurveyDB.findById((long) feedbackAdapter.getIdSurvey()).getProgram().getName());
+        dialog.setCancelable(false);
+        Button button = (Button) dialog.findViewById(R.id.apply_filter);
+        if(dashboardSentFragment.forceAllSurveys){
+            chkFailed.setChecked(false);
+        }else{
+            chkFailed.setChecked(true);
+        }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                dashboardSentFragment.reloadData();
+            }
+        });
+        chkFailed.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             dashboardSentFragment.clickOnFilter();
+                                             ((CustomRadioButton) v).setChecked(!dashboardSentFragment.forceAllSurveys);
+                                         }
+                                     }
+        );
+        dialog.show();
     }
 }
