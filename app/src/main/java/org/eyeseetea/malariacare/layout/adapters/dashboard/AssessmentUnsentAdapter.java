@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import org.eyeseetea.malariacare.strategies.AssessmentUnsentAdapterCosmeticsStrategy;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -84,21 +85,21 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
-            @Override
-            public void nextProgressMessage() {
-                Log.d(getClass().getName(), "nextProgressMessage");
-            }
+                    @Override
+                    public void nextProgressMessage() {
+                        Log.d(getClass().getName(), "nextProgressMessage");
+                    }
 
-            @Override
-            public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                Log.d(getClass().getName(), "onComplete");
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        Log.d(getClass().getName(), "onComplete");
 
-                if (surveyAnsweredRatio != null) {
-                    doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                            surveyAnsweredRatio.getTotalStatus());
-                }
-            }
-        });
+                        if (surveyAnsweredRatio != null) {
+                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
+                                    surveyAnsweredRatio.getTotalStatus());
+                        }
+                    }
+                });
     }
 
 
@@ -208,6 +209,13 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
         surveyType.setLayoutParams(
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 0, 0.5f));
+    }
+
+    @Override
+    protected void decorateSurveyChart(View rowView, SurveyDB survey) {
+        AssessmentUnsentAdapterCosmeticsStrategy assessmentUnsentAdapterCosmeticsStrategy =
+                new AssessmentUnsentAdapterCosmeticsStrategy();
+        assessmentUnsentAdapterCosmeticsStrategy.decorateUnsentSurveyChart(rowView, survey);
     }
 
     /**
