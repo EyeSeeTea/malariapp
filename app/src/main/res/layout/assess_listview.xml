@@ -32,9 +32,9 @@
                         android:lines="1"
                         android:paddingLeft="@dimen/row_left_padding"
                         android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/header_light_text_size"
+                        android:textSize="@dimen/unsent_rows_text_size"
                         app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name" />
+                        app:tFontName="@string/medium_font_name"  />
                     <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/circle_stroke_width"
@@ -53,9 +53,9 @@
                         android:paddingRight="50dp"
                         android:text="@string/assessment_title_state"
                         android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/header_light_text_size"
+                        android:textSize="@dimen/unsent_rows_text_size"
                         app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name" />
+                        app:tFontName="@string/medium_font_name"/>
             </LinearLayout>
     </RelativeLayout>
 
@@ -64,23 +64,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
-        android:background="@color/white" />
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:background="@color/assets_listview_background" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/fab_background"
+        android:padding="3dp">
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_gravity="center_vertical"
         android:background="@color/transparent"
-        android:gravity="center_horizontal"
         android:onClick="onNewSurvey"
-        android:src="@drawable/ic_add"
+        app:srcCompat="@drawable/ic_add"
         android:textColor="@color/white"
         android:textSize="@dimen/medium_text_size"
+        app:backgroundTint="@color/grey_light_qm"
         android:textStyle="bold"
         app:fabSize="normal" />
+    </LinearLayout>
 </RelativeLayout>
