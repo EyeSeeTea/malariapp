@@ -67,8 +67,9 @@ public class DoublePieChart extends FrameLayout {
         int layout_height = ta.getDimensionPixelSize(1, ViewGroup.LayoutParams.MATCH_PARENT);
 
         outsidePie.setLayoutParams(new LayoutParams(layout_width, layout_height));
+
         centerPie.setLayoutParams(
-                new LayoutParams((int) (layout_width * 0.8), (int) (layout_height * 0.8),
+                new LayoutParams((int) (layout_width * 0.70), (int) (layout_height * 0.70),
                         Gravity.CENTER));
 
     }
@@ -102,11 +103,11 @@ public class DoublePieChart extends FrameLayout {
 
         mChart.setDrawHoleEnabled(hole);
 
-
+        mChart.setHoleColor(Color.TRANSPARENT);
 
         float radio = 0;
         if(hole) {
-            radio = 50f;
+            radio = 70f;
         }
         mChart.setHoleRadius(radio);
         mChart.setDrawCenterText(false);
