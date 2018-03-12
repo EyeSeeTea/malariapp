@@ -268,4 +268,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="plan_action_edit_text_hint">"Toque para escribir"</string>
+<string name="planning_label_date">"Nueva fecha:"</string>
 </resources>

@@ -277,4 +277,6 @@ evaluation"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
+<string name="planning_label_date">"New date:"</string>
+<string name="plan_action_edit_text_hint">"ប៉ះដើម្បីសរសេរ"</string>
 </resources>
