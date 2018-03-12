@@ -3,4 +3,5 @@
     <color name="lightGreen">#adda19</color>
     <color name="darkRed">#d1213c</color>
     <color name="assess_yellow">#dbe444</color>
+    <color name="dialog_button_text">#06988a</color>
 </resources>

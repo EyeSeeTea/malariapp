@@ -15,7 +15,6 @@
     <color name="formFooter">#429470</color>
     <color name="custom_blue_light">@color/navy_blue</color>
     <color name="custom_background_grey">#f7f7f7</color>
-    <color name="dialog_button_text">#06988a</color>
     <color name="customBlue">#ccf2ff</color>
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="feedbackDarkBlue">#6ca9d8</color>
@@ -70,5 +69,14 @@
     <color name="lightGreen">#4E870C</color>
     <color name="assess_yellow">#F5A623</color>
     <color name="darkRed">#9B1323</color>
+
+    <color name="dialog_header_background">#D8D8D8</color>
+    <color name="dialog_even_row_background">#eae6e6</color>
+    <color name="dialog_row_background">@color/white</color>
+    <color name="dialog_red_button">#744442</color>
+    <color name="dialog_header_title_text">#4A4A4A</color>
+    <color name="dialog_button_text">@color/white</color>
+    <color name="dialog_button_background_text">#325058</color>
+    <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
 
 </resources>

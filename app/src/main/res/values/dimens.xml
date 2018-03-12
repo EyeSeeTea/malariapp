@@ -113,4 +113,10 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
+
+    <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
+    <dimen name="dialog_subttile_row_size">@dimen/roboto_16</dimen>
+    <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
+    <dimen name="dialog_log_size">@dimen/roboto_14</dimen>
+    <dimen name="dialog_button_space">16dp</dimen>
 </resources>
