@@ -10,26 +10,24 @@
         android:id="@+id/planned_org_unit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:padding="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:background="@color/plan_grey_light"
-        android:textColor="@color/darkGrey"
-        app:tDimension="@string/font_size_level4"
+        android:textSize="@dimen/dialog_tile_row_size"
+        android:background="@color/dialog_header_background"
+        android:textColor="@color/dialog_header_title_text"
         app:font_name="@string/font_name_medium" />
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planned_program"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:textStyle="bold"
+        android:gravity="center_horizontal"
         android:layout_margin="20dp"
         android:layout_below="@id/planned_org_unit"
-        android:textColor="@color/darkGrey"
-        app:tDimension="@string/font_size_level4"
+        android:textSize="@dimen/dialog_tile_row_size"
+        android:textColor="@color/dialog_header_title_text"
         app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/add"
@@ -38,42 +36,42 @@
         android:layout_margin="20dp"
         android:layout_below="@id/planned_program"
         android:text="@string/add"
-        android:background="@color/dialog_button_text"
+        android:background="@color/dialog_button_background_text"
+        android:textSize="@dimen/dialog_button_size"
         android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_regular" />
+        app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/change"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/dialog_button_space"
         android:layout_below="@id/add"
         android:text="@string/change_date"
-        android:background="@color/dialog_button_text"
+        android:background="@color/dialog_button_background_text"
+        android:textSize="@dimen/dialog_button_size"
         android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/show_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/dialog_button_space"
         android:layout_below="@id/change"
         android:text="@string/show_history"
-        android:background="@color/dialog_button_text"
+        android:background="@color/dialog_button_background_text"
+        android:textSize="@dimen/dialog_button_size"
         android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
+        app:font_name="@string/font_name_medium"  />
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/dialog_button_space"
         android:layout_below="@id/show_history"
         android:text="@string/cancel"
-        android:background="@color/dialog_button_text"
+        android:background="@color/dialog_red_button"
+        android:textSize="@dimen/dialog_button_size"
         android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
+        app:font_name="@string/font_name_medium"  />
 
 </RelativeLayout>

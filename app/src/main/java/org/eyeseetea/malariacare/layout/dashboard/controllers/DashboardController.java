@@ -458,6 +458,14 @@ public class DashboardController {
         Button actionPlan = (Button) v.findViewById(R.id.action_plan);
         Button cancel = (Button) v.findViewById(R.id.cancel);
 
+        TextView orgUnitTextView = (TextView) v.findViewById(R.id.planned_org_unit);
+        TextView programTextView = (TextView) v.findViewById(R.id.planned_program);
+        if(survey.getOrgUnit()!=null  && survey.getOrgUnit().getName()!=null) {
+            orgUnitTextView.setText(survey.getOrgUnit().getName());
+        }
+        if(survey.getOrgUnit()!=null  && survey.getProgram().getName()!=null) {
+            programTextView.setText(survey.getProgram().getName());
+        }
         final AlertDialog alertDialog =builder.create();
         viewFeedback.setOnClickListener(
                 new View.OnClickListener() {
@@ -493,7 +501,6 @@ public class DashboardController {
         alertDialog.show();
         return alertDialog;
     }
-
 
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
         scheduleHistoricLogDialog(survey);
