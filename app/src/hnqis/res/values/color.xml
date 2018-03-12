@@ -4,4 +4,5 @@
     <color name="darkRed">#d1213c</color>
     <color name="assess_yellow">#dbe444</color>
     <color name="dialog_button_text">#06988a</color>
+    <color name="dialog_red_button">#00988a</color>
 </resources>

@@ -460,10 +460,10 @@ public class DashboardController {
 
         TextView orgUnitTextView = (TextView) v.findViewById(R.id.planned_org_unit);
         TextView programTextView = (TextView) v.findViewById(R.id.planned_program);
-        if(survey.getOrgUnit()!=null  && survey.getOrgUnit().getName()!=null) {
+        if(survey.getOrgUnit()!=null  && survey.getOrgUnit().getName()!=null && orgUnitTextView!=null) {
             orgUnitTextView.setText(survey.getOrgUnit().getName());
         }
-        if(survey.getOrgUnit()!=null  && survey.getProgram().getName()!=null) {
+        if(survey.getOrgUnit()!=null  && survey.getProgram().getName()!=null && programTextView!=null) {
             programTextView.setText(survey.getProgram().getName());
         }
         final AlertDialog alertDialog =builder.create();
