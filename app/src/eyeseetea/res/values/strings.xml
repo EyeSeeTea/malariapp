@@ -275,4 +275,6 @@ evaluation"</string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
 <string name="plan_action_edit_text_hint">"tap to write"</string>
+<string name="header_reschedule_title">"Re-schedule"</string>
+
 </resources>
