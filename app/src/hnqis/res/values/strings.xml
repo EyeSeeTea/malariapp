@@ -273,4 +273,5 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="content_description_back_button">"Back Button"</string>
 </resources>

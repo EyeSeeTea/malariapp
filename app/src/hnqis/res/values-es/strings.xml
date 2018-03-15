@@ -268,4 +268,5 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="content_description_back_button">"Botón para retroceder"</string>
 </resources>

@@ -19,7 +19,6 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,15 +48,36 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-
-    <include
-        android:id="@+id/header_layout"
-        android:layout_width="fill_parent"
-        android:layout_alignParentTop="true"
+    <LinearLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:background="@color/assess_yellow"
-        layout="@layout/main_header"/>
+        android:layout_alignParentTop="true"
+        android:background="@color/plan_grey"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/backToSentSurveys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/back_arrow_margin"
+            android:background="@color/transparent"
+            android:contentDescription="@string/content_description_back_button"
+            android:src="@drawable/ic_back"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text_size"
+            android:textStyle="bold"/>
+
+        <include
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/assess_yellow"
+            android:textColor="@color/red"
+            layout="@layout/main_header"/>
+
+    </LinearLayout>
 
     <include
         android:id="@+id/form_footer_layout"
@@ -70,23 +90,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/form_footer_layout"
-        android:layout_below="@id/header_layout"
+        android:layout_below="@id/header_container"
         android:id="@+id/content"
         android:background="@color/white"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:gravity="top" />
-    <ImageButton
-        android:id="@+id/backToSentSurveys"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/transparent"
-        android:gravity="center_horizontal"
-        android:padding="12dp"
-        android:layout_marginLeft="-10dp"
-        android:src="@drawable/ic_back"
-        android:textColor="@color/white"
-        android:textSize="@dimen/medium_text_size"
-        android:textStyle="bold" />
+
 </RelativeLayout>
