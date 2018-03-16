@@ -188,6 +188,10 @@ public final class SurveyDialog extends AlertDialog {
         }
     }
 
+    public Button getMarkCompleteButton(){
+        return (Button) rootView.findViewById(R.id.mark_completed);
+    }
+
     private void initEditButton(@Nullable final View.OnClickListener editListener) {
         final Button edit = (Button) rootView.findViewById(R.id.edit);
 
