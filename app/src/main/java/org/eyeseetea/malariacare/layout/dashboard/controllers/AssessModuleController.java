@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
+import org.eyeseetea.malariacare.views.SurveyDialog;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 /**
@@ -275,8 +276,23 @@ public class AssessModuleController extends ModuleController {
 
                             @Override
                             public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                if (surveyAnsweredRatio.isCompulsoryCompleted())
-                                    confirmSendCompleteSurvey();
+                                if (surveyAnsweredRatio.isCompulsoryCompleted()) {
+                                    SurveyDialog.Builder builder = SurveyDialog.newBuilder(
+                                            dashboardActivity, survey);
+
+                                    final View.OnClickListener completeButtonListener =
+                                            new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    onMarkAsCompleted(survey);
+                                                }
+                                            };
+
+                                    builder.completeButton(completeButtonListener)
+                                            .bodyTextID(R.string.dialog_pie_chart_label_explanation)
+                                            .build();
+
+                                }
                             }
                         });
             }

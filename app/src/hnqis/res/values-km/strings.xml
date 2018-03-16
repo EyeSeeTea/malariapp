@@ -237,6 +237,7 @@ evaluation"</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
+<string name="dialog_pie_chart_label_explanation">"រង្វង់ខាងក្រៅបង្ហាញអ្នកអំពីការបញ្ចប់ជារួម។ \ n \ n រង្វង់ខាងក្នុងបង្ហាញអ្នកអំពីការបញ្ចប់សំណួរដែលចាំបាច់ជាធម្មតាត្រូវបានសម្គាល់ដោយ * ។ នៅពេលតែ 100% នៃសំណួរចាំបាច់ត្រូវបានបញ្ចប់អ្នកអាចសម្គាល់បានពេញលេញ"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>

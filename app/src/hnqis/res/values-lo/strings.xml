@@ -234,6 +234,7 @@
 <string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
+<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ. \ n \ n ວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="feedback_show_only_one_or_show_all">"ສະແດງສະເພາະຄວາມເຫັນທີ່ກ່ຽວຂ້ອງ"</string>
