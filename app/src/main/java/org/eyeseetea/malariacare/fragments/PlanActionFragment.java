@@ -416,15 +416,16 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
-                        R.string.app_name) + "\n\n";
+                        R.string.app_name) + "- \n";
+
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n";
 
         data += getString(R.string.on) + " " + EventExtended.format
-                (survey.getCompletionDate(), getString(R.string.date_month_text_format))
-                + "\n\n";
-
-        data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
+                (survey.getCompletionDate(), EventExtended.EUROPEAN_DATE_FORMAT)
+                + "\n";
+        int roundedScore = Math.round(survey.getMainScore());
+        data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),
                 EventExtended.format(survey.getScheduledDate(),
@@ -436,13 +437,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             data += obsActionPlan.getGaps();
         }
 
-        data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " ";
+        data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
 
         if (obsActionPlan.getAction_plan() != null && !obsActionPlan.getAction_plan().isEmpty()) {
             data += obsActionPlan.getAction_plan();
         }
 
-        data += "\n\n" + getString(R.string.plan_action_action_title) + " ";
+        data += "\n" + getString(R.string.plan_action_action_title) + " ";
 
         if (obsActionPlan.getAction1() != null && !obsActionPlan.getAction1().isEmpty()) {
             data += obsActionPlan.getAction1();
@@ -454,7 +455,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         }
 
         if (criticalQuestions != null && criticalQuestions.size() > 0) {
-            data += "\n\n" + getString(R.string.critical_steps) + "\n\n";
+            data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
             for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
