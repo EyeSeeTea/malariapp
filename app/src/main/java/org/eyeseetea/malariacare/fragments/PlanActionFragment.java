@@ -72,11 +72,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private View otherView;
     private View secondaryView;
     private ImageButton mGoBack;
-
-    private FloatingActionButton fabHtmlOption;
-    private CustomTextView mTextViewHtml;
-    private FloatingActionButton fabPlainTextOption;
-    private CustomTextView mTextViewPlainText;
     private CustomEditText mCustomGapsEditText;
     private CustomEditText mCustomActionPlanEditText;
     private CustomEditText mCustomActionOtherEditText;
@@ -84,10 +79,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private CustomSpinner secondaryActionSpinner;
     private FloatingActionButton mFabComplete;
     private RelativeLayout mRootView;
-
     private ObsActionPlanPresenter presenter;
 
-    boolean isFABOpen;
 
     public static PlanActionFragment newInstance(long surveyId) {
         PlanActionFragment myFragment = new PlanActionFragment();
@@ -213,30 +206,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private void initFAB() {
         initFabComplete(mRootView);
 
-        FloatingActionButton fab = (FloatingActionButton) mRootView.findViewById(R.id.fab);
-        fabHtmlOption = (FloatingActionButton) mRootView.findViewById(R.id.fab2);
-        mTextViewHtml = (CustomTextView) mRootView.findViewById(R.id.text2);
-        fabPlainTextOption = (FloatingActionButton) mRootView.findViewById(R.id.fab1);
-        mTextViewPlainText = (CustomTextView) mRootView.findViewById(R.id.text1);
+        FloatingActionButton fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isFABOpen) {
-                    showFABMenu();
-                } else {
-                    closeFABMenu();
-                }
-            }
-        });
-        fabHtmlOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.HTML);
-            }
-        });
-        fabPlainTextOption.setOnClickListener(new View.OnClickListener() {
+        fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.TEXT);
@@ -263,38 +235,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                         .setNegativeButton(android.R.string.no, null).create().show();
             }
         });
-    }
-
-
-    private void showFABMenu() {
-        isFABOpen = true;
-        fabHtmlOption.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-        mTextViewHtml.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-        mTextViewHtml.setVisibility(View.VISIBLE);
-        fabPlainTextOption.animate().translationY(
-                -getResources().getDimension(R.dimen.standard_105));
-        mTextViewPlainText.animate().translationY(
-                -getResources().getDimension(R.dimen.standard_105));
-        mTextViewPlainText.setVisibility(View.VISIBLE);
-    }
-
-    private void closeFABMenu() {
-        isFABOpen = false;
-        mTextViewPlainText.animate().translationY(0);
-        mTextViewHtml.animate().translationY(0);
-        fabHtmlOption.animate().translationY(0);
-        fabPlainTextOption.animate().translationY(0);
-        mTextViewPlainText.setVisibility(View.GONE);
-        mTextViewHtml.setVisibility(View.GONE);
-    }
-
-    public boolean onBackPressed() {
-        if (!isFABOpen) {
-            return false;
-        } else {
-            closeFABMenu();
-            return true;
-        }
     }
 
     private void initActions() {

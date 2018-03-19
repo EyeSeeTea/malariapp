@@ -335,61 +335,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/fab2"
-            android:layout_margin="@dimen/standard_21"
-            android:paddingBottom="10dp"
-            android:paddingRight="20dp"
-            android:text="@string/html_text"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-
         <android.support.design.widget.FloatingActionButton
-            android:id="@id/fab2"
-            android:layout_width="@dimen/standard_45"
-            android:layout_height="@dimen/standard_45"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/standard_21"
-            android:background="@color/share_fab_background"
-            app:backgroundTint="@color/share_fab_background"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_mail_white_48dp" />
-
-        <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/fab1"
-            android:layout_margin="@dimen/standard_21"
-            android:paddingBottom="10dp"
-            android:paddingRight="20dp"
-            android:text="@string/plain_text"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@id/fab1"
-            android:layout_width="@dimen/standard_45"
-            android:layout_height="@dimen/standard_45"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/standard_21"
-            android:background="@color/share_fab_background"
-            app:backgroundTint="@color/share_fab_background"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_text_format_white_48dp" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fab_share"
             android:layout_width="@dimen/standard_45"
             android:layout_height="@dimen/standard_45"
             android:layout_alignParentBottom="true"
@@ -398,14 +345,14 @@
             android:background="@color/share_fab_background"
             app:backgroundTint="@color/share_fab_background"
             app:fabSize="mini"
-            app:srcCompat="@drawable/ic_share_white_48dp" />
+            app:srcCompat="@drawable/ic_share_white_48dp"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_save"
             android:layout_width="@dimen/standard_45"
             android:layout_height="@dimen/standard_45"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/fab"
+            android:layout_alignRight="@+id/fab_share"
             android:layout_marginBottom="@dimen/standard_21"
             android:layout_marginRight="@dimen/standard_45"
             android:layout_marginTop="@dimen/standard_21"
