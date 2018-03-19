@@ -81,7 +81,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private RelativeLayout mRootView;
     private ObsActionPlanPresenter presenter;
 
-
     public static PlanActionFragment newInstance(long surveyId) {
         PlanActionFragment myFragment = new PlanActionFragment();
 
@@ -211,7 +210,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.shareObsActionPlan(ObsActionPlanPresenter.ShareType.TEXT);
+                presenter.shareObsActionPlan();
             }
         });
     }
@@ -283,7 +282,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         });
     }
 
-
     private void initLayoutHeaders() {
         mTotalScoreTextView = (CustomTextView) mRootView.findViewById(R.id.feedback_total_score);
         mOrgUnitTextView = (CustomTextView) mRootView.findViewById(
@@ -296,7 +294,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     @Override
     public void reloadData() {
     }
-
 
     @Override
     public void loadActions(String[] actions) {
@@ -359,7 +356,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         }else {
             mFabComplete.setImageResource(R.drawable.ic_action_check);
         }
-
     }
 
     @Override
@@ -412,27 +408,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         sendIntent.putExtra(Intent.EXTRA_TEXT, data);
         sendIntent.setType("text/plain");
         getActivity().startActivity(sendIntent);
-
-        System.out.println("data:" + data);
-    }
-
-    @Override
-    public void shareByHtml(ObsActionPlanDB obsActionPlan, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractHtmlData(obsActionPlan, survey, criticalQuestions,
-                compositeScoresTree);
-
-        String title = getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
-                + "/" + survey.getProgram().getName();
-
-        File attached = null;
-        try {
-            attached = FileUtils.saveStringToFile("shared_html.html", data, getActivity());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ExportData.shareFileIntent(getActivity(), "", title, attached);
 
         System.out.println("data:" + data);
     }
@@ -502,110 +477,6 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             data += getString(R.string.url_not_available) + "\n";
         }
         System.out.println("data:" + data);
-        return data;
-    }
-
-    private String extractHtmlData(ObsActionPlanDB obsActionPlan, SurveyDB survey,
-            List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-
-        String gasp = "";
-        String actionPlan = "";
-        String action1 = "";
-        String action2 = "";
-
-        String data = "<!DOCTYPE html>"
-                + "<html>"
-                + "<head>"
-                + "<meta charset=\"utf-8\"/>"
-                + "</head>"
-                + "<body>"
-                + "<div class=\"header\" style=\"height: 210px;\">";
-        data +=
-                "<img  class=\"headerImage\" src=\"https://lh3.googleusercontent"
-                        + ".com/dLn5w5rNHKkMm1axNlD1iZuwBxqgUqRRD5d9N_F"
-                        + "-H3CIN7wDHiSEm2vK6fnSRXRBj7te=w300-rw\" style=\"float: left; height: "
-                        + "210px;\"/>"
-                        + "<p class=\"headerText\" style=\"font-size: 210%; color: #6E6E6E;><b "
-                        + "style=\"color: black;\">"
-                        + PreferencesState.getInstance().getContext().getString(
-                        R.string.app_name) + "</b><br/>";
-        data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
-                + "/" + survey.getProgram().getName() + "<br/>";
-        data += getString(R.string.on) + " " + String.format(
-                getString(R.string.plan_action_next_date), EventExtended.format
-                        (survey.getCompletionDate(), getString(R.string.date_month_text_format)))
-                + "<br/>";
-        data += getString(R.string.quality_of_care) + " <em style=\"color: #FFBF00;\">"
-                + Math.round(survey.getMainScore())
-                + "%</em><br/>";
-        data += "</p></div><p class=\"nextDate\" style=\"margin-left: 50%; color: #6E6E6E;\">"
-                + String.format(
-                getString(R.string.plan_action_next_date), EventExtended.format
-                        (survey.getScheduledDate(), EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
-
-        if (obsActionPlan.getGaps() != null) {
-            gasp = obsActionPlan.getGaps();
-        }
-
-        data += "<p><b>" + getString(R.string.plan_action_gasp_title) + "</b> " + gasp + "</p>";
-
-
-        if (obsActionPlan.getAction_plan() != null) {
-            actionPlan = obsActionPlan.getAction_plan();
-        }
-
-        data += "<p><b>" + getString(R.string.plan_action_action_plan_title) + "</b> " +
-                actionPlan + "</p>";
-
-
-        if (obsActionPlan.getAction1() != null) {
-            action1 = obsActionPlan.getAction1();
-        }
-
-
-        if (obsActionPlan.getAction2() != null) {
-            action2 = obsActionPlan.getAction2();
-        }
-
-        if (!action1.isEmpty()) {
-            data += "<p><b>" + getString(R.string.plan_action_action_title) + "</b> " + action1;
-        }
-        if (!action2.isEmpty()) {
-            data += action2 + "</p>";
-        } else {
-            data += "</p>";
-        }
-
-        if (criticalQuestions != null && criticalQuestions.size() > 0) {
-            data += "<p><b>" + getString(R.string.critical_steps) + "</p>";
-
-            //For each score add proper items
-            for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
-                    iterator.hasNext(); ) {
-                CompositeScoreDB compositeScore = iterator.next();
-                data += "<p><b>" + compositeScore.getHierarchical_code() + " "
-                        + compositeScore.getLabel
-                        () + "</b></p>";
-                for (QuestionDB question : criticalQuestions) {
-                    if (question.getCompositeScoreFk()
-                            == (compositeScore.getId_composite_score())) {
-                        data += "<p style=\"font-style: italic;\">" + "-" + question.getForm_name()
-                                + "</p>";
-                    }
-                }
-            }
-        }
-        data += getString(R.string.see_full_assessment) + "</p>";
-        if (survey.isSent()) {
-            data += "<a href=https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
-                    +
-                    ">https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid()
-                    + "</a></p>";
-        } else {
-            data += getString(R.string.url_not_available) + "</p>";
-        }
-        data += "</body>"
-                + "</html>";
         return data;
     }
 }
