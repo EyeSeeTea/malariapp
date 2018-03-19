@@ -34,6 +34,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -168,6 +169,20 @@ public class SettingsActivity extends PreferenceActivity implements
                 new LoginRequiredOnPreferenceClickListener(this));
         passwordPreference.setOnPreferenceClickListener(
                 new LoginRequiredOnPreferenceClickListener(this));
+
+        hideFontCustomisationOption();
+    }
+
+    private void hideFontCustomisationOption() {
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        Preference customizeFonts = preferenceScreen.findPreference(
+                getResources().getString(R.string.customize_fonts));
+
+        Preference fontSizes = preferenceScreen.findPreference(
+                getResources().getString(R.string.font_sizes));
+
+        preferenceScreen.removePreference(customizeFonts);
+        preferenceScreen.removePreference(fontSizes);
     }
 
     /**
