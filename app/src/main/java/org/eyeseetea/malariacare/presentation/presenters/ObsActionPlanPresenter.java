@@ -100,8 +100,9 @@ public class ObsActionPlanPresenter {
             if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
                 mView.changeToReadOnlyMode();
                 mView.updateStatusView(mObsActionPlan.getStatus());
+            } else {
+                mView.hideShareButton();
             }
-
             showPlanInfo();
         }
     }
@@ -287,5 +288,10 @@ public class ObsActionPlanPresenter {
 
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
+
+        void showShareButton();
+
+        void hideShareButton();
+
     }
 }
