@@ -114,8 +114,8 @@ public class DoublePieChart extends FrameLayout {
         mChart.setDrawCenterText(false);
 
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
+        mChart.setRotationEnabled(false);
+        mChart.setHighlightPerTapEnabled(false);
 
         setData(mChart, percentage, highColor, middleColor, lowColor);
 
