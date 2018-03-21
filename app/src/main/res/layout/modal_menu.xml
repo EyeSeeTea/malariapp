@@ -18,7 +18,7 @@
         <org.eyeseetea.malariacare.views.DoublePieChart
             android:id="@+id/pie_chart"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="140dp"
             android:layout_alignParentLeft="true" />
 
         <LinearLayout
@@ -29,17 +29,27 @@
             android:layout_toRightOf="@+id/pie_chart"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <include layout="@layout/point_line"/>
+                <include layout="@layout/point_line"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/overall_point_line_label_container"
+                         android:layout_alignLeft="@id/overall_point_line_label_container"
+                         android:layout_centerVertical="true"/>
 
                 <LinearLayout
+                    android:id="@+id/overall_label_container"
+                    android:layout_toRightOf="@id/overall_point_line_label_container"
+                    android:layout_toEndOf="@id/overall_point_line_label_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp">
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/overall_percent"
@@ -59,19 +69,28 @@
                 </LinearLayout>
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <include layout="@layout/point_line"/>
+                <include layout="@layout/point_line"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/mandatory_point_line_label_container"
+                         android:layout_alignLeft="@id/mandatory_point_line_label_container"
+                         android:layout_centerVertical="true"/>
 
                 <LinearLayout
+                    android:id="@+id/mandatory_label_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_toEndOf="@id/mandatory_point_line_label_container"
+                    android:layout_toRightOf="@id/mandatory_point_line_label_container"
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/mandatory_percent"
@@ -91,7 +110,7 @@
                 </LinearLayout>
 
 
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
     <org.eyeseetea.malariacare.views.CustomButton
