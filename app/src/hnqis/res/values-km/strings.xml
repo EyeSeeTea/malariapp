@@ -43,7 +43,7 @@
 
 <!-- assessment -->
 <string name="assessment_title_facility_date">"Facility / Survey"</string>
-<string name="assessment_title_state">"% complete"</string>
+<string name="assessment_title_overall_mandatory_completed">"ជារួម / ចាំបាច់ត្រូវបានបញ្ចប់"</string>
 <string name="assessment_sent_date">"កាលបរិច្ឆេទ"</string>
 <string name="assessment_title_header">"ការបញ្ជូនមិនទាន់សម្រេច"</string>
 <string name="assessment_sent_title_header">"ការស្ទង់មតិ​ បានផ្ញើចេញ"</string>

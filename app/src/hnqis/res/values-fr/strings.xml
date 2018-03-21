@@ -39,7 +39,7 @@
 <string name="create_info_tabs_group">"Groupe d'onglets"</string>
 
 <string name="assessment_title_facility_date">"Établissement / Rapports"</string>
-<string name="assessment_title_state">"État"</string>
+<string name="assessment_title_overall_mandatory_completed">"Global / Obligatoire complété"</string>
 <string name="assessment_sent_date">"Date d'envoi"</string>
 <string name="assessment_title_header">"Rapport(s) actif(s)"</string>
 <string name="assessment_sent_title_header">"Rapport(s) antérieur(s)"</string>
