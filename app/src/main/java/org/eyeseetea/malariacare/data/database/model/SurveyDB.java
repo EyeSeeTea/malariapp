@@ -60,6 +60,7 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -410,37 +411,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
             score.delete();
         }
         super.delete();
-    }
-
-    public String getType() {
-        String type = "";
-        if (isTypeA()) {
-            type = "A";
-        } else if (isTypeB()) {
-            type = "B";
-        } else if (isTypeC()) type = "C";
-        return type;
-    }
-
-    /**
-     * Returns this survey is type A (green)
-     */
-    public boolean isTypeA() {
-        return this.getMainScore() >= Constants.MAX_AMBER;
-    }
-
-    /**
-     * Returns this survey is type B (amber)
-     */
-    public boolean isTypeB() {
-        return this.getMainScore() >= Constants.MAX_RED && !isTypeA();
-    }
-
-    /**
-     * Returns this survey is type C (red)
-     */
-    public boolean isTypeC() {
-        return !isTypeA() && !isTypeB();
     }
 
     /**
