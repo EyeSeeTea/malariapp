@@ -72,9 +72,11 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
     }
 
     @Override
-    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
+    protected void decorateCustomColumns(final SurveyDB survey, final View rowView) {
+        final CustomTextView overall =
+                (CustomTextView) rowView.findViewById(R.id.label_overall);
+
+        final CustomTextView  mandatory = (CustomTextView) rowView.findViewById(R.id.label_mandatory_completed);
 
         ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
                 new SurveyAnsweredRatioRepository();
@@ -82,6 +84,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
             @Override
@@ -94,13 +97,21 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
                 Log.d(getClass().getName(), "onComplete");
 
                 if (surveyAnsweredRatio != null) {
-                    doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                            surveyAnsweredRatio.getTotalStatus());
+                    int mandatoryStatus = surveyAnsweredRatio.getMandatoryStatus();
+                    int totalStatus = surveyAnsweredRatio.getTotalStatus();
+
+                    setPercentage(mandatory,mandatoryStatus,DoublePieChart.getMandatoryColorByPercentage(mandatoryStatus, mandatory.getContext()));
+                    setPercentage(overall,totalStatus,DoublePieChart.getOverAllColorByPercentage(totalStatus, overall.getContext()));
                 }
             }
         });
     }
 
+    private void setPercentage(CustomTextView textView, int percentage, int color){
+        Context context = textView.getContext();
+        textView.setText(context.getString(R.string.template_percentage_number,percentage));
+        textView.setTextColor(color);
+    }
 
     protected void createPie(PieChart mChart, int percentage,
             int highColor, int middleColor, int lowColor) {
