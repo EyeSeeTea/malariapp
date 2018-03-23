@@ -367,7 +367,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new UIThreadExecutor().run(new Runnable() {
                     @Override
                     public void run() {
-                        DashboardActivity.dashboardActivity.openFeedback(SurveyDB.findById(Long.parseLong(uid)));
+                        resetFilters();
+                        DashboardActivity.dashboardActivity.openFeedback(SurveyDB.findById(Long.parseLong(uid)), false);
                     }
                 });
             }
@@ -415,7 +416,8 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                     new UIThreadExecutor().run(new Runnable() {
                         @Override
                         public void run() {
-                            DashboardActivity.dashboardActivity.openFeedback(survey);
+                            resetFilters();
+                            DashboardActivity.dashboardActivity.openFeedback(survey, false);
                         }
                     });
                 }
@@ -432,6 +434,15 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         );
 
         alertDialog.show();
+    }
+
+    /**
+     * Reset filter in all modules
+     * @return
+     */
+    public void resetFilters(){
+        orgUnitProgramFilterView.resetAllFilters();
+        saveCurrentFilters();
     }
 
     /**
