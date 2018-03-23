@@ -384,8 +384,8 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onAssetsSelected(survey);
     }
 
-    public void openFeedback(SurveyDB survey) {
-        dashboardController.openFeedback(survey);
+    public void openFeedback(SurveyDB survey, boolean modifyFilter) {
+        dashboardController.openFeedback(survey, modifyFilter);
     }
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {

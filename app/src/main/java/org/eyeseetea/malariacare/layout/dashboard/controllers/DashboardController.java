@@ -463,7 +463,7 @@ public class DashboardController {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openFeedback(survey);
+                        openFeedback(survey, true);
 
 
                         alertDialog.dismiss();
@@ -577,7 +577,7 @@ public class DashboardController {
     }
 
 
-    public void openFeedback(SurveyDB survey) {
+    public void openFeedback(SurveyDB survey, boolean modifyFilter) {
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
@@ -595,7 +595,7 @@ public class DashboardController {
         }
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
-        improveModuleController.onFeedbackSelected(survey);
+        improveModuleController.onFeedbackSelected(survey, modifyFilter);
         improveModuleController.setActionBarDashboardWithProgram();
     }
 
