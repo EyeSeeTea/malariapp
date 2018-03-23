@@ -411,6 +411,9 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                         R.id.action_bar_chart);
         doublePieChart.setVisibility(View.VISIBLE);
         for (Question question : valueChangedEvent.getQuestions()) {
+            if(question.isComputable()){
+                continue;
+            }
             if (valueChangedEvent.getAction().equals(
                     ValueChangedEvent.Action.INSERT)) {
                 mSurveyAnsweredRatio.addQuestion(question.isCompulsory());
