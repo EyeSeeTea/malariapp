@@ -26,6 +26,7 @@ env:
 #- travis_wait 40 "./build.sh"
 script:
   - ./gradlew build connectedCheck --stacktrace
+  - ./gradlew test
 before_script:
 - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
 - emulator -avd test -no-audio -no-window &
