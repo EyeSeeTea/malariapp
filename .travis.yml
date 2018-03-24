@@ -22,11 +22,9 @@ env:
   global:
   - secure: XVjRNpEzXe1TuT6v1FklkNr6f50jbA4qS51Cg9vCE5u5WEbFTuKPkoFhyRv3clTpLm2QS+kF/Iah0P9GjCvYI4VOcfe+zp+p3LCc4vZjFtdfFJfdZ1+P9IiSB4rUnvnHdxzHg3QEAxAO/zMEzUFAkCc6OyZruEcuid1q8vHu6r4=
   - secure: XXl6Te0fn10PTM/myO3kwI5j1drZqTNWhlANxzQ94hmz26Bc9xPDc/EVCA4ijKiro9S1grFuBoVU/5bGa8NLBK05W2YdisMcnL+KobZqtYK7nKtRVg2aNAkl60NwO9DOzgmG77BQccDZEnd7fwdxwX7/rujQ/uYutCQG9dp3alI=
-#script:
-#- travis_wait 40 "./build.sh"
 script:
-  - ./gradlew build connectedCheck --stacktrace
-  - ./gradlew test
+  - ./gradlew testHnqisDebugUnitTest
+#  - ./gradlew build connectedCheck --stacktrace
 before_script:
 - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
 - emulator -avd test -no-audio -no-window &
@@ -39,7 +37,7 @@ before_script:
 notifications:
   slack:
     secure: TT41Hj5/zVuVU4dIXzx+QpUUWm6dZT8M3Z9evZz5Ar30tn9afSiCl0NKPu5ZL9HTaxifTP2A7Sos89fVDOdxaQLBKwKM8ZY6eIwSooQUciKpQOGYRYk2nRZkJbqh4eGXARZ5+BjjFKFVvEJ0Gc3FCdlRwNsTBomUQZ1pykruECuQB9WQTX13U2N6DKx8dA1xR0froZU3EtvLh0LZzU35sXysfvtfUQZ+V2OnErvOjmHiBhrVzUNGTanaYZNt0zVxK2toROaYGIsj8KQpSRe90bgdhSrQ69ladwDwORKNgmmuQqbq7L3TsZq0HVg8HPhdcG5FTrQomPfgpgwYMwacaUGdDk6EPow6KBOZZR0niYFLWUEq5InWISgBRcIuH4IcQGzko+sXS/yD2r9qbuTOYTqq8qniWOovEYYMhPbOAIM2YWRTSChDUetny7cqMT/0awq4BMgnl9t97AUG6tiTbIWWGbF8TR5mheyoBYtk3X9PVAlqaHA9EFcgL4xf8g0zUhJbQ/3y6RVerSNeyWvZUMamCUhw2XVq6ep1+efrsXBKO4O+Gjhvv4USasZeFfI+TQgcefBGH3PYg9u4uIVh0nEh4QsxwaqYscJlVy1fA4QOO2XAR8SNQVp41r2OqeTMheaFCGrIF+pct08Ll1GqU7eZaptTK87D7bguCf9XH/Q=
-  email: true
+  email: false
 cache:
   directories:
   - "$HOME/.m2"
