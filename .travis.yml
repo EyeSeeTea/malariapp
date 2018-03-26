@@ -5,23 +5,28 @@ jdk:
 branches:
 #- master
 - feature-travis_test
-android:
-  components:
-  - tools
-  - platform-tools
-  - build-tools-25.0.3
-  - android-25
-  - android-23
-  - android-22
-  - android-24
-  - extra-android-m2repository
-  - extra-google-google_play_services
-  - extra-google-m2repository
-  - extra-android-m2repository
-  - sys-img-armeabi-v7a-android-22
-  - extra-android-support
+#Uncomment when add instrumental tests
+#android:
+#  components:
+#  - tools
+#  - platform-tools
+#  - build-tools-25.0.3
+#  - android-25
+#  - android-23
+#  - android-22
+#  - android-24
+#  - extra-android-m2repository
+#  - extra-google-google_play_services
+#  - extra-google-m2repository
+#  - extra-android-m2repository
+#  - sys-img-armeabi-v7a-android-22
+#  - extra-android-support
 script:
-- "./travis_script.sh eyeseetea hnqis"
+- ./gradlew testEyeseeteaDebugUnitTest -i
+- ./gradlew testHnqisDebugUnitTest -i
+# insturmental tests
+#- ./gradlew testEyeseeteaDebugTest -i
+#- ./gradlew testHnqisDebugTest -i
 before_script:
 - "./travis_before_script.sh"
 notifications:
