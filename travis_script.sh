@@ -4,8 +4,8 @@ do
 	upperCaseVariant="${variant^}"
 	echo "$upperCaseVariant"
 	param="test${upperCaseVariant}DebugUnitTest"
-	./gradlew $param -i
+	./gradlew $param
 	param="test${upperCaseVariant}DebugTest"
 	#Instrumental test:
-	#./gradlew $param -i
+	#./gradlew $param
 done
