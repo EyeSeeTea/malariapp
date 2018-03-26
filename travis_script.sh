@@ -4,12 +4,9 @@ do
 	upperCaseVariant="${variant^}"
 	echo "$upperCaseVariant"
 	param="test${upperCaseVariant}DebugUnitTest"
-	./gradlew --no-daemon $param
-	param="test${upperCaseVariant}DebugTest"
-	if [ $? != 0 ]
+	$command='./gradlew --no-daemon $param'
+	if [ eval $command != 0 ]
 	then
-		exit $?
+		exit 1
 	fi
-	#Instrumental test:
-	#./gradlew $param
 done
