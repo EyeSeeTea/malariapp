@@ -6,8 +6,3 @@ do
 	param = "test" + $upperCaseVariant + "DebugUnitTest
 	./gradlew $param -i
 done
-
-for var in "$@"
-do
-  ./gradlew test"${var^}"DebugUnitTest --info
-done
