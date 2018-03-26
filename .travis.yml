@@ -22,11 +22,6 @@ android:
   - extra-android-support
 script:
 - "./travis_script.sh eyeseetea hnqis"
-#- "./gradlew testEyeseeteaDebugUnitTest -i"
-#- "./gradlew testHnqisDebugUnitTest -i"
-# insturmental tests
-#- ./gradlew testEyeseeteaDebugTest -i
-#- ./gradlew testHnqisDebugTest -i
 before_script:
 - "./travis_before_script.sh"
 notifications:
