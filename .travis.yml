@@ -20,7 +20,8 @@ android:
   - sys-img-armeabi-v7a-android-22
   - extra-android-support
 script:
-- "./travis_script.sh eyeseetea hnqis"
+- "./gradlew --no-daemon testEyeseeteaDebugUnitText"
+#- "./travis_script.sh eyeseetea hnqis"
 before_script:
 - "./travis_before_script.sh"
 notifications:
