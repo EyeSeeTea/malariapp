@@ -20,8 +20,8 @@ android:
   - sys-img-armeabi-v7a-android-22
   - extra-android-support
 script:
-- "./gradlew --nop-daemon testEyeseeteaDebugUnitTest"
-- "./gradlew --nop-daemon testHnqisDebugUnitTest"
+- "./gradlew --no-daemon testEyeseeteaDebugUnitTest"
+- "./gradlew --no-daemon testHnqisDebugUnitTest"
 before_script:
 - "./travis_before_script.sh"
 notifications:
