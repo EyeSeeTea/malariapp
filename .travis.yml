@@ -22,7 +22,6 @@ android:
 script:
 - "./gradlew --nop-daemon testEyeseeteaDebugUnitTest"
 - "./gradlew --nop-daemon testHnqisDebugUnitTest"
-- "./travis_script.sh eyeseetea hnqis"
 before_script:
 - "./travis_before_script.sh"
 notifications:
