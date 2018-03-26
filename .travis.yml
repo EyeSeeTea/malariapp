@@ -3,7 +3,7 @@ sudo: false
 jdk:
 - oraclejdk8
 branches:
-- master
+#- master
 - feature-travis_test
 android:
   components:
@@ -21,7 +21,7 @@ android:
   - sys-img-armeabi-v7a-android-22
   - extra-android-support
 script:
-- "./travis_script.sh" eyeseetea hnqis
+- "./travis_script.sh eyeseetea hnqis"
 before_script:
 - "./travis_before_script.sh"
 notifications:
