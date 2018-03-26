@@ -2,9 +2,8 @@ language: android
 sudo: false
 jdk:
 - oraclejdk8
-branches:
+#branches:
 #- master
-- feature-travis_test
 android:
   components:
   - tools
