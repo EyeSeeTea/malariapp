@@ -5,6 +5,7 @@ do
 	echo "$upperCaseVariant"
 	param="test${upperCaseVariant}DebugUnitTest"
 	commandResult=$(./gradlew --no-daemon $param)
+	echo "command result $commandResult"
 	if [ $commandResult != "0" ]; then
 		exit 1
 	fi
