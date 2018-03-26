@@ -41,6 +41,7 @@ public class MinMaxInputFilterTest {
 
         //THEN
         assertTrue(result);
+        assertFalse(result);
     }
 
     @Test
