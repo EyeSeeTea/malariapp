@@ -152,7 +152,7 @@ function buildColorXScore(value, listOfSurveys){
 	if(value==null){
 		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
-	if(value<50){
+	if(value<80){
 	    if(listOfSurveys.length>1){
 		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 		}else{
@@ -160,7 +160,7 @@ function buildColorXScore(value, listOfSurveys){
 		}
 	}
 
-	if(value<80){
+	if(value<90){
 	    if(listOfSurveys.length>1){
 		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 		}else{
