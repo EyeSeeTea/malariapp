@@ -182,7 +182,7 @@ evaluation"</string>
 <string name="monitor">"Monitor"</string>
 
 <string name="filter_all_org_units">"All Org Units"</string>
-<string name="filter_all_org_assessments">"All Assessed"</string>
+<string name="filter_all_org_assessments">"All Assessments"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
