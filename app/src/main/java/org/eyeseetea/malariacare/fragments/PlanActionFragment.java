@@ -521,7 +521,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 PreferencesState.getInstance().getContext().getString(
                         R.string.app_name) + "\n\n";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
-                + survey.getProgram().getName() + "\n\n";
+                + survey.getProgram().getName() + "\n";
+
+        data += getString(R.string.on) + " " + EventExtended.format
+                (survey.getCompletionDate(), getString(R.string.date_month_text_format))
+                + "\n\n";
 
         data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
 

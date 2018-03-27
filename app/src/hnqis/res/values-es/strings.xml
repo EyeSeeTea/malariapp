@@ -259,7 +259,7 @@ clínica"</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
 <string name="on">"en"</string>
 
-<string name="add">"Añadir"</string>
+<string name="add">"Comenzar encuesta"</string>
 <string name="change_date">"Cambiar fecha"</string>
 <string name="show_history">"Historial de programación"</string>
 <string name="comments">"Comentarios"</string>
@@ -269,5 +269,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
 <string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
 </resources>
