@@ -309,11 +309,13 @@ public class PlannedAdapter extends BaseAdapter {
                 R.id.planning_survey_action);
         if (plannedSurvey.getSurvey().isInProgress()) {
             actionButton.setImageResource(R.drawable.ic_edit);
+            actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.assess_yellow));
         } else {
             actionButton.setImageResource(R.drawable.red_circle_cross);
+            actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.plan_grey_light));
         }
-        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-                R.color.plan_grey_light));
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));

@@ -64,8 +64,8 @@
         android:layout_marginTop="8dp"
         android:layout_below="@id/add"
         android:textAllCaps="false"
-        android:text="@string/change_date"
-        android:background="@drawable/button_dialog_green_background"
+        android:text="@string/header_reschedule"
+        android:background="@color/dialog_button_text"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
