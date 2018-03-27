@@ -275,4 +275,5 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+<string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
 </resources>

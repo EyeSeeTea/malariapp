@@ -193,7 +193,7 @@ public class PlannedAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return getItem(position).hashCode();
+        return getItem(position) != null ? getItem(position).hashCode() : 0L;
     }
 
     @Override
