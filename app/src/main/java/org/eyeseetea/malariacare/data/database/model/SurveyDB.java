@@ -558,35 +558,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).querySingle();
     }
-
-    /**
-     * Returns a survey in progress for the given orgUnit
-     */
-    public static int countSurveysInProgressByOrgUnit(OrgUnitDB orgUnit) {
-        if (orgUnit == null) {
-            return 0;
-        }
-
-        return (int) SQLite.selectCountOf().from(SurveyDB.class)
-                .where(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(SurveyDB_Table.status.is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).count();
-    }
-    /**
-     * Returns a survey in progress for the given orgUnit
-     */
-    public static int countSurveysInProgressByProgram(ProgramDB program) {
-        if (program == null) {
-            return 0;
-        }
-
-        return (int) SQLite.selectCountOf().from(SurveyDB.class)
-                .where(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
-                .and(SurveyDB_Table.status.is(Constants.SURVEY_IN_PROGRESS))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).count();
-    }
     /**
      * Returns the number of surveys with status yet not put to "Sent/conflict/planned.."
      */
@@ -952,14 +923,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .where(SurveyDB_Table.status
                         .eq(Constants.SURVEY_IN_PROGRESS))
                 .querySingle();
-    }
-
-    public static int countSurveysInProgress() {
-        return (int) SQLite.selectCountOf()
-                .from(SurveyDB.class)
-                .where(SurveyDB_Table.status
-                        .eq(Constants.SURVEY_IN_PROGRESS))
-                .count();
     }
 
     public static SurveyDB getSurveyById(long id) {

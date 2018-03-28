@@ -38,7 +38,6 @@ import android.widget.ListView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -145,60 +144,13 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private void showOrHiddenButton() {
         OrgUnitDB orgUnit = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
         ProgramDB program = orgUnitProgramFilterView.getSelectedProgramFilter();
-        startButton.setVisibility(View.VISIBLE);
-
-        if(!orgUnit.getName().equals(getString(R.string.filter_all_org_units)) &&
-                !program.getName().equals(getString(R.string.filter_all_org_assessments)) &&
-                !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
+        SurveyDB survey = SurveyDB.getInProgressSurveys(orgUnit, program);
+        if (survey != null){
             startButton.setVisibility(View.INVISIBLE);
-            return;
-        }
-
-        if(!orgUnit.getName().equals(getString(R.string.filter_all_org_units))){
-            if(program.getName().equals(getString(R.string.filter_all_org_assessments))){
-                checkSurveysInProgressByOrgUnit(orgUnit);
-                return;
-            }else {
-                SurveyDB survey = SurveyDB.getInProgressSurveys(orgUnit, program);
-                if (survey != null){
-                    startButton.setVisibility(View.INVISIBLE);
-                }
-                return;
-            }
         }else{
-            if(program.getName().equals(getString(R.string.filter_all_org_assessments))){
-                checkAllSurveysInProgress();
-                return;
-            }else{
-                int surveysInProgress = SurveyDB.countSurveysInProgressByProgram(program);
-                if(surveysInProgress == OrgUnitProgramRelationDB.countNumberOfOrgUnitByProgram(program)) {
-                    startButton.setVisibility(View.INVISIBLE);
-                    return;
-                }
-            }
+            startButton.setVisibility(View.VISIBLE);
         }
     }
-
-    private void checkSurveysInProgressByOrgUnit(OrgUnitDB orgUnit) {
-        int surveysInProgress = SurveyDB.countSurveysInProgressByOrgUnit(orgUnit);
-        if(surveysInProgress==0){
-            return;
-        }
-        if(surveysInProgress == OrgUnitProgramRelationDB.countNumberOfProgramsByOrgUnit(orgUnit)){
-            startButton.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void checkAllSurveysInProgress() {
-        int surveysInProgress = SurveyDB.countSurveysInProgress();
-        if(surveysInProgress==0){
-            return;
-        }
-        if (surveysInProgress == OrgUnitProgramRelationDB.countNumberOfRelations()) {
-            startButton.setVisibility(View.INVISIBLE);
-        }
-    }
-
 
     /**
      * Inits adapter.
