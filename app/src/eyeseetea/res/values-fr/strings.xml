@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="yes">"Oui"</string>
+<string name="no">"Non"</string>
+<string name="cancel">"Annuler"</string>
+<string name="score">"Score"</string>
+<string name="title_id">"Identifiant"</string>
+<string name="title_name">"Nom"</string>
+<string name="good">"Bien"</string>
+<string name="fair">"Moyen"</string>
+<string name="poor">"Mauvais"</string>
+<string name="lorem_ipsum">"Lorem ipsum dolor sit amet"</string>
+
+<string name="settings_menu_about">"À propos de cette app"</string>
+<string name="settings_menu_configuration">"Paramètres"</string>
+<string name="settings_menu_licence">"Licence"</string>
+<string name="settings_menu_logout">"Se déconnecter"</string>
+
+<string name="dialog_title_delete_survey">"Supprimer rapport"</string>
+<string name="dialog_info_delete_survey">"Souhaitez-vous supprimer définitivement le rapport : %s pour cet établissement ?"</string>
+<string name="dialog_title_missing_selection">"Sélection manquante"</string>
+<string name="dialog_content_missing_selection">"Sélectionnez un cabinet medical et un type de rapport, s'il vous plaît"</string>
+<string name="dialog_title_existing_survey">"Rapport existant"</string>
+<string name="dialog_content_existing_survey">"Il y a déjà un Rapport %s qui n'est pas encore envoyé pour cet établissement. Prière l'envoyer d'abord."</string>
+<string name="dialog_title_incorrect_org_unit">"Cabinet incorrect"</string>
+<string name="dialog_content_incorrect_org_unit">"S'il vous plaît sélectionnez un établissement"</string>
+<string name="dialog_content_logout_confirmation">"Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer ?"</string>
+<string name="dialog_info_ask_for_completion">"Êtes-vous sûr de vouloir compléter %s ? Vous ne pouvez pas annuler cette action"</string>
+<string name="dialog_info_ask_for_completion_plan">"Êtes-vous sûr de vouloir compléter le plan? Vous ne pouvez pas annuler cette action"</string>
+
+<string name="dashboard_info_feedback">"Feedback"</string>
+<string name="dashboard_info_ready_to_upload">"Prêt pour envoyer"</string>
+<string name="dashboard_info_sent">"Envoyé"</string>
+
+<string name="create_info_ok">"Commencer"</string>
+<string name="create_info_organization_unit">"Établissement"</string>
+<string name="create_info_survey">"Rapport"</string>
+<string name="create_info_tabs_group">"Groupe d'onglets"</string>
+
+<string name="assessment_title_facility_date">"Établissement / Rapports"</string>
+<string name="assessment_title_state">"État"</string>
+<string name="assessment_sent_date">"Date d'envoi"</string>
+<string name="assessment_title_header">"Rapport(s) actif(s)"</string>
+<string name="assessment_sent_title_header">"Rapport(s) antérieur(s)"</string>
+
+<string name="survey_title_exit">"Voulez-vous réellement quitter ?"</string>
+<string name="survey_info_exit">"Souhaitez-vous vraiment sortir ?"</string>
+
+<string name="widget_info_empty_statement">"Énoncé de la question"</string>
+
+<string name="custom_title_tallies">"REGISTRES - Additionnez et introduisez les résultats pour les indicateurs suivants des registres dans la colonne A. Introduisez dans la colonne B les chiffres totaux de la feuille de registre mensuel"</string>
+<string name="custom_info_tallies">"REGISTRES pour le mois de"</string>
+
+<string name="adherence_info_switchquestion">"Sont les registres du laboratoire ou les registres cliniques ou de la pharmacie disponibles dans ce cabinet ?"</string>
+<string name="adherence_title_explanation">"Évaluation de l'Adhésion du Fournisseur aux Résutats des Tests Diagnistiques du Paludisme"</string>
+<string name="adherence_title_explanation_content">"Étape 1. Enregistrez ci-dessous les identifiants de 20 patients avec prescriptions de ACTs du Régistre de la Pharmacie.
+Étape 2. Localisez l'indentifiant du patient de l'Étape 1 dans les Régistres Cliniques et/ou de Laboratoire et enregistrez le résultat de leur test dans la colonne appropriée."</string>
+<string name="adherence_title2_explanation_content">"Étape 1. Dans le Régistre du Laboratoire, enregistrez l'identifiant de 20 patients : 5 RDT +; 5 RDT -; 5 microscopie +; 5 microscopie -.
+Étape 2. Localisez l'identifiant du patient de l'Étape 1 dans le Régistre de la Pharmacie et enregistrez si'il a reçu ACTs dans la colonne “ACT Prescrit” en cochant O ou N."</string>
+<string name="adherence_title_gender">"Sexe"</string>
+<string name="adherence_title_age">"Âge"</string>
+<string name="adherence_title_test_results">"Résultat du test"</string>
+<string name="adherence_info_patient_id">"Idéntifiant
+patient"</string>
+<string name="adherence_info_prescribed">"ACT
+Prescrit?"</string>
+<string name="adherence_info_rdt_positive">"TDR Positif"</string>
+<string name="reporting_info_reporting">"Notification"</string>
+<string name="reporting_info_results">"Résultats"</string>
+<string name="reporting_info_register">"Enregistrement"</string>
+<string name="reporting_info_monthly">"Notification
+Mensuelle"</string>
+
+<string name="score_title_clinical_fever">"Évaluation de la fièvre"</string>
+<string name="score_title_rdt">"TDR"</string>
+<string name="score_title_avg">"Moyenne"</string>
+<string name="score_title_environment">"Environnement"</string>
+<string name="score_title_profile">"Profil"</string>
+<string name="score_info_tab_score">"Ponctuation pour onglet :"</string>
+<string name="score_info_overall">"Total"</string>
+<string name="score_info_accumulated">"Onglet num/den"</string>
+<string name="score_info_case1">"Cas 1"</string>
+<string name="score_info_case2">"Cas 2"</string>
+<string name="score_info_case3">"Cas 3"</string>
+
+<string name="compscore_title_score_percentage">"Score (%)"</string>
+
+<string name="title_activity_settings">"Paramètres"</string>
+<string name="settings_checkbox_customize_fonts">"Personaliser les fonts ?"</string>
+<string name="settings_list_font_sizes">"Taille des fonts"</string>
+<string name="settings_text_dhis_server_url">"URL du serveur DHIS2"</string>
+<string name="settings_text_dhis_user">"Utilisateur DHIS2"</string>
+<string name="pref_header_general">"Général"</string>
+<string name="dialog_info_push_bad_credentials">"Identification incorrecte pour l'envoi"</string>
+<string name="dialog_info_push_empty_survey">"Les rapports vides ne peuvent pas être envoyés"</string>
+<string name="settings_menu_legal">"Légal"</string>
+<string name="settings_menu_copyright">"Copyright"</string>
+<string name="settings_menu_licenses">"Licences des logiciels"</string>
+<string name="settings_menu_eula">"Termes et conditions"</string>
+<string name="go_to_feedback">"Aller au feedback"</string>
+<string name="dialog_button_preview_feedback">"Voir évaluations"</string>
+<string name="dialog_question_complete_survey">"Toutes les questions obligatoires ont été remplies. Aimeriez-vous marquer ce rapport comme complet ?"</string>
+<string name="dialog_continue_later_option">"Continuer plus tard"</string>
+<string name="dialog_complete_option">"Achever"</string>
+<string name="dialog_are_you_sure_complete_survey">"Êtes-vous sûr ? Cette action ne peut pas être annulée et vous ne pourrez plus modifier ou supprimer ce rapport"</string>
+<string name="dialog_incompleted_compulsory_survey">"Ce rapport ne peut pas encore être envoyé. Répondez au moins à toutes les questions obligatoires s'il vous plaît."</string>
+<string name="dialog_incompleted_compulsory_pulling">"L'actualisation des métadonnées requiert que les données non envoyées soient supprimées ou complétées. S'il vous plaît répondez au moins à toutes les questions obligatoires"</string>
+<string name="dialog_sent_survey_on_refresh_metadata">"L'actualisation des métadonnées supprimera vos données non evoyées. Vous avez %s rapports non envoyés. Voulez-vous les envoyer avant d'actualiser ?"</string>
+<string name="cancellingPull">"Le processus s'arrêtera en quelques secondes"</string>
+<string name="dashboard_title_total_assessments">"Nombre total d'évaluations réalisées"</string>
+<string name="dashboard_title_planned_type_never">"Pas encore évalués"</string>
+<string name="dashboard_title_planned_type_overdue">"En retard"</string>
+<string name="dashboard_title_planned_type_next_30">"30 prochains jours"</string>
+<string name="dashboard_title_planned_type_future">"Futurs"</string>
+<string name="dashboard_title_planned_productivity">"Prd"</string>
+<string name="dashboard_title_planned_quality_of_care">"QoC"</string>
+<string name="dashboard_title_planned_next_qa">"Proch. éval."</string>
+<string name="assessment_sent_score">"Score"</string>
+<string name="feedback_show_only_failed">"Afficher uniquement les questions ratées"</string>
+<string name="feedback_show_only_media">"Afficher uniquement les questions contenant des vidéos / images"</string>
+<string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par rapport/établissement"</string>
+<string name="feedback_return">"Retour aux rapports"</string>
+<string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
+<string name="overall_quality_of_care">"Note globale sur la qualité des soins (QoC):"</string>
+<string name="feedback_info_passed">"Reussi"</string>
+<string name="feedback_info_failed">"Raté"</string>
+<string name="feedback_info_not_answered">"Non répondu"</string>
+<string name="feedback_info_no_feedback">"Aucun feedback"</string>
+<string name="feedback_info_conflict">"Conflit"</string>
+<string name="settings_checkbox_location_required">"Localisation requise"</string>
+<string name="settings_checkbox_description_location_required">"Si l'option est activée, le champ localisation est requis pour envoyer les données au serveur dhis2"</string>
+<string name="font_size_level0_title">"Extra petit"</string>
+<string name="font_size_level1_title">"Petit"</string>
+<string name="font_size_level2_title">"Moyen"</string>
+<string name="font_size_level3_title">"Grand"</string>
+<string name="font_size_level4_title">"Extra grand"</string>
+<string name="server_url">"Serveur DHIS2"</string>
+<string name="settings_text_dhis_password">"Mot de passe DHIS2"</string>
+<string name="settings_text_dhis_max_items">"Nombre max de rapports DHIS2 téléchargés"</string>
+<string name="settings_monitoring_target">"Objectif de surveillance"</string>
+<string name="dialog_error_push_uids">"Identifiant incorrect pour l'envoi"</string>
+<string name="dialog_error_push_no_location_and_required">"Aucune localisation disponible et c'est un champ obligatoire"</string>
+<string name="dialog_error_attribute_null">"Attribut avec id %s est nulle, s'il vous plaît contacter votre admin serveur."</string>
+<string name="dialog_info_push_imported">"Importé"</string>
+<string name="dialog_info_push_updated">"Mise à jour"</string>
+<string name="dialog_info_push_ignored">"Ignoré"</string>
+<string name="dialog_info_push_stats">"Données téléchargées vers le serveur. Résultats :"</string>
+<string name="dialog_info_on_complete">"Le rapport %s a été marqué comme Terminé. Vous pouvez le trouver maintenant dans l'onglet Améliorer"</string>
+<string name="dialog_deleting_children">"Vous êtes sur le point de supprimer également les réponses des questions qui sont liées à celle-ci. Voulez-vous vraiment continuer ?"</string>
+<string name="dashboard_tip_pie_chart">"Qualité des soins (basée sur la dernière évaluation)"</string>
+<string name="dialog_pull_error">"Erreur dans le téléchargement des métadonnées du serveur DHIS2"</string>
+<string name="settings_menu_pull">"Actualisation des métadonnées"</string>
+<string name="dialog_pull_success">"Téléchargement des métadonnées DHIS2 effectué avec succès"</string>
+<string name="dialog_title_pull_response">"Etat du téléchargement"</string>
+<string name="progress_pull_connecting">"Connexion au serveur DHIS2..."</string>
+<string name="dialog_demo_pull_success">"Les métadonnées DHIS2 chargées avec succès à partir de données locales"</string>
+<string name="progress_pull_downloading">"Mise à jour des métadonnées (cela peut prendre quelques minutes)..."</string>
+<string name="progress_pull_preparing_program">"Chargement des programmes..."</string>
+<string name="progress_pull_preparing_answers">"Chargement des réponses..."</string>
+<string name="progress_pull_preparing_orgs">"Chargement des Etablissements..."</string>
+<string name="progress_pull_questions">"Chargement des questions (cela peut prendre quelques minutes)..."</string>
+<string name="progress_pull_relationships">"Chargement des relations entre questions ..."</string>
+<string name="progress_pull_surveys">"Chargement des rapports..."</string>
+<string name="progress_pull_validating_composite_scores">"Validation scores composites ..."</string>
+<string name="progress_pull_done">"Terminé"</string>
+<string name="dialog_push_success">"Téléchargement du rapport dans le serveur dhis réussi"</string>
+<string name="planning_title_dialog">"Programmer un rapport"</string>
+<string name="planning_label_comment">"Commentaire"</string>
+<string name="planning_label_schedule_date">"* Date programmée"</string>
+<string name="option_edit">"Modifier"</string>
+<string name="option_mark_completed">"Marquer comme terminé"</string>
+<string name="option_delete">"Effacer"</string>
+<string name="hide_planning_tab_title">"Masquer l'onglet Planification"</string>
+<string name="hide_planning_tab_summary">"Cochez cette case pour masquer l'onglet Planifier"</string>
+<string name="plan">"Programme"</string>
+<string name="assess">"Évaluation - rapports actifs"</string>
+<string name="improve">"Améliorer"</string>
+<string name="monitor">"Contrôle"</string>
+<string name="filter_all_org_units">"Tous les établissements"</string>
+<string name="filter_all_org_assessments">"Tous les rapports"</string>
+<string name="dialog_content_dhis_preference_login">"Pour modifier le serveur il faut se reconnecter. Tout rapport non envoyé sera supprimé. Souhaitez-vous vraiment continuer ?"</string>
+<string name="lastcommit">"Version : %s"</string>
+<string name="unavailable">"Indisponible"</string>
+<string name="error_message_push">"L'événement avec identifiant : %s. a été envoyé sans sa date. S'il vous plaît contactez l'administrateur."</string>
+<string name="monitor_js_assessments">"Rapports réalisés"</string>
+<string name="monitor_js_target">"Objectif"</string>
+<string name="monitor_js_quality_of_care">"Qualité des soins: Dernier "</string>
+<string name="monitor_js_months">" mois"</string>
+
+<string name="create">"Créer"</string>
+<string name="modify">"Modifier"</string>
+<string name="developer_option_summary">"Cette option active les options de développement"</string>
+<string name="developer_option_title">"Afficher les options développeur"</string>
+<string name="import_data_option_title">"Base de données d'importation"</string>
+<string name="export_data_option_title">"Exporter Base de données"</string>
+<string name="google_play_required">"Cette application nécessite des services Google Play. S\'il vous plaît installer les services Google Play sur votre appareil et de lancer cette application."</string>
+<string name="account_permission_denied">" Contacts permission refusée. Médias ne sera pas synchronisé"</string>
+<string name="feedback_media">"Voir la vidéo commentaires"</string>
+<string name="feedback_view_image">"Ouvrir image avec ..."</string>
+<string name="select_all">"Tout sélectionner"</string>
+<string name="demo_login">"Démo"</string>
+<string name="system_defined">"Système défini"</string>
+<string name="settings_select_language">"La langue"</string>
+<string name="toast_push_in_progress">"S'il vous plaît attendre, Il ya déjà une poussée en cours"</string>
+<string name="toast_push_done">"Données d'enquête envoyées au serveur. Démarrage de .."</string>
+<string name="downloaded_media_menu">"Moyenne téléchargé"</string>
+<string name="header_filename_title">"Filename"</string>
+<string name="header_size_title">"Taille"</string>
+<string name="clear">"Effacer"</string>
+<string name="admin_announcement">"Annonce Admin"</string>
+<string name="user_close">"Cet utilisateur a été fermé par l'administrateur."</string>
+<string name="survey_first_step">"Téléchargement des questions obligatoires"</string>
+<string name="survey_second_step">"Verification des questions obligatoires"</string>
+<string name="survey_third_step">"Calcul de pourcentage de remplisage"</string>
+<string name="survey_fourth_step">"Calcul d'enregistrement de score"</string>
+<string name="error_conflict_message">"L'événement avec UID: %1$s. A été téléchargé avec conflit dans l'élément de données UID: %2$s avec le message: %3$s. Veuillez contacter l'administrateur."</string>
+<string name="dialog_action_logout">"La déconnexion nécessite de supprimer ou envoyer vos données non envoyées."</string>
+<string name="dialog_action_refresh">"L'actualisation des métadonnées nécessite la suppression ou l'envoi de vos données non envoyées."</string>
+<string name="dialog_incomplete_surveys_before_refresh">"Vous avez %d rapports non envoyés. Cela sera supprimé. Voulez-vous continuer l'actualisation?"</string>
+<string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
+
+<string name="header_reschedule">"Réprogrammer"</string>
+<string name="planing_due_date">"Date d'échéance"</string>
+<string name="action_button_text">"PLAN D'ACTION"</string>
+<string name="plan_action_title">"Observations et plan d'action"</string>
+<string name="plan_action_today_date">"Terminé: %s"</string>
+<string name="plan_action_next_date">"Suivante: %s"</string>
+<string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
+<string name="plan_action_gasp_title">Problèmes:</string>
+<string name="plan_action_action_plan_title">"Plan d'action:"</string>
+<string name="plan_action_action_title">Action:</string>
+<string-array name="plan_action_dropdown_options">
+<item>"..."</item>
+<item>"Formation de rafraîchissement pendant la SSV"</item>
+<item>"Formation de rappel de groupe à une date ultérieure"</item>
+<item>"Planifier l'activité de CME"</item>
+<item>"Démontrer la technique avec le client"</item>
+<item>"Autre"</item>
+</string-array>
+<string-array name="plan_action_dropdown_suboptions">
+<item>...</item>
+<item>"Regarder la vidéo"</item>
+<item>"Pratiquer une technique d'insertion appropriée au moment de la visite"</item>
+</string-array>
+<string name="supervision_on">"Surveillance des résultats sur:"</string>
+<string name="critical_steps">"Étapes critiques manquées:"</string>
+<string name="url_not_available">"L'URL n'est pas encore disponible"</string>
+<string name="see_full_assessment">"Voir l'évaluation complète à:"</string>
+<string name="on">"à"</string>
+
+<string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
+<string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
+<string name="start">"Début"</string>
+
+<string name="add">"Ajouter"</string>
+<string name="show_history">"Historique du calendrier"</string>
+<string name="comments">"Commentaires"</string>
+<string name="dates">"Dates précédentes"</string>
+<string name="change_date">"Changer la date"</string>
+<string name="mark_complete">"Marquer comme terminé"</string>
+<string name="plain_text">"Texte en clair "</string>
+<string name="html_text">"Texte formaté "</string>
+<string name="schedule_title">"Calendrier de l'enquête"</string>
+<string name="save">"enregistrer"</string>
+</resources>
