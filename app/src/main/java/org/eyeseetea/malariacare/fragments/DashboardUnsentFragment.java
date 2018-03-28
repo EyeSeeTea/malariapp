@@ -38,10 +38,12 @@ import android.widget.ListView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -141,11 +143,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         }
     }
 
-    private void showOrHiddenButton() {
+    private void showOrHiddenButton(SurveyDB survey) {
         OrgUnitDB orgUnit = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
         ProgramDB program = orgUnitProgramFilterView.getSelectedProgramFilter();
-        SurveyDB survey = SurveyDB.getInProgressSurveys(orgUnit, program);
-        if (survey != null){
+        if(orgUnit.getName().equals(getString(R.string.filter_all_org_units)) || program.getName().equals(getString(R.string.filter_all_org_assessments))){
+            startButton.setVisibility(View.VISIBLE);
+        }else if (survey != null || !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
             startButton.setVisibility(View.INVISIBLE);
         }else{
             startButton.setVisibility(View.VISIBLE);
@@ -257,7 +260,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
 
         reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
-        showOrHiddenButton();
     }
 
     private List<SurveyDB> getSurveysByOrgUnitAndProgram(
@@ -298,6 +300,11 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();
+            SurveyDB surveyDB=null;
+            if(newListSurveys.size()>0) {
+                surveyDB =newListSurveys.get(0);
+            }
+            showOrHiddenButton(surveyDB);
         }
     }
 
