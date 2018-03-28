@@ -265,7 +265,7 @@
 <string name="see_full_assessment">ເບິ່ງການສໍາຫຼວດຢ່າງເຕັມທີ່ຢູ່:</string>
 <string name="on">""</string>
 
-<string name="add">"ຕື່ມຂໍ້ມູນ"</string>
+<string name="add">"ເລີ່ມຕົ້ນການສໍາຫຼວດ"</string>
 <string name="change_date">"ປ່ຽນວັນທີ"</string>
 <string name="show_history">"ປະຫວັດການຈັດຕາຕະລາງ"</string>
 <string name="comments">"ຄວາມຄິດເຫັນ"</string>
@@ -275,4 +275,5 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+<string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
 </resources>
