@@ -293,8 +293,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
                 + "/" + survey.getProgram().getName() + "<br/>";
         data += getString(R.string.on) + " " + String.format(
-                getString(R.string.plan_action_next_date), EventExtended.format
-                        (survey.getCompletionDate(), getString(R.string.date_month_text_format)))
+                getString(R.string.plan_action_next_date), EventExtended.format(
+                        SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                        EventExtended.EUROPEAN_DATE_FORMAT))
                 + "<br/>";
         data += getString(R.string.quality_of_care) + " <em style=\"color: #FFBF00;\">"
                 + Math.round(survey.getMainScore())
@@ -362,7 +363,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                 + survey.getProgram().getName() + "\n\n";
         data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(survey.getScheduledDate(),
+                EventExtended.format(
+                        SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         EventExtended.EUROPEAN_DATE_FORMAT)) + "\n\n";
         data += getString(R.string.plan_action_gasp_title) + " "
                 + mCustomGapsEditText.getText().toString() + "\n\n";
