@@ -37,13 +37,12 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -287,7 +286,10 @@ public class SurveyService extends IntentService {
     private void getAllMonitorData() {
         Log.d(TAG,"getAllMonitorData (Thread:"+Thread.currentThread().getId()+")");
         List<ProgramDB> programList= ProgramDB.getAllPrograms();
-        List<SurveyDB> sentSurveys= SurveyDB.getAllSentCompletedOrConflictSurveys();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -6);
+        List<SurveyDB> sentSurveys = SurveyDB.getAllSentCompletedOrConflictSurveysAfterDate(
+                cal.getTime());
         List<OrgUnitDB> orgUnits= OrgUnitDB.list();
 
         BaseServiceBundle monitorMap=new BaseServiceBundle();

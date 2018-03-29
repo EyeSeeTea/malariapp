@@ -109,7 +109,6 @@ public class LayoutUtils {
         actionBar.setLogo(R.drawable.qualityapp_logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setIcon(R.drawable.qualityapp_logo);
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 
