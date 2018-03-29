@@ -77,9 +77,6 @@ public class FacilityTableBuilderBase {
         injectColor = String.format(JAVASCRIPT_SET_YELLOW,"{color:'"+getHtmlCodeColor(color)+"'}");
         Log.d(TAG,injectColor);
         webView.loadUrl(injectColor);
-        int high=(int)ScoreType.HIGH_SCORE_HIGHER_THAN;
-        int medium=(int)ScoreType.MEDIUM_LOWER_THAN;
-        int low=(int)ScoreType.LOW_LOWER_THAN;
         String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,"{high:'"+ScoreType.getMonitoringMinimalHigh()+"'," +
                 "medium:'"+ScoreType.getMonitoringMaximumMedium()+"'," +
                 "mediumFormatted:'"+ScoreType.getMonitoringMediumPieFormat()+"'," +
