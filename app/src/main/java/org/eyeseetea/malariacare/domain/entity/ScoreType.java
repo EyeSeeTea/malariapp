@@ -29,6 +29,10 @@ public class ScoreType {
     public String HighKey ="A";
     public String MediumKey ="B";
     public String LowKey ="C";
+    public final static float HIGH_SCORE_HIGHER_THAN = 89f;
+    public final static float MEDIUM_LOWER_THAN = 90f;
+    public final static float LOW_LOWER_THAN = 80f;
+
 
     private float score;
 
@@ -37,15 +41,30 @@ public class ScoreType {
     }
 
     public Classification getClassification() {
-        if(score>=90f){
+        if(score> HIGH_SCORE_HIGHER_THAN){
             return Classification.HIGH;
-        }else if (score >= 80f && score < 90f){
+        }else if (score >= LOW_LOWER_THAN && score < MEDIUM_LOWER_THAN){
             return Classification.MEDIUM;
         }else {
             return Classification.LOW;
         }
     }
 
+    public static int getMonitoringMinimalHigh() {
+        return (int)HIGH_SCORE_HIGHER_THAN;
+    }
+
+    public static int getMonitoringMaximumMedium() {
+        return (int)MEDIUM_LOWER_THAN;
+    }
+
+    public static int getMonitoringMaximumLow() {
+        return (int)LOW_LOWER_THAN;
+    }
+
+    public static String getMonitoringMediumPieFormat() {
+        return (int)LOW_LOWER_THAN+"-"+(int)HIGH_SCORE_HIGHER_THAN;
+    }
 
     /**
      * Returns this survey is type A (green)

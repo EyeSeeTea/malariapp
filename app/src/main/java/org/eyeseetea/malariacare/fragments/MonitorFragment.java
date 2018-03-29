@@ -277,6 +277,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 //Update hardcoded messages
                 new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
 
+                //Set the colors of red/green/yellow pie and table
+                FacilityTableBuilderBase.setColor(view);
+
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
                     new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
@@ -314,8 +317,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 }
 
                 //Draw facility main table
-                //Set the colors of red/green/yellow pie and table
-                FacilityTableBuilderBase.setColor(view);
 
                 String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
                 String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
