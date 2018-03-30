@@ -159,6 +159,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 presenter.providerChanged(editable.toString());
             }
         });
+
         mCustomGapsEditText = (CustomEditText) mRootView.findViewById(
                 R.id.plan_action_gasp_edit_text);
         mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
