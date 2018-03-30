@@ -273,6 +273,6 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
-<string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 <string name="plan_action_provider_title" >"Provider Name:"</string>
+<string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 </resources>
