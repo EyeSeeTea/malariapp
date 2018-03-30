@@ -292,18 +292,18 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                         R.string.app_name) + "</b><br/>";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName()
                 + "/" + survey.getProgram().getName() + "<br/>";
-        data += getString(R.string.on) + " " + String.format(
-                getString(R.string.plan_action_next_date), EventExtended.format(
-                        SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
-                        EventExtended.EUROPEAN_DATE_FORMAT))
+        data += getString(R.string.completed) + " " + EventExtended.format(
+                        survey.getCompletionDate(),
+                        EventExtended.EUROPEAN_DATE_FORMAT)
                 + "<br/>";
         data += getString(R.string.quality_of_care) + " <em style=\"color: #FFBF00;\">"
                 + Math.round(survey.getMainScore())
                 + "%</em><br/>";
         data += "</p></div><p class=\"nextDate\" style=\"margin-left: 50%; color: #6E6E6E;\">"
                 + String.format(
-                getString(R.string.plan_action_next_date), EventExtended.format
-                        (survey.getScheduledDate(), EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
+                getString(R.string.plan_action_next_date), EventExtended.format(
+                        SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                        EventExtended.EUROPEAN_DATE_FORMAT)) + "</p>";
         data += "<p><b>" + getString(R.string.plan_action_gasp_title) + "</b> " +
                 mCustomGapsEditText.getText().toString() + "</p>";
         data += "<p><b>" + getString(R.string.plan_action_action_plan_title) + "</b> " +
@@ -361,6 +361,9 @@ public class PlanActionFragment extends Fragment implements IModuleFragment, Obs
                         R.string.app_name) + "\n\n";
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n\n";
+        data += getString(R.string.completed) + " " + EventExtended.format(
+                survey.getCompletionDate(),
+                EventExtended.EUROPEAN_DATE_FORMAT) + "\n\n";
         data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
         data += String.format(getString(R.string.plan_action_next_date),
                 EventExtended.format(
