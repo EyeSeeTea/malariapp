@@ -128,21 +128,20 @@ public class PlannedItemBuilder {
         //Annotate number of items per accordion
         if(never.size()>0){
             ((PlannedHeader)never.get(0)).setCounter(never.size()-1);
+            plannedItems.addAll(never);
         }
         if(overdue.size()>0) {
             ((PlannedHeader) overdue.get(0)).setCounter(overdue.size() - 1);
+            plannedItems.addAll(overdue);
         }
         if(next30.size()>0) {
             ((PlannedHeader) next30.get(0)).setCounter(next30.size() - 1);
+            plannedItems.addAll(next30);
         }
         if(future.size()>0) {
             ((PlannedHeader) future.get(0)).setCounter(future.size() - 1);
+            plannedItems.addAll(future);
         }
-        //Put altogether in one list
-        plannedItems.addAll(never);
-        plannedItems.addAll(overdue);
-        plannedItems.addAll(next30);
-        plannedItems.addAll(future);
 
         //Release state references
         releaseState();
