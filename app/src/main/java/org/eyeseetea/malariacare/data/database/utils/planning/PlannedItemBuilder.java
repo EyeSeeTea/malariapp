@@ -67,13 +67,8 @@ public class PlannedItemBuilder {
      */
     private List<PlannedItem> future;
 
-    private static PlannedItemBuilder instance;
-
-    public static PlannedItemBuilder getInstance(){
-        if(instance==null){
-            instance=new PlannedItemBuilder();
-        }
-        return instance;
+    public static PlannedItemBuilder getNewInstance(){
+        return new PlannedItemBuilder();
     }
 
     /**
