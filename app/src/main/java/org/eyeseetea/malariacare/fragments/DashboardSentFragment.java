@@ -298,7 +298,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                                                     public void onClick(DialogInterface arg0, int arg1) {
                                                         selectedSurvey.delete();
                                                         Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
                                                         getActivity().startService(surveysIntent);
                                                     }
                                                 })

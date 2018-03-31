@@ -167,7 +167,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         Intent surveysIntent = new Intent(
                 PreferencesState.getInstance().getContext().getApplicationContext(),
                 SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(
                 surveysIntent);
     }
