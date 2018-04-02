@@ -42,6 +42,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.strategies.ISettingsActivityStrategy;
+import org.eyeseetea.malariacare.views.strategy.SettingsActivityStrategy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,9 @@ public class SettingsActivity extends PreferenceActivity implements
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
     private static final String TAG = ".SettingsActivity";
+
+    private final ISettingsActivityStrategy
+            settingsActivityStrategy = new SettingsActivityStrategy();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,20 +175,12 @@ public class SettingsActivity extends PreferenceActivity implements
         passwordPreference.setOnPreferenceClickListener(
                 new LoginRequiredOnPreferenceClickListener(this));
 
-        hideFontCustomisationOption();
-    }
-
-    private void hideFontCustomisationOption() {
         PreferenceScreen preferenceScreen = getPreferenceScreen();
-        Preference customizeFonts = preferenceScreen.findPreference(
-                getResources().getString(R.string.customize_fonts));
 
-        Preference fontSizes = preferenceScreen.findPreference(
-                getResources().getString(R.string.font_sizes));
-
-        preferenceScreen.removePreference(customizeFonts);
-        preferenceScreen.removePreference(fontSizes);
+        settingsActivityStrategy.afterSetupPreferencesScreen(preferenceScreen);
     }
+
+
 
     /**
      * Sets the application languages and populate the language in the preference
