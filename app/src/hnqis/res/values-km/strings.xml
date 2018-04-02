@@ -278,4 +278,5 @@ evaluation"</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
 <string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
+<string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
 </resources>

@@ -264,4 +264,5 @@ Mensuelle"</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
 <string name="monitor_no_surveys_to_show">"Aucune enquête à afficher"</string>
+<string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
 </resources>
