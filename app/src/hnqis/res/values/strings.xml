@@ -261,9 +261,9 @@ evaluation"</string>
 <string name="date_month_text_format">"MMMM d',' yyyy"</string>
 
 
-<string name="add">"Add"</string>
+<string name="add">"Start survey"</string>
 <string name="change_date">"Change date"</string>
-<string name="show_history">"Schedule History"</string>
+<string name="show_history">"Schedule history"</string>
 <string name="comments">"Comments"</string>
 <string name="dates">"Previous dates"</string>
 <string name="mark_complete">"Mark complete"</string>
@@ -273,4 +273,6 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="plan_action_provider_title" >"Provider Name:"</string>
+<string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 </resources>

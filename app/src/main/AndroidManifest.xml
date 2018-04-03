@@ -46,6 +46,10 @@
             android:name=".services.PushService"
             android:exported="false" />
 
+        <service
+            android:name=".services.PlannedSurveyService"
+            android:exported="false" />
+
         <activity
             android:name=".LoginActivity"
             android:finishOnTaskLaunch="true"

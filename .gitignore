@@ -40,4 +40,4 @@ app/fabric.properties
 app/src/main/res/raw/lastcommit.txt
 
 # local only private key for drive service account credentials
-app/src/hnqis/res/raw/driveserviceprivatekey.json
+app/src/*/res/raw/driveserviceprivatekey.json
