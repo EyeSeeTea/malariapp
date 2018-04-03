@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Ev
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -73,6 +74,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private View secondaryView;
     private ImageButton mGoBack;
     private CustomEditText mCustomGapsEditText;
+    private CustomEditText mCustomProviderText;
     private CustomEditText mCustomActionPlanEditText;
     private CustomEditText mCustomActionOtherEditText;
     private CustomSpinner actionSpinner;
@@ -130,6 +132,26 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     private void initEditTexts() {
+        mCustomProviderText = (CustomEditText) mRootView.findViewById(
+                R.id.plan_action_provider_text);
+
+        mCustomProviderText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                presenter.providerChanged(editable.toString());
+            }
+        });
+
         mCustomGapsEditText = (CustomEditText) mRootView.findViewById(
                 R.id.plan_action_gasp_edit_text);
         mCustomGapsEditText.addTextChangedListener(new TextWatcher() {
@@ -307,6 +329,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
     @Override
     public void changeToReadOnlyMode() {
+        mCustomProviderText.setEnabled(false);
         mCustomGapsEditText.setEnabled(false);
         mCustomActionPlanEditText.setEnabled(false);
         mCustomActionOtherEditText.setEnabled(false);
@@ -316,7 +339,8 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void renderBasicPlanInfo(String gasp, String actionPlan) {
+    public void renderBasicPlanInfo(String provider, String gasp, String actionPlan) {
+        mCustomProviderText.setText(provider);
         mCustomGapsEditText.setText(gasp);
         mCustomActionPlanEditText.setText(actionPlan);
     }
@@ -429,6 +453,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         data += String.format(getString(R.string.plan_action_next_date),
                 EventExtended.format(survey.getScheduledDate(),
                         EventExtended.EUROPEAN_DATE_FORMAT));
+
+        if(obsActionPlan.getProvider()!=null && !obsActionPlan.getProvider().isEmpty()) {
+            data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + obsActionPlan.getProvider();
+        }
 
         data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
 

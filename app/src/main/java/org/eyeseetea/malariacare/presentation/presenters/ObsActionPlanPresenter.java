@@ -106,7 +106,7 @@ public class ObsActionPlanPresenter {
 
     private void showPlanInfo() {
         if (mView != null) {
-            mView.renderBasicPlanInfo(mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
+            mView.renderBasicPlanInfo(mObsActionPlan.getProvider(), mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
 
             if (mObsActionPlan.getAction1() != null) {
                 for (int i = 0; i < mActions.length; i++) {
@@ -175,6 +175,12 @@ public class ObsActionPlanPresenter {
         mObsActionPlan.setAction_plan(actionPlan);
         mObsActionPlan.save();
     }
+
+    public void providerChanged(String provider) {
+        mObsActionPlan.setProvider(provider);
+        mObsActionPlan.save();
+    }
+
 
     public void subActionOtherChanged(String subActionOther) {
         mObsActionPlan.setAction2(subActionOther);
@@ -255,7 +261,7 @@ public class ObsActionPlanPresenter {
 
         void changeToReadOnlyMode();
 
-        void renderBasicPlanInfo(String gasp, String actionPlan);
+        void renderBasicPlanInfo(String provider, String gasp, String actionPlan);
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate);

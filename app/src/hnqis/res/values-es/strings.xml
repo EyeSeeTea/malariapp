@@ -41,8 +41,8 @@
 <string name="assessment_title_facility_date">"Instalación / Encuesta</string>
 <string name="assessment_title_state">"%Completo"</string>
 <string name="assessment_sent_date">"Fecha de llenado"</string>
-<string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
-<string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
+<string name="assessment_title_header">"Encuesta(s) activa(s)"</string>
+<string name="assessment_sent_title_header">"Encuesta(es) Anterior(es)"</string>
 
 <string name="survey_title_exit">"¿Realmente salir?"</string>
 <string name="survey_info_exit">"¿Esta seguro que quiere salir?"</string>
@@ -110,7 +110,7 @@ clínica"</string>
 <string name="dialog_incompleted_compulsory_pulling">"La actualización de los metadatos requiere eliminar o completar sus datos enviados. Por favor responda al menos todas las preguntas obligatorias"</string>
 <string name="dialog_sent_survey_on_refresh_metadata">"La actualización de metadatos borrará los datos enviados. Usted tiene %s encuestas no enviada/s. ¿Desea usted enviarlas antes de actualizar los metadatos?"</string>
 <string name="cancellingPull">"El proceso se cancelara en unos segundos"</string>
-<string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
+<string name="dashboard_title_total_assessments">"Número total encuestas realizadas"</string>
 <string name="dashboard_title_planned_type_never">"Nunca evaluado"</string>
 <string name="dashboard_title_planned_type_overdue">"Atrasado"</string>
 <string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
@@ -122,7 +122,7 @@ clínica"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>
 <string name="feedback_show_only_media">"Mostrar sólo las preguntas que contienen vídeo / imagen"</string>
 <string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
-<string name="feedback_return">"Regresar a todas las evaluaciones"</string>
+<string name="feedback_return">"Volver a todas las encuestas"</string>
 <string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
 <string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
@@ -150,7 +150,7 @@ clínica"</string>
 <string name="dialog_info_push_stats">"Datos subidos al servidor. Resultados:"</string>
 <string name="dialog_info_on_complete">"La encuesta %s se ha marcado como completada. Ahora la encontrará en la pestaña Mejora"</string>
 <string name="dialog_deleting_children">"Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?"</string>
-<string name="dashboard_tip_pie_chart">"Calidad de cuidados (basado en la última evaluación)"</string>
+<string name="dashboard_tip_pie_chart">"Calidad de cuidados (basado en la última encuesta)"</string>
 <string name="dialog_pull_error">"Error obteniendo metadatos del servidor dhis"</string>
 <string name="settings_menu_pull">"Refrescar metadata"</string>
 <string name="dialog_pull_success">"Metadatos Dhis obtenidos del servidor con éxito"</string>
@@ -180,7 +180,7 @@ clínica"</string>
 <string name="improve">"Mejora"</string>
 <string name="monitor">"Monitorización"</string>
 <string name="filter_all_org_units">"todas las unidades organizativas"</string>
-<string name="filter_all_org_assessments">"Todos evaluados"</string>
+<string name="filter_all_org_assessments">"Todas las encuestas"</string>
 <string name="dialog_content_dhis_preference_login">"Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?"</string>
 <string name="lastcommit">"Versión %s"</string>
 <string name="unavailable">"No disponible"</string>
@@ -258,7 +258,7 @@ clínica"</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
 <string name="on">"en"</string>
 
-<string name="add">"Añadir"</string>
+<string name="add">"Comenzar encuesta"</string>
 <string name="change_date">"Cambiar fecha"</string>
 <string name="show_history">"Historial de programación"</string>
 <string name="comments">"Comentarios"</string>
@@ -268,4 +268,6 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
+<string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
 </resources>
