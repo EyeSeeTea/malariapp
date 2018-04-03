@@ -35,6 +35,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -42,9 +43,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.strategies.ISettingsActivityStrategy;
-import org.eyeseetea.malariacare.views.strategy.SettingsActivityStrategy;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,9 +69,6 @@ public class SettingsActivity extends PreferenceActivity implements
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
     private static final String TAG = ".SettingsActivity";
-
-    private final ISettingsActivityStrategy
-            settingsActivityStrategy = new SettingsActivityStrategy();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +172,9 @@ public class SettingsActivity extends PreferenceActivity implements
 
         PreferenceScreen preferenceScreen = getPreferenceScreen();
 
-        settingsActivityStrategy.afterSetupPreferencesScreen(preferenceScreen);
+        if(BuildConfig.customFontHidden) {
+            hideFontCustomisationOption(preferenceScreen);
+        }
     }
 
 
@@ -468,6 +465,18 @@ public class SettingsActivity extends PreferenceActivity implements
         return callerActivity;
     }
 
+    private void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
+        Context context = preferenceScreen.getContext();
+
+        Preference customizeFonts = preferenceScreen.findPreference(
+                context.getString(R.string.customize_fonts));
+
+        Preference fontSizes = preferenceScreen.findPreference(
+                context.getString(R.string.font_sizes));
+
+        preferenceScreen.removePreference(customizeFonts);
+        preferenceScreen.removePreference(fontSizes);
+    }
 }
 
 /**
