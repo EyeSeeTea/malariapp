@@ -26,7 +26,6 @@ public class ObsActionPlanPresenter {
     private String[] mActions;
     private String[] mSubActions;
     SurveyDB mSurvey;
-    public enum ShareType {TEXT, HTML}
 
     public ObsActionPlanPresenter(Context context) {
         this.mContext = context;
@@ -198,18 +197,14 @@ public class ObsActionPlanPresenter {
         }
     }
 
-    public void shareObsActionPlan(ShareType shareType) {
+    public void shareObsActionPlan() {
         List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 mSurvey.getId_survey());
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
 
         if (mView != null) {
-            if (shareType == shareType.HTML) {
-                mView.shareByHtml(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
-            } else if (shareType == shareType.TEXT) {
-                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
-            }
+            mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
         }
     }
 
@@ -286,9 +281,6 @@ public class ObsActionPlanPresenter {
         void hideSubActionOtherView();
 
         void updateStatusView(Integer status);
-
-        void shareByHtml(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
-                List<CompositeScoreDB> compositeScoresTree);
 
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
