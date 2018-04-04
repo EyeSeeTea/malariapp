@@ -5,3 +5,6 @@
 [submodule "EyeSeeTea-sdk"]
 	path = EyeSeeTea-sdk
 	url = https://github.com/EyeSeeTea/sdk
+[submodule "bugshaker-android"]
+	path = bugshaker-android
+	url = https://github.com/EyeSeeTea/bugshaker-android.git

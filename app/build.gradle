@@ -77,6 +77,7 @@ android {
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "customFontHidden", "false"
+            buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
@@ -85,6 +86,7 @@ android {
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "customFontHidden", "true"
+            buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
         eyeseetea {
             applicationId "org.eyeseetea.malariacare.questmark_bb"
@@ -93,6 +95,7 @@ android {
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
             buildConfigField "boolean", "customFontHidden", "false"
+            buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
     }
 
@@ -180,6 +183,10 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
+
+    compile(project(path: ':bugshaker')) {
+        exclude group: "com.google.android.gms"
+    }
 }
 
 
