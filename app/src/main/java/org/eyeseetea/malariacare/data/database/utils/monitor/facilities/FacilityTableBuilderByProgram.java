@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
+package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import android.content.Context;
 import android.util.Log;
@@ -41,10 +41,9 @@ public class FacilityTableBuilderByProgram extends  FacilityTableBuilderBase {
      * Default constructor
      *
      * @param surveys
-     * @param context
      */
-    public FacilityTableBuilderByProgram(List<SurveyDB> surveys, Context context) {
-        super(surveys, context);
+    public FacilityTableBuilderByProgram(List<SurveyDB> surveys) {
+        super(surveys);
         this.facilityTableDataMap = new HashMap<>();
     }
 

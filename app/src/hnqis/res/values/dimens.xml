@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="feedback_question_row_left_padding">30dp</dimen>
+</resources>

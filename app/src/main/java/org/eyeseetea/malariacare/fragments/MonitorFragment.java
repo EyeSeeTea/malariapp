@@ -49,15 +49,13 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.facility.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pie.PieBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
+import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -275,10 +273,10 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //Update hardcoded messages
-                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+                new MonitorMessagesBuilder().addDataInChart(view);
 
                 //Update hardcoded messages
-                new MonitorMessagesBuilder(getActivity()).addDataInChart(view);
+                new MonitorMessagesBuilder().addDataInChart(view);
 
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
@@ -298,22 +296,20 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
-                    new PieBuilderByOrgUnit(surveysForGraphic, getActivity()).addDataInChart(view);
+                    new PieBuilderByOrgUnit(surveysForGraphic).addDataInChart(view);
                 }
                 if (isProgramFilterActive()) {
-                    new PieBuilderByProgram(surveysForGraphic, getActivity()).addDataInChart(view);
+                    new PieBuilderByProgram(surveysForGraphic).addDataInChart(view);
                 }
 
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
                     //facility by progam-> is a orgunit facility
-                    new FacilityTableBuilderByProgram(surveysForGraphic,
-                            getActivity()).addDataInChart(view);
+                    new FacilityTableBuilderByProgram(surveysForGraphic).addDataInChart(view);
                 }
                 if (isProgramFilterActive()) {
                     //facility by orgunit-> is a program facility
-                    new FacilityTableBuilderByOrgUnit(surveysForGraphic,
-                            getActivity()).addDataInChart(view);
+                    new FacilityTableBuilderByOrgUnit(surveysForGraphic).addDataInChart(view);
                 }
 
                 //Draw facility main table
