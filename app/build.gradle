@@ -71,7 +71,7 @@ android {
 
     productFlavors {
         eds {
-            applicationId "org.eyeseetea.malariacare.eds_bb"
+            applicationId "org.eyeseetea.malariacare.eds_dev"
             versionName "2.0.5"
             buildConfigField "boolean", "translations", "false"
             buildConfigField "String", "defaultLocale", "\"en\""
@@ -80,7 +80,7 @@ android {
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
+            applicationId "org.eyeseetea.malariacare.hnqis_ng_dev"
             versionName "1.3.0"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
@@ -89,7 +89,7 @@ android {
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
         }
         eyeseetea {
-            applicationId "org.eyeseetea.malariacare.questmark_bb"
+            applicationId "org.eyeseetea.malariacare.questmark_dev"
             versionName "0.1.0"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
