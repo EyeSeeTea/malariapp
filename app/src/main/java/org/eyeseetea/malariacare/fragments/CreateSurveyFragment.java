@@ -239,7 +239,7 @@ public class CreateSurveyFragment extends Fragment {
         }
 
         //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
-        if(!orgUnitStorage.equals("")){
+        if(orgUnitStorage!=null && !orgUnitStorage.equals("")){
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnitDB.getOrgUnit(orgUnitStorage).getName()));
         }
         loadHierarchy=false;
@@ -635,7 +635,7 @@ public class CreateSurveyFragment extends Fragment {
                                     R.id.assess_org_unit_program_filter_view);
 
             OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
-            if(filteredOrgUnit!=null) {
+            if(filteredOrgUnit!=null && filteredOrgUnit.getUid()!=null) {
                 return filteredOrgUnit;
             }
             //old way
