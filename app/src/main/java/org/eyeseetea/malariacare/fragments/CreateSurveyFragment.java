@@ -53,6 +53,7 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -221,10 +222,20 @@ public class CreateSurveyFragment extends Fragment {
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
 
         //set the first orgUnit saved
-        if(orgUnitHierarchy.getSavedUidsList().length()>1) {
-            orgUnitStorage = orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
-        }else{
-            orgUnitStorage="";
+
+        OrgUnitProgramFilterView filter  =
+                (OrgUnitProgramFilterView) dashboardActivity.findViewById(
+                        R.id.assess_org_unit_program_filter_view);
+
+        OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
+        if(filteredOrgUnit!=null) {
+            orgUnitStorage = filteredOrgUnit.getUid();
+        }else {
+            if (orgUnitHierarchy.getSavedUidsList().length() > 1) {
+                orgUnitStorage = orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
+            } else {
+                orgUnitStorage = "";
+            }
         }
 
         //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
@@ -463,8 +474,17 @@ public class CreateSurveyFragment extends Fragment {
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
         ProgramDB lastSelectedProgram= getLastSelectedProgram();
-        if(lastSelectedProgram!=null){
-            programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+        OrgUnitProgramFilterView filter  =
+                (OrgUnitProgramFilterView) dashboardActivity.findViewById(
+                        R.id.assess_org_unit_program_filter_view);
+
+        ProgramDB filteredProgram = filter.getSelectedProgramFilter();
+        if(filteredProgram!=null){
+            programView.setSelection(getIndex(programView, filteredProgram.getName()));
+        }else {
+            if (lastSelectedProgram != null) {
+                programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+            }
         }
         return initProgram;
     }
@@ -610,6 +630,15 @@ public class CreateSurveyFragment extends Fragment {
         }
 
         public OrgUnitDB getLastSelected() {
+            OrgUnitProgramFilterView filter  =
+                            (OrgUnitProgramFilterView) dashboardActivity.findViewById(
+                                    R.id.assess_org_unit_program_filter_view);
+
+            OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
+            if(filteredOrgUnit!=null) {
+                return filteredOrgUnit;
+            }
+            //old way
             if(selectedHierarchy.size()>0)
                 return selectedHierarchy.get(selectedHierarchy.size()-1);
             else

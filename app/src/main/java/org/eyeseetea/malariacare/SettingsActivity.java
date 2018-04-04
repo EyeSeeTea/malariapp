@@ -34,6 +34,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -41,7 +43,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -168,7 +169,15 @@ public class SettingsActivity extends PreferenceActivity implements
                 new LoginRequiredOnPreferenceClickListener(this));
         passwordPreference.setOnPreferenceClickListener(
                 new LoginRequiredOnPreferenceClickListener(this));
+
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+
+        if(BuildConfig.customFontHidden) {
+            hideFontCustomisationOption(preferenceScreen);
+        }
     }
+
+
 
     /**
      * Sets the application languages and populate the language in the preference
@@ -456,6 +465,18 @@ public class SettingsActivity extends PreferenceActivity implements
         return callerActivity;
     }
 
+    private void hideFontCustomisationOption(@NonNull PreferenceScreen preferenceScreen) {
+        Context context = preferenceScreen.getContext();
+
+        Preference customizeFonts = preferenceScreen.findPreference(
+                context.getString(R.string.customize_fonts));
+
+        Preference fontSizes = preferenceScreen.findPreference(
+                context.getString(R.string.font_sizes));
+
+        preferenceScreen.removePreference(customizeFonts);
+        preferenceScreen.removePreference(fontSizes);
+    }
 }
 
 /**
