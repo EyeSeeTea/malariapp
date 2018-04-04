@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -60,9 +59,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by ignac on 05/01/2016.
- */
 public class CreateSurveyFragment extends Fragment {
 
     private static String TAG = ".CreateSurveyFragment";
@@ -100,7 +96,7 @@ public class CreateSurveyFragment extends Fragment {
     private LayoutInflater lInflater;
     LinearLayout llLayout;
 
-    DashboardActivity dashboardActivity;
+    OrgUnitProgramFilterView filter;
 
     //Flag used to control the layout inflating is only in the creation of the fragment.
     private boolean loadHierarchy=true;
@@ -111,6 +107,8 @@ public class CreateSurveyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
+        filter  = (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity.findViewById(
+                R.id.assess_org_unit_program_filter_view);
         super.onCreate(savedInstanceState);
     }
     @Override
@@ -223,9 +221,6 @@ public class CreateSurveyFragment extends Fragment {
 
         //set the first orgUnit saved
 
-        OrgUnitProgramFilterView filter  =
-                (OrgUnitProgramFilterView) dashboardActivity.findViewById(
-                        R.id.assess_org_unit_program_filter_view);
 
         OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
         if(filteredOrgUnit!=null) {
@@ -243,13 +238,6 @@ public class CreateSurveyFragment extends Fragment {
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnitDB.getOrgUnit(orgUnitStorage).getName()));
         }
         loadHierarchy=false;
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        dashboardActivity = (DashboardActivity) activity;
     }
 
     @Override
@@ -342,7 +330,7 @@ public class CreateSurveyFragment extends Fragment {
         //save the program in the preferents
         setLastSelectedProgram(program.getUid());
 
-        dashboardActivity.onCreateSurvey(orgUnit,program);
+        DashboardActivity.dashboardActivity.onCreateSurvey(orgUnit,program);
     }
 
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -474,9 +462,6 @@ public class CreateSurveyFragment extends Fragment {
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
         ProgramDB lastSelectedProgram= getLastSelectedProgram();
-        OrgUnitProgramFilterView filter  =
-                (OrgUnitProgramFilterView) dashboardActivity.findViewById(
-                        R.id.assess_org_unit_program_filter_view);
 
         ProgramDB filteredProgram = filter.getSelectedProgramFilter();
         if(filteredProgram!=null){
@@ -630,10 +615,6 @@ public class CreateSurveyFragment extends Fragment {
         }
 
         public OrgUnitDB getLastSelected() {
-            OrgUnitProgramFilterView filter  =
-                            (OrgUnitProgramFilterView) dashboardActivity.findViewById(
-                                    R.id.assess_org_unit_program_filter_view);
-
             OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
             if(filteredOrgUnit!=null && filteredOrgUnit.getUid()!=null) {
                 return filteredOrgUnit;
