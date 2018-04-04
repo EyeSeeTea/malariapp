@@ -184,19 +184,6 @@ public class EventExtended implements VisitableFromSDK {
     }
 
     /**
-     * Turns a given date into a parseable String according to sdk date format
-     */
-    public static String format(Date date, String format, String alternativeFormat) {
-        try {
-            return (date != null) ? new SimpleDateFormat(format).format(date)
-                    : null;
-        }catch (IllegalArgumentException e){
-            return (date != null) ? new SimpleDateFormat(format).format(date)
-                    : null;
-        }
-    }
-
-    /**
      * Checks whether the given event contains errors in SDK FailedItemExtended table or has been
      * successful.
      * If not return null, it is becouse this item had a conflict.
