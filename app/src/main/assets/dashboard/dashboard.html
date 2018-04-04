@@ -41,7 +41,18 @@
             background-color:#e5e5e5;
             font-family: 'Roboto-Condensed';
             margin-top:20px;
+            margin-left:0px;
+            margin-right:0px
         }
+
+        #graphicCanvas>div>span.line-title{
+            margin: 10px;
+        }
+        #graphicCanvas>div>hr{
+            width: 93%!important;
+            margin-right: 10px;
+        }
+
         .line-title{
             float: left;
             font-size: 20px;
@@ -54,7 +65,7 @@
         }
 
         canvas, table{
-            margin: 5px;
+            margin: 0px;
         }
 
         .chart-legend li span{
@@ -104,10 +115,10 @@
         }
         .circlerow{
             margin: auto;
+            line-height: 24px;
             text-align: center;
-            width: 20px!important;
-            height: 20px!important;
-            align-content: center;
+            width: 24px!important;
+            height: 24px!important;
         }
         td.red{
             background-color: #fa8900;
@@ -218,8 +229,9 @@
         </div>
     </div>
 </script>
-<div  id="multipleEventLegend" style="display:none"><span class="line-title" id="titleFacilities">(*)More than one assessment exist on the same month</span></div>
+<div  id="multipleEventLegend" style="display:none"><span class="line-title" id="titleFacilities">(*)More than one survey exist on the same month</span></div>
 
+<span class="line-no-surveys" id="noSurveysText"></span>
 <script type = "text/javascript" src="mockData.js"> </script>
 </body>
 </html>

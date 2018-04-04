@@ -49,14 +49,11 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
-import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
@@ -238,6 +235,12 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
             reloadSurveys(surveysForGraphic, programs, orgUnits);
         }
+        showMessageNoAddedSurveys((surveysForGraphic == null || surveysForGraphic.isEmpty()));
+    }
+
+    private void showMessageNoAddedSurveys(boolean show) {
+        getActivity().findViewById(R.id.monitor_no_surveys_message).setVisibility(
+                show ? View.VISIBLE : View.GONE);
     }
 
     public void reloadSurveys(List<SurveyDB> newListSurveys, List<ProgramDB> newListPrograms,

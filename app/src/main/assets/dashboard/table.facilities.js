@@ -120,7 +120,8 @@ function buildRowFacility(facility){
 	//start row
 	var row="<tr>";
 	//name
-	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
+	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;"
+	 +" padding:8px 16px 8px 16px;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var facilityMonth=facility.values[i];
@@ -151,7 +152,7 @@ function buildColorXScore(value, listOfSurveys){
 	if(value==null){
 		return "<td class='novisible' ><div class='circlerow' ><span class='centerspan'>";
 	}
-	if(value<50){
+	if(value<80){
 	    if(listOfSurveys.length>1){
 		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+red+"'><span class='centerspan'>";
 		}else{
@@ -159,7 +160,7 @@ function buildColorXScore(value, listOfSurveys){
 		}
 	}
 
-	if(value<80){
+	if(value<90){
 	    if(listOfSurveys.length>1){
 		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circlerow' style='background-color:"+yellow+"'><span class='centerspan'>";
 		}else{

@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor;
 
-import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -32,7 +31,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 public class MonitorMessagesBuilder {
 
     private static final String TAG="MonitorMessagesBuilder";
-    public static final String JSON_MAP = "{'assesmentUnderTaken':'%s','target': '%s','qualityOfCare': '%s','months':'%s'}";
+    public static final String JSON_MAP =
+            "{'assesmentUnderTaken':'%s','target': '%s','qualityOfCare': '%s','months':'%s',"
+                    + "'noSurveys':'%s'}";
     public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:initContext(%s)";
 
     /**
@@ -51,7 +52,9 @@ public class MonitorMessagesBuilder {
         String target = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_target);
         String qualityOfCare = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_quality_of_care);
         String months = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_months);
-        return String.format(JSON_MAP,assesmentUnderTaken,target,qualityOfCare,months);
+        String noSurveys = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_no_surveys_to_show);
+        return String.format(JSON_MAP, assesmentUnderTaken, target, qualityOfCare, months,
+                noSurveys);
     }
 
 
