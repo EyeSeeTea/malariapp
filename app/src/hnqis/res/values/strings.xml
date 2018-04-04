@@ -258,7 +258,6 @@ evaluation"</string>
 <string name="get_db_file_dialog">Please select a valid db file</string>
 <string name="start">Start</string>
 <string name="on">"on"</string>
-<string name="date_month_text_format">"MMMM d',' yyyy"</string>
 
 
 <string name="add">"Start survey"</string>

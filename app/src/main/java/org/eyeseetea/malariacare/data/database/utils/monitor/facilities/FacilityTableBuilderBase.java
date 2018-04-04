@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
+package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import android.content.Context;
 import android.util.Log;
@@ -41,11 +41,6 @@ public class FacilityTableBuilderBase {
     public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
 
     /**
-     * Required to inyect title according to current language
-     */
-    private Context context;
-
-    /**
      * List of sent surveys
      */
     List<SurveyDB> surveys;
@@ -55,9 +50,8 @@ public class FacilityTableBuilderBase {
     /**
      * Default constructor
      */
-    public FacilityTableBuilderBase(List<SurveyDB> surveys, Context context) {
+    public FacilityTableBuilderBase(List<SurveyDB> surveys) {
         this.surveys = surveys;
-        this.context = context;
     }
     public static void setColor(WebView webView){
         //noinspection ResourceType
