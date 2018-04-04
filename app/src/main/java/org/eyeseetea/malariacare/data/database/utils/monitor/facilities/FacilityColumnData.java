@@ -17,7 +17,7 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
+package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 
@@ -27,32 +27,39 @@ import java.util.List;
 /**
  * Created by arrizabalaga on 13/10/15.
  */
-public class FacilityColumnCounterData {
+public class FacilityColumnData {
     private List<SurveyDB> surveys;
 
-    public FacilityColumnCounterData() {
-        surveys = new ArrayList<>();
+    public FacilityColumnData(){
+        surveys=new ArrayList<>();
     }
 
     /**
      * Adds a survey to this cell
+     * @param survey
      */
-    public void addSurvey(SurveyDB survey) {
+    public void addSurvey(SurveyDB survey){
         surveys.add(survey);
     }
 
     /**
-     * Returns the value of the columns formatted as javascript number or null if no surveys for
-     * this cell
+     * Returns the value of the columns formatted as javascript number or null if no surveys for this cell
+     * @return
      */
-    public String getAsJSON() {
-        if (!hasSurveys()) {
-            return "0";
+    public String getAsJSON(){
+        if(!hasSurveys()){
+            return "null";
         }
-        return surveys.size() + "";
+        String jsonObject="[";
+        for(SurveyDB survey:surveys){
+            jsonObject+="{\"id\":"+survey.getId_survey() + ",\"score\":" +  survey.getMainScore()+"},";
+        }
+        jsonObject=jsonObject.substring(0,jsonObject.lastIndexOf(","));
+        jsonObject= jsonObject +"]";
+        return jsonObject;
     }
 
-    private boolean hasSurveys() {
-        return surveys != null && surveys.size() > 0;
+    private boolean hasSurveys(){
+        return surveys!=null && surveys.size()>0;
     }
 }

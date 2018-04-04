@@ -17,14 +17,14 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
+package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
-import android.content.Context;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,31 +34,29 @@ import java.util.Map;
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class PieBuilderByProgram extends PieBuilderBase {
-    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:setProgramPieData(%s)";
+public class PieBuilderByOrgUnit extends PieBuilderBase {
+    public static final String JAVASCRIPT_UPDATE_CHARTS = "javascript:setOrgUnitPieData(%s)";
 
     /**
      * Map of entries per program
      */
-    private Map<ProgramDB,PieDataByProgram> pieTabGroupDataMap;
+    private Map<OrgUnitDB,PieDataByOrgUnit> pieTabGroupDataMap;
     /**
      * Default constructor
      *
      * @param surveys
-     * @param context
      */
-    public PieBuilderByProgram(List<SurveyDB> surveys, Context context) {
-        super(surveys, context);
-        pieTabGroupDataMap = new HashMap<>();
+    public PieBuilderByOrgUnit(List<SurveyDB> surveys) {
+        super(surveys);
+        pieTabGroupDataMap=new HashMap<>();
     }
-
     /**
      * Adds calculated entries to the given webView
      * @param webView
      */
     public void addDataInChart(WebView webView){
         //Build entries
-        List<PieDataByProgram> entries=build(surveys);
+        List<PieDataByOrgUnit> entries=build(surveys);
         //Inyect entries in view
         injectDataInChart(webView, entries);
         buildJSONArray(entries);
@@ -66,38 +64,41 @@ public class PieBuilderByProgram extends PieBuilderBase {
     }
     private void build(SurveyDB survey) {
         //Get the program
-        ProgramDB program=survey.getProgram();
+        OrgUnitDB orgUnit=survey.getOrgUnit();
 
         //Get the entry for that program
-        PieDataByProgram pieTabGroupData = pieTabGroupDataMap.get(program);
+        PieDataByOrgUnit pieTabGroupData = pieTabGroupDataMap.get(orgUnit);
 
         //First time no entry
         if(pieTabGroupData ==null){
-            pieTabGroupData =new PieDataByProgram(program);
-            pieTabGroupDataMap.put(program, pieTabGroupData);
+            pieTabGroupData =new PieDataByOrgUnit(orgUnit);
+            pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
         }
         //Increment surveys for that month
         pieTabGroupData.incCounter(survey.getMainScore());
     }
-    private List<PieDataByProgram> build(List<SurveyDB> surveys) {
+
+
+    private List<PieDataByOrgUnit> build(List<SurveyDB> surveys) {
         for(SurveyDB survey:surveys){
             build(survey);
         }
 
         return new ArrayList(pieTabGroupDataMap.values());
     }
-    private void injectDataInChart(WebView webView, List<PieDataByProgram> entries) {
+    private void injectDataInChart(WebView webView, List<PieDataByOrgUnit> entries) {
         //Build array JSON
         String json=buildJSONArray(entries);
 
         //Inyect in browser
         inyectInBrowser(webView, JAVASCRIPT_UPDATE_CHARTS, json);
     }
-    private String buildJSONArray(List<PieDataByProgram> entries){
+
+    private String buildJSONArray(List<PieDataByOrgUnit> entries){
         String arrayJSON="[";
         int i=0;
-        for(PieDataByProgram pieTabGroupData :entries){
-            String pieJSON= pieTabGroupData.toJSON(context.getString(R.string.dashboard_tip_pie_chart));
+        for(PieDataByOrgUnit pieTabGroupData :entries){
+            String pieJSON= pieTabGroupData.toJSON(PreferencesState.getInstance().getContext().getString(R.string.dashboard_tip_pie_chart));
             arrayJSON+=pieJSON;
             i++;
             if(i!=entries.size()){
