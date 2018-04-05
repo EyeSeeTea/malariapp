@@ -17,7 +17,7 @@
 <string name="settings_menu_about">"អំពី"</string>
 <string name="settings_menu_configuration">"ការ​កំណត់ "</string>
 <string name="settings_menu_licence">"អាជ្ញាប័ណ្ណ"</string>
-<string name="settings_menu_logout">"Logout"</string>
+<string name="settings_menu_logout">"ចាកចេញ"</string>
 
 <!-- # dialogs -->
 <string name="dialog_title_delete_survey">"លុបលទ្ធផលដែលបានផ្ញើរចេញ"</string>
@@ -31,30 +31,31 @@
 <string name="dialog_content_logout_confirmation">"If you exit the system, all the not sent data will be deleted. Do you still want to exit?"</string>
 
 <!-- dashboard -->
-<string name="dashboard_info_feedback">"Feedback"</string>
-<string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
-<string name="dashboard_info_sent">"Sent"</string>
+<string name="dashboard_info_feedback">"មតិប្រតិកម្ម"</string>
+<string name="dashboard_info_ready_to_upload">"រួចរាល់ក្នុងការផ្ទុកឡើង"</string>
+<string name="dashboard_info_sent">"បានផ្ញើ"</string>
 
 <!-- create -->
-<string name="create_info_ok">"Start"</string>
-<string name="create_info_organization_unit">"Organization Unit"</string>
-<string name="create_info_survey">"Survey"</string>
-<string name="create_info_tabs_group">"Tab Group"</string>
+<string name="create_info_ok">"ចាប់ផ្តើម"</string>
+<string name="create_info_organization_unit">"អង្គភាពអង្គភាព"</string>
+<string name="create_info_survey">"ការស្ទង់មតិ"</string>
+<string name="create_info_tabs_group">"ផ្ទាំងថេប"</string>
 
 <!-- assessment -->
-<string name="assessment_title_facility_date">"Facility / Survey"</string>
-<string name="assessment_title_overall_mandatory_completed">"ជារួម / ចាំបាច់ត្រូវបានបញ្ចប់"</string>
+<string name="assessment_title_facility_date">"ស្ថាប័ន / ការស្ទង់មតិ"</string>
+<string name="assessment_title_state">"% បញ្ចប់"</string>
 <string name="assessment_sent_date">"កាលបរិច្ឆេទ"</string>
-<string name="assessment_title_header">"ការបញ្ជូនមិនទាន់សម្រេច"</string>
-<string name="assessment_sent_title_header">"ការស្ទង់មតិ​ បានផ្ញើចេញ"</string>
+<string name="assessment_title_overall_mandatory_completed">"ជារួម / ចាំបាច់ត្រូវបានបញ្ចប់"</string>
+<string name="assessment_title_header">"ការស្ទង់មតិសកម្ម"</string>
+<string name="assessment_sent_title_header">"អង្កេតមុន ៗ"</string>
 <string name="assessment_sent_score">Score</string>
 
 <!-- survey -->
-<string name="survey_title_exit">"Really Exit?"</string>
+<string name="survey_title_exit">"ពិតជាចេញ?"</string>
 <string name="survey_info_exit">"តើអ្នកពិតជាចង់ចាកចេញមែនទេ?"</string>
 
 <!-- widget -->
-<string name="widget_info_empty_statement">"Question statement"</string>
+<string name="widget_info_empty_statement">"សេចក្តីថ្លែងសំណួរ"</string>
 
 <!-- custom -->
 <string name="custom_title_tallies">"TALLIES - Add up and enter the totals for the following indicators from the registers in column A.  In column B enter the total numbers from the monthly reporting sheet"</string>
@@ -107,13 +108,13 @@ evaluation"</string>
 <string name="title_activity_settings">"ការកំនត់"</string>
 <string name="settings_checkbox_customize_fonts">"ប្តូរពុម្ពអក្សរ?"</string>
 <string name="settings_list_font_sizes">"ទំហំពុម្ពអក្សរ"</string>
-<string name="settings_text_dhis_server_url">"DHIS Server URL"</string>
-<string name="settings_text_dhis_user">"DHIS user"</string>
+<string name="settings_text_dhis_server_url">"DHIS ម៉ាស៊ីនមេ URL"</string>
+<string name="settings_text_dhis_user">"អ្នកប្រើ DHIS"</string>
 <string name="dialog_info_push_bad_credentials">"លិខិត​សម្គាល់​អាក្រក់​សម្រាប់​ជំរុញ​ឱ្យ​មាន "</string>
 <string name="dialog_info_push_empty_survey">"Empty surveys cannot be pushed"</string>
-<string name="settings_menu_legal">"Legal"</string>
-<string name="settings_menu_copyright">"Copyright"</string>
-<string name="settings_menu_licenses">"Software licenses"</string>
+<string name="settings_menu_legal">"ច្បាប់"</string>
+<string name="settings_menu_copyright">"រក្សាសិទ្ធិ"</string>
+<string name="settings_menu_licenses">"អាជ្ញាប័ណ្ណកម្មវិធី"</string>
 <string name="settings_menu_eula">"EULA"</string>
 <string name="go_to_feedback">"Go to feedback"</string>
 <string name="dialog_button_preview_feedback">"View Feedback"</string>
@@ -125,19 +126,19 @@ evaluation"</string>
 <string name="dialog_incompleted_compulsory_pulling">"Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions"</string>
 <string name="dialog_sent_survey_on_refresh_metadata">"Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?"</string>
 <string name="cancellingPull">"ដំណើរការនេះនឹងត្រូវបញ្ឈប់នៅក្នុងពីរបីវិនាទីី"</string>
-<string name="dashboard_title_total_assessments">"Total number of assessments undertaken"</string>
-<string name="dashboard_title_planned_type_never">"Never assessed"</string>
-<string name="dashboard_title_planned_type_overdue">"Overdue"</string>
-<string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
-<string name="dashboard_title_planned_type_future">"Future"</string>
+<string name="dashboard_title_total_assessments">"ចំនួនសរុបនៃការស្ទង់មតិដែលបានអនុវត្"</string>
+<string name="dashboard_title_planned_type_never">"មិនដែលវាយតម្លៃ"</string>
+<string name="dashboard_title_planned_type_overdue">"ហួសកំណត់"</string>
+<string name="dashboard_title_planned_type_next_30">"30 ថ្ងៃបន្ទាប់"</string>
+<string name="dashboard_title_planned_type_future">"អនាគត"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
 <string name="dashboard_title_planned_next_qa">"Next QA"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
-<string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="feedback_return">"ត្រឡប់ទៅការស្ទង់មតិទាំងអស់"</string>
+<string name="quality_of_care">"គុណភាពនៃការថែរក្សា (QoC) ពិន្ទុ:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
 <string name="feedback_info_failed">"FAIL"</string>
@@ -152,8 +153,8 @@ evaluation"</string>
 <string name="font_size_level3_title">"ដែលមានទំហំធំ"</string>
 <string name="font_size_level4_title">"បន្ថែមដែលមានទំហំធំ"</string>
 <string name="server_url">"DHIS2 server"</string>
-<string name="settings_text_dhis_password">"DHIS password"</string>
-<string name="settings_text_dhis_max_items">"DHIS max loaded surveys"</string>
+<string name="settings_text_dhis_password">"ពាក្យសម្ងាត់ DHIS"</string>
+<string name="settings_text_dhis_max_items">"DHIS អតិបរមាការស្ទង់មតិបានផ្ទុក"</string>
 <string name="settings_monitoring_target">"គោលដៅតាមដាន"</string>
 <string name="dialog_error_push_uids">"Incorrect UIDs found in push"</string>
 <string name="dialog_error_push_no_location_and_required">"No location available and it is a required field"</string>
@@ -163,9 +164,9 @@ evaluation"</string>
 <string name="dialog_info_push_stats">"Survey data pushed to server. Results:"</string>
 <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
 <string name="dialog_deleting_children">"You're about to delete the answer for questions that depend on this one. Do you really want to continue?"</string>
-<string name="dashboard_tip_pie_chart">"Quality of care (based on last assessment)"</string>
+<string name="dashboard_tip_pie_chart">"គុណភាពនៃការថែទាំ (ផ្អែកលើការស្ទង់មតិចុងក្រោយ)"</string>
 <string name="dialog_pull_error">"មានកំហុសខណៈពេលព្យាយាមទាញទិន្នន័យមេតា​ (Metadata) ពីប្រព័ន្ធ Dhis (DHIS Server)"</string>
-<string name="settings_menu_pull">"Refresh metadata"</string>
+<string name="settings_menu_pull">"ធ្វើឱ្យទិន្នន័យមេតាស្រស់"</string>
 <string name="dialog_pull_success">"ទិន្នន័យមេតា (Metadata) របស់ DHIS បានទាញដោយជោគជ័យពីម៉ាស៊ីនបម្រើ​ (Server)"</string>
 <string name="dialog_title_pull_response">"ស្ថានភាពទាញទិន្នន័យ"</string>
 <string name="progress_pull_connecting">"កំពុងភ្ជាប់ទៅម៉ាស៊ីនបម្រើ DHIS..."</string>
@@ -183,19 +184,19 @@ evaluation"</string>
 <string name="option_edit">"Edit"</string>
 <string name="option_mark_completed">"Mark as completed"</string>
 <string name="option_delete">"Delete"</string>
-<string name="hide_planning_tab_title">"Hide planning tab"</string>
+<string name="hide_planning_tab_title">"លាក់ផ្ទាំងផែនការ"</string>
 <string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
 <string name="plan">"Plan"</string>
 <string name="assess">"Assess - active surveys"</string>
 <string name="improve">"Improve"</string>
 <string name="monitor">"Monitor"</string>
 <string name="filter_all_org_units">"គ្រឿងអេកូទាំងអស់"</string>
-<string name="filter_all_org_assessments">"ទាំងអស់វាយតម្លៃ"</string>
+<string name="filter_all_org_assessments">"ការស្ទង់មតិទាំងអស់"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
 <string name="error_message_push">"ព្រឹត្តិការណ៍នេះជាមួយនឹងលេខសម្គាល់អ្នកប្រើ %s ។ ត្រូវបានផ្ទុកឡើងដោយគ្មានកាលបរិច្ឆេទ។ សូមទាក់ទងអ្នកគ្រប់គ្រង។"</string>
-<string name="monitor_js_assessments">"ការវាយតម្លៃអនុវត្ត"</string>
+<string name="monitor_js_assessments">"ការស្ទង់មតិធ្វើឡើង"</string>
 <string name="monitor_js_target">"\"គោលដៅ\""</string>
 <string name="monitor_js_quality_of_care">"\"គុណភាពនៃការថែទាំ: មុន \""</string>
 <string name="monitor_js_months">"\" ខែ\""</string>
@@ -237,12 +238,13 @@ evaluation"</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
+<string name="dialog_pie_chart_label_explanation">"រង្វង់ខាងក្រៅបង្ហាញអ្នកអំពីការបញ្ចប់ជារួម។\n\nរង្វង់ខាងក្នុងបង្ហាញអ្នកអំពីការបញ្ចប់សំណួរដែលចាំបាច់ជាធម្មតាត្រូវបានសម្គាល់ដោយ * ។ នៅពេលតែ 100% នៃសំណួរចាំបាច់ត្រូវបានបញ្ចប់អ្នកអាចសម្គាល់បានពេញលេញ"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
-<string name="plan_action_next_date">បន្ទាប់: %s</string>
+<string name="plan_action_next_date">ការវាយតម្លៃក្រោយ: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
-<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_gasp_title">គម្លាត:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
 <string name="plan_action_action_title">សកម្មភាព:</string>
 <string-array name="plan_action_dropdown_options">
@@ -261,14 +263,14 @@ evaluation"</string>
 <string name="supervision_on">ការត្រួតពិនិត្យលទ្ធផលលើ:</string>
 <string name="critical_steps">ជំហានរិះគន់ខកខាន:</string>
 <string name="url_not_available">URL មិនទាន់មានទេ</string>
-<string name="see_full_assessment">មើលការវាយតម្លៃពេញលេញនៅ</string>
+<string name="see_full_assessment">មើលការស្ទង់មតិពេញលេញនៅ</string>
 <string name="pref_header_general">General</string>
 <string name="install_file_manager">សូមដំឡើងកម្មវិធីគ្រប់គ្រងឯកសារមួយ។</string>
 <string name="get_db_file_dialog">សូមជ្រើសឯកសារមូលដ្ឋានទិន្នន័យដែលមានសុពលភាព</string>
 <string name="start">Start</string>
-<string name="on">"លើ"</string>
+<string name="on">កាលបរិច្ឆេទនៃការវាយតម្លៃ:</string>
 
-<string name="add">"បន្ថែម"</string>
+<string name="add">"ចាប់ផ្តើមការស្ទង់មតិ"</string>
 <string name="change_date">"ផ្លាស់ប្ដូរកាលបរិច្ឆេទ"</string>
 <string name="show_history">"កំណត់ប្រវត្តិសាស្រ្ត"</string>
 <string name="comments">"យោបល់"</string>
@@ -277,4 +279,7 @@ evaluation"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
+<string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
+<string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
+<string name="health_facility">មជ្ឈមណ្ឌលវេជ្ជសាស្ត្រ</string>
 </resources>

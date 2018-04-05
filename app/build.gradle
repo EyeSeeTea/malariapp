@@ -76,6 +76,8 @@ android {
             buildConfigField "boolean", "translations", "false"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            buildConfigField "boolean", "customFontHidden", "false"
+            buildConfigField "boolean", "OUSelectionHealthFacility", "false"
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
@@ -83,13 +85,17 @@ android {
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            buildConfigField "boolean", "customFontHidden", "true"
+            buildConfigField "boolean", "OUSelectionHealthFacility", "true"
         }
-        surveillance {
-            applicationId "org.eyeseetea.malariacare.surveillance_bb"
-            versionName "5.0.0"
+        eyeseetea {
+            applicationId "org.eyeseetea.malariacare.questmark_bb"
+            versionName "0.1.0"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            buildConfigField "boolean", "customFontHidden", "false"
+            buildConfigField "boolean", "OUSelectionHealthFacility", "false"
         }
     }
 

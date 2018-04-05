@@ -63,6 +63,7 @@
     <string name="import_data_option" translatable="false">import_data_option</string>
     <string name="overall_score_code" translatable="false">_Overall Score</string>
     <string name="main_score_class_code" translatable="false">_Overall Class</string>
+    <string name="providerCode" translatable="false">_ProviderName</string>
     <string name="main_score_a_code" translatable="false">_Overall Class A</string>
     <string name="main_score_b_code" translatable="false">_Overall Class B</string>
     <string name="main_score_c_code" translatable="false">_Overall Class C</string>
