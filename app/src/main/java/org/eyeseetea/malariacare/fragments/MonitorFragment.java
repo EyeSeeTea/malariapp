@@ -103,9 +103,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             return null;
         }
 
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.monitor_org_unit_program_filter_view);
+        loadFilter();
 
         orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
 
@@ -186,11 +184,18 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
         }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
+
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.monitor_org_unit_program_filter_view);
     }
 
     public void setFilterType(MonitorFilter monitorFilter) {

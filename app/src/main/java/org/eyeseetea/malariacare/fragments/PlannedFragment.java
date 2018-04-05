@@ -80,8 +80,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
             return null;
         }
 
-        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
-                .findViewById(R.id.plan_org_unit_program_filter_view);
+        loadFilter();
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -135,12 +134,18 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
         }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
+
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) org.eyeseetea.malariacare.DashboardActivity.dashboardActivity
+                        .findViewById(R.id.plan_org_unit_program_filter_view);
     }
 
     /**
