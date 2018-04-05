@@ -120,7 +120,8 @@ function buildRowFacility(facility){
 	//start row
 	var row="<tr>";
 	//name
-	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;' >"+facility.name+"</td></tr><tr>";
+	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;"
+	 +" padding:8px 16px 8px 16px;' >"+facility.name+"</td></tr><tr>";
 	//value x month
 	for(var i=0;i<facility.values.length;i++){
 		var facilityMonth=facility.values[i];

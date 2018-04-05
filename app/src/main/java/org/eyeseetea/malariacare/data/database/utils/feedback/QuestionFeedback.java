@@ -56,13 +56,17 @@ public class QuestionFeedback implements Feedback {
      * Flag that indicates if this element has its feedback open or not
      */
     private boolean feedbackShown;
+    /**
+     * Default value to decide if the question is shown or hidden.
+     */
+    private boolean defaultVisibility=false;
 
     public QuestionFeedback(QuestionDB question, ValueDB value) {
         this.question = question;
         this.value = value;
         this.feedbackShown = false;
         this.media = null;
-        this.setShown(true);
+        this.setShown(defaultVisibility);
     }
 
     @Override

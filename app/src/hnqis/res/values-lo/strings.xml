@@ -47,8 +47,8 @@
 <string name="assessment_title_facility_date">"ຊື່ສະຖານທີ່ບໍລິການ /ຂໍ້ມູນການສຳຫຼວດ"</string>
 <string name="assessment_title_state">"ສຳເລັດແລ້ວ (%)"</string>
 <string name="assessment_sent_date">"ວັນທີສຳເລັດ"</string>
-<string name="assessment_title_header">"ການປະເມີນຄັ້ງນີ້"</string>
-<string name="assessment_sent_title_header">"ການປະເມີນຄັ້ງກ່ອນ"</string>
+<string name="assessment_title_header">"ການສໍາຫຼວດຢ່າງຫ້າວຫັນ"</string>
+<string name="assessment_sent_title_header">"ການສໍາຫຼວດກ່ອນຫນ້າ (s)"</string>
 
 <!-- survey -->
 <string name="survey_title_exit">"ຕ້ອງການອອກຈາກລະບົບແທ້ບໍ?"</string>
@@ -124,7 +124,7 @@
 <string name="dialog_incompleted_compulsory_pulling">"ເພື່ອປັບປຸງລະບົບໂຄງຮ່າງ, ຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງຈະຖືກລຶບອອກ ຫຼື ຕ້ອງສົ່ງອອກໝົດກ່ອນ. ກະລຸນາຕອບຄຳຖາມທູກໆຄຳຖາມທີ່ຈຳເປັນຕ້ອງຕອບ"</string>
 <string name="dialog_sent_survey_on_refresh_metadata">"ເພື່ອປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງຈະຖືກລຶບ. ເຈົ້າຍັງບໍ່ທັນໄດ້ສົ່ງຂໍ້ມູນ %s ອັນ. ເຈົ້າຕ້ອງການອັບໂຫຼດຂໍ້ມູນດັ່ງກ່າວກ່ອນການປັບປຸງບໍ?"</string>
 <string name="cancellingPull">"ລະ​ບົບຈະ​ຢຸດການ​ທຳ​ງານ​ພາຍ​ໃນ​ສອງ​ສາມ​ວິນາທີ​ນີ້"</string>
-<string name="dashboard_title_total_assessments">"ຈຳນວນການປະເມີນຜົນທັງໝົດທີ່ກຳລັງດຳເນີນການຢູ່"</string>
+<string name="dashboard_title_total_assessments">"ຈໍານວນການສໍາຫຼວດປະຕິບັດ່"</string>
 <string name="dashboard_title_planned_type_never">"ບໍ່ເຄີຍປະເມີນ"</string>
 <string name="dashboard_title_planned_type_overdue">"ກາຍກຳນົດ"</string>
 <string name="dashboard_title_planned_type_next_30">"ໃນ 30 ວັນຕໍ່ໜ້າ"</string>
@@ -162,7 +162,7 @@
 <string name="dialog_info_push_stats">"ຂໍ້ມູນໄດ້ຖືກນຳເຂົ້າໃສ່ລະບົບແລ້ວ. ຜົນໄດ້ຮັບ:"</string>
 <string name="dialog_info_on_complete">"ການປະເມີນນີ້ໄດ້ຖືກບັນທຶກວ່າສຳລັດແລ້ວ. ເຈົ້າສາມາດເຂົ້າເບິ່ງໄດ້ທີ່ໜ້າຕ່າງປັບປຸງ"</string>
 <string name="dialog_deleting_children">"ເຈົ້າກຳລັງຈະລຶບຄຳຕອບຂອງບັນດາຄຳຖາມທີ່ຂື້ນກັບໝວດນີ້. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
-<string name="dashboard_tip_pie_chart">"ຄະແນນຄຸນນະພາບ (ອິງໃສ່ການປະເມີນຜົນຄັ້ງທີ່ຜ່ານມາ)"</string>
+<string name="dashboard_tip_pie_chart">"ຄຸນະພາບຂອງການດູແລ (ອີງຕາມການສໍາຫຼວດສຸດທ້າຍ)"</string>
 <string name="dialog_pull_error">"ເກີດຄວາມຜິດພາດໃນຄະນະທີ່ກຳລັງໂຫຼດລະບົບໂຄງຮ່າງຂໍ້ມູນຈາກລະບົບ"</string>
 <string name="settings_menu_pull">"ປັບປຸງລະບົບໂຄງຮ່າງ"</string>
 <string name="dialog_pull_success">"ຊຸດຂໍ້ມູນໂຄງຮ່າງໄດ້ໂຫຼດມາຈາກລະບົບສຳເລັດແລ້ວ"</string>
@@ -189,12 +189,12 @@
 <string name="improve">"ປັບປູງ"</string>
 <string name="monitor">"ຕິດຕາມ"</string>
 <string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
-<string name="filter_all_org_assessments">"ການປະເມີນຜົນທັງໝົດ"</string>
+<string name="filter_all_org_assessments">"ທຸກໆການສໍາຫຼວດ"</string>
 <string name="dialog_content_dhis_preference_login">"ການປ່ຽນເຂົ້າໄປສູ່ລະບົບຈະຕ້ອງໄດ້ອອກ ແລະ ເຂົ້າໃໝ່. ທຸກໆຂໍ້ມູນການສຳຫຼວດທີ່ຍັງບໍ່ທັນສົ່ງຈະຖືກລຶບອອກ. ເຈົ້າຕ້ອງການຈະດຳເນີດການຕໍ່ບໍ? "</string>
 <string name="lastcommit">"ລຸ້ນທີ %s"</string>
 <string name="unavailable">"ບໍ່ມີ"</string>
 <string name="error_message_push">"ຂໍ້ມູນສຳຫຼວດທີ່ມີລະຫັດ UID: %s ນີ້, ຖືກໂຫຼດເຂົ້າໃສ່ລະບົບໂດຍບໍ່ມີວັນທີ. ກະລຸນາຕິດຕໍ່ຫາຜູ້ຄວບຄຸມລະບົບ."</string>
-<string name="monitor_js_assessments">"ການປະເມີນທີ່ກຳລັງດຳເນີດການ"</string>
+<string name="monitor_js_assessments">"ການສໍາຫຼວດປະຕິບັດ"</string>
 <string name="monitor_js_target">"ເປົ້າໝາຍ"</string>
 <string name="monitor_js_quality_of_care">"ຄຸນນະພາບຂອງການບໍລິການ: .....ຜ່ານມາ"</string>
 <string name="monitor_js_months">"...ເດືອນ"</string>
@@ -234,7 +234,7 @@
 <string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
-<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ. \ n \ n ວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
+<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="feedback_show_only_one_or_show_all">"ສະແດງສະເພາະຄວາມເຫັນທີ່ກ່ຽວຂ້ອງ"</string>
@@ -263,10 +263,10 @@
 <string name="supervision_on">ຜົນການຊີ້ນໍາກ່ຽວກັບ:</string>
 <string name="critical_steps">ຂັ້ນຕອນສໍາຄັນທີ່ພາດໂອກາດນີ້:</string>
 <string name="url_not_available">URL ບໍ່ສາມາດໃຊ້ໄດ້</string>
-<string name="see_full_assessment">ເບິ່ງການປະເມີນຜົນເຕັມທີ່ຢູ່</string>
+<string name="see_full_assessment">ເບິ່ງການສໍາຫຼວດຢ່າງເຕັມທີ່ຢູ່:</string>
 <string name="on">""</string>
 
-<string name="add">"ຕື່ມຂໍ້ມູນ"</string>
+<string name="add">"ເລີ່ມຕົ້ນການສໍາຫຼວດ"</string>
 <string name="change_date">"ປ່ຽນວັນທີ"</string>
 <string name="show_history">"ປະຫວັດການຈັດຕາຕະລາງ"</string>
 <string name="comments">"ຄວາມຄິດເຫັນ"</string>
@@ -276,4 +276,6 @@
 <string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+<string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
+<string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 </resources>

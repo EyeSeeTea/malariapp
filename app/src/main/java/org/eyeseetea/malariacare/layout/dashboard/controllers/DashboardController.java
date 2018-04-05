@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -409,6 +410,7 @@ public class DashboardController {
 
         );
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
@@ -457,6 +459,7 @@ public class DashboardController {
 
             );
             alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void showHistory(SurveyDB survey) {
@@ -581,7 +584,9 @@ public class DashboardController {
                     }
                 }
         );
+
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
