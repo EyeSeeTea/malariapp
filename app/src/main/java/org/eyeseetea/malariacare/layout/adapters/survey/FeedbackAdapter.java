@@ -38,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -270,7 +271,7 @@ public class FeedbackAdapter extends BaseAdapter {
                     + "</b></font>";
         }
 
-        String label = replaceLessThanToEntityHTMLChars(feedback.getLabel());
+        String label= StringEscapeUtils.escapeHtml4(feedback.getLabel());
 
         textView.setText(Html.fromHtml(compulsoryMark + label));
 
@@ -322,13 +323,6 @@ public class FeedbackAdapter extends BaseAdapter {
 
 
         return rowLayout;
-    }
-
-    private String replaceLessThanToEntityHTMLChars(String label) {
-        if (label.contains("<")) {
-            label = label.replace("<", "&lt;");
-        }
-        return label;
     }
 
     /**
