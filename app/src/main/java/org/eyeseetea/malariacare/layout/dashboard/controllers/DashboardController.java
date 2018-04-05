@@ -20,10 +20,9 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,20 +41,11 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.DoublePieChart;
+import org.eyeseetea.malariacare.views.SurveyDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -331,111 +321,38 @@ public class DashboardController {
     }
 
 
-    public AlertDialog assetsModelDialog(final SurveyDB survey) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
+    public AlertDialog assetsModelDialog(@NonNull final SurveyDB survey) {
 
-        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
+        SurveyDialog.Builder builder = SurveyDialog.newBuilder(dashboardActivity, survey);
 
-        View v = inflater.inflate(R.layout.modal_menu, null);
+        final View.OnClickListener editButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSurveySelected(survey);
+            }
+        };
 
-        builder.setView(v);
+        final View.OnClickListener completeButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMarkAsCompleted(survey);
+            }
+        };
 
-        final DoublePieChart mChart = (DoublePieChart) v.findViewById(R.id.pie_chart);
-        Button delete = (Button) v.findViewById(R.id.delete);
-        Button cancel = (Button) v.findViewById(R.id.cancel);
-        Button markComplete = (Button) v.findViewById(R.id.mark_completed);
-        Button edit = (Button) v.findViewById(R.id.edit);
-        final TextView overall = (TextView) v.findViewById(R.id.overall_percent);
-        final TextView mandatory = (TextView) v.findViewById(R.id.mandatory_percent);
+        final View.OnClickListener deleteButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //this method create a new survey getting the getScheduledDate date of the
+                // oldsurvey, and remove it.
+                SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
+                DashboardActivity.reloadDashboard();
+            }
+        };
 
-        final AlertDialog alertDialog = builder.create();
-
-        edit.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onSurveySelected(survey);
-                        alertDialog.dismiss();
-                    }
-                }
-
-        );
-        markComplete.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onMarkAsCompleted(survey);
-                        alertDialog.dismiss();
-                    }
-                }
-
-        );
-        delete.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new AlertDialog.Builder(dashboardActivity)
-                                .setTitle(dashboardActivity.getString(R.string.dialog_title_delete_survey))
-                                .setMessage(String.format(""+dashboardActivity.getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                        SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                                        dashboardActivity.reloadDashboard();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, null).create().show();
-                        alertDialog.dismiss();
-                    }
-                }
-        );
-        cancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                }
-        );
-
-
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-
-                        if (surveyAnsweredRatio != null) {
-                            overall.setText(surveyAnsweredRatio.getTotalStatus() +
-                                    dashboardActivity.getString(R.string.percent));
-
-                            mandatory.setText(surveyAnsweredRatio.getMandatoryStatus() +
-                                    dashboardActivity.getString(R.string.percent));
-
-                            mChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-
-                            alertDialog.show();
-
-                            alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                        }
-                    }
-                });
-
-        return alertDialog;
+        return builder.editButton(editButtonListener)
+                .completeButton(completeButtonListener)
+                .deleteButton(deleteButtonListener)
+                .build();
     }
 
     /**

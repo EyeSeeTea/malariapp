@@ -28,7 +28,7 @@
 <string name="dialog_content_logout_confirmation">"Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer ?"</string>
 <string name="dialog_info_ask_for_completion">"Êtes-vous sûr de vouloir compléter %s ? Vous ne pouvez pas annuler cette action"</string>
 <string name="dialog_info_ask_for_completion_plan">"Êtes-vous sûr de vouloir compléter le plan? Vous ne pouvez pas annuler cette action"</string>
-
+<string name="dialog_pie_chart_label_explanation">"Le cercle extérieur vous montre l'achèvement global.\n\nLe cercle intérieur affiche l'achèvement des questions obligatoires, normalement marquées d'un *. Seulement lorsque 100% des questions obligatoires sont complétées, vous pouvez "Marquer comme terminé"</string>
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Prêt pour envoyer"</string>
 <string name="dashboard_info_sent">"Envoyé"</string>

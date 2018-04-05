@@ -221,6 +221,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Você tem pesquisas %d não enviadas e será excluído. Deseja continuar?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Você não tem pesquisas não solicitadas. Você quer continuar?"</string>
+<string name="dialog_pie_chart_label_explanation">"O círculo externo mostra a conclusão geral.\n\nO círculo interno mostra a conclusão de perguntas obrigatórias, normalmente marcadas com *. Somente quando 100% das perguntas obrigatórias estiverem concluídas, você pode marcar completo."</string>
 <string name="install_file_manager">Instale um Gerenciador de Arquivos.</string>
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>

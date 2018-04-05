@@ -225,6 +225,7 @@ clínica"</string>
 <string name="dialog_action_refresh">"Refrescar los metadatos requiere eliminar o enviar los datos no enviados."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Tiene %d encuestas no enviadas y serán eliminadas. ¿Quieres continuar?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"No tiene encuestas no solicitadas. ¿Quieres continuar?"</string>
+<string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
 <string name="install_file_manager">Instale un Administrador de archivos.</string>
 <string name="get_db_file_dialog">Seleccione un archivo db válido.</string>
 <string name="start">Comenzar</string>
