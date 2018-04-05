@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -313,15 +312,15 @@ public class DashboardController {
     }
 
     /**
-     * Called when click on assets survey
+     * Called when click on assess survey
      * @param survey
      */
-    public void onAssetsSelected(SurveyDB survey) {
-        assetsModelDialog(survey);
+    public void onAssessSelected(SurveyDB survey) {
+        assessModelDialog(survey);
     }
 
 
-    public AlertDialog assetsModelDialog(@NonNull final SurveyDB survey) {
+    public AlertDialog assessModelDialog(@NonNull final SurveyDB survey) {
 
         SurveyDialog.Builder builder = SurveyDialog.newBuilder(dashboardActivity, survey);
 
