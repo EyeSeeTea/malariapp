@@ -20,11 +20,6 @@ import java.util.List;
 public class OrgUnitProgramFilterView
         extends FrameLayout implements OrgUnitProgramFilterPresenter.View {
 
-
-    public void resetAllFilters() {
-        presenter.resetAllFilters();
-    }
-
     public enum FilterType {EXCLUSIVE,NON_EXCLUSIVE}
 
     public interface FilterChangedListener {

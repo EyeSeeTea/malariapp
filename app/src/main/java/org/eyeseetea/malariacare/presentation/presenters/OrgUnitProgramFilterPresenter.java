@@ -141,11 +141,6 @@ public class OrgUnitProgramFilterPresenter {
         notifySelectProgram();
     }
 
-    public void resetAllFilters() {
-        onOrgUnitSelected(mOrgUnitDefaultOption);
-        onProgramSelected(mProgramDefaultOption);
-    }
-
     public interface View{
         void renderPrograms(List<ProgramDB> programs);
         void renderOrgUnits(List<OrgUnitDB> orgUnits);
