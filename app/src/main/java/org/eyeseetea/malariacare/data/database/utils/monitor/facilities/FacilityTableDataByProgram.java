@@ -17,10 +17,9 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
+package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.utils.AUtils;
 
@@ -30,33 +29,32 @@ import java.util.Map;
 /**
  * Created by idelcano on 23/08/2016.
  */
-public class FacilityTableDataByOrgUnit extends FacilityTableDataBase{
+public class FacilityTableDataByProgram extends  FacilityTableDataBase {
 
-    private static final String TAG=".FacilityTableDataOU";
+    private static final String TAG=".FacilityTableDataP";
     Map<String,FacilityRowDataBase> rowData;
-    public FacilityTableDataByOrgUnit(ProgramDB program, OrgUnitDB orgUnit){
-        this.title= AUtils.escapeQuotes(program.getName());
-        this.uid=program.getUid();
-        this.id=String.valueOf(program.getId_program());
+
+    public FacilityTableDataByProgram(OrgUnitDB orgUnit){
+        this.title=AUtils.escapeQuotes(orgUnit.getName());
+        this.uid=orgUnit.getUid();
+        this.id=String.valueOf(orgUnit.getId_org_unit());
         rowData=new HashMap<>();
     }
 
     public void addSurvey(SurveyDB survey){
         OrgUnitDB orgUnit=survey.getOrgUnit();
         //Get facility row
-        FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString());
+        FacilityRowDataBase facilityRow = rowData.get(orgUnit.toString()+survey.getProgram().getUid());
         //First time facility
         if(facilityRow==null){
-            facilityRow=new FacilityRowDataBase(AUtils.escapeQuotes(orgUnit.getName()));
-            rowData.put(orgUnit.toString(),facilityRow);
+            facilityRow=new FacilityRowDataBase(AUtils.escapeQuotes(survey.getProgram().getName()));
+            rowData.put(orgUnit.toString()+survey.getProgram().getUid(),facilityRow);
         }
         //Add survey
         facilityRow.addSurvey(survey);
     }
+
     public String getAsJSON(){
-        return String.format("{title:'%s',months:%s,tables:%s,tableuid:'%s',id:'%s'}",title,
-                getMonthsAsJSONArray(),
-                getFacilitiesAsJSONArray(rowData),
-                uid,id);
+        return String.format("{title:'%s',months:%s,tables:%s,tableuid:'%s',id:'%s'}",title,getMonthsAsJSONArray(),getFacilitiesAsJSONArray(rowData),uid,id);
     }
 }

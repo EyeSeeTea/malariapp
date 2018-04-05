@@ -47,7 +47,6 @@ import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -85,6 +84,7 @@ public class ConvertToSDKVisitor implements
     String completionDateCode;
 
     //ObsActionPlan control dataelements
+    String providerCode;
     String gapsCode;
     String planActionCode;
     String action1Code;
@@ -155,6 +155,8 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.completed_on_code));
         updatedUserCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.uploaded_by_code));
+        providerCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.providerCode));
         gapsCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.gaps_code));
         planActionCode = ServerMetadataDB.findControlDataElementUid(
@@ -181,6 +183,11 @@ public class ConvertToSDKVisitor implements
         currentEvent.setEventUid(survey.getEventUid());
         currentEvent.setEventDate(new DateTime(currentSurvey.getCreationDate()));
         currentEvent.save();
+        if(obsActionPlan.getProvider()!=null) {
+            if (controlDataElementExistsInServer(providerCode)) {
+                addOrUpdateDataValue(providerCode, obsActionPlan.getProvider());
+            }
+        }
         if(obsActionPlan.getGaps()!=null) {
             if (controlDataElementExistsInServer(gapsCode)) {
                 addOrUpdateDataValue(gapsCode, obsActionPlan.getGaps());
