@@ -41,8 +41,8 @@
 <string name="assessment_title_facility_date">"Facility / Survey"</string>
 <string name="assessment_title_state">"% Complete"</string>
 <string name="assessment_sent_date">"Comp date"</string>
-<string name="assessment_title_header">"Active Assessment(s)"</string>
-<string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
+<string name="assessment_title_header">"Active Survey(s)"</string>
+<string name="assessment_sent_title_header">"Previous Survey(s)"</string>
 
 <string name="survey_title_exit">"Really Exit?"</string>
 <string name="survey_info_exit">"Are you sure you want to exit?"</string>
@@ -111,7 +111,7 @@ evaluation"</string>
 <string name="dialog_incompleted_compulsory_pulling">"Metadata refresh require delete or complete your unsent data. Please answer at least all the compulsory questions"</string>
 <string name="dialog_sent_survey_on_refresh_metadata">"Metadata refresh will delete your unsent data. You have %s unsent surveys. Do you to push them before refresh?"</string>
 <string name="cancellingPull">"The process will be stopped in a few seconds "</string>
-<string name="dashboard_title_total_assessments">"Total number of assessments undertaken"</string>
+<string name="dashboard_title_total_assessments">"Total number of surveys undertaken"</string>
 <string name="dashboard_title_planned_type_never">"Never assessed"</string>
 <string name="dashboard_title_planned_type_overdue">"Overdue"</string>
 <string name="dashboard_title_planned_type_next_30">"Next 30 days"</string>
@@ -122,9 +122,9 @@ evaluation"</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
-<string name="feedback_show_only_one_or_show_all">"Show only last feedback per Program/OU"</string>
-<string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="feedback_show_only_one_or_show_all">"Show only last feedback"</string>
+<string name="feedback_return">"Return to all surveys"</string>
+<string name="quality_of_care">"QUALITY OF CARE (QoC) SCORE:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"Pass"</string>
 <string name="feedback_info_failed">"Fail"</string>
@@ -151,7 +151,7 @@ evaluation"</string>
 <string name="dialog_info_push_stats">"Survey data pushed to server. Results:"</string>
 <string name="dialog_info_on_complete">"The survey %s has been marked as completed. You'll find it now in the Improve tab"</string>
 <string name="dialog_deleting_children">"You're about to delete the answer for questions that depend on this one. Do you really want to continue?"</string>
-<string name="dashboard_tip_pie_chart">"Quality of care (based on last assessment)"</string>
+<string name="dashboard_tip_pie_chart">"Quality of care (based on the last survey)"</string>
 <string name="dialog_pull_error">"Error while trying to pull metadata from dhis server"</string>
 <string name="settings_menu_pull">"Refresh metadata"</string>
 <string name="dialog_pull_success">"Dhis metadata successfully pulled from server"</string>
@@ -182,12 +182,12 @@ evaluation"</string>
 <string name="monitor">"Monitor"</string>
 
 <string name="filter_all_org_units">"All Org Units"</string>
-<string name="filter_all_org_assessments">"All Assessed"</string>
+<string name="filter_all_org_assessments">"All Surveys"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
 <string name="lastcommit">"Version %s"</string>
 <string name="unavailable">"Unavailable"</string>
 <string name="error_message_push">"The event with UID: %s. was uploaded without date. Please contact the administrator. "</string>
-<string name="monitor_js_assessments">"Assessments undertaken"</string>
+<string name="monitor_js_assessments">"Surveys undertaken"</string>
 <string name="monitor_js_target">"Target"</string>
 <string name="monitor_js_quality_of_care">"Quality of care: Last "</string>
 <string name="monitor_js_months">" months"</string>
@@ -225,17 +225,17 @@ evaluation"</string>
 <string name="dialog_action_refresh">"Metadata refresh require delete or send your unsent data."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
-
+<string name="dialog_pie_chart_label_explanation">"The outer circle shows you the overall completion.\n\nThe inner circle shows you the completion of mandatory questions, normally marked with an *. Only when 100% of the mandatory questions are completed, you can 'Mark Complete'"</string>
 <string name="header_reschedule">"Reschedule"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
 <string name="plan_action_today_date">Completed: %s</string>
-<string name="plan_action_next_date">Next: %s</string>
+<string name="plan_action_next_date">NEXT ASSESSMENT: %s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">Action plan:</string>
-<string name="plan_action_action_title">Action:</string>
+<string name="plan_action_gasp_title">GAPS:</string>
+<string name="plan_action_action_plan_title">ACTION PLAN:</string>
+<string name="plan_action_action_title">ACTION:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Refresher training during SSV</item>
@@ -250,20 +250,20 @@ evaluation"</string>
 <item>Practice proper insertion technique at time of visit</item>
 </string-array>
 <string name="supervision_on">Results supervision on:</string>
-<string name="critical_steps">Critical Steps missed:</string>
+<string name="critical_steps">CRITICAL STEPS MISSED:</string>
 <string name="url_not_available">"URL not yet available"</string>
-<string name="see_full_assessment">"See full assessment at:"</string>
+<string name="see_full_assessment">"See full survey at:"</string>
 
 <string name="install_file_manager">Please install a File Manager.</string>
 <string name="get_db_file_dialog">Please select a valid db file</string>
 <string name="start">Start</string>
-<string name="on">"on"</string>
-<string name="date_month_text_format">"MMMM d',' YYYY"</string>
+<string name="on">"DATE OF ASSESSMENT:"</string>
+<string name="date_month_text_format">"MMMM d',' yyyy"</string>
 
 
-<string name="add">"Add"</string>
+<string name="add">"Start survey"</string>
 <string name="change_date">"Change date"</string>
-<string name="show_history">"Schedule History"</string>
+<string name="show_history">"Schedule history"</string>
 <string name="comments">"Comments"</string>
 <string name="dates">"Previous dates"</string>
 <string name="mark_complete">"Mark complete"</string>
@@ -273,4 +273,6 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="plan_action_provider_title" >"PROVIDER NAME:"</string>
+<string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 </resources>

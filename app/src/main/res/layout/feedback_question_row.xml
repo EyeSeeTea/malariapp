@@ -95,7 +95,7 @@
             android:id="@+id/feedback_feedback_html"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
+            android:paddingLeft="@dimen/feedback_question_row_left_padding"
             android:paddingTop="5dip"
             android:paddingBottom="5dip"
             android:textColor="@color/black"
