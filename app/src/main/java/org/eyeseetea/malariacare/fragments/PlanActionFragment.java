@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -463,7 +464,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(survey.getScheduledDate(),
+                EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         EventExtended.EUROPEAN_DATE_FORMAT));
 
         if(obsActionPlan.getProvider()!=null && !obsActionPlan.getProvider().isEmpty()) {
