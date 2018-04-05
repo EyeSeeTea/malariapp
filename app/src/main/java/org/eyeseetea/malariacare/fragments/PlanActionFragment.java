@@ -80,6 +80,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private CustomSpinner actionSpinner;
     private CustomSpinner secondaryActionSpinner;
     private FloatingActionButton mFabComplete;
+    private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
     private ObsActionPlanPresenter presenter;
 
@@ -227,7 +228,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private void initFAB() {
         initFabComplete(mRootView);
 
-        FloatingActionButton fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
+        fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
 
         fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,6 +435,16 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         getActivity().startActivity(sendIntent);
 
         System.out.println("data:" + data);
+    }
+
+    @Override
+    public void showShareButton() {
+        fabShare.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideShareButton() {
+        fabShare.setVisibility(View.GONE);
     }
 
     private String extractTextData(ObsActionPlanDB obsActionPlan, SurveyDB survey,
