@@ -377,7 +377,7 @@ public class DashboardActivity extends BaseActivity {
         improveModuleController.onPlanActionSelected(survey);
     }
 
-    public void onAssetsSelected(SurveyDB survey) {
+    public void onAssessSelected(SurveyDB survey) {
         dashboardController.onAssessSelected(survey);
     }
 
