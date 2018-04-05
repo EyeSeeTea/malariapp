@@ -66,7 +66,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         menuDots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dashboardActivity.onAssetsSelected(survey);
+                dashboardActivity.onAssessSelected(survey);
             }
         });
     }
