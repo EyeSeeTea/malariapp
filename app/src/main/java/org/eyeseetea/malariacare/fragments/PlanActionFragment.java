@@ -376,13 +376,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     public void updateStatusView(Integer status) {
         if (status.equals(Constants.SURVEY_IN_PROGRESS)) {
             mFabComplete.setImageResource(R.drawable.ic_action_uncheck);
-            hideShareButton();
         } else if (status == Constants.SURVEY_SENT) {
             mFabComplete.setImageResource(R.drawable.ic_double_check);
-            hideShareButton();
         }else {
             mFabComplete.setImageResource(R.drawable.ic_action_check);
-            showShareButton();
         }
     }
 
