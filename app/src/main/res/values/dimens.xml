@@ -92,6 +92,7 @@
     <dimen name="standard_50">50dp</dimen>
     <dimen name="standard_45">45dp</dimen>
     <dimen name="standard_21">25dp</dimen>
+    <dimen name="standard_30">30dp</dimen>
     <dimen name="header_min_height">50dp</dimen>
     <dimen name="row_min_height">56dp</dimen>
     <dimen name="row_left_padding">10dp</dimen>
@@ -102,4 +103,6 @@
     <dimen name="planing_text_first_title_size">15dp</dimen>
     <dimen name="header_light_text_size">18dp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
+    <dimen name="feedback_question_row_left_padding">10dp</dimen>
+    <dimen name="mini_fab_separation">6dp</dimen>
 </resources>
