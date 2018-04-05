@@ -57,6 +57,7 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.Facility
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -274,6 +275,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 //Update hardcoded messages
                 new MonitorMessagesBuilder().addDataInChart(view);
 
+                //Set the colors of red/green/yellow pie and table
+                FacilityTableBuilderBase.setColor(view);
+
                 //Add line chart
                 if (isOrgUnitFilterActive()) {
                     new SentSurveysBuilderByOrgUnit(surveysForGraphic, getActivity(),
@@ -309,8 +313,6 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 }
 
                 //Draw facility main table
-                //Set the colors of red/green/yellow pie and table
-                FacilityTableBuilderBase.setColor(view);
 
                 String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
                 String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
@@ -401,11 +403,13 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
             score.setText(survey.getMainScore()+"");
             Resources resources = getResources();
-            if(survey.isTypeA()){
+
+            ScoreType scoreType = new ScoreType(survey.getMainScore());
+            if (scoreType.isTypeA()) {
                 score.setBackgroundColor(resources.getColor(R.color.lightGreen));
-            }else if (survey.isTypeB()){
+            }else if (scoreType.isTypeB()){
                 score.setBackgroundColor(resources.getColor(R.color.assess_yellow));
-            }else if (survey.isTypeC()){
+            }else if (scoreType.isTypeC()){
                 score.setBackgroundColor(resources.getColor(R.color.darkRed));
             }
             row.setOnClickListener(new View.OnClickListener() {
