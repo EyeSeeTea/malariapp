@@ -1,0 +1,144 @@
+1~ZMB_LabOfficer
+2~GHA_FacilityType
+3~Diagnosis 2 (HNQIS)
+4~MZ_GapAddressed
+5~MZ_Yes0No1Unk0
+6~Yes1No1Match (HNQIS)
+7~RéelSimulé (HNQIS)
+8~MZ_PharmacyClinical
+9~TZ_ClinOfficer
+10~MSF - PosNegUn
+11~MZ_Yes0NA1No1
+12~MZ_AntiMalTreatment
+13~MZ_MALresults2
+14~MZ_Yes1No0NotAvailable1
+15~KH_SRV-Gender
+16~MicroOptOut
+17~MALSpecies
+18~MSF - Yes/No
+19~OuiNon (to be removed) (HNQIS)
+20~MZ_Yes1No0
+21~Diagnosis (HNQIS)
+22~PresentFunctional
+23~TestType2
+24~MZ_Yes1No0Prescribed1
+25~Antibiotic
+26~CCMOptOut
+27~MZ_Gender
+28~GHA_Cadre
+29~Yes1Apparent1Asked
+30~MZ_Done
+31~ZMB_ClinOfficer
+32~MZ_Treatment
+33~YesNoMatch (HNQIS)
+34~RDTOptOut
+35~GHA_Officer
+36~MZ_NormalAbnormal
+37~SupCadre
+38~MSF - Languages
+39~Yes1No1NotAsked0
+40~WasteMgmt
+41~Yes1No0Prescribed1
+42~MZ_PresentFunctional
+43~Yes1No1Asked0Applicable1
+44~KH_SRV-Species
+45~Yes1No1Asked0
+46~MZ_ClinOff
+47~DB - DE Type
+48~MSF - GAP
+49~Water
+50~DB - Question Type
+51~MZ_Feedback
+52~Yes1No1NotAsked0Male1
+53~Yes1NotAvailable1No0
+54~MSF - Tests
+55~Power
+56~MZ_TestType
+57~MZ_Yes1No1NotAsked0Applicable1
+58~Yes1No0Na1
+59~SevereNonsevere
+60~Yes1No0NotAvailable1
+61~Yes0NA1No1
+62~MZ_TestResult
+63~Yes1No0 (HNQIS)
+64~TestType
+65~Treatment 2 (HNQIS)
+66~TestType3
+67~MZ_LabOff
+68~MALresults2
+69~Officer2
+70~ReportingFormat
+71~Yes1No1Asked0Male1
+72~MZ_PositiveNegative
+73~MZ_PatientInfoRec
+74~Yes1No1NotAsked0Applicable1
+75~MZ_CCMOptOut
+76~TestResult
+77~MZ_Water
+78~MWI_CountingMethod
+79~Yes1No0Applicable1
+80~GapAddressed
+81~Treatment
+82~KH_SRV-Risk Group
+83~MWI_ClinOfficer
+84~MZ_Yes1Apparent1Asked
+85~ANClocation
+86~MZ_Duration
+87~MZ_TestType2
+88~PharmOptOut
+89~KH_SRV-Treatment
+90~TZ_LabOfficer
+91~SF - YesNo (temporal) (HNQIS)
+92~MWI_LabOfficer
+93~MSf - YesNotUnk
+94~MZ_Yes0No1
+95~DM_DataEntry
+96~MZ_TestType3
+97~DM_Valid
+98~Yes1No0 (numeric codes) (HNQIS)
+99~Officer
+100~DM_Transfer
+101~YesNoUnknown (HNQIS)
+102~Gender
+103~MZ_CountingMethod
+104~RealSimulated (HNQIS)
+105~ReferredAdmitted
+106~Yes0No1
+107~Feedback
+108~Done
+109~MZ_ReportingFormat
+110~DB - Parent Child
+111~MSF - FP Method
+112~Y/N/NA (HNQIS)
+113~MZ_Yes1No1Unk1Asked0
+114~Counting method
+115~Duration
+116~OuiNon (HNQIS)
+117~MZ_ANClocation
+118~HealthFacilityLevel
+119~GHA_FacilityOwn
+120~AntiMalTreatment
+121~Yes1No1Unk1Asked0
+122~Yes1No0ANP1
+123~MZ_MALspecies
+124~InvOuiNon (HNQIS)
+125~DHIS2_Access
+126~ZMB_Officer
+127~MZ_Frequency
+128~MWI_SevAntiMalTreatment
+129~PositiveNegative
+130~MZ_Yes1No0NA1
+131~MZ_Power
+132~Rate
+133~Frequency
+134~Yes0No1Unk0
+135~MZ_Yes1No0Applicable1
+136~NormalAbnormal
+137~MZ_Yes1No1NotAsked0
+138~KH_SRV-RDT
+139~Diagnostic (HNQIS)
+140~PatientInfoRec
+141~Traitement (HNQIS)
+142~PharmacyClinical
+143~MZ_SevereNonsevere
+144~Label

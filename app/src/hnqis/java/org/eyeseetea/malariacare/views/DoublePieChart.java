@@ -70,7 +70,7 @@ public class DoublePieChart extends FrameLayout {
 
         outsidePie.setLayoutParams(new LayoutParams(layout_width, layout_height));
         centerPie.setLayoutParams(
-                new LayoutParams((int) (layout_width * 0.8), (int) (layout_height * 0.8),
+                new LayoutParams((int) (layout_width * 0.75), (int) (layout_height * 0.75),
                         Gravity.CENTER));
 
     }
