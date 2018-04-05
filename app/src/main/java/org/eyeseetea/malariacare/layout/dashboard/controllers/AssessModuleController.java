@@ -22,6 +22,8 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -562,10 +564,10 @@ public class AssessModuleController extends ModuleController {
                         boolean isCompulsoryCompleted = surveyAnsweredRatio.isCompulsoryCompleted();
                         Button button = surveyDialog.getMarkCompleteButton();
 
-                        if(isCompulsoryCompleted)
-                            button.setVisibility(View.VISIBLE);
-                        else
-                            button.setVisibility(View.GONE);
+                        if(!isCompulsoryCompleted) {
+                            button.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                            button.setEnabled(false);
+                        }
                     }
                 });
 
