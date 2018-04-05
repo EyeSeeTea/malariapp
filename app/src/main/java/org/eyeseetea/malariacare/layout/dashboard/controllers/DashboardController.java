@@ -604,12 +604,13 @@ public class DashboardController {
     }
 
 
-    public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
-        plannedModelDialog(survey, scheduleClickListener);
+    public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener,
+            boolean isNeverAssessed) {
+        plannedModelDialog(survey, scheduleClickListener, isNeverAssessed);
     }
 
     public AlertDialog plannedModelDialog(final SurveyDB survey,
-            View.OnClickListener scheduleClickListener) {
+            View.OnClickListener scheduleClickListener, boolean isNeverAssessed) {
         AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
 
         LayoutInflater inflater = dashboardActivity.getLayoutInflater();
@@ -630,8 +631,9 @@ public class DashboardController {
 
         CustomTextView programTextView = (CustomTextView) v.findViewById(R.id.planned_program);
         programTextView.setText(survey.getProgram().getName());
-
-        if (survey.isInProgress()) {
+        if (isNeverAssessed) {
+            add.setText(R.string.start);
+        } else if (survey.isInProgress()) {
             add.setText(R.string.option_edit);
         } else {
             add.setText(R.string.add);

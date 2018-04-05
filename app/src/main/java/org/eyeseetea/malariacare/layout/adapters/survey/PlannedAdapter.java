@@ -289,7 +289,10 @@ public class PlannedAdapter extends BaseAdapter {
         dotsMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DashboardActivity.dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(), new ScheduleListener(plannedSurvey.getSurvey(), context));
+                boolean isNeverAssesed = plannedSurvey.getHeader().getTitleHeader().contains(
+                        context.getString(R.string.dashboard_title_planned_type_never));
+                DashboardActivity.dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),
+                        new ScheduleListener(plannedSurvey.getSurvey(), context), isNeverAssesed);
             }
         });
         //background color
