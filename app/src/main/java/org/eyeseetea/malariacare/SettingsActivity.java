@@ -39,6 +39,7 @@ import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -476,6 +477,13 @@ public class SettingsActivity extends PreferenceActivity implements
 
         preferenceScreen.removePreference(customizeFonts);
         preferenceScreen.removePreference(fontSizes);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String currentLanguage = PreferencesState.getInstance().getCurrentLocale();
+        Context context = LanguageContextWrapper.wrap(newBase, currentLanguage);
+        super.attachBaseContext(context);
     }
 }
 
