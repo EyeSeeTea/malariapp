@@ -17,9 +17,8 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.pie;
+package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
-import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -37,11 +36,6 @@ public class PieBuilderBase {
     public static final String JAVASCRIPT_SHOW = "javascript:rebuildTableFacilities()";
 
     /**
-     * Required to inyect title according to current language
-    */
-    Context context;
-
-    /**
      * List of sent surveys
      */
     List<SurveyDB> surveys;
@@ -50,9 +44,8 @@ public class PieBuilderBase {
     /**
      * Default constructor
      */
-    public PieBuilderBase(List<SurveyDB> surveys, Context context) {
+    public PieBuilderBase(List<SurveyDB> surveys) {
         this.surveys = surveys;
-        this.context = context;
     }
 
 

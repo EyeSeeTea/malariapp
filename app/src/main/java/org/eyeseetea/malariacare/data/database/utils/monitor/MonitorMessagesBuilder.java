@@ -19,11 +19,11 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor;
 
-import android.content.Context;
 import android.util.Log;
 import android.webkit.WebView;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 /**
  * Created by arrizabalaga on 26/07/16.
@@ -37,18 +37,6 @@ public class MonitorMessagesBuilder {
     public static final String JAVASCRIPT_UPDATE_TABLE = "javascript:initContext(%s)";
 
     /**
-     * Required to inyect title according to current language
-     */
-    private Context context;
-
-    /**
-     * Default constructor
-     */
-    public MonitorMessagesBuilder(Context context) {
-        this.context = context;
-    }
-
-    /**
      * Adds calculated entries to the given webView
      * @param webView
      */
@@ -60,11 +48,11 @@ public class MonitorMessagesBuilder {
     }
 
     private String buildJSON() {
-        String assesmentUnderTaken = context.getResources().getString(R.string.monitor_js_assessments);
-        String target = context.getResources().getString(R.string.monitor_js_target);
-        String qualityOfCare = context.getResources().getString(R.string.monitor_js_quality_of_care);
-        String months = context.getResources().getString(R.string.monitor_js_months);
-        String noSurveys = context.getResources().getString(R.string.monitor_no_surveys_to_show);
+        String assesmentUnderTaken = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_assessments);
+        String target = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_target);
+        String qualityOfCare = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_quality_of_care);
+        String months = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_js_months);
+        String noSurveys = PreferencesState.getInstance().getContext().getResources().getString(R.string.monitor_no_surveys_to_show);
         return String.format(JSON_MAP, assesmentUnderTaken, target, qualityOfCare, months,
                 noSurveys);
     }

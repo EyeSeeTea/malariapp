@@ -97,8 +97,9 @@ public class ObsActionPlanPresenter {
         if (mView != null) {
             if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
                 mView.changeToReadOnlyMode();
-                mView.updateStatusView(mObsActionPlan.getStatus());
             }
+
+            updateStatus();
 
             showPlanInfo();
         }
@@ -193,7 +194,18 @@ public class ObsActionPlanPresenter {
 
         if (mView != null) {
             mView.changeToReadOnlyMode();
-            mView.updateStatusView(mObsActionPlan.getStatus());
+
+            updateStatus();
+        }
+    }
+
+    private void updateStatus() {
+        mView.updateStatusView(mObsActionPlan.getStatus());
+
+        if (mObsActionPlan.getStatus().equals(Constants.SURVEY_COMPLETED)) {
+            mView.showShareButton();
+        }else {
+            mView.hideShareButton();
         }
     }
 
@@ -251,7 +263,7 @@ public class ObsActionPlanPresenter {
     private void refreshStatusFromDB() {
         mObsActionPlan = ObsActionPlanDB.findById(mObsActionPlan.getId_obs_action_plan());
 
-        mView.updateStatusView(mObsActionPlan.getStatus());
+        updateStatus();
     }
 
     public interface View {
@@ -284,5 +296,10 @@ public class ObsActionPlanPresenter {
 
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
+
+        void showShareButton();
+
+        void hideShareButton();
+
     }
 }
