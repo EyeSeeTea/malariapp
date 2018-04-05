@@ -281,7 +281,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if (!isAdded()) {
-
+                    return;
                 }
                 //Update hardcoded messages
                 new MonitorMessagesBuilder().addDataInChart(view);
