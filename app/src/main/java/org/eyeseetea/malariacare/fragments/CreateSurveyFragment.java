@@ -19,7 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -53,15 +52,13 @@ import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
+import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by ignac on 05/01/2016.
- */
 public class CreateSurveyFragment extends Fragment {
 
     private static String TAG = ".CreateSurveyFragment";
@@ -99,7 +96,7 @@ public class CreateSurveyFragment extends Fragment {
     private LayoutInflater lInflater;
     LinearLayout llLayout;
 
-    DashboardActivity dashboardActivity;
+    OrgUnitProgramFilterView filter;
 
     //Flag used to control the layout inflating is only in the creation of the fragment.
     private boolean loadHierarchy=true;
@@ -110,6 +107,8 @@ public class CreateSurveyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         Log.d(TAG, "onCreate");
+        filter  = (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity.findViewById(
+                R.id.assess_org_unit_program_filter_view);
         super.onCreate(savedInstanceState);
     }
     @Override
@@ -221,24 +220,24 @@ public class CreateSurveyFragment extends Fragment {
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
 
         //set the first orgUnit saved
-        if(orgUnitHierarchy.getSavedUidsList().length()>1) {
-            orgUnitStorage = orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
-        }else{
-            orgUnitStorage="";
+
+
+        OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
+        if(filteredOrgUnit!=null) {
+            orgUnitStorage = filteredOrgUnit.getUid();
+        }else {
+            if (orgUnitHierarchy.getSavedUidsList().length() > 1) {
+                orgUnitStorage = orgUnitHierarchy.getSavedUidsList().split(TOKEN)[0];
+            } else {
+                orgUnitStorage = "";
+            }
         }
 
         //Load the root lastorgUnit/firstOrgUnit(if we have orgUnitLevels).
-        if(!orgUnitStorage.equals("")){
+        if(orgUnitStorage!=null && !orgUnitStorage.equals("")){
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnitDB.getOrgUnit(orgUnitStorage).getName()));
         }
         loadHierarchy=false;
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        dashboardActivity = (DashboardActivity) activity;
     }
 
     @Override
@@ -331,7 +330,7 @@ public class CreateSurveyFragment extends Fragment {
         //save the program in the preferents
         setLastSelectedProgram(program.getUid());
 
-        dashboardActivity.onCreateSurvey(orgUnit,program);
+        DashboardActivity.dashboardActivity.onCreateSurvey(orgUnit,program);
     }
 
     private class OrgUnitSpinnerListener implements AdapterView.OnItemSelectedListener {
@@ -463,8 +462,14 @@ public class CreateSurveyFragment extends Fragment {
         programView = (Spinner)  llLayout.findViewById(R.id.program);
         programView.setAdapter(new ProgramArrayAdapter( getActivity(), initProgram));
         ProgramDB lastSelectedProgram= getLastSelectedProgram();
-        if(lastSelectedProgram!=null){
-            programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+
+        ProgramDB filteredProgram = filter.getSelectedProgramFilter();
+        if(filteredProgram!=null){
+            programView.setSelection(getIndex(programView, filteredProgram.getName()));
+        }else {
+            if (lastSelectedProgram != null) {
+                programView.setSelection(getIndex(programView, lastSelectedProgram.getName()));
+            }
         }
         return initProgram;
     }
@@ -610,6 +615,11 @@ public class CreateSurveyFragment extends Fragment {
         }
 
         public OrgUnitDB getLastSelected() {
+            OrgUnitDB filteredOrgUnit = filter.getSelectedOrgUnitFilter();
+            if(filteredOrgUnit!=null && filteredOrgUnit.getUid()!=null) {
+                return filteredOrgUnit;
+            }
+            //old way
             if(selectedHierarchy.size()>0)
                 return selectedHierarchy.get(selectedHierarchy.size()-1);
             else

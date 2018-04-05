@@ -23,11 +23,11 @@
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_height="32dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/create_info_organization_unit"
         android:textAllCaps="true"
-        app:tDimension="@string/font_size_level4"
+        app:tDimension="@string/font_size_level3"
         app:tFontName="@string/medium_font_name"
         android:id="@+id/textView"
         android:background="@color/assess_grey"
