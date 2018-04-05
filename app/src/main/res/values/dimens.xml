@@ -105,4 +105,5 @@
     <dimen name="header_bold_text_size">18dp</dimen>
     <dimen name="feedback_question_row_left_padding">10dp</dimen>
     <dimen name="mini_fab_separation">6dp</dimen>
+    <dimen name="fab_image_size">24dp</dimen>
 </resources>
