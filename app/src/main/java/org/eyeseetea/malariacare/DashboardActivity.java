@@ -88,6 +88,7 @@ public class DashboardActivity extends BaseActivity {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
         }
+        reloadDashboard();
     }
 
 
@@ -215,7 +216,6 @@ public class DashboardActivity extends BaseActivity {
             reloadOnResume = true;
             return;
         }
-        reloadDashboard();
     }
 
     public static void reloadDashboard() {

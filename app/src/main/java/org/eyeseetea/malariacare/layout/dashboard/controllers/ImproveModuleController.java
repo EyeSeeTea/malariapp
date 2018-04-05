@@ -152,7 +152,9 @@ public class ImproveModuleController extends ModuleController {
         android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
+            if(feedbackFragment.getView()!=null){
+                feedbackFragment.getView().setVisibility(View.GONE);
+            }
         }else if(fragment instanceof PlanActionFragment){
             if (feedbackFragment != null)
                 replaceFragment(R.id.dashboard_completed_container, feedbackFragment);

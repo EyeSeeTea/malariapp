@@ -105,7 +105,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);
         }
-        adapter.notifyDataSetChanged();
+        if(adapter!=null){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
