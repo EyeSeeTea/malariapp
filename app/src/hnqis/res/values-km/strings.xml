@@ -137,7 +137,7 @@ evaluation"</string>
 <string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
 <string name="feedback_return">"ត្រឡប់ទៅការស្ទង់មតិទាំងអស់"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="quality_of_care">"គុណភាពនៃការថែរក្សា (QoC) ពិន្ទុ:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"PASS"</string>
 <string name="feedback_info_failed">"FAIL"</string>
@@ -237,12 +237,13 @@ evaluation"</string>
 <string name="dialog_action_refresh">"ទិន្នន័យមេតាឱ្យស្រស់តម្រូវឱ្យលុបឬផ្ញើទិន្នន័យមិនទាន់អានរបស់អ្នក។"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"អ្នកមានការស្ទង់មតិមិនបានផ្ញើ %d និងនឹងត្រូវបានលុប។ តើអ្នកចង់បន្តឬ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"អ្នកមិនមានការស្ទង់មតិមិនបានផ្ញើ។ តើអ្នកចង់បន្តឬ?"</string>
+<string name="dialog_pie_chart_label_explanation">"រង្វង់ខាងក្រៅបង្ហាញអ្នកអំពីការបញ្ចប់ជារួម។\n\nរង្វង់ខាងក្នុងបង្ហាញអ្នកអំពីការបញ្ចប់សំណួរដែលចាំបាច់ជាធម្មតាត្រូវបានសម្គាល់ដោយ * ។ នៅពេលតែ 100% នៃសំណួរចាំបាច់ត្រូវបានបញ្ចប់អ្នកអាចសម្គាល់បានពេញលេញ"</string>
 <string name="action_button_text">ប្លង់ផែនការ</string>
 <string name="plan_action_title">ការសង្ក្រតនិងផែនការសកម្មភាព</string>
 <string name="plan_action_today_date">បានបញ្ចប់: %s</string>
-<string name="plan_action_next_date">បន្ទាប់: %s</string>
+<string name="plan_action_next_date">ការវាយតម្លៃក្រោយ: %s</string>
 <string name="plan_action_description">រៀបរាប់ពីអ្វីដែលបានគេសង្កេតឃើញក្នុងអំឡុងពេលដំណើរទស្សនកិច្ចផែនការសកម្មភាពជាក់លាក់មួយសម្រាប់ការដោះស្រាយគម្លាតនេះ។ ចំណាំផងដែរប្រសើរជាងគម្លាតកំណត់អត្តសញ្ញាណក្នុងអំឡុងដំណើរទស្សនកិច្ចចុងក្រោយនេះជាមួយ</string>
-<string name="plan_action_gasp_title">Gaps:</string>
+<string name="plan_action_gasp_title">គម្លាត:</string>
 <string name="plan_action_action_plan_title">ផែនការសកម្មភាព:</string>
 <string name="plan_action_action_title">សកម្មភាព:</string>
 <string-array name="plan_action_dropdown_options">
@@ -266,7 +267,7 @@ evaluation"</string>
 <string name="install_file_manager">សូមដំឡើងកម្មវិធីគ្រប់គ្រងឯកសារមួយ។</string>
 <string name="get_db_file_dialog">សូមជ្រើសឯកសារមូលដ្ឋានទិន្នន័យដែលមានសុពលភាព</string>
 <string name="start">Start</string>
-<string name="on">"លើ"</string>
+<string name="on">កាលបរិច្ឆេទនៃការវាយតម្លៃ:</string>
 
 <string name="add">"ចាប់ផ្តើមការស្ទង់មតិ"</string>
 <string name="change_date">"ផ្លាស់ប្ដូរកាលបរិច្ឆេទ"</string>

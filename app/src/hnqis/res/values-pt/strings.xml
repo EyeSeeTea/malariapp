@@ -123,7 +123,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_show_only_media">"Mostrar apenas perguntas contendo vídeo / imagem"</string>
 <string name="feedback_return">"Qualidade de atendimento (com base na última pesquisa)"</string>
-<string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação:"</string>
+<string name="quality_of_care">"QUALIDADE DA ASSISTÊNCIA (QoC) PONTUAÇÃO:"</string>
 <string name="overall_quality_of_care">"Pontuação Global Quality of Care (QoC):"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -221,6 +221,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Você tem pesquisas %d não enviadas e será excluído. Deseja continuar?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Você não tem pesquisas não solicitadas. Você quer continuar?"</string>
+<string name="dialog_pie_chart_label_explanation">"O círculo externo mostra a conclusão geral.\n\nO círculo interno mostra a conclusão de perguntas obrigatórias, normalmente marcadas com *. Somente quando 100% das perguntas obrigatórias estiverem concluídas, você pode marcar completo."</string>
 <string name="install_file_manager">Instale um Gerenciador de Arquivos.</string>
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
@@ -230,11 +231,11 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="action_button_text">PLANO DE AÇÃO</string>
 <string name="plan_action_title">Observações e Plano de Ação</string>
 <string name="plan_action_today_date">Concluído: %s</string>
-<string name="plan_action_next_date">Próxima: %s</string>
+<string name="plan_action_next_date">PRÓXIMA AVALIAÇÃO: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">Plano de ação:</string>
-<string name="plan_action_action_title">Açao:</string>
+<string name="plan_action_gasp_title">LACUNAS:</string>
+<string name="plan_action_action_plan_title">PLANO DE AÇÃO:</string>
+<string name="plan_action_action_title">AÇAO:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Treinamento de atualização durante SSV</item>
@@ -249,10 +250,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <item>Pratique a técnica de inserção adequada no momento da visita</item>
 </string-array>
 <string name="supervision_on">Supervisão de resultados em:</string>
-<string name="critical_steps">Passos críticos perdidos:</string>
+<string name="critical_steps">PASSOS CRÍTICOS PERDIDOS:</string>
 <string name="url_not_available">URL ainda não disponível</string>
 <string name="see_full_assessment">Veja a pesquisa completa em:</string>
-<string name="on">"em"</string>
+<string name="on">"DATA DE AVALIAÇÃO"</string>
 
 <string name="add">"iniciar uma pesquisa"</string>
 <string name="change_date">"Alterar data"</string>
@@ -265,6 +266,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="schedule_title">"Agendar pesquisa"</string>
 <string name="save">"Salvar"</string>
 <string name="monitor_no_surveys_to_show">"Nenhuma pesquisa para mostrar"</string>
-<string name="plan_action_provider_title" >"Nome do provedor:"</string>
+<string name="plan_action_provider_title" >"NOME DO PROVEEDOR:"</string>
 <string name="health_facility">Centro médico</string>
 </resources>

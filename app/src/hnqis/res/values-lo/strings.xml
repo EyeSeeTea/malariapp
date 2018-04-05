@@ -234,6 +234,7 @@
 <string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
+<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 <string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="feedback_show_only_one_or_show_all">"ສະແດງສະເພາະຄວາມເຫັນທີ່ກ່ຽວຂ້ອງ"</string>
@@ -241,7 +242,7 @@
 <string name="action_button_text">"ແຜນການປະຕິບັດງານ"</string>
 <string name="plan_action_title">"ການສັງເກດການ &amp; ແຜນການປະຕິບັດງານ"</string>
 <string name="plan_action_today_date">"ສຳເລັດແລ້ວ: %s"</string>
-<string name="plan_action_next_date">"ວັນທີ່ລົງຕິດຕາມຊຸກຍູ້ຄັ້ງຕໍ່ໄປ"</string>
+<string name="plan_action_next_date">ການປະເມີນຕໍ່ໄປນີ້: %s</string>
 <string name="plan_action_description">"ບັນຍາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນລະຫວ່າງການລົງຍຽມຍາມລະບຸແຜນການແກ້ໄຂຊ່ອງວ່າງຕ່າງໆ. ພ້ອມທັງບັນທຶກການປັບປຸງຂໍ້ບົກຜ່ອງທີ່ພົບເຫັນໃນການລົງຍຽມຍາມຄັ້ງທີ່ຜ່ານມາ."</string>
 <string name="plan_action_gasp_title">"ຊ່ອງວ່າງ"</string>
 <string name="plan_action_action_plan_title">"ແຜນການປະຕິບັດງານ"</string>
@@ -263,7 +264,7 @@
 <string name="critical_steps">ຂັ້ນຕອນສໍາຄັນທີ່ພາດໂອກາດນີ້:</string>
 <string name="url_not_available">URL ບໍ່ສາມາດໃຊ້ໄດ້</string>
 <string name="see_full_assessment">ເບິ່ງການສໍາຫຼວດຢ່າງເຕັມທີ່ຢູ່:</string>
-<string name="on">""</string>
+<string name="on">"ວັນທີຂອງການປະເມີນ:"</string>
 
 <string name="add">"ເລີ່ມຕົ້ນການສໍາຫຼວດ"</string>
 <string name="change_date">"ປ່ຽນວັນທີ"</string>

@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -426,7 +427,6 @@ public class ConvertToSDKVisitor implements
      * Builds several datavalues from the mainScore of the survey
      */
     private void buildControlDataElements(SurveyDB survey) {
-
         //Overall score
         if (controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore()) {
             addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
@@ -468,24 +468,28 @@ public class ConvertToSDKVisitor implements
                     Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(
                             context));
         }
+
+        //init scoreType
+        ScoreType scoreType = new ScoreType(survey.getMainScore());
+
         //MainScoreUID
         if (controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreClassCode, survey.getType());
+            addOrUpdateDataValue(mainScoreClassCode, scoreType.getType());
         }
 
         //MainScore A
         if (controlDataElementExistsInServer(mainScoreACode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
+            addOrUpdateDataValue(mainScoreACode, scoreType.isTypeA() ? "true" : "false");
         }
 
         //MainScore B
         if (controlDataElementExistsInServer(mainScoreBCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
+            addOrUpdateDataValue(mainScoreBCode, scoreType.isTypeB() ? "true" : "false");
         }
 
         //MainScoreC
         if (controlDataElementExistsInServer(mainScoreCCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
+            addOrUpdateDataValue(mainScoreCCode, scoreType.isTypeC() ? "true" : "false");
         }
 
         //Overall productivity
