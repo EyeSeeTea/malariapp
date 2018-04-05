@@ -4,4 +4,4 @@
         branch = 2.25_EyeSeeTea
 [submodule "EyeSeeTea-sdk"]
 	path = EyeSeeTea-sdk
-	url = https://github.com/EyeSeeTea/sdk
+	url = https://github.com/EyeSeeTea/sdk.git

@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.data.database.utils.monitor.pies;
 
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.Constants;
 
 /**
@@ -48,12 +49,13 @@ public class PieDataBase {
      * @param score
      */
     public void incCounter(float score){
-        if(score< Constants.MAX_RED){
+        ScoreType scoreType = new ScoreType(score);
+        if(scoreType.getClassification() == ScoreType.Classification.LOW){
             numC++;
             return;
         }
 
-        if(score< Constants.MAX_AMBER){
+        else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM){
             numB++;
             return;
         }
