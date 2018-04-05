@@ -123,7 +123,7 @@ clínica"</string>
 <string name="feedback_show_only_media">"Mostrar sólo las preguntas que contienen vídeo / imagen"</string>
 <string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
 <string name="feedback_return">"Volver a todas las encuestas"</string>
-<string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="quality_of_care">"CALIDAD DE LA ASISTENCIA (QoC) PUNTUACIÓN:"</string>
 <string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -234,11 +234,11 @@ clínica"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
 <string name="plan_action_today_date">Terminado: %s</string>
-<string name="plan_action_next_date">Próxima: %s</string>
+<string name="plan_action_next_date">PRÓXIMA EVALUACIÓN: %s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">Plan de acción:</string>
-<string name="plan_action_action_title">Acción:</string>
+<string name="plan_action_gasp_title">BRECHAS:</string>
+<string name="plan_action_action_plan_title">PLAN DE ACCIÓN:</string>
+<string name="plan_action_action_title">ACCIÓN:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Entrenamiento de actualización durante SSV</item>
@@ -253,10 +253,10 @@ clínica"</string>
 <item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
 </string-array>
 <string name="supervision_on">Supervisión de resultados en:</string>
-<string name="critical_steps">Pasos críticos perdidos:</string>
+<string name="critical_steps">PASOS CRÍTICOS PERDIDOS:</string>
 <string name="url_not_available">URL aún no disponible</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
-<string name="on">"en"</string>
+<string name="on">"FECHA DE EVALUACIÓN:"</string>
 
 <string name="add">"Comenzar encuesta"</string>
 <string name="change_date">"Cambiar fecha"</string>
@@ -269,5 +269,5 @@ clínica"</string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
 <string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
-<string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
+<string name="plan_action_provider_title" >"NOMBRE DEL PROVEEDOR:"</string>
 </resources>

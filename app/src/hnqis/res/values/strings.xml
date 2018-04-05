@@ -124,7 +124,7 @@ evaluation"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback"</string>
 <string name="feedback_return">"Return to all surveys"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="quality_of_care">"QUALITY OF CARE (QoC) SCORE:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"Pass"</string>
 <string name="feedback_info_failed">"Fail"</string>
@@ -231,11 +231,11 @@ evaluation"</string>
 <string name="action_button_text">ACTION PLAN</string>
 <string name="plan_action_title">Observations &amp; Action Plan</string>
 <string name="plan_action_today_date">Completed: %s</string>
-<string name="plan_action_next_date">Next: %s</string>
+<string name="plan_action_next_date">NEXT ASSESSMENT: %s</string>
 <string name="plan_action_description">Describe what was observed during the visit a specific action plan for addressing gaps. Also note an improvement over a gap identified during the last visit</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">Action plan:</string>
-<string name="plan_action_action_title">Action:</string>
+<string name="plan_action_gasp_title">GAPS:</string>
+<string name="plan_action_action_plan_title">ACTION PLAN:</string>
+<string name="plan_action_action_title">ACTION:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Refresher training during SSV</item>
@@ -250,14 +250,15 @@ evaluation"</string>
 <item>Practice proper insertion technique at time of visit</item>
 </string-array>
 <string name="supervision_on">Results supervision on:</string>
-<string name="critical_steps">Critical Steps missed:</string>
+<string name="critical_steps">CRITICAL STEPS MISSED:</string>
 <string name="url_not_available">"URL not yet available"</string>
 <string name="see_full_assessment">"See full survey at:"</string>
 
 <string name="install_file_manager">Please install a File Manager.</string>
 <string name="get_db_file_dialog">Please select a valid db file</string>
 <string name="start">Start</string>
-<string name="on">"on"</string>
+<string name="on">"DATE OF ASSESSMENT:"</string>
+<string name="date_month_text_format">"MMMM d',' yyyy"</string>
 
 
 <string name="add">"Start survey"</string>
@@ -272,6 +273,6 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
-<string name="plan_action_provider_title" >"Provider Name:"</string>
+<string name="plan_action_provider_title" >"PROVIDER NAME:"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 </resources>
