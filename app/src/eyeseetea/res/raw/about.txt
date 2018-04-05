@@ -1,0 +1,42 @@
+<p><b>PSI's health Network Quality Improvement System (HNQIS)</b></p>
+
+<p><b>Build %s</b></p>
+
+<p>This Software Application (“App”) was developed by Population Services International (PSI) for sustaining quality improvement of private health care sector networks. This App was developed with support from:<br/>
+The Department for International Development (DFID) (Great Britain); and<br/>
+The Minister for Foreign Trade and Development Cooperation (The Netherlands)</p>
+
+<p>This App also is made possible by the generous support of the American People through the United States Agency for International Development (USAID). The contents are the responsibility of PSI and do not necessarily reflect the views of USAID or the United States Government.</p>
+
+<p>In addition, this App contains certain modifications to a software application prepared in collaboration with Program for Appropriate Technology in Health (PATH), and thus the views expressed herein do not necessarily reflect the views of PATH.</p>
+
+<p>For more information about this application, please write to mis@psi.org</p>
+
+<p><b><u>Contributing organizations</u></b></p>
+
+<p><b><i>Population Services International</i></b></p>
+
+<p><i>Lead conceptual development and implementation</i></p>
+
+<p>PSI is a nonprofit global health organization that makes it easier for people in the developing world to lead healthier lives and plan the families they desire by marketing affordable products and services</p>
+
+<p><a href="http://www.psi.org">www.psi.org</a></p>
+
+<p><b><i>EyeSeeTea LTD</i></b></p>
+
+<p><i>Android development</i></p>
+
+<p>EyeSeeTea LTD is a London-based company dedicated to:<br/>
+- NGO software development<br/>
+- ICT development & deployment<br/>
+- Data analysis and representation<br/></p>
+
+<p><a href="http://www.eyeseetea.com">www.eyeseetea.com</a></p>
+
+<p><b><i>KnowTechTure (KTT)</i></b></p>
+
+<p><i>Development coordination</i></p>
+
+<p>KTT specializes in DHIS architecture, custom development and deployment.</p>
+
+<p><a href="http://www.knowtechture.com">www.knowtechture.com</a></p>

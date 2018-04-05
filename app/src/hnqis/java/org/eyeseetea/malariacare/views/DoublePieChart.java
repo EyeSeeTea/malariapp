@@ -30,6 +30,8 @@ import java.util.ArrayList;
 public class DoublePieChart extends FrameLayout {
     private PieChart centerPie, outsidePie;
     private View doublePieContainer;
+    private static final int HIGH_VALUE = 90;
+    private static final int MIDDLE_VALUE = 80;
     private int highColor, middleColor, lowColor,
             mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor;
 
@@ -68,7 +70,7 @@ public class DoublePieChart extends FrameLayout {
 
         outsidePie.setLayoutParams(new LayoutParams(layout_width, layout_height));
         centerPie.setLayoutParams(
-                new LayoutParams((int) (layout_width * 0.8), (int) (layout_height * 0.8),
+                new LayoutParams((int) (layout_width * 0.75), (int) (layout_height * 0.75),
                         Gravity.CENTER));
 
     }
@@ -143,9 +145,9 @@ public class DoublePieChart extends FrameLayout {
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (percentage > 90) {
+        if (percentage >= HIGH_VALUE) {
             colors.add(highColor);
-        } else if (percentage > 50) {
+        } else if (percentage >= MIDDLE_VALUE) {
             colors.add(middleColor);
         } else {
             colors.add(lowColor);
