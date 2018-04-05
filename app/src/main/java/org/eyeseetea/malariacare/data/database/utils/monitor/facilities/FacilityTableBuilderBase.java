@@ -26,6 +26,7 @@ import android.webkit.WebView;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class FacilityTableBuilderBase {
     public static final String JAVASCRIPT_SET_GREEN = "javascript:setGreen(%s)";
     public static final String JAVASCRIPT_SET_YELLOW = "javascript:setYellow(%s)";
     public static final String JAVASCRIPT_SET_RED = "javascript:setRed(%s)";
+    public static final String JAVASCRIPT_SET_CLASSIFICATION = "javascript:setClassification(%s)";
 
     /**
      * List of sent surveys
@@ -69,6 +71,13 @@ public class FacilityTableBuilderBase {
         injectColor = String.format(JAVASCRIPT_SET_YELLOW,"{color:'"+getHtmlCodeColor(color)+"'}");
         Log.d(TAG,injectColor);
         webView.loadUrl(injectColor);
+        String injectClassification = String.format(JAVASCRIPT_SET_CLASSIFICATION,"{high:'"+ScoreType.getMonitoringMinimalHigh()+"'," +
+                "medium:'"+ScoreType.getMonitoringMaximumMedium()+"'," +
+                "mediumFormatted:'"+ScoreType.getMonitoringMediumPieFormat()+"'," +
+                "low:'"+ScoreType.getMonitoringMaximumLow()+"'}");
+        Log.d(TAG,injectClassification);
+        webView.loadUrl(injectClassification);
+
     }
 
     private static String getHtmlCodeColor(String color) {

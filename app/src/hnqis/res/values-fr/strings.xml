@@ -28,7 +28,7 @@
 <string name="dialog_content_logout_confirmation">"Si vous sortez du système, tous les donnés non envoyés seront perdus. Voulez-vous continuer ?"</string>
 <string name="dialog_info_ask_for_completion">"Êtes-vous sûr de vouloir compléter %s ? Vous ne pouvez pas annuler cette action"</string>
 <string name="dialog_info_ask_for_completion_plan">"Êtes-vous sûr de vouloir compléter le plan? Vous ne pouvez pas annuler cette action"</string>
-
+<string name="dialog_pie_chart_label_explanation">"Le cercle extérieur vous montre l'achèvement global.\n\nLe cercle intérieur affiche l'achèvement des questions obligatoires, normalement marquées d'un *. Seulement lorsque 100% des questions obligatoires sont complétées, vous pouvez "Marquer comme terminé"</string>
 <string name="dashboard_info_feedback">"Feedback"</string>
 <string name="dashboard_info_ready_to_upload">"Prêt pour envoyer"</string>
 <string name="dashboard_info_sent">"Envoyé"</string>
@@ -121,7 +121,7 @@ Mensuelle"</string>
 <string name="feedback_show_only_media">"Afficher uniquement les questions contenant des vidéos / images"</string>
 <string name="feedback_show_only_one_or_show_all">"Afficher uniquement les derniers commentaires par rapport/établissement"</string>
 <string name="feedback_return">"Retour à toutes les enquêtes"</string>
-<string name="quality_of_care">"Qualité des soins (QoC) Score:"</string>
+<string name="quality_of_care">"QUALITÉ DES SOINS (QoC) SCORE:"</string>
 <string name="overall_quality_of_care">"Note globale sur la qualité des soins (QoC):"</string>
 <string name="feedback_info_passed">"Reussi"</string>
 <string name="feedback_info_failed">"Raté"</string>
@@ -225,11 +225,11 @@ Mensuelle"</string>
 <string name="action_button_text">"PLAN D'ACTION"</string>
 <string name="plan_action_title">"Observations et plan d'action"</string>
 <string name="plan_action_today_date">"Terminé: %s"</string>
-<string name="plan_action_next_date">"Suivante: %s"</string>
+<string name="plan_action_next_date">PROCHAINE ÉVALUATION %s</string>
 <string name="plan_action_description">"Décrivez ce qui a été observé lors de la visite d'un plan d'action spécifique pour combler les lacunes. Notez également une amélioration par rapport à un écart identifié lors de la dernière visite"</string>
-<string name="plan_action_gasp_title">Problèmes:</string>
-<string name="plan_action_action_plan_title">"Plan d'action:"</string>
-<string name="plan_action_action_title">Action:</string>
+<string name="plan_action_gasp_title">PROBLÈMES:</string>
+<string name="plan_action_action_plan_title">PLAN D\'ACTION:</string>
+<string name="plan_action_action_title">ACTION:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>"Formation de rafraîchissement pendant la SSV"</item>
@@ -244,10 +244,10 @@ Mensuelle"</string>
 <item>"Pratiquer une technique d'insertion appropriée au moment de la visite"</item>
 </string-array>
 <string name="supervision_on">"Surveillance des résultats sur:"</string>
-<string name="critical_steps">"Étapes critiques manquées:"</string>
+<string name="critical_steps">ÉTAPES CRITIQUES MANQUÉES:</string>
 <string name="url_not_available">"L'URL n'est pas encore disponible"</string>
 <string name="see_full_assessment">"Voir l'enquête complète à:"</string>
-<string name="on">"à"</string>
+<string name="on">"DATE D'ÉVALUATION:"</string>
 
 <string name="install_file_manager">"Veuillez installer un gestionnaire de fichiers."</string>
 <string name="get_db_file_dialog">"Sélectionnez un fichier db valide"</string>
@@ -264,5 +264,5 @@ Mensuelle"</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
 <string name="monitor_no_surveys_to_show">"Aucune enquête à afficher"</string>
-<string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
+<string name="plan_action_provider_title" >"NOM DU FOURNISSEUR:"</string>
 </resources>
