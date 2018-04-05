@@ -109,6 +109,10 @@ public class PreferencesState {
         return instance;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public void init(Context context) {
         phoneLanguage = Locale.getDefault().getLanguage();
         this.context = context;
@@ -429,18 +433,26 @@ public class PreferencesState {
     }
 
     public void loadsLanguageInActivity() {
+        setLocale(getCurrentLocale());
+    }
+
+    public String getCurrentLocale() {
         String temLanguageCode = languageCode;
         if (languageCode.equals("")) {
             temLanguageCode = phoneLanguage;
         }
+        return temLanguageCode;
+    }
+
+    private void setLocale(String languageCode) {
         Resources res = context.getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
+        android.content.res.Configuration conf = res.getConfiguration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(new Locale(temLanguageCode));
+            conf.setLocale(new Locale(languageCode));
         } else {
-            conf.locale = new Locale(temLanguageCode);
+            conf.locale = new Locale(languageCode);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             res.updateConfiguration(conf, dm);
