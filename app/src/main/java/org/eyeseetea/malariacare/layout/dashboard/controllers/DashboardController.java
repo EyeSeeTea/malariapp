@@ -309,12 +309,12 @@ public class DashboardController {
     }
 
     /**
-     * Called when click on assets survey
+     * Called when click on assess survey
      * @param survey
      */
-    public void onAssetsSelected(SurveyDB survey) {
+    public void onAssessSelected(SurveyDB survey) {
         AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
-        assessModuleController.assetsModelDialog(survey);
+        assessModuleController.assessModelDialog(survey);
     }
 
     /**
@@ -372,6 +372,7 @@ public class DashboardController {
 
         );
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
@@ -420,6 +421,7 @@ public class DashboardController {
 
             );
             alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void showHistory(SurveyDB survey) {
@@ -544,7 +546,9 @@ public class DashboardController {
                     }
                 }
         );
+
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 

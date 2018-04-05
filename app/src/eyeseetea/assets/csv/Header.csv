@@ -1,0 +1,21 @@
+1~Diagnosis 1~Diagnosis 1~0~2
+2~Introduction~Introduction~1~1
+3~Workplace~Workplace~2~3
+4~Inquiry~Inquiry~3~1
+5~Equipment, Supplies and Consumables~Equipment, Supplies and Consumables~4~3
+6~Diagnosis 2~Diagnosis 2~5~2
+7~Physical Examination~Physical Examination~6~1
+8~Document and Reporting~Document and Reporting~7~3
+9~Diagnosis 3~Diagnosis 3~8~2
+10~END OF TAB~END OF TAB~9~3
+11~RDT Procedure~RDT Procedure~10~1
+12~END OF TAB~END OF TAB~11~2
+13~END OF TAB~END OF TAB~12~1
+14~Contraceptive Counseling~Contraceptive Counseling~13~4
+15~Oral Contraceptive Pills~Oral Contraceptive Pills~14~4
+16~Injectables~Injectables~15~4
+17~IUCD Insertion~IUCD Insertion~16~4
+18~IUCD Removal~IUCD Removal~17~4
+19~Implant Insertion~Implant Insertion~18~4
+20~Implant Removal~Implant Removal~19~4
+21~END OF TAB~END OF TAB~20~4

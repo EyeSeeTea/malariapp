@@ -517,7 +517,7 @@ public class AssessModuleController extends ModuleController {
                 R.id.dashboard_details_container);
     }
 
-    public AlertDialog assetsModelDialog(@NonNull final SurveyDB survey) {
+    public AlertDialog assessModelDialog(@NonNull final SurveyDB survey) {
 
         SurveyDialog.Builder builder = SurveyDialog.newBuilder(dashboardActivity, survey);
 

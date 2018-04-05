@@ -1,4 +1,7 @@
 <resources>
     <dimen name="buttons_margin">20dp</dimen>
+    <dimen name="buttons_margin_bottom_top">18dp</dimen>
+    <dimen name="buttons_margin_left_right">8dp</dimen>
+    <dimen name="buttons_height">36dp</dimen>
     <dimen name="body_text_size">16sp</dimen>
 </resources>
