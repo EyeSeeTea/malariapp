@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.sdk.common.VideoUtils;
@@ -186,12 +187,14 @@ public class FeedbackAdapter extends BaseAdapter {
         textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
 
         if(!PreferencesState.getInstance().isVerticalDashboard()){
-            if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
+            ScoreType scoreType = new ScoreType(feedback.getScore(idSurvey, module));
+            if(scoreType.getClassification() == ScoreType.Classification.LOW) {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
-            else if(feedback.getScore(idSurvey, module)< Constants.MAX_AMBER)
+            }else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else
+            }else if(scoreType.getClassification() == ScoreType.Classification.HIGH) {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+            }
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
 

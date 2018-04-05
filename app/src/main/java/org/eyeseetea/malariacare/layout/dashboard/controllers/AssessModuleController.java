@@ -22,8 +22,12 @@ package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -50,6 +54,7 @@ import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
+import org.eyeseetea.malariacare.views.SurveyDialog;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 /**
@@ -275,8 +280,23 @@ public class AssessModuleController extends ModuleController {
 
                             @Override
                             public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                if (surveyAnsweredRatio.isCompulsoryCompleted())
-                                    confirmSendCompleteSurvey();
+                                if (surveyAnsweredRatio.isCompulsoryCompleted()) {
+                                    SurveyDialog.Builder builder = SurveyDialog.newBuilder(
+                                            dashboardActivity, survey);
+
+                                    final View.OnClickListener completeButtonListener =
+                                            new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    onMarkAsCompleted(survey);
+                                                }
+                                            };
+
+                                    builder.completeButton(completeButtonListener)
+                                            .bodyTextID(R.string.dialog_pie_chart_label_explanation)
+                                            .build();
+
+                                }
                             }
                         });
             }
@@ -499,4 +519,58 @@ public class AssessModuleController extends ModuleController {
                 R.id.dashboard_details_container);
     }
 
+    public AlertDialog assessModelDialog(@NonNull final SurveyDB survey) {
+
+        SurveyDialog.Builder builder = SurveyDialog.newBuilder(dashboardActivity, survey);
+
+        final View.OnClickListener editButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSurveySelected(survey);
+            }
+        };
+
+        final View.OnClickListener completeButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMarkAsCompleted(survey);
+            }
+        };
+
+        final View.OnClickListener deleteButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //this method create a new survey getting the getScheduledDate date of the
+                // oldsurvey, and remove it.
+                SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
+                DashboardActivity.reloadDashboard();
+            }
+        };
+
+        final SurveyDialog surveyDialog =  builder.editButton(editButtonListener)
+                .completeButton(completeButtonListener)
+                .deleteButton(deleteButtonListener)
+                .build();
+
+        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
+                new ISurveyAnsweredRatioCallback() {
+                    @Override
+                    public void nextProgressMessage() {
+
+                    }
+
+                    @Override
+                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
+                        boolean isCompulsoryCompleted = surveyAnsweredRatio.isCompulsoryCompleted();
+                        Button button = surveyDialog.getMarkCompleteButton();
+
+                        if(!isCompulsoryCompleted) {
+                            button.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                            button.setEnabled(false);
+                        }
+                    }
+                });
+
+        return surveyDialog;
+    }
 }

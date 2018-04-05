@@ -1,0 +1,78 @@
+<p> <b> Licencias de software </b> </p>
+<p> <b> 1. MIT License </b> </p>
+<p> <b> a) chart.js </b> </p>
+<p> Copyright © período 2013-16 Nick Downie </p>
+<p> Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y archivos de documentación asociados (el "Software"), para utilizar el Software sin restricciones, incluyendo, sin limitación, los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias del Software, y para permitir que las personas a quienes se proporcione el Software para hacerlo, sujeto a las siguientes condiciones: </p>
+<p> El aviso de copyright anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software. </p>
+<p> SOFTWARE se proporciona "tal cual", sin garantía de ningún tipo, expresa o implícita, incluyendo pero no limitado a las garantías de comerciabilidad, aptitud para un propósito PARTICULAR Y NO. EN NINGÚN CASO LOS AUTORES O COPYRIGHT TITULARES RESPONSABLE POR CUALQUIER RECLAMO, DAÑO U OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O CUALQUIER OTRO MOTIVO, DE O EN RELACIÓN CON EL SOFTWARE O EL USO U OTROS TRATOS EN LA SOFTWARE. </p>
+<br/>
+<p> Por favor, véase el texto de la licencia Chart.js en la siguiente dirección: https://github.com/nnnick/Chart.js/blob/master/LICENSE.md </p>
+<br/>
+
+<p> <b> b) DBFlow ORM </b> </p>
+<p> Copyright © 2014 Raizlabs </p>
+<p> Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y archivos de documentación asociados (el "Software"), para utilizar el Software sin restricciones, incluyendo, sin limitación, los derechos para usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y / o vender copias del Software, y para permitir que las personas a quienes se proporcione el Software para hacerlo, sujeto a las siguientes condiciones: </p>
+<p> El aviso de copyright anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software. </p>
+<br/>
+<p> SOFTWARE se proporciona "tal cual", sin garantía de ningún tipo, expresa o implícita, incluyendo pero no limitado a las garantías de comerciabilidad, aptitud para un propósito PARTICULAR Y NO. EN NINGÚN CASO LOS AUTORES O COPYRIGHT TITULARES RESPONSABLE POR CUALQUIER RECLAMO, DAÑO U OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O CUALQUIER OTRO MOTIVO, DE O EN RELACIÓN CON EL SOFTWARE O EL USO U OTROS TRATOS EN LA SOFTWARE. </p>
+<br/>
+<p> Por favor, véase el texto de la licencia DBFlow en la siguiente dirección: https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2FRaizlabs%2FDBFlow%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGMxEwZSy7pTU-Owh-kp9akR05PUQ</p>
+<br/>
+
+<p> <b> 2. Apache License, Version 2.0 </b> </p>
+<p> Los siguientes programas de software se han utilizado para desarrollar esta aplicación bajo la licencia Apache, versión 2.0 (<a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>):</p>
+<br/>
+<p> a) las bibliotecas Android: soporte-v4, AppCompat-7, support-anotaciones (https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/annotations/src/android/support/annotation), multidex (por favor ver archivo de aviso en https://android.googlesource.com/platform/frameworks/multidex/+/master/NOTICE), corredor, reglas <br/>
+b) OpenCSV (https://www.google.com/url?q=https%3A%2F%2Fsourceforge.net%2Fp%2Fopencsv%2Fsource%2Fci%2Fmaster%2Ftree%2FLICENSE&sa=D&sntz=1&usg=AFQjCNGU4dICEUHFbkB6BpervhnBQ3AZkg)<br/>
+c) guayaba (https://github.com/google/guava) <br/>
+d) okhttp (https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fsquare%2Fokhttp%2Fblob%2Fmaster%2FLICENSE.txt&sa=D&sntz=1&usg=AFQjCNFozOA2Z-_9h3h9MijzlAHD8iDOeA)<br/>
+e) play-servicios <br/>
+f) libphonenumber (Ver archivo Aviso de cromo en la licencia de cromo en 'https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE&sa=D&sntz=1&usg=AFQjCNFPFEwcq_wqpqa2830-lVs-GLpuow'>see here</a>), they include also the <a href='https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fgooglei18n%2Flibphonenumber%2Fblob%2Fmaster%2FLICENSE.Chromium&sa=D&sntz=1&usg=AFQjCNG9GmpMXNQ6wQpZ_F9k3MublQMstw' )<br/>
+</p>
+
+<p> Copyright © 2016 Population Services International (PSI). </p>
+<p> Con licencia bajo la Licencia Apache, versión 2.0 (la "Licencia"); usted no puede usar los archivos enumerados anteriormente, salvo en cumplimiento de la Licencia. Usted puede obtener una copia de la Licencia en http://www.apache.org/licenses/LICENSE-2.0. </p>
+<p> A menos que lo requiera la ley aplicable o se acuerde por escrito, el software distribuido bajo la Licencia se distribuye "TAL CUAL", SIN GARANTÍAS O CONDICIONES DE CUALQUIER TIPO, ya sea expresa o implícita. Consulte la Licencia para el idioma específico que rige los permisos y limitaciones bajo la licencia. </p>
+<br/>
+
+<p> <b> 3. SQlite </b> </p>
+<p> Todo el código y la documentación de SQLite se ha dedicado al dominio público por los autores. Todos los autores de códigos y representantes de las empresas para las que trabajan, han firmado declaraciones juradas que declaran sus contribuciones al dominio público y los originales de esas declaraciones suscritas se almacenan en una prueba de fuego en las oficinas principales de Hwaci. Cualquier persona es libre de copiar, modificar, publicar, usar, compilar, vender o distribuir el código SQLite original, ya sea en forma de código fuente o binario compilado, para cualquier propósito, comercial o no comercial, y por cualquier medio. < / p>
+<br/>
+<p> Con el fin de mantener SQLite totalmente gratuito y no sujeto a derechos de autor, se pide a todos los nuevos contribuyentes a la base de código de SQLite a dedicar sus contribuciones al dominio público. Si desea enviar un parche o mejora para su posible inclusión en el árbol de fuentes de SQLite, por favor acompañar el parche con la siguiente declaración: </p>
+<br/>
+<p> El autor o autores de este código dedican toda y cualquier derecho de autor en este código para el dominio público. Hacemos esta dedicación en beneficio del público en general y en detrimento de nuestros herederos y sucesores. Tenemos la intención de esta dedicación a ser un acto abierto de cesión a perpetuidad de todos los derechos presentes y futuros a este código por derechos de autor. </p>
+<br/>
+<p> PSI no ha modificado SQlite para esta aplicación. </p>
+<br/>
+
+<p> <b> 4. Licencia BSD (por UiO SDK) </b> </p>
+<p> Copyright © 2016 Universidad de Oslo </p>
+<br/>
+<p> Todos los derechos reservados. La redistribución y el uso en formas fuente y binario, con o sin modificaciones, están permitidos siempre que se cumplan las siguientes condiciones: </p>
+<br/>
+<p> Las redistribuciones del código fuente deben conservar el aviso de copyright anterior, esta lista de condiciones y el siguiente descargo de responsabilidad. </p>
+<br/>
+<p> Las redistribuciones en formato binario deben reproducir el aviso de copyright anterior, esta lista de condiciones y el siguiente descargo de responsabilidad en la documentación y / u otros materiales proporcionados con la distribución. Ni el nombre del proyecto PSSS ni los nombres de sus colaboradores pueden usarse para apoyar o promocionar productos derivados de este software sin el consentimiento previo por escrito. </p>
+<br/>
+<p> ESTE SOFTWARE SE PROPORCIONA LOS PROPIETARIOS DEL COPYRIGHT Y COLABORADORES "TAL CUAL" SIN GARANTÍA EXPRESA O IMPLÍCITAS, INCLUYENDO, PERO NO LIMITADO A, LAS GARANTÍAS DE COMERCIALIZACIÓN Y APTITUD PARA UN FIN DETERMINADO. EN NINGÚN CASO EL PROPIETARIO DE AUTOR O SUS COLABORADORES RESPONSABLES DE CUALQUIER DIRECTO, INCIDENTAL, O INDIRECTOS, EJEMPLARES DERIVADOS (INCLUYENDO, PERO NO LIMITADO A, LA ADQUISICIÓN DE BIENES O SERVICIOS, LA PÉRDIDA DE USO, DE DATOS O BENEFICIOS; O INTERRUPCIÓN DE NEGOCIO), CAUSA Y LA TEORÍA DE RESPONSABILIDAD, YA SEA EN CONTRATO, RESPONSABILIDAD OBJETIVA O AGRAVIO (INCLUYENDO NEGLIGENCIA), DERIVADOS DE CUALQUIER FORMA DEL USO DE ESTE SOFTWARE, INCLUSO SI SE HA ADVERTIDO DE LA POSIBILIDAD DE TAL DAÑO. </p>
+<br/>
+
+<p> <b> 5. Creative Commons Attribution 2.5 License </b> (por expreso (espresso núcleos en espresso y las intenciones, espresso-ralentí en los recursos, expresso en la web)) - https://creativecommons.org/licenses/by/2.5/legalcode < / p>
+<p> PSI no ha hecho ninguna modificación o cambio en el software Expresso ha hecho referencia anteriormente para los propósitos de esta solicitud. </p>
+<br/>
+<p> <b> Usted es libre de: </b> <br/>
+<B> Compartir </b> - copiar y redistribuir el material en cualquier medio o formato <br/>
+<B> Adaptar </b> - remezcla, transformar y construir sobre el material <br/>
+para cualquier propósito, incluso con fines comerciales. <br/>
+El licenciante no puede revocar estas libertades, siempre y cuando siga los términos de la licencia. </p>
+<br/>
+<p> <b> Bajo los términos siguientes: </b> <br/>
+<B> Reconocimiento </b> - Usted debe dar el crédito apropiado, proporcionar un enlace a la licencia, e indicar si se han realizado cambios. Puede hacerlo de cualquier manera razonable, pero no de una manera que sugiere que el licenciante o su uso respalda. <br/>
+No hay restricciones adicionales -. No se pueden aplicar términos legales o medidas tecnológicas que restringen legalmente otros de hacer cualquier cosa que los permisos de licencia <p />
+<br/>
+<p> <b> Advertencia: </b> <br/>
+Usted no tiene que cumplir con la licencia para los elementos del material en el dominio público o cuando su uso está permitido por una excepción o limitación aplicable. <br/>
+No se dan garantías. La licencia no le puede dar todos los permisos necesarios para su uso previsto. Por ejemplo, otros derechos, tales como publicidad, privacidad, o derechos morales pueden limitar cómo se utiliza el material. </p>
+
+<p> <b> EXCLUSIONES </b> </p>
+<p> Esta aplicación utiliza el software Crashlytics patentados bajo una licencia restringida de Crashlytics para proporcionar información a la promotora (s) sobre el funcionamiento de la aplicación, incluyendo, pero no limitado a, información acerca de cómo y bajo qué circunstancias la App estrelló y cómo muchos usuarios interactúan con la aplicación y cómo lo hacen. El software Crashlytics no está incluido en la Licencia Pública General de GNU para la aplicación; PSI no tiene autoridad para otorgar una sublicencia del software Crashlytics. Para obtener más información sobre el software Crashlytics, visite https://try.crashlytics.com/terms/. </p>

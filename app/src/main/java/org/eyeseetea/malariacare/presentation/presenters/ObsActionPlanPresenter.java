@@ -27,8 +27,6 @@ public class ObsActionPlanPresenter {
     private String[] mSubActions;
     SurveyDB mSurvey;
 
-    public enum ShareType {TEXT, HTML}
-
     public ObsActionPlanPresenter(Context context) {
         this.mContext = context;
 
@@ -99,8 +97,9 @@ public class ObsActionPlanPresenter {
         if (mView != null) {
             if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
                 mView.changeToReadOnlyMode();
-                mView.updateStatusView(mObsActionPlan.getStatus());
             }
+
+            updateStatus();
 
             showPlanInfo();
         }
@@ -108,7 +107,7 @@ public class ObsActionPlanPresenter {
 
     private void showPlanInfo() {
         if (mView != null) {
-            mView.renderBasicPlanInfo(mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
+            mView.renderBasicPlanInfo(mObsActionPlan.getProvider(), mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
 
             if (mObsActionPlan.getAction1() != null) {
                 for (int i = 0; i < mActions.length; i++) {
@@ -178,6 +177,12 @@ public class ObsActionPlanPresenter {
         mObsActionPlan.save();
     }
 
+    public void providerChanged(String provider) {
+        mObsActionPlan.setProvider(provider);
+        mObsActionPlan.save();
+    }
+
+
     public void subActionOtherChanged(String subActionOther) {
         mObsActionPlan.setAction2(subActionOther);
         mObsActionPlan.save();
@@ -189,22 +194,29 @@ public class ObsActionPlanPresenter {
 
         if (mView != null) {
             mView.changeToReadOnlyMode();
-            mView.updateStatusView(mObsActionPlan.getStatus());
+
+            updateStatus();
         }
     }
 
-    public void shareObsActionPlan(ShareType shareType) {
+    private void updateStatus() {
+        mView.updateStatusView(mObsActionPlan.getStatus());
+
+        if (mObsActionPlan.getStatus().equals(Constants.SURVEY_COMPLETED)) {
+            mView.showShareButton();
+        }else {
+            mView.hideShareButton();
+        }
+    }
+
+    public void shareObsActionPlan() {
         List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 mSurvey.getId_survey());
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
 
         if (mView != null) {
-            if (shareType == shareType.HTML) {
-                mView.shareByHtml(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
-            } else if (shareType == shareType.TEXT) {
-                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
-            }
+            mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
         }
     }
 
@@ -251,7 +263,7 @@ public class ObsActionPlanPresenter {
     private void refreshStatusFromDB() {
         mObsActionPlan = ObsActionPlanDB.findById(mObsActionPlan.getId_obs_action_plan());
 
-        mView.updateStatusView(mObsActionPlan.getStatus());
+        updateStatus();
     }
 
     public interface View {
@@ -261,7 +273,7 @@ public class ObsActionPlanPresenter {
 
         void changeToReadOnlyMode();
 
-        void renderBasicPlanInfo(String gasp, String actionPlan);
+        void renderBasicPlanInfo(String provider, String gasp, String actionPlan);
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate);
@@ -282,10 +294,12 @@ public class ObsActionPlanPresenter {
 
         void updateStatusView(Integer status);
 
-        void shareByHtml(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
-                List<CompositeScoreDB> compositeScoresTree);
-
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
+
+        void showShareButton();
+
+        void hideShareButton();
+
     }
 }
