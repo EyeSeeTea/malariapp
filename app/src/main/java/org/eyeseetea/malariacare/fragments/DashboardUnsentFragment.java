@@ -85,9 +85,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             return null;
         }
 
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.assess_org_unit_program_filter_view);
+        loadFilter();
 
         orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
 
@@ -135,18 +133,27 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
         }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
+
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.assess_org_unit_program_filter_view);
     }
 
     private void showOrHiddenButton(SurveyDB survey) {
         OrgUnitDB orgUnit = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
         ProgramDB program = orgUnitProgramFilterView.getSelectedProgramFilter();
-        if(orgUnit.getName().equals(getString(R.string.filter_all_org_units)) || program.getName().equals(getString(R.string.filter_all_org_assessments))){
+        if(orgUnit.getName().equals(
+                PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units))
+        || program.getName().equals(
+                PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments))){
             startButton.setVisibility(View.VISIBLE);
         }else if (survey != null || !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
             startButton.setVisibility(View.INVISIBLE);
@@ -185,7 +192,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         Intent surveysIntent = new Intent(
                 PreferencesState.getInstance().getContext().getApplicationContext(),
                 SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(
                 surveysIntent);
     }

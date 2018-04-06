@@ -125,9 +125,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             return null;
         }
 
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.improve_org_unit_program_filter_view);
+        loadFilter();
 
         orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
 
@@ -167,12 +165,18 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
         }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
+
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.improve_org_unit_program_filter_view);
     }
 
     private void initCheckBox(View view) {
@@ -298,7 +302,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                                                     public void onClick(DialogInterface arg0, int arg1) {
                                                         selectedSurvey.delete();
                                                         Intent surveysIntent=new Intent(getActivity(), SurveyService.class);
-                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+                                                        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_SENT_FRAGMENT_ACTION);
                                                         getActivity().startService(surveysIntent);
                                                     }
                                                 })

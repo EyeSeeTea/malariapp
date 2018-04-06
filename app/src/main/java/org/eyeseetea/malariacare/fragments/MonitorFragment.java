@@ -101,9 +101,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             return null;
         }
 
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.monitor_org_unit_program_filter_view);
+        loadFilter();
 
         orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.EXCLUSIVE);
 
@@ -130,14 +128,18 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         String JAVASCRIPT_UPDATE_FILTER = "javascript:updateOrgUnitFilter('%s')";
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER, selectedOrgUnitFilter);
         Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
+        if(webView!=null) {
+            webView.loadUrl(updateChartJS);
+        }
     }
 
     private void pushProgramFilterToJavascript(String selectedProgramFilter) {
         String JAVASCRIPT_UPDATE_FILTER = "javascript:updateProgramFilter('%s')";
         String updateChartJS=String.format(JAVASCRIPT_UPDATE_FILTER, selectedProgramFilter);
         Log.d(TAG, updateChartJS);
-        webView.loadUrl(updateChartJS);
+        if(webView!=null) {
+            webView.loadUrl(updateChartJS);
+        }
     }
 
     private void saveCurrentFilters() {
@@ -180,11 +182,18 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
         }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
+
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.monitor_org_unit_program_filter_view);
     }
 
     public void setFilterType(MonitorFilter monitorFilter) {
