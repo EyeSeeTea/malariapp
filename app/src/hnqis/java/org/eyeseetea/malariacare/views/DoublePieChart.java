@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -47,18 +49,7 @@ public class DoublePieChart extends FrameLayout {
         outsidePie = (PieChart) findViewById(R.id.external_chart);
         doublePieContainer = (View) findViewById(R.id.double_pie_container);
 
-        highColor = ResourcesCompat.getColor(
-                getContext().getResources(), R.color.ratio_questions_high, null);
-        middleColor = ResourcesCompat.getColor(
-                getContext().getResources(), R.color.ratio_questions_middle, null);
-        lowColor = ResourcesCompat.getColor(
-                getContext().getResources(), R.color.ratio_questions_low, null);
-        mandatoryHighColor = ResourcesCompat.getColor(
-                getContext().getResources(), R.color.ratio_mandatory_questions_high, null);
-        mandatoryMiddleColor = ResourcesCompat.getColor(
-                getContext().getResources(), R.color.ratio_mandatory_questions_middle, null);
-        mandatoryLowColor = ResourcesCompat.getColor(
-                getContext().getResources(), R.color.ratio_mandatory_questions_low, null);
+        initColors();
 
         int[] attrsArray = new int[]{
                 android.R.attr.layout_width,
@@ -73,6 +64,16 @@ public class DoublePieChart extends FrameLayout {
                 new LayoutParams((int) (layout_width * 0.75), (int) (layout_height * 0.75),
                         Gravity.CENTER));
 
+    }
+
+    private void initColors() {
+        highColor = getHighColor(getContext());
+        middleColor = getMiddleColor(getContext());
+        lowColor = getLowColor(getContext());
+
+        mandatoryHighColor = getMandatoryHighColor(getContext());
+        mandatoryMiddleColor = getMandatoryMiddleColor(getContext());
+        mandatoryLowColor = getMandatoryLowColor(getContext());
     }
 
     public void createDoublePie(final int internalPercentage, int externalPercentage) {
@@ -145,13 +146,8 @@ public class DoublePieChart extends FrameLayout {
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (percentage >= HIGH_VALUE) {
-            colors.add(highColor);
-        } else if (percentage >= MIDDLE_VALUE) {
-            colors.add(middleColor);
-        } else {
-            colors.add(lowColor);
-        }
+        int colorByPercentage = getColorByPercentage(percentage, highColor, middleColor, lowColor);
+        colors.add(colorByPercentage);
         colors.add(Color.TRANSPARENT);
         dataSet.setColors(colors);
 
@@ -168,6 +164,19 @@ public class DoublePieChart extends FrameLayout {
         mChart.highlightValues(null);
 
         mChart.invalidate();
+    }
+
+    private static int getColorByPercentage(int percentage, int highColor, int middleColor,
+            int lowColor) {
+        int colorByPercentage;
+        if (percentage >= HIGH_VALUE) {
+            colorByPercentage = highColor;
+        } else if (percentage >= MIDDLE_VALUE) {
+            colorByPercentage = middleColor;
+        } else {
+            colorByPercentage = lowColor;
+        }
+        return colorByPercentage;
     }
 
     private OnClickListener listener;
@@ -191,5 +200,65 @@ public class DoublePieChart extends FrameLayout {
 
     public void setOnClickListener(OnClickListener listener) {
         this.listener = listener;
+    }
+
+    public static int getMandatoryColorByPercentage(int percentage, @NonNull Context context) {
+        int highColor =  getMandatoryHighColor(context);
+
+        int middleColor = getMandatoryMiddleColor(context);
+
+        int lowColor  = getMandatoryLowColor(context);
+
+        return getColorByPercentage(percentage, highColor,
+                middleColor,
+                lowColor);
+    }
+
+    public static int getOverAllColorByPercentage(int percentage, @NonNull Context context) {
+        int highColor =  getDarkHighColor(context);
+
+        int middleColor = getDarkMiddleColor(context);
+
+        int lowColor  = getLowColor(context);
+
+        return getColorByPercentage(percentage, highColor,
+                middleColor,
+                lowColor);
+    }
+
+    private static int getHighColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_questions_high);
+    }
+
+    private static int getDarkHighColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_mandatory_questions_high);
+    }
+
+    private static int getMiddleColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_questions_middle);
+    }
+
+    private static int getDarkMiddleColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_mandatory_questions_middle);
+    }
+
+    private static int getLowColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_questions_low);
+    }
+
+    private static int getMandatoryHighColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_mandatory_questions_high);
+    }
+    private static int getMandatoryMiddleColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_mandatory_questions_middle);
+    }
+
+    private static int getMandatoryLowColor(@NonNull Context context){
+        return  getColor(context,R.color.ratio_mandatory_questions_low);
+    }
+
+    private static int getColor(@NonNull Context context, @ColorRes int color){
+       return  ResourcesCompat.getColor(
+                context.getResources(), color, null);
     }
 }

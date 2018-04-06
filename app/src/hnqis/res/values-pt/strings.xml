@@ -39,7 +39,7 @@
 <string name="create_info_tabs_group">"Tab Group"</string>
 
 <string name="assessment_title_facility_date">"Nome da Franquia ou Inquérito"</string>
-<string name="assessment_title_state">"%Completo"</string>
+<string name="assessment_title_overall_mandatory_completed">"Geral / Obrigatório concluído"</string>
 <string name="assessment_sent_date">"Data de concl"</string>
 <string name="assessment_title_header">"Pesquisa(s) activa"</string>
 <string name="assessment_sent_title_header">"Pesquisa(s) anterior(es)"</string>

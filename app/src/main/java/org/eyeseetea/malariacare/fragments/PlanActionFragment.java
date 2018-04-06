@@ -23,6 +23,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Editable;
@@ -439,13 +441,15 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void showShareButton() {
-        fabShare.setVisibility(View.VISIBLE);
+    public void enableShareButton() {
+        fabShare.setEnabled(true);
+        fabShare.getBackground().clearColorFilter();
     }
 
     @Override
-    public void hideShareButton() {
-        fabShare.setVisibility(View.GONE);
+    public void disableShareButton() {
+        fabShare.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        fabShare.setEnabled(false);
     }
 
     private String extractTextData(ObsActionPlanDB obsActionPlan, SurveyDB survey,

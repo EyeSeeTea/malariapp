@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter;
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class OrgUnitProgramFilterView
         extends FrameLayout implements OrgUnitProgramFilterPresenter.View {
-
 
     public enum FilterType {EXCLUSIVE,NON_EXCLUSIVE}
 

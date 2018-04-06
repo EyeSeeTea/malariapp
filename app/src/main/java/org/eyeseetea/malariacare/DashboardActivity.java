@@ -88,6 +88,7 @@ public class DashboardActivity extends BaseActivity {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
         }
+        reloadDashboard();
     }
 
 
@@ -215,7 +216,6 @@ public class DashboardActivity extends BaseActivity {
             reloadOnResume = true;
             return;
         }
-        reloadDashboard();
     }
 
     public static void reloadDashboard() {
@@ -381,8 +381,8 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onAssessSelected(survey);
     }
 
-    public void openFeedback(SurveyDB survey) {
-        dashboardController.openFeedback(survey);
+    public void openFeedback(SurveyDB survey, boolean modifyFilter) {
+        dashboardController.openFeedback(survey, modifyFilter);
     }
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {

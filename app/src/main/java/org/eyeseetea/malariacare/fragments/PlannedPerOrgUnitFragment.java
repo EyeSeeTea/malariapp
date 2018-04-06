@@ -43,7 +43,7 @@ import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrg
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.PlanningPerOrgUnitAdapter;
-import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.CustomCheckBox;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
@@ -87,17 +87,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
         orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
                 .findViewById(R.id.plan_org_unit_program_filter_view);
-
         return inflater.inflate(R.layout.plan_per_org_unit_listview, null);
-    }
-
-    private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
-        }
     }
 
 
@@ -249,7 +239,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION));
         }
     }
     /**
@@ -265,11 +255,9 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     public void reloadData(){
-        updateSelectedFilters();
-
         //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -302,8 +290,8 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
-                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
+            if(PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION.equals(intent.getAction())){
+                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
                 List<PlannedSurveyByOrgUnit> items= new ArrayList<>();
                 for(PlannedItem item: plannedServiceBundle.getPlannedItems()){
                     if(item instanceof PlannedSurvey && isNotFiltered(item)){
