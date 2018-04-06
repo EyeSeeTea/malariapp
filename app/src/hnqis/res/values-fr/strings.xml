@@ -39,7 +39,7 @@
 <string name="create_info_tabs_group">"Groupe d'onglets"</string>
 
 <string name="assessment_title_facility_date">"Établissement / Rapports"</string>
-<string name="assessment_title_state">"État"</string>
+<string name="assessment_title_overall_mandatory_completed">"Global / Obligatoire complété"</string>
 <string name="assessment_sent_date">"Date d'envoi"</string>
 <string name="assessment_title_header">"Enquête(s) actif(s)"</string>
 <string name="assessment_sent_title_header">"Enquête(s) antérieur(s)"</string>
@@ -265,4 +265,5 @@ Mensuelle"</string>
 <string name="save">"enregistrer"</string>
 <string name="monitor_no_surveys_to_show">"Aucune enquête à afficher"</string>
 <string name="plan_action_provider_title" >"NOM DU FOURNISSEUR:"</string>
+<string name="health_facility">Centre médical</string>
 </resources>

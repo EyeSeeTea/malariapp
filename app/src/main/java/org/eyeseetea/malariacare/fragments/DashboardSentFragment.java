@@ -239,7 +239,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "onListItemClick");
         super.onListItemClick(l, v, position, id);
 
-        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position));
+        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position), true);
     }
 
     @Override

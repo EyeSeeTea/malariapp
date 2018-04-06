@@ -39,7 +39,7 @@
 <string name="create_info_tabs_group">"Tab Group"</string>
 
 <string name="assessment_title_facility_date">"Facility / Survey"</string>
-<string name="assessment_title_state">"% Complete"</string>
+<string name="assessment_title_overall_mandatory_completed">"Overall / Mandatory completed"</string>
 <string name="assessment_sent_date">"Comp date"</string>
 <string name="assessment_title_header">"Active Survey(s)"</string>
 <string name="assessment_sent_title_header">"Previous Survey(s)"</string>
@@ -275,4 +275,5 @@ evaluation"</string>
 <string name="save">"Save"</string>
 <string name="plan_action_provider_title" >"PROVIDER NAME:"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
+<string name="health_facility">Health Facility</string>
 </resources>

@@ -369,7 +369,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                 new UIThreadExecutor().run(new Runnable() {
                     @Override
                     public void run() {
-                        DashboardActivity.dashboardActivity.openFeedback(SurveyDB.findById(Long.parseLong(uid)));
+                        DashboardActivity.dashboardActivity.openFeedback(SurveyDB.findById(Long.parseLong(uid)), false);
                     }
                 });
             }
@@ -419,7 +419,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
                     new UIThreadExecutor().run(new Runnable() {
                         @Override
                         public void run() {
-                            DashboardActivity.dashboardActivity.openFeedback(survey);
+                            DashboardActivity.dashboardActivity.openFeedback(survey, false);
                         }
                     });
                 }
