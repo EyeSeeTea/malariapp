@@ -45,6 +45,7 @@
 <string name="assessment_title_facility_date">"ស្ថាប័ន / ការស្ទង់មតិ"</string>
 <string name="assessment_title_state">"% បញ្ចប់"</string>
 <string name="assessment_sent_date">"កាលបរិច្ឆេទ"</string>
+<string name="assessment_title_overall_mandatory_completed">"ជារួម / ចាំបាច់ត្រូវបានបញ្ចប់"</string>
 <string name="assessment_title_header">"ការស្ទង់មតិសកម្ម"</string>
 <string name="assessment_sent_title_header">"អង្កេតមុន ៗ"</string>
 <string name="assessment_sent_score">Score</string>
@@ -280,4 +281,5 @@ evaluation"</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
 <string name="monitor_no_surveys_to_show">"គ្មានការស្ទង់មតិដើម្បីបង្ហាញ"</string>
 <string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
+<string name="health_facility">មជ្ឈមណ្ឌលវេជ្ជសាស្ត្រ</string>
 </resources>

@@ -34,9 +34,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
-import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
-import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -55,16 +53,6 @@ public class SurveyService extends IntentService {
      * Constant added to the intent in order to reuse the service for different 'methods'
      */
     public static final String SERVICE_METHOD="serviceMethod";
-
-    /**
-     * Name of the parameter that holds every survey that goes into the planned tab
-     */
-    public static final String PLANNED_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_SURVEYS_ACTION";
-
-    /**
-     * Name of the parameter that holds every survey that goes into the planned tab
-     */
-    public static final String PLANNED_ORG_UNIT_SURVEYS_ACTION="org.eyeseetea.malariacare.services.SurveyService.PLANNED_ORG_UNIT_SURVEYS_ACTION";
     /**
      * Name of the parameter that holds every survey and filters that goes into the feedback
      */
@@ -169,12 +157,6 @@ public class SurveyService extends IntentService {
             case ALL_COMPLETED_SURVEYS_ACTION:
                 getAllCompletedSurveys();
                 break;
-            case PLANNED_SURVEYS_ACTION:
-                reloadPlannedSurveys();
-                break;
-            case PLANNED_ORG_UNIT_SURVEYS_ACTION:
-                reloadOrgUnitPlannedSurveys();
-                break;
             case RELOAD_DASHBOARD_ACTION:
                 reloadDashboard();
                 break;
@@ -245,26 +227,19 @@ public class SurveyService extends IntentService {
 
     }
 
-    private void reloadOrgUnitPlannedSurveys() {
-        Log.d(TAG, "reloadPlanningSurveys");
-        PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
-        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
-        plannedServiceBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
-        plannedServiceBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
-        Session.putServiceValue(PLANNED_ORG_UNIT_SURVEYS_ACTION, plannedServiceBundle);
-        //Returning result to anyone listening
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_ORG_UNIT_SURVEYS_ACTION));
-    }
-
     private void reloadPlannedSurveys() {
-        Log.d(TAG, "reloadPlanningSurveys");
-        PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
-        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getInstance().buildPlannedItems());
-        plannedServiceBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
-        plannedServiceBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
-        Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);
-        //Returning result to anyone listening
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
+        Intent surveysIntent = new Intent(
+                PreferencesState.getInstance().getContext().getApplicationContext(),
+                PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
+                PlannedSurveyService.PLANNED_SURVEYS_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        surveysIntent = new Intent(
+                PreferencesState.getInstance().getContext().getApplicationContext(),
+                PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
+                PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
     private void getAllCreateSurveyData() {
@@ -338,13 +313,13 @@ public class SurveyService extends IntentService {
 
     private void reloadDashboard(){
         Log.d(TAG, "reloadDashboard");
+        reloadPlannedSurveys();
         reloadSentFragment();
         getAllCompletedSurveys();
         getAllCreateSurveyData();
         getAllInProgressSurveys();
         getAllMonitorData();
         getAllPrograms();
-        reloadPlannedSurveys();
     }
 
     /**

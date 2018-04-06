@@ -13,7 +13,7 @@ import android.widget.EditText;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.sdk.presentation.views.CustomEditText;
 
@@ -117,8 +117,8 @@ public class ScheduleListener implements View.OnClickListener {
 
     private void reloadData() {
         //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
+        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
