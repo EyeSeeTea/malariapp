@@ -17,11 +17,14 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.utils.monitor.facility;
+package org.eyeseetea.malariacare.data.database.utils.monitor.facilities;
+
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -29,7 +32,6 @@ import java.util.Map;
  */
 public class FacilityTableDataBase {
     private static final String MONTH_FORMAT="MMM";
-    private static final SimpleDateFormat HEADER_FORMATTER=new SimpleDateFormat(MONTH_FORMAT);
 
     String title;
 
@@ -44,6 +46,7 @@ public class FacilityTableDataBase {
     String getMonthsAsJSONArray() {
         String monthsJSON="";
         Calendar cal=Calendar.getInstance();
+        SimpleDateFormat HEADER_FORMATTER=new SimpleDateFormat(MONTH_FORMAT);
         for(int i = 0; i< FacilityRowDataBase.NUM_MONTHS; i++){
             String monthLabel=String.format("'%s'",HEADER_FORMATTER.format(cal.getTime()));
             //Separator BUT last and first month (in chronological order)

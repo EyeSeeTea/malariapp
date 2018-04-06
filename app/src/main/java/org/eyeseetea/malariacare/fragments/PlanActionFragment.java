@@ -45,6 +45,7 @@ import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -80,6 +81,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private CustomSpinner actionSpinner;
     private CustomSpinner secondaryActionSpinner;
     private FloatingActionButton mFabComplete;
+    private FloatingActionButton fabShare;
     private RelativeLayout mRootView;
     private ObsActionPlanPresenter presenter;
 
@@ -227,7 +229,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     private void initFAB() {
         initFabComplete(mRootView);
 
-        FloatingActionButton fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
+        fabShare = (FloatingActionButton) mRootView.findViewById(R.id.fab_share);
 
         fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -436,22 +438,33 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         System.out.println("data:" + data);
     }
 
+    @Override
+    public void showShareButton() {
+        fabShare.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideShareButton() {
+        fabShare.setVisibility(View.GONE);
+    }
+
     private String extractTextData(ObsActionPlanDB obsActionPlan, SurveyDB survey,
             List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
-                        R.string.app_name) + "\n\n";
+                        R.string.app_name) + "- \n";
+
         data += getString(R.string.supervision_on) + " " + survey.getOrgUnit().getName() + "/"
                 + survey.getProgram().getName() + "\n";
 
         data += getString(R.string.on) + " " + EventExtended.format
-                (survey.getCompletionDate(), getString(R.string.date_month_text_format))
-                + "\n\n";
-
-        data += getString(R.string.quality_of_care) + " " + survey.getMainScore() + "\n\n";
+                (survey.getCompletionDate(), EventExtended.EUROPEAN_DATE_FORMAT)
+                + "\n";
+        int roundedScore = Math.round(survey.getMainScore());
+        data += getString(R.string.quality_of_care) + " " + roundedScore + "% \n";
 
         data += String.format(getString(R.string.plan_action_next_date),
-                EventExtended.format(survey.getScheduledDate(),
+                EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         EventExtended.EUROPEAN_DATE_FORMAT));
 
         if(obsActionPlan.getProvider()!=null && !obsActionPlan.getProvider().isEmpty()) {
@@ -464,13 +477,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             data += obsActionPlan.getGaps();
         }
 
-        data += "\n\n" + getString(R.string.plan_action_action_plan_title) + " ";
+        data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
 
         if (obsActionPlan.getAction_plan() != null && !obsActionPlan.getAction_plan().isEmpty()) {
             data += obsActionPlan.getAction_plan();
         }
 
-        data += "\n\n" + getString(R.string.plan_action_action_title) + " ";
+        data += "\n" + getString(R.string.plan_action_action_title) + " ";
 
         if (obsActionPlan.getAction1() != null && !obsActionPlan.getAction1().isEmpty()) {
             data += obsActionPlan.getAction1();
@@ -482,7 +495,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         }
 
         if (criticalQuestions != null && criticalQuestions.size() > 0) {
-            data += "\n\n" + getString(R.string.critical_steps) + "\n\n";
+            data += "\n\n" + getString(R.string.critical_steps) + "\n";
 
             //For each score add proper items
             for (Iterator<CompositeScoreDB> iterator = compositeScoresTree.iterator();
