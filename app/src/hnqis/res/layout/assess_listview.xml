@@ -24,7 +24,7 @@
                         android:id="@+id/idHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.5"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@string/assessment_title_facility_date"
@@ -35,23 +35,18 @@
                         android:textSize="@dimen/header_light_text_size"
                         app:tDimension="@string/font_size_level2"
                         app:tFontName="@string/medium_font_name" />
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/circle_stroke_width"
-                        android:layout_weight="0.2">
-                    </View>
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:id="@+id/nameHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.5"
                         android:layout_gravity="center"
                         android:ellipsize="end"
                         android:lines="1"
                         android:gravity="center"
                         android:paddingRight="50dp"
-                        android:text="@string/assessment_title_state"
+                        android:text="@string/assessment_title_overall_mandatory_completed"
                         android:textColor="@color/planning_header_text"
                         android:textSize="@dimen/header_light_text_size"
                         app:tDimension="@string/font_size_level2"
