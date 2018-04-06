@@ -121,9 +121,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-        if (container == null) {
-            return null;
-        }
 
         loadFilter();
 

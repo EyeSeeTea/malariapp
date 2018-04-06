@@ -49,8 +49,10 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
+        .SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
+        .SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
@@ -278,6 +280,9 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if (!isAdded()) {
+                    return;
+                }
                 //Update hardcoded messages
                 new MonitorMessagesBuilder().addDataInChart(view);
 
@@ -411,7 +416,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             TextView score = (TextView) row.findViewById(R.id.second_column);
             completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
             score.setText(survey.getMainScore()+"");
-            Resources resources = getResources();
+            Resources resources = PreferencesState.getInstance().getContext().getResources();
 
             ScoreType scoreType = new ScoreType(survey.getMainScore());
             if (scoreType.isTypeA()) {

@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.PlanActionFragment;
@@ -77,6 +76,9 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
+        if (fragment == null || !fragment.isAdded()) {
+            reloadFragment();
+        }
         if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
            return;
         }
@@ -152,7 +154,9 @@ public class ImproveModuleController extends ModuleController {
         android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
+            if(feedbackFragment.getView()!=null){
+                feedbackFragment.getView().setVisibility(View.GONE);
+            }
         }else if(fragment instanceof PlanActionFragment){
             if (feedbackFragment != null)
                 replaceFragment(R.id.dashboard_completed_container, feedbackFragment);

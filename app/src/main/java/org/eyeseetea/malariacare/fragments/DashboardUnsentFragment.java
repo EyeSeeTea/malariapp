@@ -81,9 +81,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-        if (container == null) {
-            return null;
-        }
 
         loadFilter();
 
@@ -265,7 +262,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void reloadInProgressSurveys() {
         List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(
                 SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-
+        if(surveysInProgressFromService==null){
+            return;
+        }
         reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
     }
 
