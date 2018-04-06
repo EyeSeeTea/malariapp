@@ -1,0 +1,42 @@
+<p> <b> Sistema de Calidad PSI Red de Salud de Mejoras (HNQIS) </b> </p>
+
+<p> <b> Build %s </b> </p>
+
+<p> Esta aplicación de software ( "App") fue desarrollado por Population Services International (PSI) para sostener la mejora de la calidad de las redes del sector privado para el cuidado de la salud. Esta aplicación fue desarrollada con el apoyo de: <br/>
+El Departamento de Desarrollo Internacional (DFID) (Gran Bretaña); y <br/>
+El Ministro de Comercio Exterior y Cooperación para el Desarrollo (Países Bajos) </p>
+
+<p> Esta aplicación también es posible gracias al generoso apoyo del pueblo estadounidense a través de la Agencia de los Estados Unidos para el Desarrollo Internacional (USAID). Los contenidos son responsabilidad de los ISP y no reflejan necesariamente los puntos de vista de USAID o del Gobierno de los Estados Unidos. </ P>
+
+<p> Además, esta aplicación contiene ciertas modificaciones para una aplicación de software preparado en colaboración con el Programa de Tecnología Apropiada en Salud (PATH), y por lo tanto los puntos de vista expresados ​​en este documento no reflejan necesariamente los puntos de vista de PATH. </ P>
+
+<p> Para obtener más información acerca de esta aplicación, puede escribir a mis@psi.org </p>
+
+<p> <b> <u> Organizaciones colaboradoras </u> </b> </p>
+
+<p> <b> <i> Servicios Internacionales de Población </i> </b> </p>
+
+<p> <i> desarrollo conceptual de plomo y la aplicación </i> </p>
+
+<p> La ISP es una organización de salud mundial sin fines de lucro que hace que sea más fácil para las personas en el mundo en desarrollo a llevar una vida más saludable y planificar las familias que desean mediante la comercialización de productos y servicios a precios asequibles </p>
+
+<p> <a href="http://www.psi.org"> www.psi.org </a> </p>
+
+<p> <b> <i> EyeSeeTea LTD </i> </b> </p>
+
+<p> <i> desarrollo de Android </i> </p>
+
+<p> EyeSeeTea LTD es una empresa con sede en Londres dedicada a: <br/>
+- <br/> ONG de desarrollo de software
+- Desarrollo de las TIC y el despliegue <br/>
+- Análisis de los datos y la representación <br/> </p>
+
+<p> <a href="http://www.eyeseetea.com"> www.eyeseetea.com </a> </p>
+
+<p> <b> <i> KnowTechTure (KTT) </i> </b> </p>
+
+<p> <i> Coordinación de Desarrollo </i> </p>
+
+<p> KTT se especializa en la arquitectura DHIS, desarrollo personalizado y la implementación. </ P>
+
+<p> <a href="http://www.knowtechture.com"> www.knowtechture.com </a> </p>
