@@ -275,4 +275,5 @@ evaluation"</string>
 <string name="save">"Save"</string>
 <string name="plan_action_provider_title" >"PROVIDER NAME:"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
+<string name="health_facility">Health Facility</string>
 </resources>

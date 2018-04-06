@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
@@ -186,9 +187,8 @@ public class CreateSurveyFragment extends Fragment {
         orgUnitView.setOnItemSelectedListener(new OrgUnitSpinnerListener(viewHolder));
 
         View childView = llLayout.findViewById(R.id.org_unit_container);
-        CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView2);
-        childViewTextView.setText(orgUnitListFirstLevel.get(1).getOrgUnitLevel().getName());
 
+        bindOUFacility(orgUnitListFirstLevel, childView);
 
         //Put in org unit hierarchy map
         orgUnitHierarchyView = new LinkedHashMap<>();
@@ -200,7 +200,7 @@ public class CreateSurveyFragment extends Fragment {
         for (OrgUnitLevelDB orgUnitLevel : orgUnitLevelList) {
             if (!orgUnitLevel.equals(orgUnitListFirstLevel.get(1).getOrgUnitLevel())) {
                 childView = lInflater.inflate(R.layout.create_survey_org_unit_item_fragment, (LinearLayout) orgUnitContainerItems, false);
-                childViewTextView = (CustomTextView) childView.findViewById(R.id.textView);
+                CustomTextView childViewTextView = (CustomTextView) childView.findViewById(R.id.textView);
                 childViewTextView.setText(orgUnitLevel.getName());
 
                 Spinner childViewSpinner = (Spinner) childView.findViewById(R.id.org_unit_item_spinner);
@@ -238,6 +238,17 @@ public class CreateSurveyFragment extends Fragment {
             orgUnitView.setSelection(getIndex(orgUnitView, OrgUnitDB.getOrgUnit(orgUnitStorage).getName()));
         }
         loadHierarchy=false;
+    }
+
+    private void bindOUFacility(List<OrgUnitDB> orgUnitListFirstLevel, View childView) {
+        CustomTextView childViewTextView = (CustomTextView) childView.findViewById(
+                R.id.textView2);
+
+        if(BuildConfig.OUSelectionHealthFacility) {
+            childViewTextView.setText(R.string.health_facility);
+        }else{
+            childViewTextView.setText(orgUnitListFirstLevel.get(1).getOrgUnitLevel().getName());
+        }
     }
 
     @Override
