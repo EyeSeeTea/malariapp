@@ -91,7 +91,7 @@ public class ImproveModuleController extends ModuleController {
                     PreferencesState.getInstance().getOrgUnitUidFilter());
 
             if (surveys.size() == 1)
-                onFeedbackSelected(surveys.get(0));
+                onFeedbackSelected(surveys.get(0), true);
         }
 
         super.onTabChanged();
@@ -107,7 +107,7 @@ public class ImproveModuleController extends ModuleController {
         closeFeedbackFragment();
     }
 
-    public void onFeedbackSelected(SurveyDB survey){
+    public void onFeedbackSelected(SurveyDB survey, boolean modifyFilter){
         Session.setSurveyByModule(survey, getSimpleName());
         try {
             LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
@@ -122,7 +122,9 @@ public class ImproveModuleController extends ModuleController {
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
 
-        UpdateFiltersBySurvey(survey);
+        if(modifyFilter) {
+            UpdateFiltersBySurvey(survey);
+        }
     }
 
     public void onPlanActionSelected(SurveyDB survey){

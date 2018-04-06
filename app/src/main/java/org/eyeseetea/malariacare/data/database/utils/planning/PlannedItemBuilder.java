@@ -67,10 +67,6 @@ public class PlannedItemBuilder {
      */
     private List<PlannedItem> future;
 
-    public static PlannedItemBuilder getNewInstance(){
-        return new PlannedItemBuilder();
-    }
-
     /**
      * Inits aux data structures
      */

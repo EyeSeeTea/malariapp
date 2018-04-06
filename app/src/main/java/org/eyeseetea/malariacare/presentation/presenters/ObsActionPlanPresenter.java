@@ -1,5 +1,9 @@
 package org.eyeseetea.malariacare.presentation.presenters;
 
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_COMPLETED;
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_IN_PROGRESS;
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -10,7 +14,6 @@ import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.observables.ObservablePush;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,7 +98,7 @@ public class ObsActionPlanPresenter {
         }
 
         if (mView != null) {
-            if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
+            if (!mObsActionPlan.getStatus().equals(SURVEY_IN_PROGRESS)) {
                 mView.changeToReadOnlyMode();
             }
 
@@ -189,7 +192,7 @@ public class ObsActionPlanPresenter {
     }
 
     public void completePlan() {
-        mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+        mObsActionPlan.setStatus(SURVEY_COMPLETED);
         mObsActionPlan.save();
 
         if (mView != null) {
@@ -202,10 +205,16 @@ public class ObsActionPlanPresenter {
     private void updateStatus() {
         mView.updateStatusView(mObsActionPlan.getStatus());
 
-        if (mObsActionPlan.getStatus().equals(Constants.SURVEY_COMPLETED)) {
-            mView.showShareButton();
-        }else {
-            mView.hideShareButton();
+        switch (mObsActionPlan.getStatus()){
+
+            case SURVEY_COMPLETED:
+            case SURVEY_SENT:
+                mView.enableShareButton();
+                break;
+
+            case SURVEY_IN_PROGRESS:
+                mView.disableShareButton();
+                break;
         }
     }
 
@@ -297,9 +306,9 @@ public class ObsActionPlanPresenter {
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
 
-        void showShareButton();
+        void enableShareButton();
 
-        void hideShareButton();
+        void disableShareButton();
 
     }
 }

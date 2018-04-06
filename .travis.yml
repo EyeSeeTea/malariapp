@@ -24,6 +24,9 @@ script:
 - "./gradlew --no-daemon testHnqisDebugUnitTest"
 before_script:
 - "./travis_before_script.sh"
+install:
+  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
+  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 notifications:
   slack:
     secure: V8Wxde5RTNbNiOzulv6idvMpbWtjVc4DPwApjAgfDI01OD6nLkuogr/z3qqyKbA/uwWnzu5g7+vegFtSdjW1z32kiIO0bO2c0m2L/E542D1/zmWT9N0IPghQIZ+9BAj1ZrgG286tiX85lSV8uLy0r9bAefPWlbdrHhirYi3cTsI=
