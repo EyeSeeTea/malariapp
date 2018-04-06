@@ -29,7 +29,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -111,35 +110,6 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         Context context = textView.getContext();
         textView.setText(context.getString(R.string.template_percentage_number,percentage));
         textView.setTextColor(color);
-    }
-
-    protected void createPie(PieChart mChart, int percentage,
-            int highColor, int middleColor, int lowColor) {
-        Log.d("percentage", "percentage: " + percentage);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-
-        mChart.setDrawHoleEnabled(true);
-
-
-        mChart.setTransparentCircleColor(Color.RED);
-        mChart.setTransparentCircleAlpha(255);
-
-        mChart.setHoleRadius(0f);
-        mChart.setTransparentCircleRadius(0f);
-
-        mChart.setDrawCenterText(false);
-
-        // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
-
-        setData(mChart, percentage, highColor, middleColor, lowColor);
-
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
     }
 
     private void setData(PieChart mChart, int percentage,
