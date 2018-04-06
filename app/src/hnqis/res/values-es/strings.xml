@@ -39,7 +39,7 @@
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
 
 <string name="assessment_title_facility_date">"Instalación / Encuesta</string>
-<string name="assessment_title_state">"%Completo"</string>
+<string name="assessment_title_overall_mandatory_completed">"Total / Obligatorio completado"</string>
 <string name="assessment_sent_date">"Fecha de llenado"</string>
 <string name="assessment_title_header">"Encuesta(s) activa(s)"</string>
 <string name="assessment_sent_title_header">"Encuesta(es) Anterior(es)"</string>
