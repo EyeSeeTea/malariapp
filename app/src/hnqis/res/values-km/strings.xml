@@ -45,6 +45,7 @@
 <string name="assessment_title_facility_date">"ស្ថាប័ន / ការស្ទង់មតិ"</string>
 <string name="assessment_title_state">"% បញ្ចប់"</string>
 <string name="assessment_sent_date">"កាលបរិច្ឆេទ"</string>
+<string name="assessment_title_overall_mandatory_completed">"ជារួម / ចាំបាច់ត្រូវបានបញ្ចប់"</string>
 <string name="assessment_title_header">"ការស្ទង់មតិសកម្ម"</string>
 <string name="assessment_sent_title_header">"អង្កេតមុន ៗ"</string>
 <string name="assessment_sent_score">Score</string>
