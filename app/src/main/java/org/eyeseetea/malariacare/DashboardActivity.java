@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
+import org.eyeseetea.malariacare.layout.dashboard.controllers.ModuleController;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -197,6 +198,7 @@ public class DashboardActivity extends BaseActivity {
         super.onResume();
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
+        DashboardActivity.dashboardActivity.reloadActiveTab();
     }
 
     @Override
@@ -387,6 +389,10 @@ public class DashboardActivity extends BaseActivity {
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         dashboardController.onPlannedSurvey(survey, scheduleClickListener);
+    }
+
+    public void reloadActiveTab() {
+        dashboardController.reloadActiveModule();
     }
 
 

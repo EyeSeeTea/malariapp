@@ -312,9 +312,11 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
-                    PREPARE_FEEDBACK_ACTION_ITEMS);
-            loadItems(feedbackList);
+            if (SurveyService.PREPARE_FEEDBACK_ACTION_ITEMS.equals(intent.getAction())) {
+                List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
+                        PREPARE_FEEDBACK_ACTION_ITEMS);
+                loadItems(feedbackList);
+            }
         }
     }
 
