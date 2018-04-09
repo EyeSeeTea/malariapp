@@ -636,11 +636,11 @@ public class ConvertToSDKVisitor implements
             }
 
             //No errors -> Save and next
-            Boolean importRequired = true;
+            Boolean emptyImportAllowed = false;
             if(kind.equals(PushController.Kind.PLANS)){
-                importRequired = false;
+                emptyImportAllowed = true;
             }
-            if (pushReport!=null && !pushReport.hasPushErrors(importRequired)) {
+            if (pushReport!=null && !pushReport.hasPushErrors(emptyImportAllowed)) {
                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
                         + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
