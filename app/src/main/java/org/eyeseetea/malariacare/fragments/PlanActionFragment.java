@@ -517,7 +517,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         }
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
+            data += "https://apps.psi-mis.org/hnqis/feedback?eventId=" + survey.getEventUid() + "\n";
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }

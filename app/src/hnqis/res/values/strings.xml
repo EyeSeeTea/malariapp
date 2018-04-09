@@ -191,6 +191,7 @@ evaluation"</string>
 <string name="monitor_js_target">"Target"</string>
 <string name="monitor_js_quality_of_care">"Quality of care: Last "</string>
 <string name="monitor_js_months">" months"</string>
+<string name="monitor_js_multiple_event_legend" >"(*)More than one survey exist in the same month"</string>
 
 <string name="create">"Create"</string>
 <string name="modify">"Modify"</string>
