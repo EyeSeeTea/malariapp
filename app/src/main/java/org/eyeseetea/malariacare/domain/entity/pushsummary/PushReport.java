@@ -92,7 +92,7 @@ public class PushReport {
     }
     /**
      * Checks whether the PushReport contains errors or has been successful.
-     * An import with 0 importedItems is an error too.
+     * An import with 0 importedItems is an error only if is required.
      */
     public boolean hasPushErrors(Boolean importRequired) {
 
