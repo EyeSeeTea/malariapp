@@ -50,6 +50,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -635,7 +636,11 @@ public class ConvertToSDKVisitor implements
             }
 
             //No errors -> Save and next
-            if (pushReport!=null && !pushReport.hasPushErrors()) {
+            Boolean importRequired = true;
+            if(kind.equals(PushController.Kind.PLANS)){
+                importRequired = false;
+            }
+            if (pushReport!=null && !pushReport.hasPushErrors(importRequired)) {
                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
                         + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {

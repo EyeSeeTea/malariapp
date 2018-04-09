@@ -87,7 +87,14 @@ public class PushReport {
      * Checks whether the PushReport contains errors or has been successful.
      * An import with 0 importedItems is an error too.
      */
-    public boolean hasPushErrors() {
+    public boolean hasPushErrorsWithImport() {
+        return hasPushErrors(true);
+    }
+    /**
+     * Checks whether the PushReport contains errors or has been successful.
+     * An import with 0 importedItems is an error too.
+     */
+    public boolean hasPushErrors(Boolean importRequired) {
 
         if (this.getPushedValues() == null) {
             return true;
@@ -97,6 +104,9 @@ public class PushReport {
         }
         if (!this.getStatus().equals(PushReport.Status.SUCCESS)) {
             return true;
+        }
+        if(!importRequired){
+            return false;
         }
         return this.getPushedValues().getImported() == 0;
     }
