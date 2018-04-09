@@ -146,7 +146,7 @@ public class PushController implements IPushController {
                         }
                         try {
                             mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback, kind);
-                            callback.onComplete(kind);
+                            callback.onComplete();
                         }catch (Exception e){
                             onError(new PushReportException(e));
                         }

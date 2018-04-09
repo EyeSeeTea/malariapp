@@ -84,6 +84,9 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         if (container == null) {
             return null;
         }
+
+        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
+                .findViewById(R.id.plan_org_unit_program_filter_view);
         return inflater.inflate(R.layout.plan_per_org_unit_listview, null);
     }
 
@@ -91,11 +94,6 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
-
-        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
-                .findViewById(R.id.plan_org_unit_program_filter_view);
-        scheduleButton = (ImageButton) getActivity().findViewById(R.id.reschedule_button);
-        selectAllCheckbox=(CustomCheckBox) getActivity().findViewById(R.id.select_all_orgunits);
         super.onActivityCreated(savedInstanceState);
 
     }
@@ -144,6 +142,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     private void initScheduleButton() {
+        scheduleButton = (ImageButton) getActivity().findViewById(R.id.reschedule_button);
         scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,6 +175,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
+        selectAllCheckbox=(CustomCheckBox) getActivity().findViewById(R.id.select_all_orgunits);
         selectAllCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
