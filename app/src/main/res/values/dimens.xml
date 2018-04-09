@@ -101,7 +101,7 @@
     <dimen name="planing_per_org_text_size">14dp</dimen>
     <dimen name="planing_per_org_text_light_size">14dp</dimen>
     <dimen name="planing_text_first_title_size">15dp</dimen>
-    <dimen name="header_light_text_size">18dp</dimen>
+    <dimen name="header_light_text_size">18sp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
     <dimen name="feedback_question_row_left_padding">10dp</dimen>
     <dimen name="mini_fab_separation">6dp</dimen>
