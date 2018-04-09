@@ -187,6 +187,7 @@ Mensuelle"</string>
 <string name="monitor_js_target">"Objectif"</string>
 <string name="monitor_js_quality_of_care">"Qualité des soins: Dernier "</string>
 <string name="monitor_js_months">" mois"</string>
+<string name="monitor_js_multiple_event_legend" >"(*) Plus d'une enquête existe le même mois"</string>
 
 <string name="create">"Créer"</string>
 <string name="modify">"Modifier"</string>

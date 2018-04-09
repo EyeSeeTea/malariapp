@@ -200,6 +200,7 @@
 <string name="monitor_js_target">"\"គោលដៅ\""</string>
 <string name="monitor_js_quality_of_care">"\"គុណភាពនៃការថែទាំ: មុន \""</string>
 <string name="monitor_js_months">"\" ខែ\""</string>
+<string name="monitor_js_multiple_event_legend" >"(*) ការស្ទង់មតិច្រើនជាងមួយមាននៅក្នុងខែដដែល"</string>
 <string name="dialog_error_attribute_null">"\"លេខសម្គាល់គុណលក្ខណៈជាមួយ NULL% s សូមទាក់ទងអ្នកគ្រប់គ្រងម៉ាស៊ីនបម្រើរបស់អ្នក.\""</string>
 <string name="progress_pull_relationships">"កសាងទំនាក់ទំនងសំណួរ ..."</string>
 <string name="create">"បង្កើត"</string>
