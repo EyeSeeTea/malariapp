@@ -220,6 +220,20 @@ public abstract class ModuleController {
         LayoutUtils.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
     }
 
+    public void replaceFragmentWithoutAnimation(int layout, Fragment fragment) {
+        if (fragment instanceof ListFragment) {
+            try {
+                //fix some visual problems
+                View vg = dashboardActivity.findViewById(layout);
+                vg.invalidate();
+            } catch (Exception e) {
+            }
+        }
+
+        FragmentTransaction ft = getFragmentTransaction(false);
+        ft.replace(layout, fragment);
+        ft.commit();
+    }
     public void replaceFragment(int layout, Fragment fragment) {
         if (fragment instanceof ListFragment) {
             try {
@@ -230,19 +244,21 @@ public abstract class ModuleController {
             }
         }
 
-        FragmentTransaction ft = getFragmentTransaction();
+        FragmentTransaction ft = getFragmentTransaction(true);
         ft.replace(layout, fragment);
         ft.commit();
     }
 
-    public FragmentTransaction getFragmentTransaction() {
+    public FragmentTransaction getFragmentTransaction(boolean animate) {
         FragmentTransaction ft = dashboardActivity.getFragmentManager().beginTransaction();
-        if (dashboardController.isNavigatingBackwards()) {
-            ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
-        } else {
-            ft.setCustomAnimations(R.animator.anim_slide_in_left, R.animator.anim_slide_out_left);
+        if(animate) {
+            if (dashboardController.isNavigatingBackwards()) {
+                ft.setCustomAnimations(R.animator.anim_slide_in_right, R.animator.anim_slide_out_right);
+            } else {
+                ft.setCustomAnimations(R.animator.anim_slide_in_left, R.animator.anim_slide_out_left);
+            }
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         }
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         return ft;
     }
 
@@ -278,7 +294,7 @@ public abstract class ModuleController {
             return;
         }
 
-        FragmentTransaction ft = getFragmentTransaction();
+        FragmentTransaction ft = getFragmentTransaction(true);
         ft.hide(fragment);
         ft.commit();
     }

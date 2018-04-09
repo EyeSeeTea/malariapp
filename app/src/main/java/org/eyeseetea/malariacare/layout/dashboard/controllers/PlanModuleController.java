@@ -103,10 +103,6 @@ public class PlanModuleController extends ModuleController {
     }
 
     public boolean isVisible() {
-        if (PreferencesState.getInstance().isHidePlanningTab()) {
-            DashboardActivity.dashboardActivity.findViewById(R.id.tab_plan_layout).setVisibility(
-                    View.GONE);
-        }
         return !PreferencesState.getInstance().isHidePlanningTab();
     }
 
@@ -114,16 +110,22 @@ public class PlanModuleController extends ModuleController {
     public void onOrgUnitSelected(OrgUnitDB orgUnit) {
         Log.d(TAG, "onOrgUnitSelected");
         //hide plannedFragment layout and show plannedOrgUnitsFragment
-        programVisibility(View.GONE);
-        orgUnitVisibility(View.VISIBLE);
 
-        if (plannedOrgUnitsFragment == null) {
+        if (plannedOrgUnitsFragment == null || !plannedOrgUnitsFragment.isAdded()) {
             plannedOrgUnitsFragment = new PlannedPerOrgUnitFragment();
+            reloadFragment();
         }
         plannedOrgUnitsFragment.setOrgUnitFilter(orgUnit.getUid());
-        FragmentTransaction ft = getFragmentTransaction();
+
+        FragmentTransaction ft = getFragmentTransaction(false);
         ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
         ft.commit();
+        replaceFragmentWithoutAnimation(getLayout(), getFragment());
+        ft = getFragmentTransaction(false);
+        ft.replace(R.id.dashboard_planning_orgunit, plannedOrgUnitsFragment);
+        ft.commit();
+        programVisibility(View.GONE);
+        orgUnitVisibility(View.VISIBLE);
         plannedOrgUnitsFragment.reloadData();
     }
 
@@ -133,20 +135,21 @@ public class PlanModuleController extends ModuleController {
         if (DashboardActivity.dashboardActivity.findViewById(
                 R.id.dashboard_planning_orgunit).getVisibility() == View.VISIBLE) {
             //hide plannedFragment layout and show plannedOrgUnitsFragment
-            orgUnitVisibility(View.GONE);
-            programVisibility(View.VISIBLE);
 
 
             if (fragment == null) {
                 fragment = new PlannedFragment();
             }
 
-            FragmentTransaction ft = getFragmentTransaction();
+            replaceFragment(getLayout(), getFragment());
+            FragmentTransaction ft = getFragmentTransaction(true);
             ft.replace(R.id.dashboard_planning_init, fragment);
             ft.commit();
             if (program != null) {
                 ((PlannedFragment) fragment).reloadFilter();
             }
+            orgUnitVisibility(View.GONE);
+            programVisibility(View.VISIBLE);
         } else {
             ((PlannedFragment) fragment).reloadFilter();
         }

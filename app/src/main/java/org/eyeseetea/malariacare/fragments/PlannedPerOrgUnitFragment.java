@@ -101,8 +101,12 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     private void prepareUI(List<PlannedSurveyByOrgUnit> plannedItems) {
+        if(scheduleButton==null){
+            return;
+        }
         int countOfCheckedSurveys=0;
         //Recover the plannedItem last status.
+
         if(plannedSurveys!=null && plannedSurveys.size()>1){
             for (PlannedSurveyByOrgUnit newPlannedSurveys:plannedItems) {
                 reCheckCheckboxes(newPlannedSurveys);
