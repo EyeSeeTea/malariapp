@@ -198,6 +198,7 @@ public class DashboardActivity extends BaseActivity {
         super.onResume();
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
+        DashboardActivity.dashboardActivity.reloadActiveTab();
     }
 
     @Override
