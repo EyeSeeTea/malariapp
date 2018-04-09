@@ -16,7 +16,8 @@ var messages= {
     "target": "Target",
     "qualityOfCare": "Quality of care: Last ",
     "months": " months",
-    "noSurveys": "No surveys to show"
+    "noSurveys": "No surveys to show",
+    "multipleEventLegend": "(*)More than one survey exist on the same month"
 };
 
 /**
@@ -38,5 +39,7 @@ var initContext = function(translated){
 
     //Init SurveyXMonthChart
     surveyXMonthChart = SentXMonthChart();
+
+    updateChartTitle("multipleEventLegend",messages["multipleEventLegend"]);
 }
 
