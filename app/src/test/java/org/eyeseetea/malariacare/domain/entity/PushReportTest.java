@@ -53,7 +53,7 @@ public class PushReportTest {
         ImportSummary importSummary = getImportSummary(API_MESSAGE_WITH_CONFLICTS_JSON);
         PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
                 API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
-        assertThat(!pushReport.hasPushErrorsWithImport(), is(true));
+        assertThat(!pushReport.hasPushErrors(), is(true));
     }
 
     @Test
@@ -61,14 +61,14 @@ public class PushReportTest {
         ImportSummary importSummary = getImportSummary(ERROR_IMPORT_SUMMARY_JSON);
         PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
                 API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
-        assertThat(!pushReport.hasPushErrorsWithImport(), is(false));
+        assertThat(!pushReport.hasPushErrors(), is(false));
     }
     @Test
     public void test_error_not_datavalues_imported_push() {
         ImportSummary importSummary = getImportSummary(DATAVALUES_IMPORTED_SUMMARY_JSON);
         PushReport pushReport = PushReportMapper.mapFromImportSummaryToPushReport(importSummary,
                 API_MESSAGE_WITH_CONFLICTS_JSON_KEY);
-        assertThat(!pushReport.hasPushErrorsWithImport(), is(false));
+        assertThat(!pushReport.hasPushErrors(), is(false));
     }
 
     private ImportSummary getImportSummary(String json) {
