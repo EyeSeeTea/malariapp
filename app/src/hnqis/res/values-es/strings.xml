@@ -103,7 +103,7 @@ clínica"</string>
 <string name="go_to_feedback">"Ir a feedback"</string>
 <string name="dialog_button_preview_feedback">"Ver feedback"</string>
 <string name="dialog_question_complete_survey">"Todas las preguntas obligatorias han sido rellenadas. ¿Quiere marcar esta encuesta como completa?"</string>
-<string name="dialog_continue_later_option">"Continuar despues"</string>
+<string name="dialog_continue_later_option">"Continuar después"</string>
 <string name="dialog_complete_option">"Completar"</string>
 <string name="dialog_are_you_sure_complete_survey">"¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta"</string>
 <string name="dialog_incompleted_compulsory_survey">"Esta encuesta no puede ser enviado todavía. Por favor responda al menos todas las preguntas obligatorias"</string>
@@ -113,7 +113,7 @@ clínica"</string>
 <string name="dashboard_title_total_assessments">"Número total encuestas realizadas"</string>
 <string name="dashboard_title_planned_type_never">"Nunca evaluado"</string>
 <string name="dashboard_title_planned_type_overdue">"Atrasado"</string>
-<string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
+<string name="dashboard_title_planned_type_next_30">"Próximos 30 días"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
