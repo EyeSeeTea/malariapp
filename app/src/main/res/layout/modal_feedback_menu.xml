@@ -23,7 +23,7 @@
         android:background="@drawable/button_dialog_green_background"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="View feedback"
+        android:text="@string/dialog_button_preview_feedback"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
@@ -40,7 +40,7 @@
         android:textAllCaps="false"
         android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/view"
-        android:text="Action plan"
+        android:text="@string/dialog_action_plan"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
@@ -56,7 +56,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/action_plan"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />

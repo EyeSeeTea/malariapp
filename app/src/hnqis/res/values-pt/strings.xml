@@ -25,7 +25,7 @@
 <string name="dialog_content_existing_survey">"Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito"</string>
 <string name="dialog_title_incorrect_org_unit">"Org Unit errado"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
-<string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
+<string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados não enviados serao apagados Ainda quer sair?"</string>
 <string name="dialog_info_ask_for_completion">"Tem certeza de que deseja completar %s? Você não pode desfazer essa ação"</string>
 <string name="dialog_info_ask_for_completion_plan">Tem certeza de que deseja completar o plano? Você não pode desfazer essa ação້</string>
 
@@ -44,7 +44,7 @@
 <string name="assessment_title_header">"Pesquisa(s) activa"</string>
 <string name="assessment_sent_title_header">"Pesquisa(s) anterior(es)"</string>
 
-<string name="survey_title_exit">"Really Exit?"</string>
+<string name="survey_title_exit">"Realmente sair??"</string>
 <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
 
 <string name="widget_info_empty_statement">"Problema"</string>
@@ -187,7 +187,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="error_message_push">"O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador."</string>
 <string name="monitor_js_assessments" >"Inquéritos realizados"</string>
 <string name="monitor_js_target" >"Objetivo"</string>
-<string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Ultimos"</string>
+<string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Últimos"</string>
 <string name="monitor_js_months" >" meses"</string>
 <string name="monitor_js_multiple_event_legend" >"(*) Mais de uma pesquisa existe no mesmo mês"</string>
 <string name="create">Crio</string>
@@ -269,4 +269,6 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="monitor_no_surveys_to_show">"Nenhuma pesquisa para mostrar"</string>
 <string name="plan_action_provider_title" >"NOME DO PROVEEDOR:"</string>
 <string name="health_facility">Centro médico</string>
+<string name="mandatory">"Obrigatório"</string>
+<string name="dialog_action_plan">"Plano de ação"</string>
 </resources>
