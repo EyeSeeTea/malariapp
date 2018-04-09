@@ -51,7 +51,7 @@ public class ScheduleListener implements View.OnClickListener {
     public void createScheduleDialog() {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.planning_schedule_dialog);
-        dialog.setTitle(R.string.planning_title_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
 
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);

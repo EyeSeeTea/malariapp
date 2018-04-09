@@ -198,6 +198,7 @@
 <string name="monitor_js_target">"ເປົ້າໝາຍ"</string>
 <string name="monitor_js_quality_of_care">"ຄຸນນະພາບຂອງການບໍລິການ: .....ຜ່ານມາ"</string>
 <string name="monitor_js_months">"...ເດືອນ"</string>
+<string name="monitor_js_multiple_event_legend" >"(*) ມີການສໍາຫຼວດຫຼາຍກວ່າຫນຶ່ງເດືອນໃນເດືອນດຽວກັນ"</string>
 <string name="dialog_error_attribute_null">"\" ຂໍ້ມູນຂອງ id %s ນີ້ບໍ່ມີ. ກະລຸນາຕິດຫາຜູ້ຄວບຄຸມລະບົບ\""</string>
 <string name="progress_pull_relationships">"ການສ້າງຄວາມເຊື່ອມໂຍງຂອງຄຳຖາມ"</string>
 <string name="create">"ສ້າງ"</string>
