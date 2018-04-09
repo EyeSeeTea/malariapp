@@ -647,4 +647,9 @@ public class DashboardController {
             tabHost.getTabWidget().getChildAt(i).setBackgroundColor(resources.getColor(R.color.transparent));
         }
     }
+
+    public void reloadActiveModule() {
+        ModuleController currentModuleController = getCurrentModule();
+        currentModuleController.onTabChanged();
+    }
 }

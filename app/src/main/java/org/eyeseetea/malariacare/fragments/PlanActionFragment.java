@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -444,6 +445,10 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
     public void enableShareButton() {
         fabShare.setEnabled(true);
         fabShare.getBackground().clearColorFilter();
+        int shareColor = ContextCompat.getColor(fabShare.getContext(), R.color.share_fab_background);
+
+        fabShare.getBackground().setColorFilter(shareColor, PorterDuff.Mode.SRC_IN);
+
     }
 
     @Override
@@ -517,7 +522,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         }
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
-            data += "https://apps.psi-mis.org/hnqis/feedback?event=" + survey.getEventUid() + "\n";
+            data += "https://apps.psi-mis.org/hnqis/feedback?eventId=" + survey.getEventUid() + "\n";
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }

@@ -46,6 +46,8 @@ public final class SurveyDialog extends AlertDialog {
 
         rootView = inflater.inflate(R.layout.modal_menu, null);
 
+        getWindow().setBackgroundDrawableResource(R.color.transparent);
+
         setView(rootView);
 
         initBodyText(bodyTextId);

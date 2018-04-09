@@ -51,7 +51,7 @@ public class ScheduleListener implements View.OnClickListener {
     public void createScheduleDialog() {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.planning_schedule_dialog);
-        dialog.setTitle(R.string.planning_title_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
 
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
@@ -120,6 +120,10 @@ public class ScheduleListener implements View.OnClickListener {
         Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
         surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_PER_ORG_UNIT_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+        surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_SURVEYS_ACTION);
+        PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
+
     }
 
     private boolean validateFields(Date newDate,String comment){
