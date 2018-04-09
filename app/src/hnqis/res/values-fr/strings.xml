@@ -266,4 +266,6 @@ Mensuelle"</string>
 <string name="monitor_no_surveys_to_show">"Aucune enquête à afficher"</string>
 <string name="plan_action_provider_title" >"NOM DU FOURNISSEUR:"</string>
 <string name="health_facility">Centre médical</string>
+<string name="mandatory">"Obligatoire"</string>
+<string name="dialog_action_plan">"Plan d'action"</string>
 </resources>
