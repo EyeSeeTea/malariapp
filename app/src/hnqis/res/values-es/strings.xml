@@ -190,6 +190,7 @@ clínica"</string>
 <string name="monitor_js_target" >"Objetivo"</string>
 <string name="monitor_js_quality_of_care" >"Calidad de cuidados: Últimos "</string>
 <string name="monitor_js_months" >" meses"</string>
+<string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
 
 
 
