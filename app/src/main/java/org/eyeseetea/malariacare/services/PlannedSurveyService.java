@@ -71,8 +71,8 @@ public class PlannedSurveyService extends IntentService {
         plannedServiceBundle.setPlannedItems(new PlannedItemBuilder().buildPlannedItems());
         plannedServiceBundle.addModelList(OrgUnitDB.class.getName(), OrgUnitDB.getAllOrgUnit());
         plannedServiceBundle.addModelList(ProgramDB.class.getName(), ProgramDB.getAllPrograms());
-        Session.putServiceValue(PLANNED_PER_ORG_UNIT_SURVEYS_ACTION, plannedServiceBundle);
+        Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);
         //Returning result to anyone listening
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_PER_ORG_UNIT_SURVEYS_ACTION));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PLANNED_SURVEYS_ACTION));
     }
 }
