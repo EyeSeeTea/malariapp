@@ -134,6 +134,11 @@ dependencies {
     compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
+    // Google's auto-value. Annotations are used only during compilation time, as well as
+    // annotation processor which hoops up into compilation process
+    provided "com.google.auto.value:auto-value:${libs.autovalue}"
+    annotationProcessor "com.google.auto.value:auto-value:${libs.autovalue}"
+
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"
     compile("com.google.api-client:google-api-client-android:${libs.googleApiClientAndroidVersion}") {
