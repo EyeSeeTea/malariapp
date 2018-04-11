@@ -44,6 +44,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -237,10 +238,12 @@ public class SettingsActivity extends PreferenceActivity implements
             if (!s1.equals(s2)) {
                 languages.put(language, loc[i]);
             }
+            Locale phoneLocale = new Locale(PreferencesState.getInstance().getPhoneLanguage());
+            languages.put(phoneLocale.getDisplayLanguage(currentLocale),
+                    phoneLocale.getLanguage());
             Locale defaultLocale = new Locale(BuildConfig.defaultLocale);
-            languages.put(defaultLocale.getDisplayLanguage(currentLocale),
+            languages.put(defaultLocale.getDisplayLanguage(defaultLocale),
                     defaultLocale.getLanguage());
-
         }
         return languages;
     }
