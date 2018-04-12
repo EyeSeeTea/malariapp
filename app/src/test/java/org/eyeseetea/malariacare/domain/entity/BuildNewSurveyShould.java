@@ -5,6 +5,7 @@ import static org.eyeseetea.malariacare.domain.entity.Survey.ORG_UNIT_REQUIRED;
 import static org.eyeseetea.malariacare.domain.entity.Survey.PROGRAM_REQUIRED;
 import static org.eyeseetea.malariacare.domain.entity.Survey.USER_REQUIRED;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,6 +14,15 @@ public class BuildNewSurveyShould {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Test
+    public void return_mandatory_values_for_each_getter_after_new_survey_is_created() throws Exception {
+        Survey survey = Survey.buildNewSurvey("programUId",
+                "orgUnitUId", "userUId").build();
+        Assert.assertTrue(survey.programUId().equals("programUId"));
+        Assert.assertTrue(survey.orgUnitUId().equals("orgUnitUId"));
+        Assert.assertTrue(survey.userUId().equals("userUId"));
+        Assert.assertTrue(survey.status().equals(Survey.Status.IN_PROGRESS));
+    }
     @Test
     public void throw_exception_if_new_survey_program_uid_is_not_provided() throws Exception {
         thrown.expect(IllegalArgumentException.class);
