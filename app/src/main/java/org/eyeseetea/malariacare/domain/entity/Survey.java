@@ -10,6 +10,16 @@ import java.util.List;
 
 @AutoValue
 public abstract class Survey {
+    protected static final String STATUS_REQUIRED = "Survey status is required";
+    protected static final String PROGRAM_REQUIRED = "Survey program uid is required";
+    protected static final String ORG_UNIT_REQUIRED = "Survey organisation unit uid is required";
+    protected static final String USER_REQUIRED = "Survey User UId is required";
+    protected static final String CREATED_DATE_REQUIRED = "Survey created date is required";
+    protected static final String COMPLETION_DATE_REQUIRED = "Survey completion date is required";
+    protected static final String UPLOAD_DATE_REQUIRED = "Survey upload date is required";
+    protected static final String SCHEDULED_DATE_REQUIRED = "Survey scheduled date is required";
+    protected static final String EVENT_UID_REQUIRED = "Survey event uid required is required";
+    protected static final String VALUE_UIDS_REQUIRED = "Survey value uid is required";
     public enum Status {
         PLANNED, IN_PROGRESS, COMPLETED, SENT, CONFLICT, QUARANTINE, SENDING
     }
@@ -56,15 +66,14 @@ public abstract class Survey {
      */
     public abstract Integer productivity();
 
-    static Builder buildNewSurvey(Status status, String programUId, String orgUnitUId,
+    static Builder buildNewSurvey(String programUId, String orgUnitUId,
             String userUId) {
-        required(status, "Survey status is required");
-        required(programUId, "Survey program UId is required");
-        required(orgUnitUId, "Survey orgUnit UId is required");
-        required(userUId, "Survey User UId is required");
+        required(programUId, PROGRAM_REQUIRED);
+        required(orgUnitUId, ORG_UNIT_REQUIRED);
+        required(userUId, USER_REQUIRED);
         Date creationDate = new Date();
 
-        return new AutoValue_Survey.Builder().setStatus(status).setProgramUId(programUId)
+        return new AutoValue_Survey.Builder().setStatus(Status.IN_PROGRESS).setProgramUId(programUId)
                 .setOrgUnitUId(orgUnitUId).setCreationDate(creationDate)
                 .setUserUId(userUId);
     }
