@@ -1,74 +1,105 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
-public class Survey {
-    private long id;
-    private int status;
-    private SurveyAnsweredRatio mSurveyAnsweredRatio;
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
-    public Survey() {
+import com.google.auto.value.AutoValue;
+
+import java.util.Date;
+import java.util.List;
+
+@AutoValue
+public abstract class Survey {
+    public abstract long id();
+    //Survey default value
+    public abstract int status();
+
+    public abstract String programUId();
+
+    public abstract String orgUnitUId();
+
+    public abstract String userUId();
+
+    public abstract Date creationDate();
+
+    public abstract Date completionDate();
+
+    public abstract Date uploadDate();
+
+    public abstract Date scheduledDate();
+
+    public abstract String referencedEventUId();
+
+    /**
+     * List of value ids for this survey
+     */
+    public abstract List<Integer> valueIds();
+
+    /**
+     * List of historic previous schedules
+     */
+    public abstract List<String> scheduledSurveyUids();
+
+    public abstract SurveyAnsweredRatio surveyAnsweredRatio();
+
+    public abstract Float mainScore();
+
+    public abstract Boolean hasMainScore();
+
+    /**
+     * Expected productivity for this survey according to its orgunit + program.
+     * Just a cached value from orgunitprogramproductivity
+     */
+    public abstract Integer productivity();
+
+    static Builder builder(int status, String programUId, String orgUnitUId,
+            String userUId) {
+        required(status, "Survey status is required");
+        required(programUId, "Survey program UId is required");
+        required(orgUnitUId, "Survey orgUnit UId is required");
+        required(userUId, "Survey User UId is required");
+        Date creationDate = new Date();
+
+        return new AutoValue_Survey.Builder().setStatus(status).setProgramUId(programUId)
+                .setOrgUnitUId(orgUnitUId).setCreationDate(creationDate)
+                .setUserUId(userUId);
     }
 
-    public Survey(long id) {
-        this.id = id;
-    }
+    @AutoValue.Builder
+    public abstract static class Builder {
+        abstract Builder setId(long id);
 
-    public Survey(long id, int status,
-            SurveyAnsweredRatio surveyAnsweredRatio) {
-        this.id = id;
-        this.status = status;
-        mSurveyAnsweredRatio = surveyAnsweredRatio;
-    }
+        abstract Builder setStatus(int status);
 
-    public long getId() {
-        return id;
-    }
+        abstract Builder setProgramUId(String programUId);
 
-    public void setId(long id) {
-        this.id = id;
-    }
+        abstract Builder setOrgUnitUId(String orgUnitUId);
 
-    public int getStatus() {
-        return status;
-    }
+        abstract Builder setUserUId(String userUId);
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+        abstract Builder setCreationDate(Date creationDate);
 
-    public SurveyAnsweredRatio getSurveyAnsweredRatio() {
-        return mSurveyAnsweredRatio;
-    }
+        abstract Builder setCompletionDate(Date completionDate);
 
-    public void setSurveyAnsweredRatio(
-            SurveyAnsweredRatio surveyAnsweredRatio) {
-        mSurveyAnsweredRatio = surveyAnsweredRatio;
-    }
+        abstract Builder setUploadDate(Date uploadDate);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        abstract Builder setScheduledDate(Date scheduledDate);
 
-        Survey survey = (Survey) o;
+        abstract Builder setReferencedEventUId(String referencedEventUId);
 
-        if (id != survey.id) return false;
-        return status == survey.status;
+        abstract Builder setValueIds(List<Integer> valueIds);
 
-    }
+        abstract Builder setScheduledSurveyUids(List<String> scheduledSurveyUids);
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + status;
-        return result;
-    }
+        abstract Builder setSurveyAnsweredRatio(
+                SurveyAnsweredRatio surveyAnsweredRatio);
 
-    @Override
-    public String toString() {
-        return "Survey{" +
-                "id=" + id +
-                ", status=" + status +
-                '}';
+        abstract Builder setMainScore(Float mainScore);
+
+        abstract Builder setHasMainScore(Boolean hasMainScore);
+
+        public abstract Builder setProductivity(Integer productivity);
+
+        abstract Survey build();
     }
 }
