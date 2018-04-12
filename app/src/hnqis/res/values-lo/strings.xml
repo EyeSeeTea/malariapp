@@ -283,6 +283,7 @@
 <string name="mandatory">"ບັງຄັບ"</string>
 <string name="dialog_action_plan">"ແຜນການປະຕິບັດງານ"</string>
     <string-array name="languages_strings">
+        <item>ລະບົບກໍານົດ</item>
         <item>ພາສາອັງກິດ</item>
         <item>ພາສາຝຣັ່ງ</item>
         <item>ພາສາສະເປນ</item>
