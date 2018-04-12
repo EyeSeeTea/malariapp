@@ -10,9 +10,13 @@ import java.util.List;
 
 @AutoValue
 public abstract class Survey {
+    public enum Status {
+        PLANNED, IN_PROGRESS, COMPLETED, SENT, CONFLICT, QUARANTINE, SENDING
+    }
+
     public abstract long id();
     //Survey default value
-    public abstract int status();
+    public abstract Status status();
 
     public abstract String programUId();
 
@@ -52,7 +56,7 @@ public abstract class Survey {
      */
     public abstract Integer productivity();
 
-    static Builder builder(int status, String programUId, String orgUnitUId,
+    static Builder buildNewSurvey(Status status, String programUId, String orgUnitUId,
             String userUId) {
         required(status, "Survey status is required");
         required(programUId, "Survey program UId is required");
@@ -64,12 +68,11 @@ public abstract class Survey {
                 .setOrgUnitUId(orgUnitUId).setCreationDate(creationDate)
                 .setUserUId(userUId);
     }
-
     @AutoValue.Builder
     public abstract static class Builder {
         abstract Builder setId(long id);
 
-        abstract Builder setStatus(int status);
+        abstract Builder setStatus(Status status);
 
         abstract Builder setProgramUId(String programUId);
 
