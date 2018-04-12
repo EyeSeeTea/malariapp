@@ -287,4 +287,12 @@
 <string name="dialog_action_plan">"ផែនការសកម្មភាព"</string>
 <string name="header_reschedule">"សម្គាល់ថាបានបញ្ចប់"</string>
 <string name="save">"រក្សាទុក"</string>
+    <string-array name="languages_strings">
+        <item>អង់គ្លេស</item>
+        <item>ភាសាបារាំង</item>
+        <item>អេស្ប៉ាញ</item>
+        <item>ព័រទុយហ្គាល់</item>
+        <item>ភាសាខ្មែរ</item>
+        <item>ឡាវ</item>
+    </string-array>
 </resources>

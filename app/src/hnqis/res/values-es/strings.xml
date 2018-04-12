@@ -275,4 +275,12 @@ clínica"</string>
 <string name="health_facility">Centro Médico</string>
 <string name="mandatory">"Obligatorio"</string>
 <string name="dialog_action_plan">"Plan de acción"</string>
+    <string-array name="languages_strings">
+        <item>Inglés</item>
+        <item>Francés</item>
+        <item>Español</item>
+        <item>Portugués</item>
+        <item>Khmer</item>
+        <item>Lao</item>
+    </string-array>
 </resources>

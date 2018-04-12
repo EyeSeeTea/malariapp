@@ -282,4 +282,12 @@
 <string name="health_facility">ສູນການແພດ</string>
 <string name="mandatory">"ບັງຄັບ"</string>
 <string name="dialog_action_plan">"ແຜນການປະຕິບັດງານ"</string>
+    <string-array name="languages_strings">
+        <item>ພາສາອັງກິດ</item>
+        <item>ພາສາຝຣັ່ງ</item>
+        <item>ພາສາສະເປນ</item>
+        <item>ໂປຕຸເກດ</item>
+        <item>ພາສາອັງກິດ</item>
+        <item>ລາວ</item>
+    </string-array>
 </resources>

@@ -271,4 +271,12 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="health_facility">Centro médico</string>
 <string name="mandatory">"Obrigatório"</string>
 <string name="dialog_action_plan">"Plano de ação"</string>
+    <string-array name="languages_strings">
+        <item>Inglês</item>
+        <item>Francês</item>
+        <item>Espanhol</item>
+        <item>Português</item>
+        <item>Khmer</item>
+        <item>Lao</item>
+    </string-array>
 </resources>
