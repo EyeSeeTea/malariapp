@@ -76,9 +76,11 @@ import java.util.Map;
 public class ConversionLocalDataSource {
 
     PullController.IPullControllerCallback callback;
+    ConvertFromSDKVisitor converter;
 
     public ConversionLocalDataSource(PullController.IPullControllerCallback callback) {
         this.callback = callback;
+        converter = new ConvertFromSDKVisitor();
     }
 
     private final String TAG = ".ConversionLocalData";
@@ -113,24 +115,9 @@ public class ConversionLocalDataSource {
     }
 
     /**
-     * Launches visitor that turns SDK data into APP data
-     */
-    public void convertFromSDK() {
-        if (!PullController.PULL_IS_ACTIVE) return;
-        Log.d(TAG, "Converting SDK into APP data");
-
-        //One shared converter to match parents within the hierarchy
-        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        convertMetaData(converter);
-        if (!PullController.PULL_IS_ACTIVE) return;
-        convertDataValues(converter);
-
-    }
-
-    /**
      * Turns sdk metadata into app metadata
      */
-    private void convertMetaData(ConvertFromSDKVisitor converter) {
+    public void convertMetaData() {
         if (!PullController.PULL_IS_ACTIVE) return;
         //Convert Programs, Tabs
         callback.onStep(PullStep.PREPARING_PROGRAMS);
@@ -354,7 +341,7 @@ public class ConversionLocalDataSource {
     /**
      * Turns events and datavalues into
      */
-    private void convertDataValues(ConvertFromSDKVisitor converter) {
+    public void convertDataValues() {
         if (!PullController.PULL_IS_ACTIVE) return;
         callback.onStep(PullStep.PREPARING_SURVEYS);
         //XXX This is the right place to apply additional filters to data conversion (only

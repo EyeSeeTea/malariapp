@@ -48,7 +48,9 @@ public class PullController implements IPullController {
 
     public void conversions() {
 
-        conversionLocalDataSource.convertFromSDK();
+        conversionLocalDataSource.convertMetaData();
+
+        conversionLocalDataSource.convertDataValues();
 
         conversionLocalDataSource.validateCS();
     }
