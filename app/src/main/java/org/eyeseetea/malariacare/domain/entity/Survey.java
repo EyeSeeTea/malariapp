@@ -22,6 +22,7 @@ public abstract class Survey {
     protected static final String SCHEDULED_DATE_REQUIRED = "Survey scheduled date is required";
     protected static final String EVENT_UID_REQUIRED = "Survey event uid required is required";
     protected static final String VALUE_UIDS_REQUIRED = "Survey value uid is required";
+
     public enum Status {
         PLANNED, IN_PROGRESS, COMPLETED, SENT, CONFLICT, QUARANTINE, SENDING
     }
@@ -38,6 +39,7 @@ public abstract class Survey {
     @Nullable
     public abstract String userUId();
 
+    @Nullable
     public abstract Date creationDate();
 
     @Nullable
@@ -110,6 +112,17 @@ public abstract class Survey {
                 .setUploadDate(uploadDate).setScheduledDate(scheduledDate).setReferencedEventUId(eventUId)
                 .setValueIds(valueUIds);
     }
+
+    static Builder buildPlannedSurvey(String programUId,
+                                     String orgUnitUId, String userUId) {
+        required(programUId, PROGRAM_REQUIRED);
+        required(orgUnitUId, ORG_UNIT_REQUIRED);
+        required(userUId, USER_REQUIRED);
+
+        return new AutoValue_Survey.Builder().setStatus(Status.PLANNED).setProgramUId(programUId)
+                .setOrgUnitUId(orgUnitUId).setUserUId(userUId);
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
         abstract Builder setId(Long id);
