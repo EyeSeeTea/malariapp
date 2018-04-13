@@ -55,24 +55,6 @@ public class PullController implements IPullController {
         conversionLocalDataSource.validateCS();
     }
 
-
-    /**
-     * Notifies that the pull is over
-     */
-    public void postFinish() {
-        UserDB user = UserDB.getLoggedUser();
-        if (user == null) {
-            user = new UserDB();
-            user.save();
-        }
-        Session.setUser(user);
-        if (!PULL_IS_ACTIVE) {
-            callback.onError(new PullException());
-        } else {
-            callback.onComplete();
-        }
-    }
-
     @Override
     public void pull(final PullFilters filters, final IPullControllerCallback callback) {
         conversionLocalDataSource.wipeDataBase();
