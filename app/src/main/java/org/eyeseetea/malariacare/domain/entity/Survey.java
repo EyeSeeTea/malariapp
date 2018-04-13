@@ -82,6 +82,15 @@ public abstract class Survey {
     @Nullable
     public abstract Integer productivity();
 
+    /**
+     * Returns if this survey has low productivity or not.
+     * [0..4]: Low
+     * [5..): Not Low
+     */
+    public boolean isLowProductivity() {
+        return productivity() < 5;
+    }
+
     static Builder buildNewSurvey(String programUId, String orgUnitUId,
             String userUId) {
         required(programUId, PROGRAM_REQUIRED);
