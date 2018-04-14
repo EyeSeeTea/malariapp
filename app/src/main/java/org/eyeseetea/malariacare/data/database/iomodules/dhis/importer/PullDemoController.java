@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class PullDemoController implements IPullDemoController {
-    final String TAG = "PullLocalDataSource";
+    final String TAG = "PullDemoController";
 
     final String DATABASE_FOLDER = "database/";
     final String DATABASE_FILE = "EyeSeeTeaDB.db";
@@ -71,14 +71,6 @@ public class PullDemoController implements IPullDemoController {
         copyDBFromFile(inputStream);
         reinitializeDbFlowDatabases(context);
         Log.d(TAG, "Copy Database from assets finished");
-    }
-
-    public void importDB(Uri uri) throws IOException {
-        Log.d(TAG, "Import Database from user file started");
-        FlowManager.destroy();
-        copyDBFromFile(context.getContentResolver().openInputStream(uri));
-        reinitializeDbFlowDatabases(context);
-        Log.d(TAG, "Import Database from user file finished");
     }
 
     public void copyDBFromFile(InputStream inputStream)
