@@ -5,11 +5,13 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.config.DHIS2GeneratedDatabaseHolder;
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.sdk.common.DatabaseUtils;
 import org.eyeseetea.sdk.common.FileUtils;
 
@@ -51,5 +53,39 @@ public class DBFlowLocalDataSource {
                 .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfigDhis);
+    }
+
+
+    public void pullFromDB(Context context,
+                           InputStream inputStream) throws IOException {
+        Log.d(TAG, "Copy Database from assets started");
+        FlowManager.destroy();
+        copyDBFromFile(inputStream);
+        reinitializeDbFlowDatabases(context);
+        Log.d(TAG, "Copy Database from assets finished");
+    }
+
+    public void pullFromCsv(Context context) throws IOException {
+        ConversionLocalDataSource.wipeDataBase();
+        deleteSQLiteMetadata();
+        Log.d(TAG, "Populate from csv start");
+        populateFromCSV(context);
+        Log.d(TAG, "Populate from csv finished");
+    }
+
+    public void populateFromCSV(Context context) throws IOException {
+        PopulateDB.populateDB(context.getAssets());
+    }
+
+    /**
+     * This method removes the sqlite_sequence table that contains the last autoincrement value for
+     * each table
+     */
+    private void deleteSQLiteMetadata() {
+        String sqlCopy = "Delete from sqlite_sequence";
+        DatabaseDefinition databaseDefinition =
+                FlowManager.getDatabase(AppDatabase.class);
+        databaseDefinition.getWritableDatabase().execSQL(sqlCopy);
+
     }
 }
