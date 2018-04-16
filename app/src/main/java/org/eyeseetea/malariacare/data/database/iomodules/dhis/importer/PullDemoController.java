@@ -3,7 +3,14 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
-import org.eyeseetea.malariacare.data.database.datasources.DBFlowLocalDataSource;
+
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
+import com.raizlabs.android.dbflow.config.FlowManager;
+
+import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.DatabaseImporter;
+import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
 
 import java.io.IOException;
@@ -14,12 +21,12 @@ public class PullDemoController implements IPullDemoController {
 
     final String DATABASE_FOLDER = "database/";
     final String DATABASE_FILE = "EyeSeeTeaDB.db";
-    DBFlowLocalDataSource dbFlowLocalDataSource;
+    DatabaseImporter mDatabaseImporter;
     Context context;
 
     public PullDemoController(Context context) {
         this.context = context;
-        dbFlowLocalDataSource = new DBFlowLocalDataSource(context);
+        mDatabaseImporter = new DatabaseImporter(context);
     }
 
     @Override
@@ -35,14 +42,38 @@ public class PullDemoController implements IPullDemoController {
         }
         try {
             if (inputStream != null) {
-                dbFlowLocalDataSource.pullFromDB(context, inputStream);
+                mDatabaseImporter.importDB(context, inputStream);
             } else {
-                dbFlowLocalDataSource.pullFromCsv(context);
+                pullFromCsv(context);
             }
             callback.onComplete();
         } catch (IOException e) {
             e.printStackTrace();
             callback.onError(e);
         }
+    }
+
+    public void pullFromCsv(Context context) throws IOException {
+        ConversionLocalDataSource.wipeDataBase();
+        deleteSQLiteMetadata();
+        Log.d(TAG, "Populate from csv start");
+        populateFromCSV(context);
+        Log.d(TAG, "Populate from csv finished");
+    }
+
+    public void populateFromCSV(Context context) throws IOException {
+        PopulateDB.populateDB(context.getAssets());
+    }
+
+    /**
+     * This method removes the sqlite_sequence table that contains the last autoincrement value for
+     * each table
+     */
+    private void deleteSQLiteMetadata() {
+        String sqlCopy = "Delete from sqlite_sequence";
+        DatabaseDefinition databaseDefinition =
+                FlowManager.getDatabase(AppDatabase.class);
+        databaseDefinition.getWritableDatabase().execSQL(sqlCopy);
+
     }
 }

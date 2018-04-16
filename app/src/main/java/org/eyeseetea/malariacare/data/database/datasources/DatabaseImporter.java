@@ -18,10 +18,10 @@ import org.eyeseetea.sdk.common.FileUtils;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class DBFlowLocalDataSource {
-    String TAG = "DBFlowLocalDataSource";
+public class DatabaseImporter {
+    String TAG = "DatabaseImporter";
     Context context;
-    public DBFlowLocalDataSource(Context context){
+    public DatabaseImporter(Context context){
         this.context = context;
     }
 
@@ -33,8 +33,16 @@ public class DBFlowLocalDataSource {
         Log.d(TAG, "Import Database from user file finished");
     }
 
+    public void importDB(Context context,
+            InputStream inputStream) throws IOException {
+        Log.d(TAG, "Copy Database from assets started");
+        FlowManager.destroy();
+        copyDBFromFile(inputStream);
+        reinitializeDbFlowDatabases(context);
+        Log.d(TAG, "Copy Database from assets finished");
+    }
 
-    public void copyDBFromFile(InputStream inputStream)
+    private void copyDBFromFile(InputStream inputStream)
             throws IOException {
         FileUtils.copyInputStreamToFile(inputStream, DatabaseUtils.getAppDatabaseFile(AppDatabase.NAME, context.getPackageName()));
     }
@@ -42,7 +50,7 @@ public class DBFlowLocalDataSource {
      * This method reinitialize the DBFlow configurations to make DBFlow work in the appDB and in
      * the SDK.
      */
-    public void reinitializeDbFlowDatabases(Context context) {
+    private void reinitializeDbFlowDatabases(Context context) {
         FlowConfig flowConfig = new FlowConfig
                 .Builder(context)
                 .addDatabaseHolder(EyeSeeTeaGeneratedDatabaseHolder.class)
@@ -53,39 +61,5 @@ public class DBFlowLocalDataSource {
                 .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfigDhis);
-    }
-
-
-    public void pullFromDB(Context context,
-                           InputStream inputStream) throws IOException {
-        Log.d(TAG, "Copy Database from assets started");
-        FlowManager.destroy();
-        copyDBFromFile(inputStream);
-        reinitializeDbFlowDatabases(context);
-        Log.d(TAG, "Copy Database from assets finished");
-    }
-
-    public void pullFromCsv(Context context) throws IOException {
-        ConversionLocalDataSource.wipeDataBase();
-        deleteSQLiteMetadata();
-        Log.d(TAG, "Populate from csv start");
-        populateFromCSV(context);
-        Log.d(TAG, "Populate from csv finished");
-    }
-
-    public void populateFromCSV(Context context) throws IOException {
-        PopulateDB.populateDB(context.getAssets());
-    }
-
-    /**
-     * This method removes the sqlite_sequence table that contains the last autoincrement value for
-     * each table
-     */
-    private void deleteSQLiteMetadata() {
-        String sqlCopy = "Delete from sqlite_sequence";
-        DatabaseDefinition databaseDefinition =
-                FlowManager.getDatabase(AppDatabase.class);
-        databaseDefinition.getWritableDatabase().execSQL(sqlCopy);
-
     }
 }
