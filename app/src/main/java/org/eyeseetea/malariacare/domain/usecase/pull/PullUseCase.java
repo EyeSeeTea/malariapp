@@ -32,19 +32,21 @@ public class PullUseCase {
 
         void onPullError();
 
-        void onCancel();
-
         void onConversionError();
 
         void onStep(PullStep pullStep);
 
         void onNetworkError();
+
+        void onCancel();
     }
 
     IPullMetadataController mPullMetadataController;
     IPullDataController mPullDataController;
 
     PullFilters mPullDataFilters;
+
+    public static Boolean PULL_IS_ACTIVE;
 
     public PullUseCase(IPullMetadataController pullMetadataController,
             IPullDataController pullDataController) {
@@ -54,7 +56,7 @@ public class PullUseCase {
 
     public void execute(PullFilters pullFilters, final Callback callback) {
         mPullDataFilters = pullFilters;
-
+        PULL_IS_ACTIVE = true;
         pullMetadata(callback);
     }
 
@@ -68,17 +70,22 @@ public class PullUseCase {
 
             @Override
             public void onStep(PullStep step) {
-                callback.onStep(step);
+                if(isPullActive()){
+                    if(step.equals(PullStep.COMPLETE)){
+                        callback.onComplete();
+                    }
+                    else {
+                        callback.onStep(step);
+                        mPullMetadataController.nextStep(step);
+                    }
+                }else{
+                    callback.onCancel();
+                }
             }
 
             @Override
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
             }
         });
     }
@@ -94,16 +101,20 @@ public class PullUseCase {
             @Override
             public void onStep(PullStep step) {
                 callback.onStep(step);
+                if(isPullActive()){
+                    if(step.equals(PullStep.COMPLETE)){
+                        onComplete();
+                    }else {
+                        mPullDataController.nextStep(step);
+                    }
+                }else{
+                    callback.onCancel();
+                }
             }
 
             @Override
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
             }
         });
     }
@@ -118,13 +129,11 @@ public class PullUseCase {
         }
     }
 
-
-    public void cancel() {
-        mPullMetadataController.cancel();
-        mPullDataController.cancel();
+    public boolean isPullActive() {
+        return PULL_IS_ACTIVE;
     }
 
-    public boolean isPullActive() {
-        return mPullMetadataController.isPullActive() && mPullDataController.isPullActive();
+    public void cancel() {
+        PULL_IS_ACTIVE = false;
     }
 }

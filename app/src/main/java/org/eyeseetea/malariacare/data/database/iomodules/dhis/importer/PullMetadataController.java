@@ -50,12 +50,14 @@ import java.util.Map;
 
 public class PullMetadataController implements IPullMetadataController {
 
-    public static Boolean PULL_IS_ACTIVE = true;
     private final String TAG = ".PullMetadataController";
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
 
     ConvertFromSDKVisitor converter;
+    List<OrganisationUnitExtended> assignedOrganisationsUnits;
+    Map<String, List<DataElementExtended>> programsDataelements;
+    List<ProgramExtended> programs;
 
     public PullMetadataController() {
         converter = new ConvertFromSDKVisitor();
@@ -64,103 +66,107 @@ public class PullMetadataController implements IPullMetadataController {
 
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
+        assignedOrganisationsUnits = new ArrayList<>();
+        programsDataelements = new HashMap<>();
+        programs = new ArrayList<>();
         AppDatabase.wipeDatabase();
         this.callback = callback;
-
 
         pullRemoteDataSource.wipeDataBase();
 
         callback.onStep(PullStep.PROGRAMS);
+    }
 
-        pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
+    public void nextStep(PullStep pullStep){
+        switch (pullStep){
+            case PROGRAMS:
+                pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
 
-            @Override
-            public void onComplete() {
-                if (!PULL_IS_ACTIVE) {
-                    callback.onCancel();
-                    return;
+                    @Override
+                    public void onComplete() {
+                        callback.onStep(PullStep.PREPARING_PROGRAMS);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                        callback.onError(throwable);
+                    }
+
+                });
+                break;
+            case PREPARING_PROGRAMS:
+                System.out.printf("Converting programs...");
+                convertingPrograms();
+                callback.onStep(PullStep.PREPARING_ANSWERS);
+                break;
+            case PREPARING_ANSWERS:
+                System.out.printf("Converting answers...");
+                convertingAnswers();
+                callback.onStep(PullStep.PREPARING_ORGANISATION_UNITS);
+                break;
+            case PREPARING_ORGANISATION_UNITS:
+                System.out.printf("Converting organisation units...");
+                assignedOrganisationsUnits = convertOrgUnits(converter);
+                if(assignedOrganisationsUnits.size()>0){
+                    callback.onStep(PullStep.PREPARING_ORGANISATION_UNIT_HIERARCHY);
                 }
-                callback.onStep(PullStep.EVENTS);
-
-                convertMetaData();
-
-                if (PULL_IS_ACTIVE) {
-                    Log.d(TAG, "PULL process...OK");
-                    callback.onComplete();
-                } else {
-                    callback.onCancel();
+                break;
+            case PREPARING_ORGANISATION_UNIT_HIERARCHY:
+                System.out.printf("Building orgunit hierarchy...");
+                if(converter.buildOrgUnitHierarchy(assignedOrganisationsUnits)){
+                    callback.onStep(PullStep.PREPARING_USER);
                 }
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                throwable.printStackTrace();
-                callback.onError(throwable);
-            }
-
-        });
-    }
-
-    @Override
-    public void cancel() {
-        PULL_IS_ACTIVE = false;
-    }
-
-    @Override
-    public boolean isPullActive() {
-        return PULL_IS_ACTIVE;
-    }
-
-    /**
-     * Turns sdk metadata into app metadata
-     */
-    public void convertMetaData() {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        //Convert Programs, Tabs
-        callback.onStep(PullStep.PREPARING_PROGRAMS);
-        System.out.printf("Converting programs and tabs...");
-        List<String> assignedProgramsIDs = SdkQueries.getAssignedProgramUids(
-                PreferencesState.getInstance().getContext().getString(
-                        R.string.pull_program_code));
-        for (String assignedProgramID : assignedProgramsIDs) {
-            ProgramExtended programExtended = new ProgramExtended(
-                    SdkQueries.getProgram(assignedProgramID));
-            programExtended.accept(converter);
+                break;
+            case PREPARING_USER:
+                //User (from UserAccount)
+                System.out.printf("Converting user...");
+                UserAccountExtended userAccountExtended = new UserAccountExtended(
+                        SdkQueries.getUserAccount());
+                userAccountExtended.accept(converter);
+                callback.onStep(PullStep.PREPARING_QUESTIONS);
+                break;
+            case PREPARING_QUESTIONS:
+                System.out.printf("Building questions...");
+                convertQuestions();
+                callback.onStep(PullStep.PREPARING_RELATIONSHIPS);
+                break;
+            case PREPARING_RELATIONSHIPS:
+                System.out.printf("Building relationships...");
+                convertRelationships();
+                callback.onStep(PullStep.PREPARING_SCORES);
+            case PREPARING_SCORES:
+                //Fill order and parent scores
+                System.out.printf("Building compositeScore relationships...");
+                converter.buildScores();
+                System.out.printf("MetaData successfully converted...");
+                callback.onStep(PullStep.COMPLETE);
+                break;
         }
+    }
 
-        //Convert Answers, Options
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        callback.onStep(PullStep.PREPARING_ANSWERS);
-        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
-                SdkQueries.getOptionSets());
-        System.out.printf("Converting answers and options...");
-        for (OptionSetExtended optionSet : optionSets) {
-            if (!PullMetadataController.PULL_IS_ACTIVE) return;
-            optionSet.accept(converter);
+    private void convertRelationships() {
+        for (ProgramExtended program : programs) {
+            converter.actualProgram = program;
+            String programUid = program.getUid();
+            List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
+            programsDataelements.put(programUid, sortDataElements);
+            for (DataElementExtended dataElement : sortDataElements) {
+                dataElement.setProgramUid(programUid);
+                converter.buildRelations(dataElement);
+            }
         }
-        //OrganisationUnits
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        if (!convertOrgUnits(converter)) return;
+    }
 
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        //User (from UserAccount)
-        System.out.printf("Converting user...");
-        UserAccountExtended userAccountExtended = new UserAccountExtended(
-                SdkQueries.getUserAccount());
-        userAccountExtended.accept(converter);
-
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        //Convert questions and compositeScores
-        callback.onStep(PullStep.PREPARING_QUESTIONS);
+    private void convertQuestions() {
         System.out.printf("Ordering questions and compositeScores...");
 
         int count;
         //Dataelements ordered by program.
-        List<ProgramExtended> programs = ProgramExtended.getAllPrograms(
+        programs = ProgramExtended.getAllPrograms(
                 PreferencesState.getInstance().getContext().getString(
                         R.string.pull_program_code));
-        Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
+
         for (ProgramExtended program : programs) {
             converter.actualProgram = program;
             Log.i(TAG, String.format("\t program '%s' ", program.getName()));
@@ -176,8 +182,6 @@ public class PullMetadataController implements IPullMetadataController {
                 count = programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElementExtended programStageDataElement :
                         programStageDataElements) {
-                    if (!PullMetadataController.PULL_IS_ACTIVE) return;
-
                     //The ProgramStageDataElement without Dataelement uid is not correctly
                     // configured.
                     if (programStageDataElement.getDataelement() == null
@@ -232,8 +236,6 @@ public class PullMetadataController implements IPullMetadataController {
             }
             Log.i(TAG, String.format("\t program '%s' DONE ", program.getName()));
 
-
-            if (!PullMetadataController.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElementExtended>() {
                 public int compare(DataElementExtended dataElementExtended1,
                         DataElementExtended dataElementExtended2) {
@@ -263,7 +265,6 @@ public class PullMetadataController implements IPullMetadataController {
             programsDataelements.put(programUid, dataElements);
         }
 
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         System.out.printf("Building questions,compositescores,headers...");
         int i = 0;
         for (ProgramExtended program : programs) {
@@ -271,14 +272,13 @@ public class PullMetadataController implements IPullMetadataController {
             String programUid = program.getUid();
             List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
             for (DataElementExtended dataElement : sortDataElements) {
-                /* // TODO: 23/01/2017
-                if (++i % 50 == 0) {
-                    postProgress(
-                            context.getString(R.string.progress_pull_questions) + String.format(
-                                    " %s", i));
-                }
-                */
-                if (!PullMetadataController.PULL_IS_ACTIVE) return;
+        /* // TODO: 23/01/2017
+        if (++i % 50 == 0) {
+            postProgress(
+                    context.getString(R.string.progress_pull_questions) + String.format(
+                            " %s", i));
+        }
+        */
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
                 dataElement.setProgramUid(programUid);
                 dataElement.accept(converter);
@@ -287,41 +287,17 @@ public class PullMetadataController implements IPullMetadataController {
 
         //Saves questions and media in batch mode
         converter.saveBatch();
-
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        System.out.printf("Building relationships...");
-        callback.onStep(PullStep.PREPARING_RELATIONSHIPS);
-        for (ProgramExtended program : programs) {
-            converter.actualProgram = program;
-            String programUid = program.getUid();
-            List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
-            programsDataelements.put(programUid, sortDataElements);
-            for (DataElementExtended dataElement : sortDataElements) {
-                if (!PullMetadataController.PULL_IS_ACTIVE) return;
-                dataElement.setProgramUid(programUid);
-                converter.buildRelations(dataElement);
-            }
-        }
-
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        //Fill order and parent scores
-        System.out.printf("Building compositeScore relationships...");
-        converter.buildScores();
-        System.out.printf("MetaData successfully converted...");
     }
 
     /**
      * Turns sdk organisationUnit and levels into app info
      */
-    private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return false;
-        callback.onStep(PullStep.PREPARING_ORGANISATION_UNITS);
+    private List<OrganisationUnitExtended> convertOrgUnits(ConvertFromSDKVisitor converter) {
         System.out.printf("Converting organisationUnitLevels...");
         List<OrganisationUnitLevelExtended> organisationUnitLevels =
                 OrganisationUnitLevelExtended.getExtendedList(
                         SdkQueries.getOrganisationUnitLevels());
         for (OrganisationUnitLevelExtended organisationUnitLevel : organisationUnitLevels) {
-            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
             organisationUnitLevel.accept(converter);
         }
 
@@ -329,11 +305,29 @@ public class PullMetadataController implements IPullMetadataController {
         List<OrganisationUnitExtended> assignedOrganisationsUnits =
                 OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
         for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
             assignedOrganisationsUnit.accept(converter);
         }
+        return assignedOrganisationsUnits;
+    }
 
-        System.out.printf("Building orgunit hierarchy...");
-        return converter.buildOrgUnitHierarchy(assignedOrganisationsUnits);
+    private void convertingAnswers() {
+        List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
+                SdkQueries.getOptionSets());
+        System.out.printf("Converting answers and options...");
+        for (OptionSetExtended optionSet : optionSets) {
+            optionSet.accept(converter);
+        }
+    }
+
+    private void convertingPrograms() {
+        System.out.printf("Converting programs and tabs...");
+        List<String> assignedProgramsIDs = SdkQueries.getAssignedProgramUids(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.pull_program_code));
+        for (String assignedProgramID : assignedProgramsIDs) {
+            ProgramExtended programExtended = new ProgramExtended(
+                    SdkQueries.getProgram(assignedProgramID));
+            programExtended.accept(converter);
+        }
     }
 }

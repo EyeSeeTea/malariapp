@@ -63,41 +63,14 @@ public class PullDataController implements IPullDataController {
         pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
-                try {
-                    if (!PULL_IS_ACTIVE) {
-                        callback.onCancel();
-                        return;
-                    }
                     if (!pullRemoteDataSource
                             .mandatoryMetadataTablesNotEmpty()) {
                         callback.onError(new
                                 ConversionException());
                         return;
+                    }else{
+                        callback.onStep(PullStep.PREPARING_SURVEYS);
                     }
-                    try {
-                        if (!PULL_IS_ACTIVE) {
-                            callback.onCancel();
-                            return;
-                        }
-                        convertDataValues();
-
-                        validateCS();
-                    } catch (Exception e) {
-                        callback.onError(new
-                                ConversionException(e));
-                        return;
-                    }
-
-                    if (PULL_IS_ACTIVE) {
-                        Log.d(TAG, "PULL process...OK");
-                        callback.onComplete();
-                    } else {
-                        callback.onCancel();
-                    }
-                } catch (NullPointerException e) {
-                    callback.onError(new
-                            ConversionException(e));
-                }
             }
 
             @Override
@@ -109,22 +82,35 @@ public class PullDataController implements IPullDataController {
         });
     }
 
-    @Override
-    public void cancel() {
-        PULL_IS_ACTIVE = false;
+    public void nextStep(PullStep pullStep) {
+    try {
+        switch (pullStep) {
+            case PREPARING_SURVEYS:
+                Log.d(TAG, "converting surveys");
+                convertSurveys();
+                callback.onStep(PullStep.PREPARING_PLANNING_SURVEYS);
+            case PREPARING_PLANNING_SURVEYS:
+                Log.d(TAG, "planning surveys");
+                //Plan surveys for the future
+                SurveyPlanner.getInstance().buildNext();
+                callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
+                break;
+            case VALIDATE_COMPOSITE_SCORES:
+                Log.d(TAG, "Validate Composite scores");
+                callback.onStep(PullStep.COMPLETE);
+                break;
+            case COMPLETE:
+                Log.d(TAG, "PULL process...OK");
+                callback.onComplete();
+                break;
+        }
+    } catch (Exception e) {
+        callback.onError(new
+        ConversionException(e));
+        }
     }
 
-    @Override
-    public boolean isPullActive() {
-        return PULL_IS_ACTIVE;
-    }
-
-    /**
-     * Turns events and datavalues into
-     */
-    private void convertDataValues() {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        callback.onStep(PullStep.PREPARING_SURVEYS);
+    private void convertSurveys() {
         //XXX This is the right place to apply additional filters to data conversion (only
         // predefined orgunit for instance)
         //For each unit
@@ -142,7 +128,6 @@ public class PullDataController implements IPullDataController {
                 System.out.printf("Converting surveys and values for orgUnit: %s | program: %s",
                         organisationUnit.getLabel(), program.getDisplayName());
                 for (EventExtended event : events) {
-                    if (!PullMetadataController.PULL_IS_ACTIVE) return;
                     if (event.getEventDate() == null
                             || event.getEventDate().equals("")) {
                         Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"
@@ -153,15 +138,9 @@ public class PullDataController implements IPullDataController {
                 }
             }
         }
-
-        //Plan surveys for the future
-        SurveyPlanner.getInstance().buildNext();
     }
 
     private void validateCS() {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
-        Log.d(TAG, "Validate Composite scores");
-        callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
         List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
         for (CompositeScoreDB compositeScore : compositeScores) {
             if (!compositeScore.hasChildren() && (compositeScore.getQuestions() == null

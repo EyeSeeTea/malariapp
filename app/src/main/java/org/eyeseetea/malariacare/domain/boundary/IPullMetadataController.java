@@ -22,19 +22,16 @@ package org.eyeseetea.malariacare.domain.boundary;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
 public interface IPullMetadataController {
+
     interface Callback {
         void onComplete();
 
         void onStep(PullStep step);
 
         void onError(Throwable throwable);
-
-        void onCancel();
     }
 
     void pullMetadata(Callback callback);
 
-    void cancel();
-
-    boolean isPullActive();
+    void nextStep(PullStep step);
 }
