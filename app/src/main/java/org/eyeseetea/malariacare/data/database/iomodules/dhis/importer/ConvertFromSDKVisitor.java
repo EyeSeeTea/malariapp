@@ -107,9 +107,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
         questions = new ArrayList<>();
-
-        //Reload static dataElement codes
-        DataElementExtended.reloadDataElementTypeCodes();
     }
 
     public void saveBatch() {
@@ -294,6 +291,9 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(DataElementExtended sdkDataElementExtended) {
+        if (!DataElementExtended.isLoadedDataElementTypeCodes())
+            DataElementExtended.reloadDataElementTypeCodes();
+
         if (sdkDataElementExtended.isCompositeScore()) {
             programCompositeScoreDict.put(actualProgram.getUid(),
                     sdkDataElementExtended.getDataElement().getUid(),
