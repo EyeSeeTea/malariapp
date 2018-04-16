@@ -19,8 +19,9 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
@@ -40,11 +41,15 @@ public class PullUseCase {
         void onNetworkError();
     }
 
-    IPullController mPullController;
+    IPullMetadataController mPullMetadataController;
+    IPullDataController mPullDataController;
+
     PullFilters mPullDataFilters;
 
-    public PullUseCase(IPullController pullController) {
-        mPullController = pullController;
+    public PullUseCase(IPullMetadataController pullMetadataController,
+            IPullDataController pullDataController) {
+        mPullMetadataController = pullMetadataController;
+        mPullDataController = pullDataController;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
@@ -54,7 +59,7 @@ public class PullUseCase {
     }
 
     private void pullMetadata(final Callback callback) {
-        mPullController.pullMetadata(new PullController.IPullControllerCallback() {
+        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
 
             @Override
             public void onComplete() {
@@ -79,7 +84,7 @@ public class PullUseCase {
     }
 
     private void pullData(final Callback callback) {
-        mPullController.pullData(mPullDataFilters, new PullController.IPullControllerCallback() {
+        mPullDataController.pullData(mPullDataFilters, new IPullDataController.Callback() {
 
             @Override
             public void onComplete() {
@@ -115,10 +120,11 @@ public class PullUseCase {
 
 
     public void cancel() {
-        mPullController.cancel();
+        mPullMetadataController.cancel();
+        mPullDataController.cancel();
     }
 
     public boolean isPullActive() {
-        return mPullController.isPullActive();
+        return mPullMetadataController.isPullActive() && mPullDataController.isPullActive();
     }
 }

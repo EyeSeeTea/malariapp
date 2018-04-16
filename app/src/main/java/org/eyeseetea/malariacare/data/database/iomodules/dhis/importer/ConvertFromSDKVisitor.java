@@ -621,7 +621,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             List<OrganisationUnitExtended> assignedOrganisationsUnits) {
 
         for (OrganisationUnitExtended organisationUnit : assignedOrganisationsUnits) {
-            if (!PullController.PULL_IS_ACTIVE) return false;
+            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
 
             OrgUnitDB appOrgUnit = orgUnitDict.get(organisationUnit.getId());
             String parentUID = organisationUnit.getParent();

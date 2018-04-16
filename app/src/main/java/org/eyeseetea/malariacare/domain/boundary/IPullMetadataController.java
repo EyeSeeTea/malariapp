@@ -19,11 +19,10 @@
 
 package org.eyeseetea.malariacare.domain.boundary;
 
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
-public interface IPullController {
-    interface IPullControllerCallback {
+public interface IPullMetadataController {
+    interface Callback {
         void onComplete();
 
         void onStep(PullStep step);
@@ -33,9 +32,7 @@ public interface IPullController {
         void onCancel();
     }
 
-    void pullMetadata(IPullControllerCallback callback);
-
-    void pullData(PullFilters filters, IPullControllerCallback callback);
+    void pullMetadata(Callback callback);
 
     void cancel();
 

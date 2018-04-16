@@ -8,7 +8,6 @@ import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.DatabaseImporter;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
@@ -54,7 +53,7 @@ public class PullDemoController implements IPullDemoController {
     }
 
     public void pullFromCsv(Context context) throws IOException {
-        ConversionLocalDataSource.wipeDataBase();
+        AppDatabase.wipeDataBase();
         deleteSQLiteMetadata();
         Log.d(TAG, "Populate from csv start");
         populateFromCSV(context);
