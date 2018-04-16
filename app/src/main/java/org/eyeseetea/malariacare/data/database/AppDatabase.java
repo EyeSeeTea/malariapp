@@ -120,7 +120,7 @@ public class AppDatabase {
     public static final NameAlias attributeValueFlowAlias = NameAlias.builder(
             attributeValueFlowName).build();
 
-    public static void wipeDataBase() {
+    public static void wipeDatabase() {
         Delete.tables(
                 ValueDB.class,
                 ScoreDB.class,

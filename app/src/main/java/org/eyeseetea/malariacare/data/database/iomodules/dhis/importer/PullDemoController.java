@@ -53,7 +53,7 @@ public class PullDemoController implements IPullDemoController {
     }
 
     public void pullFromCsv(Context context) throws IOException {
-        AppDatabase.wipeDataBase();
+        AppDatabase.wipeDatabase();
         deleteSQLiteMetadata();
         Log.d(TAG, "Populate from csv start");
         populateFromCSV(context);

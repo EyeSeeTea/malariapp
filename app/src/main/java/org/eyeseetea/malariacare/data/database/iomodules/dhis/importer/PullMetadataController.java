@@ -64,7 +64,7 @@ public class PullMetadataController implements IPullMetadataController {
 
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
-        AppDatabase.wipeDataBase();
+        AppDatabase.wipeDatabase();
         this.callback = callback;
 
 
