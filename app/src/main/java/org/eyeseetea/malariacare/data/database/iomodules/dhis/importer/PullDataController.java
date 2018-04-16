@@ -99,10 +99,6 @@ public class PullDataController implements IPullDataController {
                 Log.d(TAG, "Validate Composite scores");
                 callback.onStep(PullStep.COMPLETE);
                 break;
-            case COMPLETE:
-                Log.d(TAG, "PULL process...OK");
-                callback.onComplete();
-                break;
         }
     } catch (Exception e) {
         callback.onError(new
