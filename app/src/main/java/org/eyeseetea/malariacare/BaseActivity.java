@@ -35,11 +35,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
@@ -218,10 +217,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
-                    LocalPullController localPullController = new LocalPullController(
+                    PullDemoController pullDemoController = new PullDemoController(
                             getApplicationContext());
                     try {
-                        localPullController.importDB(uri);
+                        pullDemoController.importDB(uri);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -14,27 +14,26 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
 import org.eyeseetea.sdk.common.DatabaseUtils;
 import org.eyeseetea.sdk.common.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LocalPullController implements IPullController {
+public class PullDemoController implements IPullDemoController {
     final String TAG = "PullLocalDataSource";
 
     final String DATABASE_FOLDER = "database/";
     final String DATABASE_FILE = "EyeSeeTeaDB.db";
     Context context;
 
-    public LocalPullController(Context context) {
+    public PullDemoController(Context context) {
         this.context = context;
     }
 
     @Override
-    public void pull(PullFilters filters, IPullControllerCallback callback) {
+    public void pull(IPullDemoControllerCallback callback) {
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
         Log.d(TAG, "pull from local source");
@@ -118,15 +117,5 @@ public class LocalPullController implements IPullController {
                 .addDatabaseHolder(DHIS2GeneratedDatabaseHolder.class)
                 .build();
         FlowManager.init(flowConfigDhis);
-    }
-
-    @Override
-    public void cancel() {
-
-    }
-
-    @Override
-    public boolean isPullActive() {
-        return false;
     }
 }
