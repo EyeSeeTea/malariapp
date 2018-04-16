@@ -33,7 +33,9 @@ public interface IPullController {
         void onCancel();
     }
 
-    void pull(PullFilters filters, IPullControllerCallback callback);
+    void pullMetadata(IPullControllerCallback callback);
+
+    void pullData(PullFilters filters, IPullControllerCallback callback);
 
     void cancel();
 

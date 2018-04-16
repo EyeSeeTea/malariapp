@@ -41,13 +41,45 @@ public class PullUseCase {
     }
 
     IPullController mPullController;
+    PullFilters mPullDataFilters;
 
     public PullUseCase(IPullController pullController) {
         mPullController = pullController;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
-        mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
+        mPullDataFilters = pullFilters;
+
+        pullMetadata(callback);
+    }
+
+    private void pullMetadata(final Callback callback) {
+        mPullController.pullMetadata(new PullController.IPullControllerCallback() {
+
+            @Override
+            public void onComplete() {
+                pullData(callback);
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                callback.onStep(step);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                manageError(throwable, callback);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
+    }
+
+    private void pullData(final Callback callback) {
+        mPullController.pullData(mPullDataFilters, new PullController.IPullControllerCallback() {
 
             @Override
             public void onComplete() {
@@ -61,13 +93,7 @@ public class PullUseCase {
 
             @Override
             public void onError(Throwable throwable) {
-                if (throwable instanceof NetworkException) {
-                    callback.onNetworkError();
-                } else if (throwable instanceof ConversionException) {
-                    callback.onConversionError();
-                } else {
-                    callback.onPullError();
-                }
+                manageError(throwable, callback);
             }
 
             @Override
@@ -76,6 +102,17 @@ public class PullUseCase {
             }
         });
     }
+
+    private void manageError(Throwable throwable, Callback callback) {
+        if (throwable instanceof NetworkException) {
+            callback.onNetworkError();
+        } else if (throwable instanceof ConversionException) {
+            callback.onConversionError();
+        } else {
+            callback.onPullError();
+        }
+    }
+
 
     public void cancel() {
         mPullController.cancel();

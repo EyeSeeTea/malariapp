@@ -23,12 +23,9 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.datasources.ConversionLocalDataSource;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.PullException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
@@ -46,17 +43,8 @@ public class PullController implements IPullController {
     }
 
 
-    public void conversions() {
-
-        conversionLocalDataSource.convertMetaData();
-
-        conversionLocalDataSource.convertDataValues();
-
-        conversionLocalDataSource.validateCS();
-    }
-
     @Override
-    public void pull(final PullFilters filters, final IPullControllerCallback callback) {
+    public void pullMetadata(final IPullControllerCallback callback) {
         conversionLocalDataSource.wipeDataBase();
         PULL_IS_ACTIVE = true;
         this.callback = callback;
@@ -75,7 +63,15 @@ public class PullController implements IPullController {
                     return;
                 }
                 callback.onStep(PullStep.EVENTS);
-                pullData(filters);
+
+                conversionLocalDataSource.convertMetaData();
+
+                if (PULL_IS_ACTIVE) {
+                    Log.d(TAG, "PULL process...OK");
+                    callback.onComplete();
+                } else {
+                    callback.onCancel();
+                }
             }
 
             @Override
@@ -87,7 +83,8 @@ public class PullController implements IPullController {
         });
     }
 
-    private void pullData(final PullFilters filters) {
+    @Override
+    public void pullData(final PullFilters filters, final IPullControllerCallback callback) {
         pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
@@ -107,7 +104,9 @@ public class PullController implements IPullController {
                             callback.onCancel();
                             return;
                         }
-                        conversions();
+                        conversionLocalDataSource.convertDataValues();
+
+                        conversionLocalDataSource.validateCS();
                     } catch (Exception e) {
                         callback.onError(new
                                 ConversionException(e));
