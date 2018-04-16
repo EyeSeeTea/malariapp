@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
@@ -72,9 +74,12 @@ public class PullUseCase {
             public void onStep(PullStep step) {
                 if(isPullActive()){
                     if(step.equals(PullStep.COMPLETE)){
-                        callback.onComplete();
+                        Log.i("pull", step.toString());
+                        System.out.printf("MetaData successfully converted...");
+                        onComplete();
                     }
                     else {
+                        Log.i("pull", step.toString());
                         callback.onStep(step);
                         mPullMetadataController.nextStep(step);
                     }
@@ -100,6 +105,7 @@ public class PullUseCase {
 
             @Override
             public void onStep(PullStep step) {
+                Log.i("pull", step.toString());
                 callback.onStep(step);
                 if(isPullActive()){
                     if(step.equals(PullStep.COMPLETE)){

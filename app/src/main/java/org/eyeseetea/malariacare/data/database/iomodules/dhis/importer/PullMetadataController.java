@@ -139,7 +139,6 @@ public class PullMetadataController implements IPullMetadataController {
                 //Fill order and parent scores
                 System.out.printf("Building compositeScore relationships...");
                 converter.buildScores();
-                System.out.printf("MetaData successfully converted...");
                 callback.onStep(PullStep.COMPLETE);
                 break;
         }
