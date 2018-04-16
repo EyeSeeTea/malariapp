@@ -35,11 +35,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.local.importer.ImportController;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
@@ -47,6 +46,7 @@ import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
@@ -55,7 +55,6 @@ import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 
-import java.io.IOException;
 import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
@@ -218,13 +217,19 @@ public abstract class BaseActivity extends ActionBarActivity {
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
-                    LocalPullController localPullController = new LocalPullController(
-                            getApplicationContext());
-                    try {
-                        localPullController.importDB(uri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    ImportController importController = new ImportController(this);
+                    ImportUseCase importUseCase = new ImportUseCase(uri, importController);
+                    importUseCase.execute(new ImportUseCase.Callback() {
+                        @Override
+                        public void onComplete() {
+                            Log.d(TAG, "Database imported");
+                        }
+
+                        @Override
+                        public void onImportError() {
+                            Log.d(TAG, "Database import fail");
+                        }
+                    });
                 }
                 break;
         }

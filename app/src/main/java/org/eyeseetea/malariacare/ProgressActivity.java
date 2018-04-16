@@ -33,14 +33,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
@@ -125,13 +125,26 @@ public class ProgressActivity extends Activity {
     }
 
     private void initializeDependencies() {
-        IPullController pullController;
         if (Session.getCredentials().isDemoCredentials()) {
-            pullController = new LocalPullController(this);
+            executeDemoPull();
         } else {
-            pullController = new PullController();
+            mPullUseCase = new PullUseCase(new PullController());
         }
-        mPullUseCase = new PullUseCase(pullController);
+    }
+
+    private void executeDemoPull() {
+        new PullDemoUseCase(new PullDemoController(this)).execute(new PullDemoUseCase.Callback() {
+            @Override
+            public void onComplete() {
+                finishAndGo(DashboardActivity.class);
+            }
+
+            @Override
+            public void onPullError() {
+                showException(getBaseContext().getString(R.string
+                        .dialog_pull_error));
+            }
+        });
     }
 
     /**
