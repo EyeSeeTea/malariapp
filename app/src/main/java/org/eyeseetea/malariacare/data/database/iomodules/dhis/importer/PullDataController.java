@@ -89,6 +89,7 @@ public class PullDataController implements IPullDataController {
                 Log.d(TAG, "converting surveys");
                 convertSurveys();
                 callback.onStep(PullStep.PREPARING_PLANNING_SURVEYS);
+                break;
             case PREPARING_PLANNING_SURVEYS:
                 Log.d(TAG, "planning surveys");
                 //Plan surveys for the future
@@ -97,11 +98,8 @@ public class PullDataController implements IPullDataController {
                 break;
             case VALIDATE_COMPOSITE_SCORES:
                 Log.d(TAG, "Validate Composite scores");
-                callback.onStep(PullStep.COMPLETE);
-                break;
-            case COMPLETE:
-                Log.d(TAG, "PULL process...OK");
-                callback.onComplete();
+                validateCS();
+                callback.onStep(PullStep.DATA_COMPLETED);
                 break;
         }
     } catch (Exception e) {
