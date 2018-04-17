@@ -63,14 +63,7 @@ public class PullDataController implements IPullDataController {
         pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
-                    if (!pullRemoteDataSource
-                            .mandatoryMetadataTablesNotEmpty()) {
-                        callback.onError(new
-                                ConversionException());
-                        return;
-                    }else{
-                        callback.onStep(PullStep.PREPARING_SURVEYS);
-                    }
+                callback.onStep(PullStep.PREPARING_SURVEYS);
             }
 
             @Override
@@ -129,33 +122,6 @@ public class PullDataController implements IPullDataController {
                     }
                     event.accept(converter);
                 }
-            }
-        }
-    }
-
-    private void validateCS() {
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
-        for (CompositeScoreDB compositeScore : compositeScores) {
-            if (!compositeScore.hasChildren() && (compositeScore.getQuestions() == null
-                    || compositeScore.getQuestions().size() == 0)) {
-                Log.d(TAG,
-                        "CompositeScoreDB without children and without questions will be removed: "
-                                + compositeScore.toString());
-                compositeScore.delete();
-                continue;
-            }
-            if (compositeScore.getHierarchical_code() == null) {
-                Log.d(TAG, "CompositeScoreDB without hierarchical code will be removed: "
-                        + compositeScore.toString());
-                compositeScore.delete();
-                continue;
-            }
-            if (compositeScore.getComposite_score() == null
-                    && !compositeScore.getHierarchical_code().equals(
-                    CompositeScoreBuilder.ROOT_NODE_CODE)) {
-                Log.d(TAG, "CompositeScoreDB not root and not parent should be fixed: "
-                        + compositeScore.toString());
-                continue;
             }
         }
     }

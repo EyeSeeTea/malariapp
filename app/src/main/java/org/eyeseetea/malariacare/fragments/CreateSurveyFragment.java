@@ -159,7 +159,7 @@ public class CreateSurveyFragment extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //If the survey is validate, it send the order of create survey fragment from this fragment to the activity.
+                //If the survey is validateTables, it send the order of create survey fragment from this fragment to the activity.
                 if(validateForm()) {
                     createSurvey();
                 }

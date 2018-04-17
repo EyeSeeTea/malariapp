@@ -39,7 +39,7 @@ public class UnsafeOkHttpsClientFactory {
 
     public static OkHttpClient getUnsafeOkHttpClient() {
         try {
-            // Create a trust manager that does not validate certificate chains
+            // Create a trust manager that does not validateTables certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[] {
                     new X509TrustManager() {
                         @Override

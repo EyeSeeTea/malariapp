@@ -24,6 +24,7 @@ import android.util.Log;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IValidatorController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
@@ -45,15 +46,18 @@ public class PullUseCase {
 
     IPullMetadataController mPullMetadataController;
     IPullDataController mPullDataController;
+    IValidatorController mValidatorController;
 
     PullFilters mPullDataFilters;
 
     public static Boolean PULL_IS_ACTIVE;
 
     public PullUseCase(IPullMetadataController pullMetadataController,
-            IPullDataController pullDataController) {
+                       IPullDataController pullDataController,
+                       IValidatorController validatorController) {
         mPullMetadataController = pullMetadataController;
         mPullDataController = pullDataController;
+        mValidatorController = validatorController;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
@@ -68,7 +72,18 @@ public class PullUseCase {
             @Override
             public void onComplete() {
                 Log.i("pullMetadata", "onComplete");
-                pullData(callback);
+                mValidatorController.removeInvalidCS();
+
+                mValidatorController.validateTables(new IValidatorController.IValidatorControllerCallback() {
+                    @Override
+                    public void validate(boolean result) {
+                        if(!result) {
+                            callback.onConversionError();
+                        }else{
+                            pullData(callback);
+                        }
+                    }
+                });
             }
 
             @Override

@@ -36,6 +36,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.data.database.local.ValidatorController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
@@ -131,8 +132,8 @@ public class ProgressActivity extends Activity {
         } else {
             PullMetadataController pullMetadataController = new PullMetadataController();
             PullDataController pullDataController = new PullDataController();
-
-            mPullUseCase = new PullUseCase(pullMetadataController, pullDataController);
+            ValidatorController validatorController = new ValidatorController();
+            mPullUseCase = new PullUseCase(pullMetadataController, pullDataController, validatorController);
         }
     }
 

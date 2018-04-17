@@ -28,7 +28,9 @@ import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.IPullDataSource;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -194,35 +196,5 @@ public class PullDhisSDKDataSource implements IPullDataSource {
                 StateFlow.class,
                 FailedItemFlow.class
         );
-    }
-
-
-    public final static Class[] MANDATORY_METADATA_TABLES = {
-            AttributeFlow.class,
-            DataElementFlow.class,
-            AttributeValueFlow.class,
-            OptionFlow.class,
-            OptionSetFlow.class,
-            UserAccountFlow.class,
-            OrganisationUnitFlow.class,
-            OrganisationUnitToProgramRelationFlow.class,
-            ProgramStageFlow.class,
-            ProgramStageDataElementFlow.class,
-            ProgramStageSectionFlow.class
-    };
-
-
-    public boolean mandatoryMetadataTablesNotEmpty() {
-
-        int elementsInTable = 0;
-        for (Class table : MANDATORY_METADATA_TABLES) {
-            elementsInTable = (int) new SQLite().selectCountOf()
-                    .from(table).count();
-            if (elementsInTable == 0) {
-                Log.d(TAG, "Error empty table: " + table.getName());
-                return false;
-            }
-        }
-        return true;
     }
 }
