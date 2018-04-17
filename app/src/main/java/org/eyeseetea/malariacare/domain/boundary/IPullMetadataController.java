@@ -17,17 +17,21 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.usecase.pull;
+package org.eyeseetea.malariacare.domain.boundary;
 
-public enum PullStep {
-    PROGRAMS, EVENTS, PREPARING_PROGRAMS, PREPARING_ANSWERS, PREPARING_QUESTIONS,
-    PREPARING_RELATIONSHIPS, PREPARING_ORGANISATION_UNITS, PREPARING_ORGANISATION_UNIT_HIERARCHY,
-    PREPARING_USER,
-    PREPARING_SCORES,
-    VALIDATE_COMPOSITE_SCORES,
-    PREPARING_SURVEYS,
-    PREPARING_PLANNING_SURVEYS,
-    METADATA_COMPLETED,
-    DATA_COMPLETED,
-    DEMO
+import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
+
+public interface IPullMetadataController {
+
+    interface Callback {
+        void onComplete();
+
+        void onStep(PullStep step);
+
+        void onError(Throwable throwable);
+    }
+
+    void pullMetadata(Callback callback);
+
+    void nextStep(PullStep step);
 }

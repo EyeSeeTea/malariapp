@@ -19,12 +19,8 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
 import org.eyeseetea.malariacare.domain.boundary.IPullDemoController;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
 public class PullDemoUseCase {
 
