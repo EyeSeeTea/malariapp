@@ -30,7 +30,7 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 public class PullUseCase {
 
     public interface Callback {
-        void onComplete();
+        void onPullComplete();
 
         void onPullError();
 
@@ -67,19 +67,20 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
+                Log.i("pullMetadata", "onComplete");
                 pullData(callback);
             }
 
             @Override
             public void onStep(PullStep step) {
                 if(isPullActive()){
-                    if(step.equals(PullStep.COMPLETE)){
-                        Log.i("pull", step.toString());
+                    if(step.equals(PullStep.METADATA_COMPLETED)){
+                        Log.i("pullMetadata", step.toString());
                         System.out.printf("MetaData successfully converted...");
                         onComplete();
                     }
                     else {
-                        Log.i("pull", step.toString());
+                        Log.i("pullMetadata", step.toString());
                         callback.onStep(step);
                         mPullMetadataController.nextStep(step);
                     }
@@ -100,15 +101,16 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                callback.onComplete();
+                Log.i("pullEvent", "onComplete");
+                callback.onPullComplete();
             }
 
             @Override
             public void onStep(PullStep step) {
-                Log.i("pull", step.toString());
+                Log.i("pullEvent", step.toString());
                 callback.onStep(step);
                 if(isPullActive()){
-                    if(step.equals(PullStep.COMPLETE)){
+                    if(step.equals(PullStep.DATA_COMPLETED)){
                         onComplete();
                     }else {
                         mPullDataController.nextStep(step);

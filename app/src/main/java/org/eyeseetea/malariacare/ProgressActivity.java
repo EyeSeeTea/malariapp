@@ -343,7 +343,8 @@ public class ProgressActivity extends Activity {
 
         mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
             @Override
-            public void onComplete() {
+            public void onPullComplete() {
+                Log.i("pull super ", "onComplete");
                 postFinish();
             }
 
