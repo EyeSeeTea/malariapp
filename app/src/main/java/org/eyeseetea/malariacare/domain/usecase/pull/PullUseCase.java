@@ -19,69 +19,144 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import android.util.Log;
+
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IValidatorController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
 public class PullUseCase {
 
     public interface Callback {
-        void onComplete();
+        void onPullComplete();
 
         void onPullError();
-
-        void onCancel();
 
         void onConversionError();
 
         void onStep(PullStep pullStep);
 
         void onNetworkError();
+
+        void onCancel();
     }
 
-    IPullController mPullController;
+    IPullMetadataController mPullMetadataController;
+    IPullDataController mPullDataController;
+    IValidatorController mValidatorController;
 
-    public PullUseCase(IPullController pullController) {
-        mPullController = pullController;
+    PullFilters mPullDataFilters;
+
+    public static Boolean PULL_IS_ACTIVE;
+
+    public PullUseCase(IPullMetadataController pullMetadataController,
+                       IPullDataController pullDataController,
+                       IValidatorController validatorController) {
+        mPullMetadataController = pullMetadataController;
+        mPullDataController = pullDataController;
+        mValidatorController = validatorController;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
-        mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
+        mPullDataFilters = pullFilters;
+        PULL_IS_ACTIVE = true;
+        pullMetadata(callback);
+    }
+
+    private void pullMetadata(final Callback callback) {
+        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
 
             @Override
             public void onComplete() {
-                callback.onComplete();
+                Log.i("pullMetadata", "onComplete");
+                mValidatorController.removeInvalidCS();
+
+                mValidatorController.validateTables(new IValidatorController.IValidatorControllerCallback() {
+                    @Override
+                    public void validate(boolean result) {
+                        if(!result) {
+                            callback.onConversionError();
+                        }else{
+                            pullData(callback);
+                        }
+                    }
+                });
             }
 
             @Override
             public void onStep(PullStep step) {
-                callback.onStep(step);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                if (throwable instanceof NetworkException) {
-                    callback.onNetworkError();
-                } else if (throwable instanceof ConversionException) {
-                    callback.onConversionError();
-                } else {
-                    callback.onPullError();
+                if(isPullActive()){
+                    if(step.equals(PullStep.METADATA_COMPLETED)){
+                        Log.i("pullMetadata", step.toString());
+                        System.out.printf("MetaData successfully converted...");
+                        onComplete();
+                    }
+                    else {
+                        Log.i("pullMetadata", step.toString());
+                        callback.onStep(step);
+                        mPullMetadataController.nextStep(step);
+                    }
+                }else{
+                    callback.onCancel();
                 }
             }
 
             @Override
-            public void onCancel() {
-                callback.onCancel();
+            public void onError(Throwable throwable) {
+                manageError(throwable, callback);
             }
         });
     }
 
-    public void cancel() {
-        mPullController.cancel();
+    private void pullData(final Callback callback) {
+        mPullDataController.pullData(mPullDataFilters, new IPullDataController.Callback() {
+
+            @Override
+            public void onComplete() {
+                Log.i("pullEvent", "onComplete");
+                callback.onPullComplete();
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                Log.i("pullEvent", step.toString());
+                callback.onStep(step);
+                if(isPullActive()){
+                    if(step.equals(PullStep.DATA_COMPLETED)){
+                        onComplete();
+                    }else {
+                        mPullDataController.nextStep(step);
+                    }
+                }else{
+                    callback.onCancel();
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                manageError(throwable, callback);
+            }
+        });
+    }
+
+    private void manageError(Throwable throwable, Callback callback) {
+        if (throwable instanceof NetworkException) {
+            callback.onNetworkError();
+        } else if (throwable instanceof ConversionException) {
+            callback.onConversionError();
+        } else {
+            callback.onPullError();
+        }
     }
 
     public boolean isPullActive() {
-        return mPullController.isPullActive();
+        return PULL_IS_ACTIVE;
+    }
+
+    public void cancel() {
+        PULL_IS_ACTIVE = false;
     }
 }
