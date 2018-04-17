@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -43,13 +44,16 @@ public class PullUseCase {
 
     IPullMetadataController mPullMetadataController;
     IPullDataController mPullDataController;
+    IMetadataValidator mMetadataValidator;
 
     PullFilters mPullDataFilters;
 
     public PullUseCase(IPullMetadataController pullMetadataController,
-            IPullDataController pullDataController) {
+            IPullDataController pullDataController,
+            IMetadataValidator metadataValidator) {
         mPullMetadataController = pullMetadataController;
         mPullDataController = pullDataController;
+        mMetadataValidator = metadataValidator;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
@@ -63,7 +67,11 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                pullData(callback);
+                if(mMetadataValidator.isValid()){
+                    pullData(callback);
+                } else {
+                    onError(new ConversionException());
+                }
             }
 
             @Override

@@ -68,12 +68,6 @@ public class PullDataController implements IPullDataController {
                         callback.onCancel();
                         return;
                     }
-                    if (!pullRemoteDataSource
-                            .mandatoryMetadataTablesNotEmpty()) {
-                        callback.onError(new
-                                ConversionException());
-                        return;
-                    }
                     try {
                         if (!PULL_IS_ACTIVE) {
                             callback.onCancel();
