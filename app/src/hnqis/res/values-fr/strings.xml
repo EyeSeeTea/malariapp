@@ -269,4 +269,13 @@ Mensuelle"</string>
 <string name="health_facility">Centre médical</string>
 <string name="mandatory">"Obligatoire"</string>
 <string name="dialog_action_plan">"Plan d'action"</string>
+    <string-array name="languages_strings">
+        <item>Système défini</item>
+        <item>Anglais</item>
+        <item>Français</item>
+        <item>Espagnol</item>
+        <item>Portugais</item>
+        <item>Khmer</item>
+        <item>Lao</item>
+    </string-array>
 </resources>
