@@ -146,7 +146,7 @@ public class PreferencesState {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 instance.getContext());
 
-        String languageCode = sharedPreferences.getString(languagePreferenceKey,SYSTEM_DEFINED_LANGUAGE);
+        String languageCode = sharedPreferences.getString(languagePreferenceKey,"");
 
         if(languageCode.isEmpty()) {
             languageCode = SYSTEM_DEFINED_LANGUAGE;
