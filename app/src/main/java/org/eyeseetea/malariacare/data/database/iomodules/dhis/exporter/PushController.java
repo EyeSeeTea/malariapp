@@ -95,17 +95,17 @@ public class PushController implements IPushController {
     }
 
     private void pushObsActionPlan(IPushControllerCallback callback) {
-        List<ObsActionPlan> obsActionPlen =
+        List<ObsActionPlan> obsActionPlan =
                 ObsActionPlan.getAllCompletedObsActionPlansInSentSurveys();
 
-        if (obsActionPlen == null || obsActionPlen.size() == 0) {
+        if (obsActionPlan == null || obsActionPlan.size() == 0) {
             callback.onError(new SurveysToPushNotFoundException("Null surveys"));
         } else {
             mPushDhisSDKDataSource.wipeEvents();
             Log.d(TAG, "convert surveys to sdk");
 
             try {
-                convertObsToSDK(obsActionPlen);
+                convertObsToSDK(obsActionPlan);
             } catch (ConversionException e) {
                 callback.onInformativeError(e);//notify to the user
                 callback.onError(e);//close push
