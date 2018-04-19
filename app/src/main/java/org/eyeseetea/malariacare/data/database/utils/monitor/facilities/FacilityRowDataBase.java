@@ -86,7 +86,11 @@ public class FacilityRowDataBase {
     }
 
     public String getAsJSON(){
-        return String.format("{name:'%s',values:%s, counter:%s}",name,getColumnDataAsJSON(), getNumberOfSurveysAsJSON());
+        if(getTotalNumberOfSurveys()>0){
+            return String.format("{name:'%s',values:%s, counter:%s}",name,getColumnDataAsJSON(), getNumberOfSurveysAsJSON());
+        }else{
+            return "";
+        }
     }
 
     /**
@@ -118,6 +122,14 @@ public class FacilityRowDataBase {
         return columnValues.toString();
     }
 
+    private int getTotalNumberOfSurveys(){
+        int count = 0;
+        for(FacilityColumnCounterData column:counterData){
+            count += Integer.parseInt(column.getAsJSON());
+        }
+        return count;
+    }
+
     private String getNumberOfSurveysAsJSON(){
         StringBuffer columnValues=new StringBuffer("[");
         int i=0;
@@ -130,5 +142,15 @@ public class FacilityRowDataBase {
         }
         columnValues.append("]");
         return columnValues.toString();
+    }
+
+    public int counterSum() {
+        int count = 0;
+        for(FacilityColumnCounterData counter:counterData){
+            if(!counter.getAsJSON().equals("")){
+                count+=Integer.parseInt(counter.getAsJSON());
+            }
+        }
+        return count;
     }
 }
