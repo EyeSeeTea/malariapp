@@ -143,14 +143,4 @@ public class FacilityRowDataBase {
         columnValues.append("]");
         return columnValues.toString();
     }
-
-    public int counterSum() {
-        int count = 0;
-        for(FacilityColumnCounterData counter:counterData){
-            if(!counter.getAsJSON().equals("")){
-                count+=Integer.parseInt(counter.getAsJSON());
-            }
-        }
-        return count;
-    }
 }
