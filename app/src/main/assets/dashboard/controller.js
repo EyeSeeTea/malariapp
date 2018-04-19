@@ -98,7 +98,7 @@ function changeProgram(){
 		showProgram();
 		hideElement("tableCanvas");
 		showElement("graphicCanvas");
-		showElement("noSurveysText")
+		showElement("noSurveysText");
 	}
 }
 
@@ -152,12 +152,22 @@ function changePieAndTablesByProgram(){
 //event on click select/or in program "spinner" to change the selected program and reload.
 function changePieAndTablesByOrgUnit(){
 	selectedPie="";
+	findOrgUnit=false;
 	for(var i=0;i<Object.keys(piesDataByOrgUnit).length;i++){
 		if(piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
 			selectedPie=piesDataByOrgUnit[i].uidorgunit;
+			findOrgUnit=true;
 			break;
 		}
 	}
+
+	noSurveysId="noSurveysText";
+    	 if(!findOrgUnit){
+                updateChartTitle(noSurveysId,messages["noSurveys"]);
+            }else{
+                updateChartTitle(noSurveysId,"");
+            }
+
     if(selectedOrgUnit===allOrgUnitKey){
         rebuildTableFacilities(selectedOrgUnit, inputDataTablesPerOrgUnit)
     }
