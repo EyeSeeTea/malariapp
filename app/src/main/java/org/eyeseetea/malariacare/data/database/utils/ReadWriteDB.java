@@ -82,7 +82,9 @@ public class ReadWriteDB {
                 value.save();
                 DomainEventPublisher
                         .instance()
-                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), new Question(question.getId_question(), question.getCompulsory()),ValueChangedEvent.Action.INSERT));
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),
+                                new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                                ValueChangedEvent.Action.INSERT));
             } else {
                 value.setOption(option);
                 value.setValue(option.getName());
@@ -94,7 +96,9 @@ public class ReadWriteDB {
                 value.delete();
                 DomainEventPublisher
                         .instance()
-                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), new Question(question.getId_question(), question.getCompulsory()),ValueChangedEvent.Action.DELETE));
+                        .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),
+                                new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                                ValueChangedEvent.Action.DELETE));
             }
         }
     }
@@ -109,7 +113,9 @@ public class ReadWriteDB {
             value.save();
             DomainEventPublisher
                     .instance()
-                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),  new Question(question.getId_question(), question.getCompulsory()) ,ValueChangedEvent.Action.INSERT));
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),
+                            new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                            ValueChangedEvent.Action.INSERT));
         } else {
             value.setOption((Long)null);
             value.setValue(answer);
@@ -133,7 +139,7 @@ public class ReadWriteDB {
                         .instance()
                         .publish(new ValueChangedEvent(
                                 Session.getSurveyByModule(module).getId_survey(),
-                                new Question(question.getId_question(), question.getCompulsory()),
+                                new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
                                 ValueChangedEvent.Action.DELETE));
             }
             return true;
