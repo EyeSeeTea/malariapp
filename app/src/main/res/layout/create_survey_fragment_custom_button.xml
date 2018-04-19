@@ -27,6 +27,7 @@
         android:textStyle="bold"
         android:textColor="@color/assess_grey"
         android:background="@drawable/button_round_border"
+        android:textAllCaps="false"
         app:bDimension="@string/font_size_level2"
         app:bFontName="@string/medium_font_name"
         android:layout_gravity="center_horizontal"

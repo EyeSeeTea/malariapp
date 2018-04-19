@@ -149,26 +149,24 @@ function buildColorXScore(value, listOfSurveys){
 	if(value==null){
 		return "<td class='novisible' ><div class='circleContainer' ><img src='img/scoreCircleGrey.svg'/><span class='centerspan'>";
 	}
-	if(value<50){
+	if(value<low){
 	    if(listOfSurveys.length>1){
 		    return "<td class='redcircle'   onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circleContainer'><img src='img/scoreCircleMultipleRed.svg'/><span class='centerspanmultiple'>";
 		}else{
 		    return "<td class='redcircle'   onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleRed.svg'/><span class='centerspan'>";
 		}
-	}
-
-	if(value<80){
+	}else if(value<medium){
 	    if(listOfSurveys.length>1){
 		    return "<td class='ambercircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\"><div class='circleContainer'><img src='img/scoreCircleMultipleYellow.svg'/><span class='centerspanmultiple'>";
 		}else{
 		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleYellow.svg'/><span class='centerspan'>";
 		}
-	}
-
-	if(listOfSurveys.length>1){
-	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleMultipleGreen.svg'/><span class='centerspanmultiple'>";
-	}else{
-		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleGreen.svg'/><span class='centerspan'>";
+	} else{
+        if(listOfSurveys.length>1){
+            return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+        }else{
+            return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
+        }
 	}
 }
 
