@@ -181,6 +181,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void removeSurveyFromAdapter(SurveyDB survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
+        showOrHiddenList(adapter.getItemList().isEmpty());
     }
 
     @Override
@@ -313,12 +314,12 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 surveyDB =newListSurveys.get(0);
             }
             showOrHiddenButton(surveyDB);
-            showOrHiddenList(newListSurveys);
+            showOrHiddenList(newListSurveys.isEmpty());
         }
     }
 
-    private void showOrHiddenList(List<SurveyDB> newListSurveys) {
-        if(newListSurveys.isEmpty()){
+    private void showOrHiddenList(boolean hasSurveys) {
+        if(hasSurveys){
             noSurveysText.setVisibility(View.VISIBLE);
             getListView().setVisibility(View.GONE);
         }else {
