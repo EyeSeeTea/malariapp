@@ -230,4 +230,5 @@
 <string name="get_db_file_dialog"></string>
 <string name="start"></string>
 <string name="plan_action_provider_title" ></string>
+<string name="scheduled"></string>
 </resources>

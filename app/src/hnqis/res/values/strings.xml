@@ -287,4 +287,5 @@ evaluation"</string>
         <item>Khmer</item>
         <item>Lao</item>
     </string-array>
+<string name="scheduled">Scheduled</string>
 </resources>

@@ -269,4 +269,5 @@ clínica"</string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
 <string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
+<string name="scheduled">Programado</string>
 </resources>
