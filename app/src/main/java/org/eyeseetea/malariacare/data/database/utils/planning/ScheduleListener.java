@@ -55,7 +55,8 @@ public class ScheduleListener implements View.OnClickListener {
 
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
-        scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduledDate()));
+        final Date surveyDefaultDate = survey.getScheduledDate();
+        scheduleDatePickerButton.setText(AUtils.formatDate(surveyDefaultDate));
         //On Click open an specific DatePickerDialog
         scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +64,7 @@ public class ScheduleListener implements View.OnClickListener {
                 //Init secondary datepicker with current date
                 Calendar calendar = Calendar.getInstance();
                 if(survey.getScheduledDate()!=null){
-                    calendar.setTime(survey.getScheduledDate());
+                    calendar.setTime(surveyDefaultDate);
                 }
                 //Show datepickerdialog -> updates newScheduledDate and button
                 new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
@@ -94,8 +95,8 @@ public class ScheduleListener implements View.OnClickListener {
             public void onClick(View v) {
                 //Check fields are ok
                 String comment = ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
-                if (!validateFields(newScheduledDate, comment)) {
-                    return;
+                if (newScheduledDate == null) {
+                    newScheduledDate = surveyDefaultDate;
                 }
                 //Reschedule survey
                 if(plannedSurveys==null) {
@@ -124,10 +125,6 @@ public class ScheduleListener implements View.OnClickListener {
         surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
 
-    }
-
-    private boolean validateFields(Date newDate,String comment){
-        return newDate!=null;
     }
 
 
