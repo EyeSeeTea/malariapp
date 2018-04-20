@@ -280,23 +280,20 @@ public class AssessModuleController extends ModuleController {
 
                             @Override
                             public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                if (surveyAnsweredRatio.isCompulsoryCompleted()) {
-                                    SurveyDialog.Builder builder = SurveyDialog.newBuilder(
-                                            dashboardActivity, survey);
+                                SurveyDialog.Builder builder = SurveyDialog.newBuilder(
+                                        dashboardActivity, survey);
 
-                                    final View.OnClickListener completeButtonListener =
-                                            new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    onMarkAsCompleted(survey);
-                                                }
-                                            };
+                                final View.OnClickListener completeButtonListener =
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                onMarkAsCompleted(survey);
+                                            }
+                                        };
 
-                                    builder.completeButton(completeButtonListener)
-                                            .bodyTextID(R.string.dialog_pie_chart_label_explanation)
-                                            .build();
-
-                                }
+                                builder.completeButton(completeButtonListener, surveyAnsweredRatio.isCompulsoryCompleted())
+                                        .bodyTextID(R.string.dialog_pie_chart_label_explanation)
+                                        .build();
                             }
                         });
             }
@@ -548,7 +545,7 @@ public class AssessModuleController extends ModuleController {
         };
 
         final SurveyDialog surveyDialog =  builder.editButton(editButtonListener)
-                .completeButton(completeButtonListener)
+                .completeButton(completeButtonListener, true)
                 .deleteButton(deleteButtonListener)
                 .build();
 
