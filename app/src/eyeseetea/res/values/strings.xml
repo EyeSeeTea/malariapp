@@ -273,4 +273,5 @@ evaluation"</string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
 <string name="plan_action_provider_title" >"Provider Name:"</string>
+<string name="reschedule_title_multiple_survey">"%1$d number of surveys being re-scheduled for OU %2$s"</string>
 </resources>

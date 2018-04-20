@@ -291,4 +291,5 @@
         <item>ພາສາອັງກິດ</item>
         <item>ລາວ</item>
     </string-array>
+<string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
 </resources>

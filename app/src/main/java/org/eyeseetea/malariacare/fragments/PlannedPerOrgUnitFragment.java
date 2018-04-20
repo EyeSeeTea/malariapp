@@ -155,6 +155,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
                 if(scheduleSurveys.size()==0) return;
 
+
                 new ScheduleListener(scheduleSurveys,adapter.getContext());
             }
         });

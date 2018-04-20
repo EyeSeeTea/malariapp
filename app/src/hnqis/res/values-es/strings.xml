@@ -284,4 +284,5 @@ clínica"</string>
         <item>Khmer</item>
         <item>Lao</item>
     </string-array>
+<string name="reschedule_title_multiple_survey">"%1$d número de encuestas que se reprogramarán para la OU %2$s"</string>
 </resources>

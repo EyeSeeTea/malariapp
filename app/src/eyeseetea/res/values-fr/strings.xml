@@ -264,4 +264,5 @@ Mensuelle"</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
 <string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
+<string name="reschedule_title_multiple_survey">"%1$d nombre d'enquêtes en cours de re-planification pour OU %2$s"</string>
 </resources>
