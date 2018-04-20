@@ -24,6 +24,8 @@ import java.util.List;
 
 public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
 
+    boolean hideMenu;
+
     public static boolean  greyBackground=false;
     public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context) {
         super(context);
@@ -31,6 +33,7 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.recordLayout = R.layout.assessment_planning_record;
+        this.hideMenu = newItems.size()>1;
     }
 
     @Override
@@ -94,14 +97,21 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         }
         greyBackground=!greyBackground;
         ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
-        menuDots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO : review after merge questmark cosmetics and remove or create a strategy if is necessary
-                // dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
-                dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),  new ScheduleListener(plannedSurvey.getSurvey(), context));
-            }
-        });
+        if(hideMenu){
+            menuDots.setVisibility(View.INVISIBLE);
+        }else {
+            menuDots.setVisibility(View.VISIBLE);
+            menuDots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO : review after merge questmark cosmetics and remove or create a strategy if is necessary
+
+                    // dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
+                    dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),
+                            new ScheduleListener(plannedSurvey.getSurvey(), context));
+                }
+            });
+        }
 
         return rowView;
     }
