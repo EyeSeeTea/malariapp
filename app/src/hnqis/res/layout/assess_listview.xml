@@ -71,7 +71,8 @@
         android:textColor="@color/text_dark_grey"
         android:textSize="@dimen/text_size_medium"
         app:tDimension="@string/font_size_level2"
-        app:tFontName="@string/medium_font_name"/>
+        app:tFontName="@string/medium_font_name"
+        android:layout_margin="16dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/start_button"
