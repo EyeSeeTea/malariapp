@@ -92,7 +92,7 @@
             android:ellipsize="end"
             android:paddingTop="@dimen/planning_padding"
             android:paddingBottom="@dimen/planning_padding"
-            android:text="@string/duedate"
+            android:text="@string/planing_due_date"
             android:textSize="@dimen/planing_per_org_text_size"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"/>
