@@ -264,5 +264,7 @@ Mensuelle"</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
 <string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
+<string name="assess_no_surveys">"Aucune enquête active en ce moment pour la sélection que vous avez faite. Cliquez sur + pour commencer une nouvelle enquête"</string>
+<string name="improve_no_surveys">"Aucune enquête réalisée pour la sélection que vous avez faite."</string>
 <string name="scheduled">Prévu</string>
 </resources>

@@ -235,4 +235,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         return rowView;
     }
 
+    public List<SurveyDB> getItemList(){
+        return items;
+    }
 }
