@@ -273,4 +273,6 @@ evaluation"</string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
 <string name="plan_action_provider_title" >"Provider Name:"</string>
+<string name="assess_no_surveys">"No active survey(s) at this time for the selection you have made. Click on + to start a new survey"</string>
+<string name="improve_no_surveys">"No survey(s) completed for the selection you have made."</string>
 </resources>

@@ -284,4 +284,6 @@ clínica"</string>
         <item>Khmer</item>
         <item>Lao</item>
     </string-array>
+<string name="assess_no_surveys">"No hay encuesta(s) activa(s) en este momento para la selección que ha realizado. Haga clic en + para comenzar una nueva encuesta"</string>
+<string name="improve_no_surveys">"No se completaron encuestas para la selección que ha realizado."</string>
 </resources>
