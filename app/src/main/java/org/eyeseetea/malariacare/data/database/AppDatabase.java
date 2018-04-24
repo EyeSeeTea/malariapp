@@ -20,7 +20,30 @@
 package org.eyeseetea.malariacare.data.database;
 
 import com.raizlabs.android.dbflow.annotation.Database;
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
+
+import org.eyeseetea.malariacare.data.database.model.AnswerDB;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.HeaderDB;
+import org.eyeseetea.malariacare.data.database.model.MatchDB;
+import org.eyeseetea.malariacare.data.database.model.MediaDB;
+import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.OptionDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionOptionDB;
+import org.eyeseetea.malariacare.data.database.model.QuestionRelationDB;
+import org.eyeseetea.malariacare.data.database.model.ScoreDB;
+import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
+import org.eyeseetea.malariacare.data.database.model.TabDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB;
 
 /**
  * Created by nacho on 02/08/15.
@@ -96,4 +119,30 @@ public class AppDatabase {
     public static final NameAlias optionFlowAlias = NameAlias.builder(optionFlowName).build();
     public static final NameAlias attributeValueFlowAlias = NameAlias.builder(
             attributeValueFlowName).build();
+
+    public static void wipeDatabase() {
+        Delete.tables(
+                ValueDB.class,
+                ScoreDB.class,
+                SurveyDB.class,
+                SurveyScheduleDB.class,
+                OrgUnitDB.class,
+                OrgUnitLevelDB.class,
+                OrgUnitProgramRelationDB.class,
+                UserDB.class,
+                QuestionOptionDB.class,
+                MatchDB.class,
+                QuestionRelationDB.class,
+                QuestionDB.class,
+                CompositeScoreDB.class,
+                OptionDB.class,
+                AnswerDB.class,
+                HeaderDB.class,
+                TabDB.class,
+                ProgramDB.class,
+                ServerMetadataDB.class,
+                MediaDB.class,
+                ObsActionPlanDB.class
+        );
+    }
 }

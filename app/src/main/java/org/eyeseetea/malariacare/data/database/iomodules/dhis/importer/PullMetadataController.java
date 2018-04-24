@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017.
+ * Copyright (c) 2015.
  *
  * This file is part of QA App.
  *
@@ -17,18 +17,14 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.data.database.datasources;
+package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
+import org.eyeseetea.malariacare.data.IPullSourceCallback;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
         .OrganisationUnitExtended;
@@ -39,32 +35,11 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
         .ProgramStageDataElementExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
-import org.eyeseetea.malariacare.data.database.model.AnswerDB;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.HeaderDB;
-import org.eyeseetea.malariacare.data.database.model.MatchDB;
-import org.eyeseetea.malariacare.data.database.model.MediaDB;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
-import org.eyeseetea.malariacare.data.database.model.OptionDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionOptionDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionRelationDB;
-import org.eyeseetea.malariacare.data.database.model.ScoreDB;
-import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
-import org.eyeseetea.malariacare.data.database.model.TabDB;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,70 +48,80 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConversionLocalDataSource {
+public class PullMetadataController implements IPullMetadataController {
 
-    PullController.IPullControllerCallback callback;
+    public static Boolean PULL_IS_ACTIVE = true;
+    private final String TAG = ".PullMetadataController";
+    PullDhisSDKDataSource pullRemoteDataSource;
+    IPullMetadataController.Callback callback;
 
-    public ConversionLocalDataSource(PullController.IPullControllerCallback callback) {
+    ConvertFromSDKVisitor converter;
+
+    public PullMetadataController() {
+        converter = new ConvertFromSDKVisitor();
+        pullRemoteDataSource = new PullDhisSDKDataSource();
+    }
+
+    @Override
+    public void pullMetadata(final IPullMetadataController.Callback callback) {
+        AppDatabase.wipeDatabase();
         this.callback = callback;
+
+
+        pullRemoteDataSource.wipeDataBase();
+
+        callback.onStep(PullStep.PROGRAMS);
+
+        pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
+
+            @Override
+            public void onComplete() {
+                if (!PULL_IS_ACTIVE) {
+                    callback.onCancel();
+                    return;
+                }
+                callback.onStep(PullStep.EVENTS);
+
+                convertMetaData();
+
+                if (PULL_IS_ACTIVE) {
+                    Log.d(TAG, "PULL process...OK");
+                    callback.onComplete();
+                } else {
+                    callback.onCancel();
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+                callback.onError(throwable);
+            }
+
+        });
     }
 
-    private final String TAG = ".ConversionLocalData";
-
-    public void validateCS() {
-        if (!PullController.PULL_IS_ACTIVE) return;
-        Log.d(TAG, "Validate Composite scores");
-        callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
-        for (CompositeScoreDB compositeScore : compositeScores) {
-            if (!compositeScore.hasChildren() && (compositeScore.getQuestions() == null
-                    || compositeScore.getQuestions().size() == 0)) {
-                Log.d(TAG, "CompositeScoreDB without children and without questions will be removed: "
-                        + compositeScore.toString());
-                compositeScore.delete();
-                continue;
-            }
-            if (compositeScore.getHierarchical_code() == null) {
-                Log.d(TAG, "CompositeScoreDB without hierarchical code will be removed: "
-                        + compositeScore.toString());
-                compositeScore.delete();
-                continue;
-            }
-            if (compositeScore.getComposite_score() == null
-                    && !compositeScore.getHierarchical_code().equals(
-                    CompositeScoreBuilder.ROOT_NODE_CODE)) {
-                Log.d(TAG, "CompositeScoreDB not root and not parent should be fixed: "
-                        + compositeScore.toString());
-                continue;
-            }
-        }
+    @Override
+    public void cancel() {
+        PULL_IS_ACTIVE = false;
     }
 
-    /**
-     * Launches visitor that turns SDK data into APP data
-     */
-    public void convertFromSDK() {
-        if (!PullController.PULL_IS_ACTIVE) return;
-        Log.d(TAG, "Converting SDK into APP data");
-
-        //One shared converter to match parents within the hierarchy
-        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
-        convertMetaData(converter);
-        if (!PullController.PULL_IS_ACTIVE) return;
-        convertDataValues(converter);
-
+    @Override
+    public boolean isPullActive() {
+        return PULL_IS_ACTIVE;
     }
 
     /**
      * Turns sdk metadata into app metadata
      */
-    private void convertMetaData(ConvertFromSDKVisitor converter) {
-        if (!PullController.PULL_IS_ACTIVE) return;
+    public void convertMetaData() {
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //Convert Programs, Tabs
         callback.onStep(PullStep.PREPARING_PROGRAMS);
         System.out.printf("Converting programs and tabs...");
-        List<String> assignedProgramsIDs = SdkQueries.getAssignedProgramUids(PreferencesState.getInstance().getContext().getString(
-                R.string.pull_program_code));
+        List<String> assignedProgramsIDs = SdkQueries.getAssignedProgramUids(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.pull_program_code));
         for (String assignedProgramID : assignedProgramsIDs) {
             ProgramExtended programExtended = new ProgramExtended(
                     SdkQueries.getProgram(assignedProgramID));
@@ -144,37 +129,38 @@ public class ConversionLocalDataSource {
         }
 
         //Convert Answers, Options
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         callback.onStep(PullStep.PREPARING_ANSWERS);
         List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
                 SdkQueries.getOptionSets());
         System.out.printf("Converting answers and options...");
         for (OptionSetExtended optionSet : optionSets) {
-            if (!PullController.PULL_IS_ACTIVE) return;
+            if (!PullMetadataController.PULL_IS_ACTIVE) return;
             optionSet.accept(converter);
         }
         //OrganisationUnits
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         if (!convertOrgUnits(converter)) return;
 
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         System.out.printf("Converting user...");
         UserAccountExtended userAccountExtended = new UserAccountExtended(
                 SdkQueries.getUserAccount());
         userAccountExtended.accept(converter);
 
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //Convert questions and compositeScores
         callback.onStep(PullStep.PREPARING_QUESTIONS);
         System.out.printf("Ordering questions and compositeScores...");
 
         int count;
         //Dataelements ordered by program.
-        List<ProgramExtended> programs = ProgramExtended.getAllPrograms(PreferencesState.getInstance().getContext().getString(
-                R.string.pull_program_code));
+        List<ProgramExtended> programs = ProgramExtended.getAllPrograms(
+                PreferencesState.getInstance().getContext().getString(
+                        R.string.pull_program_code));
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {
             converter.actualProgram = program;
             Log.i(TAG, String.format("\t program '%s' ", program.getName()));
@@ -190,7 +176,7 @@ public class ConversionLocalDataSource {
                 count = programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElementExtended programStageDataElement :
                         programStageDataElements) {
-                    if (!PullController.PULL_IS_ACTIVE) return;
+                    if (!PullMetadataController.PULL_IS_ACTIVE) return;
 
                     //The ProgramStageDataElement without Dataelement uid is not correctly
                     // configured.
@@ -247,7 +233,7 @@ public class ConversionLocalDataSource {
             Log.i(TAG, String.format("\t program '%s' DONE ", program.getName()));
 
 
-            if (!PullController.PULL_IS_ACTIVE) return;
+            if (!PullMetadataController.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElementExtended>() {
                 public int compare(DataElementExtended dataElementExtended1,
                         DataElementExtended dataElementExtended2) {
@@ -277,7 +263,7 @@ public class ConversionLocalDataSource {
             programsDataelements.put(programUid, dataElements);
         }
 
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         System.out.printf("Building questions,compositescores,headers...");
         int i = 0;
         for (ProgramExtended program : programs) {
@@ -292,7 +278,7 @@ public class ConversionLocalDataSource {
                                     " %s", i));
                 }
                 */
-                if (!PullController.PULL_IS_ACTIVE) return;
+                if (!PullMetadataController.PULL_IS_ACTIVE) return;
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
                 dataElement.setProgramUid(programUid);
                 dataElement.accept(converter);
@@ -302,7 +288,7 @@ public class ConversionLocalDataSource {
         //Saves questions and media in batch mode
         converter.saveBatch();
 
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         System.out.printf("Building relationships...");
         callback.onStep(PullStep.PREPARING_RELATIONSHIPS);
         for (ProgramExtended program : programs) {
@@ -311,13 +297,13 @@ public class ConversionLocalDataSource {
             List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
             for (DataElementExtended dataElement : sortDataElements) {
-                if (!PullController.PULL_IS_ACTIVE) return;
+                if (!PullMetadataController.PULL_IS_ACTIVE) return;
                 dataElement.setProgramUid(programUid);
                 converter.buildRelations(dataElement);
             }
         }
 
-        if (!PullController.PULL_IS_ACTIVE) return;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //Fill order and parent scores
         System.out.printf("Building compositeScore relationships...");
         converter.buildScores();
@@ -328,14 +314,14 @@ public class ConversionLocalDataSource {
      * Turns sdk organisationUnit and levels into app info
      */
     private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
-        if (!PullController.PULL_IS_ACTIVE) return false;
+        if (!PullMetadataController.PULL_IS_ACTIVE) return false;
         callback.onStep(PullStep.PREPARING_ORGANISATION_UNITS);
         System.out.printf("Converting organisationUnitLevels...");
         List<OrganisationUnitLevelExtended> organisationUnitLevels =
                 OrganisationUnitLevelExtended.getExtendedList(
                         SdkQueries.getOrganisationUnitLevels());
         for (OrganisationUnitLevelExtended organisationUnitLevel : organisationUnitLevels) {
-            if (!PullController.PULL_IS_ACTIVE) return false;
+            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
             organisationUnitLevel.accept(converter);
         }
 
@@ -343,78 +329,11 @@ public class ConversionLocalDataSource {
         List<OrganisationUnitExtended> assignedOrganisationsUnits =
                 OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
         for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if (!PullController.PULL_IS_ACTIVE) return false;
+            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
             assignedOrganisationsUnit.accept(converter);
         }
 
         System.out.printf("Building orgunit hierarchy...");
         return converter.buildOrgUnitHierarchy(assignedOrganisationsUnits);
-    }
-
-    /**
-     * Turns events and datavalues into
-     */
-    private void convertDataValues(ConvertFromSDKVisitor converter) {
-        if (!PullController.PULL_IS_ACTIVE) return;
-        callback.onStep(PullStep.PREPARING_SURVEYS);
-        //XXX This is the right place to apply additional filters to data conversion (only
-        // predefined orgunit for instance)
-        //For each unit
-        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(
-                SdkQueries.getAssignedOrganisationUnits())) {
-            //Each assigned program
-            for (ProgramExtended program : ProgramExtended.getExtendedList(
-                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
-                            PreferencesState.getInstance().getContext().getString(R.string.pull_program_code),
-                                    ProgramType.WITHOUT_REGISTRATION))) {
-                converter.actualProgram = program;
-                List<EventExtended> events = EventExtended.getExtendedList(
-                        SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
-                System.out.printf("Converting surveys and values for orgUnit: %s | program: %s",
-                        organisationUnit.getLabel(), program.getDisplayName());
-                for (EventExtended event : events) {
-                    if (!PullController.PULL_IS_ACTIVE) return;
-                    if (event.getEventDate() == null
-                            || event.getEventDate().equals("")) {
-                        Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"+event.getUid());
-                        continue;
-                    }
-                    event.accept(converter);
-                }
-            }
-        }
-
-        //Plan surveys for the future
-        SurveyPlanner.getInstance().buildNext();
-    }
-
-    /**
-     * Deletes all data from the app database
-     */
-
-    public static void wipeDataBase() {
-        Delete.tables(
-                ValueDB.class,
-                ScoreDB.class,
-                SurveyDB.class,
-                SurveyScheduleDB.class,
-                OrgUnitDB.class,
-                OrgUnitLevelDB.class,
-                OrgUnitProgramRelationDB.class,
-                UserDB.class,
-                QuestionOptionDB.class,
-                MatchDB.class,
-                QuestionRelationDB.class,
-                QuestionDB.class,
-                CompositeScoreDB.class,
-                OptionDB.class,
-                AnswerDB.class,
-                HeaderDB.class,
-                TabDB.class,
-                ProgramDB.class,
-                ServerMetadataDB.class,
-                MediaDB.class,
-                ObsActionPlanDB.class
-        );
     }
 }
