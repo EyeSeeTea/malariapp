@@ -23,7 +23,6 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetad
 import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
@@ -36,7 +35,7 @@ public class PullUseCase {
 
         void onCancel();
 
-        void onConversionError();
+        void onMetadataError();
 
         void onStep(PullStep pullStep);
 
@@ -120,8 +119,8 @@ public class PullUseCase {
     private void manageError(Throwable throwable, Callback callback) {
         if (throwable instanceof NetworkException) {
             callback.onNetworkError();
-        } else if (throwable instanceof ConversionException) {
-            callback.onConversionError();
+        } else if (throwable instanceof MetadataException) {
+            callback.onMetadataError();
         } else {
             callback.onPullError();
         }

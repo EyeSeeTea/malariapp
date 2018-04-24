@@ -362,7 +362,7 @@ public class ProgressActivity extends Activity {
             }
 
             @Override
-            public void onConversionError() {
+            public void onMetadataError() {
                 showException(getBaseContext().getString(R.string
                         .error_in_pull_conversion));
             }

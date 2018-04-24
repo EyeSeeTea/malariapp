@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
@@ -78,7 +79,7 @@ public class PullDataController implements IPullDataController {
                         validateCS();
                     } catch (Exception e) {
                         callback.onError(new
-                                ConversionException(e));
+                                MetadataException(e));
                         return;
                     }
 
@@ -90,7 +91,7 @@ public class PullDataController implements IPullDataController {
                     }
                 } catch (NullPointerException e) {
                     callback.onError(new
-                            ConversionException(e));
+                            MetadataException(e));
                 }
             }
 
