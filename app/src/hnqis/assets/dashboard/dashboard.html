@@ -38,25 +38,32 @@
             font-weight:    bold;
         }
         body{
-            background-color:#e5e5e5;
+            background-color:#2b2b2b;
             font-family: 'Roboto-Condensed';
             margin-top:20px;
-        }
-        .line-title{
-            float: left;
-            font-size: 20px;
-            padding: 10px;
-            padding-left: 0px;
+            margin-left:0px;
+            margin-right:0px
         }
 
+        #graphicCanvas>div>span.line-title{
+            margin: 10px;
+        }
         .tip{
             float:right;
         }
 
-        canvas, table{
-            margin: 5px;
+        body{
+            margin: 0px;
         }
 
+        canvas, table{
+			padding-top:25px;
+            margin-top: 5px;
+            margin: 0px;
+        }
+        #tableCanvas{
+            padding: 12px;
+        }
         .chart-legend li span{
             display: inline-block;
             width: 12px;
@@ -66,6 +73,7 @@
 
         .chart-legend ul{
             list-style-type: none;
+            color: white;
         }
 
         .horizontal{
@@ -104,10 +112,10 @@
         }
         .circlerow{
             margin: auto;
+            line-height: 24px;
             text-align: center;
-            width: 20px!important;
-            height: 20px!important;
-            align-content: center;
+            width: 24px!important;
+            height: 24px!important;
         }
         td.red{
             background-color: #fa8900;
@@ -126,6 +134,33 @@
             margin: auto;
             text-align: center;
             align-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .centerspanmultiple{
+            margin: auto;
+            text-align: center;
+            align-content: center;
+            position: absolute;
+            top: 40%;
+            left: 46%;
+            transform: translate(-50%, -50%);
+        }
+        .tr_header{
+            background:#d5d5d5;
+        }
+        .tr_title{
+            color:#272727!important;
+        }
+        .tr_row{
+            background:#d5d5d5;
+            border-bottom: 4px solid #272727;
+        }
+        .tr_row>td{
+            background:#d5d5d5;
+            border: 2px 2px 2px 0px solid #d5d5d5;
         }
         td.ambercircle>div{
             margin: auto;
@@ -162,6 +197,33 @@
             width: 98.5%!important;
             font-size: 40px!important;
         }
+		.line-title{
+			color:#fff;
+			padding-top:25px;
+            display:table;
+            margin:0 auto;
+            font-size: 20px;
+		}
+		.line-legend>li{
+			color:#fff;
+		}
+		.circleContainer {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        .surveysContainer{
+             background-color:#81980d;
+            width:100%;
+            height: 2px;
+         }
+         #facilitiesHead>tr>th{
+            padding:10px;
+         }
+         #facilitiesBody>tr>td{
+            padding:10px;
+         }
+
     </style>
 </head>
 <body>
@@ -198,17 +260,14 @@
         <div style="display:inline;">
             <canvas id="tabgroupCanvas###" style="width: 60%; height: auto; left:0px; display:block;"></canvas>
             <div id="tabgroupLegend###" class="chart-legend" style="display:block;right: 0px;position: absolute;top: 10%; padding-right:20%;">
-                <span id="tabgroupTip###" class="tip" style="display:none;"></span>
+                <span id="tabgroupTip###" class="tip" style="display:none; color:#fff;"></span>
             </div>
         </div>
 
         <div>
             <span class="line-title" id="titleFacilities"></span>
-            <hr style="background-color:#81980d;
-			width:100%;
-            height: 2px;"/>
             <div>
-                <table>
+                <table style="color:#9B9B9B;">
                     <thead id="facilitiesHead">
                     </thead>
                     <tbody id="facilitiesBody">
@@ -218,8 +277,9 @@
         </div>
     </div>
 </script>
-<div  id="multipleEventLegend" style="display:none"><span class="line-title" id="titleFacilities">(*)More than one assessment exist on the same month</span></div>
+<div  id="multipleEventLegend" style="display:none"><span class="line-title"></span></div>
 
+<span class="line-no-surveys" id="noSurveysText"></span>
 <script type = "text/javascript" src="mockData.js"> </script>
 </body>
 </html>

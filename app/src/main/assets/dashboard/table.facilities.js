@@ -161,12 +161,12 @@ function buildColorXScore(value, listOfSurveys){
 		}else{
 		    return "<td class='ambercircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\"><div class='circleContainer'><img src='img/scoreCircleYellow.svg'/><span class='centerspan'>";
 		}
-	} else{
-        if(listOfSurveys.length>1){
-            return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
-        }else{
-            return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circlerow' style='background-color:"+green+"'><span class='centerspan'>";
-        }
+	}
+
+	if(listOfSurveys.length>1){
+	    return "<td class='greencircle'  onclick=\"androidPassUids(\'" +getListOfUids(listOfSurveys)+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleMultipleGreen.svg'/><span class='centerspanmultiple'>";
+	}else{
+		return "<td class='greencircle'  onclick=\"androidMoveToFeedback(\'" +listOfSurveys[0].id+ "\')\" ><div class='circleContainer'><img src='img/scoreCircleGreen.svg'/><span class='centerspan'>";
 	}
 }
 
