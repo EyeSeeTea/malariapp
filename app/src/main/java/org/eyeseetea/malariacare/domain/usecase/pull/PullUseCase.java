@@ -24,6 +24,7 @@ import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
 public class PullUseCase {
@@ -70,7 +71,7 @@ public class PullUseCase {
                 if(mMetadataValidator.isValid()){
                     pullData(callback);
                 } else {
-                    onError(new ConversionException());
+                    onError(new MetadataException());
                 }
             }
 
