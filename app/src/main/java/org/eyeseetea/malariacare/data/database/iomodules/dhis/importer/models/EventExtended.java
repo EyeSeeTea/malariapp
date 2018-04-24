@@ -57,6 +57,8 @@ public class EventExtended implements VisitableFromSDK {
     public final static String DHIS2_LONG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String AMERICAN_DATE_FORMAT = "yyyy-MM-dd";
     public final static String EUROPEAN_DATE_FORMAT = "dd-MM-yyyy";
+    public final static String MONTH_DATE_FORMAT = "MMMM d',' yyyy";
+
 
 
     public static final Event.EventStatus STATUS_ACTIVE = Event.EventStatus.ACTIVE;
@@ -180,7 +182,6 @@ public class EventExtended implements VisitableFromSDK {
     public static String format(Date date, String format) {
         return (date != null) ? new SimpleDateFormat(format).format(date) : null;
     }
-
 
     /**
      * Checks whether the given event contains errors in SDK FailedItemExtended table or has been

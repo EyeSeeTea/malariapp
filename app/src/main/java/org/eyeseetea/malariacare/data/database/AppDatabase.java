@@ -54,7 +54,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 
 public class AppDatabase {
     public static final String NAME = "EyeSeeTeaDB";
-    public static final int VERSION = 14;
+    public static final int VERSION = 15;
 
     // Aliases used for EyeSeeTea DB queries
     public static final String obsActionPlanName = "oap";

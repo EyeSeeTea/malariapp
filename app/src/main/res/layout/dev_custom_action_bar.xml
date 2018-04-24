@@ -28,7 +28,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.8"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp">
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/action_bar_multititle_title"
@@ -36,7 +37,6 @@
         android:layout_height="18dip"
         android:layout_gravity="center_vertical"
         android:width="0dp"
-        android:paddingLeft="20dp"
         android:textSize="16dip"
         app:tFontName="@string/light_font" />
 
@@ -46,7 +46,6 @@
         android:layout_height="18dip"
         android:layout_gravity="center_vertical"
         android:width="0dp"
-        android:paddingLeft="20dp"
         android:textSize="16dip"
         app:tFontName="@string/light_font" />
 
@@ -56,7 +55,6 @@
         android:layout_height="16dip"
         android:layout_gravity="center_vertical"
         android:width="0dp"
-        android:paddingLeft="20dp"
         android:textSize="12dip"
         app:tFontName="@string/light_font" />
         </LinearLayout>
