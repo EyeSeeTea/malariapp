@@ -24,7 +24,7 @@ public class OrgUnitShould {
     }
 
     @Test
-    public void throw_illegalException_if_uid_idnull(){
+    public void throw_illegalArgumentException_if_uid_is_null(){
         mExpectedException.expect(IllegalArgumentException.class);
         mExpectedException.expectMessage("uid is required");
 
@@ -32,7 +32,7 @@ public class OrgUnitShould {
     }
 
     @Test
-    public void throw_illegalException_if_name_idnull(){
+    public void throw_illegalArgumentException_if_name_is_null(){
         mExpectedException.expect(IllegalArgumentException.class);
         mExpectedException.expectMessage("name is required");
 
@@ -40,11 +40,35 @@ public class OrgUnitShould {
     }
 
     @Test
-    public void throw_illegalException_if_org_unit_level_uid_idnull(){
+    public void throw_illegalArgumentException_if_org_unit_level_uid_is_null(){
         mExpectedException.expect(IllegalArgumentException.class);
         mExpectedException.expectMessage("orgUnitLevelUid is required");
 
         new OrgUnit("FKFLLFR", "Org unit name", null);;
+    }
+
+    @Test
+    public void throw_illegalArgumentException_if_uid_is_empty(){
+        mExpectedException.expect(IllegalArgumentException.class);
+        mExpectedException.expectMessage("uid is required");
+
+        new OrgUnit("", "Org unit name", "LELELL");
+    }
+
+    @Test
+    public void throw_illegalArgumentException_if_name_is_empty(){
+        mExpectedException.expect(IllegalArgumentException.class);
+        mExpectedException.expectMessage("name is required");
+
+        new OrgUnit("FKFLLFR", "", "LELELL");
+    }
+
+    @Test
+    public void throw_illegalArgumentExceptionn_if_org_unit_level_uid_is_empty(){
+        mExpectedException.expect(IllegalArgumentException.class);
+        mExpectedException.expectMessage("orgUnitLevelUid is required");
+
+        new OrgUnit("FKFLLFR", "Org unit name", "");;
     }
 
     @Test
