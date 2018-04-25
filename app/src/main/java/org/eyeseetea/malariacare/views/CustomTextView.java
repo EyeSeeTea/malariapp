@@ -75,8 +75,13 @@ public class CustomTextView extends TextView implements IEyeSeeView {
                 if (mDimension == null)
                     mDimension = context.getString(R.string.settings_array_values_font_sizes_def);
                 if (mScale == null) this.mScale = PreferencesState.getInstance().getScale();
-                if (!mScale.equals(context.getString(R.string.font_size_system)))
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, PreferencesState.getInstance().getFontSize(mScale, mDimension));
+                if (!mScale.equals(context.getString(R.string.font_size_system))) {
+                    Float value = PreferencesState.getInstance().getFontSize(mScale,
+                            mDimension);
+                    if (value != null) {
+                        setTextSize(TypedValue.COMPLEX_UNIT_SP, value);
+                    }
+                }
             } finally {
                 a.recycle();
             }
