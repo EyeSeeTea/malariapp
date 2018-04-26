@@ -278,5 +278,6 @@ Mensuelle"</string>
         <item>Khmer</item>
         <item>Lao</item>
     </string-array>
+<string name="scheduled">Prévu</string>
 <string name="reschedule_title_multiple_survey">"%1$d nombre d'enquêtes en cours de re-planification pour OU %2$s"</string>
 </resources>

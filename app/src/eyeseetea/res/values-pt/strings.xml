@@ -265,5 +265,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="schedule_title">"Agendar pesquisa"</string>
 <string name="save">"Salvar"</string>
 <string name="plan_action_provider_title" >"Nome do provedor:"</string>
+<string name="assess_no_surveys">"Nenhuma pesquisa ativa (s) neste momento para a seleção que você fez. Clique em + para iniciar uma nova pesquisa"</string>
+<string name="improve_no_surveys">"Nenhuma pesquisa concluída (s) para a seleção que você fez."</string>
+<string name="scheduled">Agendado</string>
 <string name="reschedule_title_multiple_survey">"%1$d número de pesquisas sendo reprogramadas para OU %2$s"</string>
 </resources>
