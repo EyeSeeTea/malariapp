@@ -1,74 +1,67 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+
+import java.util.Date;
+
 public class Survey {
-    private long id;
-    private int status;
-    private SurveyAnsweredRatio mSurveyAnsweredRatio;
 
-    public Survey() {
+    public enum Status {
+        PLANNED, IN_PROGRESS, COMPLETED, SENT, CONFLICT, QUARANTINE, SENDING
     }
 
-    public Survey(long id) {
-        this.id = id;
+    private final String uId;
+    private final String programUId;
+    private final String orgUnitUId;
+    private final String userUId;
+    private Date creationDate;
+    private Status status;
+
+    public Survey(String uId, String programUId, String orgUnitUId, String userUId) {
+        this.uId=required(uId, "Survey uid is required");
+        this.programUId=required(programUId, "Survey programUId is required");
+        this.orgUnitUId=required(orgUnitUId, "Survey orgUnitUId is required");
+        this.userUId=required(userUId, "Survey userUId is required");
     }
 
-    public Survey(long id, int status,
-            SurveyAnsweredRatio surveyAnsweredRatio) {
-        this.id = id;
+    public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
+            String userUId) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.setStatus(Status.IN_PROGRESS);
+        survey.setCreationDate(new Date());
+        return survey;
+    }
+
+    private void setCreationDate(Date date) {
+        this.creationDate = date;
+    }
+
+    private void setStatus(Status status) {
         this.status = status;
-        mSurveyAnsweredRatio = surveyAnsweredRatio;
     }
 
-    public long getId() {
-        return id;
+    public String getuId() {
+        return uId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getProgramUId() {
+        return programUId;
     }
 
-    public int getStatus() {
+    public String getOrgUnitUId() {
+        return orgUnitUId;
+    }
+
+    public String getUserUId() {
+        return userUId;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Status getStatus() {
         return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public SurveyAnsweredRatio getSurveyAnsweredRatio() {
-        return mSurveyAnsweredRatio;
-    }
-
-    public void setSurveyAnsweredRatio(
-            SurveyAnsweredRatio surveyAnsweredRatio) {
-        mSurveyAnsweredRatio = surveyAnsweredRatio;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Survey survey = (Survey) o;
-
-        if (id != survey.id) return false;
-        return status == survey.status;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + status;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Survey{" +
-                "id=" + id +
-                ", status=" + status +
-                '}';
     }
 }
