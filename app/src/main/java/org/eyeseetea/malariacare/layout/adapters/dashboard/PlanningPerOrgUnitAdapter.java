@@ -23,17 +23,15 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 import java.util.List;
 
 public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
-
-    boolean hideMenu;
-
+    PlannedPerOrgUnitFragment.Callback callback;
     public static boolean  greyBackground=false;
-    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context) {
+    public PlanningPerOrgUnitAdapter(List<PlannedSurveyByOrgUnit> newItems, Context context, PlannedPerOrgUnitFragment.Callback callback) {
         super(context);
         items = newItems;
         this.context = context;
         this.lInflater = LayoutInflater.from(context);
         this.recordLayout = R.layout.assessment_planning_record;
-        this.hideMenu = newItems.size()>1;
+        this.callback = callback;
     }
 
     @Override
@@ -53,7 +51,14 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
                                                       @Override
                                                       public void onCheckedChanged(CompoundButton
                                                               buttonView, boolean isChecked) {
+                                                          boolean isChanged = false;
+                                                          if(plannedSurvey.getChecked()!=isChecked) {
+                                                              isChanged = true;
+                                                          }
                                                           plannedSurvey.setChecked(isChecked);
+                                                          if(isChanged) {
+                                                              callback.onItemCheckboxChanged();
+                                                          }
                                                           PlannedPerOrgUnitFragment
                                                                   .reloadButtonState(isChecked);
                                                       }
@@ -97,7 +102,7 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         }
         greyBackground=!greyBackground;
         ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
-        if(hideMenu){
+        if(plannedSurvey.isHideMenu()){
             menuDots.setVisibility(View.INVISIBLE);
         }else {
             menuDots.setVisibility(View.VISIBLE);
