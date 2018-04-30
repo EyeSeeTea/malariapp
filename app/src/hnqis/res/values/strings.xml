@@ -278,6 +278,7 @@ evaluation"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 <string name="health_facility">Health Facility</string>
 <string name="dialog_action_plan">Action plan</string>
+<string name="reschedule_title_multiple_survey">"%1$d number of surveys being re-scheduled for OU %2$s"</string>
     <string-array name="languages_strings">
         <item>System defined</item>
         <item>English</item>
