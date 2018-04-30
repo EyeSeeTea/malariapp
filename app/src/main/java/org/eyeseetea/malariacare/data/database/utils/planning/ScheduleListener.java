@@ -127,6 +127,7 @@ public class ScheduleListener implements View.OnClickListener {
         });
 
         dialog.show();
+        ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).requestFocus();
     }
 
     private void reloadData() {
