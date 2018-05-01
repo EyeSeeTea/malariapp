@@ -46,7 +46,7 @@ public class PullUseCase {
 
     PullFilters mPullDataFilters;
 
-    public static Boolean pullIsActive = true;
+    public static Boolean pullCanceled = false;
 
     public PullUseCase(IPullMetadataController pullMetadataController,
             IPullDataController pullDataController) {
@@ -65,7 +65,7 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                if(!pullIsActive){
+                if(pullCanceled){
                     callback.onCancel();
                 }else {
                     pullData(callback);
@@ -89,7 +89,7 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                if(!pullIsActive){
+                if(pullCanceled){
                     callback.onCancel();
                 }else {
                     callback.onComplete();
@@ -120,10 +120,10 @@ public class PullUseCase {
 
 
     public void cancel() {
-        pullIsActive = false;
+        pullCanceled = true;
     }
 
-    public boolean isPullActive() {
-        return pullIsActive;
+    public boolean isPullCanceled() {
+        return pullCanceled;
     }
 }

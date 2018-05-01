@@ -282,7 +282,7 @@ public class ProgressActivity extends Activity {
         }
 
         //If is not active, we need restart the process
-        if (!mPullUseCase.isPullActive()) {
+        if (mPullUseCase.isPullCanceled()) {
             finishAndGo(LoginActivity.class);
             return;
         }
