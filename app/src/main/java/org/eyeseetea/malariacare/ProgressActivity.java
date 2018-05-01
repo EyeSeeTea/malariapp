@@ -33,8 +33,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
@@ -128,7 +130,11 @@ public class ProgressActivity extends Activity {
         if (Session.getCredentials().isDemoCredentials()) {
             executeDemoPull();
         } else {
-            mPullUseCase = new PullUseCase(new PullController());
+            PullMetadataController pullMetadataController = new PullMetadataController();
+            PullDataController pullDataController = new PullDataController();
+            MetadataValidator metadataValidator = new MetadataValidator();
+
+            mPullUseCase = new PullUseCase(pullMetadataController, pullDataController, metadataValidator);
         }
     }
 
@@ -278,7 +284,7 @@ public class ProgressActivity extends Activity {
         }
 
         //If is not active, we need restart the process
-        if (!mPullUseCase.isPullActive()) {
+        if (mPullUseCase.isPullCanceled()) {
             finishAndGo(LoginActivity.class);
             return;
         }
@@ -356,7 +362,7 @@ public class ProgressActivity extends Activity {
             }
 
             @Override
-            public void onConversionError() {
+            public void onMetadataError() {
                 showException(getBaseContext().getString(R.string
                         .error_in_pull_conversion));
             }

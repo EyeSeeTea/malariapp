@@ -78,7 +78,7 @@ public class PopulateDB {
         initMaps();
 
         //Clear database
-        wipeDatabase();
+        AppDatabase.wipeDatabase();
 
         List<String> tables2populate = Arrays.asList(PROGRAMS_CSV, TABS_CSV, HEADERS_CSV,
                 ANSWERS_CSV, OPTIONS_CSV, COMPOSITE_SCORES_CSV,
@@ -358,36 +358,6 @@ public class PopulateDB {
         }
 
         saveAllItems(list);
-    }
-
-    /**
-     * Deletes all data from the app database
-     */
-
-    public static void wipeDatabase() {
-        Delete.tables(
-                ValueDB.class,
-                ScoreDB.class,
-                SurveyDB.class,
-                SurveyScheduleDB.class,
-                OrgUnitDB.class,
-                OrgUnitLevelDB.class,
-                OrgUnitProgramRelationDB.class,
-                UserDB.class,
-                QuestionOptionDB.class,
-                MatchDB.class,
-                QuestionRelationDB.class,
-                QuestionDB.class,
-                CompositeScoreDB.class,
-                OptionDB.class,
-                AnswerDB.class,
-                HeaderDB.class,
-                TabDB.class,
-                ProgramDB.class,
-                ServerMetadataDB.class,
-                MediaDB.class,
-                ObsActionPlanDB.class
-        );
     }
 
     protected static void saveAllItems(final List<Model> models) {
