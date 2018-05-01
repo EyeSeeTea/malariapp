@@ -39,10 +39,10 @@
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
 
 <string name="assessment_title_facility_date">"Instalación / Encuesta</string>
-<string name="assessment_title_state">"%Completo"</string>
+<string name="assessment_title_overall_mandatory_completed">"Total / Obligatorio completado"</string>
 <string name="assessment_sent_date">"Fecha de llenado"</string>
-<string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
-<string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
+<string name="assessment_title_header">"Encuesta(s) activa(s)"</string>
+<string name="assessment_sent_title_header">"Encuesta(es) Anterior(es)"</string>
 
 <string name="survey_title_exit">"¿Realmente salir?"</string>
 <string name="survey_info_exit">"¿Esta seguro que quiere salir?"</string>
@@ -103,17 +103,17 @@ clínica"</string>
 <string name="go_to_feedback">"Ir a feedback"</string>
 <string name="dialog_button_preview_feedback">"Ver feedback"</string>
 <string name="dialog_question_complete_survey">"Todas las preguntas obligatorias han sido rellenadas. ¿Quiere marcar esta encuesta como completa?"</string>
-<string name="dialog_continue_later_option">"Continuar despues"</string>
+<string name="dialog_continue_later_option">"Continuar después"</string>
 <string name="dialog_complete_option">"Completar"</string>
 <string name="dialog_are_you_sure_complete_survey">"¿Está seguro? Esta acción no se puede deshacer y usted ya no será capaz de editar o borrar la encuesta"</string>
 <string name="dialog_incompleted_compulsory_survey">"Esta encuesta no puede ser enviado todavía. Por favor responda al menos todas las preguntas obligatorias"</string>
 <string name="dialog_incompleted_compulsory_pulling">"La actualización de los metadatos requiere eliminar o completar sus datos enviados. Por favor responda al menos todas las preguntas obligatorias"</string>
 <string name="dialog_sent_survey_on_refresh_metadata">"La actualización de metadatos borrará los datos enviados. Usted tiene %s encuestas no enviada/s. ¿Desea usted enviarlas antes de actualizar los metadatos?"</string>
 <string name="cancellingPull">"El proceso se cancelara en unos segundos"</string>
-<string name="dashboard_title_total_assessments">"Número total evaluaciones realizadas"</string>
+<string name="dashboard_title_total_assessments">"Número total encuestas realizadas"</string>
 <string name="dashboard_title_planned_type_never">"Nunca evaluado"</string>
 <string name="dashboard_title_planned_type_overdue">"Atrasado"</string>
-<string name="dashboard_title_planned_type_next_30">"Próximos 30 dias"</string>
+<string name="dashboard_title_planned_type_next_30">"Próximos 30 días"</string>
 <string name="dashboard_title_planned_type_future">"Futuro"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
@@ -122,8 +122,8 @@ clínica"</string>
 <string name="feedback_show_only_failed">"Mostrar solo preguntas falladas"</string>
 <string name="feedback_show_only_media">"Mostrar sólo las preguntas que contienen vídeo / imagen"</string>
 <string name="feedback_show_only_one_or_show_all">"Mostrar sólo la última respuesta por programa/unidad organizativa"</string>
-<string name="feedback_return">"Regresar a todas las evaluaciones"</string>
-<string name="quality_of_care">"Calidad de la Asistencia (QoC) Puntuación:"</string>
+<string name="feedback_return">"Volver a todas las encuestas"</string>
+<string name="quality_of_care">"CALIDAD DE LA ASISTENCIA (QoC) PUNTUACIÓN:"</string>
 <string name="overall_quality_of_care">"Puntuación general de calidad de atención (QoC):"</string>
 <string name="feedback_info_passed">"Aprobado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -150,7 +150,7 @@ clínica"</string>
 <string name="dialog_info_push_stats">"Datos subidos al servidor. Resultados:"</string>
 <string name="dialog_info_on_complete">"La encuesta %s se ha marcado como completada. Ahora la encontrará en la pestaña Mejora"</string>
 <string name="dialog_deleting_children">"Esta acción borrará las preguntas que dependen de ésta. ¿realmente quieres continuar?"</string>
-<string name="dashboard_tip_pie_chart">"Calidad de cuidados (basado en la última evaluación)"</string>
+<string name="dashboard_tip_pie_chart">"Calidad de cuidados (basado en la última encuesta)"</string>
 <string name="dialog_pull_error">"Error obteniendo metadatos del servidor dhis"</string>
 <string name="settings_menu_pull">"Refrescar metadata"</string>
 <string name="dialog_pull_success">"Metadatos Dhis obtenidos del servidor con éxito"</string>
@@ -180,7 +180,7 @@ clínica"</string>
 <string name="improve">"Mejora"</string>
 <string name="monitor">"Monitorización"</string>
 <string name="filter_all_org_units">"todas las unidades organizativas"</string>
-<string name="filter_all_org_assessments">"Todos evaluados"</string>
+<string name="filter_all_org_assessments">"Todas las encuestas"</string>
 <string name="dialog_content_dhis_preference_login">"Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?"</string>
 <string name="lastcommit">"Versión %s"</string>
 <string name="unavailable">"No disponible"</string>
@@ -190,6 +190,7 @@ clínica"</string>
 <string name="monitor_js_target" >"Objetivo"</string>
 <string name="monitor_js_quality_of_care" >"Calidad de cuidados: Últimos "</string>
 <string name="monitor_js_months" >" meses"</string>
+<string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
 
 
 
@@ -225,6 +226,7 @@ clínica"</string>
 <string name="dialog_action_refresh">"Refrescar los metadatos requiere eliminar o enviar los datos no enviados."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Tiene %d encuestas no enviadas y serán eliminadas. ¿Quieres continuar?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"No tiene encuestas no solicitadas. ¿Quieres continuar?"</string>
+<string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
 <string name="install_file_manager">Instale un Administrador de archivos.</string>
 <string name="get_db_file_dialog">Seleccione un archivo db válido.</string>
 <string name="start">Comenzar</string>
@@ -234,11 +236,11 @@ clínica"</string>
 <string name="action_button_text">PLAN DE ACCIÓN</string>
 <string name="plan_action_title">Observaciones y plan de acción</string>
 <string name="plan_action_today_date">Terminado: %s</string>
-<string name="plan_action_next_date">Próxima: %s</string>
+<string name="plan_action_next_date">PRÓXIMA EVALUACIÓN: %s</string>
 <string name="plan_action_description">Describa lo que se observó durante la visita de un plan de acción específico para abordar las lagunas. Obsérvese también una mejora respecto a la brecha identificada durante la última visita</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">Plan de acción:</string>
-<string name="plan_action_action_title">Acción:</string>
+<string name="plan_action_gasp_title">BRECHAS:</string>
+<string name="plan_action_action_plan_title">PLAN DE ACCIÓN:</string>
+<string name="plan_action_action_title">ACCIÓN:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Entrenamiento de actualización durante SSV</item>
@@ -253,12 +255,12 @@ clínica"</string>
 <item>Practicar la técnica adecuada de inserción en el momento de la visita</item>
 </string-array>
 <string name="supervision_on">Supervisión de resultados en:</string>
-<string name="critical_steps">Pasos críticos perdidos:</string>
+<string name="critical_steps">PASOS CRÍTICOS PERDIDOS:</string>
 <string name="url_not_available">URL aún no disponible</string>
 <string name="see_full_assessment">Ver evaluación completa en:</string>
-<string name="on">"en"</string>
+<string name="on">"FECHA DE EVALUACIÓN:"</string>
 
-<string name="add">"Añadir"</string>
+<string name="add">"Comenzar encuesta"</string>
 <string name="change_date">"Cambiar fecha"</string>
 <string name="show_history">"Historial de programación"</string>
 <string name="comments">"Comentarios"</string>
@@ -267,5 +269,10 @@ clínica"</string>
 <string name="plain_text">Texto sin formato </string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
-<string name="save">"salvar"</string>
+<string name="save">"Salvar"</string>
+<string name="monitor_no_surveys_to_show">"No hay encuesta que mostrar"</string>
+<string name="plan_action_provider_title" >"NOMBRE DEL PROVEEDOR:"</string>
+<string name="health_facility">Centro Médico</string>
+<string name="mandatory">"Obligatorio"</string>
+<string name="dialog_action_plan">"Plan de acción"</string>
 </resources>

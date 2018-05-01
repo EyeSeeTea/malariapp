@@ -38,6 +38,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -46,10 +47,10 @@ import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +85,7 @@ public class ConvertToSDKVisitor implements
     String completionDateCode;
 
     //ObsActionPlan control dataelements
+    String providerCode;
     String gapsCode;
     String planActionCode;
     String action1Code;
@@ -154,6 +156,8 @@ public class ConvertToSDKVisitor implements
                 context.getString(R.string.completed_on_code));
         updatedUserCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.uploaded_by_code));
+        providerCode = ServerMetadataDB.findControlDataElementUid(
+                context.getString(R.string.providerCode));
         gapsCode = ServerMetadataDB.findControlDataElementUid(
                 context.getString(R.string.gaps_code));
         planActionCode = ServerMetadataDB.findControlDataElementUid(
@@ -180,6 +184,11 @@ public class ConvertToSDKVisitor implements
         currentEvent.setEventUid(survey.getEventUid());
         currentEvent.setEventDate(new DateTime(currentSurvey.getCreationDate()));
         currentEvent.save();
+        if(obsActionPlan.getProvider()!=null) {
+            if (controlDataElementExistsInServer(providerCode)) {
+                addOrUpdateDataValue(providerCode, obsActionPlan.getProvider());
+            }
+        }
         if(obsActionPlan.getGaps()!=null) {
             if (controlDataElementExistsInServer(gapsCode)) {
                 addOrUpdateDataValue(gapsCode, obsActionPlan.getGaps());
@@ -419,7 +428,6 @@ public class ConvertToSDKVisitor implements
      * Builds several datavalues from the mainScore of the survey
      */
     private void buildControlDataElements(SurveyDB survey) {
-
         //Overall score
         if (controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore()) {
             addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
@@ -461,24 +469,28 @@ public class ConvertToSDKVisitor implements
                     Session.getPhoneMetaData().getPhone_metaData() + "###" + AUtils.getCommitHash(
                             context));
         }
+
+        //init scoreType
+        ScoreType scoreType = new ScoreType(survey.getMainScore());
+
         //MainScoreUID
         if (controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreClassCode, survey.getType());
+            addOrUpdateDataValue(mainScoreClassCode, scoreType.getType());
         }
 
         //MainScore A
         if (controlDataElementExistsInServer(mainScoreACode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreACode, survey.isTypeA() ? "true" : "false");
+            addOrUpdateDataValue(mainScoreACode, scoreType.isTypeA() ? "true" : "false");
         }
 
         //MainScore B
         if (controlDataElementExistsInServer(mainScoreBCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreBCode, survey.isTypeB() ? "true" : "false");
+            addOrUpdateDataValue(mainScoreBCode, scoreType.isTypeB() ? "true" : "false");
         }
 
         //MainScoreC
         if (controlDataElementExistsInServer(mainScoreCCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(mainScoreCCode, survey.isTypeC() ? "true" : "false");
+            addOrUpdateDataValue(mainScoreCCode, scoreType.isTypeC() ? "true" : "false");
         }
 
         //Overall productivity
@@ -624,7 +636,11 @@ public class ConvertToSDKVisitor implements
             }
 
             //No errors -> Save and next
-            if (pushReport!=null && !pushReport.hasPushErrors()) {
+            Boolean emptyImportAllowed = false;
+            if(kind.equals(PushController.Kind.PLANS)){
+                emptyImportAllowed = true;
+            }
+            if (pushReport!=null && !pushReport.hasPushErrors(emptyImportAllowed)) {
                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
                         + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
