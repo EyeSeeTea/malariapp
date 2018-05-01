@@ -276,4 +276,8 @@
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
+<string name="assess_no_surveys">"ບໍ່ມີການສໍາຫຼວດຢ່າງຫ້າວຫັນໃນເວລານີ້ສໍາລັບການຄັດເລືອກທີ່ທ່ານໄດ້ເຮັດ. ກົດ + ເພື່ອເລີ່ມຕົ້ນການສໍາຫຼວດໃຫມ່"</string>
+<string name="improve_no_surveys">"ບໍ່ມີການສໍາຫຼວດສໍາລັບການຄັດເລືອກທີ່ທ່ານໄດ້ເຮັດ."</string>
+<string name="scheduled">ກໍານົດເວລາ</string>
+<string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
 </resources>

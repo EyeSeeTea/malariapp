@@ -296,4 +296,8 @@
         <item>ភាសាខ្មែរ</item>
         <item>ឡាវ</item>
     </string-array>
+<string name="assess_no_surveys">"មិនមានការស្ទង់មតិសកម្មនៅពេលនេះសម្រាប់ការជ្រើសរើសដែលអ្នកបានធ្វើ។ ចុចលើ + ដើម្បីចាប់ផ្តើមការស្ទង់មតិថ្មី"</string>
+<string name="improve_no_surveys">"គ្មានការស្ទង់មតិសម្រាប់ការជ្រើសរើសដែលអ្នកបានធ្វើទេ។"</string>
+<string name="scheduled">កំណត់ពេល</string>
+<string name="reschedule_title_multiple_survey">"ការស្ទង់មតិចំនួន %1$d ដែលត្រូវបានកំណត់ឡើងវិញសម្រាប់ OU %2$s"</string>
 </resources>

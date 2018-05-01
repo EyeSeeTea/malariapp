@@ -32,8 +32,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -43,7 +43,6 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -66,6 +65,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
     FloatingActionButton startButton;
+    TextView noSurveysText;
 
     public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
@@ -101,6 +101,8 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                     }
                 });
         View view =  inflater.inflate(R.layout.assess_listview, null);
+
+        noSurveysText = (TextView) view.findViewById(R.id.no_surveys);
         startButton = (FloatingActionButton) view.findViewById(R.id.start_button);
         return view;
     }
@@ -179,6 +181,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void removeSurveyFromAdapter(SurveyDB survey) {
         adapter.remove(survey);
         adapter.notifyDataSetChanged();
+        showOrHiddenList(adapter.getItemList().isEmpty());
     }
 
     @Override
@@ -311,6 +314,17 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                 surveyDB =newListSurveys.get(0);
             }
             showOrHiddenButton(surveyDB);
+            showOrHiddenList(newListSurveys.isEmpty());
+        }
+    }
+
+    private void showOrHiddenList(boolean hasSurveys) {
+        if(hasSurveys){
+            noSurveysText.setVisibility(View.VISIBLE);
+            getListView().setVisibility(View.GONE);
+        }else {
+            getListView().setVisibility(View.VISIBLE);
+            noSurveysText.setVisibility(View.GONE);
         }
     }
 
