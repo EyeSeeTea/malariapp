@@ -20,7 +20,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var green;
 var yellow;
 var red;
+var high;
+var medium;
+var low;
+var mediumPieFormatted;
 
+function setClassification(classification){
+    high=classification["high"];
+    medium=classification["medium"];
+    low=classification["low"];
+    mediumPieFormatted=classification["mediumFormatted"];
+}
+function setGreen(color){
+    green=color["color"];
+    //console.log(green);
+}
+function setGreen(color){
+    green=color["color"];
+    //console.log(green);
+}
 function setGreen(color){
     green=color["color"];
     //console.log(green);
@@ -52,15 +70,15 @@ function pieXTabGroupChart(data){
                                [{
                                    value: data.valueA,
                                    color: green,
-                                   label: "A (>80)"
+                                   label: "A (>"+high+")"
                                }, {
                                    value: data.valueB,
                                    color: yellow,
-                                   label: "B (50-80)"
+                                   label: "B ("+mediumPieFormatted+")"
                                }, {
                                    value: data.valueC,
                                    color: red,
-                                   label: "C (<50)"
+                                   label: "C (<"+low+")"
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",

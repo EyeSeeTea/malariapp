@@ -48,6 +48,8 @@ public class PullUseCase {
 
     PullFilters mPullDataFilters;
 
+    public static Boolean pullCanceled = false;
+
     public PullUseCase(IPullMetadataController pullMetadataController,
             IPullDataController pullDataController,
             IMetadataValidator metadataValidator) {
@@ -67,10 +69,14 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                if(mMetadataValidator.isValid()){
-                    pullData(callback);
-                } else {
-                    onError(new MetadataException());
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    if(mMetadataValidator.isValid()){
+                        pullData(callback);
+                    } else {
+                        onError(new MetadataException());
+                    }
                 }
             }
 
@@ -83,11 +89,6 @@ public class PullUseCase {
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
             }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
-            }
         });
     }
 
@@ -96,7 +97,11 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                callback.onComplete();
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    callback.onComplete();
+                }
             }
 
             @Override
@@ -107,11 +112,6 @@ public class PullUseCase {
             @Override
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
             }
         });
     }
@@ -128,11 +128,10 @@ public class PullUseCase {
 
 
     public void cancel() {
-        mPullMetadataController.cancel();
-        mPullDataController.cancel();
+        pullCanceled = true;
     }
 
-    public boolean isPullActive() {
-        return mPullMetadataController.isPullActive() && mPullDataController.isPullActive();
+    public boolean isPullCanceled() {
+        return pullCanceled;
     }
 }

@@ -52,7 +52,7 @@ import java.util.Calendar;
 
 public class ProgressActivity extends Activity {
 
-    public static final int NUMBER_OF_MONTHS = 6;
+    public static final int NUMBER_OF_MONTHS = 12;
     /**
      * Intent param that tells what to do (push, pull or push before pull)
      */
@@ -284,7 +284,7 @@ public class ProgressActivity extends Activity {
         }
 
         //If is not active, we need restart the process
-        if (!mPullUseCase.isPullActive()) {
+        if (mPullUseCase.isPullCanceled()) {
             finishAndGo(LoginActivity.class);
             return;
         }

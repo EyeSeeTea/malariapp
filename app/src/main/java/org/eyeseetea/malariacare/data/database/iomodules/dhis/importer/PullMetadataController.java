@@ -50,7 +50,6 @@ import java.util.Map;
 
 public class PullMetadataController implements IPullMetadataController {
 
-    public static Boolean PULL_IS_ACTIVE = true;
     private final String TAG = ".PullMetadataController";
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullMetadataController.Callback callback;
@@ -76,20 +75,12 @@ public class PullMetadataController implements IPullMetadataController {
 
             @Override
             public void onComplete() {
-                if (!PULL_IS_ACTIVE) {
-                    callback.onCancel();
-                    return;
-                }
                 callback.onStep(PullStep.EVENTS);
 
                 convertMetaData();
 
-                if (PULL_IS_ACTIVE) {
-                    Log.d(TAG, "PULL process...OK");
-                    callback.onComplete();
-                } else {
-                    callback.onCancel();
-                }
+                Log.d(TAG, "PULL process...OK");
+                callback.onComplete();
             }
 
             @Override
@@ -101,21 +92,10 @@ public class PullMetadataController implements IPullMetadataController {
         });
     }
 
-    @Override
-    public void cancel() {
-        PULL_IS_ACTIVE = false;
-    }
-
-    @Override
-    public boolean isPullActive() {
-        return PULL_IS_ACTIVE;
-    }
-
     /**
      * Turns sdk metadata into app metadata
      */
     public void convertMetaData() {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //Convert Programs, Tabs
         callback.onStep(PullStep.PREPARING_PROGRAMS);
         System.out.printf("Converting programs and tabs...");
@@ -129,27 +109,21 @@ public class PullMetadataController implements IPullMetadataController {
         }
 
         //Convert Answers, Options
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         callback.onStep(PullStep.PREPARING_ANSWERS);
         List<OptionSetExtended> optionSets = OptionSetExtended.getExtendedList(
                 SdkQueries.getOptionSets());
         System.out.printf("Converting answers and options...");
         for (OptionSetExtended optionSet : optionSets) {
-            if (!PullMetadataController.PULL_IS_ACTIVE) return;
             optionSet.accept(converter);
         }
         //OrganisationUnits
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         if (!convertOrgUnits(converter)) return;
-
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //User (from UserAccount)
         System.out.printf("Converting user...");
         UserAccountExtended userAccountExtended = new UserAccountExtended(
                 SdkQueries.getUserAccount());
         userAccountExtended.accept(converter);
 
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //Convert questions and compositeScores
         callback.onStep(PullStep.PREPARING_QUESTIONS);
         System.out.printf("Ordering questions and compositeScores...");
@@ -160,7 +134,6 @@ public class PullMetadataController implements IPullMetadataController {
                 PreferencesState.getInstance().getContext().getString(
                         R.string.pull_program_code));
         Map<String, List<DataElementExtended>> programsDataelements = new HashMap<>();
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         for (ProgramExtended program : programs) {
             converter.actualProgram = program;
             Log.i(TAG, String.format("\t program '%s' ", program.getName()));
@@ -176,7 +149,6 @@ public class PullMetadataController implements IPullMetadataController {
                 count = programStage.getProgramStageDataElements().size();
                 for (ProgramStageDataElementExtended programStageDataElement :
                         programStageDataElements) {
-                    if (!PullMetadataController.PULL_IS_ACTIVE) return;
 
                     //The ProgramStageDataElement without Dataelement uid is not correctly
                     // configured.
@@ -232,8 +204,6 @@ public class PullMetadataController implements IPullMetadataController {
             }
             Log.i(TAG, String.format("\t program '%s' DONE ", program.getName()));
 
-
-            if (!PullMetadataController.PULL_IS_ACTIVE) return;
             Collections.sort(dataElements, new Comparator<DataElementExtended>() {
                 public int compare(DataElementExtended dataElementExtended1,
                         DataElementExtended dataElementExtended2) {
@@ -263,7 +233,6 @@ public class PullMetadataController implements IPullMetadataController {
             programsDataelements.put(programUid, dataElements);
         }
 
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         System.out.printf("Building questions,compositescores,headers...");
         int i = 0;
         for (ProgramExtended program : programs) {
@@ -278,7 +247,6 @@ public class PullMetadataController implements IPullMetadataController {
                                     " %s", i));
                 }
                 */
-                if (!PullMetadataController.PULL_IS_ACTIVE) return;
                 //Log.i(TAG,"Converting DE "+dataElementExtended.getDataElement().getUid());
                 dataElement.setProgramUid(programUid);
                 dataElement.accept(converter);
@@ -288,7 +256,6 @@ public class PullMetadataController implements IPullMetadataController {
         //Saves questions and media in batch mode
         converter.saveBatch();
 
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         System.out.printf("Building relationships...");
         callback.onStep(PullStep.PREPARING_RELATIONSHIPS);
         for (ProgramExtended program : programs) {
@@ -297,13 +264,11 @@ public class PullMetadataController implements IPullMetadataController {
             List<DataElementExtended> sortDataElements = programsDataelements.get(programUid);
             programsDataelements.put(programUid, sortDataElements);
             for (DataElementExtended dataElement : sortDataElements) {
-                if (!PullMetadataController.PULL_IS_ACTIVE) return;
                 dataElement.setProgramUid(programUid);
                 converter.buildRelations(dataElement);
             }
         }
 
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         //Fill order and parent scores
         System.out.printf("Building compositeScore relationships...");
         converter.buildScores();
@@ -314,14 +279,12 @@ public class PullMetadataController implements IPullMetadataController {
      * Turns sdk organisationUnit and levels into app info
      */
     private boolean convertOrgUnits(ConvertFromSDKVisitor converter) {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return false;
         callback.onStep(PullStep.PREPARING_ORGANISATION_UNITS);
         System.out.printf("Converting organisationUnitLevels...");
         List<OrganisationUnitLevelExtended> organisationUnitLevels =
                 OrganisationUnitLevelExtended.getExtendedList(
                         SdkQueries.getOrganisationUnitLevels());
         for (OrganisationUnitLevelExtended organisationUnitLevel : organisationUnitLevels) {
-            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
             organisationUnitLevel.accept(converter);
         }
 
@@ -329,7 +292,6 @@ public class PullMetadataController implements IPullMetadataController {
         List<OrganisationUnitExtended> assignedOrganisationsUnits =
                 OrganisationUnitExtended.getExtendedList(SdkQueries.getAssignedOrganisationUnits());
         for (OrganisationUnitExtended assignedOrganisationsUnit : assignedOrganisationsUnits) {
-            if (!PullMetadataController.PULL_IS_ACTIVE) return false;
             assignedOrganisationsUnit.accept(converter);
         }
 
