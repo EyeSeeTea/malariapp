@@ -28,13 +28,7 @@ public interface IPullMetadataController {
         void onStep(PullStep step);
 
         void onError(Throwable throwable);
-
-        void onCancel();
     }
 
     void pullMetadata(Callback callback);
-
-    void cancel();
-
-    boolean isPullActive();
 }

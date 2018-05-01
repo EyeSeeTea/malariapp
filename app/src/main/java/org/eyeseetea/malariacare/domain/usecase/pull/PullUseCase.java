@@ -46,6 +46,8 @@ public class PullUseCase {
 
     PullFilters mPullDataFilters;
 
+    public static Boolean pullCanceled = false;
+
     public PullUseCase(IPullMetadataController pullMetadataController,
             IPullDataController pullDataController) {
         mPullMetadataController = pullMetadataController;
@@ -63,7 +65,11 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                pullData(callback);
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    pullData(callback);
+                }
             }
 
             @Override
@@ -74,11 +80,6 @@ public class PullUseCase {
             @Override
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
             }
         });
     }
@@ -88,7 +89,11 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                callback.onComplete();
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    callback.onComplete();
+                }
             }
 
             @Override
@@ -99,11 +104,6 @@ public class PullUseCase {
             @Override
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
             }
         });
     }
@@ -120,11 +120,10 @@ public class PullUseCase {
 
 
     public void cancel() {
-        mPullMetadataController.cancel();
-        mPullDataController.cancel();
+        pullCanceled = true;
     }
 
-    public boolean isPullActive() {
-        return mPullMetadataController.isPullActive() && mPullDataController.isPullActive();
+    public boolean isPullCanceled() {
+        return pullCanceled;
     }
 }
