@@ -129,4 +129,13 @@
 
     <string name="user_preference_program_filter" translatable="false">user_preference_program_filter</string>
     <string name="user_preference_org_unit_filter" translatable="false">user_preference_org_unit_filter</string>
+    <string-array name="languages_codes" translatable="false">
+        <item>system_defined</item>
+        <item>en</item>
+        <item>fr</item>
+        <item>es</item>
+        <item>pt</item>
+        <item>km</item>
+        <item>lo</item>
+    </string-array>
 </resources>

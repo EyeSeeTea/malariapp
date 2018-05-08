@@ -59,6 +59,21 @@
         android:layout_below="@id/header"
         android:background="@color/white" />
 
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/no_surveys"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="@string/assess_no_surveys"
+        android:textColor="@color/text_dark_grey"
+        android:textSize="@dimen/text_size_medium"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/medium_font_name"
+        android:layout_margin="16dp"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/start_button"
         android:layout_width="wrap_content"

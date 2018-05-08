@@ -232,7 +232,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="action_button_text">PLANO DE AÇÃO</string>
 <string name="plan_action_title">Observações e Plano de Ação</string>
 <string name="plan_action_today_date">Concluído: %s</string>
-<string name="plan_action_next_date">PRÓXIMA AVALIAÇÃO: %s</string>
+<string name="plan_action_next_date">Próxima: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
 <string name="plan_action_gasp_title">LACUNAS:</string>
 <string name="plan_action_action_plan_title">PLANO DE AÇÃO:</string>
@@ -271,4 +271,15 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="health_facility">Centro médico</string>
 <string name="mandatory">"Obrigatório"</string>
 <string name="dialog_action_plan">"Plano de ação"</string>
+    <string-array name="languages_strings">
+        <item>Sistema definido</item>
+        <item>Inglês</item>
+        <item>Francês</item>
+        <item>Espanhol</item>
+        <item>Português</item>
+        <item>Khmer</item>
+        <item>Lao</item>
+    </string-array>
+<string name="scheduled">Agendado</string>
+<string name="reschedule_title_multiple_survey">"%1$d número de pesquisas sendo reprogramadas para OU %2$s"</string>
 </resources>

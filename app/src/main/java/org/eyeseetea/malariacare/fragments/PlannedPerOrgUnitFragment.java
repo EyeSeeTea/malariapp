@@ -56,6 +56,10 @@ import java.util.List;
 public class PlannedPerOrgUnitFragment extends ListFragment {
     public static final String TAG = ".PlannedOrgUnitsF";
 
+    public interface Callback {
+        void onItemCheckboxChanged();
+    }
+
     private PlannedItemsReceiver plannedItemsReceiver;
     protected PlanningPerOrgUnitAdapter adapter;
     private static List<PlannedSurveyByOrgUnit> plannedSurveys;
@@ -125,6 +129,23 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         resetList();
     }
 
+    private void refreshMenuDots() {
+        List<PlannedSurveyByOrgUnit> plannedSurveys = ( List<PlannedSurveyByOrgUnit> ) adapter.items;
+        int countOfPlannedSurveys = 0;
+        for (PlannedSurveyByOrgUnit plannedSurveyByOrgUnit : plannedSurveys){
+            if(plannedSurveyByOrgUnit.getChecked()){
+                countOfPlannedSurveys++;
+            }
+        }
+        for(PlannedSurveyByOrgUnit plannedSurveyByOrgUnit:plannedSurveys){
+            if(countOfPlannedSurveys>=2) {
+                plannedSurveyByOrgUnit.setHideMenu(true);
+            }else{
+                plannedSurveyByOrgUnit.setHideMenu(false);
+            }
+        }
+    }
+
     private void reCheckCheckboxes(PlannedSurveyByOrgUnit newPlannedSurveys) {
         if (newPlannedSurveys.getSurvey() == null) return;
         for (PlannedSurveyByOrgUnit plannedSurvey: plannedSurveys){
@@ -156,6 +177,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
 
                 if(scheduleSurveys.size()==0) return;
 
+
                 new ScheduleListener(scheduleSurveys,adapter.getContext());
             }
         });
@@ -170,6 +192,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
     }
 
     public void resetList() {
+        refreshMenuDots();
         this.adapter.notifyDataSetChanged();
     }
     /**
@@ -196,6 +219,7 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
         }else{
             disableScheduleButton();
         }
+        resetList();
     }
 
     /**
@@ -205,7 +229,12 @@ public class PlannedPerOrgUnitFragment extends ListFragment {
      * @param plannedItems
      */
     private void initAdapter(List<PlannedSurveyByOrgUnit> plannedItems){
-        this.adapter  = new PlanningPerOrgUnitAdapter(plannedItems, getActivity());
+        this.adapter  = new PlanningPerOrgUnitAdapter(plannedItems, getActivity(), new Callback() {
+            @Override
+            public void onItemCheckboxChanged() {
+                resetList();
+            }
+        });
         setListAdapter(adapter);
     }
 
