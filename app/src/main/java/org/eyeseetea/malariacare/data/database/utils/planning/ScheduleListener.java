@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -52,10 +53,23 @@ public class ScheduleListener implements View.OnClickListener {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.planning_schedule_dialog);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-
+        String subtitle;
+        if(plannedSurveys==null) {
+            subtitle = survey.getProgram().getName() + "\n" + survey.getOrgUnit().getName();
+        }else{
+            if(plannedSurveys.size()>1) {
+                subtitle = String.format(
+                        context.getString(R.string.reschedule_title_multiple_survey),
+                        plannedSurveys.size(), plannedSurveys.get(0).getOrgUnit().getName());
+            }else{
+                subtitle = survey.getProgram().getName() + "\n" + survey.getOrgUnit().getName();
+            }
+        }
+        ((TextView) dialog.findViewById(R.id.schedule_title)).setText(subtitle);
         //Set current date
         final CustomEditText scheduleDatePickerButton=(CustomEditText)dialog.findViewById(R.id.planning_dialog_picker_button);
-        scheduleDatePickerButton.setText(AUtils.formatDate(survey.getScheduledDate()));
+        final Date surveyDefaultDate = survey.getScheduledDate();
+        scheduleDatePickerButton.setText(AUtils.formatDate(surveyDefaultDate));
         //On Click open an specific DatePickerDialog
         scheduleDatePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +77,7 @@ public class ScheduleListener implements View.OnClickListener {
                 //Init secondary datepicker with current date
                 Calendar calendar = Calendar.getInstance();
                 if(survey.getScheduledDate()!=null){
-                    calendar.setTime(survey.getScheduledDate());
+                    calendar.setTime(surveyDefaultDate);
                 }
                 //Show datepickerdialog -> updates newScheduledDate and button
                 new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
@@ -94,8 +108,8 @@ public class ScheduleListener implements View.OnClickListener {
             public void onClick(View v) {
                 //Check fields are ok
                 String comment = ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).getText().toString();
-                if (!validateFields(newScheduledDate, comment)) {
-                    return;
+                if (newScheduledDate == null) {
+                    newScheduledDate = surveyDefaultDate;
                 }
                 //Reschedule survey
                 if(plannedSurveys==null) {
@@ -113,6 +127,7 @@ public class ScheduleListener implements View.OnClickListener {
         });
 
         dialog.show();
+        ((EditText) dialog.findViewById(R.id.planning_dialog_comment)).requestFocus();
     }
 
     private void reloadData() {
@@ -124,10 +139,6 @@ public class ScheduleListener implements View.OnClickListener {
         surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD, PlannedSurveyService.PLANNED_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
 
-    }
-
-    private boolean validateFields(Date newDate,String comment){
-        return newDate!=null;
     }
 
 

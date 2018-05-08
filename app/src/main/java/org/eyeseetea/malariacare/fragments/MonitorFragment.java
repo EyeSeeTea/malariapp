@@ -415,7 +415,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
             TextView score = (TextView) row.findViewById(R.id.second_column);
             completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
-            score.setText(survey.getMainScore()+"");
+            score.setText(Math.round(survey.getMainScore())+"");
             Resources resources = PreferencesState.getInstance().getContext().getResources();
 
             ScoreType scoreType = new ScoreType(survey.getMainScore());

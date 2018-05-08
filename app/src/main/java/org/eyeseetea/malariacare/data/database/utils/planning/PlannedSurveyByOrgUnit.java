@@ -13,6 +13,8 @@ public class PlannedSurveyByOrgUnit extends PlannedSurvey {
 
     private boolean isChecked;
 
+    private boolean hideMenu;
+
     public PlannedSurveyByOrgUnit(SurveyDB survey, PlannedHeader header) {
         super(survey, header);
     }
@@ -25,5 +27,11 @@ public class PlannedSurveyByOrgUnit extends PlannedSurvey {
         return this.isChecked;
     }
 
+    public boolean isHideMenu() {
+        return hideMenu;
+    }
 
+    public void setHideMenu(boolean hideMenu) {
+        this.hideMenu=hideMenu;
+    }
 }
