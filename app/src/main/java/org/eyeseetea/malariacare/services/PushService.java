@@ -26,7 +26,11 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.strategies.PushServiceStrategy;
 
@@ -79,8 +83,10 @@ public class PushService extends IntentService {
     public void onCreate() {
         super.onCreate();
 
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
         pushController = new PushController(getApplicationContext());
-        pushUseCase = new PushUseCase(pushController);
+        pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController);
     }
 
     public void onPushFinished() {

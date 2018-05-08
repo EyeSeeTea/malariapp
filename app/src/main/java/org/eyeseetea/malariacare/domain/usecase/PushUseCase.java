@@ -20,23 +20,40 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 
-public class PushUseCase {
+public class PushUseCase implements UseCase{
 
+    private final IAsyncExecutor mAsyncExecutor;
+    private final IMainExecutor mMainExecutor;
     private IPushController mPushController;
+    private Callback mCallback;
 
-    public PushUseCase(IPushController pushController) {
+    public PushUseCase(IAsyncExecutor asyncExecutor,
+            IMainExecutor mainExecutor,
+            IPushController pushController) {
+        mAsyncExecutor = asyncExecutor;
+        mMainExecutor = mainExecutor;
         mPushController = pushController;
     }
 
     public void execute(final Callback callback) {
+        this.mCallback = callback;
+
+        mAsyncExecutor.run(this);
+    }
+
+    @Override
+    public void run() {
         if (mPushController.isPushInProgress()) {
-            callback.onPushInProgressError();
+            notifyOnPushInProgressError();
             return;
         }
         mPushController.changePushInProgress(true);
@@ -50,34 +67,71 @@ public class PushUseCase {
 
                 mPushController.changePushInProgress(false);
 
-                callback.onComplete();
+                notifyOnComplete();
             }
 
             @Override
             public void onError(Throwable throwable) {
                 System.out.println("PusUseCase error");
 
-                if (throwable instanceof NetworkException) {
-                    mPushController.changePushInProgress(false);
-                    callback.onNetworkError();
-                } else if (throwable instanceof ConversionException) {
-                    mPushController.changePushInProgress(false);
-                    callback.onConversionError();
-                } else if (throwable instanceof SurveysToPushNotFoundException) {
-                    mPushController.changePushInProgress(false);
-                    callback.onSurveysNotFoundError();
-                } else if (throwable instanceof PushReportException){
-                    mPushController.changePushInProgress(false);
-                    callback.onPushError();
-                } else {
-                    mPushController.changePushInProgress(false);
-                    callback.onPushError();
-                }
+                notifyOnError(throwable);
             }
 
             @Override
             public void onInformativeError(Throwable throwable) {
-                callback.onInformativeError(throwable.getMessage());
+                notifyOnInformativeError(throwable.getMessage());
+            }
+        });
+    }
+
+
+    private void notifyOnComplete() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onComplete();
+            }
+        });
+    }
+
+    private void notifyOnError(final Throwable throwable) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                if (throwable instanceof NetworkException) {
+                    mPushController.changePushInProgress(false);
+                    mCallback.onNetworkError();
+                } else if (throwable instanceof ConversionException) {
+                    mPushController.changePushInProgress(false);
+                    mCallback.onConversionError();
+                } else if (throwable instanceof SurveysToPushNotFoundException) {
+                    mPushController.changePushInProgress(false);
+                    mCallback.onSurveysNotFoundError();
+                } else if (throwable instanceof PushReportException){
+                    mPushController.changePushInProgress(false);
+                    mCallback.onPushError();
+                } else {
+                    mPushController.changePushInProgress(false);
+                    mCallback.onPushError();
+                }
+            }
+        });
+    }
+
+    private void notifyOnInformativeError(final String message) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onInformativeError(message);
+            }
+        });
+    }
+
+    private void notifyOnPushInProgressError() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onPushInProgressError();
             }
         });
     }
