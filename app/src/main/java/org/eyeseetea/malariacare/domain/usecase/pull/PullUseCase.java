@@ -23,10 +23,13 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetad
 import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
+import org.eyeseetea.malariacare.domain.usecase.UseCase;
 
-public class PullUseCase {
+public class PullUseCase implements UseCase {
 
     public interface Callback {
         void onComplete();
@@ -42,17 +45,23 @@ public class PullUseCase {
         void onNetworkError();
     }
 
-    IPullMetadataController mPullMetadataController;
-    IPullDataController mPullDataController;
-    IMetadataValidator mMetadataValidator;
+    private final IAsyncExecutor mAsyncExecutor;
+    private final IMainExecutor mMainExecutor;
+    private final IPullMetadataController mPullMetadataController;
+    private final IPullDataController mPullDataController;
+    private final IMetadataValidator mMetadataValidator;
+    private Callback mCallback;
+    private PullFilters mPullDataFilters;
+    private Boolean pullCanceled = false;
 
-    PullFilters mPullDataFilters;
-
-    public static Boolean pullCanceled = false;
-
-    public PullUseCase(IPullMetadataController pullMetadataController,
+    public PullUseCase(
+            IAsyncExecutor asyncExecutor,
+            IMainExecutor mainExecutor,
+            IPullMetadataController pullMetadataController,
             IPullDataController pullDataController,
             IMetadataValidator metadataValidator) {
+        mAsyncExecutor = asyncExecutor;
+        mMainExecutor = mainExecutor;
         mPullMetadataController = pullMetadataController;
         mPullDataController = pullDataController;
         mMetadataValidator = metadataValidator;
@@ -60,72 +69,15 @@ public class PullUseCase {
 
     public void execute(PullFilters pullFilters, final Callback callback) {
         mPullDataFilters = pullFilters;
+        mCallback = callback;
 
-        pullMetadata(callback);
+        mAsyncExecutor.run(this);
     }
 
-    private void pullMetadata(final Callback callback) {
-        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
-
-            @Override
-            public void onComplete() {
-                if(pullCanceled){
-                    callback.onCancel();
-                }else {
-                    if(mMetadataValidator.isValid()){
-                        pullData(callback);
-                    } else {
-                        onError(new MetadataException());
-                    }
-                }
-            }
-
-            @Override
-            public void onStep(PullStep step) {
-                callback.onStep(step);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                manageError(throwable, callback);
-            }
-        });
+    @Override
+    public void run() {
+        pullMetadata();
     }
-
-    private void pullData(final Callback callback) {
-        mPullDataController.pullData(mPullDataFilters, new IPullDataController.Callback() {
-
-            @Override
-            public void onComplete() {
-                if(pullCanceled){
-                    callback.onCancel();
-                }else {
-                    callback.onComplete();
-                }
-            }
-
-            @Override
-            public void onStep(PullStep step) {
-                callback.onStep(step);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                manageError(throwable, callback);
-            }
-        });
-    }
-
-    private void manageError(Throwable throwable, Callback callback) {
-        if (throwable instanceof NetworkException) {
-            callback.onNetworkError();
-        } else if (throwable instanceof MetadataException) {
-            callback.onMetadataError();
-        } else {
-            callback.onPullError();
-        }
-    }
-
 
     public void cancel() {
         pullCanceled = true;
@@ -133,5 +85,99 @@ public class PullUseCase {
 
     public boolean isPullCanceled() {
         return pullCanceled;
+    }
+
+    private void pullMetadata() {
+        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
+
+            @Override
+            public void onComplete() {
+                if(pullCanceled){
+                    notifyCancel();
+                }else {
+                    if(mMetadataValidator.isValid()){
+                        pullData();
+                    } else {
+                        notifyError(new MetadataException());
+                    }
+                }
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                notifyOnStep(step);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                notifyError(throwable);
+            }
+        });
+    }
+
+    private void pullData() {
+        mPullDataController.pullData(mPullDataFilters, new IPullDataController.Callback() {
+
+            @Override
+            public void onComplete() {
+                if(pullCanceled){
+                    notifyCancel();
+                }else {
+                    notifyOnComplete();
+                }
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                notifyOnStep(step);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                notifyError(throwable);
+            }
+        });
+    }
+
+    private void notifyOnStep(final PullStep step) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onStep(step);
+            }
+        });
+    }
+
+    private void notifyOnComplete() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onComplete();
+            }
+        });
+    }
+
+    private void notifyError(final Throwable throwable) {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                if (throwable instanceof NetworkException) {
+                    mCallback.onNetworkError();
+                } else if (throwable instanceof MetadataException) {
+                    mCallback.onMetadataError();
+                } else {
+                    mCallback.onPullError();
+                }
+            }
+        });
+    }
+
+    private void notifyCancel() {
+        mMainExecutor.run(new Runnable() {
+            @Override
+            public void run() {
+                mCallback.onCancel();
+            }
+        });
     }
 }
