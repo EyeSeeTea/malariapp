@@ -29,13 +29,7 @@ public interface IPullDataController {
         void onStep(PullStep step);
 
         void onError(Throwable throwable);
-
-        void onCancel();
     }
 
     void pullData(PullFilters filters, Callback callback);
-
-    void cancel();
-
-    boolean isPullActive();
 }

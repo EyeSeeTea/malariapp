@@ -19,16 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.boundary;
 
-import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-
-public interface IPullMetadataController {
-    interface Callback {
-        void onComplete();
-
-        void onStep(PullStep step);
-
-        void onError(Throwable throwable);
-    }
-
-    void pullMetadata(Callback callback);
+public interface IMetadataValidator {
+    boolean isValid();
 }

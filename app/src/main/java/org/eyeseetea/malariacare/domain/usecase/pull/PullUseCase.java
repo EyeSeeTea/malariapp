@@ -20,9 +20,10 @@
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
 public class PullUseCase {
@@ -34,7 +35,7 @@ public class PullUseCase {
 
         void onCancel();
 
-        void onConversionError();
+        void onMetadataError();
 
         void onStep(PullStep pullStep);
 
@@ -43,13 +44,18 @@ public class PullUseCase {
 
     IPullMetadataController mPullMetadataController;
     IPullDataController mPullDataController;
+    IMetadataValidator mMetadataValidator;
 
     PullFilters mPullDataFilters;
 
+    public static Boolean pullCanceled = false;
+
     public PullUseCase(IPullMetadataController pullMetadataController,
-            IPullDataController pullDataController) {
+            IPullDataController pullDataController,
+            IMetadataValidator metadataValidator) {
         mPullMetadataController = pullMetadataController;
         mPullDataController = pullDataController;
+        mMetadataValidator = metadataValidator;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
@@ -63,7 +69,15 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                pullData(callback);
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    if(mMetadataValidator.isValid()){
+                        pullData(callback);
+                    } else {
+                        onError(new MetadataException());
+                    }
+                }
             }
 
             @Override
@@ -74,11 +88,6 @@ public class PullUseCase {
             @Override
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
             }
         });
     }
@@ -88,7 +97,11 @@ public class PullUseCase {
 
             @Override
             public void onComplete() {
-                callback.onComplete();
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    callback.onComplete();
+                }
             }
 
             @Override
@@ -100,19 +113,14 @@ public class PullUseCase {
             public void onError(Throwable throwable) {
                 manageError(throwable, callback);
             }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
-            }
         });
     }
 
     private void manageError(Throwable throwable, Callback callback) {
         if (throwable instanceof NetworkException) {
             callback.onNetworkError();
-        } else if (throwable instanceof ConversionException) {
-            callback.onConversionError();
+        } else if (throwable instanceof MetadataException) {
+            callback.onMetadataError();
         } else {
             callback.onPullError();
         }
@@ -120,11 +128,10 @@ public class PullUseCase {
 
 
     public void cancel() {
-        mPullMetadataController.cancel();
-        mPullDataController.cancel();
+        pullCanceled = true;
     }
 
-    public boolean isPullActive() {
-        return mPullMetadataController.isPullActive() && mPullDataController.isPullActive();
+    public boolean isPullCanceled() {
+        return pullCanceled;
     }
 }
