@@ -3,9 +3,9 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Survey {
 
@@ -16,17 +16,14 @@ public class Survey {
     private final String uId;
     private final String programUId;
     private final String orgUnitUId;
-    private final String userUId;
+    private Score score;
+    private String userUId;
     private Date creationDate;
     private Date completionDate;
     private Date updateDate;
     private Date scheduledDate;
     private Status status;
-    Set<String> values = new HashSet<String>();
-
-    public Set<String> getValues() {
-        return values;
-    }
+    private List<SurveyValue> values;
 
 
     public Survey(String uId, String programUId, String orgUnitUId, String userUId) {
@@ -34,6 +31,7 @@ public class Survey {
         this.programUId=required(programUId, "Survey programUId is required");
         this.orgUnitUId=required(orgUnitUId, "Survey orgUnitUId is required");
         this.userUId=required(userUId, "Survey userUId is required");
+        this.values = new ArrayList<>();
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
@@ -46,7 +44,7 @@ public class Survey {
 
     public static Survey createPulledSurvey(String uId, String programUId, String orgUnitUId,
             String userUId, Date creationDate, Date updateDate, Date scheduledDate,
-            Date completionDate, Set<String> values) {
+            Date completionDate, List<SurveyValue> values, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         survey.setStatus(Status.SENT);
         survey.setCreationDate(creationDate);
@@ -54,14 +52,31 @@ public class Survey {
         survey.setScheduledDate(scheduledDate);
         survey.setCompletionDate(completionDate);
         survey.setValues(values);
+        survey.setScore(score);
         return survey;
     }
 
-    private void setValues(Set<String> values) {
+    public List<SurveyValue> getValues() {
+        return values;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public void setUserUId(String uid) {
+        userUId = uId;
+    }
+
+    private void setValues(List<SurveyValue> values) {
         this.values = values;
     }
 
-    private void setCreationDate(Date date) {
+    public void setCreationDate(Date date) {
         this.creationDate = date;
     }
 
@@ -69,19 +84,19 @@ public class Survey {
         this.status = status;
     }
 
-    private void setCompletionDate(Date completionDate) {
+    public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
     }
 
-    private void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
-    private void setScheduledDate(Date scheduledDate) {
+    public void setScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
     }
 
-    public String getuId() {
+    public String getUId() {
         return uId;
     }
 
