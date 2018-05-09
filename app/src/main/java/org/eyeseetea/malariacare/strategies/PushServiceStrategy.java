@@ -23,6 +23,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.usecase.MockedPushSurveysUseCase;
@@ -70,8 +71,8 @@ public class PushServiceStrategy {
 
         pushUseCase.execute(new PushUseCase.Callback() {
             @Override
-            public void onComplete() {
-                AlarmPushReceiver.isDoneSuccess();
+            public void onComplete(PushController.Kind kind) {
+                AlarmPushReceiver.isDoneSuccess(kind);
                 Log.d(TAG, "push complete");
             }
 
