@@ -26,20 +26,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -61,6 +65,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     DashboardActivity dashboardActivity;
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
+    FloatingActionButton startButton;
 
     public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
@@ -76,13 +81,8 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-        if (container == null) {
-            return null;
-        }
 
-        orgUnitProgramFilterView =
-                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
-                        .findViewById(R.id.assess_org_unit_program_filter_view);
+        loadFilter();
 
         orgUnitProgramFilterView.setFilterType(OrgUnitProgramFilterView.FilterType.NON_EXCLUSIVE);
 
@@ -100,8 +100,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
                         saveCurrentFilters();
                     }
                 });
-
-        return inflater.inflate(R.layout.assess_listview, null);
+        View view =  inflater.inflate(R.layout.assess_listview, null);
+        startButton = (FloatingActionButton) view.findViewById(R.id.start_button);
+        return view;
     }
 
     private void saveCurrentFilters() {
@@ -129,11 +130,32 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
+        }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
 
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) DashboardActivity.dashboardActivity
+                        .findViewById(R.id.assess_org_unit_program_filter_view);
+    }
+
+    private void showOrHiddenButton(SurveyDB survey) {
+        OrgUnitDB orgUnit = orgUnitProgramFilterView.getSelectedOrgUnitFilter();
+        ProgramDB program = orgUnitProgramFilterView.getSelectedProgramFilter();
+        if(orgUnit.getName().equals(
+                PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_units))
+        || program.getName().equals(
+                PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments))){
+            startButton.setVisibility(View.VISIBLE);
+        }else if (survey != null || !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
+            startButton.setVisibility(View.INVISIBLE);
+        }else{
+            startButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -167,7 +189,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         Intent surveysIntent = new Intent(
                 PreferencesState.getInstance().getContext().getApplicationContext(),
                 SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.RELOAD_DASHBOARD_ACTION);
+        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(
                 surveysIntent);
     }
@@ -240,7 +262,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     public void reloadInProgressSurveys() {
         List<SurveyDB> surveysInProgressFromService = (List<SurveyDB>) Session.popServiceValue(
                 SurveyService.ALL_IN_PROGRESS_SURVEYS_ACTION);
-
+        if(surveysInProgressFromService==null){
+            return;
+        }
         reloadSurveys(getSurveysByOrgUnitAndProgram(surveysInProgressFromService));
     }
 
@@ -282,6 +306,11 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             this.surveys.clear();
             this.surveys.addAll(newListSurveys);
             this.adapter.notifyDataSetChanged();
+            SurveyDB surveyDB=null;
+            if(newListSurveys.size()>0) {
+                surveyDB =newListSurveys.get(0);
+            }
+            showOrHiddenButton(surveyDB);
         }
     }
 

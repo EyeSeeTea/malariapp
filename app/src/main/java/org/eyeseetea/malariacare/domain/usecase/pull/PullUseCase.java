@@ -19,8 +19,9 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
@@ -40,14 +41,50 @@ public class PullUseCase {
         void onNetworkError();
     }
 
-    IPullController mPullController;
+    IPullMetadataController mPullMetadataController;
+    IPullDataController mPullDataController;
 
-    public PullUseCase(IPullController pullController) {
-        mPullController = pullController;
+    PullFilters mPullDataFilters;
+
+    public PullUseCase(IPullMetadataController pullMetadataController,
+            IPullDataController pullDataController) {
+        mPullMetadataController = pullMetadataController;
+        mPullDataController = pullDataController;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
-        mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
+        mPullDataFilters = pullFilters;
+
+        pullMetadata(callback);
+    }
+
+    private void pullMetadata(final Callback callback) {
+        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
+
+            @Override
+            public void onComplete() {
+                pullData(callback);
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                callback.onStep(step);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                manageError(throwable, callback);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
+    }
+
+    private void pullData(final Callback callback) {
+        mPullDataController.pullData(mPullDataFilters, new IPullDataController.Callback() {
 
             @Override
             public void onComplete() {
@@ -61,13 +98,7 @@ public class PullUseCase {
 
             @Override
             public void onError(Throwable throwable) {
-                if (throwable instanceof NetworkException) {
-                    callback.onNetworkError();
-                } else if (throwable instanceof ConversionException) {
-                    callback.onConversionError();
-                } else {
-                    callback.onPullError();
-                }
+                manageError(throwable, callback);
             }
 
             @Override
@@ -77,11 +108,23 @@ public class PullUseCase {
         });
     }
 
+    private void manageError(Throwable throwable, Callback callback) {
+        if (throwable instanceof NetworkException) {
+            callback.onNetworkError();
+        } else if (throwable instanceof ConversionException) {
+            callback.onConversionError();
+        } else {
+            callback.onPullError();
+        }
+    }
+
+
     public void cancel() {
-        mPullController.cancel();
+        mPullMetadataController.cancel();
+        mPullDataController.cancel();
     }
 
     public boolean isPullActive() {
-        return mPullController.isPullActive();
+        return mPullMetadataController.isPullActive() && mPullDataController.isPullActive();
     }
 }
