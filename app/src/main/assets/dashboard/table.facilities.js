@@ -120,28 +120,30 @@ function buildRowFacility(facility){
 	//start row
 	var row="<tr>";
 	//name
-	row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;"
-	 +" padding:8px 16px 8px 16px;' >"+facility.name+"</td></tr><tr>";
-	//value x month
-	for(var i=0;i<facility.values.length;i++){
-		var facilityMonth=facility.values[i];
-		var average=0;
-		var asterisk = "";
-		if(facilityMonth==null){
-			var average=null;
-		}else{
-			for(var d=0;d<facilityMonth.length;d++){
-				average+= facilityMonth[d].score;
-			}
-			average=average/facilityMonth.length;
-			average=Math.round(average);
-            if(facilityMonth.length>1){
-                showMultipleEventLegend();
-                asterisk = "*";
-            }
-		}
+	if(facility != undefined){
+	    row=row+"<td  colspan="+facility.values.length+" style='background:#3e3e3f; color:white;"
+	     +" padding:8px 16px 8px 16px;' >"+facility.name+"</td></tr><tr>";
+	    //value x month
+	    for(var i=0;i<facility.values.length;i++){
+	    	var facilityMonth=facility.values[i];
+	    	var average=0;
+	    	var asterisk = "";
+	    	if(facilityMonth==null){
+	    		var average=null;
+	    	}else{
+	    		for(var d=0;d<facilityMonth.length;d++){
+	    			average+= facilityMonth[d].score;
+	    		}
+	    		average=average/facilityMonth.length;
+	    		average=Math.round(average);
+                if(facilityMonth.length>1){
+                    showMultipleEventLegend();
+                    asterisk = "*";
+                }
+	    	}
 
-        row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
+            row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div>"+asterisk+"</td>";
+	    }
 	}
 	//end row
 	row=row+"</tr>";
