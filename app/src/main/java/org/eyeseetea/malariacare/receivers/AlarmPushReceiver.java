@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.DashboardActivity;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 import org.eyeseetea.malariacare.services.PushService;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -50,11 +51,14 @@ public class AlarmPushReceiver extends BroadcastReceiver {
     }
 
 
-    public static void isDoneSuccess() {
+    public static void isDoneSuccess(PushController.Kind kind) {
         Log.i(TAG, "isDoneSuccess");
         setFail(false);
-        DashboardActivity.reloadDashboard();
-        ObservablePush.getInstance().pushFinish();
+        if(kind.equals(PushController.Kind.EVENTS)) {
+            DashboardActivity.dashboardActivity.reloadActiveTab();
+        }else {
+            ObservablePush.getInstance().pushFinish();
+        }
     }
 
     public static void isDoneFail() {

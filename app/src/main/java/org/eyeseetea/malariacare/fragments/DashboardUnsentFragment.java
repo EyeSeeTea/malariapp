@@ -66,6 +66,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     OrgUnitProgramFilterView orgUnitProgramFilterView;
     FloatingActionButton startButton;
     TextView noSurveysText;
+    ListView listView;
 
     public DashboardUnsentFragment() {
         this.surveys = new ArrayList();
@@ -219,6 +220,7 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView() {
+        listView = getListView();
         if (PreferencesState.getInstance().isVerticalDashboard()) {
             CustomTextView title = (CustomTextView) getActivity().findViewById(
                     R.id.titleInProgress);
@@ -321,9 +323,9 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private void showOrHiddenList(boolean hasSurveys) {
         if(hasSurveys){
             noSurveysText.setVisibility(View.VISIBLE);
-            getListView().setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
         }else {
-            getListView().setVisibility(View.VISIBLE);
+            listView.setVisibility(View.VISIBLE);
             noSurveysText.setVisibility(View.GONE);
         }
     }

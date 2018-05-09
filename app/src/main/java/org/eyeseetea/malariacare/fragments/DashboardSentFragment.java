@@ -90,6 +90,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
 
     CustomRadioButton customRadioButton;
     TextView noSurveysText;
+    ListView listView;
     /**
      * Toggles the state of the flag that determines if only shown one or all the surveys
      */
@@ -265,6 +266,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
+        listView = getListView();
         if(!PreferencesState.getInstance().isVerticalDashboard()) {
             initFilterOrder(getView());
         }else
@@ -272,7 +274,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
             title.setText(adapter.getTitle());
         }
-        ListView listView = getListView();
         setListAdapter(adapter);
         if(PreferencesState.getInstance().isVerticalDashboard()){
 
@@ -378,11 +379,14 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
-        if(newListSurveys.isEmpty()){
+        if(!this.isAdded()){
+            return;
+        }
+            if(newListSurveys.isEmpty()){
             noSurveysText.setVisibility(View.VISIBLE);
-            getListView().setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
         }else {
-            getListView().setVisibility(View.VISIBLE);
+                listView.setVisibility(View.VISIBLE);
             noSurveysText.setVisibility(View.GONE);
         }
     }

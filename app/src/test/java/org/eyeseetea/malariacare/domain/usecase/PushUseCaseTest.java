@@ -25,6 +25,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.junit.Test;
 
@@ -44,8 +45,9 @@ public class PushUseCaseTest {
         PushUseCase pushUseCase = new PushUseCase(mPushController);
 
         pushUseCase.execute(new PushUseCase.Callback() {
+
             @Override
-            public void onComplete() {
+            public void onComplete(PushController.Kind kind) {
                 callbackInvoked(false);
             }
 

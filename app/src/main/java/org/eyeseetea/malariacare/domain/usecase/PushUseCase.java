@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -45,12 +46,12 @@ public class PushUseCase {
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
-            public void onComplete() {
+            public void onComplete(PushController.Kind kind) {
                 System.out.println("PusUseCase Complete");
 
                 mPushController.changePushInProgress(false);
 
-                callback.onComplete();
+                callback.onComplete(kind);
             }
 
             @Override
@@ -83,7 +84,7 @@ public class PushUseCase {
     }
 
     public interface Callback {
-        void onComplete();
+        void onComplete(PushController.Kind kind);
 
         void onPushError();
 
