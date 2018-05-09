@@ -26,6 +26,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -48,10 +49,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
@@ -415,9 +414,25 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
             row = inflater.inflate(R.layout.survey_list_row, null);
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
             completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
+            if(row.findViewById(R.id.second_column) instanceof  DoubleRectChart) {
+                DoubleRectChart mDoubleRectChart = (DoubleRectChart) row.findViewById(
+                        R.id.second_column);
+                LayoutUtils.drawScore(survey.getMainScore(), mDoubleRectChart);
+            }
+            else{
+                TextView score = (TextView) row.findViewById(R.id.second_column);
+                score.setText(survey.getMainScore()+"");
+                Resources resources = PreferencesState.getInstance().getContext().getResources();
 
-            DoubleRectChart mDoubleRectChart = (DoubleRectChart) row.findViewById(R.id.second_column);
-            LayoutUtils.drawScore(survey.getMainScore(), mDoubleRectChart);
+                ScoreType scoreType = new ScoreType(survey.getMainScore());
+                if (scoreType.isTypeA()) {
+                    score.setBackgroundColor(resources.getColor(R.color.lightGreen));
+                }else if (scoreType.isTypeB()){
+                    score.setBackgroundColor(resources.getColor(R.color.assess_yellow));
+                }else if (scoreType.isTypeC()){
+                    score.setBackgroundColor(resources.getColor(R.color.darkRed));
+                }
+            }
 
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
