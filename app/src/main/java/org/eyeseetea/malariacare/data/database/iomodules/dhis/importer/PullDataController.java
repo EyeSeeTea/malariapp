@@ -34,6 +34,7 @@ import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
@@ -44,7 +45,6 @@ public class PullDataController implements IPullDataController {
     /**
      * Used for control new steps
      */
-    public static Boolean PULL_IS_ACTIVE = true;
     private final String TAG = ".PullDataController";
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullDataController.Callback callback;
@@ -64,39 +64,20 @@ public class PullDataController implements IPullDataController {
             @Override
             public void onComplete() {
                 try {
-                    if (!PULL_IS_ACTIVE) {
-                        callback.onCancel();
-                        return;
-                    }
-                    if (!pullRemoteDataSource
-                            .mandatoryMetadataTablesNotEmpty()) {
-                        callback.onError(new
-                                ConversionException());
-                        return;
-                    }
                     try {
-                        if (!PULL_IS_ACTIVE) {
-                            callback.onCancel();
-                            return;
-                        }
                         convertDataValues();
 
                         validateCS();
                     } catch (Exception e) {
                         callback.onError(new
-                                ConversionException(e));
+                                MetadataException(e));
                         return;
                     }
 
-                    if (PULL_IS_ACTIVE) {
-                        Log.d(TAG, "PULL process...OK");
-                        callback.onComplete();
-                    } else {
-                        callback.onCancel();
-                    }
+                    callback.onComplete();
                 } catch (NullPointerException e) {
                     callback.onError(new
-                            ConversionException(e));
+                            MetadataException(e));
                 }
             }
 
@@ -109,21 +90,10 @@ public class PullDataController implements IPullDataController {
         });
     }
 
-    @Override
-    public void cancel() {
-        PULL_IS_ACTIVE = false;
-    }
-
-    @Override
-    public boolean isPullActive() {
-        return PULL_IS_ACTIVE;
-    }
-
     /**
      * Turns events and datavalues into
      */
     private void convertDataValues() {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         callback.onStep(PullStep.PREPARING_SURVEYS);
         //XXX This is the right place to apply additional filters to data conversion (only
         // predefined orgunit for instance)
@@ -142,7 +112,6 @@ public class PullDataController implements IPullDataController {
                 System.out.printf("Converting surveys and values for orgUnit: %s | program: %s",
                         organisationUnit.getLabel(), program.getDisplayName());
                 for (EventExtended event : events) {
-                    if (!PullMetadataController.PULL_IS_ACTIVE) return;
                     if (event.getEventDate() == null
                             || event.getEventDate().equals("")) {
                         Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"
@@ -159,7 +128,6 @@ public class PullDataController implements IPullDataController {
     }
 
     private void validateCS() {
-        if (!PullMetadataController.PULL_IS_ACTIVE) return;
         Log.d(TAG, "Validate Composite scores");
         callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
         List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
