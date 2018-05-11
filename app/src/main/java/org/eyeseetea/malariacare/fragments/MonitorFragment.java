@@ -49,10 +49,8 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.monitor.MonitorMessagesBuilder;
 import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderBase;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByOrgUnit;
-import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments
-        .SentSurveysBuilderByProgram;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.monitor.allassessments.SentSurveysBuilderByProgram;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderBase;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByOrgUnit;
 import org.eyeseetea.malariacare.data.database.utils.monitor.facilities.FacilityTableBuilderByProgram;
@@ -61,10 +59,12 @@ import org.eyeseetea.malariacare.data.database.utils.monitor.pies.PieBuilderByPr
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.layout.dashboard.config.MonitorFilter;
+import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
+import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -397,7 +397,7 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.dashboardActivity);
         LayoutInflater inflater = DashboardActivity.dashboardActivity.getLayoutInflater();
 
-        View v = inflater.inflate(R.layout.historical_log_dialog, null);
+        View v = inflater.inflate(R.layout.monitoring_survey_list_dialog, null);
         builder.setView(v);
         TextView orgUnit = (TextView) v.findViewById(R.id.org_unitName);
         TextView program = (TextView) v.findViewById(R.id.programName);
@@ -405,27 +405,35 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
         orgUnit.setText(surveys.get(0).getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
-        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
+        View row = inflater.inflate(R.layout.survey_list_dialog_header, null);
         ((TextView)row.findViewById(R.id.first_column)).setText(R.string.assessment_sent_date);
         ((TextView)row.findViewById(R.id.second_column)).setText(R.string.score);
         linearLayout.addView(row);
         final AlertDialog alertDialog = builder.create();
         for(final SurveyDB survey: surveys){
-            row = inflater.inflate(R.layout.item_list_row_row, null);
+            row = inflater.inflate(R.layout.survey_list_row, null);
             TextView completionDate = (TextView) row.findViewById(R.id.first_column);
-            TextView score = (TextView) row.findViewById(R.id.second_column);
             completionDate.setText(AUtils.getEuropeanFormatedDate(survey.getCompletionDate()));
-            score.setText(survey.getMainScore()+"");
-            Resources resources = PreferencesState.getInstance().getContext().getResources();
-
-            ScoreType scoreType = new ScoreType(survey.getMainScore());
-            if (scoreType.isTypeA()) {
-                score.setBackgroundColor(resources.getColor(R.color.lightGreen));
-            }else if (scoreType.isTypeB()){
-                score.setBackgroundColor(resources.getColor(R.color.assess_yellow));
-            }else if (scoreType.isTypeC()){
-                score.setBackgroundColor(resources.getColor(R.color.darkRed));
+            if(row.findViewById(R.id.second_column) instanceof  DoubleRectChart) {
+                DoubleRectChart mDoubleRectChart = (DoubleRectChart) row.findViewById(
+                        R.id.second_column);
+                LayoutUtils.drawScore(survey.getMainScore(), mDoubleRectChart);
             }
+            else{
+                TextView score = (TextView) row.findViewById(R.id.second_column);
+                score.setText(survey.getMainScore()+"");
+                Resources resources = PreferencesState.getInstance().getContext().getResources();
+
+                ScoreType scoreType = new ScoreType(survey.getMainScore());
+                if (scoreType.isTypeA()) {
+                    score.setBackgroundColor(resources.getColor(R.color.lightGreen));
+                }else if (scoreType.isTypeB()){
+                    score.setBackgroundColor(resources.getColor(R.color.assess_yellow));
+                }else if (scoreType.isTypeC()){
+                    score.setBackgroundColor(resources.getColor(R.color.darkRed));
+                }
+            }
+
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
