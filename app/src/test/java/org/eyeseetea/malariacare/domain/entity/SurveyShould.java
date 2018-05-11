@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 public class SurveyShould {
 
     @Rule
@@ -17,7 +16,9 @@ public class SurveyShould {
 
     @Test
     public void create_survey_with_mandatory_fields(){
-        Survey survey = new Survey("UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey survey = Survey.createEmptySurvey(
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getUId().equals("UID"));
         Assert.assertTrue(survey.getProgramUId().equals("PROGRAM_UID"));
@@ -27,7 +28,9 @@ public class SurveyShould {
 
     @Test
     public void create_empty_survey(){
-        Survey survey = Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey survey = Survey.createEmptySurvey(
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+
         Assert.assertNotNull(survey);
         Assert.assertNotNull(survey.getCreationDate());
         Assert.assertTrue(survey.getStatus().equals(Survey.Status.IN_PROGRESS));
@@ -39,13 +42,14 @@ public class SurveyShould {
         Date updateDate = new Date();
         Date scheduledDate = new Date();
         Date completionDate = new Date();
-        List<SurveyValue> values = new ArrayList<>();
+        List<QuestionValue> values = new ArrayList<>();
         Score score = new Score("ScoreUId", 100.0f);
-        values.add(new SurveyValue("UId", "value"));
-        values.add(new SurveyValue("UId2", "optionUId", "value2"));
+        values.add(QuestionValue.createSimpleValue("UId", "value"));
+        values.add(QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
 
-        Survey survey = Survey.createPulledSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
+        Survey survey = Survey.createExistedSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
                 "USER_UID", creationDate, updateDate, scheduledDate, completionDate, values, score);
+
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getStatus().equals(Survey.Status.SENT));
         Assert.assertTrue(survey.getCreationDate().equals(creationDate));
@@ -60,27 +64,31 @@ public class SurveyShould {
     public void throw_exception_when_create_survey_with_null_uid(){
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey uid is required");
-        new Survey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+
+        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
     }
 
     @Test
     public void throw_exception_when_create_survey_with_null_program_uid(){
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey programUId is required");
-        new Survey("UID", null, "ORG_UNIT_UID", "USER_UID");
+
+        Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID");
     }
 
     @Test
     public void throw_exception_when_create_survey_with_null_org_unit_uid(){
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey orgUnitUId is required");
-        new Survey("UID", "PROGRAM_UID", null, "USER_UID");
+
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID");
     }
 
     @Test
     public void throw_exception_when_create_survey_with_null_user_uid(){
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey userUId is required");
-        new Survey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null);
+
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null);
     }
 }

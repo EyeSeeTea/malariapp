@@ -23,77 +23,37 @@ public class Survey {
     private Date updateDate;
     private Date scheduledDate;
     private Status status;
-    private List<SurveyValue> values;
+    private List<QuestionValue> values;
 
-
-    public Survey(String uId, String programUId, String orgUnitUId, String userUId) {
+    private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
         this.uId=required(uId, "Survey uid is required");
         this.programUId=required(programUId, "Survey programUId is required");
         this.orgUnitUId=required(orgUnitUId, "Survey orgUnitUId is required");
         this.userUId=required(userUId, "Survey userUId is required");
         this.values = new ArrayList<>();
+
+        creationDate = new Date();
+        status = Status.IN_PROGRESS;
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
             String userUId) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.setStatus(Status.IN_PROGRESS);
-        survey.setCreationDate(new Date());
         return survey;
     }
 
-    public static Survey createPulledSurvey(String uId, String programUId, String orgUnitUId,
+    public static Survey createExistedSurvey(String uId, String programUId, String orgUnitUId,
             String userUId, Date creationDate, Date updateDate, Date scheduledDate,
-            Date completionDate, List<SurveyValue> values, Score score) {
+            Date completionDate, List<QuestionValue> values, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.setStatus(Status.SENT);
-        survey.setCreationDate(creationDate);
-        survey.setUpdateDate(updateDate);
-        survey.setScheduledDate(scheduledDate);
-        survey.setCompletionDate(completionDate);
-        survey.setValues(values);
-        survey.setScore(score);
+        survey.changeStatus(Status.SENT);
+        survey.assignCreationDate(creationDate);
+        survey.changeUpdateDate(updateDate);
+        survey.changeScheduledDate(scheduledDate);
+        survey.assignCompletionDate(completionDate);
+        survey.addQuestionValues(values);
+        survey.assignScore(score);
         return survey;
-    }
-
-    public List<SurveyValue> getValues() {
-        return values;
-    }
-
-    public Score getScore() {
-        return score;
-    }
-
-    public void setScore(Score score) {
-        this.score = score;
-    }
-
-    public void setUserUId(String uid) {
-        userUId = uId;
-    }
-
-    private void setValues(List<SurveyValue> values) {
-        this.values = values;
-    }
-
-    public void setCreationDate(Date date) {
-        this.creationDate = date;
-    }
-
-    private void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public void setCompletionDate(Date completionDate) {
-        this.completionDate = completionDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public void setScheduledDate(Date scheduledDate) {
-        this.scheduledDate = scheduledDate;
     }
 
     public String getUId() {
@@ -130,5 +90,41 @@ public class Survey {
 
     public Date getScheduledDate() {
         return scheduledDate;
+    }
+
+    public List<QuestionValue> getValues() {
+        return new ArrayList<>(values);
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public void assignScore(Score score) {
+        this.score = score;
+    }
+
+    private void addQuestionValues(List<QuestionValue> values) {
+        this.values.addAll(values);
+    }
+
+    public void assignCreationDate(Date date) {
+        this.creationDate = date;
+    }
+
+    public void changeStatus(Status status) {
+        this.status = status;
+    }
+
+    public void assignCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
+    }
+
+    public void changeUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public void changeScheduledDate(Date scheduledDate) {
+        this.scheduledDate = scheduledDate;
     }
 }
