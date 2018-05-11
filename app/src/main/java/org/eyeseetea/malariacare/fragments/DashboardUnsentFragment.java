@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -43,7 +42,6 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.layout.adapters.dashboard.AssessmentUnsentAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.views.CustomTextView;
