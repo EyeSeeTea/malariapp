@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -88,6 +89,8 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     boolean forceAllSurveys;
 
     CustomRadioButton customRadioButton;
+    TextView noSurveysText;
+    ListView listView;
     /**
      * Toggles the state of the flag that determines if only shown one or all the surveys
      */
@@ -141,7 +144,9 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                     }
                 });
 
-        return inflater.inflate(R.layout.improve_listview, null);
+        View view = inflater.inflate(R.layout.improve_listview, null);
+        noSurveysText = (TextView) view.findViewById(R.id.no_surveys_improve);
+        return view;
     }
 
     private void saveCurrentFilters() {
@@ -155,7 +160,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-        initCheckBox(getView().getRootView());
+        initComponents(getView().getRootView());
         initAdapter();
         initListView();
         resetList();
@@ -176,7 +181,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                         .findViewById(R.id.improve_org_unit_program_filter_view);
     }
 
-    private void initCheckBox(View view) {
+    private void initComponents(View view) {
         customRadioButton = (CustomRadioButton) view.findViewById(
                 R.id.check_show_all_surveys);
         forceAllSurveys = false;
@@ -261,6 +266,7 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
      * Initializes the listview component, adding a listener for swiping right
      */
     private void initListView(){
+        listView = getListView();
         if(!PreferencesState.getInstance().isVerticalDashboard()) {
             initFilterOrder(getView());
         }else
@@ -268,7 +274,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             CustomTextView title = (CustomTextView) getActivity().findViewById(R.id.titleCompleted);
             title.setText(adapter.getTitle());
         }
-        ListView listView = getListView();
         setListAdapter(adapter);
         if(PreferencesState.getInstance().isVerticalDashboard()){
 
@@ -374,6 +379,16 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         Log.d(TAG, "refreshScreen (Thread: " + Thread.currentThread().getId() + "): " + newListSurveys.size());
         adapter.setItems(newListSurveys);
         this.adapter.notifyDataSetChanged();
+        if(!this.isAdded()){
+            return;
+        }
+            if(newListSurveys.isEmpty()){
+            noSurveysText.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        }else {
+                listView.setVisibility(View.VISIBLE);
+            noSurveysText.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -527,6 +542,4 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
             }
         }
     }
-
-
 }

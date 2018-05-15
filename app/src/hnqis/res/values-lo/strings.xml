@@ -291,4 +291,8 @@
         <item>ພາສາອັງກິດ</item>
         <item>ລາວ</item>
     </string-array>
+<string name="assess_no_surveys">"ບໍ່ມີການສໍາຫຼວດຢ່າງຫ້າວຫັນໃນເວລານີ້ສໍາລັບການຄັດເລືອກທີ່ທ່ານໄດ້ເຮັດ. ກົດ + ເພື່ອເລີ່ມຕົ້ນການສໍາຫຼວດໃຫມ່"</string>
+<string name="improve_no_surveys">"ບໍ່ມີການສໍາຫຼວດສໍາລັບການຄັດເລືອກທີ່ທ່ານໄດ້ເຮັດ."</string>
+<string name="scheduled">ກໍານົດເວລາ</string>
+<string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
 </resources>
