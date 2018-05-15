@@ -265,6 +265,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="schedule_title">"Agendar pesquisa"</string>
 <string name="save">"Salvar"</string>
 <string name="planning_label_date">"Nova data:"</string>
+<string name="plan_action_provider_title" >"Nome do provedor:"</string>
 <string name="plan_action_edit_text_hint">"toque para escrever"</string>
 <string name="header_reschedule_title">"re-agendar"</string>
 </resources>

@@ -94,6 +94,12 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/body_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/edit"
         android:layout_width="match_parent"

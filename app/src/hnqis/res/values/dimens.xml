@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="feedback_question_row_left_padding">30dp</dimen>
+    <dimen name="buttons_margin">20dp</dimen>
+    <dimen name="buttons_margin_bottom_top">8dp</dimen>
+    <dimen name="buttons_margin_left_right">36dp</dimen>
+    <dimen name="buttons_height">36dp</dimen>
+    <dimen name="body_text_size">16sp</dimen>
+    <dimen name="dialog_layout_margins_left_right">35dp</dimen>
+    <dimen name="three_dots_padding_left">10dp</dimen>
+</resources>

@@ -263,6 +263,7 @@ Mensuelle"</string>
 <string name="html_text">"Texte formaté "</string>
 <string name="schedule_title">"Calendrier de l'enquête"</string>
 <string name="save">"enregistrer"</string>
+<string name="plan_action_provider_title" >"Nom du fournisseur:"</string>
 <string name="planning_label_date">"Nouvelle date:"</string>
 <string name="plan_action_edit_text_hint">"appuyez pour écrire"</string>
 <string name="header_reschedule_title">"Re-programmer"</string>

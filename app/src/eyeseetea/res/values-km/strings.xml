@@ -280,4 +280,5 @@ evaluation"</string>
 <string name="planning_label_date">"New date:"</string>
 <string name="plan_action_edit_text_hint">"ប៉ះដើម្បីសរសេរ"</string>
 <string name="header_reschedule_title">"កំណត់ឡើងវិញ"</string>
+<string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
 </resources>

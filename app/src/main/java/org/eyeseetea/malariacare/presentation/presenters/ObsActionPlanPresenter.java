@@ -1,5 +1,9 @@
 package org.eyeseetea.malariacare.presentation.presenters;
 
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_COMPLETED;
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_IN_PROGRESS;
+import static org.eyeseetea.malariacare.utils.Constants.SURVEY_SENT;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -10,7 +14,6 @@ import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.observables.ObservablePush;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,8 +29,6 @@ public class ObsActionPlanPresenter {
     private String[] mActions;
     private String[] mSubActions;
     SurveyDB mSurvey;
-
-    public enum ShareType {TEXT, HTML}
 
     public ObsActionPlanPresenter(Context context) {
         this.mContext = context;
@@ -97,10 +98,11 @@ public class ObsActionPlanPresenter {
         }
 
         if (mView != null) {
-            if (!mObsActionPlan.getStatus().equals(Constants.SURVEY_IN_PROGRESS)) {
+            if (!mObsActionPlan.getStatus().equals(SURVEY_IN_PROGRESS)) {
                 mView.changeToReadOnlyMode();
-                mView.updateStatusView(mObsActionPlan.getStatus());
             }
+
+            updateStatus();
 
             showPlanInfo();
         }
@@ -108,7 +110,7 @@ public class ObsActionPlanPresenter {
 
     private void showPlanInfo() {
         if (mView != null) {
-            mView.renderBasicPlanInfo(mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
+            mView.renderBasicPlanInfo(mObsActionPlan.getProvider(), mObsActionPlan.getGaps(), mObsActionPlan.getAction_plan());
 
             if (mObsActionPlan.getAction1() != null) {
                 for (int i = 0; i < mActions.length; i++) {
@@ -178,33 +180,52 @@ public class ObsActionPlanPresenter {
         mObsActionPlan.save();
     }
 
+    public void providerChanged(String provider) {
+        mObsActionPlan.setProvider(provider);
+        mObsActionPlan.save();
+    }
+
+
     public void subActionOtherChanged(String subActionOther) {
         mObsActionPlan.setAction2(subActionOther);
         mObsActionPlan.save();
     }
 
     public void completePlan() {
-        mObsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
+        mObsActionPlan.setStatus(SURVEY_COMPLETED);
         mObsActionPlan.save();
 
         if (mView != null) {
             mView.changeToReadOnlyMode();
-            mView.updateStatusView(mObsActionPlan.getStatus());
+
+            updateStatus();
         }
     }
 
-    public void shareObsActionPlan(ShareType shareType) {
+    private void updateStatus() {
+        mView.updateStatusView(mObsActionPlan.getStatus());
+
+        switch (mObsActionPlan.getStatus()){
+
+            case SURVEY_COMPLETED:
+            case SURVEY_SENT:
+                mView.enableShareButton();
+                break;
+
+            case SURVEY_IN_PROGRESS:
+                mView.disableShareButton();
+                break;
+        }
+    }
+
+    public void shareObsActionPlan() {
         List<QuestionDB> criticalQuestions = QuestionDB.getCriticalFailedQuestions(
                 mSurvey.getId_survey());
 
         List<CompositeScoreDB> compositeScoresTree = getValidTreeOfCompositeScores();
 
         if (mView != null) {
-            if (shareType == shareType.HTML) {
-                mView.shareByHtml(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
-            } else if (shareType == shareType.TEXT) {
-                mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
-            }
+            mView.shareByText(mObsActionPlan, mSurvey, criticalQuestions, compositeScoresTree);
         }
     }
 
@@ -251,7 +272,7 @@ public class ObsActionPlanPresenter {
     private void refreshStatusFromDB() {
         mObsActionPlan = ObsActionPlanDB.findById(mObsActionPlan.getId_obs_action_plan());
 
-        mView.updateStatusView(mObsActionPlan.getStatus());
+        updateStatus();
     }
 
     public interface View {
@@ -261,7 +282,7 @@ public class ObsActionPlanPresenter {
 
         void changeToReadOnlyMode();
 
-        void renderBasicPlanInfo(String gasp, String actionPlan);
+        void renderBasicPlanInfo(String provider, String gasp, String actionPlan);
 
         void renderHeaderInfo(String orgUnitName, Float mainScore, String completionDate,
                 String nextDate);
@@ -282,10 +303,12 @@ public class ObsActionPlanPresenter {
 
         void updateStatusView(Integer status);
 
-        void shareByHtml(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
-                List<CompositeScoreDB> compositeScoresTree);
-
         void shareByText(ObsActionPlanDB obsActionPlan,SurveyDB survey, List<QuestionDB> criticalQuestions,
                 List<CompositeScoreDB> compositeScoresTree);
+
+        void enableShareButton();
+
+        void disableShareButton();
+
     }
 }

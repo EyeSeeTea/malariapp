@@ -278,4 +278,5 @@
 <string name="planning_label_date">"ຄໍາເຫັນ"</string>
 <string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
 <string name="header_reschedule_title">"ກໍານົດເວລາໃຫມ່"</string>
+<string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 </resources>

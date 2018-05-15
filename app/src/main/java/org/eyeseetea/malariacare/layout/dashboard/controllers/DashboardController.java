@@ -20,10 +20,8 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -40,23 +38,11 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.DoublePieChart;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -323,117 +309,12 @@ public class DashboardController {
     }
 
     /**
-     * Called when click on assets survey
+     * Called when click on assess survey
      * @param survey
      */
-    public void onAssetsSelected(SurveyDB survey) {
-        assetsModelDialog(survey);
-    }
-
-
-    public AlertDialog assetsModelDialog(final SurveyDB survey) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
-
-        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
-
-        View v = inflater.inflate(R.layout.modal_menu, null);
-
-        builder.setView(v);
-
-        final DoublePieChart mChart = (DoublePieChart) v.findViewById(R.id.pie_chart);
-        Button delete = (Button) v.findViewById(R.id.delete);
-        Button cancel = (Button) v.findViewById(R.id.cancel);
-        Button markComplete = (Button) v.findViewById(R.id.mark_completed);
-        Button edit = (Button) v.findViewById(R.id.edit);
-        final TextView overall = (TextView) v.findViewById(R.id.overall_percent);
-        final TextView mandatory = (TextView) v.findViewById(R.id.mandatory_percent);
-
-        final AlertDialog alertDialog = builder.create();
-
-        edit.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onSurveySelected(survey);
-                        alertDialog.dismiss();
-                    }
-                }
-
-        );
-        markComplete.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onMarkAsCompleted(survey);
-                        alertDialog.dismiss();
-                    }
-                }
-
-        );
-        delete.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new AlertDialog.Builder(dashboardActivity)
-                                .setTitle(dashboardActivity.getString(R.string.dialog_title_delete_survey))
-                                .setMessage(String.format(""+dashboardActivity.getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                        SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                                        dashboardActivity.reloadDashboard();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, null).create().show();
-                        alertDialog.dismiss();
-                    }
-                }
-        );
-        cancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                }
-        );
-
-
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-
-                        if (surveyAnsweredRatio != null) {
-                            overall.setText(surveyAnsweredRatio.getTotalStatus() +
-                                    dashboardActivity.getString(R.string.percent));
-
-                            mandatory.setText(surveyAnsweredRatio.getMandatoryStatus() +
-                                    dashboardActivity.getString(R.string.percent));
-
-                            mChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-
-                            alertDialog.show();
-                        }
-                    }
-                });
-
-        return alertDialog;
+    public void onAssessSelected(SurveyDB survey) {
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        assessModuleController.assessModelDialog(survey);
     }
 
     /**
@@ -471,7 +352,7 @@ public class DashboardController {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openFeedback(survey);
+                        openFeedback(survey, true);
 
 
                         alertDialog.dismiss();
@@ -499,6 +380,7 @@ public class DashboardController {
 
         );
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
@@ -546,6 +428,7 @@ public class DashboardController {
 
             );
             alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void showHistory(SurveyDB survey) {
@@ -560,10 +443,10 @@ public class DashboardController {
         orgUnit.setText(survey.getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
-        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
+        View row = inflater.inflate(R.layout.log_list_dialog_header, null);
         linearLayout.addView(row);
         for(SurveyScheduleDB surveyScheduleDB: survey.getSurveySchedules()){
-            row = inflater.inflate(R.layout.item_list_row_row, null);
+            row = inflater.inflate(R.layout.log_list_row, null);
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
@@ -584,7 +467,7 @@ public class DashboardController {
     }
 
 
-    public void openFeedback(SurveyDB survey) {
+    public void openFeedback(SurveyDB survey, boolean modifyFilter) {
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
@@ -602,7 +485,7 @@ public class DashboardController {
         }
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
-        improveModuleController.onFeedbackSelected(survey);
+        improveModuleController.onFeedbackSelected(survey, modifyFilter);
         improveModuleController.setActionBarDashboardWithProgram();
     }
 
@@ -670,7 +553,9 @@ public class DashboardController {
                     }
                 }
         );
+
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
