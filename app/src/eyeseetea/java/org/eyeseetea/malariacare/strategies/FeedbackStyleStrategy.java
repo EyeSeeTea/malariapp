@@ -9,8 +9,10 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 
 public class FeedbackStyleStrategy {
     public static void drawRowResult(LinearLayout rowLayout, QuestionFeedback feedback, Context context) {
-        TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        textView.setText(context.getString(feedback.getGrade()));
-        textView.setTextColor(context.getResources().getColor(feedback.getColor()));
+        if(feedback.hasGrade()) {
+            TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_score_label);
+            textView.setText(context.getString(feedback.getGrade()));
+            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
+        }
     }
 }
