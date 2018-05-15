@@ -34,6 +34,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedHeader;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
@@ -316,6 +317,9 @@ public class PlannedAdapter extends BaseAdapter {
                     R.color.plan_grey_light));
         }
 
+        //Planned survey -> onclick startSurvey
+        actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
+
         return rowLayout;
     }
 
@@ -327,6 +331,25 @@ public class PlannedAdapter extends BaseAdapter {
         }
         PlannedSurvey previousPlannedSurvey = (PlannedSurvey) plannedItem;
         return plannedSurvey.getOrgUnit().equals(previousPlannedSurvey.getOrgUnit());
+    }
+
+    /**
+     * Listener that starts the given planned survey and goes to surveyActivity to start with
+     * edition
+     */
+    class CreateOrEditSurveyListener implements View.OnClickListener {
+
+        SurveyDB survey;
+
+        CreateOrEditSurveyListener(SurveyDB survey) {
+            this.survey = survey;
+        }
+
+        @Override
+        public void onClick(View v) {
+            DashboardActivity activity = ((DashboardActivity) context);
+            activity.onSurveySelected(survey);
+        }
     }
 
     /**
