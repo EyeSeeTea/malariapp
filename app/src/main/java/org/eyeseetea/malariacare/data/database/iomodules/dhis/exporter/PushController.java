@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
@@ -39,8 +37,6 @@ import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.models.event.Event;
 
 import java.util.List;
 import java.util.Map;
@@ -73,7 +69,7 @@ public class PushController implements IPushController {
             List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
 
             if (surveys == null || surveys.size() == 0) {
-                callback.onError(new SurveysToPushNotFoundException("Null surveys"));
+                obsActionPlanPush(callback);
             } else {
 
                 mPushDhisSDKDataSource.wipeEvents();
@@ -95,31 +91,34 @@ public class PushController implements IPushController {
                     pushData(callback, Kind.EVENTS);
                 }
             }
-            List<ObsActionPlanDB> obsActionPlen =
-                    ObsActionPlanDB.getAllCompletedObsActionPlansInSentSurveys();
+        }
+    }
 
-            if (obsActionPlen == null || obsActionPlen.size() == 0) {
-                callback.onError(new SurveysToPushNotFoundException("Null surveys"));
+    private void obsActionPlanPush(IPushControllerCallback callback) {
+        List<ObsActionPlanDB> obsActionPlan =
+                ObsActionPlanDB.getAllCompletedObsActionPlansInSentSurveys();
+
+        if (obsActionPlan == null || obsActionPlan.size() == 0) {
+            callback.onError(new SurveysToPushNotFoundException("Null surveys"));
+        } else {
+
+            mPushDhisSDKDataSource.wipeEvents();
+            Log.d(TAG, "convert surveys to sdk");
+
+            try {
+                convertObsToSDK(obsActionPlan);
+            } catch (ConversionException e) {
+                callback.onInformativeError(e);//notify to the user
+                callback.onError(e);//close push
+                return;
+            }
+
+            if (EventExtended.getAllEvents().size() == 0) {
+                callback.onError(new ConversionException());
+                return;
             } else {
-
-                mPushDhisSDKDataSource.wipeEvents();
-                Log.d(TAG, "convert surveys to sdk");
-
-                try {
-                    convertObsToSDK(obsActionPlen);
-                } catch (ConversionException e) {
-                    callback.onInformativeError(e);//notify to the user
-                    callback.onError(e);//close push
-                    return;
-                }
-
-                if (EventExtended.getAllEvents().size() == 0) {
-                    callback.onError(new ConversionException());
-                    return;
-                } else {
-                    Log.d(TAG, "push data of observation and plan surveys");
-                    pushData(callback, Kind.PLANS);
-                }
+                Log.d(TAG, "push data of observation and plan surveys");
+                pushData(callback, Kind.PLANS);
             }
         }
     }
