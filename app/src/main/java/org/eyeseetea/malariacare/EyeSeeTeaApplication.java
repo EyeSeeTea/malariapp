@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
 import com.github.stkent.bugshaker.BugShaker;
@@ -48,6 +49,10 @@ import io.fabric.sdk.android.Fabric;
 public class EyeSeeTeaApplication extends Application {
 
     public static Permissions permissions;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     public void onCreate() {
