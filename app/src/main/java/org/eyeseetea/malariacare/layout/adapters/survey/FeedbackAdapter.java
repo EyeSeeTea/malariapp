@@ -49,6 +49,7 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeed
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.strategies.FeedbackStyleStrategy;
 import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.CustomParser;
@@ -292,11 +293,8 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setText(feedback.getOption());
 
         //Score label
-        textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
-        if(feedback.hasGrade()) {
-            textView.setText(context.getString(feedback.getGrade()));
-            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
-        }
+        FeedbackStyleStrategy.drawRowResult(rowLayout, feedback, context);
+
 
         //Feedback
         textView=(TextView)rowLayout.findViewById(R.id.feedback_feedback_html);

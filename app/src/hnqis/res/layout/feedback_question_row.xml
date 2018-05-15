@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".80">
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/feedback_question_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:text="@string/lorem_ipsum"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font"
+                />
+            <org.eyeseetea.malariacare.views.CustomTextView
+                android:id="@+id/feedback_uid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:text="@string/empty_string"
+                android:visibility="gone"
+                app:tDimension="@string/font_size_level1"
+                app:tFontName="@string/light_font"
+                />
+        </LinearLayout>
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/feedback_option_value"
+            android:layout_width="0dp"
+            android:layout_weight=".10"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingTop="5dip"
+            android:capitalize="words"
+            android:paddingBottom="5dip"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name"
+            />
+        <ImageView
+            android:id="@+id/feedback_score_label_img"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_weight=".10"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:scaleType="fitCenter"
+             />
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/feedback_score_label"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_weight=".10"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:capitalize="words"
+            android:textSize="14dp"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/feedback_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <View
+            android:id="@+id/feedback_separator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/darkGrey"/>
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/feedback_feedback_html"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/feedback_question_row_left_padding"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:textColor="@color/black"
+            android:text="@string/lorem_ipsum"
+            android:background="@color/white"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/light_font"
+            />
+    </LinearLayout>
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/darkGrey"></View>
+</LinearLayout>
+
