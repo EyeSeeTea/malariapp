@@ -1,3 +1,4 @@
 <resources>
+    <dimen name="feedback_question_row_left_padding">30dp</dimen>
     <dimen name="create_survey_title_extra_bottom_marging">0dip</dimen>
 </resources>

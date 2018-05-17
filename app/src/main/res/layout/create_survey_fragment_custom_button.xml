@@ -26,6 +26,7 @@
         android:layout_margin="16dp" android:text="@string/create_info_ok"
         android:textColor="@color/start_button_text"
         android:background="@drawable/button_round_border"
+        android:textAllCaps="false"
         app:bDimension="@string/font_size_level2"
         app:bFontName="@string/medium_font_name"
         android:layout_gravity="center_horizontal"

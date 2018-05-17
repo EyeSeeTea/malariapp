@@ -25,7 +25,7 @@
 <string name="dialog_content_existing_survey">"Já existe um formato não enviado no sistema para essa Unid. Org.Inquérito"</string>
 <string name="dialog_title_incorrect_org_unit">"Org Unit errado"</string>
 <string name="dialog_content_incorrect_org_unit">"Por favor seleccione uma org unit de final"</string>
-<string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados nao enviados serao apagados Ainda quer sair?"</string>
+<string name="dialog_content_logout_confirmation">"Se sair do sistema, todos os dados não enviados serao apagados Ainda quer sair?"</string>
 <string name="dialog_info_ask_for_completion">"Tem certeza de que deseja completar %s? Você não pode desfazer essa ação"</string>
 <string name="dialog_info_ask_for_completion_plan">Tem certeza de que deseja completar o plano? Você não pode desfazer essa ação້</string>
 
@@ -39,12 +39,12 @@
 <string name="create_info_tabs_group">"Tab Group"</string>
 
 <string name="assessment_title_facility_date">"Nome da Franquia ou Inquérito"</string>
-<string name="assessment_title_state">"%Completo"</string>
+<string name="assessment_title_overall_mandatory_completed">"Geral / Obrigatório concluído"</string>
 <string name="assessment_sent_date">"Data de concl"</string>
-<string name="assessment_title_header">"Avaliação activa"</string>
-<string name="assessment_sent_title_header">"Avaliação anterior(es)"</string>
+<string name="assessment_title_header">"Pesquisa(s) activa"</string>
+<string name="assessment_sent_title_header">"Pesquisa(s) anterior(es)"</string>
 
-<string name="survey_title_exit">"Really Exit?"</string>
+<string name="survey_title_exit">"Realmente sair??"</string>
 <string name="survey_info_exit">"Tem a certeza que quer sair?"</string>
 
 <string name="widget_info_empty_statement">"Problema"</string>
@@ -122,8 +122,8 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="assessment_sent_score">"Ponto"</string>
 <string name="feedback_show_only_failed">"Mostrar só falhou perguntas"</string>
 <string name="feedback_show_only_media">"Mostrar apenas perguntas contendo vídeo / imagem"</string>
-<string name="feedback_return">"Voltar para todas as avaliações"</string>
-<string name="quality_of_care">"Qualidade da Assistência (QoC) Pontuação:"</string>
+<string name="feedback_return">"Qualidade de atendimento (com base na última pesquisa)"</string>
+<string name="quality_of_care">"QUALIDADE DA ASSISTÊNCIA (QoC) PONTUAÇÃO:"</string>
 <string name="overall_quality_of_care">"Pontuação Global Quality of Care (QoC):"</string>
 <string name="feedback_info_passed">"Aprovado"</string>
 <string name="feedback_info_failed">"Suspenso"</string>
@@ -180,15 +180,16 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="improve">"Melhorar"</string>
 <string name="monitor">"Monitor"</string>
 <string name="filter_all_org_units">"todas as unidades de organização"</string>
-<string name="filter_all_org_assessments">"Todos avaliados"</string>
+<string name="filter_all_org_assessments">"Todas as pesquisas"</string>
 <string name="dialog_content_dhis_preference_login">"Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?"</string>
 <string name="lastcommit">"Versão: %s"</string>
 <string name="unavailable">"indisponível"</string>
 <string name="error_message_push">"O evento com UID: %s. foi carregado sem data. Entre em contato com o administrador."</string>
-<string name="monitor_js_assessments" >"Avaliações realizadas"</string>
+<string name="monitor_js_assessments" >"Inquéritos realizados"</string>
 <string name="monitor_js_target" >"Objetivo"</string>
-<string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Ultimos"</string>
+<string name="monitor_js_quality_of_care" >"A qualidade do atendimento: Últimos"</string>
 <string name="monitor_js_months" >" meses"</string>
+<string name="monitor_js_multiple_event_legend" >"(*) Mais de uma pesquisa existe no mesmo mês"</string>
 <string name="create">Crio</string>
 <string name="modify">Modificar</string>
 <string name="developer_option_summary">Esta opção permite que as opções de desenvolvedor</string>
@@ -221,6 +222,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="dialog_action_refresh">"A atualização de metadados precisa ser excluída ou enviar seus dados não enviados."</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Você tem pesquisas %d não enviadas e será excluído. Deseja continuar?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Você não tem pesquisas não solicitadas. Você quer continuar?"</string>
+<string name="dialog_pie_chart_label_explanation">"O círculo externo mostra a conclusão geral.\n\nO círculo interno mostra a conclusão de perguntas obrigatórias, normalmente marcadas com *. Somente quando 100% das perguntas obrigatórias estiverem concluídas, você pode marcar completo."</string>
 <string name="install_file_manager">Instale um Gerenciador de Arquivos.</string>
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
@@ -230,11 +232,11 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="action_button_text">PLANO DE AÇÃO</string>
 <string name="plan_action_title">Observações e Plano de Ação</string>
 <string name="plan_action_today_date">Concluído: %s</string>
-<string name="plan_action_next_date">Próxima: %s</string>
+<string name="plan_action_next_date">PRÓXIMA AVALIAÇÃO: %s</string>
 <string name="plan_action_description">Descreva o que foi observado durante a visita um plano de ação específico para abordar lacunas. Observe também uma melhoria em relação a uma lacuna identificada durante a última visita</string>
-<string name="plan_action_gasp_title">Gaps:</string>
-<string name="plan_action_action_plan_title">Plano de ação:</string>
-<string name="plan_action_action_title">Açao:</string>
+<string name="plan_action_gasp_title">LACUNAS:</string>
+<string name="plan_action_action_plan_title">PLANO DE AÇÃO:</string>
+<string name="plan_action_action_title">AÇAO:</string>
 <string-array name="plan_action_dropdown_options">
 <item>"..."</item>
 <item>Treinamento de atualização durante SSV</item>
@@ -249,12 +251,12 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <item>Pratique a técnica de inserção adequada no momento da visita</item>
 </string-array>
 <string name="supervision_on">Supervisão de resultados em:</string>
-<string name="critical_steps">Passos críticos perdidos:</string>
+<string name="critical_steps">PASSOS CRÍTICOS PERDIDOS:</string>
 <string name="url_not_available">URL ainda não disponível</string>
-<string name="see_full_assessment">Veja a avaliação completa em:</string>
-<string name="on">"em"</string>
+<string name="see_full_assessment">Veja a pesquisa completa em:</string>
+<string name="on">"DATA DE AVALIAÇÃO"</string>
 
-<string name="add">"adicionar"</string>
+<string name="add">"iniciar uma pesquisa"</string>
 <string name="change_date">"Alterar data"</string>
 <string name="show_history">"Histórico de agendamento"</string>
 <string name="comments">"Comentários"</string>
@@ -264,4 +266,9 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="html_text">"Texto formatado "</string>
 <string name="schedule_title">"Agendar pesquisa"</string>
 <string name="save">"Salvar"</string>
+<string name="monitor_no_surveys_to_show">"Nenhuma pesquisa para mostrar"</string>
+<string name="plan_action_provider_title" >"NOME DO PROVEEDOR:"</string>
+<string name="health_facility">Centro médico</string>
+<string name="mandatory">"Obrigatório"</string>
+<string name="dialog_action_plan">"Plano de ação"</string>
 </resources>

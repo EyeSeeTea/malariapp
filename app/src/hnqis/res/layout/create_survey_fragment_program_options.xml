@@ -28,29 +28,29 @@
         android:id="@+id/select_survey_view"
         android:visibility="gone">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center">
 
-            <org.eyeseetea.malariacare.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/create_info_survey"
-                android:id="@+id/textView3"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                app:tDimension="@string/font_size_level4"
-                app:tFontName="@string/medium_font_name"/>
-        </LinearLayout>
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/create_info_survey"
+            android:id="@+id/textView3"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            app:tDimension="@string/font_size_level3"
+            app:tFontName="@string/medium_font_name"/>
 
 
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:paddingLeft="2dip"
+            android:paddingTop="2dip"
+            android:paddingRight="20dip"
+            android:paddingBottom="2dip"
             android:background="@drawable/background_textfield">
 
             <Spinner
@@ -60,21 +60,25 @@
                 android:id="@+id/program"
                 android:spinnerMode="dropdown"
                 android:backgroundTintMode="add"
-                android:paddingLeft="2dip"
-                android:paddingTop="2dip"
-                android:paddingRight="20dip"
-                android:paddingBottom="2dip"
                 android:background="@null"
                 android:gravity="right"
+
                 />
             <ImageView
-                android:src="@drawable/arrow_assess"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="2dip"
-                android:paddingRight="20dip"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"  />
+                android:src="@drawable/ic_media_arrow"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_marginRight="-17dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/new_grey"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginLeft="100dp"
+                android:layout_below="@+id/program"/>
         </RelativeLayout>
     </LinearLayout>
 </merge>
