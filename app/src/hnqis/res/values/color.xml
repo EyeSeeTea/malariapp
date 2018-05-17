@@ -4,4 +4,7 @@
     <color name="color_primary_default">#FF276696</color>
     <color name="color_primary_light">#FF3284C3</color>
     <color name="tab_background">#3e3e3f</color>
+    <color name="lightGreen">#adda19</color>
+    <color name="darkRed">#d1213c</color>
+    <color name="assess_yellow">#dbe444</color>
 </resources>

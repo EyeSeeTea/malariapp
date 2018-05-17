@@ -191,6 +191,9 @@ public abstract class ModuleController {
      * Invoked whenever a tab gains focus
      */
     public void onTabChanged() {
+        if (fragment == null || !fragment.isAdded()) {
+            reloadFragment();
+        }
         reloadData();
     }
 

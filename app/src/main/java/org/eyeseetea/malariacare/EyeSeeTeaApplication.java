@@ -28,6 +28,9 @@ import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
+import com.github.stkent.bugshaker.BugShaker;
+import com.github.stkent.bugshaker.flow.dialog.AlertDialogType;
+import com.github.stkent.bugshaker.github.GitHubConfiguration;
 import com.raizlabs.android.dbflow.config.EyeSeeTeaGeneratedDatabaseHolder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -68,6 +71,7 @@ public class EyeSeeTeaApplication extends Application {
 
         // Create indexes to accelerate the DB selects and avoid SQlite errors
         createDBIndexes();
+        initBugShaker();
     }
 
     @Override
@@ -125,5 +129,19 @@ public class EyeSeeTeaApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    private void initBugShaker() {
+        BugShaker.get(this)
+                .setEmailAddresses("someone@example.com")
+                .setLoggingEnabled(BuildConfig.DEBUG)
+                .setAlertDialogType(AlertDialogType.APP_COMPAT)
+                .setGitHubInfo(new GitHubConfiguration(
+                        "eyeseetea/malariapp",
+                        BuildConfig.GIT_HUB_BOT_TOKEN,
+                        "eyeseeteabottest/snapshots",
+                        "master"))
+                .assemble()
+                .start();
     }
 }
