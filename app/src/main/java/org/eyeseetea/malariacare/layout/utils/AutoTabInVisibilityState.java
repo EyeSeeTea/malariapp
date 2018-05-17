@@ -172,7 +172,7 @@ public class AutoTabInVisibilityState {
             HeaderDB childHeader = childQuestion.getHeader();
             visible=!childQuestion.isHiddenBySurvey(idSurvey);boolean isAlreadyVisible=(elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true);
             if(visible || isAlreadyVisible) {
-                toggledQuestion = new Question(childQuestion.getId_question(), childQuestion.getCompulsory(), visible);
+                toggledQuestion = new Question(childQuestion.getId_question(), childQuestion.getOutput(), childQuestion.getCompulsory(), visible);
             }
 
             this.updateVisibility(childQuestion,visible);

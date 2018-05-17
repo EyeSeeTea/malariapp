@@ -413,17 +413,20 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
             doublePieChart.setVisibility(View.VISIBLE);
         }
         for (Question question : valueChangedEvent.getQuestions()) {
-            if (valueChangedEvent.getAction().equals(
-                    ValueChangedEvent.Action.INSERT)) {
-                mSurveyAnsweredRatio.addQuestion(question.isCompulsory());
-            } else if (valueChangedEvent.getAction().equals(
-                    ValueChangedEvent.Action.DELETE)) {
-                mSurveyAnsweredRatio.removeQuestion(question.isCompulsory());
-            } else if (valueChangedEvent.getAction().equals(
-                    ValueChangedEvent.Action.TOGGLE)) {
-                mSurveyAnsweredRatio.fixTotalQuestion(question.isCompulsory(), question.isCachedVisibility());
-                if(question.isRemoved()){
+            if(question.isComputable()) {
+                if (valueChangedEvent.getAction().equals(
+                        ValueChangedEvent.Action.INSERT)) {
+                    mSurveyAnsweredRatio.addQuestion(question.isCompulsory());
+                } else if (valueChangedEvent.getAction().equals(
+                        ValueChangedEvent.Action.DELETE)) {
                     mSurveyAnsweredRatio.removeQuestion(question.isCompulsory());
+                } else if (valueChangedEvent.getAction().equals(
+                        ValueChangedEvent.Action.TOGGLE)) {
+                    mSurveyAnsweredRatio.fixTotalQuestion(question.isCompulsory(),
+                            question.isCachedVisibility());
+                    if (question.isRemoved()) {
+                        mSurveyAnsweredRatio.removeQuestion(question.isCompulsory());
+                    }
                 }
             }
         }

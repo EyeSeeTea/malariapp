@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="feedback_question_row_left_padding">30dp</dimen>
     <dimen name="header_survey_margin_top">20dp</dimen>
     <dimen name="header_top_padding">0dp</dimen>
     <dimen name="header_bottom_padding">0dp</dimen>

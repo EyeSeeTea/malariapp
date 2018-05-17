@@ -10,4 +10,7 @@
     <color name="event_row_odd">@color/white</color>
     <color name="evenRows">@color/light_grey</color>
     <color name="headerColor">@color/dark_navy_blue</color>
+    <color name="lightGreen">#adda19</color>
+    <color name="darkRed">#d1213c</color>
+    <color name="assess_yellow">#dbe444</color>
 </resources>
