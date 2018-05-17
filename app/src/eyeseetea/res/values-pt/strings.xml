@@ -264,6 +264,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="html_text">"Texto formatado "</string>
 <string name="schedule_title">"Agendar pesquisa"</string>
 <string name="save">"Salvar"</string>
+<string name="plan_action_provider_title" >"Nome do provedor:"</string>
 <string name="advanced_options">"Opções avançadas"</string>
 <string name="simple_options">"Opções simples"</string>
 </resources>

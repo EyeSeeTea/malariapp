@@ -278,4 +278,5 @@
 
 <string name="advanced_options">"ຕົວເລືອກຂັ້ນສູງ"</string>
 <string name="simple_options">"ຕົວເລືອກທີ່ງ່າຍດາຍ"</string>
+<string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 </resources>

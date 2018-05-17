@@ -270,4 +270,5 @@ clínica"</string>
 <string name="save">"salvar"</string>
 <string name="advanced_options">"Opciones avanzadas"</string>
 <string name="simple_options">"Opciones simples"</string>
+<string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
 </resources>

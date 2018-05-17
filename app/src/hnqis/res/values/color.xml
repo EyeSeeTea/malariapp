@@ -9,4 +9,7 @@
     <color name="color_primary_light">#FF3284C3</color>
     <color name="pull_background">#1C5187</color>
     <color name="primary_dark">@color/dark_navy_blue</color>
+    <color name="lightGreen">#adda19</color>
+    <color name="darkRed">#d1213c</color>
+    <color name="assess_yellow">#dbe444</color>
 </resources>

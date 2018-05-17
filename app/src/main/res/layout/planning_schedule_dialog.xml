@@ -92,6 +92,7 @@
         android:background="@color/dialog_button_text"
         android:textColor="@android:color/white"
         app:tDimension="@string/font_size_level4"
+        android:textAllCaps="false"
         app:font_name="@string/font_name_medium" />
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/planning_dialog_close_button"
@@ -102,6 +103,7 @@
         android:text="@string/cancel"
         android:background="@color/dialog_button_text"
         android:textColor="@android:color/white"
+        android:textAllCaps="false"
         app:tDimension="@string/font_size_level4"
         app:font_name="@string/font_name_medium" />
 

@@ -20,20 +20,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var green;
 var yellow;
 var red;
+var high;
+var medium;
+var low;
+var mediumPieFormatted;
 
+function setClassification(classification){
+    high=classification["high"];
+    medium=classification["medium"];
+    low=classification["low"];
+    mediumPieFormatted=classification["mediumFormatted"];
+}
 function setGreen(color){
     green=color["color"];
     //console.log(green);
 }
+function setGreen(color){
+    green=color["color"];
+    //console.log(green);
+}
+function setGreen(color){
+    green=color["color"];
+}
 
 function setYellow(color){
     yellow=color["color"];
-    //console.log(yellow);
 }
 
 function setRed(color){
     red=color["color"];
-    //console.log(red);
 }
 
 function pieXTabGroupChart(data){
@@ -52,15 +67,15 @@ function pieXTabGroupChart(data){
                                [{
                                    value: data.valueA,
                                    color: green,
-                                   label: "A (>80)"
+                                   label: "A (>"+high+")"
                                }, {
                                    value: data.valueB,
                                    color: yellow,
-                                   label: "B (50-80)"
+                                   label: "B ("+mediumPieFormatted+")"
                                }, {
                                    value: data.valueC,
                                    color: red,
-                                   label: "C (<50)"
+                                   label: "C (<"+low+")"
                                }],
                                {
                                    tooltipTemplate: "<%= value %>",
@@ -68,7 +83,9 @@ function pieXTabGroupChart(data){
                                        this.showTooltip(this.segments, true);
                                    },
                                    tooltipEvents: [],
-                                   showTooltips: true
+                                   showTooltips: true,
+	                               segmentStrokeWidth : 5,
+                                   segmentStrokeColor : "#4a494a"
                                }
                            );
     //Legend
