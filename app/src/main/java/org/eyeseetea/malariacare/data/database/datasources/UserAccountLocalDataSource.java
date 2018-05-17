@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -49,7 +50,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
         PreferencesState.getInstance().clearOrgUnitPreference();
 
-        PopulateDB.wipeDatabase();
+        AppDatabase.wipeDatabase();
 
         callback.onSuccess(null);
     }

@@ -33,7 +33,6 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelati
 import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyProgramRelationAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
@@ -43,12 +42,9 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.BaseModelQueriable;
-import com.raizlabs.android.dbflow.sql.language.BaseQueriable;
-import com.raizlabs.android.dbflow.sql.language.Condition;
 import com.raizlabs.android.dbflow.sql.language.ConditionGroup;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Method;
-import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -412,37 +408,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         super.delete();
     }
 
-    public String getType() {
-        String type = "";
-        if (isTypeA()) {
-            type = "A";
-        } else if (isTypeB()) {
-            type = "B";
-        } else if (isTypeC()) type = "C";
-        return type;
-    }
-
-    /**
-     * Returns this survey is type A (green)
-     */
-    public boolean isTypeA() {
-        return this.getMainScore() >= Constants.MAX_AMBER;
-    }
-
-    /**
-     * Returns this survey is type B (amber)
-     */
-    public boolean isTypeB() {
-        return this.getMainScore() >= Constants.MAX_RED && !isTypeA();
-    }
-
-    /**
-     * Returns this survey is type C (red)
-     */
-    public boolean isTypeC() {
-        return !isTypeA() && !isTypeB();
-    }
-
     /**
      * Returns the list of answered values from this survey
      */
@@ -674,6 +639,14 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .groupBy(SurveyDB_Table.id_org_unit_fk, SurveyDB_Table.id_program_fk)
                 .having(SurveyDB_Table.completion_date.eq(Method.max(SurveyDB_Table.completion_date)))
                 .queryList();
+    }
+
+    public static List<SurveyDB> getAllSentCompletedOrConflictSurveysAfterDate(Date afterDate) {
+        return new Select().from(SurveyDB.class)
+                .where(SurveyDB_Table.status.isNot(Constants.SURVEY_HIDE))
+                .and(SurveyDB_Table.status.isNot(Constants.SURVEY_IN_PROGRESS))
+                .and(SurveyDB_Table.completion_date.greaterThan(afterDate))
+                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date)).queryList();
     }
 
     /**

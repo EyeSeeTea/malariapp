@@ -27,7 +27,6 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.PlanActionFragment;
@@ -78,6 +77,9 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
+        if (fragment == null || !fragment.isAdded()) {
+            reloadFragment();
+        }
         if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
            return;
         }
@@ -90,7 +92,7 @@ public class ImproveModuleController extends ModuleController {
                     PreferencesState.getInstance().getOrgUnitUidFilter());
 
             if (surveys.size() == 1)
-                onFeedbackSelected(surveys.get(0));
+                onFeedbackSelected(surveys.get(0), true);
         }
 
         super.onTabChanged();
@@ -106,7 +108,7 @@ public class ImproveModuleController extends ModuleController {
         closeFeedbackFragment();
     }
 
-    public void onFeedbackSelected(SurveyDB survey){
+    public void onFeedbackSelected(SurveyDB survey, boolean modifyFilter){
         Session.setSurveyByModule(survey, getSimpleName());
         try {
             LinearLayout filters = (LinearLayout) dashboardActivity.findViewById(R.id.filters_sentSurveys);
@@ -121,7 +123,9 @@ public class ImproveModuleController extends ModuleController {
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         ActionBarStrategy.setActionBarForSurvey(dashboardActivity, survey);
 
-        UpdateFiltersBySurvey(survey);
+        if(modifyFilter) {
+            UpdateFiltersBySurvey(survey);
+        }
     }
 
     public void onPlanActionSelected(SurveyDB survey){
@@ -151,7 +155,9 @@ public class ImproveModuleController extends ModuleController {
         android.app.Fragment fragment = dashboardActivity.getFragmentManager ().findFragmentById(R.id.dashboard_completed_container);
         if(fragment instanceof  FeedbackFragment) {
             feedbackFragment.unregisterReceiver();
-            feedbackFragment.getView().setVisibility(View.GONE);
+            if(feedbackFragment.getView()!=null){
+                feedbackFragment.getView().setVisibility(View.GONE);
+            }
         }else if(fragment instanceof PlanActionFragment){
             if (feedbackFragment != null)
                 replaceFragment(R.id.dashboard_completed_container, feedbackFragment);

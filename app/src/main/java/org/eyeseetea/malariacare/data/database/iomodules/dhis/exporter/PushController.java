@@ -52,8 +52,6 @@ public class PushController implements IPushController {
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
 
-    public enum Kind {EVENTS, PLANS}
-
     public PushController(Context context) {
         mContext = context;
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="assessment_title_overall_mandatory_completed">"Overall / Mandatory completed"</string>
+    <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
+    <string name="dialog_action_plan">Action plan</string>
+    <string name="health_facility">Health Facility</string>
+    <string name="monitor_js_multiple_event_legend">"(*)More than one survey exist in the same month"</string>
+    <string name="dialog_pie_chart_label_explanation">"The outer circle shows you the overall completion.\n\nThe inner circle shows you the completion of mandatory questions, normally marked with an *. Only when 100% of the mandatory questions are completed, you can 'Mark Complete'"</string>
+</resources>
