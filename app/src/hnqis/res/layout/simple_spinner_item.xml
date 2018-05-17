@@ -4,12 +4,13 @@
     android:id="@android:id/text1"
     android:singleLine="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="marquee"
-    style="?android:attr/spinnerItemStyle"
+    android:layout_height="48dp"
     android:alpha="0.8"
-    android:textAlignment="gravity"
-    android:gravity="center"
+    android:gravity="left|center_vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:textColor="@color/darkGrey"
-    app:tDimension="@string/font_size_level1"
+    android:textSize="18sp"
     app:tFontName="@string/medium_font_name" />
+    <!--Putting text size in sp because tSize and tDimension not working well
+     in different phones-->

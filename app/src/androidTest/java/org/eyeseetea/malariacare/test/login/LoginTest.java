@@ -28,6 +28,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.test.utils.SDKTestUtils;
 import org.junit.AfterClass;
@@ -65,7 +66,7 @@ public class LoginTest {
 
     @BeforeClass
     public static void setupClass(){
-        PopulateDB.wipeDatabase();
+        AppDatabase.wipeDatabase();
     }
 
     @Before

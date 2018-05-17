@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dialog_layout_margins_left_right"
+        android:layout_marginRight="@dimen/dialog_layout_margins_left_right"
+        android:background="@android:color/white"
+        android:gravity="center">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:background="@color/plan_grey_light"
+            android:gravity="left"
+            android:paddingLeft="@dimen/buttons_margin_bottom_top"
+            android:text="@string/planning_title_dialog"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level3_title" />
+
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/schedule_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_title"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:background="@color/plan_grey_light"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/schedule_title"
+            android:textColor="@color/darkGrey"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4" />
+
+        <LinearLayout
+            android:id="@+id/schedule_date_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/schedule_title"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:src="@drawable/ic_event" />
+
+            <org.eyeseetea.sdk.presentation.views.CustomEditText
+                android:id="@+id/planning_dialog_picker_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:editable="false"
+                android:gravity="center"
+                android:padding="@dimen/dashboard_planning_padding"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/planning_dialog_comment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/schedule_date_container"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:padding="@dimen/dashboard_planning_padding"
+            android:text="@string/planning_label_comment"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/medium_font_name" />
+
+        <org.eyeseetea.malariacare.views.CustomEditText
+            android:id="@+id/planning_dialog_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/planning_dialog_comment_title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:lines="3"
+            android:minWidth="@dimen/dashboard_planning_alert_width"
+            android:padding="@dimen/dashboard_planning_padding"
+            android:textStyle="bold"
+            app:tDimension="@string/font_size_level1"
+            app:tFontName="@string/medium_font_name" />
+
+        <org.eyeseetea.malariacare.views.CustomButton
+            android:id="@+id/planning_dialog_ok_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_below="@id/planning_dialog_comment"
+            android:layout_marginBottom="@dimen/buttons_margin_bottom_top"
+            android:layout_marginLeft="@dimen/buttons_margin_left_right"
+            android:layout_marginRight="@dimen/buttons_margin_left_right"
+            android:layout_marginTop="@dimen/buttons_margin"
+            android:background="@color/dialog_button_text"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4" />
+
+        <org.eyeseetea.malariacare.views.CustomButton
+            android:id="@+id/planning_dialog_close_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_below="@id/planning_dialog_ok_button"
+            android:layout_marginBottom="@dimen/buttons_margin"
+            android:layout_marginLeft="@dimen/buttons_margin_left_right"
+            android:layout_marginRight="@dimen/buttons_margin_left_right"
+            android:layout_marginTop="@dimen/buttons_margin_bottom_top"
+            android:background="@color/dialog_button_text"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:font_name="@string/font_name_medium"
+            app:tDimension="@string/font_size_level4" />
+
+    </RelativeLayout>
+</FrameLayout>
