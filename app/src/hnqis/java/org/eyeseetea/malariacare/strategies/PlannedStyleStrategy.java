@@ -89,9 +89,16 @@ public class PlannedStyleStrategy {
         return String.format("%s (%d)",titleHeader,counter);
     }
 
-    public static void drawActionButtonTint(ImageButton actionButton) {
-        actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
-                R.color.plan_grey_light));
+    public static void drawActionButtonTint(ImageButton actionButton, boolean isInProgress) {
+        if (isInProgress) {
+            actionButton.setImageResource(R.drawable.ic_edit);
+            actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.assess_yellow));
+        } else {
+            actionButton.setImageResource(R.drawable.red_circle_cross);
+            actionButton.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
+                    R.color.plan_grey_light));
+        }
     }
 
     public static View getViewByPlannedSurveyHeader(ViewGroup parent) {

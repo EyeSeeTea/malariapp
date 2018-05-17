@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.fragments;
 
-import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
-
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
@@ -42,11 +39,8 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItem;
 import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.layout.adapters.survey.PlannedAdapter;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
-import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter;
-import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.strategies.PlannedStyleStrategy;
-import org.eyeseetea.malariacare.views.CustomSpinner;
+import org.eyeseetea.malariacare.services.PlannedSurveyService;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
 import java.util.List;
@@ -87,8 +81,7 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
             return null;
         }
 
-        orgUnitProgramFilterView = (OrgUnitProgramFilterView) getActivity()
-                .findViewById(R.id.plan_org_unit_program_filter_view);
+        loadFilter();
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -114,7 +107,9 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         if(selectedProgram!=null) {
             loadProgram(selectedProgram);
         }
-        adapter.notifyDataSetChanged();
+        if(adapter!=null){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -143,12 +138,18 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
     }
 
     private void updateSelectedFilters() {
-        if (orgUnitProgramFilterView != null) {
-            String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
-            String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
-
-            orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+        if (orgUnitProgramFilterView == null) {
+            loadFilter();
         }
+        String programUidFilter = PreferencesState.getInstance().getProgramUidFilter();
+        String orgUnitUidFilter = PreferencesState.getInstance().getOrgUnitUidFilter();
+        orgUnitProgramFilterView.changeSelectedFilters(programUidFilter, orgUnitUidFilter);
+    }
+
+    private void loadFilter() {
+        orgUnitProgramFilterView =
+                (OrgUnitProgramFilterView) org.eyeseetea.malariacare.DashboardActivity.dashboardActivity
+                        .findViewById(R.id.plan_org_unit_program_filter_view);
     }
 
     /**
@@ -159,7 +160,8 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
 
         if (plannedItemsReceiver == null) {
             plannedItemsReceiver = new PlannedItemsReceiver();
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver, new IntentFilter(SurveyService.PLANNED_SURVEYS_ACTION));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(plannedItemsReceiver,
+                    new IntentFilter(PlannedSurveyService.PLANNED_SURVEYS_ACTION));
         }
     }
     /**
@@ -179,8 +181,11 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         updateSelectedFilters();
 
         //Reload data using service
-        Intent surveysIntent=new Intent(PreferencesState.getInstance().getContext().getApplicationContext(), SurveyService.class);
-        surveysIntent.putExtra(SurveyService.SERVICE_METHOD, SurveyService.PLANNED_SURVEYS_ACTION);
+        Intent surveysIntent = new Intent(
+                PreferencesState.getInstance().getContext().getApplicationContext(),
+                PlannedSurveyService.class);
+        surveysIntent.putExtra(PlannedSurveyService.SERVICE_METHOD,
+                PlannedSurveyService.PLANNED_SURVEYS_ACTION);
         PreferencesState.getInstance().getContext().getApplicationContext().startService(surveysIntent);
     }
 
@@ -207,8 +212,10 @@ public class PlannedFragment extends ListFragment implements IModuleFragment{
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
             //Listening only intents from this method
-            if(SurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())){
-                PlannedServiceBundle plannedServiceBundle= (PlannedServiceBundle)Session.popServiceValue(SurveyService.PLANNED_SURVEYS_ACTION);
+            if (PlannedSurveyService.PLANNED_SURVEYS_ACTION.equals(intent.getAction())) {
+                PlannedServiceBundle plannedServiceBundle =
+                        (PlannedServiceBundle) Session.popServiceValue(
+                                PlannedSurveyService.PLANNED_SURVEYS_ACTION);
 
                 prepareUI(plannedServiceBundle.getPlannedItems());
 

@@ -90,4 +90,8 @@
     <color name="filter_border_bottom">#959595</color>
     <color name="filter_gradient_start">#818181</color>
     <color name="filter_gradient_end">#B5B5B5</color>
+    <color name="dialog_header_background">#D8D8D8</color>
+    <color name="dialog_header_title_text">#4A4A4A</color>
+    <color name="dialog_row_background">@color/white</color>
+
 </resources>

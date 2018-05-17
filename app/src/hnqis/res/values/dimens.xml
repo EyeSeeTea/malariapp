@@ -1,4 +1,5 @@
 <resources>
+    <dimen name="feedback_question_row_left_padding">30dp</dimen>
     <dimen name="header_min_height">50dp</dimen>
     <dimen name="planning_title_number">20dp</dimen>
     <dimen name="planning_titles">18dp</dimen>

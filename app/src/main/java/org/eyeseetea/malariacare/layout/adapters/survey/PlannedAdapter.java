@@ -196,7 +196,7 @@ public class PlannedAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return getItem(position).hashCode();
+        return getItem(position) != null ? getItem(position).hashCode() : 0L;
     }
 
     @Override
@@ -304,7 +304,7 @@ public class PlannedAdapter extends BaseAdapter {
         } else {
             actionButton.setImageResource(R.drawable.ic_plus_light);
         }
-        PlannedStyleStrategy.drawActionButtonTint(actionButton);
+        PlannedStyleStrategy.drawActionButtonTint(actionButton, plannedSurvey.getSurvey().isInProgress());
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));

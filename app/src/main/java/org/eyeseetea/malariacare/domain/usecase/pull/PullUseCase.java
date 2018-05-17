@@ -19,9 +19,11 @@
 
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullController;
-import org.eyeseetea.malariacare.domain.boundary.IPullController;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
+import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
+import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
+import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 
 public class PullUseCase {
@@ -33,25 +35,49 @@ public class PullUseCase {
 
         void onCancel();
 
-        void onConversionError();
+        void onMetadataError();
 
         void onStep(PullStep pullStep);
 
         void onNetworkError();
     }
 
-    IPullController mPullController;
+    IPullMetadataController mPullMetadataController;
+    IPullDataController mPullDataController;
+    IMetadataValidator mMetadataValidator;
 
-    public PullUseCase(IPullController pullController) {
-        mPullController = pullController;
+    PullFilters mPullDataFilters;
+
+    public static Boolean pullCanceled = false;
+
+    public PullUseCase(IPullMetadataController pullMetadataController,
+            IPullDataController pullDataController,
+            IMetadataValidator metadataValidator) {
+        mPullMetadataController = pullMetadataController;
+        mPullDataController = pullDataController;
+        mMetadataValidator = metadataValidator;
     }
 
     public void execute(PullFilters pullFilters, final Callback callback) {
-        mPullController.pull(pullFilters, new PullController.IPullControllerCallback() {
+        mPullDataFilters = pullFilters;
+
+        pullMetadata(callback);
+    }
+
+    private void pullMetadata(final Callback callback) {
+        mPullMetadataController.pullMetadata(new PullMetadataController.Callback() {
 
             @Override
             public void onComplete() {
-                callback.onComplete();
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    if(mMetadataValidator.isValid()){
+                        pullData(callback);
+                    } else {
+                        onError(new MetadataException());
+                    }
+                }
             }
 
             @Override
@@ -61,27 +87,51 @@ public class PullUseCase {
 
             @Override
             public void onError(Throwable throwable) {
-                if (throwable instanceof NetworkException) {
-                    callback.onNetworkError();
-                } else if (throwable instanceof ConversionException) {
-                    callback.onConversionError();
-                } else {
-                    callback.onPullError();
-                }
-            }
-
-            @Override
-            public void onCancel() {
-                callback.onCancel();
+                manageError(throwable, callback);
             }
         });
     }
 
-    public void cancel() {
-        mPullController.cancel();
+    private void pullData(final Callback callback) {
+        mPullDataController.pullData(mPullDataFilters, new IPullDataController.Callback() {
+
+            @Override
+            public void onComplete() {
+                if(pullCanceled){
+                    callback.onCancel();
+                }else {
+                    callback.onComplete();
+                }
+            }
+
+            @Override
+            public void onStep(PullStep step) {
+                callback.onStep(step);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                manageError(throwable, callback);
+            }
+        });
     }
 
-    public boolean isPullActive() {
-        return mPullController.isPullActive();
+    private void manageError(Throwable throwable, Callback callback) {
+        if (throwable instanceof NetworkException) {
+            callback.onNetworkError();
+        } else if (throwable instanceof MetadataException) {
+            callback.onMetadataError();
+        } else {
+            callback.onPullError();
+        }
+    }
+
+
+    public void cancel() {
+        pullCanceled = true;
+    }
+
+    public boolean isPullCanceled() {
+        return pullCanceled;
     }
 }
