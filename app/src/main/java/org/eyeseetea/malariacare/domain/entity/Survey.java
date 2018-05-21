@@ -20,7 +20,7 @@ public class Survey {
     private String userUId;
     private Date creationDate;
     private Date completionDate;
-    private Date updateDate;
+    private Date uploadDate;
     private Date scheduledDate;
     private Status status;
     private List<QuestionValue> values;
@@ -42,13 +42,13 @@ public class Survey {
         return survey;
     }
 
-    public static Survey createExistedSurvey(String uId, String programUId, String orgUnitUId,
-            String userUId, Date creationDate, Date updateDate, Date scheduledDate,
+    public static Survey createSentSurvey(String uId, String programUId, String orgUnitUId,
+            String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
             Date completionDate, List<QuestionValue> values, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         survey.changeStatus(Status.SENT);
         survey.assignCreationDate(creationDate);
-        survey.changeUpdateDate(updateDate);
+        survey.changeUploadDate(uploadDate);
         survey.changeScheduledDate(scheduledDate);
         survey.assignCompletionDate(completionDate);
         survey.addQuestionValues(values);
@@ -84,8 +84,8 @@ public class Survey {
         return completionDate;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUploadDate() {
+        return uploadDate;
     }
 
     public Date getScheduledDate() {
@@ -120,8 +120,8 @@ public class Survey {
         this.completionDate = completionDate;
     }
 
-    public void changeUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void changeUploadDate(Date upoadDate) {
+        this.uploadDate = uploadDate;
     }
 
     public void changeScheduledDate(Date scheduledDate) {

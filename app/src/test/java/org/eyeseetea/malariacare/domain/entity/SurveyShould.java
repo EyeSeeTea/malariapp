@@ -39,7 +39,7 @@ public class SurveyShould {
     @Test
     public void create_pulled_survey(){
         Date creationDate = new Date();
-        Date updateDate = new Date();
+        Date uploadDate = new Date();
         Date scheduledDate = new Date();
         Date completionDate = new Date();
         List<QuestionValue> values = new ArrayList<>();
@@ -47,15 +47,15 @@ public class SurveyShould {
         values.add(QuestionValue.createSimpleValue("UId", "value"));
         values.add(QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
 
-        Survey survey = Survey.createExistedSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
-                "USER_UID", creationDate, updateDate, scheduledDate, completionDate, values, score);
+        Survey survey = Survey.createSentSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
+                "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score);
 
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getStatus().equals(Survey.Status.SENT));
         Assert.assertTrue(survey.getCreationDate().equals(creationDate));
         Assert.assertTrue(survey.getCompletionDate().equals(completionDate));
         Assert.assertTrue(survey.getScheduledDate().equals(scheduledDate));
-        Assert.assertTrue(survey.getUpdateDate().equals(updateDate));
+        Assert.assertTrue(survey.getUploadDate().equals(uploadDate));
         Assert.assertTrue(survey.getValues().equals(values));
         Assert.assertTrue(survey.getScore().equals(score));
     }
