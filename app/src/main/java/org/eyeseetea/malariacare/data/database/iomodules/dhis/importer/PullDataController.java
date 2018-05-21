@@ -23,6 +23,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IPullSourceCallback;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
         .OrganisationUnitExtended;
@@ -32,8 +33,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyDhisDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
@@ -49,6 +51,9 @@ public class PullDataController implements IPullDataController {
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullDataController.Callback callback;
 
+
+    private ISurveyDataSource remoteDataSource;
+
     ConvertFromSDKVisitor converter;
 
     public PullDataController() {
@@ -60,6 +65,29 @@ public class PullDataController implements IPullDataController {
     public void pullData(final PullFilters filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
+        try {
+            callback.onStep(PullStep.PREPARING_SURVEYS);
+
+            remoteDataSource = new SurveyDhisDataSource();
+
+            List<Survey> surveys = remoteDataSource.getSurveys(filters);
+
+            //TODO: on the future issue, here invoke LocalDataSource to save
+            // downloaded surveys in database
+
+            validateCS();
+
+            callback.onComplete();
+
+        }catch (Exception e){
+            callback.onError(e);
+        }
+
+
+        //oldPullData(filters, callback);
+    }
+
+    private void oldPullData(PullFilters filters, final Callback callback) {
         pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
