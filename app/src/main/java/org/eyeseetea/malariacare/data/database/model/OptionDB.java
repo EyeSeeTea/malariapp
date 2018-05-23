@@ -78,6 +78,14 @@ public class OptionDB extends BaseModel {
         this.name = name;
     }
 
+    public OptionDB(String uId, String name, String code, float factor, AnswerDB answer) {
+        this.uid_option = uId;
+        this.name = name;
+        this.code = code;
+        this.factor = factor;
+        this.answer = answer;
+    }
+
     public Long getId_option() {
         return id_option;
     }
@@ -137,6 +145,14 @@ public class OptionDB extends BaseModel {
     public void setAnswer(Long id_answer){
         this.id_answer_fk = id_answer;
         this.answer = null;
+    }
+
+    public static OptionDB getByUId(String UId) {
+            OptionDB optionDB = new Select()
+                    .from(OptionDB.class)
+                    .where(OptionDB_Table.uid_option
+                            .is(UId)).querySingle();
+        return optionDB;
     }
 
     /**
