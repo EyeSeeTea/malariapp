@@ -421,7 +421,7 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
                 } else if (valueChangedEvent.getAction().equals(
                         ValueChangedEvent.Action.TOGGLE)) {
                     mSurveyAnsweredRatio.fixTotalQuestion(question.isCompulsory(),
-                            question.isCachedVisibility());
+                            valueChangedEvent.getQuestionVisibility(question.getId()));
                     if (question.isRemoved()) {
                         mSurveyAnsweredRatio.removeQuestion(question.isCompulsory());
                     }
