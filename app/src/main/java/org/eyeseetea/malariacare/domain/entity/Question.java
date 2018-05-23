@@ -1,9 +1,10 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 import org.eyeseetea.malariacare.utils.Constants;
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
-    private long id;
+    private String uId;
     private boolean isCompulsory;
     private boolean removed;
     private int questionType;
@@ -11,14 +12,14 @@ public class Question {
     public Question() {
     }
 
-    public Question(long id, int questionType, boolean isCompulsory) {
-        this.id = id;
-        this.questionType = questionType;
-        this.isCompulsory = isCompulsory;
+    public Question(String uId, int questionType, boolean isCompulsory) {
+        this.uId = required(uId, "question uId is required");
+        this.questionType = required(questionType, "question questionType is required");
+        this.isCompulsory = required(isCompulsory, "question isCompulsory is required");
     }
 
-    public long getId() {
-        return id;
+    public String getUId() {
+        return uId;
     }
 
     public boolean isCompulsory() {
@@ -33,13 +34,10 @@ public class Question {
         this.removed = removed;
     }
 
-    public int getQuestionType() {
-        return questionType;
-    }
-
     public boolean isComputable(){
         return questionType != Constants.NO_ANSWER;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,7 +45,7 @@ public class Question {
 
         Question question = (Question) o;
 
-        if (id != question.id) return false;
+        if (uId != question.uId) return false;
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
         return questionType == question.questionType;
@@ -55,17 +53,17 @@ public class Question {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (questionType ^ (questionType >>> 32));
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + questionType;
+        result = 31 * result + (uId != null ? uId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + id +
+                "id=" + uId +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
                 ", questionType=" + questionType +

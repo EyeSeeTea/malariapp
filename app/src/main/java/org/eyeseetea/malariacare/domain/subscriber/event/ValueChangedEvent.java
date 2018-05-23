@@ -23,7 +23,7 @@ import java.util.List;
 public class ValueChangedEvent {
 
     List<Question> questions;
-    HashMap<Long, Boolean> questionVisibility;
+    HashMap<String, Boolean> questionVisibility;
 
     public enum Action {INSERT, DELETE, TOGGLE}
     private Action action;
@@ -35,19 +35,19 @@ public class ValueChangedEvent {
         this.questions = new ArrayList<>();
         questionVisibility = new HashMap<>();
         this.questions.add(question);
-        questionVisibility.put(question.getId(), true);
+        questionVisibility.put(question.getUId(), true);
     }
 
-    public ValueChangedEvent(long idSurvey, List<Question> questions, HashMap<Long, Boolean> questionVisibility, Action action) {
+    public ValueChangedEvent(long idSurvey, List<Question> questions, HashMap<String, Boolean> questionVisibility, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
         this.questions = questions;
         this.questionVisibility = questionVisibility;
     }
 
-    public boolean getQuestionVisibility(long id) {
-        if(questionVisibility.containsKey(id)) {
-            return questionVisibility.get(id);
+    public boolean getQuestionVisibility(String uId) {
+        if(questionVisibility.containsKey(uId)) {
+            return questionVisibility.get(uId);
         }else{
             return false;
         }

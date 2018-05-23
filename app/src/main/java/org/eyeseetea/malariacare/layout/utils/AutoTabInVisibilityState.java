@@ -155,7 +155,7 @@ public class AutoTabInVisibilityState {
     public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         QuestionDB question = autoTabSelectedItem.getQuestion();
         List<Question> toggledQuestions= new ArrayList<>();
-        HashMap<Long, Boolean> questionVisibilityMap = new HashMap<>();
+        HashMap<String, Boolean> questionVisibilityMap = new HashMap<>();
         if(question.hasChildren()) {
             recursiveToggleChildrenVisibility(idSurvey, module, question, toggledQuestions, questionVisibilityMap);
         }
@@ -166,7 +166,7 @@ public class AutoTabInVisibilityState {
         }
     }
 
-    private List<Question> recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion, List<Question> toggledQuestions, HashMap<Long, Boolean> questionVisibilityMap) {
+    private List<Question> recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion, List<Question> toggledQuestions, HashMap<String, Boolean> questionVisibilityMap) {
         boolean visible;
         for (QuestionDB childQuestion : parentQuestion.getChildren()) {
             Question toggledQuestion = null;
@@ -174,7 +174,7 @@ public class AutoTabInVisibilityState {
             visible=!childQuestion.isHiddenBySurvey(idSurvey);
             boolean isAlreadyVisible=(elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true);
             if(visible || isAlreadyVisible) {
-                toggledQuestion = new Question(childQuestion.getId_question(), childQuestion.getOutput(), childQuestion.getCompulsory());
+                toggledQuestion = new Question(childQuestion.getUid(), childQuestion.getOutput(), childQuestion.getCompulsory());
             }
 
             this.updateVisibility(childQuestion,visible);
@@ -186,7 +186,7 @@ public class AutoTabInVisibilityState {
                 this.setInvisible(childHeader,false);
                 if(toggledQuestion!=null && isAlreadyVisible==false){
                     toggledQuestions.add(toggledQuestion);//Added new visible child question
-                    questionVisibilityMap.put(toggledQuestion.getId(), visible);
+                    questionVisibilityMap.put(toggledQuestion.getUId(), visible);
                 }
                 continue;
             }
@@ -198,7 +198,7 @@ public class AutoTabInVisibilityState {
             if(toggledQuestion!=null){
                 toggledQuestion.setRemoved(isRemoved);//Set question as removed if it is necessary to removes the answered question ratio
                 toggledQuestions.add(toggledQuestion);//Add not visible child to be removed from total question list
-                questionVisibilityMap.put(toggledQuestion.getId(), visible);
+                questionVisibilityMap.put(toggledQuestion.getUId(), visible);
             }
             //-> Remove score
             if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
