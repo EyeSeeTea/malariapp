@@ -1,21 +1,18 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.data.database.QuestionType;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
     private String uId;
     private boolean isCompulsory;
     private boolean removed;
-    private int questionType;
-
-    public Question() {
-    }
+    private QuestionType questionTypeMapper;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
         this.uId = required(uId, "question uId is required");
-        this.questionType = required(questionType, "question questionType is required");
-        this.isCompulsory = required(isCompulsory, "question isCompulsory is required");
+        this.questionTypeMapper = required(QuestionType.get(questionType), "valid question type is required");
+        this.isCompulsory = isCompulsory;
     }
 
     public String getUId() {
@@ -35,7 +32,7 @@ public class Question {
     }
 
     public boolean isComputable(){
-        return questionType != Constants.NO_ANSWER;
+        return questionTypeMapper != QuestionType.NO_ANSWER;
     }
 
     @Override
@@ -45,18 +42,18 @@ public class Question {
 
         Question question = (Question) o;
 
-        if (uId != question.uId) return false;
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
-        return questionType == question.questionType;
+        if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
+        return questionTypeMapper == question.questionTypeMapper;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (questionType ^ (questionType >>> 32));
+        int result = uId != null ? uId.hashCode() : 0;
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + (uId != null ? uId.hashCode() : 0);
+        result = 31 * result + (questionTypeMapper != null ? questionTypeMapper.hashCode() : 0);
         return result;
     }
 
@@ -66,7 +63,7 @@ public class Question {
                 "id=" + uId +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionType=" + questionType +
+                ", questionType=" + questionTypeMapper.toString() +
                 '}';
     }
 }
