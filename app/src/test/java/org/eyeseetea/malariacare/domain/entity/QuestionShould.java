@@ -37,7 +37,7 @@ public class QuestionShould {
         List<String> options = new ArrayList<>();
         options.add("UID1");
         options.add("UID2");
-        Question question = new Question("UID",7, true);
+        Question question = new Question("UID", options,7, true);
         Assert.assertNotNull(question);
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
@@ -63,6 +63,6 @@ public class QuestionShould {
     public void throw_exception_when_create_a_question_with_invalid_options(){
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("list of option uId is required");
-        new Question("UId", null, 0, false);
+        new Question("UId", null, 1, false);
     }
 }
