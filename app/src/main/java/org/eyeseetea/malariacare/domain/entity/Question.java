@@ -59,7 +59,8 @@ public class Question {
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
         if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
-        return questionTypeMapper == question.questionTypeMapper;
+        if (questionTypeMapper != question.questionTypeMapper) return false;
+        return optionUIds != null ? optionUIds.equals(question.optionUIds) : question.optionUIds == null;
     }
 
     @Override
@@ -68,16 +69,18 @@ public class Question {
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
         result = 31 * result + (questionTypeMapper != null ? questionTypeMapper.hashCode() : 0);
+        result = 31 * result + (optionUIds != null ? optionUIds.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + uId +
+                "uId='" + uId + '\'' +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionType=" + questionTypeMapper.toString() +
+                ", questionTypeMapper=" + questionTypeMapper +
+                ", optionUIds=" + optionUIds +
                 '}';
     }
 }
