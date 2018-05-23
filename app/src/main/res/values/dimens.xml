@@ -129,4 +129,5 @@
     <dimen name="buttons_margin_left_right">8dp</dimen>
     <dimen name="buttons_height">36dp</dimen>
     <dimen name="body_text_size">16sp</dimen>
+    <dimen name="text_dialog_padding">20dp</dimen>
 </resources>

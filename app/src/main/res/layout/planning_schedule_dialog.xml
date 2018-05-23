@@ -9,34 +9,16 @@
     android:background="@android:color/white">
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/schedule_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/dashboard_planning_padding"
-        android:paddingBottom="@dimen/dashboard_planning_padding"
         android:text="@string/header_reschedule_title"
-        android:textSize="@dimen/dialog_tile_row_size"
-        android:background="@color/dialog_header_background"
-        android:textColor="@color/dialog_header_title_text"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogTitle"/>
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/schedule_date_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/dashboard_planning_padding"
-        android:paddingBottom="@dimen/dashboard_planning_padding"
         android:layout_below="@id/schedule_title"
         android:layout_alignParentLeft="true"
         android:text="@string/planning_label_date"
-        android:textSize="@dimen/dialog_tile_row_size"
-        android:background="@color/dialog_header_background"
-        android:textColor="@color/dialog_header_title_text"
-        app:font_name="@string/font_name_medium"
+        style="@style/EyeSeeDialogSubTitle"
         />
 <LinearLayout
     android:id="@+id/schedule_date_container"
@@ -114,26 +96,14 @@
     </LinearLayout>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/planning_dialog_ok_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dialog_button_space"
         android:layout_below="@id/schedule_edit_container"
         android:text="@string/header_reschedule"
         android:textAllCaps="true"
-        android:background="@color/dialog_button_background_text"
-        android:textSize="@dimen/dialog_button_size"
-        android:textColor="@android:color/white"
-        app:font_name="@string/font_name_medium"  />
+        style="@style/EyeSeeDialogButton"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/planning_dialog_close_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dialog_button_space"
         android:layout_below="@id/planning_dialog_ok_button"
         android:text="@string/cancel"
-        android:background="@color/dialog_red_button"
-        android:textSize="@dimen/dialog_button_size"
-        android:textColor="@android:color/white"
-        app:font_name="@string/font_name_medium"  />
+        style="@style/EyeSeeDialogCancelButton"/>
 
 </RelativeLayout>

@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
 
     <RelativeLayout
@@ -14,51 +13,22 @@
 
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/view"
-        android:layout_height="36dp"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/buttons_margin_bottom_top"
-        android:layout_marginLeft="@dimen/buttons_margin_left_right"
-        android:layout_marginRight="@dimen/buttons_margin_left_right"
-        android:layout_marginTop="@dimen/buttons_margin"
-        android:background="@drawable/button_dialog_green_background"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/dialog_button_preview_feedback"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogButton"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/action_plan"
-        android:layout_height="36dp"
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/buttons_margin_bottom_top"
-        android:layout_marginLeft="@dimen/buttons_margin_left_right"
-        android:layout_marginRight="@dimen/buttons_margin_left_right"
-        android:layout_marginTop="@dimen/buttons_margin_bottom_top"
-        android:textAllCaps="false"
-        android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/view"
         android:text="@string/dialog_action_plan"
-        android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogButton"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/cancel"
-        android:layout_height="36dp"
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/buttons_margin"
-        android:textAllCaps="false"
-        android:layout_marginLeft="@dimen/buttons_margin_left_right"
-        android:layout_marginRight="@dimen/buttons_margin_left_right"
-        android:layout_marginTop="@dimen/buttons_margin_bottom_top"
-        android:background="@drawable/button_dialog_green_background"
         android:layout_below="@id/action_plan"
         android:text="@string/cancel"
-        android:textColor="@android:color/white"
-        app:tDimension="@string/font_size_level4"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogCancelButton"/>
     </RelativeLayout>
 </FrameLayout>

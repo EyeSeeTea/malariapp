@@ -8,48 +8,23 @@
     android:background="@android:color/white">
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planned_org_unit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/dialog_tile_row_size"
-        android:background="@color/dialog_header_background"
-        android:textColor="@color/dialog_header_title_text"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogTitle"/>
 
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planned_program"
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:layout_below="@id/planned_org_unit"
-        android:textSize="@dimen/dialog_tile_row_size"
-        android:textColor="@color/dialog_header_title_text"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogSubTitle"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/show_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:layout_below="@id/planned_program"
         android:text="@string/show_history"
-        android:background="@color/dialog_button_background_text"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/dialog_button_size"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogButton"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:layout_below="@id/show_history"
         android:text="@string/cancel"
-        android:background="@color/dialog_red_button"
-        android:textSize="@dimen/dialog_button_size"
-        android:textColor="@android:color/white"
-        app:font_name="@string/font_name_medium" />
+        style="@style/EyeSeeDialogCancelButton"/>
 
 </RelativeLayout>

@@ -7,4 +7,5 @@
     <dimen name="body_text_size">16sp</dimen>
     <dimen name="dialog_layout_margins_left_right">35dp</dimen>
     <dimen name="three_dots_padding_left">10dp</dimen>
+    <dimen name="dialog_header_height">36dp</dimen>
 </resources>

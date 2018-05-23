@@ -40,4 +40,47 @@
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
 
+    <style name="EyeSeeDialogTitle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:padding">@dimen/text_dialog_padding</item>
+        <item name="android:textSize">@dimen/dialog_tile_row_size</item>
+        <item name="android:background">@color/dialog_header_background</item>
+        <item name="android:textColor">@color/dialog_header_title_text</item>
+        <item name="font_name">@string/font_name_medium</item>
+    </style>
+    <style name="EyeSeeDialogSubTitle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">@dimen/text_dialog_padding</item>
+        <item name="android:textSize">@dimen/dialog_tile_row_size</item>
+        <item name="android:textColor">@color/dialog_header_title_text</item>
+        <item name="font_name">@string/font_name_medium</item>
+    </style>
+    <style name="EyeSeeDialogButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_margin">@dimen/dialog_button_space</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">@dimen/dialog_button_size</item>
+        <item name="android:background">@color/dialog_button_background_text</item>
+        <item name="android:textColor">@color/dialog_button_text</item>
+        <item name="font_name">@string/font_name_medium</item>
+        <item name="tDimension">@string/font_size_level4</item>
+    </style>
+    <style name="EyeSeeDialogCancelButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_margin">@dimen/dialog_button_space</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">@dimen/dialog_button_size</item>
+        <item name="android:background">@color/dialog_red_button</item>
+        <item name="android:textColor">@color/dialog_button_text</item>
+        <item name="font_name">@string/font_name_medium</item>
+        <item name="tDimension">@string/font_size_level4</item>
+    </style>
+
 </resources>
