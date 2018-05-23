@@ -5,6 +5,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QuestionShould {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -16,6 +19,7 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(question.isComputable());
+        Assert.assertTrue(question.getOptionUIds().size()==0);
     }
 
     @Test
@@ -25,6 +29,20 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(!question.isComputable());
+        Assert.assertTrue(question.getOptionUIds().size()==0);
+    }
+
+    @Test
+    public void create_a_question_with_mandatory_fields_with_option_uid_list(){
+        List<String> options = new ArrayList<>();
+        options.add("UID1");
+        options.add("UID2");
+        Question question = new Question("UID",7, true);
+        Assert.assertNotNull(question);
+        Assert.assertTrue(question.getUId().equals("UID"));
+        Assert.assertTrue(question.isCompulsory());
+        Assert.assertTrue(!question.isComputable());
+        Assert.assertTrue(question.getOptionUIds().equals(options));
     }
 
     @Test
@@ -39,5 +57,12 @@ public class QuestionShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("valid question type is required");
         new Question("UId", 0, false);
+    }
+
+    @Test
+    public void throw_exception_when_create_a_question_with_invalid_options(){
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("list of option uId is required");
+        new Question("UId", null, 0, false);
     }
 }

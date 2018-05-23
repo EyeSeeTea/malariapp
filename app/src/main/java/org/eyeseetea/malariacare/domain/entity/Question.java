@@ -1,6 +1,10 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 import org.eyeseetea.malariacare.data.database.QuestionType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
@@ -8,11 +12,21 @@ public class Question {
     private boolean isCompulsory;
     private boolean removed;
     private QuestionType questionTypeMapper;
+    private List<String> optionUIds;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
+        this(uId, new ArrayList(),  questionType, isCompulsory);
+    }
+
+    public Question(String uId, List<String> optionUIds, int questionType, boolean isCompulsory) {
         this.uId = required(uId, "question uId is required");
+        this.optionUIds = required(optionUIds, "list of option uId is required");
         this.questionTypeMapper = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
+    }
+
+    public List<String> getOptionUIds(){
+        return optionUIds;
     }
 
     public String getUId() {
