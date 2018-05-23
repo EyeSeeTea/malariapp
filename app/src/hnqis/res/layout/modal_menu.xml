@@ -137,28 +137,24 @@
 
         <org.eyeseetea.malariacare.views.CustomButton
             android:id="@+id/edit"
-            android:layout_width="match_parent"
             android:layout_below="@id/body_text"
             android:text="@string/option_edit"
             style="@style/EyeSeeDialogButton"/>
 
         <org.eyeseetea.malariacare.views.CustomButton
             android:id="@+id/mark_completed"
-            android:layout_width="match_parent"
             android:layout_below="@id/edit"
             android:text="@string/mark_complete"
             style="@style/EyeSeeDialogButton" />
 
         <org.eyeseetea.malariacare.views.CustomButton
             android:id="@+id/delete"
-            android:layout_width="match_parent"
             android:layout_below="@id/mark_completed"
             android:text="@string/option_delete"
             style="@style/EyeSeeDialogButton" />
 
         <org.eyeseetea.malariacare.views.CustomButton
             android:id="@+id/cancel"
-            android:layout_width="match_parent"
             android:layout_below="@id/delete"
             android:text="@string/cancel"
             style="@style/EyeSeeDialogCancelButton" />

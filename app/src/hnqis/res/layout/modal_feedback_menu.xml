@@ -13,20 +13,17 @@
 
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/view"
-        android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/dialog_button_preview_feedback"
         style="@style/EyeSeeDialogButton"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/action_plan"
-        android:layout_width="match_parent"
         android:layout_below="@id/view"
         android:text="@string/dialog_action_plan"
         style="@style/EyeSeeDialogButton"/>
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/cancel"
-        android:layout_width="match_parent"
         android:layout_below="@id/action_plan"
         android:text="@string/cancel"
         style="@style/EyeSeeDialogCancelButton"/>
