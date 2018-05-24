@@ -26,7 +26,8 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
                 && !compositeScoreDB.getCompositeScoreChildren().isEmpty()) {
             for (CompositeScoreDB compositeScoreChild : compositeScoreDB
                     .getCompositeScoreChildren()) {
-                convertCompositeScoreChildren(compositeScoreDB);
+                compositeScore.addChild(
+                        convertCompositeScoreChildren(compositeScoreChild).getUid());
             }
         }
         return compositeScore;
@@ -41,8 +42,13 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
                 compositeScoreChildren.add(compositeScoreChild.getUid());
             }
         }
-        return new CompositeScore(compositeScoreDB.getUid(), compositeScoreDB.getLabel(),
-                compositeScoreDB.getHierarchical_code(), compositeScoreDB.getOrder_pos(),
-                compositeScoreDB.getComposite_score().getUid(), compositeScoreChildren);
+        CompositeScore compositeScore = new CompositeScore(compositeScoreDB.getUid(),
+                compositeScoreDB.getLabel(),
+                compositeScoreDB.getHierarchical_code(), compositeScoreDB.getOrder_pos());
+        if (compositeScoreDB.getComposite_score() != null) {
+            compositeScore.addParent(compositeScoreDB.getComposite_score().getUid());
+        }
+        compositeScore.addChildren(compositeScoreChildren);
+        return compositeScore;
     }
 }
