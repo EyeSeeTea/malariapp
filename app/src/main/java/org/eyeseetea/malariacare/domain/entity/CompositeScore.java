@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import static org.eyeseetea.malariacare.domain.utils.PositiveOrCeroChecker.isPositiveOrCero;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
@@ -17,16 +18,16 @@ public class CompositeScore {
             int orderPos) {
         this.uid = required(uid, "Uid is required");
         this.label = required(label, "Label is required");
-        this.hierarchicalCode = required(hierarchicalCode, "HierachicalCode is required");
-        this.orderPos = required(orderPos, "OrderPos is required");
+        this.hierarchicalCode = required(hierarchicalCode, "HierarchicalCode is required");
+        this.orderPos = isPositiveOrCero(orderPos, "OrderPos has to be higher than 0");
     }
 
     public CompositeScore(String uid, String label, String hierarchicalCode, int orderPos,
             String parentUid, ArrayList<String> childrenUids) {
         this.uid = required(uid, "Uid is required");
         this.label = required(label, "Label is required");
-        this.hierarchicalCode = required(hierarchicalCode, "HierachicalCode is required");
-        this.orderPos = required(orderPos, "OrderPos is required");
+        this.hierarchicalCode = required(hierarchicalCode, "HierarchicalCode is required");
+        this.orderPos = isPositiveOrCero(orderPos, "OrderPos has to be higher than 0");
         this.parentUid = parentUid;
         this.childrenUids = childrenUids;
     }
