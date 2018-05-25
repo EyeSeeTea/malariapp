@@ -25,7 +25,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import android.support.annotation.NonNull;
+
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -41,7 +47,7 @@ public class PushUseCaseTest {
     public void should_invoke_in_progress_error_callback_when_is_in_progress() throws Exception {
         givenThereIsAInProgressPushController();
 
-        PushUseCase pushUseCase = new PushUseCase(mPushController);
+        PushUseCase pushUseCase = givenAPushUseCase();
 
         pushUseCase.execute(new PushUseCase.Callback() {
             @Override
@@ -84,6 +90,19 @@ public class PushUseCaseTest {
         assertThat(invokedInProgressCallback, is(true));
     }
 
+    @NonNull
+    private PushUseCase givenAPushUseCase() {
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new IMainExecutor() {
+            @Override
+            public void run(Runnable runnable) {
+                runnable.run();
+            }
+        };
+
+        return new PushUseCase(asyncExecutor, mainExecutor, mPushController);
+    }
+
     private void callbackInvoked(boolean inProgressCallback) {
         lock.countDown();
         invokedInProgressCallback = inProgressCallback;
@@ -92,7 +111,6 @@ public class PushUseCaseTest {
     private void givenThereIsAInProgressPushController() {
             when(mPushController.isPushInProgress()).thenReturn(true);
     }
-
 
 }
 class CallbackInvoked{
