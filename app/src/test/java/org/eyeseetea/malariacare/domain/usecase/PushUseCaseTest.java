@@ -26,6 +26,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -41,7 +45,9 @@ public class PushUseCaseTest {
     public void should_invoke_in_progress_error_callback_when_is_in_progress() throws Exception {
         givenThereIsAInProgressPushController();
 
-        PushUseCase pushUseCase = new PushUseCase(mPushController);
+        IAsyncExecutor asyncExecutor = new AsyncExecutor();
+        IMainExecutor mainExecutor = new UIThreadExecutor();
+        PushUseCase pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, mPushController);
 
         pushUseCase.execute(new PushUseCase.Callback() {
             @Override
