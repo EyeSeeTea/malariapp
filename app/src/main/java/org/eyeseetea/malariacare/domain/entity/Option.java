@@ -10,19 +10,11 @@ public class Option {
     private String answerUId;
 
     public Option(String uId, String code, String name, float factor, String answerUId) {
-        this.uId = validate(uId, "UId is required");
-        this.code = validate(code, "Code is required");
-        this.name = validate(name, "Name is required");
+        this.uId = required(uId, "UId is required");
+        this.code = required(code, "Code is required");
+        this.name = required(name, "Name is required");
         this.factor = validateFactor(factor, "Invalid factor");
-        this.answerUId = validate(answerUId, "Answer is required");
-    }
-
-    private String validate(String value, String message) {
-        required(value, "UId is required");
-        if(value.isEmpty()){
-            throw new IllegalArgumentException(message);
-        }
-        return value;
+        this.answerUId = required(answerUId, "Answer is required");
     }
 
     private float validateFactor(float factor, String message) {
