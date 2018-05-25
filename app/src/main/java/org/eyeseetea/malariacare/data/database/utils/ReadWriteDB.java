@@ -83,7 +83,7 @@ public class ReadWriteDB {
                 DomainEventPublisher
                         .instance()
                         .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),
-                                new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                                new Question(question.getUid(), question.getOutput(), question.getCompulsory()),
                                 ValueChangedEvent.Action.INSERT));
             } else {
                 value.setOption(option);
@@ -97,7 +97,7 @@ public class ReadWriteDB {
                 DomainEventPublisher
                         .instance()
                         .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),
-                                new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                                new Question(question.getUid(), question.getOutput(), question.getCompulsory()),
                                 ValueChangedEvent.Action.DELETE));
             }
         }
@@ -114,7 +114,7 @@ public class ReadWriteDB {
             DomainEventPublisher
                     .instance()
                     .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(),
-                            new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                            new Question(question.getUid(), question.getOutput(), question.getCompulsory()),
                             ValueChangedEvent.Action.INSERT));
         } else {
             value.setOption((Long)null);
@@ -139,7 +139,7 @@ public class ReadWriteDB {
                         .instance()
                         .publish(new ValueChangedEvent(
                                 Session.getSurveyByModule(module).getId_survey(),
-                                new Question(question.getId_question(), question.getOutput(), question.getCompulsory()),
+                                new Question(question.getUid(), question.getOutput(), question.getCompulsory()),
                                 ValueChangedEvent.Action.DELETE));
             }
             return true;
