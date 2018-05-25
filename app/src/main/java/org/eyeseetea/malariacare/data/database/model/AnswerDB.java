@@ -97,6 +97,14 @@ public class AnswerDB extends BaseModel{
         return questions;
     }
 
+    public static AnswerDB getByName(String answerName) {
+        AnswerDB answerDB = new Select()
+                .from(AnswerDB.class)
+                .where(AnswerDB_Table.name
+                        .eq(answerName)).querySingle();
+        return answerDB;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

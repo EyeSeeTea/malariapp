@@ -1,17 +1,14 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.database.QuestionType;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
     private String uId;
     private boolean isCompulsory;
     private boolean removed;
-    private QuestionType questionTypeMapper;
+    private QuestionType questionType;
     private List<String> optionUIds;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
@@ -21,7 +18,7 @@ public class Question {
     public Question(String uId, List<String> optionUIds, int questionType, boolean isCompulsory) {
         this.uId = required(uId, "question uId is required");
         this.optionUIds = required(optionUIds, "list of option uId is required");
-        this.questionTypeMapper = required(QuestionType.get(questionType), "valid question type is required");
+        this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
     }
 
@@ -46,7 +43,7 @@ public class Question {
     }
 
     public boolean isComputable(){
-        return questionTypeMapper != QuestionType.NO_ANSWER;
+        return questionType != QuestionType.NO_ANSWER;
     }
 
     @Override
@@ -59,7 +56,7 @@ public class Question {
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
         if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
-        if (questionTypeMapper != question.questionTypeMapper) return false;
+        if (questionType != question.questionType) return false;
         return optionUIds != null ? optionUIds.equals(question.optionUIds) : question.optionUIds == null;
     }
 
@@ -68,7 +65,7 @@ public class Question {
         int result = uId != null ? uId.hashCode() : 0;
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + (questionTypeMapper != null ? questionTypeMapper.hashCode() : 0);
+        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
         result = 31 * result + (optionUIds != null ? optionUIds.hashCode() : 0);
         return result;
     }
@@ -79,7 +76,7 @@ public class Question {
                 "uId='" + uId + '\'' +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionTypeMapper=" + questionTypeMapper +
+                ", questionTypeMapper=" + questionType +
                 ", optionUIds=" + optionUIds +
                 '}';
     }
