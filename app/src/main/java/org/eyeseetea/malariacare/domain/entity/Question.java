@@ -1,17 +1,16 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.data.database.QuestionType;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
     private String uId;
     private boolean isCompulsory;
     private boolean removed;
-    private QuestionType questionTypeMapper;
+    private QuestionType questionType;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
         this.uId = required(uId, "question uId is required");
-        this.questionTypeMapper = required(QuestionType.get(questionType), "valid question type is required");
+        this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
     }
 
@@ -32,7 +31,7 @@ public class Question {
     }
 
     public boolean isComputable(){
-        return questionTypeMapper != QuestionType.NO_ANSWER;
+        return questionType != QuestionType.NO_ANSWER;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class Question {
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
         if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
-        return questionTypeMapper == question.questionTypeMapper;
+        return questionType == question.questionType;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class Question {
         int result = uId != null ? uId.hashCode() : 0;
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + (questionTypeMapper != null ? questionTypeMapper.hashCode() : 0);
+        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
         return result;
     }
 
@@ -63,7 +62,7 @@ public class Question {
                 "id=" + uId +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionType=" + questionTypeMapper.toString() +
+                ", questionType=" + questionType.toString() +
                 '}';
     }
 }

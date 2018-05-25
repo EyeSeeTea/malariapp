@@ -1,4 +1,4 @@
-package org.eyeseetea.malariacare.data.database;
+package org.eyeseetea.malariacare.domain.entity;
 
 import java.util.EnumSet;
 import java.util.HashMap;
