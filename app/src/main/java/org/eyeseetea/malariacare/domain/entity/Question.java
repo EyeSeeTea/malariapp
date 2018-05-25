@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
@@ -7,11 +9,21 @@ public class Question {
     private boolean isCompulsory;
     private boolean removed;
     private QuestionType questionType;
+    private List<String> optionUIds;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
+        this(uId, new ArrayList(),  questionType, isCompulsory);
+    }
+
+    public Question(String uId, List<String> optionUIds, int questionType, boolean isCompulsory) {
         this.uId = required(uId, "question uId is required");
+        this.optionUIds = required(optionUIds, "list of option uId is required");
         this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
+    }
+
+    public List<String> getOptionUIds(){
+        return optionUIds;
     }
 
     public String getUId() {
@@ -44,7 +56,8 @@ public class Question {
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
         if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
-        return questionType == question.questionType;
+        if (questionType != question.questionType) return false;
+        return optionUIds != null ? optionUIds.equals(question.optionUIds) : question.optionUIds == null;
     }
 
     @Override
@@ -53,16 +66,18 @@ public class Question {
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
         result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
+        result = 31 * result + (optionUIds != null ? optionUIds.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + uId +
+                "uId='" + uId + '\'' +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionType=" + questionType.toString() +
+                ", questionTypeMapper=" + questionType +
+                ", optionUIds=" + optionUIds +
                 '}';
     }
 }
