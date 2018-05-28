@@ -60,7 +60,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
     private SurveyReceiver surveyReceiver;
     private List<SurveyDB> surveys;
     protected AssessmentUnsentAdapter adapter;
-    private static int selectedPosition = 0;
     DashboardActivity dashboardActivity;
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
@@ -227,16 +226,6 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
             title.setText(adapter.getTitle());
         }
         setListAdapter(adapter);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        //Discard clicks on header|footer (which is attendend on onNewSurvey via super)
-        selectedPosition = position;
-
-        final SurveyDB survey = (SurveyDB) adapter.getItem(selectedPosition);
-        dashboardActivity.onSurveySelected(survey);
-
     }
 
     /**
