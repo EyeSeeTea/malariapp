@@ -98,11 +98,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <View
-            android:id="@+id/feedback_separator"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/darkGrey"/>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_feedback_html"
             android:layout_width="match_parent"
@@ -121,6 +116,6 @@
 <View
     android:layout_width="match_parent"
     android:layout_height="1px"
-    android:background="@color/darkGrey"></View>
+    android:background="@color/question_row_divisor"></View>
 </LinearLayout>
 
