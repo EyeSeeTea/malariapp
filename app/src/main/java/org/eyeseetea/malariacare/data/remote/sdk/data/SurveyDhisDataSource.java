@@ -35,14 +35,13 @@ import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
-import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntity;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 
 import java.util.ArrayList;
@@ -51,9 +50,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
 
 public class SurveyDhisDataSource implements ISurveyDataSource {
 
@@ -70,7 +66,7 @@ public class SurveyDhisDataSource implements ISurveyDataSource {
     }
 
     @Override
-    public List<Survey> getSurveys(PullFilters filters) throws Exception {
+    public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (isNetworkAvailable) {
@@ -100,7 +96,7 @@ public class SurveyDhisDataSource implements ISurveyDataSource {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private void pullEvents(PullFilters filters) {
+    private void pullEvents(SurveyFilter filters) {
         for (OrganisationUnit organisationUnit : D2.me().organisationUnits().list().toBlocking()
                 .single()) {
             for (Program program : getValidPrograms(organisationUnit)) {

@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.IPullDataSource;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -112,7 +112,7 @@ public class PullDhisSDKDataSource implements IPullDataSource {
 
     }
 
-    public void pullData(PullFilters filters, IPullSourceCallback callback) {
+    public void pullData(SurveyFilter filters, IPullSourceCallback callback) {
         boolean isNetworkAvailable = isNetworkAvailable();
 
         if (!isNetworkAvailable) {
@@ -127,7 +127,7 @@ public class PullDhisSDKDataSource implements IPullDataSource {
         }
     }
 
-    private void pullEvents(PullFilters filters, IPullSourceCallback callback) {
+    private void pullEvents(SurveyFilter filters, IPullSourceCallback callback) {
         Scheduler listThread = Schedulers.newThread();
         List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
                 .observeOn(listThread).toBlocking().single();

@@ -36,6 +36,7 @@ import android.widget.TextView;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
@@ -53,15 +54,13 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 import java.util.Calendar;
-import java.util.InputMismatchException;
 
 public class ProgressActivity extends Activity {
 
@@ -150,11 +149,16 @@ public class ProgressActivity extends Activity {
                     new ServerMetadataRepository(this);
             IOptionRepository optionRepository = new OptionRepository();
             IQuestionRepository questionRepository = new QuestionLocalDataSource();
-            ISurveyDataSource surveyDataSource =
+
+            ISurveyDataSource surveyRemoteDataSource =
                     new SurveyDhisDataSource(serverMetadataRepository,
                             questionRepository, optionRepository);
 
-            PullDataController pullDataController = new PullDataController(surveyDataSource);
+            ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
+
+            PullDataController pullDataController =
+                    new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
+
             MetadataValidator metadataValidator = new MetadataValidator();
             IAsyncExecutor asyncExecutor = new AsyncExecutor();
             IMainExecutor mainExecutor = new UIThreadExecutor();
@@ -366,11 +370,10 @@ public class ProgressActivity extends Activity {
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        PullFilters pullFilters = new PullFilters(month.getTime(), null, isDemo,
-                AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
+        SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
                 PreferencesState.getInstance().getMaxEvents());
 
-        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+        mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();

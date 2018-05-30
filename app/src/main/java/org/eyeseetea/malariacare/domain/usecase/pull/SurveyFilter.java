@@ -17,14 +17,32 @@
  *  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.eyeseetea.malariacare.domain.boundary;
+package org.eyeseetea.malariacare.domain.usecase.pull;
 
-public interface IPullDemoController {
-    interface IPullDemoControllerCallback {
-        void onComplete();
 
-        void onError(Throwable throwable);
+import java.util.Date;
+
+public class SurveyFilter {
+
+    Date startDate;
+    Date endDate;
+    int maxEvents;
+
+    public SurveyFilter(Date startDate, Date endDate, int maxEvents) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.maxEvents = maxEvents;
     }
 
-    void pull(IPullDemoControllerCallback callback);
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public int getMaxEvents() {
+        return maxEvents;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
 }

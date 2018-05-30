@@ -36,41 +36,44 @@ import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
 import java.util.List;
 
 public class PullDataController implements IPullDataController {
-    /**
-     * Used for control new steps
-     */
     private final String TAG = ".PullDataController";
+
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullDataController.Callback callback;
 
     private ISurveyDataSource remoteSurveyDataSource;
+    private ISurveyDataSource localSurveyDataSource;
 
     ConvertFromSDKVisitor converter;
 
-    public PullDataController(ISurveyDataSource remoteSurveyDataSource) {
+    public PullDataController(
+            ISurveyDataSource localSurveyDataSource,
+            ISurveyDataSource remoteSurveyDataSource) {
+
+        this.localSurveyDataSource = localSurveyDataSource;
         this.remoteSurveyDataSource = remoteSurveyDataSource;
+
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
     }
 
     @Override
-    public void pullData(final PullFilters filters, final IPullDataController.Callback callback) {
+    public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
-/*        try {
+        try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
             List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
 
-            //TODO: on the future issue, here invoke LocalDataSource to save
-            // downloaded surveys in database
+            localSurveyDataSource.Save(surveys);
 
             validateCS();
 
@@ -78,12 +81,12 @@ public class PullDataController implements IPullDataController {
 
         } catch (Exception e) {
             callback.onError(e);
-        }*/
+        }
 
-        oldPullData(filters, callback);
+        //oldPullData(filters, callback);
     }
 
-    private void oldPullData(PullFilters filters, final Callback callback) {
+    private void oldPullData(SurveyFilter filters, final Callback callback) {
         pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
             @Override
             public void onComplete() {
