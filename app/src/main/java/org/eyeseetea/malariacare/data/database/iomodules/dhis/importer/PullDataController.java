@@ -33,7 +33,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyDhisDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
@@ -51,12 +50,12 @@ public class PullDataController implements IPullDataController {
     PullDhisSDKDataSource pullRemoteDataSource;
     IPullDataController.Callback callback;
 
-
-    private ISurveyDataSource remoteDataSource;
+    private ISurveyDataSource remoteSurveyDataSource;
 
     ConvertFromSDKVisitor converter;
 
-    public PullDataController() {
+    public PullDataController(ISurveyDataSource remoteSurveyDataSource) {
+        this.remoteSurveyDataSource = remoteSurveyDataSource;
         converter = new ConvertFromSDKVisitor();
         pullRemoteDataSource = new PullDhisSDKDataSource();
     }
@@ -65,12 +64,10 @@ public class PullDataController implements IPullDataController {
     public void pullData(final PullFilters filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
-        try {
+/*        try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
-            remoteDataSource = new SurveyDhisDataSource();
-
-            List<Survey> surveys = remoteDataSource.getSurveys(filters);
+            List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
 
             //TODO: on the future issue, here invoke LocalDataSource to save
             // downloaded surveys in database
@@ -79,12 +76,11 @@ public class PullDataController implements IPullDataController {
 
             callback.onComplete();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             callback.onError(e);
-        }
+        }*/
 
-
-        //oldPullData(filters, callback);
+        oldPullData(filters, callback);
     }
 
     private void oldPullData(PullFilters filters, final Callback callback) {

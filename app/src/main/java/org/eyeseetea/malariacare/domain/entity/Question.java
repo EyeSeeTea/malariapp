@@ -9,22 +9,20 @@ public class Question {
     private boolean isCompulsory;
     private boolean removed;
     private QuestionType questionType;
+    private String answerName;
     private List<String> optionUIds;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
-        this(uId, new ArrayList(),  questionType, isCompulsory);
+        this(uId,   questionType, isCompulsory, null);
     }
 
-    public Question(String uId, List<String> optionUIds, int questionType, boolean isCompulsory) {
+    public Question(String uId, int questionType, boolean isCompulsory, String answerName) {
         this.uId = required(uId, "question uId is required");
-        this.optionUIds = required(optionUIds, "list of option uId is required");
         this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
+        this.answerName = answerName;
     }
 
-    public List<String> getOptionUIds(){
-        return optionUIds;
-    }
 
     public String getUId() {
         return uId;
@@ -46,6 +44,10 @@ public class Question {
         return questionType != QuestionType.NO_ANSWER;
     }
 
+    public String getAnswerName() {
+        return answerName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,18 +57,19 @@ public class Question {
 
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
-        if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
+        if (!uId.equals(question.uId)) return false;
         if (questionType != question.questionType) return false;
-        return optionUIds != null ? optionUIds.equals(question.optionUIds) : question.optionUIds == null;
+        return answerName != null ? !answerName.equals(question.answerName)
+                : question.answerName != null;
     }
 
     @Override
     public int hashCode() {
-        int result = uId != null ? uId.hashCode() : 0;
+        int result = uId.hashCode();
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
-        result = 31 * result + (optionUIds != null ? optionUIds.hashCode() : 0);
+        result = 31 * result + questionType.hashCode();
+        result = 31 * result + (answerName != null ? answerName.hashCode() : 0);
         return result;
     }
 
@@ -76,8 +79,8 @@ public class Question {
                 "uId='" + uId + '\'' +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionTypeMapper=" + questionType +
-                ", optionUIds=" + optionUIds +
+                ", questionType=" + questionType +
+                ", answerName='" + answerName + '\'' +
                 '}';
     }
 }

@@ -19,7 +19,7 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(question.isComputable());
-        Assert.assertTrue(question.getOptionUIds().size()==0);
+        Assert.assertTrue(question.getOptions().size()==0);
     }
 
     @Test
@@ -29,7 +29,7 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(!question.isComputable());
-        Assert.assertTrue(question.getOptionUIds().size()==0);
+        Assert.assertTrue(question.getOptions().size()==0);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(!question.isComputable());
-        Assert.assertTrue(question.getOptionUIds().equals(options));
+        Assert.assertTrue(question.getOptions().equals(options));
     }
 
     @Test

@@ -22,17 +22,17 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.ConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
+import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.Question;
+import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
@@ -42,18 +42,31 @@ import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
+import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntity;
+import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
-
 public class SurveyDhisDataSource implements ISurveyDataSource {
-    private final String TAG = ".SurveyDhisDataSource";
 
-    public SurveyDhisDataSource() {
+    private IServerMetadataRepository mServerMetadataRepository;
+    private IOptionRepository mOptionRepository;
+    private IQuestionRepository mQuestionRepository;
+
+    public SurveyDhisDataSource(IServerMetadataRepository serverMetadataRepository,
+            IQuestionRepository questionRepository,
+            IOptionRepository optionRepository) {
+        this.mServerMetadataRepository = serverMetadataRepository;
+        this.mQuestionRepository = questionRepository;
+        this.mOptionRepository = optionRepository;
     }
 
     @Override
@@ -87,74 +100,73 @@ public class SurveyDhisDataSource implements ISurveyDataSource {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private List<Event> pullEvents(PullFilters filters) {
-        List<Event> allPulledEvents = new ArrayList<>();
+    private void pullEvents(PullFilters filters) {
+        for (OrganisationUnit organisationUnit : D2.me().organisationUnits().list().toBlocking()
+                .single()) {
+            for (Program program : getValidPrograms(organisationUnit)) {
 
-        Scheduler listThread = Schedulers.newThread();
-        List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
-                .observeOn(listThread).toBlocking().single();
-        List<OrganisationUnit> sdkOrganisationUnits =
-                D2.me().organisationUnits().list().subscribeOn(listThread)
-                        .observeOn(listThread).toBlocking().single();
-        for (Program program : sdkPrograms) {
-            for (OrganisationUnit organisationUnit : sdkOrganisationUnits) {
-                for (Program orgunitProgram : organisationUnit.getPrograms()) {
-                    if (orgunitProgram.getUId().equals(program.getUId())) {
+                EventFilters eventFilters = new EventFilters();
+                eventFilters.setProgramUId(program.getUId());
+                eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
+                eventFilters.setStartDate(filters.getStartDate());
+                eventFilters.setEndDate(filters.getEndDate());
+                eventFilters.setMaxEvents(filters.getMaxEvents());
 
-                        EventFilters eventFilters = new EventFilters();
-                        eventFilters.setProgramUId(program.getUId());
-                        eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
-                        eventFilters.setStartDate(filters.getStartDate());
-                        eventFilters.setEndDate(filters.getEndDate());
-                        eventFilters.setMaxEvents(filters.getMaxEvents());
-
-                        Scheduler pullEventsThread = Schedulers.newThread();
-                        List<Event> eventByOrgUnitAndProgram = D2.events().pull(eventFilters)
-                                .subscribeOn(pullEventsThread)
-                                .observeOn(pullEventsThread).toBlocking().single();
-
-                        allPulledEvents.addAll(eventByOrgUnitAndProgram);
-                    }
-                }
+                D2.events().pull(eventFilters).toBlocking().single();
             }
         }
-
-        return allPulledEvents;
     }
 
     private List<Survey> convertToSurveys() {
-        ConvertFromSDKVisitor converter = new ConvertFromSDKVisitor();
+        ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
+        List<Option> options = mOptionRepository.getAll();
+        List<Question> questions = mQuestionRepository.getAll();
+        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
 
-        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(
-                SdkQueries.getAssignedOrganisationUnits())) {
-            for (ProgramExtended program : ProgramExtended.getExtendedList(
-                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
-                            PreferencesState.getInstance().getContext().getString(
-                                    R.string.pull_program_code),
-                            ProgramType.WITHOUT_REGISTRATION))) {
-                converter.actualProgram = program;
-                List<EventExtended> events = EventExtended.getExtendedList(
-                        SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
-                System.out.printf("Converting surveys and values for orgUnit: %s | program: %s",
-                        organisationUnit.getLabel(), program.getDisplayName());
-                for (EventExtended event : events) {
-                    if (event.getEventDate() == null
-                            || event.getEventDate().equals("")) {
-                        Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"
-                                + event.getUid());
-                        continue;
-                    }
-                    event.accept(converter);
-                }
+        SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, compositeScores, questions,
+                options);
+
+        List<Event> events = getDownloadedEvents();
+
+        List<Survey> surveys = surveyMapper.mapSurveys(events);
+
+        return surveys;
+    }
+
+    private List<Event> getDownloadedEvents() {
+        List<Event> events = D2.events().list().toBlocking().first();
+
+        List<TrackedEntityDataValue> allValues = D2.trackedEntityDataValues().list().toBlocking().first();
+        Map<String, List<TrackedEntityDataValue>> valuesMap = new HashMap<>();
+        for (TrackedEntityDataValue value : allValues) {
+            if (!valuesMap.containsKey(value.getEvent().getUId()))
+                valuesMap.put(value.getEvent().getUId(), new ArrayList<TrackedEntityDataValue>());
+
+            valuesMap.get(value.getEvent().getUId()).add(value);
+        }
+
+        for (Event event : events) {
+            if (valuesMap.containsKey(event.getUId())){
+                event.setDataValues(valuesMap.get(event.getUId()));
             }
         }
 
-        return new ArrayList<>();
+        return events;
     }
 
+    private List<Program> getValidPrograms(OrganisationUnit organisationUnit) {
+        Set<ProgramType> programTypes = new HashSet<>();
+        programTypes.add(ProgramType.WITHOUT_REGISTRATION);
 
+        String attributeCodeToFilter =
+                PreferencesState.getInstance().getContext().getString(R.string.program_type_code);
+        String attributeValueToFilter =
+                PreferencesState.getInstance().getContext().getString(R.string.pull_program_code);
 
+        List<Program> allPrograms = D2.me().programs()
+                .list(organisationUnit, programTypes, attributeCodeToFilter, attributeValueToFilter)
+                .toBlocking().first();
 
-
-
+        return allPrograms;
+    }
 }

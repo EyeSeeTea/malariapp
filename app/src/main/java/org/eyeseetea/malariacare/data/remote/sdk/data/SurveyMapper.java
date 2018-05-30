@@ -5,8 +5,8 @@ import android.util.Log;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.OptionDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
+import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
@@ -19,27 +19,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SurveyMapper {
-    private final static String TAG = ".SurveyConversion";
+    private final static String TAG = ".SurveyMapper";
 
     private ServerMetadata serverMetadata;
-    private Map<String, CompositeScoreDB> compositeScoreDBMap;
-    private Map<String, QuestionDB> questionsDBMap;
-    private Map<String, OptionDB> optionsMap;
+    private Map<String, CompositeScoreDB> compositeScoreMap;
+    private Map<String, Question> questionsMap;
+    private Map<String, List<Option>> optionsMap;
 
-    //TODO compositeScoreMap, questionsMap, optionsMap on the future should be domain entities maps
+    //TODO compositeScoreMap on the future should be a domain entity list
     public SurveyMapper(
             ServerMetadata serverMetadata,
-            Map<String, CompositeScoreDB> compositeScoreMap,
-            Map<String, QuestionDB> questionsMap,
-            Map<String, OptionDB> optionsMap) {
+            List<CompositeScoreDB> compositeScores,
+            List<Question> questions,
+            List<Option> options) {
         this.serverMetadata = serverMetadata;
-        this.compositeScoreDBMap = compositeScoreMap;
-        this.questionsDBMap = questionsMap;
-        this.optionsMap = optionsMap;
+
+        createMaps(compositeScores, questions, options);
     }
 
     public List<Survey> mapSurveys(List<Event> events) {
@@ -47,11 +47,53 @@ public class SurveyMapper {
         List<Survey> surveys = new ArrayList<>();
 
         for (Event event : events) {
-            Survey survey = map(event);
-            surveys.add(survey);
+            try {
+                Survey survey = map(event);
+
+                surveys.add(survey);
+            } catch (Exception e) {
+                Log.e(TAG, "An error occurred converting Event " + event.getUId() +
+                        " to survey:" + e.getMessage());
+            }
         }
 
         return surveys;
+    }
+
+    private boolean isEventValid(EventExtended event) {
+        boolean isValid = true;
+
+        if (event.getEventDate() == null
+                || event.getEventDate().equals("")) {
+            Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"
+                    + event.getUid());
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void createMaps(List<CompositeScoreDB> compositeScores, List<Question> questions,
+            List<Option> options) {
+        compositeScoreMap = new HashMap<>();
+        for (CompositeScoreDB compositeScore : compositeScores) {
+            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
+        }
+
+        optionsMap = new HashMap<>();
+        for (Option option : options) {
+            if (!optionsMap.containsKey(option.getAnswerName())) {
+                optionsMap.put(option.getAnswerName(), new ArrayList<Option>());
+            }
+
+            optionsMap.get(option.getAnswerName()).add(option);
+        }
+
+
+        questionsMap = new HashMap<>();
+        for (Question question : questions) {
+            questionsMap.put(question.getUId(), question);
+        }
     }
 
     private Survey map(Event event) {
@@ -59,27 +101,30 @@ public class SurveyMapper {
         String eventUid = event.getUId();
         String orgUnitUid = event.getOrgUnit();
         String programUid = event.getProgram();
-        String userUid = "";
+        String userUid = null;
         Score score = null;
         //Set dates by default ( to prevent a null value, all take the getEventDate date
         Date creationDate = event.getEventDate().toDate();
         Date completionDate = event.getEventDate().toDate();
         Date uploadDate = event.getEventDate().toDate();
         Date nextAssessmentDate = event.getEventDate().toDate();
-        ;
+
         Date scheduledDate = event.getDueDate().toDate();
 
         List<QuestionValue> values = new ArrayList<>();
 
         for (TrackedEntityDataValue dataValue : event.getDataValues()) {
 
-            if (dataValue.getDataElement().equals(serverMetadata.getCreationDateUid())) {
+            if (dataValue.getDataElement().equals(serverMetadata.getCreationDate().getUId())) {
                 creationDate = EventExtended.parseLongDate(dataValue.getValue());
-            } else if (dataValue.getDataElement().equals(serverMetadata.getCompletionDateUid())) {
+            } else if (serverMetadata.getCompletionDate() != null
+                    && dataValue.getDataElement().equals(
+                    serverMetadata.getCompletionDate().getUId())) {
                 completionDate = EventExtended.parseLongDate(dataValue.getValue());
-            } else if (dataValue.getDataElement().equals(serverMetadata.getUploadDateUid())) {
+            } else if (dataValue.getDataElement().equals(serverMetadata.getUploadDate().getUId())) {
                 uploadDate = EventExtended.parseLongDate(dataValue.getValue());
-            } else if (dataValue.getDataElement().equals(serverMetadata.getNextAssessmentUid())) {
+            } else if (dataValue.getDataElement().equals(
+                    serverMetadata.getNextAssessment().getUId())) {
                 if (dataValue.getValue() != null && !dataValue.getValue().isEmpty()) {
                     nextAssessmentDate =
                             convertStringToDate("yyyy-MM-dd", dataValue.getValue());
@@ -89,10 +134,10 @@ public class SurveyMapper {
                     scheduledDate = nextAssessmentDate;
                 }
 
-            } else if (dataValue.getDataElement().equals(serverMetadata.getUploadByUid())) {
+            } else if (dataValue.getDataElement().equals(serverMetadata.getUploadBy().getUId())) {
                 userUid = dataValue.getValue();
-            } else if (compositeScoreDBMap.containsKey(dataValue.getDataElement())) {
-                CompositeScoreDB compositeScore = compositeScoreDBMap.get(
+            } else if (compositeScoreMap.containsKey(dataValue.getDataElement())) {
+                CompositeScoreDB compositeScore = compositeScoreMap.get(
                         dataValue.getDataElement());
 
                 if (CompositeScoreBuilder.isRootScore(compositeScore)) {
@@ -104,10 +149,6 @@ public class SurveyMapper {
 
                 if (questionValue != null) {
                     values.add(questionValue);
-                } else {
-                    Log.d(TAG, String.format(
-                            "An error occurred converting data value (data: Event: %s, DataElement: %s, value: %s)",
-                            eventUid, dataValue.getDataElement(), dataValue.getValue()));
                 }
             }
         }
@@ -123,22 +164,52 @@ public class SurveyMapper {
         QuestionValue questionValue = null;
         String questionUid = dataValue.getDataElement();
 
-        if (questionsDBMap.containsKey(dataValue.getDataElement())) {
-            QuestionDB question = questionsDBMap.get(dataValue.getDataElement());
-
+        if (questionsMap.containsKey(dataValue.getDataElement())) {
             String optionUid = null;
-            String optionName = "";
 
-            //TODO find optionUid
+            Option option = findOptionByValue(dataValue);
+
+            if (option != null) {
+                optionUid = option.getUId();
+            }
 
             if (optionUid == null) {
                 questionValue = QuestionValue.createSimpleValue(questionUid, dataValue.getValue());
             } else {
-                questionValue = QuestionValue.createOptionValue(questionUid, dataValue.getValue(),optionName );
+                questionValue = QuestionValue.createOptionValue(questionUid, optionUid,
+                        dataValue.getValue());
             }
+        } else {
+            //There is data values assigned by dhis scripts that we should not converting
+            //Examples:
+            //<dataValue created="2017-10-03T08:00:35.266" lastUpdated="2018-04-24T04:00:40.560"
+            // value="23" dataElement="deeu8rjsqvH" providedElsewhere="false"
+            // storedBy="script_HNQIS"/>
+            //<dataValue created="2017-10-03T08:00:35.269" lastUpdated="2018-04-24T04:00:40.564"
+            // value="false" dataElement="iW2zVNwfDK6" providedElsewhere="false"
+            // storedBy="script_HNQIS"/>
+            Log.w(TAG, String.format(
+                    "An error occurred converting data value because DataElement does no exists "
+                            + "as Question. Event: %s, DataElement: %s)",
+                    dataValue.getEvent().getUId(), dataValue.getDataElement()));
         }
 
         return questionValue;
+    }
+
+    private Option findOptionByValue(TrackedEntityDataValue dataValue) {
+        Option optionResult = null;
+
+        Question question = questionsMap.get(dataValue.getDataElement());
+
+        for (Option option : optionsMap.get(question.getAnswerName())) {
+            if (option.getCode().equals(dataValue.getValue())) {
+                optionResult = option;
+                break;
+            }
+        }
+
+        return optionResult;
     }
 
     private Date convertStringToDate(String format, String dateText) {
@@ -151,5 +222,4 @@ public class SurveyMapper {
         }
         return null;
     }
-
 }

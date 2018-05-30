@@ -68,6 +68,11 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 context.getString(R.string.action2_code));
 
         ServerMetadata serverMetadata = new ServerMetadata(
+                new ServerMetadataItem(nextAssessment.getCode(), nextAssessment.getUid()),
+                new ServerMetadataItem(createdOn.getCode(), createdOn.getUid()),
+                null,
+                new ServerMetadataItem(updatedDate.getCode(), updatedDate.getUid()),
+                new ServerMetadataItem(updatedUser.getCode(), updatedUser.getUid()),
                 new ServerMetadataItem(overallScore.getCode(), overallScore.getUid()),
                 new ServerMetadataItem(mainScoreClass.getCode(), mainScoreClass.getUid()),
                 new ServerMetadataItem(mainScoreA.getCode(), mainScoreA.getUid()),
@@ -76,12 +81,7 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 new ServerMetadataItem(forwardOrder.getCode(), forwardOrder.getUid()),
                 new ServerMetadataItem(pushDevice.getCode(), pushDevice.getUid()),
                 new ServerMetadataItem(overallProductivity.getCode(), overallProductivity.getUid()),
-                new ServerMetadataItem(nextAssessment.getCode(), nextAssessment.getUid()),
-                new ServerMetadataItem(createdOn.getCode(), createdOn.getUid()),
-                new ServerMetadataItem(updatedDate.getCode(), updatedDate.getUid()),
-                new ServerMetadataItem(completionDate.getCode(), completionDate.getUid()),
-                new ServerMetadataItem(updatedUser.getCode(), updatedUser.getUid()),
-                new ServerMetadataItem(provider.getCode(), provider.getUid()),
+                null,
                 new ServerMetadataItem(gaps.getCode(), gaps.getUid()),
                 new ServerMetadataItem(planAction.getCode(), planAction.getUid()),
                 new ServerMetadataItem(action1.getCode(), action1.getUid()),
