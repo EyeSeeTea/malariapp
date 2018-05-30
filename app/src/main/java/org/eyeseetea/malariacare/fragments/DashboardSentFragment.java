@@ -240,13 +240,6 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
         orderBy=DATE_ORDER;
         reloadSentSurveys(surveys);
     }
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
-        Log.d(TAG, "onListItemClick");
-        super.onListItemClick(l, v, position, id);
-
-        dashboardActivity.openFeedback(oneSurveyForOrgUnit.get(position), true);
-    }
 
     @Override
     public void onStop(){
