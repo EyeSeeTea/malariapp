@@ -40,7 +40,6 @@ import java.util.Map;
 public class PlannedItemBuilder {
 
     private final String TAG=".PlannedItemBuilder";
-    private static PlannedItemBuilder instance;
 
     public static PlannedItemBuilder getNewInstance(){
         return new PlannedItemBuilder();
@@ -53,6 +52,7 @@ public class PlannedItemBuilder {
     public List<PlannedItem> buildPlannedItemsWithoutSave(Context context){
         return buildPlannedItems(context, false);
     }
+
     /**
      * Builds an ordered list of planned items (header + surveys)
      * @return
@@ -60,6 +60,7 @@ public class PlannedItemBuilder {
     public List<PlannedItem> buildPlannedItemsSavingNews(Context context){
         return buildPlannedItems(context, true);
     }
+
     /**
      * Builds an ordered list of planned items (header + surveys)
      * @return
@@ -92,9 +93,6 @@ public class PlannedItemBuilder {
         if(saveEmptyCombinations) {
             buildNonExistantCombinations(never, surveyMap);
         }
-
-        //Plan surveys for the future
-        //Join lists together (never + overdue + next30 + future)
 
         List<PlannedItem> plannedItems = new ArrayList<>();
         //Annotate number of items per accordion
@@ -151,7 +149,6 @@ public class PlannedItemBuilder {
      */
     private boolean processAsNever(Survey survey, List<PlannedItem> section){
         Date scheduledDate = survey.getScheduledDate();
-        Date today = new Date();
 
         //No Scheduled
         if (scheduledDate==null) {
@@ -254,10 +251,10 @@ public class PlannedItemBuilder {
                     continue;
                 }
 
-                //NOT exists
+                //NOT exists. Create a new survey and add to never
                 survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
 
-                //Check if belongs to NEVER section
+                //Add to never
                 if(processAsNever(survey, never)){
                     return;
                 }

@@ -56,7 +56,6 @@ public class PlannedSurveyService extends IntentService {
     }
 
     private void reloadPlannedSurveys() {
-        System.out.print("Strategy ina log: reloadPlanningSurveys Planned survey service");
         Log.d(getClass().getName(), "reloadPlanningSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getNewInstance().buildPlannedItemsSavingNews(getApplicationContext()));
@@ -68,7 +67,6 @@ public class PlannedSurveyService extends IntentService {
     }
 
     private void reloadOrgUnitPlannedSurveys() {
-        System.out.print("Strategy ina log: reloadPlanningSurveys Planned survey service");
         Log.d(getClass().getName(), "reloadPlanningSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
         plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getNewInstance().buildPlannedItemsWithoutSave(getApplicationContext()));
