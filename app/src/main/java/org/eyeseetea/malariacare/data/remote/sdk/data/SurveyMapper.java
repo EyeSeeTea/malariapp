@@ -31,7 +31,7 @@ public class SurveyMapper {
     private Map<String, Question> questionsMap;
     private Map<String, List<Option>> optionsMap;
 
-    //TODO compositeScoreMap on the future should be a domain entity list
+    //TODO: compositeScoreMap on the future should be a domain entity list
     public SurveyMapper(
             ServerMetadata serverMetadata,
             List<CompositeScoreDB> compositeScores,
@@ -58,42 +58,6 @@ public class SurveyMapper {
         }
 
         return surveys;
-    }
-
-    private boolean isEventValid(EventExtended event) {
-        boolean isValid = true;
-
-        if (event.getEventDate() == null
-                || event.getEventDate().equals("")) {
-            Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"
-                    + event.getUid());
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    private void createMaps(List<CompositeScoreDB> compositeScores, List<Question> questions,
-            List<Option> options) {
-        compositeScoreMap = new HashMap<>();
-        for (CompositeScoreDB compositeScore : compositeScores) {
-            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
-        }
-
-        optionsMap = new HashMap<>();
-        for (Option option : options) {
-            if (!optionsMap.containsKey(option.getAnswerName())) {
-                optionsMap.put(option.getAnswerName(), new ArrayList<Option>());
-            }
-
-            optionsMap.get(option.getAnswerName()).add(option);
-        }
-
-
-        questionsMap = new HashMap<>();
-        for (Question question : questions) {
-            questionsMap.put(question.getUId(), question);
-        }
     }
 
     private Survey map(Event event) {
@@ -173,11 +137,13 @@ public class SurveyMapper {
                 optionUid = option.getUId();
             }
 
+            //No option -> text question (straight value)
             if (optionUid == null) {
                 questionValue = QuestionValue.createSimpleValue(questionUid, dataValue.getValue());
             } else {
+                //Option -> extract value from code
                 questionValue = QuestionValue.createOptionValue(questionUid, optionUid,
-                        dataValue.getValue());
+                       option.getName());
             }
         } else {
             //There is data values assigned by dhis scripts that we should not converting
@@ -221,5 +187,28 @@ public class SurveyMapper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void createMaps(List<CompositeScoreDB> compositeScores, List<Question> questions,
+            List<Option> options) {
+        compositeScoreMap = new HashMap<>();
+        for (CompositeScoreDB compositeScore : compositeScores) {
+            compositeScoreMap.put(compositeScore.getUid(), compositeScore);
+        }
+
+        optionsMap = new HashMap<>();
+        for (Option option : options) {
+            if (!optionsMap.containsKey(option.getAnswerName())) {
+                optionsMap.put(option.getAnswerName(), new ArrayList<Option>());
+            }
+
+            optionsMap.get(option.getAnswerName()).add(option);
+        }
+
+
+        questionsMap = new HashMap<>();
+        for (Question question : questions) {
+            questionsMap.put(question.getUId(), question);
+        }
     }
 }

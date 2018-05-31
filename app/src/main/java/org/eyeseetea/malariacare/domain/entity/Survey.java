@@ -9,10 +9,6 @@ import java.util.List;
 
 public class Survey {
 
-    public enum Status {
-        PLANNED, IN_PROGRESS, COMPLETED, SENT, CONFLICT, QUARANTINE, SENDING
-    }
-
     private final String uId;
     private final String programUId;
     private final String orgUnitUId;
@@ -22,7 +18,7 @@ public class Survey {
     private Date completionDate;
     private Date uploadDate;
     private Date scheduledDate;
-    private Status status;
+    private SurveyStatus status;
     private List<QuestionValue> values;
 
     private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
@@ -33,7 +29,7 @@ public class Survey {
         this.values = new ArrayList<>();
 
         creationDate = new Date();
-        status = Status.IN_PROGRESS;
+        status = SurveyStatus.IN_PROGRESS;
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
@@ -46,7 +42,7 @@ public class Survey {
             String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
             Date completionDate, List<QuestionValue> values, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.changeStatus(Status.SENT);
+        survey.changeStatus(SurveyStatus.SENT);
         survey.assignCreationDate(creationDate);
         survey.changeUploadDate(uploadDate);
         survey.changeScheduledDate(scheduledDate);
@@ -76,7 +72,7 @@ public class Survey {
         return creationDate;
     }
 
-    public Status getStatus() {
+    public SurveyStatus getStatus() {
         return status;
     }
 
@@ -112,7 +108,7 @@ public class Survey {
         this.creationDate = date;
     }
 
-    public void changeStatus(Status status) {
+    public void changeStatus(SurveyStatus status) {
         this.status = status;
     }
 
