@@ -37,7 +37,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.FeedbackBuilder;
+import org.eyeseetea.malariacare.data.database.utils.planning.PlannedItemBuilder;
 import org.eyeseetea.malariacare.data.database.utils.services.BaseServiceBundle;
+import org.eyeseetea.malariacare.data.database.utils.services.PlannedServiceBundle;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -232,6 +234,28 @@ public class SurveyService extends IntentService {
 
     }
 
+    private void reloadOrgUnitPlannedSurveys() {
+        Log.d(TAG, "reloadPlanningSurveys");
+        PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
+        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getNewInstance().buildPlannedItems(getApplicationContext()));
+        plannedServiceBundle.addModelList(OrgUnit.class.getName(), OrgUnit.getAllOrgUnit());
+        plannedServiceBundle.addModelList(Program.class.getName(), Program.getAllPrograms());
+        Session.putServiceValue(PlannedSurveyService.PLANNED_ORG_SURVEYS_ACTION, plannedServiceBundle);
+        //Returning result to anyone listening
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PlannedSurveyService.PLANNED_ORG_SURVEYS_ACTION));
+    }
+
+    private void reloadPlannedSurveys() {
+        Log.d(TAG, "reloadPlanningSurveys");
+        PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
+        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getNewInstance().buildPlannedItems(getApplicationContext()));
+        plannedServiceBundle.addModelList(OrgUnit.class.getName(), OrgUnit.getAllOrgUnit());
+        plannedServiceBundle.addModelList(Program.class.getName(), Program.getAllPrograms());
+        Session.putServiceValue(PlannedSurveyService.PLANNED_SURVEYS_ACTION, plannedServiceBundle);
+        //Returning result to anyone listening
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(PlannedSurveyService.PLANNED_SURVEYS_ACTION));
+    }
+
     private void getAllCreateSurveyData() {
         Log.d(TAG,"getAllCreateSurveyData (Thread:"+Thread.currentThread().getId()+")");
 
@@ -327,6 +351,8 @@ public class SurveyService extends IntentService {
         getAllInProgressSurveys();
         getAllMonitorData();
         getAllPrograms();
+        reloadOrgUnitPlannedSurveys();
+        reloadPlannedSurveys();
     }
 
     /**
