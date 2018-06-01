@@ -27,6 +27,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
+import java.util.List;
+
 /**
  * Created by ivan.arrizabalaga on 14/02/15.
  */
@@ -163,6 +165,12 @@ public class OrgUnitProgramRelation extends BaseModel {
 
     public void setId_orgunit_program_relation(long id_orgunit_program_relation) {
         this.id_orgunit_program_relation = id_orgunit_program_relation;
+    }
+
+    public static List<OrgUnitProgramRelation> getAll() {
+        return new Select()
+                .from(OrgUnitProgramRelation.class)
+                .queryList();
     }
 
     @Override

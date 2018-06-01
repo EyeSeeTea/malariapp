@@ -22,6 +22,7 @@ package org.eyeseetea.malariacare.data.database.utils.planning;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnit;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelation;
 import org.eyeseetea.malariacare.data.database.model.Program;
 import org.eyeseetea.malariacare.data.database.model.Survey;
 import org.eyeseetea.malariacare.data.database.utils.Session;
@@ -29,6 +30,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Helper that creates a 'next' planned survey from a given survey or from a orgUnit + program
@@ -158,6 +160,21 @@ public class SurveyPlanner {
             buildNext(survey);
         }
 
+        //Plan non existant combinations
+        buildNonExistentCombinations();
+    }
+
+    private void buildNonExistentCombinations() {
+        List<OrgUnitProgramRelation> orgUnitProgramRelations = OrgUnitProgramRelation.getAll();
+        for (OrgUnitProgramRelation orgUnitProgramRelation : orgUnitProgramRelations) {
+            Survey survey = Survey.findPlannedByOrgUnitAndProgram(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
+            //Already built
+            if (survey != null) {
+                continue;
+            }
+            //NOT exists. Create a new survey and add to never
+            buildNext(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
+        }
     }
 
     public Date findScheduledDateBySurvey(Survey survey) {

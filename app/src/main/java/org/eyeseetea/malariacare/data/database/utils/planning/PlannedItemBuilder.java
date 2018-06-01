@@ -44,28 +44,11 @@ public class PlannedItemBuilder {
     public static PlannedItemBuilder getNewInstance(){
         return new PlannedItemBuilder();
     }
-
     /**
      * Builds an ordered list of planned items (header + surveys)
      * @return
      */
-    public List<PlannedItem> buildPlannedItemsWithoutSave(Context context){
-        return buildPlannedItems(context, false);
-    }
-
-    /**
-     * Builds an ordered list of planned items (header + surveys)
-     * @return
-     */
-    public List<PlannedItem> buildPlannedItemsSavingNews(Context context){
-        return buildPlannedItems(context, true);
-    }
-
-    /**
-     * Builds an ordered list of planned items (header + surveys)
-     * @return
-     */
-    public List<PlannedItem> buildPlannedItems(Context context, boolean saveEmptyCombinations){
+    public List<PlannedItem> buildPlannedItems(Context context){
         Context ctx = context;
         Map<String,Survey> surveyMap = new HashMap<>();
         List<PlannedItem> never;
@@ -90,9 +73,6 @@ public class PlannedItemBuilder {
         }
 
         //Fill potential gaps (a brand new program or orgunit)
-        if(saveEmptyCombinations) {
-            buildNonExistantCombinations(never, surveyMap);
-        }
 
         List<PlannedItem> plannedItems = new ArrayList<>();
         //Annotate number of items per accordion
@@ -232,34 +212,6 @@ public class PlannedItemBuilder {
         calendar.setTime(date);
         calendar.add(Calendar.DATE,30);
         return calendar.getTime();
-    }
-
-
-    /**
-     * Builds brand new combinations for those orgunit + program without a planned item
-     */
-    private void buildNonExistantCombinations(List<PlannedItem> never, Map<String, Survey> surveyMap) {
-
-        //Every orgunit
-        for(OrgUnit orgUnit:OrgUnit.list()){
-            //Each authorized program
-            for(Program program:orgUnit.getPrograms()){
-                String key=getSurveyKey(orgUnit,program);
-                Survey survey=surveyMap.get(key);
-                //Already built
-                if(survey!=null){
-                    continue;
-                }
-
-                //NOT exists. Create a new survey and add to never
-                survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
-
-                //Add to never
-                if(processAsNever(survey, never)){
-                    return;
-                }
-            }
-        }
     }
 
     /**
