@@ -42,10 +42,12 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoC
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
@@ -149,10 +151,11 @@ public class ProgressActivity extends Activity {
                     new ServerMetadataRepository(this);
             IOptionRepository optionRepository = new OptionRepository();
             IQuestionRepository questionRepository = new QuestionLocalDataSource();
+            IConnectivityManager connectivityManager = new ConnectivityManager();
 
             ISurveyDataSource surveyRemoteDataSource =
                     new SurveyDhisDataSource(serverMetadataRepository,
-                            questionRepository, optionRepository);
+                            questionRepository, optionRepository, connectivityManager);
 
             ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
 

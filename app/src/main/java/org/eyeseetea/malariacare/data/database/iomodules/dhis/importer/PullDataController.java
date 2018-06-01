@@ -68,6 +68,7 @@ public class PullDataController implements IPullDataController {
     public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
+        //New code
         try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
@@ -83,6 +84,7 @@ public class PullDataController implements IPullDataController {
             callback.onError(e);
         }
 
+        //Old code
         //oldPullData(filters, callback);
     }
 

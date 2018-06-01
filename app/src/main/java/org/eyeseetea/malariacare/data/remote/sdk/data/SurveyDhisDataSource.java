@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
@@ -53,21 +54,24 @@ import java.util.Set;
 
 public class SurveyDhisDataSource implements ISurveyDataSource {
 
-    private IServerMetadataRepository mServerMetadataRepository;
-    private IOptionRepository mOptionRepository;
-    private IQuestionRepository mQuestionRepository;
+    private final IServerMetadataRepository mServerMetadataRepository;
+    private final IOptionRepository mOptionRepository;
+    private final IQuestionRepository mQuestionRepository;
+    private final IConnectivityManager mConnectivityManager;
 
     public SurveyDhisDataSource(IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository,
-            IOptionRepository optionRepository) {
+            IOptionRepository optionRepository,
+            IConnectivityManager connectivityManager) {
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
+        this.mConnectivityManager = connectivityManager;
     }
 
     @Override
     public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
-        boolean isNetworkAvailable = isNetworkAvailable();
+        boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
         if (isNetworkAvailable) {
             pullEvents(filters);
@@ -85,15 +89,6 @@ public class SurveyDhisDataSource implements ISurveyDataSource {
     @Override
     public void Save(List<Survey> surveys) throws Exception {
         //Here push surveys code
-    }
-
-    private boolean isNetworkAvailable() {
-        //TODO: extract this to another class to avoid duplicate code
-        ConnectivityManager cm =
-                (ConnectivityManager) PreferencesState.getInstance().getContext().getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void pullEvents(SurveyFilter filters) {
