@@ -50,7 +50,6 @@ public class PlannedItemBuilder {
      */
     public List<PlannedItem> buildPlannedItems(Context context){
         Context ctx = context;
-        Map<String,Survey> surveyMap = new HashMap<>();
         List<PlannedItem> never;
         List<PlannedItem> overdue;
         List<PlannedItem> next30;
@@ -69,7 +68,7 @@ public class PlannedItemBuilder {
         future.add(PlannedHeader.buildFutureHeader(ctx));
 
         for(Survey survey: Survey.findPlannedOrInProgress()){
-            findRightState(survey, never, overdue, next30, future, surveyMap);
+            findRightState(survey, never, overdue, next30, future);
         }
 
         //Fill potential gaps (a brand new program or orgunit)
@@ -96,12 +95,9 @@ public class PlannedItemBuilder {
      * @param overdue
      * @param next30
      * @param future
-     * @param surveyMap
      */
     private void findRightState(Survey survey, List<PlannedItem> never, List<PlannedItem> overdue,
-                                List<PlannedItem> next30, List<PlannedItem> future, Map<String, Survey> surveyMap){
-        //Annotate this survey to fill its spot
-        annotateSurvey(survey, surveyMap);
+                                List<PlannedItem> next30, List<PlannedItem> future){
 
         //Check if belongs to NEVER section
         if(processAsNever(survey, never)){
@@ -177,30 +173,6 @@ public class PlannedItemBuilder {
 
         //This survey does not belong to NEXT30 section
         return false;
-    }
-
-    /**
-     * Annotates the survey in the map
-     * @param survey
-     */
-    private void annotateSurvey(Survey survey, Map<String, Survey> surveyMap){
-        if(survey.getProgram()!=null) {
-            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
-            surveyMap.put(key,survey);
-        }
-        else{
-            Log.d(TAG, "Error program null in survey id: " + survey.getId_survey());
-        }
-    }
-
-    /**
-     * Builds a synthetic key for this survey
-     * @param orgUnit
-     * @param program
-     * @return
-     */
-    private String getSurveyKey(OrgUnit orgUnit, Program program) {
-        return orgUnit.getId_org_unit().toString()+"@"+program.getId_program().toString();
     }
 
     /**
