@@ -17,11 +17,14 @@ package org.eyeseetea.malariacare.domain.subscriber.event;
 import org.eyeseetea.malariacare.domain.entity.Question;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ValueChangedEvent {
 
-    List<Question> mQuestions;
+    List<Question> questions;
+    HashMap<String, Boolean> questionVisibility;
+
     public enum Action {INSERT, DELETE, TOGGLE}
     private Action action;
     private long idSurvey;
@@ -29,14 +32,25 @@ public class ValueChangedEvent {
     public ValueChangedEvent(long idSurvey, Question question, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
-        mQuestions = new ArrayList<>();
-        mQuestions.add(question);
+        this.questions = new ArrayList<>();
+        questionVisibility = new HashMap<>();
+        this.questions.add(question);
+        questionVisibility.put(question.getUId(), true);
     }
 
-    public ValueChangedEvent(long idSurvey, List<Question> questions, Action action) {
+    public ValueChangedEvent(long idSurvey, List<Question> questions, HashMap<String, Boolean> questionVisibility, Action action) {
         this.action = action;
         this.idSurvey = idSurvey;
-        mQuestions = questions;
+        this.questions = questions;
+        this.questionVisibility = questionVisibility;
+    }
+
+    public boolean getQuestionVisibility(String uId) {
+        if(questionVisibility.containsKey(uId)) {
+            return questionVisibility.get(uId);
+        }else{
+            return false;
+        }
     }
 
     public Action getAction() {
@@ -48,6 +62,6 @@ public class ValueChangedEvent {
     }
 
     public List<Question> getQuestions() {
-        return mQuestions;
+        return questions;
     }
 }
