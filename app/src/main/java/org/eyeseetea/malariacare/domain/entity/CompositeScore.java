@@ -2,7 +2,6 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.utils.PositiveOrCeroChecker.isPositiveOrCero;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.requiredNotEmpty;
 
 import java.util.ArrayList;
 
@@ -11,8 +10,8 @@ public class CompositeScore {
     private String label;
     private String hierarchicalCode;
     private int orderPos;
-    private String parentUid;
-    private ArrayList<String> childrenUids;
+    private CompositeScore parent;
+    private ArrayList<CompositeScore> children;
 
 
     public CompositeScore(String uid, String label, String hierarchicalCode,
@@ -39,25 +38,28 @@ public class CompositeScore {
         return orderPos;
     }
 
-    public String getParentUid() {
-        return parentUid;
+    public CompositeScore getParent() {
+        return parent;
     }
 
-    public ArrayList<String> getChildrenUids() {
-        return childrenUids;
+    public ArrayList<CompositeScore> getChildren() {
+        return children;
     }
 
-    public void addParent(String parentUid) {
-        parentUid = requiredNotEmpty(parentUid, "ParentUid is required and not empty");
+    public void addParent(CompositeScore parentUid) {
+        this.parent = required(parentUid, "ParentUid is required and not empty");
     }
 
-    public void addChildren(ArrayList<String> childrenUids) {
-        for (String childUid : childrenUids) {
-            addChild(childUid);
+    public void addChildren(ArrayList<CompositeScore> children) {
+        for (CompositeScore child : children) {
+            addChild(child);
         }
     }
 
-    public void addChild(String childUid) {
-        childrenUids.add(requiredNotEmpty(childUid, "ChildUid is required an not empty"));
+    public void addChild(CompositeScore child) {
+        if (children == null) {
+            children = new ArrayList<>();
+        }
+        children.add(required(child, "ChildUid is required an not empty"));
     }
 }

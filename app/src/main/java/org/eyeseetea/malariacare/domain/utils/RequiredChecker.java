@@ -17,12 +17,4 @@ public class RequiredChecker {
 
         return obj;
     }
-
-    public static String requiredNotEmpty(String obj, String message) {
-        if (obj == null || obj.isEmpty()) {
-            throw new IllegalArgumentException(message);
-        }
-
-        return obj;
-    }
 }

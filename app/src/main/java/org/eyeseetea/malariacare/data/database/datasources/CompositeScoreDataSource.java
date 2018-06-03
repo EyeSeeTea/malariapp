@@ -21,32 +21,35 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
     }
 
     private CompositeScore convertCompositeScoreChildren(CompositeScoreDB compositeScoreDB) {
-        CompositeScore compositeScore = convertFromDBToDomain(compositeScoreDB);
+        CompositeScore compositeScore = convertFromDBToDomain(compositeScoreDB, null);
         if (compositeScoreDB.getCompositeScoreChildren() != null
                 && !compositeScoreDB.getCompositeScoreChildren().isEmpty()) {
             for (CompositeScoreDB compositeScoreChild : compositeScoreDB
                     .getCompositeScoreChildren()) {
-                compositeScore.addChild(
-                        convertCompositeScoreChildren(compositeScoreChild).getUid());
+                compositeScore.addChild(convertFromDBToDomain(compositeScoreChild, compositeScore));
             }
         }
         return compositeScore;
     }
 
 
-    private CompositeScore convertFromDBToDomain(CompositeScoreDB compositeScoreDB) {
-        ArrayList<String> compositeScoreChildren = new ArrayList<>();
-        if (compositeScoreDB.getCompositeScoreChildren() != null) {
-            for (CompositeScoreDB compositeScoreChild : compositeScoreDB
-                    .getCompositeScoreChildren()) {
-                compositeScoreChildren.add(compositeScoreChild.getUid());
-            }
-        }
+    private CompositeScore convertFromDBToDomain(CompositeScoreDB compositeScoreDB,
+            CompositeScore parent) {
+        ArrayList<CompositeScore> compositeScoreChildren = new ArrayList<>();
+
         CompositeScore compositeScore = new CompositeScore(compositeScoreDB.getUid(),
                 compositeScoreDB.getLabel(),
                 compositeScoreDB.getHierarchical_code(), compositeScoreDB.getOrder_pos());
         if (compositeScoreDB.getComposite_score() != null) {
-            compositeScore.addParent(compositeScoreDB.getComposite_score().getUid());
+            compositeScore.addParent(parent);
+        }
+        if (compositeScoreDB.getCompositeScoreChildren() != null) {
+
+            for (CompositeScoreDB compositeScoreChild : compositeScoreDB
+                    .getCompositeScoreChildren()) {
+                compositeScoreChildren.add(
+                        convertFromDBToDomain(compositeScoreChild, compositeScore));
+            }
         }
         compositeScore.addChildren(compositeScoreChildren);
         return compositeScore;

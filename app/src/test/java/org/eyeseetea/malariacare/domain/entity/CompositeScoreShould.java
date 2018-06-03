@@ -27,25 +27,30 @@ public class CompositeScoreShould {
     @Test
     public void create_composite_score_and_add_parent() {
         CompositeScore compositeScore = new CompositeScore("UID", "LABEL", "HIERARCHICAL_CODE", 1);
-        compositeScore.addParent("PARENT_UID");
-        Assert.assertTrue(compositeScore.getParentUid().equals("PARENT_UID"));
+        CompositeScore parent = new CompositeScore("PARENT_UID", "LABEL", "HIERARCHICAL_CODE", 1);
+        compositeScore.addParent(parent);
+        Assert.assertTrue(compositeScore.getParent().equals(parent));
     }
 
     @Test
     public void create_composite_score_and_add_child() {
         CompositeScore compositeScore = new CompositeScore("UID", "LABEL", "HIERARCHICAL_CODE", 1);
-        compositeScore.addChild("CHILD_UID");
-        Assert.assertTrue(compositeScore.getChildrenUids().get(0).equals("CHILD_UID"));
+        CompositeScore child = new CompositeScore("CHILD_UID", "LABEL", "HIERARCHICAL_CODE", 1);
+        compositeScore.addChild(child);
+        Assert.assertTrue(compositeScore.getChildren().get(0).equals(child));
     }
 
     @Test
     public void create_composite_score_and_add_children() {
         CompositeScore compositeScore = new CompositeScore("UID", "LABEL", "HIERARCHICAL_CODE", 1);
+        CompositeScore child1 = new CompositeScore("CHILD_UID1", "LABEL", "HIERARCHICAL_CODE", 1);
+        CompositeScore child2 = new CompositeScore("CHILD_UID2", "LABEL", "HIERARCHICAL_CODE", 1);
+        CompositeScore child3 = new CompositeScore("CHILD_UID3", "LABEL", "HIERARCHICAL_CODE", 1);
         compositeScore.addChildren(
-                new ArrayList<>(Arrays.asList("CHILD_UID1", "CHILD_UID2", "CHILD_UID3")));
-        Assert.assertTrue(compositeScore.getChildrenUids().get(0).equals("CHILD_UID1"));
-        Assert.assertTrue(compositeScore.getChildrenUids().get(1).equals("CHILD_UID2"));
-        Assert.assertTrue(compositeScore.getChildrenUids().get(2).equals("CHILD_UID3"));
+                new ArrayList<>(Arrays.asList(child1, child2, child3)));
+        Assert.assertTrue(compositeScore.getChildren().get(0).equals(child1));
+        Assert.assertTrue(compositeScore.getChildren().get(1).equals(child2));
+        Assert.assertTrue(compositeScore.getChildren().get(2).equals(child3));
     }
 
     @Test
@@ -53,7 +58,7 @@ public class CompositeScoreShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("ParentUid is required and not empty");
         CompositeScore compositeScore = new CompositeScore("UID", "LABEL", "HIERARCHICAL_CODE", 1);
-        compositeScore.addParent("");
+        compositeScore.addParent(null);
     }
 
     @Test
@@ -61,7 +66,7 @@ public class CompositeScoreShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("ChildUid is required an not empty");
         CompositeScore compositeScore = new CompositeScore("UID", "LABEL", "HIERARCHICAL_CODE", 1);
-        compositeScore.addChild("");
+        compositeScore.addChild(null);
     }
 
     @Test
@@ -69,8 +74,9 @@ public class CompositeScoreShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("ChildUid is required an not empty");
         CompositeScore compositeScore = new CompositeScore("UID", "LABEL", "HIERARCHICAL_CODE", 1);
-        compositeScore.addChildren(
-                new ArrayList<>(Arrays.asList("CHILD_UID1", "", "CHILD_UID3")));
+        CompositeScore child1 = new CompositeScore("CHILD_UID1", "LABEL", "HIERARCHICAL_CODE", 1);
+        CompositeScore child3 = new CompositeScore("CHILD_UID3", "LABEL", "HIERARCHICAL_CODE", 1);
+        compositeScore.addChildren(new ArrayList<>(Arrays.asList(child1, null, child3)));
     }
 
     @Test
