@@ -58,7 +58,8 @@ public class PlannedSurveyService extends IntentService {
     private void reloadPlannedSurveys() {
         Log.d(getClass().getName(), "reloadPlanningSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
-        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getNewInstance().buildPlannedItems(getApplicationContext()));
+        PlannedItemBuilder plannedItemBuilder = new PlannedItemBuilder();
+        plannedServiceBundle.setPlannedItems(plannedItemBuilder.buildPlannedItems(getApplicationContext()));
         plannedServiceBundle.addModelList(OrgUnit.class.getName(), OrgUnit.getAllOrgUnit());
         plannedServiceBundle.addModelList(Program.class.getName(), Program.getAllPrograms());
         Session.putServiceValue(PLANNED_SURVEYS_ACTION, plannedServiceBundle);
@@ -69,7 +70,8 @@ public class PlannedSurveyService extends IntentService {
     private void reloadOrgUnitPlannedSurveys() {
         Log.d(getClass().getName(), "reloadPlanningSurveys");
         PlannedServiceBundle plannedServiceBundle = new PlannedServiceBundle();
-        plannedServiceBundle.setPlannedItems(PlannedItemBuilder.getNewInstance().buildPlannedItems(getApplicationContext()));
+        PlannedItemBuilder plannedItemBuilder = new PlannedItemBuilder();
+        plannedServiceBundle.setPlannedItems(plannedItemBuilder.buildPlannedItems(getApplicationContext()));
         plannedServiceBundle.addModelList(OrgUnit.class.getName(), OrgUnit.getAllOrgUnit());
         plannedServiceBundle.addModelList(Program.class.getName(), Program.getAllPrograms());
         Session.putServiceValue(PLANNED_ORG_SURVEYS_ACTION, plannedServiceBundle);

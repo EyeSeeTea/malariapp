@@ -40,10 +40,6 @@ import java.util.Map;
 public class PlannedItemBuilder {
 
     private final String TAG=".PlannedItemBuilder";
-
-    public static PlannedItemBuilder getNewInstance(){
-        return new PlannedItemBuilder();
-    }
     /**
      * Builds an ordered list of planned items (header + surveys)
      * @return
