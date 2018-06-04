@@ -41,7 +41,7 @@ ext {
             minSdkVersion    : 15,
             compileSdkVersion: 24,
             targetSdkVersion : 24,
-            versionCode      : 43,
+            versionCode      : 44,
             versionName      : "QAApp"
     ]
     libraries = [
