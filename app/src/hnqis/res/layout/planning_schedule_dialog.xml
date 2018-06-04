@@ -76,6 +76,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:editable="false"
+                android:focusable="false"
                 android:gravity="center"
                 android:padding="@dimen/dashboard_planning_padding"
                 android:textStyle="bold" />
