@@ -174,7 +174,6 @@ public class DashboardController {
         for(ModuleController module: this.getModules()){
             module.onCreate(dashboardActivity);
         }
-        getFirstVisibleModule().reloadData();
         onCreateTabHost(savedInstanceState);
     }
 
