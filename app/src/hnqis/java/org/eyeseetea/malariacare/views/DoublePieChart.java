@@ -34,6 +34,7 @@ public class DoublePieChart extends FrameLayout {
     private View doublePieContainer;
     private static final int HIGH_VALUE = 90;
     private static final int MIDDLE_VALUE = 80;
+    private static final int HIGH_VALUE_OUTSIDE = 99;
     private int highColor, middleColor, lowColor,
             mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor;
 
@@ -118,14 +119,14 @@ public class DoublePieChart extends FrameLayout {
         mChart.setRotationEnabled(false);
         mChart.setHighlightPerTapEnabled(false);
 
-        setData(mChart, percentage, highColor, middleColor, lowColor);
+        setData(mChart, percentage, highColor, middleColor, lowColor, hole);
 
         mChart.animateY(100, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
     }
 
     private void setData(PieChart mChart, int percentage,
-            int highColor, int middleColor, int lowColor) {
+            int highColor, int middleColor, int lowColor, boolean hole) {
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -146,7 +147,9 @@ public class DoublePieChart extends FrameLayout {
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        int colorByPercentage = getColorByPercentage(percentage, highColor, middleColor, lowColor);
+        int colorByPercentage = !hole ? getColorByPercentage(percentage, highColor, middleColor,
+                lowColor) : getOutsideColorByPercentage(percentage, highColor, middleColor,
+                lowColor);
         colors.add(colorByPercentage);
         colors.add(Color.TRANSPARENT);
         dataSet.setColors(colors);
@@ -221,9 +224,22 @@ public class DoublePieChart extends FrameLayout {
 
         int lowColor  = getLowColor(context);
 
-        return getColorByPercentage(percentage, highColor,
+        return getOutsideColorByPercentage(percentage, highColor,
                 middleColor,
                 lowColor);
+    }
+
+    private static int getOutsideColorByPercentage(int percentage, int highColor, int middleColor,
+            int lowColor) {
+        int colorByPercentage;
+        if (percentage >= HIGH_VALUE_OUTSIDE) {
+            colorByPercentage = highColor;
+        } else if (percentage >= MIDDLE_VALUE) {
+            colorByPercentage = middleColor;
+        } else {
+            colorByPercentage = lowColor;
+        }
+        return colorByPercentage;
     }
 
     private static int getHighColor(@NonNull Context context){
