@@ -40,39 +40,16 @@ import java.util.Map;
  */
 public class PlannedItemBuilder {
 
-    private final String TAG=".PlannedItemBuilder";
-
     /**
-     * Memo to find non existant combinations
+     * Builds an ordered list of planned items (header + surveys)
+     * @return
      */
-    Map<String,SurveyDB> surveyMap;
-
-    /**
-     * List of surveys not sent
-     */
-    private List<PlannedItem> never;
-
-    /**
-     * List of surveys overdued
-     */
-    private List<PlannedItem> overdue;
-
-    /**
-     * List of surveys for the next 30 days
-     */
-    private List<PlannedItem> next30;
-
-    /**
-     * List of surveys beyond the next 30 days
-     */
-    private List<PlannedItem> future;
-
-    /**
-     * Inits aux data structures
-     */
-    private void initBuilder(){
-        surveyMap = new HashMap<>();
-        Context ctx=PreferencesState.getInstance().getContext();
+    public List<PlannedItem> buildPlannedItems(Context context){
+        Context ctx = context;
+        List<PlannedItem> never;
+        List<PlannedItem> overdue;
+        List<PlannedItem> next30;
+        List<PlannedItem> future;
 
         never = new ArrayList<>();
         never.add(PlannedHeader.buildNeverHeader(ctx));
@@ -85,85 +62,53 @@ public class PlannedItemBuilder {
 
         future = new ArrayList<>();
         future.add(PlannedHeader.buildFutureHeader(ctx));
-    }
-
-    /**
-     * Releases memory references
-     */
-    private void releaseState(){
-        Log.d(TAG, "release states");
-        surveyMap.clear();
-        never.clear();
-        overdue.clear();
-        next30.clear();
-        future.clear();
-    }
-
-    /**
-     * Builds an ordered list of planned items (header + surveys)
-     * @return
-     */
-    public List<PlannedItem> buildPlannedItems(){
-
-        initBuilder();
 
         //Find its place according to scheduleddate
         for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
-            findRightState(survey);
+            findRightState(survey, never, overdue, next30, future);
         }
 
         //Fill potential gaps (a brand new program or orgunit)
-        buildNonExistantCombinations();
 
-        //Join lists together (never + overdue + next30 + future)
-        return mergeLists();
-    }
-
-    private List<PlannedItem> mergeLists() {
         List<PlannedItem> plannedItems = new ArrayList<>();
         //Annotate number of items per accordion
-        if(never.size()>0){
-            ((PlannedHeader)never.get(0)).setCounter(never.size()-1);
-            plannedItems.addAll(never);
-        }
-        if(overdue.size()>0) {
-            ((PlannedHeader) overdue.get(0)).setCounter(overdue.size() - 1);
-            plannedItems.addAll(overdue);
-        }
-        if(next30.size()>0) {
-            ((PlannedHeader) next30.get(0)).setCounter(next30.size() - 1);
-            plannedItems.addAll(next30);
-        }
-        if(future.size()>0) {
-            ((PlannedHeader) future.get(0)).setCounter(future.size() - 1);
-            plannedItems.addAll(future);
-        }
+        ((PlannedHeader)never.get(0)).setCounter(never.size()-1);
+        ((PlannedHeader)overdue.get(0)).setCounter(overdue.size()-1);
+        ((PlannedHeader)next30.get(0)).setCounter(next30.size()-1);
+        ((PlannedHeader)future.get(0)).setCounter(future.size() - 1);
 
-        //Release state references
-        releaseState();
+        //Put altogether in one list
+        plannedItems.addAll(never);
+        plannedItems.addAll(overdue);
+        plannedItems.addAll(next30);
+        plannedItems.addAll(future);
         return plannedItems;
     }
+
 
     /**
      * Puts the survey in its right list
      * @param survey
+     * @param never
+     * @param overdue
+     * @param next30
+     * @param future
      */
-    private void findRightState(SurveyDB survey){
-        //Annotate this survey to fill its spot
-        annotateSurvey(survey);
+    private void findRightState(SurveyDB survey, List<PlannedItem> never, List<PlannedItem> overdue,
+                                List<PlannedItem> next30, List<PlannedItem> future){
 
         //Check if belongs to NEVER section
-        if(processAsNever(survey)){
+        if(processAsNever(survey, never)){
             return;
         }
 
         //Check if belongs to NEVER section
-        if(processAsOverdue(survey)){
+        if(processAsOverdue(survey, overdue)){
             return;
         }
 
         //Check if belongs to NEVER section
-        if(processAsNext30(survey)){
+        if(processAsNext30(survey, next30)){
             return;
         }
 
@@ -176,13 +121,12 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsNever(SurveyDB survey){
+    private boolean processAsNever(SurveyDB survey, List<PlannedItem> section){
         Date scheduledDate = survey.getScheduledDate();
-        Date today = new Date();
 
         //No Scheduled
         if (scheduledDate==null) {
-            addToSection(never, survey);
+            addToSection(section, survey);
             return true;
         }
 
@@ -195,13 +139,13 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsOverdue(SurveyDB survey){
+    private boolean processAsOverdue(SurveyDB survey, List<PlannedItem> section){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
 
         //scheduledDate<today
         if(scheduledDate.before(today)){
-            addToSection(overdue, survey);
+            addToSection(section, survey);
             return true;
         }
 
@@ -214,33 +158,19 @@ public class PlannedItemBuilder {
      * @param survey
      * @return
      */
-    private boolean processAsNext30(SurveyDB survey){
+    private boolean processAsNext30(SurveyDB survey, List<PlannedItem> section){
         Date scheduledDate = survey.getScheduledDate();
         Date today = new Date();
         Date today30 = getIn30Days(today);
 
         //planned in less 30 days
         if(scheduledDate.before(today30)) {
-            addToSection(next30,survey);
+            addToSection(section,survey);
             return true;
         }
 
         //This survey does not belong to NEXT30 section
         return false;
-    }
-
-    /**
-     * Annotates the survey in the map
-     * @param survey
-     */
-    private void annotateSurvey(SurveyDB survey){
-        if(survey.getProgram()!=null) {
-            String key= getSurveyKey(survey.getOrgUnit(), survey.getProgram());
-            surveyMap.put(key,survey);
-        }
-        else{
-            Log.d(TAG, "Error program null in survey id: " + survey.getId_survey());
-        }
     }
 
     /**
@@ -264,38 +194,12 @@ public class PlannedItemBuilder {
         return calendar.getTime();
     }
 
-
-    /**
-     * Builds brand new combinations for those orgunit + program without a planned item
-     */
-    private void buildNonExistantCombinations() {
-
-        //Every orgunit
-        for(OrgUnitDB orgUnit: OrgUnitDB.list()){
-            //Each authorized program
-            for(ProgramDB program:orgUnit.getPrograms()){
-                String key=getSurveyKey(orgUnit,program);
-                SurveyDB survey=surveyMap.get(key);
-                //Already built
-                if(survey!=null){
-                    continue;
-                }
-
-                //NOT exists
-                survey=SurveyPlanner.getInstance().buildNext(orgUnit,program);
-
-                //Process like any other survey
-                findRightState(survey);
-            }
-        }
-    }
-
     /**
      * Adds a survey to the given list (section), linking the new item to its header
      * @param section
      * @param survey
      */
-    private void addToSection(List<PlannedItem> section,SurveyDB survey){
+    private void addToSection(List<PlannedItem> section, SurveyDB survey){
         if(section.size()>0) {
             PlannedHeader header = (PlannedHeader) section.get(0);
             section.add(new PlannedSurvey(survey, header));
