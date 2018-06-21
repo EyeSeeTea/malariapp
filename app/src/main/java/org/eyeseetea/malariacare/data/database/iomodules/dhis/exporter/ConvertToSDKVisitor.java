@@ -433,14 +433,14 @@ public class ConvertToSDKVisitor implements
             addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
         }
 
-        //It Checks if the dataelement exists, before build and save the datavalue
+        //It Checks if the dataelement exists, before build and saveOldSurvey the datavalue
         //Created date
         if (controlDataElementExistsInServer(createdOnCode)) {
             addOrUpdateDataValue(createdOnCode, EventExtended.format(survey.getCreationDate(),
                     EventExtended.DHIS2_GMT_DATE_FORMAT));
         }
 
-        //It Checks if the dataelement exists, before build and save the datavalue
+        //It Checks if the dataelement exists, before build and saveOldSurvey the datavalue
         //Created date
         if (controlDataElementExistsInServer(completionDateCode)) {
             addOrUpdateDataValue(completionDateCode, EventExtended.format(survey.getCompletionDate(),

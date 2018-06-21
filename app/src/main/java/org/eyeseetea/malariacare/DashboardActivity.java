@@ -402,7 +402,7 @@ public class DashboardActivity extends BaseActivity {
                 pullClient.pullUserAttributes(loggedUser);
             }*/
             loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
-            loggedUser.save();//save the lastUpdated info and attributes
+            loggedUser.save();//saveOldSurvey the lastUpdated info and attributes
             return null;
         }
 

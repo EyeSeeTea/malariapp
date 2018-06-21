@@ -112,7 +112,7 @@ class DownloadMediaTask extends AsyncTask<Void, Void, Integer> {
         try {
             //download file
             String absolutePath=downloadFile(media.getResourceUrl());
-            //save local path to use later
+            //saveOldSurvey local path to use later
             media.setFilename(absolutePath);
             media.save();
             Log.d(TAG,"\tsaved in "+absolutePath);

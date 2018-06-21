@@ -185,7 +185,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
      */
     @Override
     public void visit(OrganisationUnitExtended organisationUnit) {
-        //Create and save OrgUnitLevel
+        //Create and saveOldSurvey OrgUnitLevel
         OrgUnitLevelDB appOrgUnitLevel = orgUnitLevelMap.get(
                 OrganisationUnitLevelExtended.buildKey(organisationUnit.getLevel()));
         //create the orgUnit
@@ -370,7 +370,7 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             dataValueExtended.setProgramUid(event.getProgramId());
             dataValueExtended.accept(this);
         }
-        //Once all the values are processed save common data across created surveys
+        //Once all the values are processed saveOldSurvey common data across created surveys
         //eventToSurveyBuilder.saveCommonData();
     }
 

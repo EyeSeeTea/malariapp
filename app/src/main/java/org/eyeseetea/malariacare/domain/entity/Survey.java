@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
+import static org.eyeseetea.malariacare.domain.entity.Survey.Status.QUARANTINE;
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
@@ -47,6 +48,20 @@ public class Survey {
             Date completionDate, List<QuestionValue> values, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         survey.changeStatus(Status.SENT);
+        survey.assignCreationDate(creationDate);
+        survey.changeUpdateDate(updateDate);
+        survey.changeScheduledDate(scheduledDate);
+        survey.assignCompletionDate(completionDate);
+        survey.addQuestionValues(values);
+        survey.assignScore(score);
+        return survey;
+    }
+
+    public static Survey createExistedSurvey(String uId, String programUId, String orgUnitUId,
+            String userUId, Date creationDate, Date updateDate, Date scheduledDate,
+            Date completionDate, List<QuestionValue> values, Score score, Status status) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.changeStatus(status);
         survey.assignCreationDate(creationDate);
         survey.changeUpdateDate(updateDate);
         survey.changeScheduledDate(scheduledDate);
@@ -126,5 +141,9 @@ public class Survey {
 
     public void changeScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    public boolean isQuarantine() {
+        return status.equals(QUARANTINE);
     }
 }

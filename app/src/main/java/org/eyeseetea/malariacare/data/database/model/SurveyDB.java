@@ -772,7 +772,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     }
 
     public void setSentSurveyState() {
-        //Change status and save mainScore
+        //Change status and saveOldSurvey mainScore
         setStatus(Constants.SURVEY_SENT);
         save();
         saveMainScore();
@@ -803,7 +803,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         //Clean inner lazy schedulelist
         surveySchedules = null;
 
-        //Move scheduledate and save
+        //Move scheduledate and saveOldSurvey
         this.scheduled_date = newScheduledDate;
         this.save();
     }

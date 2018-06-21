@@ -108,7 +108,7 @@ public class QuestionBuilder {
     Map<String, ProgramDB> mapProgram;
 
     /**
-     * Contains all media (required for batch save)
+     * Contains all media (required for batch saveOldSurvey)
      */
     List<MediaDB> listMedia;
     /**
@@ -366,7 +366,7 @@ public class QuestionBuilder {
 
 
     /**
-     * Create and save the parent reation
+     * Create and saveOldSurvey the parent reation
      *
      * @param dataElementExtended
      */

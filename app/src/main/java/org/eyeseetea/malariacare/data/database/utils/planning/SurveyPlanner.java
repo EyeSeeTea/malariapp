@@ -103,7 +103,7 @@ public class SurveyPlanner {
      */
     public SurveyDB buildNext(SurveyDB survey) {
         SurveyDB plannedSurvey = new SurveyDB();
-        //Create and save a planned survey
+        //Create and saveOldSurvey a planned survey
         plannedSurvey.setStatus(Constants.SURVEY_PLANNED);
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
