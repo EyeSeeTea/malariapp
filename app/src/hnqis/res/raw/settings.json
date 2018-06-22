@@ -13,29 +13,29 @@
     "tabTitleVisible": false,
     "modules": [{
       "title": "plan",
-      "icon": "tab_plan",
-      "secondaryIcon": "tab_plan",
+      "icon": "tab_plan_selector",
+      "secondaryIcon": "tab_plan_selector",
       "backgroundColor": "tab_orange_plan",
       "layout": "dashboard_planning_init",
       "controller": "PlanModuleController"
     }, {
       "title": "assess",
-      "icon": "tab_assess",
-      "secondaryIcon": "tab_assess",
+      "icon": "tab_assess_selector",
+      "secondaryIcon": "tab_assess_selector",
       "backgroundColor": "tab_yellow_assess",
       "layout": "dashboard_details_container",
       "controller": "AssessModuleController"
     },{
       "title": "improve",
-      "icon": "tab_improve",
-      "secondaryIcon": "tab_improve",
+      "icon": "tab_improve_selector",
+      "secondaryIcon": "tab_improve_selector",
       "backgroundColor": "tab_blue_improve",
       "layout": "dashboard_completed_container",
       "controller": "ImproveModuleController"
     },{
       "title": "monitor",
-      "icon": "tab_monitor",
-      "secondaryIcon": "tab_monitor",
+      "icon": "tab_monitor_selector",
+      "secondaryIcon": "tab_monitor_selector",
       "backgroundColor": "tab_green_monitor",
       "layout": "dashboard_charts_container",
       "controller": "MonitorModuleController",
