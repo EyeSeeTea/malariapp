@@ -264,6 +264,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(OptionExtended sdkOption) {
         //Build option
         AnswerDB appAnswer = answerMap.get(sdkOption.getOptionSet());
+        if(sdkOption.getCode() == null){
+            Log.i(TAG, "A optionDB is ignored because null code, with name:" + sdkOption.getName());
+            return;
+        }
         OptionDB appOption =
                 new OptionDB();
         appOption.setName(sdkOption.getName());

@@ -53,15 +53,8 @@
     </ScrollView>
     <org.eyeseetea.sdk.presentation.views.CustomButton
         android:id="@id/cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="20dp"
         android:layout_alignParentBottom="true"
         android:text="@string/cancel"
-        android:background="@color/dialog_red_button"
-        android:textSize="@dimen/dialog_button_size"
-        android:textColor="@android:color/white"
-        app:font_name="@string/font_name_medium"   />
+        style="@style/EyeSeeDialogCancelButton"   />
 
 </RelativeLayout>
