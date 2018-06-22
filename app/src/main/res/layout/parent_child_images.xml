@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:id="@+id/parent_img"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
+        android:visibility="gone"
+        android:scaleType="centerInside"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/icn_plus"/>
+    <ImageView
+        android:id="@+id/parent_hide_img"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
+        android:visibility="gone"
+        android:scaleType="centerInside"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/ic_icn_min"/>
+    <ImageView
+        android:id="@+id/child_img"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
+        android:visibility="gone"
+        android:scaleType="centerInside"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        app:srcCompat="@drawable/ic_icn_follow_up"/>
+    <View
+        android:id="@+id/space_not_child_parent"
+        android:layout_width="@dimen/child_parent_image_size"
+        android:layout_height="@dimen/child_parent_image_size"
+        android:visibility="gone"
+        android:paddingLeft="10dp"/>
+
+</merge>
