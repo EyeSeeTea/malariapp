@@ -1,36 +1,33 @@
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.utils.Constants;
+import java.util.ArrayList;
+import java.util.List;
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
-    private long id;
-    private boolean cachedVisibility;
+    private String uId;
     private boolean isCompulsory;
     private boolean removed;
-    private int questionType;
+    private QuestionType questionType;
+    private List<String> optionUIds;
 
-    public Question() {
+    public Question(String uId, int questionType, boolean isCompulsory) {
+        this(uId, new ArrayList(),  questionType, isCompulsory);
     }
 
-    public Question(long id, int questionType, boolean isCompulsory) {
-        this.id = id;
-        this.questionType = questionType;
+    public Question(String uId, List<String> optionUIds, int questionType, boolean isCompulsory) {
+        this.uId = required(uId, "question uId is required");
+        this.optionUIds = required(optionUIds, "list of option uId is required");
+        this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
     }
 
-    public Question(long id, int questionType, boolean isCompulsory,  boolean cachedVisibility) {
-        this.id = id;
-        this.questionType = questionType;
-        this.cachedVisibility = cachedVisibility;
-        this.isCompulsory = isCompulsory;
+    public List<String> getOptionUIds(){
+        return optionUIds;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public boolean isCachedVisibility() {
-        return cachedVisibility;
+    public String getUId() {
+        return uId;
     }
 
     public boolean isCompulsory() {
@@ -45,13 +42,10 @@ public class Question {
         this.removed = removed;
     }
 
-    public int getQuestionType() {
-        return questionType;
+    public boolean isComputable(){
+        return questionType != QuestionType.NO_ANSWER;
     }
 
-    public boolean isComputable(){
-        return questionType != Constants.NO_ANSWER;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,31 +53,31 @@ public class Question {
 
         Question question = (Question) o;
 
-        if (id != question.id) return false;
-        if (cachedVisibility != question.cachedVisibility) return false;
         if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
-        return questionType == question.questionType;
+        if (uId != null ? !uId.equals(question.uId) : question.uId != null) return false;
+        if (questionType != question.questionType) return false;
+        return optionUIds != null ? optionUIds.equals(question.optionUIds) : question.optionUIds == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (cachedVisibility ? 1 : 0);
+        int result = uId != null ? uId.hashCode() : 0;
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
-        result = 31 * result + questionType;
+        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
+        result = 31 * result + (optionUIds != null ? optionUIds.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + id +
-                ", cachedVisibility=" + cachedVisibility +
+                "uId='" + uId + '\'' +
                 ", isCompulsory=" + isCompulsory +
                 ", removed=" + removed +
-                ", questionType=" + questionType +
+                ", questionTypeMapper=" + questionType +
+                ", optionUIds=" + optionUIds +
                 '}';
     }
 }
