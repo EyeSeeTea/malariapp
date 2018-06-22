@@ -46,6 +46,7 @@ import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
@@ -518,7 +519,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         data += "\n\n" + getString(R.string.see_full_assessment) + "\n";
         if (survey.isSent()) {
             data += String.format(getActivity().getString(R.string.feedback_url),
-                    survey.getEventUid());
+                    survey.getEventUid(), Session.getCredentials().getServerURL());
         } else {
             data += getString(R.string.url_not_available) + "\n";
         }
