@@ -78,4 +78,7 @@
     <color name="color_primary_light">@color/tab_gradient_end</color>
     <color name="color_primary_default">@color/grey_light_qm</color>
     <color name="tab_background">@color/app_background</color>
+    <color name="selected_text_tab_color">@color/white</color>
+    <color name="unselected_text_tab_color">#79939b</color>
+
 </resources>

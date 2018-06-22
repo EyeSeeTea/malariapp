@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -271,6 +272,12 @@ public class DashboardController {
     }
 
     private void changeActiveIcon(View view, int primary, int secondary){
+        TextView textView = (TextView) view.findViewById(R.id.tabsText);
+        if(primary == View.VISIBLE){
+            textView.setTextColor(ContextCompat.getColor(dashboardActivity, R.color.selected_text_tab_color));
+        }else{
+            textView.setTextColor(ContextCompat.getColor(dashboardActivity, R.color.unselected_text_tab_color));
+        }
         ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
         setVisibility(imageView, primary);
         imageView = (ImageView) view.findViewById(R.id.tabSecundaryImage);
