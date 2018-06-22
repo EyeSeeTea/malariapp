@@ -25,6 +25,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
+import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -62,7 +63,7 @@ public class WipeDataOnLogout {
 
     @BeforeClass
     public static void setupClass(){
-        PopulateDB.wipeDatabase();
+        AppDatabase.wipeDatabase();
     }
 
     @Before

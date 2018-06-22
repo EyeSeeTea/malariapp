@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:startColor="@color/color_primary_light"
-        android:endColor="@color/color_primary_dark"
-        android:angle="90"
-        />
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/transparent"/>
+</shape>

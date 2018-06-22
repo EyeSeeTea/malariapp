@@ -2,22 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabsLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="50dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical">
     <ImageView
         android:id="@+id/tabsImage"
         android:layout_width="match_parent"
         android:visibility="visible"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:padding="@dimen/tab_host_padding"
         android:scaleType="fitCenter" />
     <ImageView
         android:id="@+id/tabSecundaryImage"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:padding="@dimen/tab_host_padding"
         android:scaleType="fitCenter" />
 

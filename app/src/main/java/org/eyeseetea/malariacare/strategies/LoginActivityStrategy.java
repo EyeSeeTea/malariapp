@@ -29,14 +29,12 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.LocalPullController;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
@@ -113,12 +111,10 @@ public class LoginActivityStrategy {
     }
 
     private void executeDemo() {
-        LocalPullController pullController = new LocalPullController(loginActivity);
-        PullUseCase pullUseCase = new PullUseCase(pullController);
+        PullDemoController pullController = new PullDemoController(loginActivity);
+        PullDemoUseCase pullUseCase = new PullDemoUseCase(pullController);
 
-        PullFilters pullFilters = new PullFilters();
-
-        pullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+        pullUseCase.execute(new PullDemoUseCase.Callback() {
             @Override
             public void onComplete() {
                 finishAndGo(DashboardActivity.class);
@@ -127,26 +123,6 @@ public class LoginActivityStrategy {
             @Override
             public void onPullError() {
                 Log.d(this.getClass().getSimpleName(), "Pull error");
-            }
-
-            @Override
-            public void onStep(PullStep step) {
-                Log.d(this.getClass().getSimpleName(), step.toString());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.e(this.getClass().getSimpleName(), "Pull cancel");
-            }
-
-            @Override
-            public void onConversionError() {
-                Log.d(this.getClass().getSimpleName(), "Pull error");
-            }
-
-            @Override
-            public void onNetworkError() {
-                Log.e(this.getClass().getSimpleName(), "Network Error");
             }
         });
 
