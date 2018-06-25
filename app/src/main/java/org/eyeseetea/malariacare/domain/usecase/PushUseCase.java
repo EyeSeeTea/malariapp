@@ -19,15 +19,16 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import android.content.Context;
+
+import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
-import org.eyeseetea.malariacare.data.remote.SurveyChecker;
 
 public class PushUseCase implements UseCase{
 
@@ -35,13 +36,16 @@ public class PushUseCase implements UseCase{
     private final IMainExecutor mMainExecutor;
     private IPushController mPushController;
     private Callback mCallback;
+    private Context mContext;
 
     public PushUseCase(IAsyncExecutor asyncExecutor,
             IMainExecutor mainExecutor,
-            IPushController pushController) {
+            IPushController pushController,
+            Context context) {
         mAsyncExecutor = asyncExecutor;
         mMainExecutor = mainExecutor;
         mPushController = pushController;
+        mContext = context;
     }
 
     public void execute(final Callback callback) {
@@ -58,7 +62,7 @@ public class PushUseCase implements UseCase{
         }
         mPushController.changePushInProgress(true);
 
-        SurveyChecker.launchQuarantineChecker();
+        SurveyChecker.launchQuarantineChecker(mContext);
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override
