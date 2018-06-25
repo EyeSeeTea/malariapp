@@ -42,6 +42,8 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
@@ -401,8 +403,17 @@ public class DashboardActivity extends BaseActivity {
             if (isUpdated) {
                 pullClient.pullUserAttributes(loggedUser);
             }*/
-            loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
-            loggedUser.save();//save the lastUpdated info and attributes
+
+            GetCredentialsUseCase credentialsUseCase = new GetCredentialsUseCase(getApplicationContext(),
+                    new GetCredentialsUseCase.Callback() {
+                        @Override
+                        public void onSuccess(Credentials credentials) {
+                            PullDhisApiDataSource pullDhisApiDataSource = new PullDhisApiDataSource(credentials);
+                            loggedUser = pullDhisApiDataSource.pullUserAttributes(loggedUser);
+                            loggedUser.save();//save the lastUpdated info and attributes
+                        }
+                    });
+            credentialsUseCase.execute();
             return null;
         }
 

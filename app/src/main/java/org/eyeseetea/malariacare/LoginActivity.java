@@ -52,6 +52,7 @@ import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.strategies.LoginActivityStrategy;
@@ -305,7 +306,15 @@ public class LoginActivity extends AbsLoginActivity {
         @Override
         protected Void doInBackground(LoginActivity... params) {
             loginActivity = params[0];
-            isUserClosed = PullDhisApiDataSource.isUserClosed(Session.getUser().getUid());
+            GetCredentialsUseCase credentialsUseCase = new GetCredentialsUseCase(getApplicationContext(),
+                    new GetCredentialsUseCase.Callback() {
+                        @Override
+                        public void onSuccess(Credentials credentials) {
+                            PullDhisApiDataSource pullDhisApiDataSource = new PullDhisApiDataSource(credentials);
+                            isUserClosed = pullDhisApiDataSource.isUserClosed(Session.getUser().getUid());
+                        }
+                    });
+            credentialsUseCase.execute();
             return null;
         }
 

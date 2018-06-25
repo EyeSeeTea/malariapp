@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.data.remote;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
@@ -11,11 +12,11 @@ import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.GetCredentialsUseCase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class SurveyChecker {
     /**
      * Launch a new thread to checks all the quarantine surveys
      */
-    public static void launchQuarantineChecker() {
+    public static void launchQuarantineChecker(Context context) {
         if (!AUtils.isNetworkAvailable()) {
             return;
         }
@@ -33,7 +34,14 @@ public class SurveyChecker {
             int quarantineSurveysSize = SurveyDB.countQuarantineSurveys();
             Log.d(TAG, "Quarantine size: " + quarantineSurveysSize);
             if (quarantineSurveysSize > 0) {
-                checkAllQuarantineSurveys();
+                GetCredentialsUseCase credentialsUseCase = new GetCredentialsUseCase(context,
+                        new GetCredentialsUseCase.Callback() {
+                            @Override
+                            public void onSuccess(Credentials credentials) {
+                                checkAllQuarantineSurveys(credentials);
+                            }
+                        });
+                credentialsUseCase.execute();
             }
         } finally {
             Log.d(TAG, "Quarantine thread finished");
@@ -46,7 +54,7 @@ public class SurveyChecker {
      * If a survey is in the server, the survey should be set as sent. Else, the survey should be
      * set as completed and it will be resend.
      */
-    public static void checkAllQuarantineSurveys() {
+    public static void checkAllQuarantineSurveys(Credentials credentials) {
         List<ProgramDB> programs = ProgramDB.getAllPrograms();
         for (ProgramDB program : programs) {
             for (OrgUnitDB orgUnit : program.getOrgUnits()) {
@@ -63,14 +71,13 @@ public class SurveyChecker {
                 // quarantine surveys
                 List<EventExtended> events = null;
                 try {
-                    events = PullDhisApiDataSource.getEvents(program.getUid(), orgUnit.getUid(),
+                    PullDhisApiDataSource pullDhisApiDataSource = new PullDhisApiDataSource(credentials);
+                    events = pullDhisApiDataSource.getEvents(program.getUid(), orgUnit.getUid(),
                             minDate,
                             maxDate);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     return;
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
                 if (events == null) {
                     return;
