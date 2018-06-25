@@ -138,4 +138,6 @@
     <dimen name="row_size">35dp</dimen>
     <dimen name="question_margin_right">10dp</dimen>
 
+    <dimen name="tab_host_padding">4dp</dimen>
+    <dimen name="tab_host_text_size">14dip</dimen>
 </resources>

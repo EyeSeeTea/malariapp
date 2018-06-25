@@ -20,10 +20,14 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +42,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -186,12 +191,14 @@ public class DashboardController {
         onCreateTabHost(savedInstanceState);
     }
 
+
     /**
      * Init the container for all the tabs
      */
     private void onCreateTabHost(Bundle savedInstanceState) {
         tabHost = (TabHost)dashboardActivity.findViewById(R.id.tabHost);
         tabHost.setup();
+        tabHost.setBackgroundResource(R.drawable.tab_background);
 
         //Add visible modules to tabhost
         for(ModuleController moduleController: this.getModules()){
@@ -203,6 +210,8 @@ public class DashboardController {
 
         ModuleController firstModuleController=getFirstVisibleModule();
         tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
+
+        setPrimaryIconActive(tabHost.getTabWidget().getChildAt(0));
         currentTab = firstModuleController.getName();
         currentTabTitle = firstModuleController.getTitle();
 
@@ -217,9 +226,17 @@ public class DashboardController {
                 //Reset tab colors
                 resetTabBackground();
                 tabHost.getCurrentTabView().setBackgroundColor(nextModuleController.getBackgroundColor());
+                tabHost.setBackgroundResource(R.drawable.tab_background);
 
                 //Update next Tab and title
                 currentTab = tabId;
+                for(int i=0; i<tabHost.getTabWidget().getTabCount();i++){
+                    if((tabHost.getTabWidget().getChildAt(i).findViewById(R.id.tabsLayout)).getTag().toString().equals(nextModuleController.getName())){
+                        setPrimaryIconActive(tabHost.getTabWidget().getChildAt(i));
+                    }else {
+                        setSecondaryIconActive(tabHost.getTabWidget().getChildAt(i));
+                    }
+                }
                 currentTabTitle = nextModuleController.getTitle();
 
                 //Before leaving current tab
@@ -230,6 +247,33 @@ public class DashboardController {
                 nextModuleController.onTabChanged();
             }
         });
+    }
+
+    private void setPrimaryIconActive(View view) {
+        changeActiveIcon(view, View.VISIBLE, View.GONE);
+    }
+
+    private void setSecondaryIconActive(View view) {
+        changeActiveIcon(view, View.GONE, View.VISIBLE);
+    }
+
+    private void changeActiveIcon(View view, int primary, int secondary){
+        TextView textView = (TextView) view.findViewById(R.id.tabsText);
+        if(primary == View.VISIBLE){
+            textView.setTextColor(ContextCompat.getColor(dashboardActivity, R.color.selected_text_tab_color));
+        }else{
+            textView.setTextColor(ContextCompat.getColor(dashboardActivity, R.color.unselected_text_tab_color));
+        }
+        ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        setVisibility(imageView, primary);
+        imageView = (ImageView) view.findViewById(R.id.tabSecondaryImage);
+        setVisibility(imageView, secondary);
+    }
+
+    private void setVisibility(ImageView imageView, int visibility) {
+        if(imageView!=null) {
+            imageView.setVisibility(visibility);
+        }
     }
 
     /**
@@ -582,12 +626,31 @@ public class DashboardController {
         //Add tab to tabhost
         TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
         tab.setContent(moduleController.getTabLayout());
-        tab.setIndicator("", moduleController.getIcon());
+        String title = "";
+        View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon(), moduleController.getSecondaryIcon());
+        tabview.setTag(moduleController.getName());
+        tab = tabHost.newTabSpec(tabName).setIndicator(tabview).setContent(moduleController.getTabLayout());
         tabHost.addTab(tab);
 
         addTagToLastTab(tabName);
     }
 
+    private static View createTabView(final Context context, final String text, Drawable icon, Drawable secondaryIcon) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        if(AppSettingsBuilder.isTabTitleVisible()){
+            tv.setText(text);
+        }else {
+            tv.setVisibility(View.GONE);
+        }
+        ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        imageView.setVisibility(View.GONE);
+        imageView.setImageDrawable(icon);
+        imageView = (ImageView) view.findViewById(R.id.tabSecondaryImage);
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setImageDrawable(secondaryIcon);
+        return view;
+    }
     /**
      * Last current tab is tagged with the given tabName
      * @param tabName
@@ -595,7 +658,7 @@ public class DashboardController {
     private void addTagToLastTab(String tabName){
         TabWidget tabWidget=tabHost.getTabWidget();
         int numTabs=tabWidget.getTabCount();
-        LinearLayout tabIndicator=(LinearLayout)tabWidget.getChildTabViewAt(numTabs - 1);
+        ViewGroup tabIndicator=(ViewGroup)tabWidget.getChildTabViewAt(numTabs - 1);
 
         ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
         imageView.setTag(tabName);
