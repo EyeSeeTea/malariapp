@@ -34,13 +34,12 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class PushUseCaseTest {
 
     IPushController mPushController = mock(IPushController.class);
 
-    private CountDownLatch lock = new CountDownLatch(1);
+    private static CountDownLatch lock = new CountDownLatch(1);
 
     @Test
     public void should_invoke_in_progress_error_callback_when_is_in_progress() throws Exception {
@@ -84,8 +83,7 @@ public class PushUseCaseTest {
                 callbackInvoked(false);
             }
         });
-
-        lock.await(1000, TimeUnit.MILLISECONDS);
+        lock.await();
         assertThat(invokedInProgressCallback, is(true));
     }
 
@@ -103,8 +101,8 @@ public class PushUseCaseTest {
     }
 
     private void callbackInvoked(boolean inProgressCallback) {
-        lock.countDown();
         invokedInProgressCallback = inProgressCallback;
+        lock.countDown();
     }
 
     private void givenThereIsAInProgressPushController() {
