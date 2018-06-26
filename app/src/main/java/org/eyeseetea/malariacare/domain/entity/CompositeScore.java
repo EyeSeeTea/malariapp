@@ -62,4 +62,16 @@ public class CompositeScore {
         }
         children.add(required(child, "ChildUid is required an not empty"));
     }
+
+    @Override
+    public String toString() {
+        return "CompositeScore{" +
+                "uid='" + uid + '\'' +
+                ", label='" + label + '\'' +
+                ", hierarchicalCode='" + hierarchicalCode + '\'' +
+                ", orderPos=" + orderPos +
+                ", parent=" + parent +
+                ", children=" + children +
+                '}';
+    }
 }

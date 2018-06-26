@@ -14,8 +14,10 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
         ArrayList<CompositeScore> compositeScores = new ArrayList<>();
         ProgramDB programDB = ProgramDB.getProgram(programUid);
         List<CompositeScoreDB> compositeScoreDBS = CompositeScoreDB.listByProgram(programDB);
-        for (CompositeScoreDB compositeScoreChild : compositeScoreDBS) {
-            convertCompositeScoreChildren(compositeScoreChild);
+        for (CompositeScoreDB compositeScore : compositeScoreDBS) {
+            if (compositeScore.getComposite_score() == null) {
+                compositeScores.add(convertCompositeScoreChildren(compositeScore));
+            }
         }
         return compositeScores;
     }
@@ -31,7 +33,6 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
         }
         return compositeScore;
     }
-
 
     private CompositeScore convertFromDBToDomain(CompositeScoreDB compositeScoreDB,
             CompositeScore parent) {
