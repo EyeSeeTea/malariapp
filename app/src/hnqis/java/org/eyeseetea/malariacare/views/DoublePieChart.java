@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class DoublePieChart extends FrameLayout {
     private PieChart centerPie, outsidePie;
     private View doublePieContainer;
-    private static final int HIGH_VALUE = 90;
+    private static final int HIGH_VALUE = 99;
     private static final int MIDDLE_VALUE = 80;
     private int highColor, middleColor, lowColor,
             mandatoryHighColor, mandatoryMiddleColor, mandatoryLowColor;
