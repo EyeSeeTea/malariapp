@@ -11,13 +11,7 @@ public class Option {
 
     public Option(String uId, String code, String name, float factor, String answerName) {
         this.uId = required(uId, "UId is required");
-
-        //TODO: temporal comment because this required current throw exception because
-        // on database there are , resolving in issue
-        // https://github.com/EyeSeeTea/malariapp/issues/1996
-        //this.code = required(code, "Code is required");
-        this.code = code;
-
+        this.code = required(code, "Code is required");
         this.name = required(name, "Name is required");
         this.factor = validateFactor(factor, "Invalid factor");
         this.answerName = required(answerName, "Answer is required");

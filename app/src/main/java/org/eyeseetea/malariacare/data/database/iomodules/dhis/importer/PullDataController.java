@@ -76,8 +76,6 @@ public class PullDataController implements IPullDataController {
 
             localSurveyDataSource.Save(surveys);
 
-            validateCS();
-
             callback.onComplete();
 
         } catch (Exception e) {
