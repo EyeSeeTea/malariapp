@@ -2,22 +2,11 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import android.content.Context;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyAnsweredRatioDB_Table;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadataItem;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 
 
 public class ServerMetadataRepository implements IServerMetadataRepository {
@@ -70,7 +59,7 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
         ServerMetadata serverMetadata = new ServerMetadata(
                 new ServerMetadataItem(nextAssessment.getCode(), nextAssessment.getUid()),
                 new ServerMetadataItem(createdOn.getCode(), createdOn.getUid()),
-                null,
+                new ServerMetadataItem(completionDate.getCode(), completionDate.getUid()),
                 new ServerMetadataItem(updatedDate.getCode(), updatedDate.getUid()),
                 new ServerMetadataItem(updatedUser.getCode(), updatedUser.getUid()),
                 new ServerMetadataItem(overallScore.getCode(), overallScore.getUid()),
@@ -81,7 +70,7 @@ public class ServerMetadataRepository implements IServerMetadataRepository {
                 new ServerMetadataItem(forwardOrder.getCode(), forwardOrder.getUid()),
                 new ServerMetadataItem(pushDevice.getCode(), pushDevice.getUid()),
                 new ServerMetadataItem(overallProductivity.getCode(), overallProductivity.getUid()),
-                null,
+                new ServerMetadataItem(provider.getCode(), provider.getUid()),
                 new ServerMetadataItem(gaps.getCode(), gaps.getUid()),
                 new ServerMetadataItem(planAction.getCode(), planAction.getUid()),
                 new ServerMetadataItem(action1.getCode(), action1.getUid()),

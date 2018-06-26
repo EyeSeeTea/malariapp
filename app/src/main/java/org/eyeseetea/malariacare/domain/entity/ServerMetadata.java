@@ -29,16 +29,8 @@ public class ServerMetadata {
                           ServerMetadataItem planAction, ServerMetadataItem action1, ServerMetadataItem action2) {
         this.nextAssessment = required(nextAssessment, "nextAssessment is required");
         this.creationDate = required(creationDate, "creationDate is required");
-
-        //TODO: temporal comment because this required current throw exception because
-        // on database does not exist row, resolving in issue
-        // https://github.com/EyeSeeTea/malariapp/issues/1995
-        //this.completionDate = required(completionDate, "completionDate is required");
-        //this.provider = required(provider, "provider is required");
-
-        this.completionDate = completionDate;
-        this.provider = provider;
-
+        this.completionDate = required(completionDate, "completionDate is required");
+        this.provider = required(provider, "provider is required");
         this.uploadDate = required(uploadDate, "uploadDate is required");
         this.uploadBy = required(uploadBy, "uploadBy is required");
         this.overallScore = required(overallScore, "overallScore is required");
