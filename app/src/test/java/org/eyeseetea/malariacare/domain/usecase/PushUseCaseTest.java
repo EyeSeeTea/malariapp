@@ -36,7 +36,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class PushUseCaseTest {
 
@@ -88,8 +87,7 @@ public class PushUseCaseTest {
                 callbackInvoked(false);
             }
         });
-
-        lock.await(100, TimeUnit.MILLISECONDS);
+        lock.await();
         assertThat(invokedInProgressCallback, is(true));
     }
 
@@ -107,8 +105,8 @@ public class PushUseCaseTest {
     }
 
     private void callbackInvoked(boolean inProgressCallback) {
-        lock.countDown();
         invokedInProgressCallback = inProgressCallback;
+        lock.countDown();
     }
 
     private void givenThereIsAInProgressPushController() {
