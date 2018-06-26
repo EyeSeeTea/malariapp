@@ -39,7 +39,7 @@ public class PushUseCaseTest {
 
     IPushController mPushController = mock(IPushController.class);
 
-    private static CountDownLatch lock = new CountDownLatch(1);
+    private CountDownLatch lock = new CountDownLatch(1);
 
     @Test
     public void should_invoke_in_progress_error_callback_when_is_in_progress() throws Exception {
