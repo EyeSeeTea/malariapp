@@ -117,7 +117,7 @@ public class UserDB extends BaseModel {
         return null;
     }
 
-    public static UserDB getUserByUId( String uid) {
+    public static UserDB getUserByUId(String uid) {
         return new Select().from(UserDB.class).where(UserDB_Table.uid_user.eq(uid)).querySingle();
     }
 
@@ -159,11 +159,13 @@ public class UserDB extends BaseModel {
         UserDB user = (UserDB) o;
 
         if (id_user != user.id_user) return false;
-        if (uid_user != null ? !uid_user.equals(user.uid_user) : user.uid_user != null)
+        if (uid_user != null ? !uid_user.equals(user.uid_user) : user.uid_user != null) {
             return false;
+        }
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null)
+        if (username != null ? !username.equals(user.username) : user.username != null) {
             return false;
+        }
         if (announcement != null ? !announcement.equals(user.announcement)
                 : user.announcement != null) {
             return false;
@@ -174,6 +176,10 @@ public class UserDB extends BaseModel {
         return last_updated != null ? last_updated.equals(user.last_updated)
                 : user.last_updated == null;
 
+    }
+
+    public static List<UserDB> list() {
+        return new Select().from(UserDB.class).queryList();
     }
 
     @Override

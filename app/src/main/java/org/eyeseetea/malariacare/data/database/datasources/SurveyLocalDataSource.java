@@ -7,6 +7,7 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
@@ -23,7 +24,8 @@ public class SurveyLocalDataSource implements ISurveyDataSource{
     @Override
     public void Save(List<Survey> surveys) {
         SurveyDBMapper surveyDBMapper = new SurveyDBMapper(
-                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(), OptionDB.list());
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list());
 
         List<SurveyDB> surveysDB = surveyDBMapper.mapSurveys(surveys);
 
@@ -38,5 +40,6 @@ public class SurveyLocalDataSource implements ISurveyDataSource{
                 valueDB.save();
             }
         }
+
     }
 }

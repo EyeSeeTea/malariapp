@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.data.database.mapper;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
@@ -8,6 +9,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -25,14 +27,16 @@ public class SurveyDBMapper {
     private Map<String, OptionDB> optionsDBMap;
     private Map<String, OrgUnitDB> orgUnitsDBMap;
     private Map<String, ProgramDB> programsDBMap;
+    private Map<String, UserDB> usersDBMap;
 
     public SurveyDBMapper(
             List<OrgUnitDB> orgUnitsDB,
             List<ProgramDB> programsDB,
             List<QuestionDB> questionsDB,
-            List<OptionDB> optionsDB) {
+            List<OptionDB> optionsDB,
+            List<UserDB> usersDB) {
 
-        createMaps(orgUnitsDB, programsDB, questionsDB, optionsDB);
+        createMaps(orgUnitsDB, programsDB, questionsDB, optionsDB, usersDB);
     }
 
     public List<SurveyDB> mapSurveys(List<Survey> surveys) {
@@ -75,14 +79,52 @@ public class SurveyDBMapper {
 
         surveyDB.setValues(valuesDB);
 
+        ScoreDB scoreDB = mapScore(survey, surveyDB);
+
+        surveyDB.setScoreDB(scoreDB);
+
+        UserDB user = mapSurveyUser(survey);
+        surveyDB.setUser(user);
+        surveyDB.save();
+
+        return surveyDB;
+    }
+
+    @NonNull
+    private ScoreDB mapScore(Survey survey, SurveyDB surveyDB) {
         ScoreDB scoreDB = new ScoreDB();
         scoreDB.setUid(survey.getScore().getUId());
         scoreDB.setScore(survey.getScore().getScore());
         scoreDB.setSurvey(surveyDB);
+        return scoreDB;
+    }
 
-        surveyDB.setScoreDB(scoreDB);
+    @NonNull
+    private UserDB mapSurveyUser(Survey survey) {
+        UserDB userDB = findUserDB(survey.getUserUId());
 
-        return surveyDB;
+        if (userDB == null) {
+            userDB = new UserDB(survey.getUserUId(), survey.getUserUId());
+            userDB.save();
+
+            usersDBMap.put(userDB.getUid(), userDB);
+        }
+        return userDB;
+    }
+
+    private UserDB findUserDB(String text) {
+        UserDB existedUser = null;
+
+        //For Support old push find by uid, name and username
+        for (UserDB userDB:usersDBMap.values()) {
+            if (userDB.getUid().equals(text) ||
+                    userDB.getName().equals(text) ||
+                    userDB.getUsername().equals(text)){
+                existedUser = userDB;
+            }
+        }
+
+        return existedUser;
     }
 
     private ValueDB mapValueDB(SurveyDB surveyDB, QuestionValue questionValue) {
@@ -103,7 +145,7 @@ public class SurveyDBMapper {
     }
 
     private void createMaps(List<OrgUnitDB> orgUnitsDB, List<ProgramDB> programsDB,
-            List<QuestionDB> questionsDB, List<OptionDB> optionsDB) {
+            List<QuestionDB> questionsDB, List<OptionDB> optionsDB, List<UserDB> usersDB) {
         orgUnitsDBMap = new HashMap<>();
         for (OrgUnitDB orgUnitDB : orgUnitsDB) {
             orgUnitsDBMap.put(orgUnitDB.getUid(), orgUnitDB);
@@ -122,6 +164,11 @@ public class SurveyDBMapper {
         optionsDBMap = new HashMap<>();
         for (OptionDB optionDB : optionsDB) {
             optionsDBMap.put(optionDB.getUid(), optionDB);
+        }
+
+        usersDBMap = new HashMap<>();
+        for (UserDB userDB : usersDB) {
+            usersDBMap.put(userDB.getUsername(), userDB);
         }
     }
 }
