@@ -19,10 +19,6 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;

@@ -79,9 +79,11 @@ public class SurveyDBMapper {
 
         surveyDB.setValues(valuesDB);
 
-        ScoreDB scoreDB = mapScore(survey, surveyDB);
+        if (survey.getScore() != null) {
+            ScoreDB scoreDB = mapScore(survey, surveyDB);
 
-        surveyDB.setScoreDB(scoreDB);
+            surveyDB.setScoreDB(scoreDB);
+        }
 
         UserDB user = mapSurveyUser(survey);
         surveyDB.setUser(user);
@@ -117,9 +119,9 @@ public class SurveyDBMapper {
 
         //For Support old push find by uid, name and username
         for (UserDB userDB:usersDBMap.values()) {
-            if (userDB.getUid().equals(text) ||
-                    userDB.getName().equals(text) ||
-                    userDB.getUsername().equals(text)){
+            if ((userDB.getUid() != null && userDB.getUid().equals(text)) ||
+                    (userDB.getName()!= null && userDB.getName().equals(text)) ||
+                    (userDB.getUsername() != null && userDB.getUsername().equals(text))){
                 existedUser = userDB;
             }
         }

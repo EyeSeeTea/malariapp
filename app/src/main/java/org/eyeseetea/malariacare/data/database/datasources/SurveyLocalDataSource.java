@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
@@ -14,7 +16,9 @@ import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.List;
 
-public class SurveyLocalDataSource implements ISurveyDataSource{
+public class SurveyLocalDataSource implements ISurveyDataSource {
+    private final static String TAG = ".SurveyLocalDataSource";
+
     @Override
     public List<Survey> getSurveys(SurveyFilter filters) {
         //On the future implement this method to retrieve surveys from db
@@ -29,16 +33,25 @@ public class SurveyLocalDataSource implements ISurveyDataSource{
 
         List<SurveyDB> surveysDB = surveyDBMapper.mapSurveys(surveys);
 
-        for (SurveyDB surveyDB:surveysDB) {
-            surveyDB.save();
+        for (SurveyDB surveyDB : surveysDB) {
+            try {
+                surveyDB.save();
 
-            surveyDB.getScoreDB().setSurvey(surveyDB);
-            surveyDB.getScoreDB().save();
+                if (surveyDB.getScoreDB() != null) {
+                    surveyDB.getScoreDB().setSurvey(surveyDB);
+                    surveyDB.getScoreDB().save();
+                }
 
-            for (ValueDB valueDB:surveyDB.getValues()) {
-                valueDB.setSurvey(surveyDB);
-                valueDB.save();
+                for (ValueDB valueDB : surveyDB.getValues()) {
+                    valueDB.setSurvey(surveyDB);
+                    valueDB.save();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "An error occurred saving Survey " + surveyDB.getEventUid() + ":" +
+                         e.getMessage());
             }
+
+
         }
 
     }
