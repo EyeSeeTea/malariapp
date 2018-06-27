@@ -42,7 +42,6 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
-import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 
 import java.util.ArrayList;
@@ -69,14 +68,13 @@ public class PullMetadataController implements IPullMetadataController {
     public void pullMetadata(final IPullMetadataController.Callback callback) {
         AppDatabase.wipeDatabase();
 
-        saveLoggedUser();
-
         this.callback = callback;
-
 
         pullRemoteDataSource.wipeDataBase();
 
         callback.onStep(PullStep.PROGRAMS);
+
+        saveLoggedUser();
 
         pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
 
@@ -87,6 +85,7 @@ public class PullMetadataController implements IPullMetadataController {
                 convertMetaData();
 
                 Log.d(TAG, "PULL process...OK");
+
                 callback.onComplete();
             }
 

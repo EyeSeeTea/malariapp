@@ -28,21 +28,16 @@ import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 
-public class LoadUserAndCredentialsUseCase {
+public class LoadCredentialsUseCase {
 
     Context mContext;
 
-    public LoadUserAndCredentialsUseCase(Context context) {
+    public LoadCredentialsUseCase(Context context) {
         mContext = context;
     }
 
     public void execute() {
-        loadUser();
         loadCredentials();
-    }
-
-    private void loadUser() {
-        Session.setUser(UserDB.getLoggedUser());
     }
 
     private void loadCredentials() {
