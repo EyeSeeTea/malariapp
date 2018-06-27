@@ -33,7 +33,7 @@ public class SurveyShould {
 
         Assert.assertNotNull(survey);
         Assert.assertNotNull(survey.getCreationDate());
-        Assert.assertTrue(survey.getStatus().equals(Survey.Status.IN_PROGRESS));
+        Assert.assertTrue(survey.getStatus().equals(SurveyStatus.IN_PROGRESS));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class SurveyShould {
                 "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score);
 
         Assert.assertNotNull(survey);
-        Assert.assertTrue(survey.getStatus().equals(Survey.Status.SENT));
+        Assert.assertTrue(survey.getStatus().equals(SurveyStatus.SENT));
         Assert.assertTrue(survey.getCreationDate().equals(creationDate));
         Assert.assertTrue(survey.getCompletionDate().equals(completionDate));
         Assert.assertTrue(survey.getScheduledDate().equals(scheduledDate));

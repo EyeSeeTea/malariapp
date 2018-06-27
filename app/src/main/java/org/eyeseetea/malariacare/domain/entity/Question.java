@@ -10,7 +10,6 @@ public class Question {
     private boolean removed;
     private QuestionType questionType;
     private String answerName;
-    private List<String> optionUIds;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
         this(uId,   questionType, isCompulsory, null);

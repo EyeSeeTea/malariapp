@@ -116,7 +116,7 @@ public class Survey {
         this.completionDate = completionDate;
     }
 
-    public void changeUploadDate(Date upoadDate) {
+    public void changeUploadDate(Date uploadDate) {
         this.uploadDate = uploadDate;
     }
 
