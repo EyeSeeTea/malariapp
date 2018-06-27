@@ -122,8 +122,6 @@ public class ConvertToSDKVisitor implements
      */
     Date uploadedDate;
 
-    ConvertToSDKVisitorStrategyFactory mConvertToSDKVisitorStrategyFactory;
-
 
     ConvertToSDKVisitor(Context context) {
         this.context = context;
@@ -171,8 +169,6 @@ public class ConvertToSDKVisitor implements
         obsActionPlanSurveys = new ArrayList<>();
         events = new HashMap<>();
         obsActionPlanEvents = new HashMap<>();
-        mConvertToSDKVisitorStrategyFactory = new ConvertToSDKVisitorStrategyFactory(
-                obsActionPlanEvents, surveys, currentSurvey, currentEvent);
     }
 
     @Override
@@ -311,7 +307,10 @@ public class ConvertToSDKVisitor implements
 
     private void removeSurveyAndEvent(IPushController.Kind kind) {
         //remove event from annotated event list and from db
-        mConvertToSDKVisitorStrategyFactory.get(kind).removeSurveyAndEvent();
+        ConvertToSDKVisitorStrategyFactory convertToSDKVisitorStrategyFactory =
+                new ConvertToSDKVisitorStrategyFactory(
+                        obsActionPlanEvents, surveys, currentSurvey, currentEvent);
+        convertToSDKVisitorStrategyFactory.get(kind).removeSurveyAndEvent();
     }
 
     @Override
@@ -531,7 +530,10 @@ public class ConvertToSDKVisitor implements
      * @param kind
      */
     private void annotateSurveyAndEvent(IPushController.Kind kind) {
-        mConvertToSDKVisitorStrategyFactory.get(kind).annotateSurveyAndEvent(uploadedDate);
+        ConvertToSDKVisitorStrategyFactory convertToSDKVisitorStrategyFactory =
+                new ConvertToSDKVisitorStrategyFactory(
+                        obsActionPlanEvents, surveys, currentSurvey, currentEvent);
+        convertToSDKVisitorStrategyFactory.get(kind).annotateSurveyAndEvent(uploadedDate);
     }
 
     /**
@@ -539,17 +541,11 @@ public class ConvertToSDKVisitor implements
      */
     public void saveSurveyStatus(Map<String, PushReport> pushReportMap, final
     IPushController.IPushControllerCallback callback, IPushController.Kind kind) {
-        mConvertToSDKVisitorStrategyFactory.get(kind).saveSurveyStatus(pushReportMap, callback,
-                context);
-    }
-
-    private void saveSurveyFromImportSummary(SurveyDB iSurvey) {
-        iSurvey.setStatus(Constants.SURVEY_SENT);
-        iSurvey.setUploadDate(uploadedDate);
-        iSurvey.saveMainScore();
-        iSurvey.save();
-
-        Log.d(TAG, "PUSH process...OK. Survey saved");
+        ConvertToSDKVisitorStrategyFactory convertToSDKVisitorStrategyFactory =
+                new ConvertToSDKVisitorStrategyFactory(
+                        obsActionPlanEvents, surveys, currentSurvey, currentEvent);
+        convertToSDKVisitorStrategyFactory.get(kind).saveSurveyStatus(pushReportMap, callback,
+                context, uploadedDate);
     }
 
     /**
@@ -564,6 +560,9 @@ public class ConvertToSDKVisitor implements
     }
 
     public void setSurveysAsQuarantine(IPushController.Kind kind) {
-        mConvertToSDKVisitorStrategyFactory.get(kind).setSurveysAsQuarantine();
+        ConvertToSDKVisitorStrategyFactory convertToSDKVisitorStrategyFactory =
+                new ConvertToSDKVisitorStrategyFactory(
+                        obsActionPlanEvents, surveys, currentSurvey, currentEvent);
+        convertToSDKVisitorStrategyFactory.get(kind).setSurveysAsQuarantine();
     }
 }

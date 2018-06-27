@@ -57,11 +57,13 @@ public class ConvertToSDKVisitorEventStrategy implements IConvertToSDKVisitorStr
 
     @Override
     public void saveSurveyStatus(Map<String, PushReport> pushReportMap,
-            IPushController.IPushControllerCallback callback, Context context) {
+            IPushController.IPushControllerCallback callback, Context context,
+            Date uploadedDate) {
         List<SurveyDB> surveys = new ArrayList<>();
         Map<Long, EventExtended> events = new HashMap<>();
         surveys = this.surveys;
         events = this.events;
+
         Log.d(getClass().getName(),
                 String.format("pushReportMap %d surveys savedSurveyStatus", surveys.size()));
         for (int i = 0; i < surveys.size(); i++) {
@@ -73,8 +75,10 @@ public class ConvertToSDKVisitorEventStrategy implements IConvertToSDKVisitorStr
             //F.E. if the app crash unexpected this survey will be checked again in the future
             // push to prevent the duplicates
             // in the server.
+
             iSurvey.setStatus(Constants.SURVEY_QUARANTINE);
             iSurvey.save();
+
             Log.d(getClass().getName(),
                     "saveSurveyStatus: Starting saving survey Set Survey status as QUARANTINE"
                             + iSurvey.getId_survey() + " eventuid: " + iSurvey.getEventUid());
@@ -94,10 +98,8 @@ public class ConvertToSDKVisitorEventStrategy implements IConvertToSDKVisitorStr
             //If the pushResult has some conflict the survey was saved in the server but
             // never resend, the survey is saved as survey in conflict.
             if (pushConflicts != null && pushConflicts.size() > 0) {
-                Log.d(getClass().getName(), "saveSurveyStatus: conflicts");
-                obsActionPlan.setStatus(Constants.SURVEY_CONFLICT);
-                obsActionPlan.save();
-
+                iSurvey.setStatus(Constants.SURVEY_CONFLICT);
+                iSurvey.save();
                 for (PushConflict pushConflict : pushConflicts) {
                     Log.d(getClass().getName(),
                             "saveSurveyStatus: Faileditem not null " + iSurvey.getId_survey());
@@ -118,27 +120,30 @@ public class ConvertToSDKVisitorEventStrategy implements IConvertToSDKVisitorStr
                 }
                 continue;
             }
-
             //No errors -> Save and next
             Boolean emptyImportAllowed = false;
-            emptyImportAllowed = true;
-
             if (pushReport != null && !pushReport.hasPushErrors(emptyImportAllowed)) {
                 Log.d(getClass().getName(), "saveSurveyStatus: report without errors and status ok "
                         + iSurvey.getId_survey());
                 if (iEvent.getEventDate() == null || iEvent.getEventDate().equals("")) {
-                    //If eventdate is null the event is invalid. The event is sent but we need
-                    // inform to the user.
+                    //If eventdate is null the event is invalid. The event is sent but we need inform to the user.
                     callback.onInformativeError(new NullEventDateException(
                             String.format(context.getString(R.string.error_message_push),
                                     iEvent.getEvent())));
                 }
-                obsActionPlan.setStatus(Constants.SURVEY_SENT);
-                obsActionPlan.save();
-
+                saveSurveyFromImportSummary(iSurvey, uploadedDate);
             }
         }
+    }
 
+
+    private void saveSurveyFromImportSummary(SurveyDB iSurvey, Date uploadedDate) {
+        iSurvey.setStatus(Constants.SURVEY_SENT);
+        iSurvey.setUploadDate(uploadedDate);
+        iSurvey.saveMainScore();
+        iSurvey.save();
+
+        Log.d(getClass().getName(), "PUSH process...OK. Survey saved");
     }
 
     @Override

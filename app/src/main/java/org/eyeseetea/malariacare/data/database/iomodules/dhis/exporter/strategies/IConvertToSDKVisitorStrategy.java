@@ -15,7 +15,7 @@ public interface IConvertToSDKVisitorStrategy {
     void annotateSurveyAndEvent(Date uploadedDate);
 
     void saveSurveyStatus(Map<String, PushReport> pushReportMap, final
-    IPushController.IPushControllerCallback callback,Context context);
+    IPushController.IPushControllerCallback callback, Context context, Date uploadedDate);
 
     void setSurveysAsQuarantine();
 }
