@@ -48,14 +48,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SurveyDhisDataSource implements ISurveyDataSource {
+public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
     private final IConnectivityManager mConnectivityManager;
 
-    public SurveyDhisDataSource(IServerMetadataRepository serverMetadataRepository,
+    public SurveySDKDhisDataSource(IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository,
             IOptionRepository optionRepository,
             IConnectivityManager connectivityManager) {

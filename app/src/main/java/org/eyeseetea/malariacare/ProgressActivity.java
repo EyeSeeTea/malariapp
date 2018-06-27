@@ -43,7 +43,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetad
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyDhisDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
@@ -154,7 +154,7 @@ public class ProgressActivity extends Activity {
             IConnectivityManager connectivityManager = new ConnectivityManager();
 
             ISurveyDataSource surveyRemoteDataSource =
-                    new SurveyDhisDataSource(serverMetadataRepository,
+                    new SurveySDKDhisDataSource(serverMetadataRepository,
                             questionRepository, optionRepository, connectivityManager);
 
             ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();

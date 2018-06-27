@@ -69,7 +69,7 @@ public class PullDataController implements IPullDataController {
         this.callback = callback;
 
         //New code
-        try {
+       try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
             List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
