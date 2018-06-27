@@ -31,11 +31,9 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class PushUseCaseTest {
 
@@ -85,8 +83,7 @@ public class PushUseCaseTest {
                 callbackInvoked(false);
             }
         });
-
-        lock.await(100, TimeUnit.MILLISECONDS);
+        lock.await();
         assertThat(invokedInProgressCallback, is(true));
     }
 
@@ -104,8 +101,8 @@ public class PushUseCaseTest {
     }
 
     private void callbackInvoked(boolean inProgressCallback) {
-        lock.countDown();
         invokedInProgressCallback = inProgressCallback;
+        lock.countDown();
     }
 
     private void givenThereIsAInProgressPushController() {

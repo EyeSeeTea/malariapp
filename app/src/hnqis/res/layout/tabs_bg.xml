@@ -14,7 +14,7 @@
         android:padding="@dimen/tab_host_padding"
         android:scaleType="fitCenter" />
     <ImageView
-        android:id="@+id/tabSecundaryImage"
+        android:id="@+id/tabSecondaryImage"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="56dp"
