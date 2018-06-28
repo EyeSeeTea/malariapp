@@ -2,6 +2,8 @@ package org.eyeseetea.malariacare.data.remote.api;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
@@ -10,6 +12,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -36,6 +39,22 @@ public class OkHttpClientDataSource {
             throws Exception {
         Response response = executeCall(null, url, method);
         return response.body().string();
+    }
+
+    protected static JsonNode parseResponse(String responseData)throws Exception{
+        try{
+            JSONObject jsonResponse=new JSONObject(responseData);
+            Log.i("JsonCommonParser", "parseResponse: " + jsonResponse);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = jsonResponse.toString();
+            try {
+                return objectMapper.readValue(jsonString, JsonNode.class);
+            }catch(Exception ex){
+                throw new PullApiParsingException();
+            }
+        }catch(Exception ex){
+            throw new PullApiParsingException();
+        }
     }
 
     private static Response executeCall(JSONObject data, String url, String method) throws
