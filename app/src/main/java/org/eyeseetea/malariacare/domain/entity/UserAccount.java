@@ -19,24 +19,23 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-
-import org.eyeseetea.malariacare.utils.DateParser;
-
-import java.util.Date;
-
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class UserAccount {
+    private String name;
     private String userName;
     private String userUid;
-    private String announcement;
-    private Date closedDate;
+    private UserAttributes userAttributes;
 
-    public UserAccount(String userName, String userUid, String announcement, Date closedDate) {
+    public UserAccount(String name, String userName, String userUid, UserAttributes userAttributes) {
+        this.name = required(name, "name is required");
         this.userName = required(userName, "username is required");
         this.userUid = required(userUid, "user uid is required");
-        this.announcement = required(announcement, "user uid is required");
-        this.closedDate = closedDate;
+        this.userAttributes = required(userAttributes, "userAttributes are required");
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUserName() {
@@ -47,26 +46,11 @@ public class UserAccount {
         return userUid;
     }
 
-    public String getAnnouncement() {
-        return announcement;
+    public UserAttributes getUserAttributes(){
+        return userAttributes;
     }
 
-    public String setAnnouncement(String announcement) {
-        return this.announcement = announcement;
-    }
-
-    public boolean isClosed() {
-        if(closedDate==null) {
-            return false;
-        }else{
-            return closedDate.before(new Date());
-        }
-    }
-
-    public void setClosedDate(String closedDate) {
-        if (closedDate == null || closedDate.equals("")) {
-            this.closedDate = null;
-        }
-        this.closedDate = DateParser.parseNewLongDate(closedDate);
+    public void setUserAttributes(UserAttributes userAttributes) {
+        this.userAttributes = userAttributes;
     }
 }
