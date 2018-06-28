@@ -42,10 +42,16 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAttributesRemoteDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserLocalDataSource;
+import org.eyeseetea.malariacare.domain.entity.UserAttributes;
+import org.eyeseetea.malariacare.domain.usecase.PullLoggedUserAttributesUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -67,7 +73,32 @@ public class DashboardActivity extends BaseActivity {
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
         if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
-            new AsyncAnnouncement().execute();
+
+            PullLoggedUserAttributesUseCase pullAttributesUseCase = new PullLoggedUserAttributesUseCase(
+                    new AsyncExecutor(),
+                    new UIThreadExecutor(),
+                    new UserLocalDataSource(),
+                    new UserAttributesRemoteDataSource(Session.getCredentials())
+            );
+
+            pullAttributesUseCase.execute(new PullLoggedUserAttributesUseCase.Callback() {
+                @Override
+                public void onSuccess(UserAttributes userAttributes) {
+
+                    if (shouldDisplayAnnoucement(userAttributes)) {
+                        Log.d(TAG, "show logged announcement");
+                        AUtils.showAnnouncement(R.string.admin_announcement, userAttributes.getAnnouncement(),
+                                DashboardActivity.this);
+                    } else {
+                        AUtils.checkUserClosed(userAttributes.getClosedDate(), DashboardActivity.this);
+                    }
+                }
+
+                @Override
+                public void onError() {
+                    System.out.println("Error pulling attributes");
+                }
+            });
         }
 
         //XXX to remove?
@@ -89,6 +120,11 @@ public class DashboardActivity extends BaseActivity {
             DriveRestController.getInstance().init(this);
         }
         reloadDashboard();
+    }
+
+    private boolean shouldDisplayAnnoucement(UserAttributes userAttributes) {
+        return userAttributes.getAnnouncement() != null && !userAttributes.getAnnouncement().equals("")
+                && !PreferencesState.getInstance().isUserAccept();
     }
 
 
@@ -387,41 +423,5 @@ public class DashboardActivity extends BaseActivity {
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         dashboardController.onPlannedSurvey(survey, scheduleClickListener);
-    }
-
-
-    public class AsyncAnnouncement extends AsyncTask<Void, Void, Void> {
-        UserDB loggedUser;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            loggedUser = UserDB.getLoggedUser();
-            /* Ignoring the update date
-            boolean isUpdated = pullClient.isUserUpdated(loggedUser);
-            if (isUpdated) {
-                pullClient.pullUserAttributes(loggedUser);
-            }*/
-            loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
-            loggedUser.save();//save the lastUpdated info and attributes
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            if (shouldDisplayAnnoucement()) {
-                Log.d(TAG, "show logged announcement");
-                AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(),
-                        DashboardActivity.this);
-            } else {
-                AUtils.checkUserClosed(loggedUser, DashboardActivity.this);
-            }
-        }
-
-        private boolean shouldDisplayAnnoucement() {
-            return loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
-                    && !PreferencesState.getInstance().isUserAccept();
-        }
     }
 }

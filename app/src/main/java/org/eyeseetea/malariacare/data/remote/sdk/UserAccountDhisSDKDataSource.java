@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.entity.UserAttributes;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.hisp.dhis.client.sdk.android.api.D2;
@@ -96,8 +97,8 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
                         @Override
                         public void call(
                                 org.hisp.dhis.client.sdk.models.user.UserAccount dhisUserAccount) {
-                            UserAccount userAccount = new UserAccount(credentials.getUsername(),
-                                    dhisUserAccount.getUId(), "", null);
+                            UserAccount userAccount = new UserAccount(credentials.getUsername(), credentials.getUsername(),
+                                    dhisUserAccount.getUId(), UserAttributes.createEmptyUserAttributes());
                             callback.onSuccess(userAccount);
                         }
                     }, new Action1<Throwable>() {

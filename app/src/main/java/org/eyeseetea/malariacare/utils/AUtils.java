@@ -352,13 +352,13 @@ public abstract class AUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         PreferencesState.getInstance().setUserAccept(true);
-                        checkUserClosed(loggedUser, context);
+                        checkUserClosed(loggedUser.getCloseDate(), context);
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        checkUserClosed(loggedUser, context);
+                        checkUserClosed(loggedUser.getCloseDate(), context);
                     }
                 }).create();
         dialog.show();
@@ -366,8 +366,8 @@ public abstract class AUtils {
                 LinkMovementMethod.getInstance());
     }
 
-    public static void checkUserClosed(UserDB user, Context context) {
-        if (isUserClosed(user)) {
+    public static void checkUserClosed(Date closedDate, Context context) {
+        if (isUserClosed(closedDate)) {
             DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -381,8 +381,8 @@ public abstract class AUtils {
         }
     }
 
-    private static boolean isUserClosed(UserDB user) {
-        return user.getCloseDate() != null && user.getCloseDate().before(new Date());
+    private static boolean isUserClosed(Date closedDate) {
+        return closedDate != null && closedDate.before(new Date());
     }
 
     /**

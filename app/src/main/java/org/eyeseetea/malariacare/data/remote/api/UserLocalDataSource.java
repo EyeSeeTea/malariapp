@@ -18,7 +18,7 @@ public class UserLocalDataSource implements IUserLocalDataSource {
         UserDB userDB = UserDB.getLoggedUser();
         return new UserAccount(userDB.getName(), userDB.getUsername(), userDB.getUid(), new UserAttributes(userDB.getAnnouncement(), userDB.getCloseDate()));
     }
-    
+
     @Override
     public void saveUser(UserAccount user) {
         UserDB userDB = UserDB.getUserByUId(user.getUserUid());
