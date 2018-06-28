@@ -1,7 +1,8 @@
 package org.eyeseetea.malariacare.domain.boundary;
 
-import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.entity.UserAttributes;
+import org.eyeseetea.malariacare.domain.exception.PullUserAttributesException;
 
-public interface IUserRemoteDataSource {
-    UserAccount getUser(UserAccount user);
+public interface IUserAttributesRemoteDataSource {
+    UserAttributes getUser(String userUId) throws PullUserAttributesException;
 }

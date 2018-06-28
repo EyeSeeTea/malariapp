@@ -5,11 +5,12 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.domain.boundary.IUserRemoteDataSource;
+import org.eyeseetea.malariacare.domain.boundary.IUserAttributesRemoteDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.entity.UserAttributes;
+import org.eyeseetea.malariacare.domain.exception.PullUserAttributesException;
 
-public class UserRemoteDataSource extends OkHttpClientDataSource implements IUserRemoteDataSource {
+public class UserAttributesRemoteDataSource extends OkHttpClientDataSource implements IUserAttributesRemoteDataSource {
 
     private static final String DHIS_PULL_API="/api/";
 
@@ -26,19 +27,18 @@ public class UserRemoteDataSource extends OkHttpClientDataSource implements IUse
     public static final String CODE = "code";
     private static final String USER = "users";
 
-    public UserRemoteDataSource(Credentials credentials) {
+    public UserAttributesRemoteDataSource(Credentials credentials) {
         super(credentials);
     }
 
     @Override
-    public UserAccount getUser(UserAccount userAccount) {
-        UserAccount userAccountUpdated = pullUserAttributes(userAccount.getUserUid());
-        return userAccountUpdated;
+    public UserAttributes getUser(String userUId) throws PullUserAttributesException {
+        return pullUserAttributes(userUId);
     }
 
-    private UserAccount pullUserAttributes(String userUId) {
-        UserAccount userAccount = new UserAccount(userUId, userUId, "", null);
-        String data = USER + String.format(QUERY_USER_ATTRIBUTES, userAccount.getUserUid());
+    private UserAttributes pullUserAttributes(String userUId) throws PullUserAttributesException{
+        UserAttributes userAttributes = UserAttributes.createEmptyUserAttributes();
+        String data = USER + String.format(QUERY_USER_ATTRIBUTES, userUId);
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
             String response = executeCall(DHIS_PULL_API+data, "GET");
@@ -52,13 +52,14 @@ public class UserRemoteDataSource extends OkHttpClientDataSource implements IUse
                                 UserDB.ATTRIBUTE_USER_ANNOUNCEMENT);
                 closeDate = getUserCloseDate(jsonNodeArray, closeDate, i);
             }
-            userAccount.setAnnouncement(newMessage);
-            userAccount.setClosedDate(closeDate);
+            userAttributes.setAnnouncement(newMessage);
+            userAttributes.setClosedDate(closeDate);
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
+            throw new PullUserAttributesException();
         }
-        return userAccount;
+        return userAttributes;
     }
 
     private static String getUserCloseDate(JsonNode jsonNodeArray, String closeDate, int i) {
