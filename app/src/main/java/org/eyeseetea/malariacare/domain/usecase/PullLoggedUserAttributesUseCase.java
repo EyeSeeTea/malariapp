@@ -66,7 +66,7 @@ public class PullLoggedUserAttributesUseCase implements UseCase {
             userAttributes = userAttributesRemoteDataSource.getUser(userAccount.getUserUid());
         }catch (PullUserAttributesException pullException){
             pullException.printStackTrace();
-            mCallback.onError();
+            notifyError();
             return;
         }
 
