@@ -36,9 +36,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramStageExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
@@ -67,14 +65,12 @@ public class PullMetadataController implements IPullMetadataController {
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
         AppDatabase.wipeDatabase();
-
         this.callback = callback;
+
 
         pullRemoteDataSource.wipeDataBase();
 
         callback.onStep(PullStep.PROGRAMS);
-
-        saveLoggedUser();
 
         pullRemoteDataSource.pullMetadata(new IPullSourceCallback() {
 
@@ -85,7 +81,6 @@ public class PullMetadataController implements IPullMetadataController {
                 convertMetaData();
 
                 Log.d(TAG, "PULL process...OK");
-
                 callback.onComplete();
             }
 
@@ -96,11 +91,6 @@ public class PullMetadataController implements IPullMetadataController {
             }
 
         });
-    }
-
-    private void saveLoggedUser() {
-        UserDB userDB = Session.getUser();
-        userDB.save();
     }
 
     /**
