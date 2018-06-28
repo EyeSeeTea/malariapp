@@ -97,7 +97,7 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
                         public void call(
                                 org.hisp.dhis.client.sdk.models.user.UserAccount dhisUserAccount) {
                             UserAccount userAccount = new UserAccount(credentials.getUsername(),
-                                    dhisUserAccount.getUId());
+                                    dhisUserAccount.getUId(), "", null);
                             callback.onSuccess(userAccount);
                         }
                     }, new Action1<Throwable>() {

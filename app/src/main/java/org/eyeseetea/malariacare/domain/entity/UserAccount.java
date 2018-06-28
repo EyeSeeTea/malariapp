@@ -20,13 +20,23 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
+import org.eyeseetea.malariacare.utils.DateParser;
+
+import java.util.Date;
+
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+
 public class UserAccount {
     private String userName;
     private String userUid;
+    private String announcement;
+    private Date closedDate;
 
-    public UserAccount(String userName, String userUid) {
-        this.userName = userName;
-        this.userUid = userUid;
+    public UserAccount(String userName, String userUid, String announcement, Date closedDate) {
+        this.userName = required(userName, "username is required");
+        this.userUid = required(userUid, "user uid is required");
+        this.announcement = required(announcement, "user uid is required");
+        this.closedDate = closedDate;
     }
 
     public String getUserName() {
@@ -37,7 +47,26 @@ public class UserAccount {
         return userUid;
     }
 
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
+    public String getAnnouncement() {
+        return announcement;
+    }
+
+    public String setAnnouncement(String announcement) {
+        return this.announcement = announcement;
+    }
+
+    public boolean isClosed() {
+        if(closedDate==null) {
+            return false;
+        }else{
+            return closedDate.before(new Date());
+        }
+    }
+
+    public void setClosedDate(String closedDate) {
+        if (closedDate == null || closedDate.equals("")) {
+            this.closedDate = null;
+        }
+        this.closedDate = DateParser.parseNewLongDate(closedDate);
     }
 }
