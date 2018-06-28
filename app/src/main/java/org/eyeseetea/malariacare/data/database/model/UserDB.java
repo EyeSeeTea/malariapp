@@ -65,6 +65,14 @@ public class UserDB extends BaseModel {
         this.name = name;
     }
 
+    public UserDB(String uid, String name, String username, String announcement, Date closeDate) {
+        this.uid_user = uid;
+        this.name = name;
+        this.username = username;
+        this.announcement = announcement;
+        this.close_date = closeDate;
+    }
+
     public Long getId_user() {
         return id_user;
     }
