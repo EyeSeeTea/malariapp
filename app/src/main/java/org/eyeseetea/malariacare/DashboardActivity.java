@@ -73,7 +73,6 @@ public class DashboardActivity extends BaseActivity {
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
         if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
-
             PullLoggedUserAttributesUseCase pullAttributesUseCase = new PullLoggedUserAttributesUseCase(
                     new AsyncExecutor(),
                     new UIThreadExecutor(),
@@ -84,19 +83,13 @@ public class DashboardActivity extends BaseActivity {
             pullAttributesUseCase.execute(new PullLoggedUserAttributesUseCase.Callback() {
                 @Override
                 public void onSuccess(UserAttributes userAttributes) {
-
-                    if (shouldDisplayAnnoucement(userAttributes)) {
-                        Log.d(TAG, "show logged announcement");
-                        AUtils.showAnnouncement(R.string.admin_announcement, userAttributes.getAnnouncement(),
-                                DashboardActivity.this);
-                    } else {
-                        AUtils.checkUserClosed(userAttributes.getClosedDate(), DashboardActivity.this);
-                    }
+                    announcementAndUserClosedActions(userAttributes);
                 }
 
                 @Override
-                public void onError() {
-                    System.out.println("Error pulling attributes");
+                public void onError(UserAttributes userAttributes) {
+                    System.out.println("Error pulling attributes. Show the last persisted announcement and close date");
+                    announcementAndUserClosedActions(userAttributes);
                 }
             });
         }
@@ -120,6 +113,16 @@ public class DashboardActivity extends BaseActivity {
             DriveRestController.getInstance().init(this);
         }
         reloadDashboard();
+    }
+
+    private void announcementAndUserClosedActions(UserAttributes userAttributes) {
+        if (shouldDisplayAnnoucement(userAttributes)) {
+            Log.d(TAG, "show logged announcement");
+            AUtils.showAnnouncement(R.string.admin_announcement, userAttributes.getAnnouncement(),
+                    DashboardActivity.this);
+        } else {
+            AUtils.checkUserClosed(userAttributes.getClosedDate(), DashboardActivity.this);
+        }
     }
 
     private boolean shouldDisplayAnnoucement(UserAttributes userAttributes) {
