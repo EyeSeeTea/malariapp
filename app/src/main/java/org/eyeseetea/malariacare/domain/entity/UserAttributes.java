@@ -31,7 +31,7 @@ public class UserAttributes {
     private Date closedDate;
 
     public UserAttributes(String announcement, Date closedDate) {
-        this.announcement = required(announcement, "user uid is required");
+        this.announcement = announcement;
         this.closedDate = closedDate;
     }
 

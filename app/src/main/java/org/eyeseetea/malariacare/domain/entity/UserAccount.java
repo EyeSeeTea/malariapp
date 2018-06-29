@@ -29,9 +29,9 @@ public class UserAccount {
 
     public UserAccount(String name, String userName, String userUid, UserAttributes userAttributes) {
         this.name = required(name, "name is required");
-        this.userName = required(userName, "username is required");
+        this.userName = required(userName, "user name is required");
         this.userUid = required(userUid, "user uid is required");
-        this.userAttributes = required(userAttributes, "userAttributes are required");
+        this.userAttributes = required(userAttributes, "user attributes are required");
     }
 
     public String getName() {

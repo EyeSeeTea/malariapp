@@ -97,7 +97,7 @@ public class UserAccountDhisSDKDataSource implements IUserAccountDataSource {
                         @Override
                         public void call(
                                 org.hisp.dhis.client.sdk.models.user.UserAccount dhisUserAccount) {
-                            UserAccount userAccount = new UserAccount(credentials.getUsername(), credentials.getUsername(),
+                            UserAccount userAccount = new UserAccount(dhisUserAccount.getName(), credentials.getUsername(),
                                     dhisUserAccount.getUId(), UserAttributes.createEmptyUserAttributes());
                             callback.onSuccess(userAccount);
                         }
