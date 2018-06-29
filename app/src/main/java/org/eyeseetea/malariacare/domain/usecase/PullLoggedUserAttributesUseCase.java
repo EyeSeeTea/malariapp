@@ -33,7 +33,7 @@ public class PullLoggedUserAttributesUseCase implements UseCase {
     public interface Callback {
         void onSuccess(UserAttributes userAttributes);
 
-        void onError();
+        void onError(UserAttributes userAttributes);
     }
 
     private final IAsyncExecutor mAsyncExecutor;
@@ -61,12 +61,11 @@ public class PullLoggedUserAttributesUseCase implements UseCase {
     public void run() {
         UserAccount userAccount = userLocalDataSource.getLoggedUser();
         UserAttributes userAttributes;
-
         try {
-            userAttributes = userAttributesRemoteDataSource.getUser(userAccount.getUserUid());
+             userAttributes = userAttributesRemoteDataSource.getUser(userAccount.getUserUid());
         }catch (PullUserAttributesException pullException){
             pullException.printStackTrace();
-            notifyError();
+            notifyError(userAccount.getUserAttributes());
             return;
         }
 
@@ -88,11 +87,11 @@ public class PullLoggedUserAttributesUseCase implements UseCase {
         });
     }
 
-    private void notifyError() {
+    private void notifyError(final UserAttributes userAttributes) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onError();
+                mCallback.onError(userAttributes);
             }
         });
     }
