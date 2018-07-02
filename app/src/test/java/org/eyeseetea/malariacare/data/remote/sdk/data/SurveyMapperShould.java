@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.eyeseetea.malariacare.common.DateTimeTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.domain.entity.Option;
@@ -156,7 +157,7 @@ public class SurveyMapperShould {
         builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
         // Register an adapter to manage the date types as long values
-        builder.registerTypeAdapter(DateTime.class, new SurveySDKDhisDataSource.DateTimeTypeAdapter());
+        builder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
 
         return builder.create();
     }

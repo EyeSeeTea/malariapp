@@ -138,57 +138,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
         List<Survey> surveys = surveyMapper.mapSurveys(events);
 
-        String eventsJson;
-        String serverMetadataJson;
-        String compositeScoresJson;
-        String questionsJson;
-        String optionsJson;
-        String surveysJson;
-
-        Gson gson = createGson();
-
-        try {
-            eventsJson = gson.toJson(events);
-            serverMetadataJson = gson.toJson(serverMetadata);
-            questionsJson = gson.toJson(questions);
-            optionsJson = gson.toJson(options);
-            surveysJson = gson.toJson(surveys);
-            compositeScoresJson = gson.toJson(compositeScores);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
         return surveys;
-    }
-
-    static class DateTimeTypeAdapter implements JsonSerializer<DateTime>,
-            JsonDeserializer<DateTime> {
-        @Override
-        public DateTime deserialize(JsonElement json, Type typeOfT,
-                JsonDeserializationContext context) throws JsonParseException {
-            return DateTime.parse(json.getAsString());
-        }
-
-        @Override
-        public JsonElement serialize(DateTime src, Type typeOfSrc,
-                JsonSerializationContext context) {
-            return new JsonPrimitive(ISODateTimeFormat
-                    .dateTimeNoMillis()
-                    .print(src));
-        }
-    }
-
-    @NonNull
-    private Gson createGson() {
-        GsonBuilder builder = new GsonBuilder();
-
-        builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-
-        // Register an adapter to manage the date types as long values
-        builder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
-
-        return builder.create();
     }
 
     private List<Event> getDownloadedEvents() {
