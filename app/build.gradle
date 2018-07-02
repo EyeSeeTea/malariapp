@@ -159,6 +159,7 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules

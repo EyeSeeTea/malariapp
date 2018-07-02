@@ -25,4 +25,30 @@ public class Score {
     public float getScore() {
         return score;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Score score1 = (Score) o;
+
+        if (!uId.equals(score1.uId)) return false;
+        return score.equals(score1.score);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uId.hashCode();
+        result = 31 * result + score.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "uId='" + uId + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }

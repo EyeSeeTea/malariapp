@@ -123,4 +123,66 @@ public class Survey {
     public void changeScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        if (!uId.equals(survey.uId)) return false;
+        if (!programUId.equals(survey.programUId)) return false;
+        if (!orgUnitUId.equals(survey.orgUnitUId)) return false;
+        if (score != null ? !score.equals(survey.score) : survey.score != null) return false;
+        if (!userUId.equals(survey.userUId)) return false;
+        if (!creationDate.equals(survey.creationDate)) return false;
+        if (completionDate != null ? !completionDate.equals(survey.completionDate)
+                : survey.completionDate != null) {
+            return false;
+        }
+        if (uploadDate != null ? !uploadDate.equals(survey.uploadDate)
+                : survey.uploadDate != null) {
+            return false;
+        }
+        if (scheduledDate != null ? !scheduledDate.equals(survey.scheduledDate)
+                : survey.scheduledDate != null) {
+            return false;
+        }
+        if (status != survey.status) return false;
+        return values.equals(survey.values);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uId.hashCode();
+        result = 31 * result + programUId.hashCode();
+        result = 31 * result + orgUnitUId.hashCode();
+        result = 31 * result + (score != null ? score.hashCode() : 0);
+        result = 31 * result + userUId.hashCode();
+        result = 31 * result + creationDate.hashCode();
+        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
+        result = 31 * result + (uploadDate != null ? uploadDate.hashCode() : 0);
+        result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
+        result = 31 * result + status.hashCode();
+        result = 31 * result + values.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "uId='" + uId + '\'' +
+                ", programUId='" + programUId + '\'' +
+                ", orgUnitUId='" + orgUnitUId + '\'' +
+                ", score=" + score +
+                ", userUId='" + userUId + '\'' +
+                ", creationDate=" + creationDate +
+                ", completionDate=" + completionDate +
+                ", uploadDate=" + uploadDate +
+                ", scheduledDate=" + scheduledDate +
+                ", status=" + status +
+                ", values=" + values +
+                '}';
+    }
 }
