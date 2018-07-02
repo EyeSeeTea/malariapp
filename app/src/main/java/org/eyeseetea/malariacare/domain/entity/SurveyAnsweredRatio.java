@@ -26,10 +26,6 @@ package org.eyeseetea.malariacare.domain.entity;
  */
 public class SurveyAnsweredRatio {
     /**
-     * Id of the related survey
-     */
-    private long surveyId;
-    /**
      * Total number of questions to answer
      */
     private int total;
@@ -48,21 +44,17 @@ public class SurveyAnsweredRatio {
      */
     private int totalCompulsory;
 
-    public SurveyAnsweredRatio(long surveyId, int total, int answered, int totalCompulsory,
+    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory,
             int compulsoryAnswered) {
-        this.surveyId = surveyId;
         this.total = total;
         this.answered = answered;
         this.totalCompulsory = totalCompulsory;
         this.compulsoryAnswered = compulsoryAnswered;
     }
 
-    public long getSurveyId() {
-        return surveyId;
-    }
 
-    public void setSurveyId(long surveyId) {
-        this.surveyId = surveyId;
+    public static SurveyAnsweredRatio startSurvey(int total, int totalCompulsory) {
+        return new SurveyAnsweredRatio(total,0,totalCompulsory,0);
     }
 
     public int getAnswered() {
