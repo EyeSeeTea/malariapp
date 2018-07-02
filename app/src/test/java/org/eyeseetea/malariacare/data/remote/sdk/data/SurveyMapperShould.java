@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.eyeseetea.malariacare.common.DateTimeTypeAdapter;
+import org.eyeseetea.malariacare.common.DateTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.domain.entity.Option;
@@ -23,6 +24,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SurveyMapperShould {
@@ -158,6 +160,7 @@ public class SurveyMapperShould {
 
         // Register an adapter to manage the date types as long values
         builder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
+        builder.registerTypeAdapter(Date.class, new DateTypeAdapter());
 
         return builder.create();
     }

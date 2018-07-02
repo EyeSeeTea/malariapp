@@ -1,6 +1,6 @@
 [
   {
-    "completionDate": "2017-10-03T10:15:53.026",
+    "completionDate": "2017-10-03T08:15:53.026+0000",
     "creationDate": "2017-10-03T09:31:03.287",
     "orgUnitUId": "A5HZNrJc2ir",
     "programUId": "Qt74wJNHTAS",
@@ -11,7 +11,7 @@
     },
     "status": "SENT",
     "uId": "NrZU8fZkR5p",
-    "uploadDate": "2017-10-03T09:33:27.765",
+    "uploadDate": "2017-10-03T10:33:27.765+0000",
     "userUId": "Kenya Demo1",
     "values": [
       {
@@ -232,7 +232,7 @@
     ]
   },
   {
-    "completionDate": "2017-10-03T12:15:20.026",
+    "completionDate": "2017-10-03T10:15:20.026+0000",
     "creationDate": "2017-09-26T04:52:47.291",
     "orgUnitUId": "A5HZNrJc2ir",
     "programUId": "Qt74wJNHTAS",
@@ -243,7 +243,7 @@
     },
     "status": "SENT",
     "uId": "hPaq2nOqRa9",
-    "uploadDate": "2017-09-26T04:57:46.889",
+    "uploadDate": "2017-09-26T22:57:46.889+0000",
     "userUId": "Kenya Demo1",
     "values": [
       {
@@ -910,7 +910,7 @@
   },
   {
     "completionDate": "2017-10-03T08:15:57.007",
-    "creationDate": "2017-10-03T09:42:37.670",
+    "creationDate": "2017-10-03T10:42:37.670+0000",
     "orgUnitUId": "A5HZNrJc2ir",
     "programUId": "Qt74wJNHTAS",
     "scheduledDate": "2018-02-03T00:00:00.000",
@@ -920,7 +920,7 @@
     },
     "status": "SENT",
     "uId": "xwvcQEpxOzb",
-    "uploadDate": "2017-10-03T10:16:51.505",
+    "uploadDate": "2017-10-03T11:16:51.505+0000",
     "userUId": "Kenya Demo1",
     "values": [
       {
