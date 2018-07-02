@@ -66,14 +66,14 @@ public class SurveyMapperShould {
     }
 
     private ServerMetadata givenAServerMetadata() throws IOException {
-        String stringJson = mFileReader.getStringFromFile("ServerMetadata.json");
+        String stringJson = mFileReader.getStringFromFile("server_metadata.json");
         Gson gson = createGson();
 
         return gson.fromJson(stringJson, ServerMetadata.class);
     }
 
     private List<Survey> givenAnExpectedSurveys() throws IOException {
-        String stringJson = mFileReader.getStringFromFile("Surveys.json");
+        String stringJson = mFileReader.getStringFromFile("surveys.json");
 
         Gson gson = createGson();
 
@@ -92,7 +92,7 @@ public class SurveyMapperShould {
     }
 
     private List<Question> givenAQuestions() throws IOException {
-        String stringJson = mFileReader.getStringFromFile("Questions.json");
+        String stringJson = mFileReader.getStringFromFile("questions.json");
         Gson gson = createGson();
 
         Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
@@ -100,7 +100,7 @@ public class SurveyMapperShould {
     }
 
     private List<Option> givenAnOptions() throws IOException {
-        String stringJson = mFileReader.getStringFromFile("Options.json");
+        String stringJson = mFileReader.getStringFromFile("options.json");
         Gson gson = createGson();
 
         Type listType = new TypeToken<ArrayList<Option>>(){}.getType();
@@ -145,7 +145,7 @@ public class SurveyMapperShould {
 
         //TODO: compositeScoreMap on the future should be a domain entity list
         // and retrieve from file
-        /*String stringJson = mFileReader.getStringFromFile("CompositeScores.json");
+        /*String stringJson = mFileReader.getStringFromFile("composite_scores.json");
         return mGenericClassParser.parse(stringJson,List.class,CompositeScoreDB.class);*/
 
         return compositeScoreDBS;
