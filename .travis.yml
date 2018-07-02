@@ -21,7 +21,7 @@ android:
   - extra-android-support
 script:
 #- "./gradlew --no-daemon testEyeseeteaDebugUnitTest"
-- "./gradlew --info --no-daemon testHnqisDebugUnitTest"
+- "./gradlew --no-daemon testHnqisDebugUnitTest"
 before_script:
 - "./travis_before_script.sh"
 install:
