@@ -20,6 +20,7 @@ public class Survey {
     private Date scheduledDate;
     private SurveyStatus status;
     private List<QuestionValue> values;
+    private SurveyAnsweredRatio surveyAnsweredRatio;
 
     private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
         this.uId=required(uId, "Survey uid is required");
@@ -33,8 +34,9 @@ public class Survey {
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
-            String userUId) {
+            String userUId, int total, int totalCompulsory) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.setSurveyAnsweredRatio(SurveyAnsweredRatio.startSurvey(total, totalCompulsory));
         return survey;
     }
 
@@ -122,5 +124,13 @@ public class Survey {
 
     public void changeScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    public SurveyAnsweredRatio getSurveyAnsweredRatio() {
+        return surveyAnsweredRatio;
+    }
+
+    public void setSurveyAnsweredRatio(SurveyAnsweredRatio surveyAnsweredRatio) {
+        this.surveyAnsweredRatio = surveyAnsweredRatio;
     }
 }

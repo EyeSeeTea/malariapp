@@ -17,7 +17,7 @@ public class SurveyShould {
     @Test
     public void create_survey_with_mandatory_fields(){
         Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, 0);
 
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getUId().equals("UID"));
@@ -29,7 +29,7 @@ public class SurveyShould {
     @Test
     public void create_empty_survey(){
         Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, 0);
 
         Assert.assertNotNull(survey);
         Assert.assertNotNull(survey.getCreationDate());
@@ -65,7 +65,7 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey uid is required");
 
-        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0, 0);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey programUId is required");
 
-        Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID");
+        Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID", 0, 0);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey orgUnitUId is required");
 
-        Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID");
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID", 0, 0);
     }
 
     @Test
@@ -89,6 +89,6 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey userUId is required");
 
-        Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null);
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null, 0, 0);
     }
 }
