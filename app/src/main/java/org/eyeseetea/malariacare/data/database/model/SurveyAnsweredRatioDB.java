@@ -26,6 +26,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
+@Deprecated
 @Table(database = AppDatabase.class, name = "SurveyAnsweredRatio")
 public class SurveyAnsweredRatioDB extends BaseModel{
 
