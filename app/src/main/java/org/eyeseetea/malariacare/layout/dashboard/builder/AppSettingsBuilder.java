@@ -87,6 +87,10 @@ public class AppSettingsBuilder {
         return getInstance().getSettings().getDashboardSettings().isDeveloperOptions();
     }
 
+    public static boolean isTabTitleVisible(){
+        return getInstance().getSettings().getDashboardSettings().isTabTitleVisible();
+    }
+
     public void init(Context context){
         settings = parse(R.raw.settings,context);
         dashboardController = build(settings);
