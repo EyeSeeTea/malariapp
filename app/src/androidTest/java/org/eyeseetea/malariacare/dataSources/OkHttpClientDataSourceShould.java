@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.data.remote.api.OkHttpClientDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class OkHttpClientDataSourceShould {
     @Before
     public void loadCredentials(){
         //// TODO: 26/06/2018  add testing credentials in github
-        mCredentials = new Credentials("https://data.psi-mis.org","", "");
+        mCredentials = new Credentials(BuildConfig.DEFAULT_SERVER, BuildConfig.DEFAULT_USER, BuildConfig.DEFAULT_PASSWORD);
     }
 
     @Test
