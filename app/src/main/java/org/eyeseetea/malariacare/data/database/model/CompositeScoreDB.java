@@ -32,6 +32,8 @@ import static org.eyeseetea.malariacare.data.database.AppDatabase.tabAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.tabName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.headerName;
 
+import android.util.Log;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -164,6 +166,7 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
 
     public List<CompositeScoreDB> getCompositeScoreChildren() {
         if (this.compositeScoreChildren == null){
+            Log.d("CompositeScoreDB","Executing getCompositeScoreChildren for id_composite_score: "  + id_composite_score );
             this.compositeScoreChildren = new Select()
                     .from(CompositeScoreDB.class)
                     .where(CompositeScoreDB_Table.id_composite_score_parent.eq(this.getId_composite_score()))
@@ -194,6 +197,8 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
         if(program==null || program.getId_program()==null){
             return new ArrayList<>();
         }
+
+        Log.d("CompositeScoreDB","Executing listByprogram: " + program.uid_program);
 
         //FIXME: Apparently there is a bug in DBFlow joins that affects here. Question has a column 'uid', and so do CompositeScoreDB, so results are having Questions one, and should keep CompositeScoreDB one. To solve it, we've introduced a last join with CompositeScoreDB again and a HashSet to remove resulting duplicates
         //Take scores associated to questions of the program ('leaves')
