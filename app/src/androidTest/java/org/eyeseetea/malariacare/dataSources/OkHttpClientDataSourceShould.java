@@ -34,7 +34,7 @@ public class OkHttpClientDataSourceShould {
         try {
             String apiCall = String.format(DHIS_CHECK_EVENT_API, "ggxhuvMBtxj", "A5HZNrJc2ir",
                     "2009-01-01", "2009-01-01");
-            response = okHttpClientDataSource.executeCall(apiCall, "GET");
+            response = okHttpClientDataSource.executeCall(apiCall);
         } catch (Exception e) {
             e.printStackTrace();
         }

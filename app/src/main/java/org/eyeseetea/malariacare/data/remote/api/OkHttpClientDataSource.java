@@ -21,7 +21,7 @@ public class OkHttpClientDataSource {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static final String TAG = ".PullDhisApiDataSource";
-    private static org.eyeseetea.malariacare.domain.entity.Credentials mCredentials;
+    private org.eyeseetea.malariacare.domain.entity.Credentials mCredentials;
 
     public OkHttpClientDataSource(org.eyeseetea.malariacare.domain.entity.Credentials credentials) {
         mCredentials = credentials;
@@ -30,15 +30,8 @@ public class OkHttpClientDataSource {
     /**
      * Call to DHIS Server
      * @param url
-     * @param method
      */
-    public static String executeCall(String url, String method)
-            throws Exception {
-        Response response = executeCall(null, url, method);
-        return response.body().string();
-    }
-
-    private static Response executeCall(JSONObject data, String url, String method) throws
+    public String executeCall(String url) throws
             IOException {
         final String DHIS_URL= mCredentials.getServerURL() + url.replace(" ", "%20");
 
@@ -58,23 +51,7 @@ public class OkHttpClientDataSource {
                 .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
                 .url(DHIS_URL);
 
-        switch (method){
-            case "POST":
-                RequestBody postBody = RequestBody.create(JSON, data.toString());
-                builder.post(postBody);
-                break;
-            case "PUT":
-                RequestBody putBody = RequestBody.create(JSON, data.toString());
-                builder.put(putBody);
-                break;
-            case "PATCH":
-                RequestBody patchBody = RequestBody.create(JSON, data.toString());
-                builder.patch(patchBody);
-                break;
-            case "GET":
-                builder.get();
-                break;
-        }
+        builder.get();
 
         Request request = builder.build();
         Response response = client.newCall(request).execute();;
@@ -82,12 +59,12 @@ public class OkHttpClientDataSource {
             Log.e(TAG, "pushData (" + response.code() + "): " + response.body().string());
             throw new IOException(response.message());
         }
-        return response;
+        return  response.body().string();
     }
     /**
      * Basic
      */
-    private static class BasicAuthenticator implements Authenticator {
+    private class BasicAuthenticator implements Authenticator {
 
         public final String AUTHORIZATION_HEADER="Authorization";
         private String credentials;
