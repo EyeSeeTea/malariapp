@@ -16,26 +16,30 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
         List<CompositeScoreDB> compositeScoreDBS = CompositeScoreDB.listByProgram(programDB);
         for (CompositeScoreDB compositeScore : compositeScoreDBS) {
             if (compositeScore.getComposite_score() == null) {
-                compositeScores.add(convertCompositeScoreChildren(compositeScore));
+                compositeScores.add(
+                        convertCompositeScoreChildren(compositeScore, compositeScoreDBS));
             }
         }
         return compositeScores;
     }
 
-    private CompositeScore convertCompositeScoreChildren(CompositeScoreDB compositeScoreDB) {
-        CompositeScore compositeScore = convertFromDBToDomain(compositeScoreDB, null);
+    private CompositeScore convertCompositeScoreChildren(CompositeScoreDB compositeScoreDB,
+            List<CompositeScoreDB> compositeScoreDBS) {
+        CompositeScore compositeScore = convertFromDBToDomain(compositeScoreDB, null,
+                compositeScoreDBS);
         if (compositeScoreDB.getCompositeScoreChildren() != null
                 && !compositeScoreDB.getCompositeScoreChildren().isEmpty()) {
             for (CompositeScoreDB compositeScoreChild : compositeScoreDB
                     .getCompositeScoreChildren()) {
-                compositeScore.addChild(convertFromDBToDomain(compositeScoreChild, compositeScore));
+                compositeScore.addChild(convertFromDBToDomain(compositeScoreChild, compositeScore,
+                        compositeScoreDBS));
             }
         }
         return compositeScore;
     }
 
     private CompositeScore convertFromDBToDomain(CompositeScoreDB compositeScoreDB,
-            CompositeScore parent) {
+            CompositeScore parent, List<CompositeScoreDB> compositeScoreDBS) {
         ArrayList<CompositeScore> compositeScoreChildren = new ArrayList<>();
 
         CompositeScore compositeScore = new CompositeScore(compositeScoreDB.getUid(),
@@ -44,15 +48,30 @@ public class CompositeScoreDataSource implements ICompositeScoreRepository {
         if (compositeScoreDB.getComposite_score() != null) {
             compositeScore.addParent(parent);
         }
-        if (compositeScoreDB.getCompositeScoreChildren() != null) {
+        List<CompositeScoreDB> compositeScoreChildrenDB = getCompositeScoreChildrenDBFromList(
+                compositeScoreDB, compositeScoreDBS);
+        if (compositeScoreChildrenDB != null) {
 
-            for (CompositeScoreDB compositeScoreChild : compositeScoreDB
-                    .getCompositeScoreChildren()) {
+            for (CompositeScoreDB compositeScoreChild : compositeScoreChildrenDB) {
                 compositeScoreChildren.add(
-                        convertFromDBToDomain(compositeScoreChild, compositeScore));
+                        convertFromDBToDomain(compositeScoreChild, compositeScore,
+                                compositeScoreDBS));
             }
         }
         compositeScore.addChildren(compositeScoreChildren);
         return compositeScore;
+    }
+
+
+    private List<CompositeScoreDB> getCompositeScoreChildrenDBFromList(CompositeScoreDB parent,
+            List<CompositeScoreDB> compositeScoreDBS) {
+        List<CompositeScoreDB> compositeScoreChildren = new ArrayList<>();
+        for (CompositeScoreDB compositeScoreDB : compositeScoreDBS) {
+            if (compositeScoreDB.getComposite_score() != null
+                    && compositeScoreDB.getComposite_score().equals(parent)) {
+                compositeScoreChildren.add(compositeScoreDB);
+            }
+        }
+        return compositeScoreChildren;
     }
 }
