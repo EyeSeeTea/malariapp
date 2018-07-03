@@ -66,8 +66,6 @@ public class PullDataController implements IPullDataController {
                 try {
                     try {
                         convertDataValues();
-
-                        validateCS();
                     } catch (Exception e) {
                         callback.onError(new
                                 MetadataException(e));
@@ -127,33 +125,6 @@ public class PullDataController implements IPullDataController {
         SurveyPlanner.getInstance().buildNext();
     }
 
-    private void validateCS() {
-        Log.d(TAG, "Validate Composite scores");
-        callback.onStep(PullStep.VALIDATE_COMPOSITE_SCORES);
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
-        for (CompositeScoreDB compositeScore : compositeScores) {
-            if (!compositeScore.hasChildren() && (compositeScore.getQuestions() == null
-                    || compositeScore.getQuestions().size() == 0)) {
-                Log.d(TAG,
-                        "CompositeScoreDB without children and without questions will be removed: "
-                                + compositeScore.toString());
-                compositeScore.delete();
-                continue;
-            }
-            if (compositeScore.getHierarchical_code() == null) {
-                Log.d(TAG, "CompositeScoreDB without hierarchical code will be removed: "
-                        + compositeScore.toString());
-                compositeScore.delete();
-                continue;
-            }
-            if (compositeScore.getComposite_score() == null
-                    && !compositeScore.getHierarchical_code().equals(
-                    CompositeScoreBuilder.ROOT_NODE_CODE)) {
-                Log.d(TAG, "CompositeScoreDB not root and not parent should be fixed: "
-                        + compositeScore.toString());
-                continue;
-            }
-        }
-    }
+
 
 }
