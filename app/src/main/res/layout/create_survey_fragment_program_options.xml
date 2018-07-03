@@ -40,6 +40,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/create_info_survey"
                 android:id="@+id/textView3"
+                android:textSize="@dimen/creation_title"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 app:tDimension="@string/font_size_level4"
@@ -62,7 +63,7 @@
                 android:spinnerMode="dropdown"
                 android:backgroundTintMode="add"
                 android:background="@drawable/filter_create_org_background"
-                android:layout_margin="6dp"
+                android:layout_margin="12dp"
                 android:gravity="right"
                 />
             <ImageView

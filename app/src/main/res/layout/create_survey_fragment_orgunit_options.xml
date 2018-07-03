@@ -37,6 +37,7 @@
             app:tFontName="@string/medium_font_name"
             android:textAllCaps="true"
             android:id="@+id/textView2"
+            android:textSize="@dimen/creation_title"
             android:background="@color/assess_grey"
             android:textColor="@color/white"
             android:gravity="center" />
@@ -55,7 +56,7 @@
             android:background="@drawable/filter_create_org_background"
             android:id="@+id/org_unit"
             android:spinnerMode="dropdown"
-            android:layout_margin="6dip"/>
+            android:layout_margin="12dp"/>
         <ImageView
             app:srcCompat="@drawable/ic_white_arrow"
             android:layout_width="wrap_content"
