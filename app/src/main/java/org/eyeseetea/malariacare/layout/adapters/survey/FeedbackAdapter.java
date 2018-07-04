@@ -273,18 +273,17 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        String compulsoryMark="";
+        TextView compulsoryMark = (TextView) rowLayout.findViewById(
+                R.id.feedback_question_mandatory);
         if(feedback.getQuestion().getCompulsory()) {
-            int red = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.darkRed);
-            String appNameColorString = String.format("%X", red).substring(2);
-            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
-                    + "</b></font>";
+            compulsoryMark.setVisibility(View.VISIBLE);
+        } else {
+            compulsoryMark.setVisibility(View.INVISIBLE);
         }
 
         String label= StringEscapeUtils.escapeHtml4(feedback.getLabel());
 
-        textView.setText(Html.fromHtml(compulsoryMark + label));
+        textView.setText(Html.fromHtml(label));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
