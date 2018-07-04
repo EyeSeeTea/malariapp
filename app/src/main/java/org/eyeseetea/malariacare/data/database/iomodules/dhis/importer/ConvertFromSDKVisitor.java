@@ -53,6 +53,7 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
@@ -289,6 +290,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
+        //TODO: retrieved user name usign SDK
+        appUser.setUsername(Session.getCredentials().getUsername());
         appUser.setLastUpdated(null);
         appUser.save();
     }
