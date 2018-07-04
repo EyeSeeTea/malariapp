@@ -1,7 +1,10 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
@@ -10,9 +13,12 @@ public class Question {
     private boolean removed;
     private QuestionType questionType;
     private String answerName;
+    private List<Question> children;
+    private List<Question> parents;
+    private Map<String, Map<String, Boolean>> questionOptionMatches;//private Map<Question uid, Map<Option uid, visibility>>
 
     public Question(String uId, int questionType, boolean isCompulsory) {
-        this(uId,   questionType, isCompulsory, null);
+        this(uId, questionType, isCompulsory, null);
     }
 
     public Question(String uId, int questionType, boolean isCompulsory, String answerName) {
@@ -20,6 +26,9 @@ public class Question {
         this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
         this.answerName = answerName;
+        children = new ArrayList<>();
+        parents = new ArrayList<>();
+        questionOptionMatches = new HashMap<>();
     }
 
 
@@ -29,6 +38,17 @@ public class Question {
 
     public boolean isCompulsory() {
         return isCompulsory;
+    }
+
+    public boolean isVisible() {
+        if(!hasParents()) {
+            return true;
+        }else{
+            if (hasActiveParent()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isRemoved() {
@@ -45,6 +65,67 @@ public class Question {
 
     public String getAnswerName() {
         return answerName;
+    }
+
+    public void addParent(Question question, String optionUid1) {
+        parents.add(question);
+        Map<String, Boolean> matches = new HashMap<>();
+        if(questionOptionMatches.containsKey(question.getUId())) {
+            matches = questionOptionMatches.get(question.getUId());
+        }
+        matches.put(optionUid1, false);
+        questionOptionMatches.put(question.getUId(), matches);
+    }
+
+    public void addChildren(Question question) {
+        children.add(question);
+    }
+
+    public boolean hasChildren() {
+        return  children.size()>0;
+    }
+    public boolean hasParents() {
+        return  parents.size()>0;
+    }
+
+    public List<Question> getChildren(){
+        return children;
+    }
+
+    public boolean shouldActivateQuestion(QuestionValue value) {
+        Map<String, Boolean> matches = questionOptionMatches.get(value.getQuestionUId());
+        return !isVisible() && matches!=null && matches.containsKey(value.getOptionUId());
+    }
+
+    public void addActiveParentMatch(QuestionValue questionValue) {
+        if(questionValue.getQuestionUId()!=null && questionValue.getOptionUId()!=null){
+            Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
+            match.put(questionValue.getOptionUId(), true);
+            questionOptionMatches.put(questionValue.getQuestionUId(), match);
+        }
+    }
+
+    public void removeActiveParentMatch(QuestionValue questionValue) {
+        if(questionValue.getQuestionUId()!=null && questionValue.getOptionUId()!=null){
+            Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
+            match.put(questionValue.getOptionUId(), false);
+            questionOptionMatches.put(questionValue.getQuestionUId(), match);
+        }
+    }
+
+    private boolean hasActiveParent() {
+        for(String questionUId : questionOptionMatches.keySet()){
+            Map<String, Boolean> optionMatcher = questionOptionMatches.get(questionUId);
+            if(optionMatcher==null){
+                continue;
+            }
+            for(String optionUId : optionMatcher.keySet()) {
+                if (optionMatcher.get(optionUId).booleanValue()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
