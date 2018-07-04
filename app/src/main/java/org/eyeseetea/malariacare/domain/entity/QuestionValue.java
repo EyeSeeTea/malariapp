@@ -2,8 +2,6 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
-import android.icu.text.PluralFormat;
-
 public class QuestionValue {
     private final String questionUId;
     private String optionUId;
