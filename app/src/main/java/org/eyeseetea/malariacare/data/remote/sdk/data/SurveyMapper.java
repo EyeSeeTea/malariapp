@@ -75,7 +75,7 @@ public class SurveyMapper {
 
         Date scheduledDate = event.getDueDate().toDate();
 
-        List<QuestionValue> values = new ArrayList<>();
+        HashMap<String, QuestionValue> values = new HashMap<>();
 
         for (TrackedEntityDataValue dataValue : event.getDataValues()) {
 
@@ -112,7 +112,7 @@ public class SurveyMapper {
                 QuestionValue questionValue = mapValue(dataValue);
 
                 if (questionValue != null) {
-                    values.add(questionValue);
+                    values.put(questionValue.getQuestionUId(), questionValue);
                 }
             }
         }
