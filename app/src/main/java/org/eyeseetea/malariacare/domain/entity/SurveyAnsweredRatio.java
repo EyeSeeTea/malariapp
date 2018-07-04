@@ -48,6 +48,14 @@ public class SurveyAnsweredRatio {
      */
     private int totalCompulsory;
 
+    public SurveyAnsweredRatio(int total, int answered, int totalCompulsory,
+                               int compulsoryAnswered) {
+        this.total = total;
+        this.answered = answered;
+        this.totalCompulsory = totalCompulsory;
+        this.compulsoryAnswered = compulsoryAnswered;
+    }
+
     public SurveyAnsweredRatio(long surveyId, int total, int answered, int totalCompulsory,
             int compulsoryAnswered) {
         this.surveyId = surveyId;
@@ -63,6 +71,10 @@ public class SurveyAnsweredRatio {
 
     public void setSurveyId(long surveyId) {
         this.surveyId = surveyId;
+    }
+
+    public static SurveyAnsweredRatio startSurvey(int total, int totalCompulsory) {
+        return new SurveyAnsweredRatio(total,0,totalCompulsory,0);
     }
 
     public int getAnswered() {
