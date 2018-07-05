@@ -49,9 +49,39 @@ public class SurveyAnswerRatioShould {
         Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
         Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
     }
+    @Test
+    public void complete_survey_ratio_when_add_all__values(){
+        Survey survey = createQuestionTreeWithoutMultiparentChildren();
+
+        Question question = survey.getQuestion("QuestionUID1");
+        QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
+        survey.addValue(questionValue, question);
+        question = survey.getQuestion("QuestionUID2");
+        questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
+        survey.addValue(questionValue, question);
+        question = survey.getQuestion("QuestionUID3");
+        questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
+        survey.addValue(questionValue, question);
+        question = survey.getQuestion("QuestionUID4");
+        questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
+        survey.addValue(questionValue, question);
+        question = survey.getQuestion("QuestionUIDCHILD1");
+        questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
+        survey.addValue(questionValue, question);
+        question = survey.getQuestion("QuestionUIDCHILD2");
+        questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
+        survey.addValue(questionValue, question);
+
+
+        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==6);
+        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==6);
+        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+    }
 
     @Test
-    public void calculate_survey_ratio_when_add_only_one_when_add_repeated_value_with_normal_values(){
+    public void increment_only_one_question_when_add_that_question_more_than_one_time_values(){
         Survey survey = createQuestionTreeWithoutMultiparentChildren();
 
 
@@ -70,6 +100,7 @@ public class SurveyAnswerRatioShould {
         Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
         Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && !survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
     }
+
     @Test
     public void calculate_survey_ratio_when_add_compulsory_values(){
         Survey survey = createQuestionTreeWithoutMultiparentChildren();
@@ -135,7 +166,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void complete_survey_ratio_when_child_values_are_hidden_values(){
+    public void complete_survey_ratio_when_child_values_are_hidden(){
         Survey survey = createQuestionTreeWithoutMultiparentChildren();
 
         Question question = survey.getQuestion("QuestionUID1");
@@ -159,7 +190,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void complete_survey_ratio_when_child_values_are_filled_values(){
+    public void complete_survey_ratio_when_parents_and_children_values_are_filled(){
         Survey survey = createQuestionTreeWithoutMultiparentChildren();
 
         Question question = survey.getQuestion("QuestionUID1");
@@ -189,7 +220,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void calculate_survey_ratio_when_child_values_are_filled_and_remove_parent_values(){
+    public void count_questions_when_child_values_are_filled_and_remove_parent_values(){
         Survey survey = createQuestionTreeWithoutMultiparentChildren();
 
         Question question = survey.getQuestion("QuestionUID1");
@@ -232,7 +263,7 @@ public class SurveyAnswerRatioShould {
 
 
     @Test
-    public void calculate_survey_ratio_when_child_values_are_filled_with_more_than_one_level_and_remove_parent_values(){
+    public void count_questions_when_child_values_are_filled_with_more_than_one_level_and_remove_parent_values(){
         Survey survey = createQuestionTreeWithoutMultiparentButWithMultipleDepthLevels();
 
         Question question = survey.getQuestion("QuestionUID1");
@@ -280,7 +311,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void calculate_survey_ratio_and_count_children_when_create_survey_and_add_parent_values(){
+    public void count_questions_when_create_survey_and_add_parent_values(){
         Survey survey = createQuestionTreeWithoutMultiparentChildren();
 
         Question question = survey.getQuestion("QuestionUID4");
@@ -303,7 +334,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void count_children_only_one_time_when_create_survey_and_add_parents_with_multiparents_values(){
+    public void count_children_only_one_time_when_create_survey_and_add_parents_with_common_child_with_multiparents(){
         Survey survey = createQuestionTreeWithMultipleParents();
 
         Question question = survey.getQuestion("QuestionUID4");
@@ -323,7 +354,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void count_children_when_create_survey_and_add_parents_and_remove_one_with_multiparents_values(){
+    public void count_children_when_create_survey_and_add_parents_and_remove_one_with_multiparents(){
         Survey survey = createQuestionTreeWithMultipleParents();
 
         Question question = survey.getQuestion("QuestionUID3");
@@ -352,7 +383,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void count_only_one_child_when_create_survey_and_add_parents_and_remove_one_with_multiparents_values(){
+    public void count_only_one_child_when_create_survey_and_add_parents_and_remove_one_with_multiparents(){
         Survey survey = createQuestionTreeWithMultipleParents();
 
         Question question = survey.getQuestion("QuestionUID4");
@@ -381,7 +412,7 @@ public class SurveyAnswerRatioShould {
     }
 
     @Test
-    public void calculate_survey_ratio_and_count_children_when_create_survey_and_add_two_parent_and_remove_one(){
+    public void count_all_children_when_create_survey_and_add_two_parent_and_remove_only_one_with_multiparents(){
         Survey survey = createQuestionTreeWithMultipleParents();
 
         Question question = survey.getQuestion("QuestionUID4");
