@@ -49,8 +49,9 @@ import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeed
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.layout.adapters.survey.strategies.AFeedbackAdapterStrategy;
+import org.eyeseetea.malariacare.layout.adapters.survey.strategies.FeedbackAdapterStrategy;
 import org.eyeseetea.malariacare.strategies.FeedbackStyleStrategy;
-import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.CustomParser;
 import org.eyeseetea.sdk.common.VideoUtils;
@@ -78,6 +79,8 @@ public class FeedbackAdapter extends BaseAdapter {
 
     String module;
 
+    AFeedbackAdapterStrategy mFeedbackAdapterStrategy;
+
     public FeedbackAdapter(Context context, float idSurvey, String module){
         this(new ArrayList<Feedback>(), context, idSurvey, module);
     }
@@ -89,6 +92,7 @@ public class FeedbackAdapter extends BaseAdapter {
         this.module=module;
         this.onlyFailed=true;
         this.hiddenPositions= new boolean[this.items.size()];
+        mFeedbackAdapterStrategy = new FeedbackAdapterStrategy();
     }
 
     @Override
@@ -191,13 +195,15 @@ public class FeedbackAdapter extends BaseAdapter {
 
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             ScoreType scoreType = new ScoreType(feedback.getScore(idSurvey, module));
+            int color = R.color.darkRed;
             if(scoreType.getClassification() == ScoreType.Classification.LOW) {
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
+                color = R.color.darkRed;
             }else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
+                color = R.color.amber;
             }else if(scoreType.getClassification() == ScoreType.Classification.HIGH) {
-                textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+                color = R.color.lightGreen;
             }
+            mFeedbackAdapterStrategy.setPercentColor(textView, color, context);
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
 
@@ -267,18 +273,17 @@ public class FeedbackAdapter extends BaseAdapter {
             textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        String compulsoryMark="";
+        TextView compulsoryMark = (TextView) rowLayout.findViewById(
+                R.id.feedback_question_mandatory);
         if(feedback.getQuestion().getCompulsory()) {
-            int red = PreferencesState.getInstance().getContext().getResources().getColor(
-                    R.color.darkRed);
-            String appNameColorString = String.format("%X", red).substring(2);
-            compulsoryMark = String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  "
-                    + "</b></font>";
+            compulsoryMark.setVisibility(View.VISIBLE);
+        } else {
+            compulsoryMark.setVisibility(View.INVISIBLE);
         }
 
         String label= StringEscapeUtils.escapeHtml4(feedback.getLabel());
 
-        textView.setText(Html.fromHtml(compulsoryMark + label));
+        textView.setText(Html.fromHtml(label));
 
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
