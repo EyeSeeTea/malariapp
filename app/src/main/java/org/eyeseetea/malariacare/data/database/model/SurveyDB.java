@@ -111,6 +111,28 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
 
     @Column
     String uid_event_fk;
+    /**
+     * Total number of questions to answer
+     */
+    @Column
+    int total_questions;
+
+    /**
+     * Total number of answered questions
+     */
+    @Column
+    int answered_questions;
+
+    /**
+     * Total number of compulsoryAnswered questions
+     */
+    @Column
+    int total_compulsory_questions;
+    /**
+     * Total number of compulsoryAnswered questions
+     */
+    @Column
+    int answered_compulsory_questions;
 
     /**
      * List of values for this survey
@@ -282,6 +304,38 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void setStatus(Integer status) {
         Log.d(SurveyDB.class.getName()+"B&D","Id: "+ getId_survey() + " actual status:"+ status +" set as:"+ status);
         this.status = status;
+    }
+
+    public int getTotalQuestions() {
+        return total_questions;
+    }
+
+    public void setTotalQuestions(int total_questions) {
+        this.total_questions = total_questions;
+    }
+
+    public int getAnsweredQuestions() {
+        return answered_questions;
+    }
+
+    public void setAnsweredQuestions(int answered_questions) {
+        this.answered_questions = answered_questions;
+    }
+
+    public int getTotalCompulsoryQuestions() {
+        return total_compulsory_questions;
+    }
+
+    public void setTotalCompulsoryQuestions(int total_compulsory_questions) {
+        this.total_compulsory_questions = total_compulsory_questions;
+    }
+
+    public int getAnsweredCompulsoryQuestions() {
+        return answered_compulsory_questions;
+    }
+
+    public void setAnsweredCompulsoryQuestions(int answered_compulsory_questions) {
+        this.answered_compulsory_questions = answered_compulsory_questions;
     }
 
     /**
@@ -824,6 +878,17 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .querySingle();
     }
 
+    /**
+     * Finds a survey by its ID
+     */
+    public static SurveyDB findByUId(String surveyUId) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk
+                        .eq(surveyUId))
+                .querySingle();
+    }
+
     public static boolean exists(Long id_survey) {
         return findById(id_survey) != null;
     }
@@ -913,41 +978,50 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         return stringBuilder.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SurveyDB survey = (SurveyDB) o;
-
-        if (id_survey != survey.id_survey) return false;
-        if (id_program_fk != null ? !id_program_fk.equals(survey.id_program_fk) : survey.id_program_fk != null)
-            return false;
-        if (id_org_unit_fk != null ? !id_org_unit_fk.equals(survey.id_org_unit_fk) : survey.id_org_unit_fk != null)
-            return false;
-        if (id_user_fk != null ? !id_user_fk.equals(survey.id_user_fk) : survey.id_user_fk != null)
-            return false;
-        if (creation_date != null ? !creation_date.equals(survey.creation_date) : survey.creation_date != null)
-            return false;
-        if (completion_date != null ? !completion_date.equals(survey.completion_date) : survey.completion_date != null)
-            return false;
-        if (upload_date != null ? !upload_date.equals(survey.upload_date) : survey.upload_date != null)
-            return false;
-        if (uid_event_fk != null ? !uid_event_fk.equals(survey.uid_event_fk) : survey.uid_event_fk != null)
-            return false;
-        if (scheduled_date != null ? !scheduled_date.equals(survey.scheduled_date) : survey.scheduled_date != null)
-            return false;
-        return !(status != null ? !status.equals(survey.status) : survey.status != null);
-
-    }
-
-
     public ScoreDB getScoreDB() {
         return scoreDB;
     }
 
     public void setScoreDB(ScoreDB scoreDB) {
         this.scoreDB = scoreDB;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SurveyDB surveyDB = (SurveyDB) o;
+
+        if (id_survey != surveyDB.id_survey) return false;
+        if (total_questions != surveyDB.total_questions) return false;
+        if (answered_questions != surveyDB.answered_questions) return false;
+        if (total_compulsory_questions != surveyDB.total_compulsory_questions) return false;
+        if (answered_compulsory_questions != surveyDB.answered_compulsory_questions) return false;
+        if (id_program_fk != null ? !id_program_fk.equals(surveyDB.id_program_fk) : surveyDB.id_program_fk != null)
+            return false;
+        if (id_org_unit_fk != null ? !id_org_unit_fk.equals(surveyDB.id_org_unit_fk) : surveyDB.id_org_unit_fk != null)
+            return false;
+        if (id_user_fk != null ? !id_user_fk.equals(surveyDB.id_user_fk) : surveyDB.id_user_fk != null)
+            return false;
+        if (creation_date != null ? !creation_date.equals(surveyDB.creation_date) : surveyDB.creation_date != null)
+            return false;
+        if (completion_date != null ? !completion_date.equals(surveyDB.completion_date) : surveyDB.completion_date != null)
+            return false;
+        if (upload_date != null ? !upload_date.equals(surveyDB.upload_date) : surveyDB.upload_date != null)
+            return false;
+        if (scheduled_date != null ? !scheduled_date.equals(surveyDB.scheduled_date) : surveyDB.scheduled_date != null)
+            return false;
+        if (status != null ? !status.equals(surveyDB.status) : surveyDB.status != null)
+            return false;
+        if (uid_event_fk != null ? !uid_event_fk.equals(surveyDB.uid_event_fk) : surveyDB.uid_event_fk != null)
+            return false;
+        if (mainScore != null ? !mainScore.equals(surveyDB.mainScore) : surveyDB.mainScore != null)
+            return false;
+        if (hasMainScore != null ? !hasMainScore.equals(surveyDB.hasMainScore) : surveyDB.hasMainScore != null)
+            return false;
+        return productivity != null ? productivity.equals(surveyDB.productivity) : surveyDB.productivity == null;
     }
 
     @Override
@@ -958,27 +1032,17 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         result = 31 * result + (id_user_fk != null ? id_user_fk.hashCode() : 0);
         result = 31 * result + (creation_date != null ? creation_date.hashCode() : 0);
         result = 31 * result + (completion_date != null ? completion_date.hashCode() : 0);
-                result = 31 * result + (upload_date != null ? upload_date.hashCode() : 0);
-        result = 31 * result + (uid_event_fk != null ? uid_event_fk.hashCode() : 0);
+        result = 31 * result + (upload_date != null ? upload_date.hashCode() : 0);
         result = 31 * result + (scheduled_date != null ? scheduled_date.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (uid_event_fk != null ? uid_event_fk.hashCode() : 0);
+        result = 31 * result + total_questions;
+        result = 31 * result + answered_questions;
+        result = 31 * result + total_compulsory_questions;
+        result = 31 * result + answered_compulsory_questions;
+        result = 31 * result + (mainScore != null ? mainScore.hashCode() : 0);
+        result = 31 * result + (hasMainScore != null ? hasMainScore.hashCode() : 0);
+        result = 31 * result + (productivity != null ? productivity.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "Survey{" +
-                "id_survey=" + id_survey +
-                ", id_program=" + id_program_fk +
-                ", id_org_unit=" + id_org_unit_fk +
-                ", id_user=" + id_user_fk +
-                ", creation_date=" + creation_date +
-                ", completion_date=" + completion_date +
-                ", upload_date=" + upload_date +
-                ", scheduled_date=" + scheduled_date +
-                ", status=" + status +
-                ", uid_event_fk="+uid_event_fk+
-                '}';
-    }
-
 }
