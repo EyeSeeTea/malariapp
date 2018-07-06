@@ -103,6 +103,10 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
         this.setCompositeScore(compositeScore);
     }
 
+    public Long getId_composite_score_parent() {
+        return id_composite_score_parent;
+    }
+
     public Long getId_composite_score() {
         return id_composite_score;
     }
@@ -164,6 +168,7 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
         return getComposite_score() != null;
     }
 
+
     public List<CompositeScoreDB> getCompositeScoreChildren() {
         if (this.compositeScoreChildren == null){
             Log.d("CompositeScoreDB","Executing getCompositeScoreChildren for id_composite_score: "  + id_composite_score );
@@ -175,6 +180,7 @@ public class CompositeScoreDB extends BaseModel implements VisitableToSDK {
         }
         return this.compositeScoreChildren;
     }
+
 
     public List<QuestionDB> getQuestions(){
         if(questions==null){

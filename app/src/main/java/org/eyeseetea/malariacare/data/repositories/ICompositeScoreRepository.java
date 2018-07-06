@@ -2,10 +2,10 @@ package org.eyeseetea.malariacare.data.repositories;
 
 import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface ICompositeScoreRepository {
 
-    ArrayList<CompositeScore> getCompositesScoreByProgram(String programUid);
+    List<CompositeScore> getCompositesScoreByProgram(String programUid);
 
 }

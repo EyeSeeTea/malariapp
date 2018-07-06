@@ -10,12 +10,13 @@ public class CompositeScore {
     private String label;
     private String hierarchicalCode;
     private int orderPos;
-    private CompositeScore parent;
+    private String parentUid;
     private ArrayList<CompositeScore> children;
 
 
-    public CompositeScore(String uid, String label, String hierarchicalCode,
+    public CompositeScore(String parentUid, String uid, String label, String hierarchicalCode,
             int orderPos) {
+        this.parentUid = parentUid;
         this.uid = required(uid, "Uid is required");
         this.label = required(label, "Label is required");
         this.hierarchicalCode = required(hierarchicalCode, "HierarchicalCode is required");
@@ -38,16 +39,12 @@ public class CompositeScore {
         return orderPos;
     }
 
-    public CompositeScore getParent() {
-        return parent;
+    public String getParent() {
+        return parentUid;
     }
 
     public ArrayList<CompositeScore> getChildren() {
         return children;
-    }
-
-    public void addParent(CompositeScore parentUid) {
-        this.parent = required(parentUid, "ParentUid is required and not empty");
     }
 
     public void addChildren(ArrayList<CompositeScore> children) {
@@ -70,7 +67,7 @@ public class CompositeScore {
                 ", label='" + label + '\'' +
                 ", hierarchicalCode='" + hierarchicalCode + '\'' +
                 ", orderPos=" + orderPos +
-                ", parent=" + parent +
+                ", parent=" + parentUid +
                 ", children=" + children +
                 '}';
     }

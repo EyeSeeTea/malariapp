@@ -1,77 +1,89 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
+import android.support.annotation.NonNull;
+
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CompositeScoreDataSource implements ICompositeScoreRepository {
     @Override
-    public ArrayList<CompositeScore> getCompositesScoreByProgram(String programUid) {
-        ArrayList<CompositeScore> compositeScores = new ArrayList<>();
+    public List<CompositeScore> getCompositesScoreByProgram(String programUid) {
         ProgramDB programDB = ProgramDB.getProgram(programUid);
         List<CompositeScoreDB> compositeScoreDBS = CompositeScoreDB.listByProgram(programDB);
-        for (CompositeScoreDB compositeScore : compositeScoreDBS) {
-            if (compositeScore.getComposite_score() == null) {
-                compositeScores.add(
-                        convertCompositeScoreChildren(compositeScore, compositeScoreDBS));
-            }
-        }
+
+        List<CompositeScore> compositeScores = map(compositeScoreDBS);
+
         return compositeScores;
     }
 
-    private CompositeScore convertCompositeScoreChildren(CompositeScoreDB compositeScoreDB,
-            List<CompositeScoreDB> compositeScoreDBS) {
-        CompositeScore compositeScore = convertFromDBToDomain(compositeScoreDB, null,
-                compositeScoreDBS);
-        if (compositeScoreDB.getCompositeScoreChildren() != null
-                && !compositeScoreDB.getCompositeScoreChildren().isEmpty()) {
-            for (CompositeScoreDB compositeScoreChild : compositeScoreDB
-                    .getCompositeScoreChildren()) {
-                compositeScore.addChild(convertFromDBToDomain(compositeScoreChild, compositeScore,
-                        compositeScoreDBS));
+    @NonNull
+    private List<CompositeScore> map(List<CompositeScoreDB> compositeScoreDBS) {
+        List<CompositeScore> compositeScores = new ArrayList<>();
+        HashMap<String, CompositeScore> compositeScoresMap = new HashMap<>();
+
+        LinkedHashMap<Long, CompositeScoreDB> compositeScoresDBMap =
+                createCompositeScoresDBMap(compositeScoreDBS);
+
+        for (Map.Entry<Long, CompositeScoreDB> entry : compositeScoresDBMap.entrySet()){
+            CompositeScoreDB compositeScoreDB = entry.getValue();
+
+            String parentUid = null;
+
+            if (compositeScoreDB.getId_composite_score_parent() != null) {
+                CompositeScoreDB compositeScoreDBParent =
+                        compositeScoresDBMap.get(compositeScoreDB.getId_composite_score_parent());
+
+                parentUid = compositeScoreDBParent.getUid();
+            }
+
+            CompositeScore compositeScore = new CompositeScore(parentUid, compositeScoreDB.getUid(),
+                    compositeScoreDB.getLabel(), compositeScoreDB.getHierarchical_code(),
+                    compositeScoreDB.getOrder_pos());
+
+            compositeScoresMap.put(compositeScore.getUid(),compositeScore);
+
+            if (parentUid != null){
+                compositeScoresMap.get(parentUid).addChild(compositeScore);
             }
         }
-        return compositeScore;
+
+
+        for (Map.Entry<String, CompositeScore> entry : compositeScoresMap.entrySet()) {
+            if (entry.getValue().getHierarchicalCode().equals("0"))
+                compositeScores.add(entry.getValue());
+        }
+
+        return compositeScores;
     }
 
-    private CompositeScore convertFromDBToDomain(CompositeScoreDB compositeScoreDB,
-            CompositeScore parent, List<CompositeScoreDB> compositeScoreDBS) {
-        ArrayList<CompositeScore> compositeScoreChildren = new ArrayList<>();
-
-        CompositeScore compositeScore = new CompositeScore(compositeScoreDB.getUid(),
-                compositeScoreDB.getLabel(),
-                compositeScoreDB.getHierarchical_code(), compositeScoreDB.getOrder_pos());
-        if (compositeScoreDB.getComposite_score() != null) {
-            compositeScore.addParent(parent);
-        }
-        List<CompositeScoreDB> compositeScoreChildrenDB = getCompositeScoreChildrenDBFromList(
-                compositeScoreDB, compositeScoreDBS);
-        if (compositeScoreChildrenDB != null) {
-
-            for (CompositeScoreDB compositeScoreChild : compositeScoreChildrenDB) {
-                compositeScoreChildren.add(
-                        convertFromDBToDomain(compositeScoreChild, compositeScore,
-                                compositeScoreDBS));
-            }
-        }
-        compositeScore.addChildren(compositeScoreChildren);
-        return compositeScore;
-    }
-
-
-    private List<CompositeScoreDB> getCompositeScoreChildrenDBFromList(CompositeScoreDB parent,
+    private LinkedHashMap<Long, CompositeScoreDB> createCompositeScoresDBMap(
             List<CompositeScoreDB> compositeScoreDBS) {
-        List<CompositeScoreDB> compositeScoreChildren = new ArrayList<>();
+
+        LinkedHashMap<Long, CompositeScoreDB> compositeScoresDBMap = new LinkedHashMap<>();
+
+        Collections.sort(compositeScoreDBS, new Comparator<CompositeScoreDB>() {
+            public int compare(CompositeScoreDB o1, CompositeScoreDB o2) {
+                return o1.getHierarchical_code().compareTo(
+                        o2.getHierarchical_code());
+            }
+        });
+
         for (CompositeScoreDB compositeScoreDB : compositeScoreDBS) {
-            if (compositeScoreDB.getComposite_score() != null
-                    && compositeScoreDB.getComposite_score().equals(parent)) {
-                compositeScoreChildren.add(compositeScoreDB);
+            if (!compositeScoresDBMap.containsKey(compositeScoreDB.getId_composite_score())) {
+                compositeScoresDBMap.put(compositeScoreDB.getId_composite_score(), compositeScoreDB);
             }
         }
-        return compositeScoreChildren;
+
+        return compositeScoresDBMap;
     }
 }
