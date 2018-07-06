@@ -18,18 +18,18 @@
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
 
-    <Spinner
-        android:dropDownWidth="match_parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/org_unit_item_spinner"
-        android:spinnerMode="dropdown"
-        android:backgroundTintMode="add"
-        android:background="@drawable/filter_create_org_background"
-        android:paddingLeft="2dip"
-        android:paddingTop="2dip"
-        android:paddingRight="20dip"
-        android:paddingBottom="2dip"/>
-</merge>
+    <!-- view background color -->
+    <solid
+        android:color="@color/assess_yellow" >
+    </solid>
+
+    <!-- Here is the corner radius -->
+    <corners
+        android:radius="5dp"   >
+    </corners>
+
+</shape>
