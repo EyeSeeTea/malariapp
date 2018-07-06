@@ -32,13 +32,15 @@ import java.util.List;
  */
 public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
 
+    public OrgUnitArrayAdapter(Context context, Integer layout, List<OrgUnitDB> orgUnits) {
+        super(context, layout, orgUnits);
+    }
+
     public OrgUnitArrayAdapter(Context context, List<OrgUnitDB> orgUnits) {
         super(context, orgUnits);
     }
 
     @Override public void drawText(CustomTextView customTextView, OrgUnitDB orgUnit) {
-        if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
-            customTextView.setTextSize(18); //FIXME: create a default system size centralized instead of putting a fix 18 here
         customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
         customTextView.setText(orgUnit.getName());
     }
