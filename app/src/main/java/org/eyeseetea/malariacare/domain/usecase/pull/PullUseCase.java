@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
@@ -123,6 +124,7 @@ public class PullUseCase implements UseCase {
                 if(pullCanceled){
                     notifyCancel();
                 }else {
+                    SurveyPlanner.getInstance().buildNext();
                     notifyOnComplete();
                 }
             }
