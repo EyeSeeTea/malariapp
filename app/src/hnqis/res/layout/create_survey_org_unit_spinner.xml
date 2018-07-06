@@ -27,9 +27,17 @@
         android:id="@+id/org_unit_item_spinner"
         android:spinnerMode="dropdown"
         android:backgroundTintMode="add"
-        android:background="@drawable/filter_create_org_background"
         android:paddingLeft="2dip"
         android:paddingTop="2dip"
         android:paddingRight="20dip"
-        android:paddingBottom="2dip"/>
+        android:paddingBottom="2dip"
+        android:background="@null"/>
+    <ImageView
+        android:src="@drawable/arrow_assess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingRight="20dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"  />
 </merge>
