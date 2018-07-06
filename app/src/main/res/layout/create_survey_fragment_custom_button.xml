@@ -22,12 +22,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.eyeseetea.malariacare.views.CustomButton
         android:id="@+id/create_form_button" style="?android:textAppearanceMedium"
-        android:layout_width="170dp" android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" android:text="@string/create_info_ok"
-        android:textStyle="bold"
-        android:textColor="@color/assess_grey"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_margin="16dp" android:text="@string/create_info_ok"
+        android:padding="18dp"
+        android:textColor="@color/start_button_text"
         android:background="@drawable/button_round_border"
         android:textAllCaps="false"
+        android:textSize="22dp"
         app:bDimension="@string/font_size_level2"
         app:bFontName="@string/medium_font_name"
         android:layout_gravity="center_horizontal"
