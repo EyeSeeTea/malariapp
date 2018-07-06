@@ -38,7 +38,7 @@
 <string name="dashboard_info_sent">"ຂໍ້ມູນໄດ້ຖືກສົ່ງແລ້ວ"</string>
 
 <!-- create -->
-<string name="create_info_ok">"ເລີ່ມ"</string>
+<string name="create_info_ok">"ເລີ່ມຕົ້ນການສໍາຫຼວດ"</string>
 <string name="create_info_organization_unit">"ຊື່ສະຖານທີ່"</string>
 <string name="create_info_survey">"ຂໍ້ມູນການສຳຫຼວດ"</string>
 <string name="create_info_tabs_group">"ກຸ່ມຂອງໜ້າຕ່າງ"</string>
@@ -186,10 +186,10 @@
 <string name="option_delete">"ລຶບ"</string>
 <string name="hide_planning_tab_title">"ເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
 <string name="hide_planning_tab_summary">"ໝາຍເອົາຫ້ອງນີ້ເພື່ອເຊື້້ອງໜ້າຕ່າງການວາງແຜນ"</string>
-<string name="plan">"ການວາງແຜນ"</string>
-<string name="assess">"ປະເມີນຜົນ - ການສຳຫຼວດທີ່ກຳລັງດຳເນີນ"</string>
-<string name="improve">"ປັບປູງ"</string>
-<string name="monitor">"ຕິດຕາມ"</string>
+<string name="plan">"ການປະເມີນຜົນ"</string>
+<string name="assess">"ການສໍາຫຼວດ"</string>
+<string name="improve">"ຄໍາຕອບ"</string>
+<string name="monitor">"ບົດລາຍງານ"</string>
 <string name="filter_all_org_units">"ສະຖານທີ່ທັງໝົດ"</string>
 <string name="filter_all_org_assessments">"All Assessed"</string>
 <string name="dialog_content_dhis_preference_login">"ການປ່ຽນເຂົ້າໄປສູ່ລະບົບຈະຕ້ອງໄດ້ອອກ ແລະ ເຂົ້າໃໝ່. ທຸກໆຂໍ້ມູນການສຳຫຼວດທີ່ຍັງບໍ່ທັນສົ່ງຈະຖືກລຶບອອກ. ເຈົ້າຕ້ອງການຈະດຳເນີດການຕໍ່ບໍ? "</string>
@@ -278,5 +278,8 @@
 
 <string name="advanced_options">"ຕົວເລືອກຂັ້ນສູງ"</string>
 <string name="simple_options">"ຕົວເລືອກທີ່ງ່າຍດາຍ"</string>
+<string name="planning_label_date">"ຄໍາເຫັນ"</string>
+<string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
+<string name="header_reschedule_title">"ກໍານົດເວລາໃຫມ່"</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 </resources>
