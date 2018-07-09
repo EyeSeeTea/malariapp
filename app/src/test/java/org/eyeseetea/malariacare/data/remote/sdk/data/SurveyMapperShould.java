@@ -108,30 +108,6 @@ public class SurveyMapperShould {
     }
 
     private List<CompositeScore> givenACompositeScores() throws IOException {
-
-        List<CompositeScore> compositeScores = new ArrayList<>();
-
-/*        CompositeScore compositeScoreDBRoot1 =
-                new CompositeScore(null,"pxHcA2H4CU3","Overall QA Score",
-                        "0",0);
-        compositeScores.add(compositeScoreDBRoot1);
-
-        CompositeScore compositeScoreDBRoot2 =
-                new CompositeScore(null,"O4RfbCjbs1H","Overall QA Score",
-                "0",0);
-        compositeScores.add(compositeScoreDBRoot2);
-
-        CompositeScore compositeScoreDBRoot3 =
-                new CompositeScore(null,"Zsu8EY6iK4L","Overall QA Score",
-                        "0",0);
-        compositeScores.add(compositeScoreDBRoot3);
-
-
-        CompositeScore compositeScoreDBRoot4 =
-                new CompositeScore(null,"e8cEHJZkMVP","Overall QA Score",
-                        "0",0);
-        compositeScores.add(compositeScoreDBRoot4);*/
-
         String stringJson = mFileReader.getStringFromFile("composite_scores.json");
 
         Gson gson = createGson();
