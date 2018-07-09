@@ -41,7 +41,7 @@ public class UserAttributesRemoteDataSource extends OkHttpClientDataSource imple
         String data = USER + String.format(QUERY_USER_ATTRIBUTES, userUId);
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
-            String response = executeCall(DHIS_PULL_API+data, "GET");
+            String response = executeCall(DHIS_PULL_API+data);
             JsonNode jsonNode = parseResponse(response);
             JsonNode jsonNodeArray = jsonNode.get(ATTRIBUTEVALUES);
             String newMessage = "";
