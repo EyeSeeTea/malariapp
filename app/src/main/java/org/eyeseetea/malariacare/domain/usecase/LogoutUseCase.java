@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 
 public class LogoutUseCase {
     public interface Callback {
@@ -29,9 +29,9 @@ public class LogoutUseCase {
         void onLogoutError(String message);
     }
 
-    private IUserAccountRepository mUserAccountRepository;
+    private IAuthenticationManager mUserAccountRepository;
 
-    public LogoutUseCase(IUserAccountRepository userAccountRepository) {
+    public LogoutUseCase(IAuthenticationManager userAccountRepository) {
         mUserAccountRepository = userAccountRepository;
     }
 
