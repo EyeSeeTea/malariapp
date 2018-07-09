@@ -16,16 +16,14 @@ public class UserAccountShould {
     @Test
     public void create_a_useraccount_value_with_mandatory_fields(){
         Date date = new Date();
-        UserAttributes userAttributes = new UserAttributes("Announcement", date);
-        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "UID", userAttributes);
+        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "UID", "Announcement", date);
 
         Assert.assertNotNull(userAccount);
         Assert.assertTrue(userAccount.getName().equals("NAME"));
         Assert.assertTrue(userAccount.getUserName().equals("USERNAME"));
         Assert.assertTrue(userAccount.getUserUid().equals("UID"));
-        Assert.assertTrue(userAccount.getUserAttributes().equals(userAttributes));
-        Assert.assertTrue(userAccount.getUserAttributes().getAnnouncement().equals("Announcement"));
-        Assert.assertTrue(userAccount.getUserAttributes().getClosedDate().equals(date));
+        Assert.assertTrue(userAccount.getAnnouncement().equals("Announcement"));
+        Assert.assertTrue(userAccount.getClosedDate().equals(date));
     }
 
     @Test
@@ -33,7 +31,7 @@ public class UserAccountShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("user uid is required");
 
-        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "", UserAttributes.createEmptyUserAttributes());
+        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "", "", null);
     }
 
     @Test
@@ -41,7 +39,7 @@ public class UserAccountShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("name is required");
 
-        UserAccount userAccount = new UserAccount("", "USERNAME", "UID", UserAttributes.createEmptyUserAttributes());
+        UserAccount userAccount = new UserAccount("", "USERNAME", "UID", "", null);
     }
 
     @Test
@@ -49,15 +47,7 @@ public class UserAccountShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("user name is required");
 
-        UserAccount userAccount = new UserAccount("name", "", "UID", UserAttributes.createEmptyUserAttributes());
-    }
-
-    @Test
-    public void throw_exception_when_create_a__useraccount_with_mandatory_fields_without_userattributes(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("user attributes are required");
-
-        UserAccount userAccount = new UserAccount("name", "username", "UID", null);
+        UserAccount userAccount = new UserAccount("name", "", "UID", "", null);
     }
 
 }
