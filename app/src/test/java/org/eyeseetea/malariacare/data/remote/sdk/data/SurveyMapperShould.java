@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import org.eyeseetea.malariacare.common.DateTimeTypeAdapter;
 import org.eyeseetea.malariacare.common.DateTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
@@ -37,7 +37,7 @@ public class SurveyMapperShould {
 
         List<Event> events = givenAnEventsDownloaded("events.json");
         ServerMetadata serverMetadata = givenAServerMetadata();
-        List<CompositeScoreDB> compositeScores = givenACompositeScores();
+        List<CompositeScore> compositeScores = givenACompositeScores();
         List<Question> questions = givenAQuestions();
         List<Option> options = givenAnOptions();
 
@@ -53,7 +53,7 @@ public class SurveyMapperShould {
     public void doesNotMapToSurveysIfNotExistsUserCDE() throws IOException {
         List<Event> events = givenAnEventsDownloaded("events_without_user_cde.json");
         ServerMetadata serverMetadata = givenAServerMetadata();
-        List<CompositeScoreDB> compositeScores = givenACompositeScores();
+        List<CompositeScore> compositeScores = givenACompositeScores();
         List<Question> questions = givenAQuestions();
         List<Option> options = givenAnOptions();
 
@@ -107,48 +107,37 @@ public class SurveyMapperShould {
         return gson.fromJson(stringJson, listType);
     }
 
-    private List<CompositeScoreDB> givenACompositeScores() {
+    private List<CompositeScore> givenACompositeScores() throws IOException {
 
-        List<CompositeScoreDB> compositeScoreDBS = new ArrayList<>();
+        List<CompositeScore> compositeScores = new ArrayList<>();
 
-        CompositeScoreDB compositeScoreDBRoot1 = new CompositeScoreDB();
-        compositeScoreDBRoot1.setId_composite_score(3758L);
-        compositeScoreDBRoot1.setHierarchical_code("0");
-        compositeScoreDBRoot1.setLabel("Overall QA Score");
-        compositeScoreDBRoot1.setUid("pxHcA2H4CU3");
-        compositeScoreDBRoot1.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot1);
+/*        CompositeScore compositeScoreDBRoot1 =
+                new CompositeScore(null,"pxHcA2H4CU3","Overall QA Score",
+                        "0",0);
+        compositeScores.add(compositeScoreDBRoot1);
 
-        CompositeScoreDB compositeScoreDBRoot2 = new CompositeScoreDB();
-        compositeScoreDBRoot2.setId_composite_score(3761L);
-        compositeScoreDBRoot2.setHierarchical_code("0");
-        compositeScoreDBRoot2.setLabel("Overall QA Score");
-        compositeScoreDBRoot2.setUid("O4RfbCjbs1H");
-        compositeScoreDBRoot2.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot2);
+        CompositeScore compositeScoreDBRoot2 =
+                new CompositeScore(null,"O4RfbCjbs1H","Overall QA Score",
+                "0",0);
+        compositeScores.add(compositeScoreDBRoot2);
 
-        CompositeScoreDB compositeScoreDBRoot3 = new CompositeScoreDB();
-        compositeScoreDBRoot3.setId_composite_score(3769L);
-        compositeScoreDBRoot3.setHierarchical_code("0");
-        compositeScoreDBRoot3.setLabel("Overall QA Score");
-        compositeScoreDBRoot3.setUid("Zsu8EY6iK4L");
-        compositeScoreDBRoot3.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot3);
+        CompositeScore compositeScoreDBRoot3 =
+                new CompositeScore(null,"Zsu8EY6iK4L","Overall QA Score",
+                        "0",0);
+        compositeScores.add(compositeScoreDBRoot3);
 
-        CompositeScoreDB compositeScoreDBRoot4 = new CompositeScoreDB();
-        compositeScoreDBRoot4.setId_composite_score(3774L);
-        compositeScoreDBRoot4.setHierarchical_code("0");
-        compositeScoreDBRoot4.setLabel("Overall QA Score");
-        compositeScoreDBRoot4.setUid("e8cEHJZkMVP");
-        compositeScoreDBRoot4.setOrder_pos(0);
-        compositeScoreDBS.add(compositeScoreDBRoot4);
 
-        //TODO: compositeScoreMap on the future should be a domain entity list
-        // and retrieve from file
-        /*String stringJson = mFileReader.getStringFromFile("composite_scores.json");
-        return mGenericClassParser.parse(stringJson,List.class,CompositeScoreDB.class);*/
+        CompositeScore compositeScoreDBRoot4 =
+                new CompositeScore(null,"e8cEHJZkMVP","Overall QA Score",
+                        "0",0);
+        compositeScores.add(compositeScoreDBRoot4);*/
 
-        return compositeScoreDBS;
+        String stringJson = mFileReader.getStringFromFile("composite_scores.json");
+
+        Gson gson = createGson();
+
+        Type listType = new TypeToken<ArrayList<CompositeScore>>(){}.getType();
+        return gson.fromJson(stringJson, listType);
     }
 
 

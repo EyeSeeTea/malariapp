@@ -19,31 +19,17 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
-import android.support.annotation.NonNull;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.repositories.ICompositeScoreRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.CompositeScore;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.Question;
-import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -55,14 +41,10 @@ import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -74,15 +56,18 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
+    private final ICompositeScoreRepository mCompositeScoreRepository;
     private final IConnectivityManager mConnectivityManager;
 
     public SurveySDKDhisDataSource(IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository,
             IOptionRepository optionRepository,
+            ICompositeScoreRepository mCompositeScoreRepository,
             IConnectivityManager connectivityManager) {
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
+        this.mCompositeScoreRepository = mCompositeScoreRepository;
         this.mConnectivityManager = connectivityManager;
     }
 
@@ -129,7 +114,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
-        List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
+        List<CompositeScore> compositeScores = mCompositeScoreRepository.getAll();
 
         SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, compositeScores, questions,
                 options);
