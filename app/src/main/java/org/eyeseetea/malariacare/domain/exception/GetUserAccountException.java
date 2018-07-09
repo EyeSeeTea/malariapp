@@ -1,7 +1,7 @@
 package org.eyeseetea.malariacare.domain.exception;
 
-public class PullUserAttributesException extends Exception {
-    public PullUserAttributesException() {
+public class UserAccountApiDataException extends Exception {
+    public UserAccountApiDataException() {
         super("Error on user attributes pull");
     }
 }
