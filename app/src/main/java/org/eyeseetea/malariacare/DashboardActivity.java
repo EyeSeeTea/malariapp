@@ -23,7 +23,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,16 +35,15 @@ import android.widget.Toast;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
-import org.eyeseetea.malariacare.data.remote.api.UserAttributesRemoteDataSource;
-import org.eyeseetea.malariacare.data.remote.api.UserLocalDataSource;
-import org.eyeseetea.malariacare.domain.entity.UserAttributes;
-import org.eyeseetea.malariacare.domain.usecase.PullLoggedUserAttributesUseCase;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIRemoteDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
@@ -73,23 +71,23 @@ public class DashboardActivity extends BaseActivity {
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
         if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
-            PullLoggedUserAttributesUseCase pullAttributesUseCase = new PullLoggedUserAttributesUseCase(
+            GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                     new AsyncExecutor(),
                     new UIThreadExecutor(),
-                    new UserLocalDataSource(),
-                    new UserAttributesRemoteDataSource(Session.getCredentials())
+                    new UserAccountRepository(new UserAccountAPIRemoteDataSource(Session.getCredentials()),
+                            new UserAccountLocalDataSource())
             );
 
-            pullAttributesUseCase.execute(new PullLoggedUserAttributesUseCase.Callback() {
+            getUserAccountUseCase.execute(new GetUserAccountUseCase.Callback() {
                 @Override
-                public void onSuccess(UserAttributes userAttributes) {
-                    announcementAndUserClosedActions(userAttributes);
+                public void onSuccess(UserAccount userAccount) {
+                    announcementAndUserClosedActions(userAccount);
                 }
 
                 @Override
-                public void onError(UserAttributes userAttributes) {
+                public void onError(UserAccount userAccount) {
                     System.out.println("Error pulling attributes. Show the last persisted announcement and close date");
-                    announcementAndUserClosedActions(userAttributes);
+                    announcementAndUserClosedActions(userAccount);
                 }
             });
         }
@@ -112,18 +110,18 @@ public class DashboardActivity extends BaseActivity {
         reloadDashboard();
     }
 
-    private void announcementAndUserClosedActions(UserAttributes userAttributes) {
-        if (shouldDisplayAnnoucement(userAttributes)) {
+    private void announcementAndUserClosedActions(UserAccount userAccount) {
+        if (shouldDisplayAnnoucement(userAccount)) {
             Log.d(TAG, "show logged announcement");
-            AUtils.showAnnouncement(R.string.admin_announcement, userAttributes.getAnnouncement(),
+            AUtils.showAnnouncement(R.string.admin_announcement, userAccount.getAnnouncement(),
                     DashboardActivity.this);
         } else {
-            AUtils.checkUserClosed(userAttributes.getClosedDate(), DashboardActivity.this);
+            AUtils.checkUserClosed(userAccount.getClosedDate(), DashboardActivity.this);
         }
     }
 
-    private boolean shouldDisplayAnnoucement(UserAttributes userAttributes) {
-        return userAttributes.getAnnouncement() != null && !userAttributes.getAnnouncement().equals("")
+    private boolean shouldDisplayAnnoucement(UserAccount userAccount) {
+        return userAccount.getAnnouncement() != null && !userAccount.getAnnouncement().equals("")
                 && !PreferencesState.getInstance().isUserAccept();
     }
 
@@ -185,7 +183,7 @@ public class DashboardActivity extends BaseActivity {
                 R.string.dialog_action_refresh);
         if (unsentSurveysCount > 0) {
             message += String.format(getApplicationContext().getResources().getString(
-                    R.string.dialog_incomplete_surveys_before_refresh),
+                    R.string.dialog_incomplete_surveys_before_refresh)+"",
                     unsentSurveysCount);
         }
         //check if exist a compulsory question without awnser before push and pull.
