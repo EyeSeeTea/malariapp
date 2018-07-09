@@ -1,21 +1,22 @@
-package org.eyeseetea.malariacare.data.remote.api;
+package org.eyeseetea.malariacare.data.database.datasources;
 
+import org.eyeseetea.malariacare.data.IUserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.usecase.UserFilter;
 
-public class UserAccountRepository implements IUserAccountRepository {
+public class UserAccountLocalDataSource implements IUserAccountLocalDataSource {
 
     @Override
-    public UserAccount getUser(String uid) {
-      UserDB userDB = UserDB.getUserByUId(uid);
+    public UserAccount getUser(UserFilter userFilter) {
+        UserDB userDB;
+        if(userFilter.getLoggedUser()) {
+            userDB = UserDB.getLoggedUser();
+        }else{
+            userDB = UserDB.getUserByUId(userFilter.getUid());
+        }
       return new UserAccount(userDB.getName(), userDB.getUsername(), userDB.getUid(), userDB.getAnnouncement(), userDB.getCloseDate());
-    }
 
-    @Override
-    public UserAccount getLoggedUser() {
-        UserDB userDB = UserDB.getLoggedUser();
-        return new UserAccount(userDB.getName(), userDB.getUsername(), userDB.getUid(),userDB.getAnnouncement(), userDB.getCloseDate());
     }
 
     @Override

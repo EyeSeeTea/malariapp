@@ -5,17 +5,21 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.domain.boundary.IUserAttributesRemoteDataSource;
+import org.eyeseetea.malariacare.data.IUserAccountRemoteDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.entity.UserAttributes;
-import org.eyeseetea.malariacare.domain.exception.PullUserAttributesException;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.exception.GetUserAccountException;
+import org.eyeseetea.malariacare.domain.usecase.UserFilter;
+import org.eyeseetea.malariacare.utils.DateParser;
 
-public class UserAttributesRemoteDataSource extends OkHttpClientDataSource implements IUserAttributesRemoteDataSource {
+import java.util.Date;
+
+public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource implements IUserAccountRemoteDataSource {
 
     private static final String DHIS_PULL_API="/api/";
 
     private static String QUERY_USER_ATTRIBUTES =
-            "/%s?fields=attributeValues[value,attribute[code]]id&paging=false";
+            "/%s?fields=name,userCredentials[username],attributeValues[value,attribute[code]]id&paging=false";
 
 
     private static final String TAG = ".PullDhisApiDataSource";
@@ -26,19 +30,21 @@ public class UserAttributesRemoteDataSource extends OkHttpClientDataSource imple
     public static final String VALUE = "value";
     public static final String CODE = "code";
     private static final String USER = "users";
+    private static final String NAME = "name";
+    private static final String USERCREDENTIALS = "userCredentials";
+    private static final String USERNAME = "username";
 
-    public UserAttributesRemoteDataSource(Credentials credentials) {
+    public UserAccountAPIRemoteDataSource(Credentials credentials) {
         super(credentials);
     }
 
     @Override
-    public UserAttributes getUser(String userUId) throws PullUserAttributesException {
-        return pullUserAttributes(userUId);
-    }
-
-    private UserAttributes pullUserAttributes(String userUId) throws PullUserAttributesException{
-        UserAttributes userAttributes = UserAttributes.createEmptyUserAttributes();
-        String data = USER + String.format(QUERY_USER_ATTRIBUTES, userUId);
+    public UserAccount getUser(UserFilter userFilter) throws GetUserAccountException {
+        String username = "";
+        String name = "";
+        String announcement;
+        String closedDateAsString;
+        String data = USER + String.format(QUERY_USER_ATTRIBUTES, userFilter.getUid());
         Log.d(TAG, String.format("getUserAttributesApiCall(%s) -> %s", USER, data));
         try {
             String response = executeCall(DHIS_PULL_API+data);
@@ -52,14 +58,33 @@ public class UserAttributesRemoteDataSource extends OkHttpClientDataSource imple
                                 UserDB.ATTRIBUTE_USER_ANNOUNCEMENT);
                 closeDate = getUserCloseDate(jsonNodeArray, closeDate, i);
             }
-            userAttributes.setAnnouncement(newMessage);
-            userAttributes.setClosedDate(closeDate);
+            announcement =newMessage;
+            closedDateAsString=closeDate;
+            username = getUsername(jsonNode);
+            name = getName(jsonNode);
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
-            throw new PullUserAttributesException();
+            throw new GetUserAccountException();
         }
-        return userAttributes;
+        UserAccount userAccount = new UserAccount(name, username, userFilter.getUid(), announcement, parseClosedDate(closedDateAsString));
+        return userAccount;
+    }
+
+
+    private Date parseClosedDate(String closedDate) {
+        if (closedDate == null || closedDate.equals("")) {
+            return null;
+        }
+        return DateParser.parseNewLongDate(closedDate);
+    }
+
+    private static String getName(JsonNode jsonNodeArray) {
+        return jsonNodeArray.get(NAME).textValue();
+    }
+
+    private static String getUsername(JsonNode jsonNodeArray) {
+        return jsonNodeArray.get(USERCREDENTIALS).get(USERNAME).textValue();
     }
 
     private static String getUserCloseDate(JsonNode jsonNodeArray, String closeDate, int i) {
