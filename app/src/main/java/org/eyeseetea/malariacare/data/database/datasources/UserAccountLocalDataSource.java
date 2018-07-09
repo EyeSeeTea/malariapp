@@ -1,11 +1,11 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
-import org.eyeseetea.malariacare.data.IUserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.usecase.UserFilter;
 
-public class UserAccountLocalDataSource implements IUserAccountLocalDataSource {
+public class UserAccountLocalDataSource implements IUserAccountDataSource {
 
     @Override
     public UserAccount getUser(UserFilter userFilter) {

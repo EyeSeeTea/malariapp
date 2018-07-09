@@ -5,16 +5,15 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.IUserAccountRemoteDataSource;
+import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.exception.GetUserAccountException;
 import org.eyeseetea.malariacare.domain.usecase.UserFilter;
 import org.eyeseetea.malariacare.utils.DateParser;
 
 import java.util.Date;
 
-public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource implements IUserAccountRemoteDataSource {
+public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource implements IUserAccountDataSource {
 
     private static final String DHIS_PULL_API="/api/";
 
@@ -39,7 +38,7 @@ public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource imple
     }
 
     @Override
-    public UserAccount getUser(UserFilter userFilter) throws GetUserAccountException {
+    public UserAccount getUser(UserFilter userFilter)  {
         String username = "";
         String name = "";
         String announcement;
@@ -65,10 +64,15 @@ public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource imple
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
-            throw new GetUserAccountException();
+            return null;
         }
         UserAccount userAccount = new UserAccount(name, username, userFilter.getUid(), announcement, parseClosedDate(closedDateAsString));
         return userAccount;
+    }
+
+    @Override
+    public void saveUser(UserAccount user) {
+        //On the future implement this method to update server user account if is needed
     }
 
 
