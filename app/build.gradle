@@ -80,6 +80,9 @@ android {
             buildConfigField "boolean", "customFontHidden", "false"
             buildConfigField "boolean", "OUSelectionHealthFacility", "false"
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_dev"
@@ -90,6 +93,9 @@ android {
             buildConfigField "boolean", "customFontHidden", "true"
             buildConfigField "boolean", "OUSelectionHealthFacility", "true"
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
         eyeseetea {
             applicationId "org.eyeseetea.malariacare.questmark_dev"
@@ -100,6 +106,9 @@ android {
             buildConfigField "boolean", "customFontHidden", "false"
             buildConfigField "boolean", "OUSelectionHealthFacility", "false"
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
     }
 
