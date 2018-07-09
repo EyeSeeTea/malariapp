@@ -108,9 +108,9 @@ public class UserDB extends BaseModel {
     }
 
     public static UserDB getLoggedUser() {
-        // for the moment we return just the first entry assuming there will be only one entry,
-        // but in the future we will have to tag the logged user
-        List<UserDB> users = new Select().from(UserDB.class).queryList();
+        List<UserDB> users = new Select().from(UserDB.class)
+                .where(UserDB_Table.username.isNotNull())
+                .queryList();
         if (users != null && users.size() != 0) {
             return users.get(0);
         }
