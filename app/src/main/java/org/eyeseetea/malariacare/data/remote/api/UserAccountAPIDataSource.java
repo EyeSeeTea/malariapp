@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource implements IUserAccountDataSource {
+public class UserAccountAPIDataSource extends OkHttpClientDataSource implements IUserAccountDataSource {
 
     private static final String DHIS_PULL_API="/api/";
 
@@ -36,7 +36,7 @@ public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource imple
     private static final String USERCREDENTIALS = "userCredentials";
     private static final String USERNAME = "username";
 
-    public UserAccountAPIRemoteDataSource(Credentials credentials) {
+    public UserAccountAPIDataSource(Credentials credentials) {
         super(credentials);
     }
 

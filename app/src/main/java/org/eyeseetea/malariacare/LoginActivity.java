@@ -47,7 +47,7 @@ import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIRemoteDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
@@ -195,7 +195,7 @@ public class LoginActivity extends AbsLoginActivity {
                 GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                         new AsyncExecutor(),
                         new UIThreadExecutor(),
-                        new UserAccountRepository(new UserAccountAPIRemoteDataSource(Session.getCredentials()),
+                        new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
                                 new UserAccountLocalDataSource())
                 );
 

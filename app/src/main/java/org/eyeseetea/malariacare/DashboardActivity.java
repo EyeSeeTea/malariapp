@@ -39,7 +39,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIRemoteDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
@@ -74,7 +74,7 @@ public class DashboardActivity extends BaseActivity {
             GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                     new AsyncExecutor(),
                     new UIThreadExecutor(),
-                    new UserAccountRepository(new UserAccountAPIRemoteDataSource(Session.getCredentials()),
+                    new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
                             new UserAccountLocalDataSource())
             );
 
