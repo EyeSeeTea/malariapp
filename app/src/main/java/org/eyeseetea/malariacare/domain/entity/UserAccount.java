@@ -19,19 +19,25 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
+import org.eyeseetea.malariacare.utils.DateParser;
+
+import java.util.Date;
+
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class UserAccount {
     private String name;
     private String userName;
     private String userUid;
-    private UserAttributes userAttributes;
+    private String announcement;
+    private Date closedDate;
 
-    public UserAccount(String name, String userName, String userUid, UserAttributes userAttributes) {
+    public UserAccount(String name, String userName, String userUid, String announcement, Date closedDate) {
         this.name = required(name, "name is required");
         this.userName = required(userName, "user name is required");
         this.userUid = required(userUid, "user uid is required");
-        this.userAttributes = required(userAttributes, "user attributes are required");
+        this.announcement = announcement;
+        this.closedDate = closedDate;
     }
 
     public String getName() {
@@ -46,11 +52,23 @@ public class UserAccount {
         return userUid;
     }
 
-    public UserAttributes getUserAttributes(){
-        return userAttributes;
+    public String getAnnouncement() {
+        return announcement;
     }
 
-    public void setUserAttributes(UserAttributes userAttributes) {
-        this.userAttributes = userAttributes;
+    public String setAnnouncement(String announcement) {
+        return this.announcement = announcement;
+    }
+
+    public boolean isClosed() {
+        if(closedDate==null) {
+            return false;
+        }else{
+            return closedDate.before(new Date());
+        }
+    }
+
+    public Date getClosedDate() {
+        return closedDate;
     }
 }
