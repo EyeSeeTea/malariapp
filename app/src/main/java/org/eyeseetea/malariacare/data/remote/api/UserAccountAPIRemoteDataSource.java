@@ -3,13 +3,16 @@ package org.eyeseetea.malariacare.data.remote.api;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
 import org.eyeseetea.malariacare.domain.usecase.UserFilter;
 import org.eyeseetea.malariacare.utils.DateParser;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -106,5 +109,21 @@ public class UserAccountAPIRemoteDataSource extends OkHttpClientDataSource imple
             newMessage = jsonNodeArray.get(i).get(VALUE).textValue();
         }
         return newMessage;
+    }
+
+    private static JsonNode parseResponse(String responseData)throws Exception{
+        try{
+            JSONObject jsonResponse=new JSONObject(responseData);
+            Log.i("JsonCommonParser", "parseResponse: " + jsonResponse);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = jsonResponse.toString();
+            try {
+                return objectMapper.readValue(jsonString, JsonNode.class);
+            }catch(Exception ex){
+                throw new PullApiParsingException();
+            }
+        }catch(Exception ex){
+            throw new PullApiParsingException();
+        }
     }
 }
