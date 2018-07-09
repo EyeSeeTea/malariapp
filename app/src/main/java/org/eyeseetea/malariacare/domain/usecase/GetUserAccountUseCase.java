@@ -19,37 +19,33 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import org.eyeseetea.malariacare.data.NetworkStrategy;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.boundary.IUserAttributesRemoteDataSource;
-import org.eyeseetea.malariacare.domain.boundary.IUserLocalDataSource;
+import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.entity.UserAttributes;
-import org.eyeseetea.malariacare.domain.exception.PullUserAttributesException;
 
-public class PullLoggedUserAttributesUseCase implements UseCase {
+public class GetUserAccountUseCase implements UseCase {
 
     public interface Callback {
-        void onSuccess(UserAttributes userAttributes);
+        void onSuccess(UserAccount user);
 
-        void onError(UserAttributes userAttributes);
+        void onError(UserAccount user);
     }
 
     private final IAsyncExecutor mAsyncExecutor;
     private final IMainExecutor mMainExecutor;
-    private final IUserLocalDataSource userLocalDataSource;
-    private final IUserAttributesRemoteDataSource userAttributesRemoteDataSource;
+    private final IUserAccountRepository userAccountRepository;
     private Callback mCallback;
 
-    public PullLoggedUserAttributesUseCase(
+    public GetUserAccountUseCase(
             IAsyncExecutor asyncExecutor,
             IMainExecutor mainExecutor,
-            IUserLocalDataSource userLocalDataSource, IUserAttributesRemoteDataSource userAttributesRemoteDataSource) {
+            IUserAccountRepository userAccountRepository) {
         this.mAsyncExecutor = asyncExecutor;
         this.mMainExecutor = mainExecutor;
-        this.userLocalDataSource = userLocalDataSource;
-        this.userAttributesRemoteDataSource = userAttributesRemoteDataSource;
+        this.userAccountRepository = userAccountRepository;
     }
 
     public void execute(final Callback callback) {
@@ -59,39 +55,38 @@ public class PullLoggedUserAttributesUseCase implements UseCase {
 
     @Override
     public void run() {
-        UserAccount userAccount = userLocalDataSource.getLoggedUser();
-        UserAttributes userAttributes;
-        try {
-             userAttributes = userAttributesRemoteDataSource.getUser(userAccount.getUserUid());
-        }catch (PullUserAttributesException pullException){
-            pullException.printStackTrace();
-            notifyError(userAccount.getUserAttributes());
+        //get logged user
+        UserFilter userFilter = new UserFilter("", true);
+        UserAccount localUserAccount = userAccountRepository.getUser(userFilter, NetworkStrategy.LocalFirst);
+        //set logged user uid in User Filter and get user from network
+        userFilter = new UserFilter(localUserAccount.getUserUid(), false);
+        UserAccount updatedUserAccount = userAccountRepository.getUser(userFilter, NetworkStrategy.NetworkFirst);
+        if(updatedUserAccount==null){
+            notifyError(localUserAccount);
             return;
         }
-
-        if(userAttributes.getAnnouncement()!=null && !userAttributes.getAnnouncement().isEmpty()
-                && !userAttributes.getAnnouncement().equals(userAccount.getUserAttributes().getAnnouncement())){
+        //set user accept as false if announcement was changed
+        if(localUserAccount.getAnnouncement()!=null && !localUserAccount.getAnnouncement().isEmpty()
+                && !localUserAccount.getAnnouncement().equals(updatedUserAccount.getAnnouncement())){
             PreferencesState.getInstance().setUserAccept(false);
         }
-        userAccount.setUserAttributes(userAttributes);
-        userLocalDataSource.saveUser(userAccount);
-        notifyOnComplete(userAttributes);
+        notifyOnComplete(updatedUserAccount);
     }
 
-    private void notifyOnComplete(final UserAttributes userAttributes) {
+    private void notifyOnComplete(final UserAccount userAccount) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onSuccess(userAttributes);
+                mCallback.onSuccess(userAccount);
             }
         });
     }
 
-    private void notifyError(final UserAttributes userAttributes) {
+    private void notifyError(final UserAccount userAccount) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onError(userAttributes);
+                mCallback.onError(userAccount);
             }
         });
     }
