@@ -25,20 +25,19 @@ import android.preference.PreferenceManager;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
-import org.eyeseetea.malariacare.data.IUserAccountDataSource;
+import org.eyeseetea.malariacare.data.IAuthenticationManagerDataSource;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.database.utils.PopulateDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
-public class UserAccountLocalDataSource implements IUserAccountDataSource {
+public class AuthenticationManagerLocalDataSource implements IAuthenticationManagerDataSource {
 
     Context mContext;
 
-    public UserAccountLocalDataSource(Context context){
+    public AuthenticationManagerLocalDataSource(Context context){
         mContext = context;
     }
 

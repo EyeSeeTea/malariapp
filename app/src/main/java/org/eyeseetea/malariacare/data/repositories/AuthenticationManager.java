@@ -22,23 +22,23 @@ package org.eyeseetea.malariacare.data.repositories;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
-import org.eyeseetea.malariacare.data.IUserAccountDataSource;
-import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.IAuthenticationManagerDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.AuthenticationManagerLocalDataSource;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.remote.sdk.UserAccountDhisSDKDataSource;
+import org.eyeseetea.malariacare.data.remote.sdk.AuthenticationManagerDhisSDKDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 
-public class UserAccountRepository implements IUserAccountRepository {
-    IUserAccountDataSource userAccountLocalDataSource;
-    IUserAccountDataSource userAccountRemoteDataSource;
+public class AuthenticationManager implements IAuthenticationManager {
+    IAuthenticationManagerDataSource userAccountLocalDataSource;
+    IAuthenticationManagerDataSource userAccountRemoteDataSource;
 
-    public UserAccountRepository(Context context) {
+    public AuthenticationManager(Context context) {
 
-        userAccountLocalDataSource = new UserAccountLocalDataSource(context);
-        userAccountRemoteDataSource = new UserAccountDhisSDKDataSource(context);
+        userAccountLocalDataSource = new AuthenticationManagerLocalDataSource(context);
+        userAccountRemoteDataSource = new AuthenticationManagerDhisSDKDataSource(context);
     }
 
     @Override
@@ -113,6 +113,7 @@ public class UserAccountRepository implements IUserAccountRepository {
         userAccountLocalDataSource.login(credentials, new IDataSourceCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount userAccount) {
+                //todo pull attributes
                 callback.onSuccess(userAccount);
             }
 
