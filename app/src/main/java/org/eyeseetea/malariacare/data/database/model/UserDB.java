@@ -51,11 +51,6 @@ public class UserDB extends BaseModel {
     @Column
     boolean isAnnouncementAccept;
 
-    /**
-     * List of surveys of this user
-     */
-    List<SurveyDB> surveys;
-
     public static final String ATTRIBUTE_USER_CLOSE_DATE = "USER_CLOSE_DATE";
     public static final String ATTRIBUTE_USER_ANNOUNCEMENT = "USER_ANNOUNCEMENT";
 
@@ -98,16 +93,6 @@ public class UserDB extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<SurveyDB> getSurveys() {
-        if (surveys == null) {
-            surveys = new Select()
-                    .from(SurveyDB.class)
-                    .where(SurveyDB_Table.id_user_fk
-                            .eq(this.getId_user())).queryList();
-        }
-        return surveys;
     }
 
     public String getUsername() {
@@ -188,9 +173,7 @@ public class UserDB extends BaseModel {
             return false;
         if (close_date != null ? !close_date.equals(userDB.close_date) : userDB.close_date != null)
             return false;
-        if (last_updated != null ? !last_updated.equals(userDB.last_updated) : userDB.last_updated != null)
-            return false;
-        return surveys != null ? surveys.equals(userDB.surveys) : userDB.surveys == null;
+        return last_updated != null ? last_updated.equals(userDB.last_updated) : userDB.last_updated == null;
     }
 
     @Override
@@ -203,7 +186,6 @@ public class UserDB extends BaseModel {
         result = 31 * result + (close_date != null ? close_date.hashCode() : 0);
         result = 31 * result + (last_updated != null ? last_updated.hashCode() : 0);
         result = 31 * result + (isAnnouncementAccept ? 1 : 0);
-        result = 31 * result + (surveys != null ? surveys.hashCode() : 0);
         return result;
     }
 
@@ -218,7 +200,6 @@ public class UserDB extends BaseModel {
                 ", close_date=" + close_date +
                 ", last_updated=" + last_updated +
                 ", isAnnouncementAccept=" + isAnnouncementAccept +
-                ", surveys=" + surveys +
                 '}';
     }
 }
