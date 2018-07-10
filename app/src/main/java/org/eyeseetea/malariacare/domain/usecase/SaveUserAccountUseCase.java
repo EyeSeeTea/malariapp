@@ -19,27 +19,25 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 
-public class GetUserAccountUseCase implements UseCase {
+public class SaveUserAccountUseCase implements UseCase {
 
     public interface Callback {
-        void onSuccess(UserAccount user);
-
-        void onError();
+        void onSuccess();
     }
 
     private final IAsyncExecutor mAsyncExecutor;
     private final IMainExecutor mMainExecutor;
     private final IUserAccountRepository userAccountRepository;
     private Callback mCallback;
-    private NetworkStrategy networkStrategy;
+    private UserAccount userAccount;
 
-    public GetUserAccountUseCase(
+    public SaveUserAccountUseCase(
             IAsyncExecutor asyncExecutor,
             IMainExecutor mainExecutor,
             IUserAccountRepository userAccountRepository) {
@@ -48,37 +46,23 @@ public class GetUserAccountUseCase implements UseCase {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public void execute(final Callback callback, NetworkStrategy networkStrategy) {
+    public void execute(final Callback callback, UserAccount userAccount) {
         this.mCallback = callback;
-        this.networkStrategy = networkStrategy;
+        this.userAccount = userAccount;
         mAsyncExecutor.run(this);
     }
 
     @Override
     public void run() {
-        UserAccount updatedUserAccount = null;
-        try {
-            updatedUserAccount = userAccountRepository.getUser(networkStrategy);
-        } catch (Exception e){
-            notifyError();
-        }
-        notifyOnComplete(updatedUserAccount);
+        userAccountRepository.saveUser(userAccount);
+        notifyOnComplete();
     }
 
-    private void notifyOnComplete(final UserAccount userAccount) {
+    private void notifyOnComplete() {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onSuccess(userAccount);
-            }
-        });
-    }
-
-    private void notifyError() {
-        mMainExecutor.run(new Runnable() {
-            @Override
-            public void run() {
-                mCallback.onError();
+                mCallback.onSuccess();
             }
         });
     }

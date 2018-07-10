@@ -54,6 +54,7 @@ import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
@@ -190,7 +191,6 @@ public class LoginActivity extends AbsLoginActivity {
         mLoginUseCase.execute(credentials, new LoginUseCase.Callback() {
             @Override
             public void onLoginSuccess() {
-                PreferencesState.getInstance().setUserAccept(false);
                 hideProgress();
                 GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                         new AsyncExecutor(),
@@ -206,11 +206,10 @@ public class LoginActivity extends AbsLoginActivity {
                     }
 
                     @Override
-                    public void onError(UserAccount userAccount) {
-                        System.out.println("Error pulling closed user date. Ignoring closed user attribute on server");
-                        onGetUserSuccess(userAccount.isClosed());
+                    public void onError() {
+                        System.out.println("Error pulling closed user date.");
                     }
-                });
+                }, NetworkStrategy.NETWORK_FIRST);
             }
 
             @Override
@@ -256,7 +255,6 @@ public class LoginActivity extends AbsLoginActivity {
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PreferencesState.getInstance().setUserAccept(false);
                 LoginActivity.mLoginActivity.executeLogout();
             }
         };

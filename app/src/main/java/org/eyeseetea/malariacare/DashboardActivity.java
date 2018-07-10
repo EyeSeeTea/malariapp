@@ -43,6 +43,7 @@ import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
 import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -85,11 +86,10 @@ public class DashboardActivity extends BaseActivity {
                 }
 
                 @Override
-                public void onError(UserAccount userAccount) {
-                    System.out.println("Error pulling attributes. Show the last persisted announcement and close date");
-                    announcementAndUserClosedActions(userAccount);
+                public void onError() {
+                    System.out.println("Error recovering user account.");
                 }
-            });
+            }, NetworkStrategy.NETWORK_FIRST);
         }
 
         loadPhoneMetadata();
@@ -113,16 +113,16 @@ public class DashboardActivity extends BaseActivity {
     private void announcementAndUserClosedActions(UserAccount userAccount) {
         if (shouldDisplayAnnoucement(userAccount)) {
             Log.d(TAG, "show logged announcement");
-            AUtils.showAnnouncement(R.string.admin_announcement, userAccount.getAnnouncement(),
+            AUtils.showAnnouncement(R.string.admin_announcement, userAccount,
                     DashboardActivity.this);
-        } else {
-            AUtils.checkUserClosed(userAccount.getClosedDate(), DashboardActivity.this);
+        } else if(userAccount.isClosed()){
+            AUtils.checkUserClosed(DashboardActivity.this);
         }
     }
 
     private boolean shouldDisplayAnnoucement(UserAccount userAccount) {
         return userAccount.getAnnouncement() != null && !userAccount.getAnnouncement().equals("")
-                && !PreferencesState.getInstance().isUserAccept();
+                && !userAccount.isAnnouncementAccept();
     }
 
 
