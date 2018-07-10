@@ -71,6 +71,37 @@ public class UserAccountShould {
     }
 
     @Test
+    public void return_should_display_announcement_false_after_create_user_account_with_empty_annoucement(){
+        Date date = new Date();
+        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "UID", "", date);
+        Assert.assertTrue(userAccount.shouldDisplayAnnouncement()==false);
+    }
+
+    @Test
+    public void return_should_display_announcement_false_after_create_user_account_with_null_annoucement(){
+        Date date = new Date();
+        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "UID", null, date);
+        Assert.assertTrue(userAccount.shouldDisplayAnnouncement()==false);
+    }
+
+    @Test
+    public void return_should_display_announcement_true_after_create_user_account_with_empty_announcement_and_add_annoucement(){
+        Date date = new Date();
+        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "UID", "", date);
+        userAccount.changeAnnouncement("new announcement");
+        Assert.assertTrue(userAccount.shouldDisplayAnnouncement()==true);
+    }
+
+    @Test
+    public void return_should_display_announcement_false_after_create_user_account_with_empty_announcement_and_add_announcement_and_accept_announcement(){
+        Date date = new Date();
+        UserAccount userAccount = new UserAccount("NAME", "USERNAME", "UID", "", date);
+        userAccount.changeAnnouncement("new announcement");
+        userAccount.acceptAnnouncement();
+        Assert.assertTrue(userAccount.shouldDisplayAnnouncement()==false);
+    }
+
+    @Test
     public void return_is_closed_true_after_change_date_to_past_date(){
         LocalDate localDate = new LocalDate();
         localDate.minusDays(1);

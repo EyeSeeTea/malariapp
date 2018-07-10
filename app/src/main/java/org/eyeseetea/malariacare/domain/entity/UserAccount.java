@@ -89,4 +89,8 @@ public class UserAccount {
     public void changeClosedDate(Date closedDate) {
         this.closedDate = closedDate;
     }
+
+    public boolean shouldDisplayAnnouncement() {
+        return (announcement!=null && !announcement.isEmpty() && !isAnnouncementAccept);
+    }
 }

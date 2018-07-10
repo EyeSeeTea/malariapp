@@ -111,18 +111,13 @@ public class DashboardActivity extends BaseActivity {
     }
 
     private void announcementAndUserClosedActions(UserAccount userAccount) {
-        if (shouldDisplayAnnoucement(userAccount)) {
+        if (userAccount.shouldDisplayAnnouncement()) {
             Log.d(TAG, "show logged announcement");
             AUtils.showAnnouncement(R.string.admin_announcement, userAccount,
                     DashboardActivity.this);
         } else if(userAccount.isClosed()){
             AUtils.checkUserClosed(DashboardActivity.this);
         }
-    }
-
-    private boolean shouldDisplayAnnoucement(UserAccount userAccount) {
-        return userAccount.getAnnouncement() != null && !userAccount.getAnnouncement().equals("")
-                && !userAccount.isAnnouncementAccept();
     }
 
 
