@@ -48,6 +48,8 @@ public class UserDB extends BaseModel {
     Date close_date;
     @Column
     Date last_updated;
+    @Column
+    boolean isAnnouncementAccept;
 
     /**
      * List of surveys of this user
@@ -65,12 +67,13 @@ public class UserDB extends BaseModel {
         this.name = name;
     }
 
-    public UserDB(String uid, String name, String username, String announcement, Date closeDate) {
+    public UserDB(String uid, String name, String username, String announcement, Date closeDate, boolean isAnnouncementAccept) {
         this.uid_user = uid;
         this.name = name;
         this.username = username;
         this.announcement = announcement;
         this.close_date = closeDate;
+        this.isAnnouncementAccept = isAnnouncementAccept;
     }
 
     public Long getId_user() {
@@ -159,29 +162,35 @@ public class UserDB extends BaseModel {
         this.last_updated = last_updated;
     }
 
+    public boolean isAnnouncementAccept() {
+        return isAnnouncementAccept;
+    }
+
+    public void setAnnouncementAccept(boolean announcementAccept) {
+        isAnnouncementAccept = announcementAccept;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserDB user = (UserDB) o;
+        UserDB userDB = (UserDB) o;
 
-        if (id_user != user.id_user) return false;
-        if (uid_user != null ? !uid_user.equals(user.uid_user) : user.uid_user != null)
+        if (id_user != userDB.id_user) return false;
+        if (isAnnouncementAccept != userDB.isAnnouncementAccept) return false;
+        if (uid_user != null ? !uid_user.equals(userDB.uid_user) : userDB.uid_user != null)
             return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null)
+        if (name != null ? !name.equals(userDB.name) : userDB.name != null) return false;
+        if (username != null ? !username.equals(userDB.username) : userDB.username != null)
             return false;
-        if (announcement != null ? !announcement.equals(user.announcement)
-                : user.announcement != null) {
+        if (announcement != null ? !announcement.equals(userDB.announcement) : userDB.announcement != null)
             return false;
-        }
-        if (close_date != null ? !close_date.equals(user.close_date) : user.close_date != null) {
+        if (close_date != null ? !close_date.equals(userDB.close_date) : userDB.close_date != null)
             return false;
-        }
-        return last_updated != null ? last_updated.equals(user.last_updated)
-                : user.last_updated == null;
-
+        if (last_updated != null ? !last_updated.equals(userDB.last_updated) : userDB.last_updated != null)
+            return false;
+        return surveys != null ? surveys.equals(userDB.surveys) : userDB.surveys == null;
     }
 
     @Override
@@ -192,12 +201,15 @@ public class UserDB extends BaseModel {
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (announcement != null ? announcement.hashCode() : 0);
         result = 31 * result + (close_date != null ? close_date.hashCode() : 0);
+        result = 31 * result + (last_updated != null ? last_updated.hashCode() : 0);
+        result = 31 * result + (isAnnouncementAccept ? 1 : 0);
+        result = 31 * result + (surveys != null ? surveys.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDB{" +
                 "id_user=" + id_user +
                 ", uid_user='" + uid_user + '\'' +
                 ", name='" + name + '\'' +
@@ -205,6 +217,7 @@ public class UserDB extends BaseModel {
                 ", announcement='" + announcement + '\'' +
                 ", close_date=" + close_date +
                 ", last_updated=" + last_updated +
+                ", isAnnouncementAccept=" + isAnnouncementAccept +
                 ", surveys=" + surveys +
                 '}';
     }
