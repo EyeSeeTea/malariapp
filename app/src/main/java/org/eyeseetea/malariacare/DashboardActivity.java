@@ -70,9 +70,6 @@ public class DashboardActivity extends BaseActivity {
             new AsyncAnnouncement().execute();
         }
 
-        //XXX to remove?
-        initDataIfRequired();
-
         loadPhoneMetadata();
 
         //get dashboardcontroller from settings.json
@@ -230,29 +227,6 @@ public class DashboardActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         dashboardController.onBackPressed();
-    }
-
-    /**
-     * PUll data from DHIS server and turn into our model
-     */
-    private void initDataIfRequired() {
-        initUserSessionIfRequired();
-    }
-
-    /**
-     * In case Session doesn't have the user set, here we set it to the first entry of User table
-     */
-    private void initUserSessionIfRequired() {
-        // already a user in session -> done
-        if (Session.getUser() != null) {
-            return;
-        }
-
-        // If we're in dashboard and User is not yet in session we have to put it
-        // FIXME: for the moment there will be only one user in the User table, but in the future
-        // we will have to think about tagging the logged user in the DB
-        UserDB user = UserDB.getLoggedUser();
-        Session.setUser(user);
     }
 
     /**

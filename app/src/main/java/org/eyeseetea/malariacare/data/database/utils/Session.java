@@ -28,7 +28,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.usecase.LoadUserAndCredentialsUseCase;
+import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 
 import java.util.HashMap;
 import java.util.List;
@@ -104,10 +104,10 @@ public class Session {
 
     public static Credentials getCredentials() {
         if (credentials == null) {
-            LoadUserAndCredentialsUseCase loadUserAndCredentialsUseCase =
-                    new LoadUserAndCredentialsUseCase(
+            LoadCredentialsUseCase loadCredentialsUseCase =
+                    new LoadCredentialsUseCase(
                             PreferencesState.getInstance().getContext());
-            loadUserAndCredentialsUseCase.execute();
+            loadCredentialsUseCase.execute();
             if (credentials == null) {
                 return  null;
             }

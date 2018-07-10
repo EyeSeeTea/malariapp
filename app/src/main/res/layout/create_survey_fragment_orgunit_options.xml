@@ -24,18 +24,20 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/create_survey_title_top_marging"
         android:background="@color/assess_grey"
         android:gravity="center">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/create_info_organization_unit"
-            app:tDimension="@string/font_size_level3"
+            app:tDimension="@string/font_size_level4"
             app:tFontName="@string/medium_font_name"
             android:textAllCaps="true"
             android:id="@+id/textView2"
+            android:textSize="@dimen/creation_title"
             android:background="@color/assess_grey"
             android:textColor="@color/white"
             android:gravity="center" />
@@ -45,32 +47,24 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingRight="20dp"
-        android:background="@drawable/background_textfield">
+        android:background="@color/assess_grey">
 
         <Spinner
             android:dropDownWidth="match_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/filter_create_org_background"
             android:id="@+id/org_unit"
             android:spinnerMode="dropdown"
-            android:backgroundTintMode="add"
-            android:background="@null"
-            android:gravity="right"/>
+            android:layout_margin="12dp"/>
         <ImageView
-            android:src="@drawable/ic_media_arrow"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginRight="-17dp"
+            app:srcCompat="@drawable/ic_white_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingRight="20dip"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/new_grey"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="-10dp"
-            android:layout_marginLeft="100dp"
-            android:layout_below="@+id/org_unit"/>
+            android:layout_alignParentRight="true"  />
     </RelativeLayout>
 </merge>
