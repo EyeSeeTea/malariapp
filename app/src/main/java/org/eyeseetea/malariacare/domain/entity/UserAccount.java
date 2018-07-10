@@ -19,8 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
-import org.eyeseetea.malariacare.utils.DateParser;
-
 import java.util.Date;
 
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
@@ -31,6 +29,7 @@ public class UserAccount {
     private String userUid;
     private String announcement;
     private Date closedDate;
+    private boolean isAnnouncementAccept;
 
     public UserAccount(String name, String userName, String userUid, String announcement, Date closedDate) {
         this.name = required(name, "name is required");
@@ -56,8 +55,23 @@ public class UserAccount {
         return announcement;
     }
 
-    public String setAnnouncement(String announcement) {
-        return this.announcement = announcement;
+    public void changeAnnouncement(String announcement){
+        if(announcement.isEmpty()){
+            return;
+        }
+        if(this.announcement!=null && this.announcement.equals(announcement)){
+            return;
+        }
+        isAnnouncementAccept = false;
+        this.announcement = announcement;
+    }
+
+    public void acceptAnnouncement(){
+        isAnnouncementAccept = true;
+    }
+
+    public boolean isAnnouncementAccept(){
+        return isAnnouncementAccept;
     }
 
     public boolean isClosed() {
@@ -70,5 +84,9 @@ public class UserAccount {
 
     public Date getClosedDate() {
         return closedDate;
+    }
+
+    public void changeClosedDate(Date closedDate) {
+        this.closedDate = closedDate;
     }
 }
