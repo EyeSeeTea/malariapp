@@ -9,8 +9,9 @@ import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.exception.GetUserAccountException;
 import org.eyeseetea.malariacare.domain.exception.PullApiParsingException;
-import org.eyeseetea.malariacare.domain.usecase.UserFilter;
+import org.eyeseetea.malariacare.data.filters.UserFilter;
 import org.eyeseetea.malariacare.utils.DateParser;
 import org.json.JSONObject;
 
@@ -41,7 +42,7 @@ public class UserAccountAPIDataSource extends OkHttpClientDataSource implements 
     }
 
     @Override
-    public UserAccount getUser(UserFilter userFilter)  {
+    public UserAccount getUser(UserFilter userFilter) throws GetUserAccountException {
         String username = "";
         String name = "";
         String announcement;
@@ -67,7 +68,7 @@ public class UserAccountAPIDataSource extends OkHttpClientDataSource implements 
         } catch (Exception ex) {
             Log.e(TAG, "Cannot read user last updated from server with");
             ex.printStackTrace();
-            return null;
+            throw new GetUserAccountException();
         }
         UserAccount userAccount = new UserAccount(name, username, userFilter.getUid(), announcement, parseClosedDate(closedDateAsString));
         return userAccount;

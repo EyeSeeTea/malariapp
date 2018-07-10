@@ -1,10 +1,10 @@
 package org.eyeseetea.malariacare.data.repositories;
 
 import org.eyeseetea.malariacare.data.IUserAccountDataSource;
-import org.eyeseetea.malariacare.data.NetworkStrategy;
-import org.eyeseetea.malariacare.domain.boundary.IUserAccountRepository;
+import org.eyeseetea.malariacare.data.filters.UserFilter;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
-import org.eyeseetea.malariacare.domain.usecase.UserFilter;
 
 public class UserAccountRepository implements IUserAccountRepository {
 
@@ -18,23 +18,31 @@ public class UserAccountRepository implements IUserAccountRepository {
     }
 
     @Override
-    public UserAccount getUser(UserFilter userFilter, NetworkStrategy networkStrategy) {
-        UserAccount userAccount = userAccountLocalDataSource.getUser(userFilter);
+    public UserAccount getUser(NetworkStrategy networkStrategy) throws Exception {
 
-        if(networkStrategy.equals(NetworkStrategy.NetworkFirst)){
+        UserAccount localUserAccount = null;
 
-            userFilter = new UserFilter(userAccount.getUserUid(), false);
+        UserFilter userFilter = new UserFilter();
+        localUserAccount = userAccountLocalDataSource.getUser(userFilter);
 
-            UserAccount localUserAccount = userAccount;
-
-            userAccount = userAccountAPIDataSource.getUser(userFilter);
-
-            if(userAccount==null){
+        if(networkStrategy.equals(NetworkStrategy.NETWORK_FIRST)){
+            UserAccount userAccount = null;
+            try {
+                userFilter = new UserFilter();
+                userFilter.setUId(localUserAccount.getUserUid());
+                userAccount = userAccountAPIDataSource.getUser(userFilter);
+                localUserAccount.changeClosedDate(userAccount.getClosedDate());
+                localUserAccount.changeAnnouncement(userAccount.getAnnouncement());
+                saveUser(localUserAccount);
+            } catch (Exception e) {
                 return localUserAccount;
             }
-
-            userAccountLocalDataSource.saveUser(userAccount);
         }
-        return userAccount;
+        return localUserAccount;
+    }
+
+    @Override
+    public void saveUser(UserAccount user) {
+        userAccountLocalDataSource.saveUser(user);
     }
 }
