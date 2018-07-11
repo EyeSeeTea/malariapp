@@ -218,7 +218,7 @@ public class PlannedAdapter extends BaseAdapter {
         TextView textView = (TextView) rowLayout.findViewById(R.id.planning_title);
         String titleHeader = String.format("%s (%d)",
                 context.getString(plannedHeader.getTitleHeader()), plannedHeader.getCounter());
-        textView.setText(plannedHeader.getTitleHeader());
+        textView.setText(titleHeader);
         ImageView img = (ImageView) rowLayout.findViewById(R.id.planning_image_cross);
 
         int color  = PreferencesState.getInstance().getContext().getResources().getColor(
