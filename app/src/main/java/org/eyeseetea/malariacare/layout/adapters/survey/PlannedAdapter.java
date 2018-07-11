@@ -216,7 +216,9 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Title
         TextView textView = (TextView) rowLayout.findViewById(R.id.planning_title);
-        textView.setText(plannedHeader.getTitleHeader());
+        String titleHeader = String.format("%s (%d)",
+                context.getString(plannedHeader.getTitleHeader()), plannedHeader.getCounter());
+        textView.setText(titleHeader);
         ImageView img = (ImageView) rowLayout.findViewById(R.id.planning_image_cross);
 
         int color  = PreferencesState.getInstance().getContext().getResources().getColor(
@@ -227,7 +229,7 @@ public class PlannedAdapter extends BaseAdapter {
             img.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.white));
         } else {
-            if (plannedHeader.getTitleHeader().contains(context.getString(R.string.dashboard_title_planned_type_never))) {
+            if (plannedHeader.getTitleHeader() == R.string.dashboard_title_planned_type_never) {
                 color  =  PreferencesState.getInstance().getContext().getResources().getColor(
                         R.color.white);
                 Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/"+context.getString(R.string.medium_font_name));

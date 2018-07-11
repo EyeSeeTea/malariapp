@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
  * Created by arrizabalaga on 15/12/15.
  */
 public class PlannedHeader implements PlannedItem {
-    private String titleHeader;
+    private int titleHeader;
     private final Integer backgroundColor;
     private final Integer secondaryColor;
     private final Integer gaudyBackgroundColor;
@@ -39,7 +39,8 @@ public class PlannedHeader implements PlannedItem {
      */
     private Integer counter;
 
-    public PlannedHeader(String titleHeader, Integer backgroundColor, Integer secondaryColor, Integer gaudyBackgroundColor) {
+    public PlannedHeader(int titleHeader, Integer backgroundColor, Integer secondaryColor,
+            Integer gaudyBackgroundColor) {
         this.titleHeader = titleHeader;
         this.backgroundColor = backgroundColor;
         this.secondaryColor = secondaryColor;
@@ -51,8 +52,8 @@ public class PlannedHeader implements PlannedItem {
         return gaudyBackgroundColor;
     }
 
-    public String getTitleHeader() {
-        return String.format("%s (%d)",titleHeader,counter);
+    public int getTitleHeader() {
+        return titleHeader;
     }
 
     public Integer getCounter() {
@@ -103,12 +104,10 @@ public class PlannedHeader implements PlannedItem {
 
     /**
      * Builds the header for the never accordion
-     * @param ctx
      * @return
      */
-    public static PlannedHeader buildNeverHeader(Context ctx){
-        return new PlannedHeader(
-                ctx.getString(R.string.dashboard_title_planned_type_never),
+    public static PlannedHeader buildNeverHeader(){
+        return new PlannedHeader(R.string.dashboard_title_planned_type_never,
                 R.color.red,
                 R.color.white_grey,
                 R.color.white);
@@ -116,12 +115,10 @@ public class PlannedHeader implements PlannedItem {
 
     /**
      * Builds the header for the overdue accordion
-     * @param ctx
      * @return
      */
-    public static PlannedHeader buildOverdueHeader(Context ctx){
-        return new PlannedHeader(
-                ctx.getString(R.string.dashboard_title_planned_type_overdue),
+    public static PlannedHeader buildOverdueHeader(){
+        return new PlannedHeader(R.string.dashboard_title_planned_type_overdue,
                 R.color.amber,
                 R.color.white_grey,
                 R.color.white);
@@ -129,12 +126,10 @@ public class PlannedHeader implements PlannedItem {
 
     /**
      * Builds the header for the overdue accordion
-     * @param ctx
      * @return
      */
-    public static PlannedHeader buildNext30Header(Context ctx){
-        return new PlannedHeader(
-                ctx.getString(R.string.dashboard_title_planned_type_next_30),
+    public static PlannedHeader buildNext30Header(){
+        return new PlannedHeader(R.string.dashboard_title_planned_type_next_30,
                 R.color.green,
                 R.color.white_grey,
                 R.color.white);
@@ -142,12 +137,10 @@ public class PlannedHeader implements PlannedItem {
 
     /**
      * Builds the header for the overdue accordion
-     * @param ctx
      * @return
      */
-    public static PlannedHeader buildFutureHeader(Context ctx){
-        return new PlannedHeader(
-                ctx.getString(R.string.dashboard_title_planned_type_future),
+    public static PlannedHeader buildFutureHeader(){
+        return new PlannedHeader(R.string.dashboard_title_planned_type_future,
                 R.color.scoreGrandson,
                 R.color.white_grey,
                 R.color.white);
@@ -160,7 +153,7 @@ public class PlannedHeader implements PlannedItem {
 
         PlannedHeader that = (PlannedHeader) o;
 
-        if (titleHeader != null ? !titleHeader.equals(that.titleHeader) : that.titleHeader != null)
+        if (titleHeader != that.titleHeader)
             return false;
         return !(backgroundColor != null ? !backgroundColor.equals(that.backgroundColor) : that.backgroundColor != null);
 
@@ -168,14 +161,8 @@ public class PlannedHeader implements PlannedItem {
 
     @Override
     public int hashCode() {
-        int result = titleHeader != null ? titleHeader.hashCode() : 0;
+        int result = titleHeader;
         result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString(){
-        return titleHeader;
-    }
-
 }

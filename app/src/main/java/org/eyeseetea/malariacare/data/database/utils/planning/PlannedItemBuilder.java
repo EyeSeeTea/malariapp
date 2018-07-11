@@ -44,24 +44,23 @@ public class PlannedItemBuilder {
      * Builds an ordered list of planned items (header + surveys)
      * @return
      */
-    public List<PlannedItem> buildPlannedItems(Context context){
-        Context ctx = context;
+    public List<PlannedItem> buildPlannedItems(){
         List<PlannedItem> never;
         List<PlannedItem> overdue;
         List<PlannedItem> next30;
         List<PlannedItem> future;
 
         never = new ArrayList<>();
-        never.add(PlannedHeader.buildNeverHeader(ctx));
+        never.add(PlannedHeader.buildNeverHeader());
 
         overdue = new ArrayList<>();
-        overdue.add(PlannedHeader.buildOverdueHeader(ctx));
+        overdue.add(PlannedHeader.buildOverdueHeader());
 
         next30 = new ArrayList<>();
-        next30.add(PlannedHeader.buildNext30Header(ctx));
+        next30.add(PlannedHeader.buildNext30Header());
 
         future = new ArrayList<>();
-        future.add(PlannedHeader.buildFutureHeader(ctx));
+        future.add(PlannedHeader.buildFutureHeader());
 
         //Find its place according to scheduleddate
         for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
