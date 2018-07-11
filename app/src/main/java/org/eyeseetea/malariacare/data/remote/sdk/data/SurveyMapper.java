@@ -52,7 +52,7 @@ public class SurveyMapper {
 
                 surveys.add(survey);
             } catch (Exception e) {
-                Log.e(TAG, "An error occurred converting Event " + event.getUId() +
+                System.out.println("An error occurred converting Event " + event.getUId() +
                         " to survey:" + e.getMessage());
             }
         }
@@ -109,7 +109,7 @@ public class SurveyMapper {
                             Float.parseFloat(dataValue.getValue()));
                 }
             } else {
-                QuestionValue questionValue = mapValue(dataValue);
+                QuestionValue questionValue = mapValue(dataValue, event);
 
                 if (questionValue != null) {
                     values.put(questionValue.getQuestionUId(), questionValue);
@@ -123,7 +123,8 @@ public class SurveyMapper {
         return survey;
     }
 
-    private QuestionValue mapValue(TrackedEntityDataValue dataValue) {
+    private QuestionValue mapValue(TrackedEntityDataValue dataValue,
+            Event event) {
 
         QuestionValue questionValue = null;
         String questionUid = dataValue.getDataElement();
@@ -154,10 +155,10 @@ public class SurveyMapper {
             //<dataValue created="2017-10-03T08:00:35.269" lastUpdated="2018-04-24T04:00:40.564"
             // value="false" dataElement="iW2zVNwfDK6" providedElsewhere="false"
             // storedBy="script_HNQIS"/>
-            Log.w(TAG, String.format(
+            System.out.println( String.format(
                     "An error occurred converting data value because DataElement does no exists "
                             + "as Question. Event: %s, DataElement: %s)",
-                    dataValue.getEvent().getUId(), dataValue.getDataElement()));
+                    event.getUId(), dataValue.getDataElement()));
         }
 
         return questionValue;

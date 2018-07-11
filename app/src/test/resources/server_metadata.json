@@ -1,0 +1,74 @@
+{
+  "action1": {
+    "UId": "bwwyHVzxnTZ",
+    "code": "_Action1"
+  },
+  "action2": {
+    "UId": "ibpjjNJLn44",
+    "code": "_Action2"
+  },
+  "completionDate": {
+    "UId": "I7rMklpweh0",
+    "code": "_CompletedOn"
+  },
+  "creationDate": {
+    "UId": "rcAkFQFYknk",
+    "code": "_CreatedOn"
+  },
+  "forwardOrder": {
+    "UId": "FEkGksxhOpH",
+    "code": "_FWR-sort"
+  },
+  "gaps": {
+    "UId": "lI09tJv3h4z",
+    "code": "_Gaps"
+  },
+  "mainScoreA": {
+    "UId": "TgCWRlUXbca",
+    "code": "_Overall Class A"
+  },
+  "mainScoreB": {
+    "UId": "zckZqXOQRHT",
+    "code": "_Overall Class B"
+  },
+  "mainScoreC": {
+    "UId": "DBUwlPCO0Hd",
+    "code": "_Overall Class C"
+  },
+  "mainScoreClass": {
+    "UId": "ggrkfoq6nxA",
+    "code": "_Overall Class"
+  },
+  "nextAssessment": {
+    "UId": "M93RYt47CMK",
+    "code": "_NextAssessmentDate"
+  },
+  "overallProductivity": {
+    "UId": "vGphb9ZfLGg",
+    "code": "_OverallProductivity"
+  },
+  "overallScore": {
+    "UId": "Y8Nmpp7RhXw",
+    "code": "_Overall Score"
+  },
+  "planAction": {
+    "UId": "Im5C86I2ObV",
+    "code": "_ActionPlan"
+  },
+  "provider": {
+    "UId": "VIFKfFTVLcg",
+    "code": "_ProviderName"
+  },
+  "pushDevice": {
+    "UId": "YVyeP6WQkDA",
+    "code": "_PushDevice"
+  },
+  "uploadBy": {
+    "UId": "UzOOxp9OlSb",
+    "code": "_UploadedBy"
+  },
+  "uploadDate": {
+    "UId": "B6afQk2qZTL",
+    "code": "_UploadedOn"
+  }
+}

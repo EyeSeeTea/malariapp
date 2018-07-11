@@ -40,4 +40,35 @@ public class QuestionValue {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        QuestionValue that = (QuestionValue) o;
+
+        if (!questionUId.equals(that.questionUId)) return false;
+        if (optionUId != null ? !optionUId.equals(that.optionUId) : that.optionUId != null) {
+            return false;
+        }
+        return value.equals(that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = questionUId.hashCode();
+        result = 31 * result + (optionUId != null ? optionUId.hashCode() : 0);
+        result = 31 * result + value.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionValue{" +
+                "questionUId='" + questionUId + '\'' +
+                ", optionUId='" + optionUId + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }
