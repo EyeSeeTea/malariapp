@@ -195,13 +195,13 @@ public class FeedbackAdapter extends BaseAdapter {
 
         if(!PreferencesState.getInstance().isVerticalDashboard()){
             ScoreType scoreType = new ScoreType(feedback.getScore(idSurvey, module));
-            int color = R.color.darkRed;
+            int color = R.color.low_score_color;
             if(scoreType.getClassification() == ScoreType.Classification.LOW) {
-                color = R.color.darkRed;
+                color = R.color.low_score_color;
             }else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
-                color = R.color.amber;
+                color = R.color.medium_score_color;
             }else if(scoreType.getClassification() == ScoreType.Classification.HIGH) {
-                color = R.color.feedback_green_score_color;
+                color = R.color.high_score_color;
             }
             mFeedbackAdapterStrategy.setPercentColor(textView, color, context);
         }
