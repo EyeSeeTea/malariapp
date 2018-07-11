@@ -108,9 +108,11 @@ public class LoginActivity extends AbsLoginActivity {
 
     private void replaceDhisLogoToHNQISLogo() {
         FrameLayout progressBarContainer = (FrameLayout) findViewById(R.id.layout_dhis_logo);
-        ((org.hisp.dhis.client.sdk.ui.views.FontTextView)progressBarContainer.getChildAt(2)).setText("");
+        ((org.hisp.dhis.client.sdk.ui.views.FontTextView) progressBarContainer.getChildAt(
+                2)).setText("");
 
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         progressBarContainer.addView(inflater.inflate(R.layout.progress_logo_item, null));
     }
 
@@ -195,21 +197,23 @@ public class LoginActivity extends AbsLoginActivity {
                 GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                         new AsyncExecutor(),
                         new UIThreadExecutor(),
-                        new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
+                        new UserAccountRepository(
+                                new UserAccountAPIDataSource(Session.getCredentials()),
                                 new UserAccountLocalDataSource())
                 );
 
-                getUserAccountUseCase.execute(new GetUserAccountUseCase.Callback() {
-                    @Override
-                    public void onSuccess(UserAccount userAccount) {
-                        onGetUserSuccess(userAccount.isClosed());
-                    }
+                getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                        new GetUserAccountUseCase.Callback() {
+                            @Override
+                            public void onSuccess(UserAccount userAccount) {
+                                onGetUserSuccess(userAccount.isClosed());
+                            }
 
-                    @Override
-                    public void onError() {
-                        System.out.println("Error pulling closed user date.");
-                    }
-                }, NetworkStrategy.NETWORK_FIRST);
+                            @Override
+                            public void onError() {
+                                System.out.println("Error pulling closed user date.");
+                            }
+                        });
             }
 
             @Override

@@ -71,25 +71,28 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
+                && !Session.getCredentials().isDemoCredentials()) {
             GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
                     new AsyncExecutor(),
                     new UIThreadExecutor(),
-                    new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
+                    new UserAccountRepository(
+                            new UserAccountAPIDataSource(Session.getCredentials()),
                             new UserAccountLocalDataSource())
             );
 
-            getUserAccountUseCase.execute(new GetUserAccountUseCase.Callback() {
-                @Override
-                public void onSuccess(UserAccount userAccount) {
-                    announcementAndUserClosedActions(userAccount);
-                }
+            getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                    new GetUserAccountUseCase.Callback() {
+                        @Override
+                        public void onSuccess(UserAccount userAccount) {
+                            announcementAndUserClosedActions(userAccount);
+                        }
 
-                @Override
-                public void onError() {
-                    System.out.println("Error recovering user account.");
-                }
-            }, NetworkStrategy.NETWORK_FIRST);
+                        @Override
+                        public void onError() {
+                            System.out.println("Error recovering user account.");
+                        }
+                    });
         }
 
         loadPhoneMetadata();
@@ -115,7 +118,7 @@ public class DashboardActivity extends BaseActivity {
             Log.d(TAG, "show logged announcement");
             AUtils.showAnnouncement(R.string.admin_announcement, userAccount,
                     DashboardActivity.this);
-        } else if(userAccount.isClosed()){
+        } else if (userAccount.isClosed()) {
             AUtils.checkUserClosed(DashboardActivity.this);
         }
     }
@@ -178,7 +181,7 @@ public class DashboardActivity extends BaseActivity {
                 R.string.dialog_action_refresh);
         if (unsentSurveysCount > 0) {
             message += String.format(getApplicationContext().getResources().getString(
-                    R.string.dialog_incomplete_surveys_before_refresh)+"",
+                    R.string.dialog_incomplete_surveys_before_refresh) + "",
                     unsentSurveysCount);
         }
         //check if exist a compulsory question without awnser before push and pull.
@@ -290,7 +293,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
 
-
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
         dashboardController.onPlanPerOrgUnitMenuClicked(survey);
     }
@@ -379,7 +381,9 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void openActionPlan(SurveyDB survey) {
-        ImproveModuleController improveModuleController = (ImproveModuleController) dashboardController.getModuleByName(ImproveModuleController.getSimpleName());
+        ImproveModuleController improveModuleController =
+                (ImproveModuleController) dashboardController.getModuleByName(
+                        ImproveModuleController.getSimpleName());
         improveModuleController.onPlanActionSelected(survey);
     }
 

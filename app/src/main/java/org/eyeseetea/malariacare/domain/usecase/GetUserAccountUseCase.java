@@ -48,7 +48,7 @@ public class GetUserAccountUseCase implements UseCase {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public void execute(final Callback callback, NetworkStrategy networkStrategy) {
+    public void execute( NetworkStrategy networkStrategy, final Callback callback) {
         this.mCallback = callback;
         this.networkStrategy = networkStrategy;
         mAsyncExecutor.run(this);
