@@ -45,8 +45,8 @@ import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -68,7 +68,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private SurveyLocationListener locationListener;
 
     LogoutUseCase mLogoutUseCase;
-    IUserAccountRepository mUserAccountRepository;
+    IAuthenticationManager mUserAccountRepository;
     private AlarmPushReceiver alarmPush;
 
     @Override
@@ -81,7 +81,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         initView(savedInstanceState);
 
-        mUserAccountRepository = new UserAccountRepository(this);
+        mUserAccountRepository = new AuthenticationManager(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
         checkQuarantineSurveys();
         alarmPush = new AlarmPushReceiver();

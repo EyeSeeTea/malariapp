@@ -40,6 +40,7 @@ import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.enums.Action;
 import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
 import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
 import org.eyeseetea.malariacare.domain.usecase.SaveSurveyAnsweredRatioUseCase;
@@ -128,12 +129,11 @@ public class AssessModuleController extends ModuleController {
         }
 
         surveyFragment.showProgress();
-        closeSurveyFragment(survey, org.eyeseetea.malariacare.domain
-                .utils.Action.CHANGE_TAB);
+        closeSurveyFragment(survey, Action.CHANGE_TAB);
     }
 
     private void closeSurveyFragment(final SurveyDB survey,
-            final org.eyeseetea.malariacare.domain.utils.Action action) {
+            final Action action) {
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override
@@ -144,7 +144,7 @@ public class AssessModuleController extends ModuleController {
                     @Override
                     public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
                         if (action.equals(
-                                org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
+                                Action.PRESS_BACK_BUTTON)) {
                             surveyFragment.hideProgress();
                             boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
                             if (!isDialogShown) {
@@ -159,7 +159,7 @@ public class AssessModuleController extends ModuleController {
                                 }
                             }
                         } else if (action.equals(
-                                org.eyeseetea.malariacare.domain.utils.Action.CHANGE_TAB)) {
+                                Action.CHANGE_TAB)) {
                             if (surveyAnsweredRatio.getCompulsoryAnswered()
                                     == surveyAnsweredRatio.getTotalCompulsory()
                                     && surveyAnsweredRatio.getTotalCompulsory() != 0) {
@@ -195,8 +195,7 @@ public class AssessModuleController extends ModuleController {
         surveyFragment.showProgress();
         final SurveyDB survey = Session.getSurveyByModule(getSimpleName());
 
-        closeSurveyFragment(survey, org.eyeseetea.malariacare.domain
-                .utils.Action.PRESS_BACK_BUTTON);
+        closeSurveyFragment(survey, Action.PRESS_BACK_BUTTON);
         //if the survey is opened in review mode exit.
     }
 

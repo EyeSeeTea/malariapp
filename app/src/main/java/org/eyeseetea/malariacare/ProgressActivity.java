@@ -39,7 +39,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoC
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
@@ -53,7 +53,6 @@ import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 import java.util.Calendar;
-import java.util.InputMismatchException;
 
 public class ProgressActivity extends Activity {
 
@@ -266,8 +265,8 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        UserAccountRepository userAccountRepository = new UserAccountRepository(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+        AuthenticationManager authenticationManager = new AuthenticationManager(this);
+        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
