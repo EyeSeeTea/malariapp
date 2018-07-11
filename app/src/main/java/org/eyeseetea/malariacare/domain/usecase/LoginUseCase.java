@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase;
 
 import org.eyeseetea.malariacare.domain.boundary.IRepositoryCallback;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IUserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.entity.UserAccount;
 import org.eyeseetea.malariacare.domain.exception.InvalidCredentialsException;
@@ -40,9 +40,9 @@ public class LoginUseCase {
         void onNetworkError();
     }
 
-    private IUserAccountRepository mUserAccountRepository;
+    private IAuthenticationManager mUserAccountRepository;
 
-    public LoginUseCase(IUserAccountRepository userAccountRepository) {
+    public LoginUseCase(IAuthenticationManager userAccountRepository) {
         mUserAccountRepository = userAccountRepository;
     }
 

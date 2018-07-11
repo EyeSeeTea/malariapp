@@ -4,21 +4,15 @@ import android.util.Log;
 
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientDataSource {
-
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static final String TAG = ".PullDhisApiDataSource";
     private org.eyeseetea.malariacare.domain.entity.Credentials mCredentials;
@@ -54,7 +48,7 @@ public class OkHttpClientDataSource {
         builder.get();
 
         Request request = builder.build();
-        Response response = client.newCall(request).execute();;
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) {
             Log.e(TAG, "pushData (" + response.code() + "): " + response.body().string());
             throw new IOException(response.message());

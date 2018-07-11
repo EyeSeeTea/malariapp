@@ -40,14 +40,20 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.eyeseetea.malariacare.BuildConfig;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.HeaderDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.usecase.SaveUserAccountUseCase;
 import org.eyeseetea.malariacare.layout.utils.QuestionRow;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -295,10 +301,10 @@ public abstract class AUtils {
         String stringCommit = getCommitHash(context);
         String stringMessage = AUtils.convertFromInputStreamToString(message).toString();
         if (stringCommit.contains(context.getString(R.string.unavailable))) {
-            stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
+            stringCommit = String.format(context.getString(R.string.lastcommit)+"", stringCommit);
             stringCommit = stringCommit + " " + context.getText(R.string.lastcommit_unavailable);
         } else {
-            stringCommit = String.format(context.getString(R.string.lastcommit), stringCommit);
+            stringCommit = String.format(context.getString(R.string.lastcommit)+"", stringCommit);
         }
         stringMessage = String.format(stringMessage, stringCommit);
         return stringMessage;
@@ -346,11 +352,10 @@ public abstract class AUtils {
      * Shows an alert dialog asking for acceptance of the announcement. If ok calls the accept the
      * annoucement, do nothing otherwise
      */
-    public static void showAnnouncement(int titleId, String message, final Context context) {
-        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(message));
+    public static void showAnnouncement(int titleId, final UserAccount userAccount, final Context context) {
+        final SpannableString linkedMessage = new SpannableString(Html.fromHtml(userAccount.getAnnouncement()));
         Linkify.addLinks(linkedMessage, Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
 
-        final UserDB loggedUser = UserDB.getLoggedUser();
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(titleId))
                 .setMessage(linkedMessage)
@@ -358,38 +363,43 @@ public abstract class AUtils {
                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PreferencesState.getInstance().setUserAccept(true);
-                        checkUserClosed(loggedUser, context);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        checkUserClosed(loggedUser, context);
-                    }
-                }).create();
+                        userAccount.acceptAnnouncement();
+                        SaveUserAccountUseCase saveUserAccountUseCase = new SaveUserAccountUseCase(
+                                new AsyncExecutor(),
+                                new UIThreadExecutor(),
+                                new UserAccountRepository(new UserAccountAPIDataSource(Session.getCredentials()),
+                                        new UserAccountLocalDataSource())
+                        );
+                        saveUserAccountUseCase.execute(new SaveUserAccountUseCase.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                if(userAccount.isClosed()){
+                                    checkUserClosed(context);
+                                }
+                            }}, userAccount);
+                        }}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(userAccount.isClosed()) {
+                                    checkUserClosed(context);
+                                }
+                            }
+                        }).create();
         dialog.show();
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(
                 LinkMovementMethod.getInstance());
     }
 
-    public static void checkUserClosed(UserDB user, Context context) {
-        if (isUserClosed(user)) {
-            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    PreferencesState.getInstance().setUserAccept(false);
-                    DashboardActivity.dashboardActivity.executeLogout();
-                }
-            };
-            closeUser(R.string.admin_announcement,
-                    PreferencesState.getInstance().getContext().getString(R.string.user_close),
-                    context, listener);
-        }
-    }
-
-    private static boolean isUserClosed(UserDB user) {
-        return user.getCloseDate() != null && user.getCloseDate().before(new Date());
+    public static void checkUserClosed(Context context) {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DashboardActivity.dashboardActivity.executeLogout();
+            }
+        };
+        closeUser(R.string.admin_announcement,
+                PreferencesState.getInstance().getContext().getString(R.string.user_close),
+                context, listener);
     }
 
     /**
