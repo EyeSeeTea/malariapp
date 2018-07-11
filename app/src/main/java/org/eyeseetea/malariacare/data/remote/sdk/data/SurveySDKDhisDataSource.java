@@ -32,7 +32,7 @@ import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
 import org.hisp.dhis.client.sdk.models.event.Event;
@@ -66,7 +66,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
     }
 
     @Override
-    public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
+    public List<Survey> getSurveys(PullFilters filters) throws Exception {
         boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
         if (isNetworkAvailable) {
@@ -87,7 +87,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
         //Here push surveys code
     }
 
-    private void pullEvents(SurveyFilter filters) {
+    private void pullEvents(PullFilters filters) {
         for (OrganisationUnit organisationUnit : D2.me().organisationUnits().list().toBlocking()
                 .single()) {
             for (Program program : getValidPrograms(organisationUnit)) {

@@ -44,9 +44,9 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
@@ -56,9 +56,10 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -291,8 +292,8 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        UserAccountRepository userAccountRepository = new UserAccountRepository(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+        AuthenticationManager authenticationManager = new AuthenticationManager(this);
+        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
@@ -373,10 +374,11 @@ public class ProgressActivity extends Activity {
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
+        PullFilters pullFilters = new PullFilters(month.getTime(), null, isDemo,
+                AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
                 PreferencesState.getInstance().getMaxEvents());
 
-        mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
+        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();
