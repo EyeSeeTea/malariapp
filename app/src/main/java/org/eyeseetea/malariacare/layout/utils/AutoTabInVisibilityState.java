@@ -155,24 +155,26 @@ public class AutoTabInVisibilityState {
     public void toggleChildrenVisibility(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module) {
         QuestionDB question = autoTabSelectedItem.getQuestion();
         List<Question> toggledQuestions= new ArrayList<>();
+        HashMap<String, Boolean> questionVisibilityMap = new HashMap<>();
         if(question.hasChildren()) {
-            recursiveToggleChildrenVisibility(idSurvey, module, question, toggledQuestions);
+            recursiveToggleChildrenVisibility(idSurvey, module, question, toggledQuestions, questionVisibilityMap);
         }
         if(toggledQuestions.size()>0){
             DomainEventPublisher
                     .instance()
-                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), toggledQuestions, ValueChangedEvent.Action.TOGGLE));
+                    .publish(new ValueChangedEvent(Session.getSurveyByModule(module).getId_survey(), toggledQuestions, questionVisibilityMap, ValueChangedEvent.Action.TOGGLE));
         }
     }
 
-    private List<Question> recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion, List<Question> toggledQuestions) {
+    private List<Question> recursiveToggleChildrenVisibility(float idSurvey, String module, QuestionDB parentQuestion, List<Question> toggledQuestions, HashMap<String, Boolean> questionVisibilityMap) {
         boolean visible;
         for (QuestionDB childQuestion : parentQuestion.getChildren()) {
             Question toggledQuestion = null;
             HeaderDB childHeader = childQuestion.getHeader();
-            visible=!childQuestion.isHiddenBySurvey(idSurvey);boolean isAlreadyVisible=(elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true);
+            visible=!childQuestion.isHiddenBySurvey(idSurvey);
+            boolean isAlreadyVisible=(elementInvisibility.containsKey(childQuestion) && elementInvisibility.get(childQuestion)!=true);
             if(visible || isAlreadyVisible) {
-                toggledQuestion = new Question(childQuestion.getId_question(), childQuestion.getOutput(), childQuestion.getCompulsory(), visible);
+                toggledQuestion = new Question(childQuestion.getUid(), childQuestion.getOutput(), childQuestion.getCompulsory());
             }
 
             this.updateVisibility(childQuestion,visible);
@@ -184,6 +186,7 @@ public class AutoTabInVisibilityState {
                 this.setInvisible(childHeader,false);
                 if(toggledQuestion!=null && isAlreadyVisible==false){
                     toggledQuestions.add(toggledQuestion);//Added new visible child question
+                    questionVisibilityMap.put(toggledQuestion.getUId(), visible);
                 }
                 continue;
             }
@@ -195,6 +198,7 @@ public class AutoTabInVisibilityState {
             if(toggledQuestion!=null){
                 toggledQuestion.setRemoved(isRemoved);//Set question as removed if it is necessary to removes the answered question ratio
                 toggledQuestions.add(toggledQuestion);//Add not visible child to be removed from total question list
+                questionVisibilityMap.put(toggledQuestion.getUId(), visible);
             }
             //-> Remove score
             if (ScoreRegister.getNumDenum(childQuestion, idSurvey, module) != null) {
@@ -207,7 +211,7 @@ public class AutoTabInVisibilityState {
             //-> Check header visibility
             this.updateHeaderVisibility(childHeader);
             if(childQuestion.hasChildren())
-                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion, toggledQuestions);
+                recursiveToggleChildrenVisibility(idSurvey, module, childQuestion, toggledQuestions, questionVisibilityMap);
         }
         return toggledQuestions;
     }

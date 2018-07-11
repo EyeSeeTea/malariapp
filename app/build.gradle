@@ -80,6 +80,9 @@ android {
             buildConfigField "boolean", "customFontHidden", "false"
             buildConfigField "boolean", "OUSelectionHealthFacility", "false"
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_ng_dev"
@@ -90,6 +93,9 @@ android {
             buildConfigField "boolean", "customFontHidden", "true"
             buildConfigField "boolean", "OUSelectionHealthFacility", "true"
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
         eyeseetea {
             applicationId "org.eyeseetea.malariacare.questmark_dev"
@@ -100,6 +106,9 @@ android {
             buildConfigField "boolean", "customFontHidden", "false"
             buildConfigField "boolean", "OUSelectionHealthFacility", "false"
             buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
     }
 
@@ -120,14 +129,14 @@ configurations {
 }
 
 dependencies {
+
     // SDK submodules
-    compile project(":core-rules")
-    compile project(":ui-bindings")
-    compile project(":EyeSeeTea-sdk")
+    compile project(':core-rules')
+    compile project(':ui-bindings')
+    compile project(':EyeSeeTea-sdk')
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
 
@@ -136,6 +145,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${libs.supportVersion}"
     compile "com.android.support:support-annotations:${libs.supportVersion}"
     compile "com.android.support:multidex:${libs.multidex}"
+
     //3rd party dependencies
     compile "com.opencsv:opencsv:${libs.opencsvVersion}"
     compile "com.google.android.gms:play-services:${libs.gmsPlayVersion}"
@@ -153,7 +163,6 @@ dependencies {
     compile("com.google.apis:google-api-services-drive:${libs.googleApiServicesDriveVersion}") {
         exclude group: 'org.apache.httpcomponents'
     }
-
     compile "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
     // Unit testing dependencies
@@ -161,16 +170,18 @@ dependencies {
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
 
     // Instrumented tests dependencies
+
     // Android Testing Support Library's runner and rules
-    
     androidTestCompile "com.android.support.test:runner:${libs.runnerVersion}"
     androidTestCompile "com.android.support.test:rules:${libs.runnerVersion}"
 
     // Espresso UI Testing dependencies.
     androidTestCompile "com.android.support.test.espresso:espresso-core:${libs.espressoVersion}"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:${libs.espressoVersion}"
+
     // Espresso-idling-resource for synchronization with background jobs
     androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
+
     // Espresso-web for WebView support
     androidTestCompile "com.android.support.test.espresso:espresso-web:${libs.espressoVersion}"
 
@@ -187,7 +198,6 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
-
     compile(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"
     }
