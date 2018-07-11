@@ -210,4 +210,65 @@ public class Survey {
         return total;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        if (uId != null ? !uId.equals(survey.uId) : survey.uId != null) return false;
+        if (programUId != null ? !programUId.equals(survey.programUId) : survey.programUId != null)
+            return false;
+        if (orgUnitUId != null ? !orgUnitUId.equals(survey.orgUnitUId) : survey.orgUnitUId != null)
+            return false;
+        if (score != null ? !score.equals(survey.score) : survey.score != null) return false;
+        if (userUId != null ? !userUId.equals(survey.userUId) : survey.userUId != null)
+            return false;
+        if (creationDate != null ? !creationDate.equals(survey.creationDate) : survey.creationDate != null)
+            return false;
+        if (completionDate != null ? !completionDate.equals(survey.completionDate) : survey.completionDate != null)
+            return false;
+        if (uploadDate != null ? !uploadDate.equals(survey.uploadDate) : survey.uploadDate != null)
+            return false;
+        if (scheduledDate != null ? !scheduledDate.equals(survey.scheduledDate) : survey.scheduledDate != null)
+            return false;
+        if (status != survey.status) return false;
+        return surveyAnsweredRatio != null ? surveyAnsweredRatio.equals(survey.surveyAnsweredRatio) : survey.surveyAnsweredRatio == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uId != null ? uId.hashCode() : 0;
+        result = 31 * result + (programUId != null ? programUId.hashCode() : 0);
+        result = 31 * result + (orgUnitUId != null ? orgUnitUId.hashCode() : 0);
+        result = 31 * result + (score != null ? score.hashCode() : 0);
+        result = 31 * result + (userUId != null ? userUId.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
+        result = 31 * result + (uploadDate != null ? uploadDate.hashCode() : 0);
+        result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (surveyAnsweredRatio != null ? surveyAnsweredRatio.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "uId='" + uId + '\'' +
+                ", programUId='" + programUId + '\'' +
+                ", orgUnitUId='" + orgUnitUId + '\'' +
+                ", score=" + score +
+                ", userUId='" + userUId + '\'' +
+                ", creationDate=" + creationDate +
+                ", completionDate=" + completionDate +
+                ", uploadDate=" + uploadDate +
+                ", scheduledDate=" + scheduledDate +
+                ", status=" + status +
+                ", questionValues=" + questionValues +
+                ", questions=" + questions +
+                ", surveyAnsweredRatio=" + surveyAnsweredRatio +
+                '}';
+    }
 }
