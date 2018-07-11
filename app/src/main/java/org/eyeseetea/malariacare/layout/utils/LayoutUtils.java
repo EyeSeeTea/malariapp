@@ -95,11 +95,11 @@ public class LayoutUtils {
     public static int trafficColor(float score) {
         ScoreType scoreType = new ScoreType(score);
         if (scoreType.getClassification() == ScoreType.Classification.LOW) {
-            return R.color.darkRed;
+            return R.color.low_score_color;
         } else if (scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
-            return R.color.amber;
+            return R.color.medium_score_color;
         }else {
-            return R.color.tab_green_monitor;
+            return R.color.high_score_color;
         }
     }
 

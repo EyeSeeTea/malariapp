@@ -71,5 +71,9 @@
     <color name="share_fab_background">#7790fd</color>
     <color name="question_row_divisor">@color/stroke_dark_grey</color>
     <color name="question_section_divisor">@color/darkGrey</color>
+    <color name="feedback_question_grey">#d0d0d0</color>
 
+    <color name="high_score_color">@color/lightGreen</color>
+    <color name="medium_score_color">@color/assess_yellow</color>
+    <color name="low_score_color">@color/darkRed</color>
 </resources>

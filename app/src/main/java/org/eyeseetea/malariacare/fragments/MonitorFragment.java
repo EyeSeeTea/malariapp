@@ -420,11 +420,11 @@ public class MonitorFragment extends Fragment implements IModuleFragment {
 
             ScoreType scoreType = new ScoreType(survey.getMainScore());
             if (scoreType.isTypeA()) {
-                score.setBackgroundColor(resources.getColor(R.color.lightGreen));
+                score.setBackgroundColor(resources.getColor(R.color.high_score_color));
             }else if (scoreType.isTypeB()){
-                score.setBackgroundColor(resources.getColor(R.color.assess_yellow));
+                score.setBackgroundColor(resources.getColor(R.color.medium_score_color));
             }else if (scoreType.isTypeC()){
-                score.setBackgroundColor(resources.getColor(R.color.darkRed));
+                score.setBackgroundColor(resources.getColor(R.color.low_score_color));
             }
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
