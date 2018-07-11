@@ -24,7 +24,7 @@
     <LinearLayout
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_gray_400"
+        android:background="@color/feedback_question_grey"
         android:weightSum="1">
 
         <LinearLayout
@@ -46,7 +46,8 @@
                     android:paddingTop="5dip"
                     android:text="@string/lorem_ipsum"
                     app:tDimension="@string/font_size_level1"
-                    app:tFontName="@string/light_font" />
+                    app:tFontName="@string/regular_font"
+                    android:textColor="@color/black"/>
 
                 <org.eyeseetea.malariacare.views.CustomTextView
                     android:id="@+id/feedback_question_mandatory"

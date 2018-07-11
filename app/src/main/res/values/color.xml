@@ -19,6 +19,7 @@
     <color name="customBlue">#ccf2ff</color>
     <color name="scoreGrandson">#6fa8dc</color>
     <color name="lightGreen">#adda19</color>
+    <color name="feedback_green_score_color">@color/lightGreen</color>
     <color name="darkRed">#d1213c</color>
     <color name="feedbackDarkBlue">#6ca9d8</color>
     <color name="feedbackLightBlue">#6bcdfd</color>
@@ -71,5 +72,6 @@
     <color name="share_fab_background">#7790fd</color>
     <color name="question_row_divisor">@color/stroke_dark_grey</color>
     <color name="question_section_divisor">@color/darkGrey</color>
+    <color name="feedback_question_grey">#d0d0d0</color>
 
 </resources>
