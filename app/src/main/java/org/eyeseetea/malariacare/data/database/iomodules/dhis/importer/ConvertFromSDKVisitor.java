@@ -53,6 +53,7 @@ import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
@@ -264,6 +265,10 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     public void visit(OptionExtended sdkOption) {
         //Build option
         AnswerDB appAnswer = answerMap.get(sdkOption.getOptionSet());
+        if(sdkOption.getCode() == null){
+            Log.i(TAG, "A optionDB is ignored because null code, with name:" + sdkOption.getName());
+            return;
+        }
         OptionDB appOption =
                 new OptionDB();
         appOption.setName(sdkOption.getName());
@@ -285,6 +290,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         }
         appUser.setUid(userAccount.getUId());
         appUser.setName(userAccount.getName());
+        //TODO: retrieved user name usign SDK
+        appUser.setUsername(Session.getCredentials().getUsername());
         appUser.setLastUpdated(null);
         appUser.save();
     }

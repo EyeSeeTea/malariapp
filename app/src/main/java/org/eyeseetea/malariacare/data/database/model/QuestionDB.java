@@ -832,6 +832,47 @@ public class QuestionDB extends BaseModel {
 
     }
 
+    public boolean areChildrenVisible(float idSurvey) {
+        if(!hasChildren()){
+            return false;
+        }
+        if(getValueBySurvey(idSurvey)==null || getValueBySurvey(idSurvey).getOption()==null ) {
+            return false;
+        }
+
+        long optionId = (long) getValueBySurvey(idSurvey).getOption().getId_option();
+        List<ValueDB> questionsMatches = new Select().from(ValueDB.class).as(valueName)
+                .join(QuestionOptionDB.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
+                .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
+                        .eq(QuestionOptionDB_Table.id_question_fk.withTable(questionOptionAlias)))
+
+                .join(MatchDB.class, Join.JoinType.LEFT_OUTER).as(matchName)
+                .on(QuestionOptionDB_Table.id_match_fk.withTable(questionOptionAlias)
+                        .eq(MatchDB_Table.id_match.withTable(matchAlias)))
+
+                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
+                .on(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)
+                        .eq(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)))
+
+                //Parent child relationship
+                .where(QuestionRelationDB_Table.operation.eq(1))
+                //For the given survey
+                .and(ValueDB_Table.id_survey_fk.withTable(valueAlias)
+                        .eq((long)idSurvey))
+                //and question
+                .and(ValueDB_Table.id_question_fk.withTable(valueAlias)
+                        .eq(id_question))
+                //and option
+                .and(ValueDB_Table.id_option_fk.withTable(valueAlias)
+                        .eq((long)optionId))
+                .and(QuestionOptionDB_Table.id_option_fk.withTable(questionOptionAlias).is(optionId)).queryList();
+        int numberOfChildrenActive = 0;
+        if(questionsMatches!=null){
+            numberOfChildrenActive = questionsMatches.size();
+        }
+        return numberOfChildrenActive>0;
+    }
+
     /**
      * Returns all the questions that belongs to a program
      */

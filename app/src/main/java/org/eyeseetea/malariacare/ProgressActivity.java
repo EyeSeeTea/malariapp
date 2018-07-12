@@ -39,7 +39,9 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoC
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
+import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
@@ -47,6 +49,8 @@ import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
 import java.util.Calendar;
 
@@ -133,8 +137,12 @@ public class ProgressActivity extends Activity {
             PullMetadataController pullMetadataController = new PullMetadataController();
             PullDataController pullDataController = new PullDataController();
             MetadataValidator metadataValidator = new MetadataValidator();
+            IAsyncExecutor asyncExecutor = new AsyncExecutor();
+            IMainExecutor mainExecutor = new UIThreadExecutor();
 
-            mPullUseCase = new PullUseCase(pullMetadataController, pullDataController, metadataValidator);
+            mPullUseCase = new PullUseCase(
+                    asyncExecutor, mainExecutor, pullMetadataController,
+                    pullDataController, metadataValidator);
         }
     }
 
@@ -257,8 +265,8 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        UserAccountRepository userAccountRepository = new UserAccountRepository(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+        AuthenticationManager authenticationManager = new AuthenticationManager(this);
+        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
