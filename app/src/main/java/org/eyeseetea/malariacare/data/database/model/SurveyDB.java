@@ -191,6 +191,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         return orgUnit;
     }
 
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
     public void setOrgUnit(OrgUnitDB orgUnit) {
         this.orgUnit = orgUnit;
         this.id_org_unit_fk = (orgUnit!=null)?orgUnit.getId_org_unit():null;
@@ -199,6 +203,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void setOrgUnit(Long id_org_unit){
         this.id_org_unit_fk = id_org_unit;
         this.orgUnit = null;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
     }
 
     public ProgramDB getProgram() {
@@ -220,6 +228,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     public void setProgram(Long id_program){
         this.id_program_fk = id_program;
         this.program = null;
+    }
+
+    public Long getId_user_fk() {
+        return id_user_fk;
     }
 
     public UserDB getUser() {

@@ -19,20 +19,6 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
-import android.support.annotation.NonNull;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
@@ -43,7 +29,6 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepositor
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.Question;
-import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -55,14 +40,10 @@ import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -118,7 +99,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
                 eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
                 eventFilters.setStartDate(filters.getStartDate());
                 eventFilters.setEndDate(filters.getEndDate());
-                eventFilters.setMaxEvents(filters.getMaxEvents());
+                eventFilters.setMaxEvents(filters.getMaxSize());
 
                 D2.events().pull(eventFilters).toBlocking().single();
             }

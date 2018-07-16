@@ -20,13 +20,15 @@
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
 
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+
 import java.util.Date;
 
 public class SurveyFilter {
 
-    Date startDate;
-    Date endDate;
-    int maxEvents;
+    private Date startDate;
+    private Date endDate;
+    private int maxEvents;
 
     public SurveyFilter(Date startDate, Date endDate, int maxEvents) {
         this.startDate = startDate;
@@ -38,11 +40,43 @@ public class SurveyFilter {
         return startDate;
     }
 
-    public int getMaxEvents() {
+    public int getMaxSize() {
         return maxEvents;
     }
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public static class Builder {
+        private Date startDate = null;
+        private Date endDate = null;
+        private int maxSize = 0;
+
+        private Builder() {
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public Builder withStartDate(Date startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder withEndDate(Date endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder withMaxSize(int maxSize) {
+            this.maxSize = maxSize;
+            return this;
+        }
+
+        public SurveyFilter build() {
+            return new SurveyFilter(startDate, endDate, maxSize);
+        }
     }
 }
