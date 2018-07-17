@@ -70,9 +70,6 @@ public class SurveyMapper {
 
         if (usersDBMap.containsKey(surveyDB.getId_user_fk()))
             userUid = usersDBMap.get(surveyDB.getId_user_fk()).getUid();
-        else {
-            Log.d("","");
-        }
 
         ScoreDB scoreDB = scoreDBMap.get(surveyDB.getId_survey());
 

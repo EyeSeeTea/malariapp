@@ -85,7 +85,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
 
     @Override
-    public void Save(List<Survey> surveys) throws Exception {
+    public void save(List<Survey> surveys) throws Exception {
         //Here push surveys code
     }
 

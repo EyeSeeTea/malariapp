@@ -2,7 +2,10 @@ package org.eyeseetea.malariacare.data.database.datasources;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.From;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.Where;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
@@ -43,7 +46,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     }
 
     @Override
-    public void Save(List<Survey> surveys) {
+    public void save(List<Survey> surveys) {
         SurveyDBMapper surveyDBMapper = new SurveyDBMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
                 OptionDB.list(), UserDB.list());
@@ -71,9 +74,27 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     }
 
     private List<SurveyDB> getSurveysDB(SurveyFilter surveyFilter){
-        List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.isNot(Constants.SURVEY_PLANNED)).queryList();
 
+        List<SurveyDB> surveyDBS = null;
+
+        From from = new Select().from(SurveyDB.class);
+
+        Where where = from.where(SurveyDB_Table.status.isNotNull());
+
+        if (surveyFilter.getSurveysToRetrieve() == SurveyFilter.SurveysToRetrieve.COMPLETED){
+            where = from.where(SurveyDB_Table.status.in(Constants.SURVEY_COMPLETED));
+        }
+
+        surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
+                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
+
+        if (surveyDBS.size() > 0)
+            loadValuesInSurveys(surveyDBS);
+
+        return surveyDBS;
+    }
+
+    private void loadValuesInSurveys(List<SurveyDB> surveyDBS) {
         List<ValueDB> allValues = new Select().from(ValueDB.class).queryList();
 
         Map<Long, List<ValueDB>> valuesMap = new HashMap<>();
@@ -89,7 +110,5 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
                 surveyDB.setValues(valuesMap.get(surveyDB.getId_survey()));
             }
         }
-
-        return surveyDBS;
     }
 }
