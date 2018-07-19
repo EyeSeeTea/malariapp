@@ -111,9 +111,9 @@ public class AssessCompleteGoToImprove {
             Log.i(TAG, "Multiple surveys have the same date " + AUtils.formatDate(completionDate));
         }
         try {
-            onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
+            onView(withText(String.format("%.1f %%", survey.getMainScore().getScore()))).check(matches(isDisplayed()));
         }catch(AmbiguousViewMatcherException e){
-            Log.i(TAG, "Multiple surveys have the same score " + String.format("%.1f %%", survey.getMainScore()));
+            Log.i(TAG, "Multiple surveys have the same score " + String.format("%.1f %%", survey.getMainScore().getScore()));
         }
 
         //WHEN
@@ -128,7 +128,7 @@ public class AssessCompleteGoToImprove {
         Espresso.registerIdlingResources(idlingResource);
         //check if is in feedback
         onView(withText(R.string.quality_of_care)).check(matches(isDisplayed()));
-        onView(withText(String.format("%.1f%%", survey.getMainScore()))).check(matches(isDisplayed()));
+        onView(withText(String.format("%.1f%%", survey.getMainScore().getScore()))).check(matches(isDisplayed()));
         Espresso.unregisterIdlingResources(idlingResource);
     }
 }

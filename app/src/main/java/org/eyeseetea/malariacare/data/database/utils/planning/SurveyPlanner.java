@@ -175,7 +175,7 @@ public class SurveyPlanner {
         Log.d(TAG, String.format(
                 "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
                         + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
+                eventDate.toString(), survey.getMainScore().getScore(), survey.isLowProductivity()));
 
         //A -> 6 months
         ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());

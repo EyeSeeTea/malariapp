@@ -104,7 +104,7 @@ public class ListOfSurveysDialogFragment extends DialogFragment {
                 LayoutUtils.drawScore(survey.getMainScore().getScore(), mDoubleRectChart);
             } else {
                 TextView score = (TextView) row.findViewById(R.id.second_column);
-                score.setText(survey.getMainScore() + "");
+                score.setText(survey.getMainScore().getScore() + "");
                 Resources resources = PreferencesState.getInstance().getContext().getResources();
 
                 ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());

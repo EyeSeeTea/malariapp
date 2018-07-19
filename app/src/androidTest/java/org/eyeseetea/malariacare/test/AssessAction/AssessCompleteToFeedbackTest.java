@@ -95,7 +95,7 @@ public class AssessCompleteToFeedbackTest {
         //THEN
         //check if is in feedback
         onView(withText(R.string.quality_of_care)).check(matches(isDisplayed()));
-        onView(withText(String.format("%.1f%%", survey.getMainScore()))).check(matches(isDisplayed()));
+        onView(withText(String.format("%.1f%%", survey.getMainScore().getScore()))).check(matches(isDisplayed()));
 
         //WHEN
         onView(withText(R.string.feedback_return)).perform(click());
@@ -105,9 +105,9 @@ public class AssessCompleteToFeedbackTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(5 * 1000);
         Espresso.registerIdlingResources(idlingResource);
         try {
-            onView(withText(String.format("%.1f %%", survey.getMainScore()))).check(matches(isDisplayed()));
+            onView(withText(String.format("%.1f %%", survey.getMainScore().getScore()))).check(matches(isDisplayed()));
         }catch(AmbiguousViewMatcherException e){
-            Log.d(TAG,"Multiple surveys have the same score "+String.format("%.1f %%", survey.getMainScore()));
+            Log.d(TAG,"Multiple surveys have the same score "+String.format("%.1f %%", survey.getMainScore().getScore()));
         }
         Espresso.unregisterIdlingResources(idlingResource);
         if(survey.isCompleted())

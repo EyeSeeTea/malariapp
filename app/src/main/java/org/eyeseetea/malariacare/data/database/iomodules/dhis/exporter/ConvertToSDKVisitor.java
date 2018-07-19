@@ -430,7 +430,7 @@ public class ConvertToSDKVisitor implements
     private void buildControlDataElements(SurveyDB survey) {
         //Overall score
         if (controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().getScore().toString());
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
