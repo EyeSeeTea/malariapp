@@ -101,13 +101,13 @@ public class ListOfSurveysDialogFragment extends DialogFragment {
             if (row.findViewById(R.id.second_column) instanceof DoubleRectChart) {
                 DoubleRectChart mDoubleRectChart = (DoubleRectChart) row.findViewById(
                         R.id.second_column);
-                LayoutUtils.drawScore(survey.getMainScore(), mDoubleRectChart);
+                LayoutUtils.drawScore(survey.getMainScore().getScore(), mDoubleRectChart);
             } else {
                 TextView score = (TextView) row.findViewById(R.id.second_column);
                 score.setText(survey.getMainScore() + "");
                 Resources resources = PreferencesState.getInstance().getContext().getResources();
 
-                ScoreType scoreType = new ScoreType(survey.getMainScore());
+                ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
                 if (scoreType.isTypeA()) {
                     score.setBackgroundColor(resources.getColor(R.color.lightGreen));
                 } else if (scoreType.isTypeB()) {

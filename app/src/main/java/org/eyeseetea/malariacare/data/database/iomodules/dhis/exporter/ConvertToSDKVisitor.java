@@ -471,7 +471,7 @@ public class ConvertToSDKVisitor implements
         }
 
         //init scoreType
-        ScoreType scoreType = new ScoreType(survey.getMainScore());
+        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
 
         //MainScoreUID
         if (controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {
@@ -538,7 +538,8 @@ public class ConvertToSDKVisitor implements
      * This changes will be saved just when process finish successfully.
      */
     private void updateSurvey(List<CompositeScoreDB> compositeScores, float idSurvey, String module) {
-        currentSurvey.setMainScore(
+        currentSurvey.setMainScore((long) idSurvey,
+                ScoreRegister.getCompositeScoreRoot(compositeScores).getUid(),
                 ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setEventUid(currentEvent.getUid());

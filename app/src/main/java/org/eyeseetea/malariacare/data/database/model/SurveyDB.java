@@ -56,6 +56,7 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -125,12 +126,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     /**
      * Calculated main Score for this survey, is not persisted, just calculated on runtime
      */
-    Float mainScore;
-
-    /**
-     * hasMainScore is used to know if the survey have a compositeScore with only 1 query time.
-     */
-    private Boolean hasMainScore = null;
+    ScoreDB score;
 
     /**
      * Expected productivity for this survey according to its orgunit + program.
@@ -334,43 +330,32 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         return (isCompleted() || isSent());
     }
 
-    public Float getMainScore() {
+    public ScoreDB getMainScore() {
         //The main score is only return from a query 1 time
-        if (this.mainScore == null) {
-            ScoreDB score = getScore();
-            this.mainScore = (score == null) ? 0f : score.getScore();
+        if (this.score == null) {
+            score = getScore();
         }
-        return mainScore;
+        return score;
     }
 
     public Boolean hasMainScore() {
-        if (hasMainScore == null || !hasMainScore) {
-            ScoreDB score = getScore();
-            Float value = (score == null) ? null : score.getScore();
-            if (value == null) {
-                hasMainScore = false;
-            } else {
-                hasMainScore = true;
-            }
+        if(score==null){
+            score = getScore();
         }
-        return hasMainScore;
+        return score!=null;
     }
 
-    public void setMainScore(Float mainScore) {
-        this.mainScore = mainScore;
+    public void setMainScore(long survey_id, String compositeScoreUid, Float mainScore) {
+        score = new ScoreDB(survey_id, compositeScoreUid, mainScore);
     }
 
     public void saveMainScore() {
         Float valScore = 0f;
-        if (mainScore != null) {
-            valScore = mainScore;
-        }
-        //Update or New row
-        ScoreDB score = getScore();
-        if (score == null) {
-            score = new ScoreDB(this, "", valScore);
-        } else {
-            score.setScore(valScore);
+        if (score != null) {
+            score.save();
+        }else{
+            //todo find composite score root?
+            score = new ScoreDB(id_survey, null, valScore);
         }
         score.save();
     }
@@ -513,7 +498,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
-        this.setMainScore(ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
+
+        this.setMainScore(id_survey,
+                ScoreRegister.getCompositeScoreRoot(compositeScoreList).getUid(),
+                ScoreRegister.calculateMainScore(compositeScoreList, id_survey, module));
         this.saveMainScore();
     }
 
@@ -981,4 +969,11 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 '}';
     }
 
+    public void resetMainScore() {
+        ScoreDB scoreDB = getMainScore();
+        if(scoreDB!=null){
+            scoreDB.delete();
+        }
+        score = null;
+    }
 }
