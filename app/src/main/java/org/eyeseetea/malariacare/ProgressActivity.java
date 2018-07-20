@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
+import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
@@ -291,8 +292,8 @@ public class ProgressActivity extends Activity {
 
     private void executeLogout() {
         Log.d(TAG, "Logging out...");
-        UserAccountRepository userAccountRepository = new UserAccountRepository(this);
-        LogoutUseCase logoutUseCase = new LogoutUseCase(userAccountRepository);
+        AuthenticationManager authenticationManager = new AuthenticationManager(this);
+        LogoutUseCase logoutUseCase = new LogoutUseCase(authenticationManager);
 
         logoutUseCase.execute(new LogoutUseCase.Callback() {
             @Override
