@@ -19,14 +19,28 @@
 
 package org.eyeseetea.malariacare.domain.entity;
 
+import java.util.Date;
+
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class UserAccount {
+    private String name;
     private String userName;
     private String userUid;
+    private String announcement;
+    private Date closedDate;
+    private boolean isAnnouncementAccept;
 
-    public UserAccount(String userName, String userUid) {
-        this.userName = userName;
-        this.userUid = userUid;
+    public UserAccount(String name, String userName, String userUid, String announcement, Date closedDate) {
+        this.name = required(name, "name is required");
+        this.userName = required(userName, "user name is required");
+        this.userUid = required(userUid, "user uid is required");
+        this.announcement = announcement;
+        this.closedDate = closedDate;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUserName() {
@@ -37,7 +51,46 @@ public class UserAccount {
         return userUid;
     }
 
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
+    public String getAnnouncement() {
+        return announcement;
+    }
+
+    public void changeAnnouncement(String announcement){
+        if(announcement.isEmpty()){
+            return;
+        }
+        if(this.announcement!=null && this.announcement.equals(announcement)){
+            return;
+        }
+        isAnnouncementAccept = false;
+        this.announcement = announcement;
+    }
+
+    public void acceptAnnouncement(){
+        isAnnouncementAccept = true;
+    }
+
+    public boolean isAnnouncementAccept(){
+        return isAnnouncementAccept;
+    }
+
+    public boolean isClosed() {
+        if(closedDate==null) {
+            return false;
+        }else{
+            return closedDate.before(new Date());
+        }
+    }
+
+    public Date getClosedDate() {
+        return closedDate;
+    }
+
+    public void changeClosedDate(Date closedDate) {
+        this.closedDate = closedDate;
+    }
+
+    public boolean shouldDisplayAnnouncement() {
+        return (announcement!=null && !announcement.isEmpty() && !isAnnouncementAccept);
     }
 }
