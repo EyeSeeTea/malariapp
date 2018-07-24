@@ -16,7 +16,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
             userDB = UserDB.getUserByUId(userFilter.getUid());
         }
         UserAccount userAccount = new UserAccount(userDB.getName(), userDB.getUsername(), userDB.getUid(), userDB.getAnnouncement(), userDB.getCloseDate());
-        if(userDB.isAnnouncementAccept()){
+        if(userDB.isAnnouncementAccepted()){
             userAccount.acceptAnnouncement();
         }
       return userAccount;
@@ -30,7 +30,7 @@ public class UserAccountLocalDataSource implements IUserAccountDataSource {
                     user.getAnnouncement(), user.getClosedDate(), user.isAnnouncementAccept());
         }else{
             userDB.setAnnouncement(user.getAnnouncement());
-            userDB.setAnnouncementAccept(user.isAnnouncementAccept());
+            userDB.setAnnouncementAccepted(user.isAnnouncementAccept());
             userDB.setCloseDate(user.getClosedDate());
             userDB.setName(user.getUserName());
             userDB.setUsername(user.getUserName());
