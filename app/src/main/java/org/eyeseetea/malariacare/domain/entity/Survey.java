@@ -9,10 +9,6 @@ import java.util.List;
 
 public class Survey {
 
-    public enum Status {
-        PLANNED, IN_PROGRESS, COMPLETED, SENT, CONFLICT, QUARANTINE, SENDING
-    }
-
     private final String uId;
     private final String programUId;
     private final String orgUnitUId;
@@ -20,9 +16,9 @@ public class Survey {
     private String userUId;
     private Date creationDate;
     private Date completionDate;
-    private Date updateDate;
+    private Date uploadDate;
     private Date scheduledDate;
-    private Status status;
+    private SurveyStatus status;
     private List<QuestionValue> values;
 
     private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
@@ -33,7 +29,7 @@ public class Survey {
         this.values = new ArrayList<>();
 
         creationDate = new Date();
-        status = Status.IN_PROGRESS;
+        status = SurveyStatus.IN_PROGRESS;
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
@@ -42,13 +38,13 @@ public class Survey {
         return survey;
     }
 
-    public static Survey createExistedSurvey(String uId, String programUId, String orgUnitUId,
-            String userUId, Date creationDate, Date updateDate, Date scheduledDate,
+    public static Survey createSentSurvey(String uId, String programUId, String orgUnitUId,
+            String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
             Date completionDate, List<QuestionValue> values, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.changeStatus(Status.SENT);
+        survey.changeStatus(SurveyStatus.SENT);
         survey.assignCreationDate(creationDate);
-        survey.changeUpdateDate(updateDate);
+        survey.changeUploadDate(uploadDate);
         survey.changeScheduledDate(scheduledDate);
         survey.assignCompletionDate(completionDate);
         survey.addQuestionValues(values);
@@ -76,7 +72,7 @@ public class Survey {
         return creationDate;
     }
 
-    public Status getStatus() {
+    public SurveyStatus getStatus() {
         return status;
     }
 
@@ -84,8 +80,8 @@ public class Survey {
         return completionDate;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUploadDate() {
+        return uploadDate;
     }
 
     public Date getScheduledDate() {
@@ -112,7 +108,7 @@ public class Survey {
         this.creationDate = date;
     }
 
-    public void changeStatus(Status status) {
+    public void changeStatus(SurveyStatus status) {
         this.status = status;
     }
 
@@ -120,11 +116,73 @@ public class Survey {
         this.completionDate = completionDate;
     }
 
-    public void changeUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void changeUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
     }
 
     public void changeScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        if (!uId.equals(survey.uId)) return false;
+        if (!programUId.equals(survey.programUId)) return false;
+        if (!orgUnitUId.equals(survey.orgUnitUId)) return false;
+        if (score != null ? !score.equals(survey.score) : survey.score != null) return false;
+        if (!userUId.equals(survey.userUId)) return false;
+        if (!creationDate.equals(survey.creationDate)) return false;
+        if (completionDate != null ? !completionDate.equals(survey.completionDate)
+                : survey.completionDate != null) {
+            return false;
+        }
+        if (uploadDate != null ? !uploadDate.equals(survey.uploadDate)
+                : survey.uploadDate != null) {
+            return false;
+        }
+        if (scheduledDate != null ? !scheduledDate.equals(survey.scheduledDate)
+                : survey.scheduledDate != null) {
+            return false;
+        }
+        if (status != survey.status) return false;
+        return values.equals(survey.values);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uId.hashCode();
+        result = 31 * result + programUId.hashCode();
+        result = 31 * result + orgUnitUId.hashCode();
+        result = 31 * result + (score != null ? score.hashCode() : 0);
+        result = 31 * result + userUId.hashCode();
+        result = 31 * result + creationDate.hashCode();
+        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
+        result = 31 * result + (uploadDate != null ? uploadDate.hashCode() : 0);
+        result = 31 * result + (scheduledDate != null ? scheduledDate.hashCode() : 0);
+        result = 31 * result + status.hashCode();
+        result = 31 * result + values.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "uId='" + uId + '\'' +
+                ", programUId='" + programUId + '\'' +
+                ", orgUnitUId='" + orgUnitUId + '\'' +
+                ", score=" + score +
+                ", userUId='" + userUId + '\'' +
+                ", creationDate=" + creationDate +
+                ", completionDate=" + completionDate +
+                ", uploadDate=" + uploadDate +
+                ", scheduledDate=" + scheduledDate +
+                ", status=" + status +
+                ", values=" + values +
+                '}';
     }
 }

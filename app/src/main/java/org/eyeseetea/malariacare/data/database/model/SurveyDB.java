@@ -139,6 +139,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     Integer productivity;
 
     private SurveyAnsweredRatioDB mSurveyAnsweredRatio;
+    private ScoreDB scoreDB;
 
     public SurveyDB() {
         //Set dates
@@ -419,6 +420,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                             .eq(this.getId_survey())).queryList();
         }
         return values;
+    }
+
+    public void setValues(List<ValueDB> values) {
+        this.values = values;
     }
 
     /**
@@ -936,6 +941,15 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
 
     }
 
+
+    public ScoreDB getScoreDB() {
+        return scoreDB;
+    }
+
+    public void setScoreDB(ScoreDB scoreDB) {
+        this.scoreDB = scoreDB;
+    }
+
     @Override
     public int hashCode() {
         int result = (int) (id_survey ^ (id_survey >>> 32));
@@ -966,4 +980,5 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 ", uid_event_fk="+uid_event_fk+
                 '}';
     }
+
 }

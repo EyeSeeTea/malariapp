@@ -873,6 +873,10 @@ public class QuestionDB extends BaseModel {
         return numberOfChildrenActive>0;
     }
 
+    public static List<QuestionDB> list() {
+        return new Select().from(QuestionDB.class).queryList();
+    }
+
     /**
      * Returns all the questions that belongs to a program
      */
