@@ -34,16 +34,13 @@ public class ObservationValueDB extends BaseModel {
     long id_observation_value;
 
     @Column
-    Long id_survey_observation_value_fk;
+    Long id_observation_fk;
 
     @Column
     String value;
 
     @Column
-    String uid_observation;
-
-    @Column
-    Integer status;
+    String uid_observation_value;
 
     public long getId_observation_value() {
         return id_observation_value;
@@ -53,12 +50,12 @@ public class ObservationValueDB extends BaseModel {
         this.id_observation_value = id_observation_value;
     }
 
-    public Long getId_survey_observation_value_fk() {
-        return id_survey_observation_value_fk;
+    public Long getId_observation_fk() {
+        return id_observation_fk;
     }
 
-    public void setId_survey_observation_value_fk(Long id_survey_observation_value_fk) {
-        this.id_survey_observation_value_fk = id_survey_observation_value_fk;
+    public void setId_observation_fk(Long id_observation_fk) {
+        this.id_observation_fk = id_observation_fk;
     }
 
     public String getValue() {
@@ -69,20 +66,12 @@ public class ObservationValueDB extends BaseModel {
         this.value = value;
     }
 
-    public String getUid_observation() {
-        return uid_observation;
+    public String getUid_observation_value() {
+        return uid_observation_value;
     }
 
-    public void setUid_observation(String uid_observation) {
-        this.uid_observation = uid_observation;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setUid_observation_value(String uid_observation_value) {
+        this.uid_observation_value = uid_observation_value;
     }
 
     @Override
@@ -93,27 +82,17 @@ public class ObservationValueDB extends BaseModel {
         ObservationValueDB that = (ObservationValueDB) o;
 
         if (id_observation_value != that.id_observation_value) return false;
-        if (id_survey_observation_value_fk != null ? !id_survey_observation_value_fk.equals(
-                that.id_survey_observation_value_fk)
-                : that.id_survey_observation_value_fk != null) {
-            return false;
-        }
+        if (!id_observation_fk.equals(that.id_observation_fk)) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
-        if (uid_observation != null ? !uid_observation.equals(that.uid_observation)
-                : that.uid_observation != null) {
-            return false;
-        }
-        return status != null ? status.equals(that.status) : that.status == null;
+        return uid_observation_value.equals(that.uid_observation_value);
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_observation_value ^ (id_observation_value >>> 32));
-        result = 31 * result + (id_survey_observation_value_fk != null
-                ? id_survey_observation_value_fk.hashCode() : 0);
+        result = 31 * result + id_observation_fk.hashCode();
         result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (uid_observation != null ? uid_observation.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + uid_observation_value.hashCode();
         return result;
     }
 
@@ -121,10 +100,9 @@ public class ObservationValueDB extends BaseModel {
     public String toString() {
         return "ObservationValueDB{" +
                 "id_observation_value=" + id_observation_value +
-                ", id_survey_observation_value_fk=" + id_survey_observation_value_fk +
+                ", id_observation_fk=" + id_observation_fk +
                 ", value='" + value + '\'' +
-                ", uid_observation='" + uid_observation + '\'' +
-                ", status=" + status +
+                ", uid_observation_value='" + uid_observation_value + '\'' +
                 '}';
     }
 }

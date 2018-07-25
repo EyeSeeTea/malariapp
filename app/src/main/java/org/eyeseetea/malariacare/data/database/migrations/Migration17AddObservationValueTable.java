@@ -20,35 +20,22 @@
 package org.eyeseetea.malariacare.data.database.migrations;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
+import android.database.Cursor;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
-import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB_Table;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB_Table;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by idelcano on 23/03/2016.
- */
 @Migration(version = 17, database = AppDatabase.class)
 public class Migration17AddObservationValueTable extends BaseMigration {
 
@@ -58,10 +45,12 @@ public class Migration17AddObservationValueTable extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        List<ObsActionPlanDB> obsActionPlanDBS =
-                new Select().from(ObsActionPlanDB.class).queryList(database);
 
-        if (obsActionPlanDBS.size() > 0) {
+        Cursor obsActionPlanDBCursor = database.rawQuery(
+                "Select id_obs_action_plan, id_survey_obs_action_fk, provider, gaps, "
+                        + "action_plan, action1, action2, status from ObsActionPlan", null);
+
+        if (obsActionPlanDBCursor.moveToFirst()) {
 
             Context context = FlowManager.getContext();
 
@@ -71,7 +60,7 @@ public class Migration17AddObservationValueTable extends BaseMigration {
             String gapsUid = findControlDataElementByCode(database,
                     context.getString(R.string.gaps_code)).getUid();
 
-            String planActionUid = findControlDataElementByCode(database,
+            String actionPlanUid = findControlDataElementByCode(database,
                     context.getString(R.string.action_plan_code)).getUid();
 
             String action1Uid = findControlDataElementByCode(database,
@@ -81,83 +70,66 @@ public class Migration17AddObservationValueTable extends BaseMigration {
                     context.getString(R.string.action2_code)).getUid();
 
             List<String> sqlDataMigrations = new ArrayList();
+            
+            do {
 
-            String insertQueryBase =
-                    "INSERT INTO ObservationValue(id_survey_observation_value_fk, value, uid_observation, status)";
+                long surveyId = obsActionPlanDBCursor.getLong(1);
+                String provider = obsActionPlanDBCursor.getString(2);
+                String gaps = obsActionPlanDBCursor.getString(3);
+                String actionPlan = obsActionPlanDBCursor.getString(4);
+                String action1 = obsActionPlanDBCursor.getString(5);
+                String action2 = obsActionPlanDBCursor.getString(6);
+                int status = obsActionPlanDBCursor.getInt(7);
 
+                database.execSQL(
+                        String.format("INSERT INTO Observation(id_survey_observation_fk,status)"
+                                        + " values(%d, %d)", surveyId, status));
 
-            for (ObsActionPlanDB obsActionPlanDB : obsActionPlanDBS) {
-                //Provider
-                sqlDataMigrations.add(createObservationValueMigrationQuery(insertQueryBase,
-                        obsActionPlanDB.getId_survey_obs_action_fk(),
-                        obsActionPlanDB.getProvider(),
-                        providerUid,
-                        obsActionPlanDB.getStatus()));
+                Cursor lastIdCursor = database.rawQuery("SELECT last_insert_rowid()", null);
 
-                //gaps
-                sqlDataMigrations.add(createObservationValueMigrationQuery(insertQueryBase,
-                        obsActionPlanDB.getId_survey_obs_action_fk(),
-                        obsActionPlanDB.getGaps(),
-                        gapsUid,
-                        obsActionPlanDB.getStatus()));
+                lastIdCursor.moveToFirst();
+                long observationId = lastIdCursor.getLong(0);
 
-                //planAction
-                sqlDataMigrations.add(createObservationValueMigrationQuery(insertQueryBase,
-                        obsActionPlanDB.getId_survey_obs_action_fk(),
-                        obsActionPlanDB.getAction_plan(),
-                        planActionUid,
-                        obsActionPlanDB.getStatus()));
+                sqlDataMigrations.add(
+                        createObservationValuesQuery(observationId, provider, providerUid));
 
-                //action1
-                sqlDataMigrations.add(createObservationValueMigrationQuery(insertQueryBase,
-                        obsActionPlanDB.getId_survey_obs_action_fk(),
-                        obsActionPlanDB.getAction1(),
-                        action1Uid,
-                        obsActionPlanDB.getStatus()));
+                sqlDataMigrations.add(
+                        createObservationValuesQuery(observationId, gaps,gapsUid));
 
-                //action2
-                sqlDataMigrations.add(createObservationValueMigrationQuery(insertQueryBase,
-                        obsActionPlanDB.getId_survey_obs_action_fk(),
-                        obsActionPlanDB.getAction2(),
-                        action2Uid,
-                        obsActionPlanDB.getStatus()));
+                sqlDataMigrations.add(
+                        createObservationValuesQuery(observationId, actionPlan, actionPlanUid));
+
+                sqlDataMigrations.add(
+                        createObservationValuesQuery(observationId, action1, action1Uid));
+
+                sqlDataMigrations.add(
+                        createObservationValuesQuery(observationId, action2, action2Uid));
+
+            } while(obsActionPlanDBCursor.moveToNext());
+
+            for (String dataMigration : sqlDataMigrations) {
+                database.execSQL(dataMigration);
             }
 
-            try {
-                database.beginTransaction();
-
-                for (String dataMigration:sqlDataMigrations) {
-                    database.execSQL(dataMigration);
-                }
-
-                //removeOldTable(database);
-                database.setTransactionSuccessful();
-
-            }catch (Exception e){
-                Log.e("Migration17","An error occur executing migration: " + e.getMessage());
-            } finally {
-                database.endTransaction();
-            }
+            //database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
         }
     }
 
-    private String createObservationValueMigrationQuery(
-            String insertQueryBase, long surveyId, String value, String uid, int status) {
-        String valuesQuery =
-                String.format(" values(%d, '%s', '%s', %d);",
-                        surveyId,
-                        value,
-                        uid,
-                        status);
+    private String createObservationValuesQuery(long observationId, String value, String uid) {
 
-        return insertQueryBase + valuesQuery;
+        String query =
+                String.format(
+                        "INSERT INTO ObservationValue(id_observation_fk, value, "
+                                + "uid_observation_value) "
+                                +
+                                "values(%d, '%s','%s')", observationId, value, uid);
+
+        return query;
     }
 
-    private void removeOldTable(DatabaseWrapper database) {
-        database.execSQL("DROP TABLE IF EXISTS ObsActionPlan");
-    }
 
-    public static ServerMetadataDB findControlDataElementByCode(DatabaseWrapper database, String code){
+    public static ServerMetadataDB findControlDataElementByCode(DatabaseWrapper database,
+            String code) {
         return new Select().from(ServerMetadataDB.class)
                 .where(ServerMetadataDB_Table.code.eq(code)).querySingle(database);
     }
