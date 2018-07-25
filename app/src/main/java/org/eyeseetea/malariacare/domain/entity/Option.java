@@ -7,14 +7,14 @@ public class Option {
     private String code;
     private String name;
     private float factor;
-    private String answerUId;
+    private String answerName;
 
-    public Option(String uId, String code, String name, float factor, String answerUId) {
+    public Option(String uId, String code, String name, float factor, String answerName) {
         this.uId = required(uId, "UId is required");
         this.code = required(code, "Code is required");
         this.name = required(name, "Name is required");
         this.factor = validateFactor(factor, "Invalid factor");
-        this.answerUId = required(answerUId, "Answer is required");
+        this.answerName = required(answerName, "Answer is required");
     }
 
     private float validateFactor(float factor, String message) {
@@ -41,6 +41,6 @@ public class Option {
     }
 
     public String getAnswerName() {
-        return answerUId;
+        return answerName;
     }
 }

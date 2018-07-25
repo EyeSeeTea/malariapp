@@ -9,4 +9,6 @@ import java.util.List;
 public interface IQuestionRepository {
 
     Question getQuestionByUId(String uid);
+
+    List<Question> getAll();
 }
