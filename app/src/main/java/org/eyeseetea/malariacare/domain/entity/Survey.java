@@ -1,6 +1,8 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 
+import org.hisp.dhis.client.sdk.core.common.utils.CodeGenerator;
+
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
@@ -32,8 +34,9 @@ public class Survey {
         status = SurveyStatus.IN_PROGRESS;
     }
 
-    public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
+    public static Survey createEmptySurvey(String programUId, String orgUnitUId,
             String userUId) {
+        String uId = CodeGenerator.generateCode();
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         return survey;
     }
