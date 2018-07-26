@@ -30,6 +30,7 @@ public class ServerMetadata {
         this.nextAssessment = required(nextAssessment, "nextAssessment is required");
         this.creationDate = required(creationDate, "creationDate is required");
         this.completionDate = required(completionDate, "completionDate is required");
+        this.provider = required(provider, "provider is required");
         this.uploadDate = required(uploadDate, "uploadDate is required");
         this.uploadBy = required(uploadBy, "uploadBy is required");
         this.overallScore = required(overallScore, "overallScore is required");
@@ -40,7 +41,6 @@ public class ServerMetadata {
         this.forwardOrder = required(forwardOrder, "forwardOrder is required");
         this.pushDevice = required(pushDevice, "pushDevice is required");
         this.overallProductivity = required(overallProductivity, "overallProductivity is required");
-        this.provider = required(provider, "provider is required");
         this.gaps = required(gaps, "gaps is required");
         this.planAction = required(planAction, "planAction is required");
         this.action1 = required(action1, "action1 is required");

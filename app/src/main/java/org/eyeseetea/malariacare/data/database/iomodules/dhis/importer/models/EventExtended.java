@@ -49,7 +49,7 @@ import java.util.List;
 /**
  * Created by arrizabalaga on 5/11/15.
  */
-public class EventExtended implements VisitableFromSDK {
+public class EventExtended {
 
     private final static String TAG = ".EventExtended";
     public final static String DHIS2_GMT_NEW_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
@@ -81,11 +81,6 @@ public class EventExtended implements VisitableFromSDK {
     public EventExtended() {
         event = new EventFlow();
         event.generateUId();
-    }
-
-    @Override
-    public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this);
     }
 
     public List<TrackedEntityDataValueFlow> getDataValuesInMemory() {

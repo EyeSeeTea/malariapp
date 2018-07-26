@@ -147,6 +147,10 @@ public class OptionDB extends BaseModel {
         this.answer = null;
     }
 
+    public static List<OptionDB> list() {
+        return new Select().from(OptionDB.class).queryList();
+    }
+
     public static OptionDB getByUId(String UId) {
             OptionDB optionDB = new Select()
                     .from(OptionDB.class)
@@ -242,4 +246,5 @@ public class OptionDB extends BaseModel {
                 ", values=" + values +
                 '}';
     }
+
 }

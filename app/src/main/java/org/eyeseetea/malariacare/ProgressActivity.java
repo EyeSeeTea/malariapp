@@ -33,22 +33,33 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.network.ConnectivityManager;
+import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
+import org.eyeseetea.malariacare.data.repositories.OptionRepository;
+import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 
@@ -135,7 +146,23 @@ public class ProgressActivity extends Activity {
             executeDemoPull();
         } else {
             PullMetadataController pullMetadataController = new PullMetadataController();
-            PullDataController pullDataController = new PullDataController();
+
+
+            IServerMetadataRepository serverMetadataRepository =
+                    new ServerMetadataRepository(this);
+            IOptionRepository optionRepository = new OptionRepository();
+            IQuestionRepository questionRepository = new QuestionLocalDataSource();
+            IConnectivityManager connectivityManager = new ConnectivityManager();
+
+            ISurveyDataSource surveyRemoteDataSource =
+                    new SurveySDKDhisDataSource(serverMetadataRepository,
+                            questionRepository, optionRepository, connectivityManager);
+
+            ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
+
+            PullDataController pullDataController =
+                    new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
+
             MetadataValidator metadataValidator = new MetadataValidator();
             IAsyncExecutor asyncExecutor = new AsyncExecutor();
             IMainExecutor mainExecutor = new UIThreadExecutor();
@@ -347,11 +374,10 @@ public class ProgressActivity extends Activity {
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        PullFilters pullFilters = new PullFilters(month.getTime(), null, isDemo,
-                AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
+        SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
                 PreferencesState.getInstance().getMaxEvents());
 
-        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+        mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();
