@@ -118,7 +118,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Next QA"</string>
+<string name="dashboard_title_planned_next_qa">"Next Eval."</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
