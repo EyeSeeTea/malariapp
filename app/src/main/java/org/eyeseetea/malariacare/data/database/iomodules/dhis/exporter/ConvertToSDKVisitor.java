@@ -238,7 +238,7 @@ public class ConvertToSDKVisitor implements
             return;
         }
         try {
-            currentSurvey.setEventUid(currentEvent.getUid());
+            currentEvent.setEventUid(currentSurvey.getEventUid());
             currentSurvey.save();
             currentEvent.save();
             Log.d(TAG, "Event created" + currentEvent.getUid());
