@@ -41,8 +41,6 @@ public interface IConvertFromSDKVisitor {
     void visit(OptionExtended option);
     void visit(UserAccountExtended userAccount);
     void visit(DataElementExtended dataElement);
-    void visit(EventExtended sdkEventExtended);
-    void visit(DataValueExtended sdkDataValueExtended);
     void buildScores();
 
 }

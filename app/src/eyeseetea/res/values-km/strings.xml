@@ -36,7 +36,7 @@
 <string name="dashboard_info_sent">"Sent"</string>
 
 <!-- create -->
-<string name="create_info_ok">"Start"</string>
+<string name="create_info_ok">"ចាប់ផ្តើមវាស់វែង"</string>
 <string name="create_info_organization_unit">"Organization Unit"</string>
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
@@ -185,10 +185,10 @@ evaluation"</string>
 <string name="option_delete">"Delete"</string>
 <string name="hide_planning_tab_title">"Hide planning tab"</string>
 <string name="hide_planning_tab_summary">"Check this box for hide planning tab"</string>
-<string name="plan">"Plan"</string>
-<string name="assess">"Assess - active surveys"</string>
-<string name="improve">"Improve"</string>
-<string name="monitor">"Monitor"</string>
+<string name="plan">"ការវាយតម្លៃ"</string>
+<string name="assess">"ការស្ទង់មតិ"</string>
+<string name="improve">"មតិត្រឡប់"</string>
+<string name="monitor">"របាយការណ៍"</string>
 <string name="filter_all_org_units">"គ្រឿងអេកូទាំងអស់"</string>
 <string name="filter_all_org_assessments">"ទាំងអស់វាយតម្លៃ"</string>
 <string name="dialog_content_dhis_preference_login">"Changing the server needs to re-login. Every not-sent survey will be deleted. Are you sure you want to continue?"</string>
@@ -220,7 +220,7 @@ evaluation"</string>
 <string name="user_close">"អ្នកប្រើប្រាស់នេះត្រូវបានបិទដោយអ្នកគ្រប់គ្រង។"</string>
 <string name="dialog_demo_pull_success">"ទិន្នន័យមេតា Dhis បានផ្ទុកដោយជោគជ័យពីទិន្នន័យក្នុងស្រុក"</string>
 <string name="select_all">"ជ្រើសរើសទាំងអស់"</string>
-<string name="demo_login">"សាកល្បង"</string>
+<string name="demo_login">"របៀបសាកល្បង"</string>
 <string name="system_defined">"ដែលបានកំណត់ប្រព័ន្ធ"</string>
 <string name="settings_select_language">"ភាសា"</string>
 <string name="toast_push_in_progress">"សូមរង់ចាំ, វាមានការជំរុញក្នុងវឌ្ឍនភាពរួចទៅហើយ"</string>
@@ -277,6 +277,13 @@ evaluation"</string>
 <string name="plain_text">"អត្ថបទធម្មតា "</string>
 <string name="html_text">"អត្ថបទដែលបានធ្វើទ្រង់ទ្រាយ "</string>
 <string name="schedule_title">"កំណត់កាលវិភាគស្ទង់មតិ"</string>
+<string name="planning_label_date">"New date:"</string>
+<string name="plan_action_edit_text_hint">"ប៉ះដើម្បីសរសេរ"</string>
+<string name="header_reschedule_title">"កំណត់ឡើងវិញ"</string>
+<string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
+
+<string name="advanced_options">"ជម្រើសកម្រិតខ្ពស់"</string>
+<string name="simple_options">"ជម្រើសសាមញ្ញ"</string>
 
 <string name="scheduled">"ព្រុយ"</string>
 <string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>

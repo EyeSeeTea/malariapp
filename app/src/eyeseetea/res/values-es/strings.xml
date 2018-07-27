@@ -33,7 +33,7 @@
 <string name="dashboard_info_ready_to_upload">"Lista para enviar"</string>
 <string name="dashboard_info_sent">"Enviado"</string>
 
-<string name="create_info_ok">"Empezar"</string>
+<string name="create_info_ok">"EMPEZAR ENCUESTA"</string>
 <string name="create_info_organization_unit">"Unidad de organización"</string>
 <string name="create_info_survey">"Formulario"</string>
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
@@ -175,10 +175,10 @@ clínica"</string>
 <string name="option_delete">"Borrar"</string>
 <string name="hide_planning_tab_title">"Ocultar ficha planificación"</string>
 <string name="hide_planning_tab_summary">"Marque esta casilla para ocultar ficha de planificación"</string>
-<string name="plan">"Planificación"</string>
-<string name="assess">"Evaluación - encuestas activas"</string>
-<string name="improve">"Mejora"</string>
-<string name="monitor">"Monitorización"</string>
+<string name="plan">"Evaluaciones"</string>
+<string name="assess">"Encuesta"</string>
+<string name="improve">"Valoración"</string>
+<string name="monitor">"Informes"</string>
 <string name="filter_all_org_units">"todas las unidades organizativas"</string>
 <string name="filter_all_org_assessments">"Todos evaluados"</string>
 <string name="dialog_content_dhis_preference_login">"Cambiar el servidor implica volver a iniciar sesión. Se eliminarán todas las encuestas no enviadas. ¿Estás seguro de que quieres continuar?"</string>
@@ -205,7 +205,7 @@ clínica"</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
 <string name="select_all">Seleccionar todas las encuestas</string>
-<string name="demo_login">Demo</string>
+<string name="demo_login">Modo Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
 <string name="toast_push_in_progress">"Por favor, espere, ya hay una subida en curso"</string>
@@ -268,6 +268,12 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="advanced_options">"Opciones avanzadas"</string>
+<string name="simple_options">"Opciones simples"</string>
+<string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
+<string name="plan_action_edit_text_hint">"Toque para escribir"</string>
+<string name="planning_label_date">"Nueva fecha:"</string>
+<string name="header_reschedule_title">"Re-programar"</string>
 
 <string name="scheduled">Programada</string>
 </resources>

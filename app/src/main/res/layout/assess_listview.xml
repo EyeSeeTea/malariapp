@@ -13,50 +13,52 @@
         android:layout_gravity="center"
         android:layout_centerVertical="true"
         android:background="@color/planning_header_background"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:padding="8dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="1">
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:id="@+id/idHeader"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/assessment_title_facility_date"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:paddingLeft="@dimen/row_left_padding"
-                        android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/header_light_text_size"
-                        app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name" />
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/circle_stroke_width"
-                        android:layout_weight="0.2">
-                    </View>
 
-                    <org.eyeseetea.malariacare.views.CustomTextView
-                        android:id="@+id/nameHeader"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:gravity="center"
-                        android:paddingRight="50dp"
-                        android:text="@string/assessment_title_state"
-                        android:textColor="@color/planning_header_text"
-                        android:textSize="@dimen/header_light_text_size"
-                        app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name" />
-            </LinearLayout>
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/idHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toLeftOf="@+id/divider"
+            android:layout_toStartOf="@+id/divider"
+            android:gravity="center"
+            android:text="@string/assessment_title_facility_date"
+            android:textColor="@color/planning_header_text"
+            android:textSize="@dimen/text_size_medium"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/medium_font_name"/>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="@dimen/circle_stroke_width"
+            android:layout_height="@dimen/circle_stroke_width"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/fab_image_size"
+            android:layout_marginRight="@dimen/fab_image_size">
+        </View>
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/nameHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/divider"
+            android:layout_toRightOf="@+id/divider"
+            android:gravity="center"
+            android:text="@string/assessment_title_overall_mandatory_completed"
+            android:textColor="@color/planning_header_text"
+            android:textSize="@dimen/text_size_medium"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/medium_font_name"/>
     </RelativeLayout>
 
     <ListView

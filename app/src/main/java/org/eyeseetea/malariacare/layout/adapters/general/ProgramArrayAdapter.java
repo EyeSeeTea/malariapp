@@ -32,17 +32,15 @@ import java.util.List;
  */
 public class ProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
 
+    public ProgramArrayAdapter(Context context, Integer layout, List<ProgramDB> programs) {
+        super(context, layout, programs);
+    }
+
     public ProgramArrayAdapter(Context context, List<ProgramDB> programs) {
         super(context, programs);
     }
 
-    public ProgramArrayAdapter(Context context, Integer layout, List<ProgramDB> programs){
-        super(context, layout, programs);
-    }
-
     @Override public void drawText(CustomTextView customTextView, ProgramDB program) {
-        if (customTextView.getmScale().equals(getContext().getString(R.string.font_size_system)))
-            customTextView.setTextSize(16);
         customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
         customTextView.setText(program.getName());
     }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_margin="20dp"
+    android:paddingBottom="20dp"
+    android:background="@android:color/white">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+        <org.eyeseetea.sdk.presentation.views.CustomTextView
+            android:id="@+id/org_unitName"
+            style="@style/EyeSeeDialogTitle"/>
+
+        <org.eyeseetea.sdk.presentation.views.CustomTextView
+            android:id="@+id/programName"
+            style="@style/EyeSeeDialogSubTitle" />
+    </LinearLayout>
+    <ScrollView
+        android:id="@+id/log_content_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:scrollbars="none"
+        android:layout_weight="1">
+        <LinearLayout
+            android:id="@+id/log_content"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </ScrollView>
+    <org.eyeseetea.sdk.presentation.views.CustomButton
+        android:layout_below="@id/log_content_scroll"
+        android:id="@id/cancel"
+        android:text="@string/cancel"
+        style="@style/EyeSeeDialogCancelButton"/>
+</RelativeLayout>

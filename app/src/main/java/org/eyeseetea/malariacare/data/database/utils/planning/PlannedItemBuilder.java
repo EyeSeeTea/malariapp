@@ -68,15 +68,6 @@ public class PlannedItemBuilder {
      */
     private List<PlannedItem> future;
 
-    private static PlannedItemBuilder instance;
-
-    public static PlannedItemBuilder getInstance(){
-        if(instance==null){
-            instance=new PlannedItemBuilder();
-        }
-        return instance;
-    }
-
     /**
      * Inits aux data structures
      */
@@ -128,11 +119,12 @@ public class PlannedItemBuilder {
      * Releases memory references
      */
     private void releaseState(){
-        surveyMap=null;
-        never=null;
-        overdue=null;
-        next30=null;
-        future=null;
+        Log.d(TAG, "release states");
+        surveyMap.clear();
+        never.clear();
+        overdue.clear();
+        next30.clear();
+        future.clear();
     }
 
     /**
@@ -158,16 +150,22 @@ public class PlannedItemBuilder {
     private List<PlannedItem> mergeLists() {
         List<PlannedItem> plannedItems = new ArrayList<>();
         //Annotate number of items per accordion
-        ((PlannedHeader)never.get(0)).setCounter(never.size()-1);
-        ((PlannedHeader)overdue.get(0)).setCounter(overdue.size()-1);
-        ((PlannedHeader)next30.get(0)).setCounter(next30.size()-1);
-        ((PlannedHeader)future.get(0)).setCounter(future.size() - 1);
-
-        //Put altogether in one list
-        plannedItems.addAll(never);
-        plannedItems.addAll(overdue);
-        plannedItems.addAll(next30);
-        plannedItems.addAll(future);
+        if(never.size()>0){
+            ((PlannedHeader)never.get(0)).setCounter(never.size()-1);
+            plannedItems.addAll(never);
+        }
+        if(overdue.size()>0) {
+            ((PlannedHeader) overdue.get(0)).setCounter(overdue.size() - 1);
+            plannedItems.addAll(overdue);
+        }
+        if(next30.size()>0) {
+            ((PlannedHeader) next30.get(0)).setCounter(next30.size() - 1);
+            plannedItems.addAll(next30);
+        }
+        if(future.size()>0) {
+            ((PlannedHeader) future.get(0)).setCounter(future.size() - 1);
+            plannedItems.addAll(future);
+        }
 
         //Release state references
         releaseState();
@@ -326,8 +324,10 @@ public class PlannedItemBuilder {
      * @param survey
      */
     private void addToSection(List<PlannedItem> section,SurveyDB survey){
-        PlannedHeader header=(PlannedHeader)section.get(0);
-        section.add(new PlannedSurvey(survey,header));
+        if(section.size()>0) {
+            PlannedHeader header = (PlannedHeader) section.get(0);
+            section.add(new PlannedSurvey(survey, header));
+        }
     }
 
 }
