@@ -45,7 +45,13 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
                                 surveyCompletion.setText(surveyAnsweredRatio.getAnswered() + "%");
                             }
                             if(surveyMandatoryCompletion!=null) {
-                                surveyMandatoryCompletion.setText(surveyAnsweredRatio.getCompulsoryAnswered() + "%");
+                                String total = "";
+                                if (surveyAnsweredRatio.getTotalCompulsory() == 0){
+                                    total = "100";
+                                }else{
+                                    total= surveyAnsweredRatio.getCompulsoryAnswered()+"";
+                                }
+                                surveyMandatoryCompletion.setText( total + "%");
                             }
                         }
                     }

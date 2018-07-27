@@ -124,5 +124,6 @@
     <color name="plan_listview_background">@color/app_background</color>
     <color name="grey_light_qm">#325058</color>
     <color name="assets_listview_background">@color/app_background</color>
+    <color name="scoreGrandson">#6fa8dc</color>
 
 </resources>
