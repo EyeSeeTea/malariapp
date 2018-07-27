@@ -49,7 +49,7 @@ public class UserDB extends BaseModel {
     @Column
     Date last_updated;
     @Column
-    boolean isAnnouncementAccept;
+    boolean isAnnouncementAccepted;
 
     public static final String ATTRIBUTE_USER_CLOSE_DATE = "USER_CLOSE_DATE";
     public static final String ATTRIBUTE_USER_ANNOUNCEMENT = "USER_ANNOUNCEMENT";
@@ -62,13 +62,13 @@ public class UserDB extends BaseModel {
         this.name = name;
     }
 
-    public UserDB(String uid, String name, String username, String announcement, Date closeDate, boolean isAnnouncementAccept) {
+    public UserDB(String uid, String name, String username, String announcement, Date closeDate, boolean isAnnouncementAccepted) {
         this.uid_user = uid;
         this.name = name;
         this.username = username;
         this.announcement = announcement;
         this.close_date = closeDate;
-        this.isAnnouncementAccept = isAnnouncementAccept;
+        this.isAnnouncementAccepted = isAnnouncementAccepted;
     }
 
     public Long getId_user() {
@@ -113,7 +113,7 @@ public class UserDB extends BaseModel {
         return null;
     }
 
-    public static UserDB getUserByUId( String uid) {
+    public static UserDB getUserByUId(String uid) {
         return new Select().from(UserDB.class).where(UserDB_Table.uid_user.eq(uid)).querySingle();
     }
 
@@ -147,12 +147,12 @@ public class UserDB extends BaseModel {
         this.last_updated = last_updated;
     }
 
-    public boolean isAnnouncementAccept() {
-        return isAnnouncementAccept;
+    public boolean isAnnouncementAccepted() {
+        return isAnnouncementAccepted;
     }
 
-    public void setAnnouncementAccept(boolean announcementAccept) {
-        isAnnouncementAccept = announcementAccept;
+    public void setAnnouncementAccepted(boolean announcementAccepted) {
+        isAnnouncementAccepted = announcementAccepted;
     }
 
     @Override
@@ -163,7 +163,7 @@ public class UserDB extends BaseModel {
         UserDB userDB = (UserDB) o;
 
         if (id_user != userDB.id_user) return false;
-        if (isAnnouncementAccept != userDB.isAnnouncementAccept) return false;
+        if (isAnnouncementAccepted != userDB.isAnnouncementAccepted) return false;
         if (uid_user != null ? !uid_user.equals(userDB.uid_user) : userDB.uid_user != null)
             return false;
         if (name != null ? !name.equals(userDB.name) : userDB.name != null) return false;
@@ -176,6 +176,10 @@ public class UserDB extends BaseModel {
         return last_updated != null ? last_updated.equals(userDB.last_updated) : userDB.last_updated == null;
     }
 
+    public static List<UserDB> list() {
+        return new Select().from(UserDB.class).queryList();
+    }
+
     @Override
     public int hashCode() {
         int result = (int) (id_user ^ (id_user >>> 32));
@@ -185,7 +189,7 @@ public class UserDB extends BaseModel {
         result = 31 * result + (announcement != null ? announcement.hashCode() : 0);
         result = 31 * result + (close_date != null ? close_date.hashCode() : 0);
         result = 31 * result + (last_updated != null ? last_updated.hashCode() : 0);
-        result = 31 * result + (isAnnouncementAccept ? 1 : 0);
+        result = 31 * result + (isAnnouncementAccepted ? 1 : 0);
         return result;
     }
 
@@ -199,7 +203,7 @@ public class UserDB extends BaseModel {
                 ", announcement='" + announcement + '\'' +
                 ", close_date=" + close_date +
                 ", last_updated=" + last_updated +
-                ", isAnnouncementAccept=" + isAnnouncementAccept +
+                ", isAnnouncementAccepted=" + isAnnouncementAccepted +
                 '}';
     }
 }

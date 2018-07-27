@@ -40,7 +40,7 @@ public class Migration16AddAnnouncementAcceptColumn extends BaseMigration {
 
     @Override
     public void migrate(DatabaseWrapper database) {
-        addColumn(database, UserDB.class, "isAnnouncementAccept", "boolean");
+        addColumn(database, UserDB.class, "isAnnouncementAccepted", "boolean");
     }
 
     @Override

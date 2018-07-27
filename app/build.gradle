@@ -23,6 +23,22 @@ repositories {
 }
 
 android {
+
+
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "skipped", "failed", "standardOut", "standardError"
+                exceptionFormat "full"
+                showCauses true
+                showExceptions true
+                showStackTraces true
+                showStandardStreams true
+            }
+        }
+    }
+
     signingConfigs {
         config {}
     }
@@ -69,6 +85,7 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
+
 
     productFlavors {
         eds {
@@ -168,6 +185,7 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules

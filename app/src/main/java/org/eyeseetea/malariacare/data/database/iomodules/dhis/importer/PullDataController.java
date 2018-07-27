@@ -19,112 +19,45 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import android.util.Log;
-
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.IPullSourceCallback;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models
-        .OrganisationUnitExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.ProgramExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.remote.sdk.PullDhisSDKDataSource;
-import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
-import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.MetadataException;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.hisp.dhis.client.sdk.models.program.ProgramType;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.List;
 
 public class PullDataController implements IPullDataController {
-    /**
-     * Used for control new steps
-     */
     private final String TAG = ".PullDataController";
-    PullDhisSDKDataSource pullRemoteDataSource;
+
     IPullDataController.Callback callback;
 
-    ConvertFromSDKVisitor converter;
+    private ISurveyDataSource remoteSurveyDataSource;
+    private ISurveyDataSource localSurveyDataSource;
 
-    public PullDataController() {
-        converter = new ConvertFromSDKVisitor();
-        pullRemoteDataSource = new PullDhisSDKDataSource();
+    public PullDataController(
+            ISurveyDataSource localSurveyDataSource,
+            ISurveyDataSource remoteSurveyDataSource) {
+
+        this.localSurveyDataSource = localSurveyDataSource;
+        this.remoteSurveyDataSource = remoteSurveyDataSource;
     }
 
     @Override
-    public void pullData(final PullFilters filters, final IPullDataController.Callback callback) {
+    public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
-        pullRemoteDataSource.pullData(filters, new IPullSourceCallback() {
-            @Override
-            public void onComplete() {
-                try {
-                    try {
-                        convertDataValues();
-                    } catch (Exception e) {
-                        callback.onError(new
-                                MetadataException(e));
-                        return;
-                    }
+       try {
+            callback.onStep(PullStep.PREPARING_SURVEYS);
 
-                    callback.onComplete();
-                } catch (NullPointerException e) {
-                    callback.onError(new
-                            MetadataException(e));
-                }
-            }
+            List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
 
-            @Override
-            public void onError(Throwable throwable) {
-                throwable.printStackTrace();
-                callback.onError(throwable);
-            }
+            localSurveyDataSource.Save(surveys);
 
-        });
-    }
+            callback.onComplete();
 
-    /**
-     * Turns events and datavalues into
-     */
-    private void convertDataValues() {
-        callback.onStep(PullStep.PREPARING_SURVEYS);
-        //XXX This is the right place to apply additional filters to data conversion (only
-        // predefined orgunit for instance)
-        //For each unit
-        for (OrganisationUnitExtended organisationUnit : OrganisationUnitExtended.getExtendedList(
-                SdkQueries.getAssignedOrganisationUnits())) {
-            //Each assigned program
-            for (ProgramExtended program : ProgramExtended.getExtendedList(
-                    SdkQueries.getProgramsForOrganisationUnit(organisationUnit.getId(),
-                            PreferencesState.getInstance().getContext().getString(
-                                    R.string.pull_program_code),
-                            ProgramType.WITHOUT_REGISTRATION))) {
-                converter.actualProgram = program;
-                List<EventExtended> events = EventExtended.getExtendedList(
-                        SdkQueries.getEvents(organisationUnit.getId(), program.getUid()));
-                System.out.printf("Converting surveys and values for orgUnit: %s | program: %s",
-                        organisationUnit.getLabel(), program.getDisplayName());
-                for (EventExtended event : events) {
-                    if (event.getEventDate() == null
-                            || event.getEventDate().equals("")) {
-                        Log.d(TAG, "Alert, ignoring event without eventdate, event uid:"
-                                + event.getUid());
-                        continue;
-                    }
-                    event.accept(converter);
-                }
-            }
+        } catch (Exception e) {
+            callback.onError(e);
         }
-
-        //Plan surveys for the future
-        SurveyPlanner.getInstance().buildNext();
     }
-
-
-
 }
