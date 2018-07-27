@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -90,11 +89,6 @@ public class PreferencesState {
      * Active language code;
      */
     private static String languageCode;
-
-    /**
-     * Flag that determines if the user did accept the announcement
-     */
-    private boolean userAccept;
     private String serverUrl;
     private String phoneLanguage;
     private Credentials creedentials;
@@ -107,6 +101,10 @@ public class PreferencesState {
             instance = new PreferencesState();
         }
         return instance;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public void init(Context context) {
@@ -127,7 +125,6 @@ public class PreferencesState {
         maxEvents = initMaxEvents();
         monitoringTarget = initMonitoringTarget();
         languageCode = initLanguageCode();
-        userAccept = initUserAccept();
         Log.d(TAG, String.format(
                 "reloadPreferences: scale: %s | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b  | target: %d",
@@ -142,16 +139,6 @@ public class PreferencesState {
                 instance.getContext());
         return sharedPreferences.getString(instance.getContext().getString(R.string.language_code),
                 "");
-    }
-
-    /**
-     * Inits user accept flag according to preferences
-     */
-    private boolean initUserAccept() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                instance.getContext());
-        return sharedPreferences.getBoolean(
-                instance.getContext().getString(R.string.user_accept_key), false);
     }
 
     /**
@@ -404,43 +391,31 @@ public class PreferencesState {
         editor.commit();
     }
 
-    /**
-     * Tells if user accepted the announcement message
-     */
-    public Boolean isUserAccept() {
-        return userAccept;
-    }
-
-    /**
-     * Set userAccept in the preferences and local memory
-     */
-    public Boolean setUserAccept(boolean isAccepted) {
-        this.userAccept = isAccepted;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(context.getResources().getString(R.string.user_accept_key), isAccepted);
-        editor.commit();
-        return userAccept;
-    }
-
     public void initalizateActivityDependencies() {
         loadsLanguageInActivity();
     }
 
     public void loadsLanguageInActivity() {
+        setLocale(getCurrentLocale());
+    }
+
+    public String getCurrentLocale() {
         String temLanguageCode = languageCode;
         if (languageCode.equals("")) {
             temLanguageCode = phoneLanguage;
         }
+        return temLanguageCode;
+    }
+
+    private void setLocale(String languageCode) {
         Resources res = context.getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
+        android.content.res.Configuration conf = res.getConfiguration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(new Locale(temLanguageCode));
+            conf.setLocale(new Locale(languageCode));
         } else {
-            conf.locale = new Locale(temLanguageCode);
+            conf.locale = new Locale(languageCode);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             res.updateConfiguration(conf, dm);

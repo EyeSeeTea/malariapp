@@ -75,9 +75,6 @@ public class Constants {
 
     public static final String CHECKBOX_YES_OPTION="Yes";
 
-    public static final float MAX_AMBER = 80f;
-    public static final float MAX_RED = 50f;
-
     //Keys used to know if a survey is saved in surveyfragment, in feedbackfragment, or in push.
     public static final String PUSH_MODULE_KEY="PUSH_MODULE_KEY";
     public static final String PROGRESSACTIVITY_MODULE_KEY="PROGRESSACTIVITY_MODULE_KEY";

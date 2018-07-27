@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dialog_layout_margins_left_right"
+        android:layout_marginRight="@dimen/dialog_layout_margins_left_right"
+        android:background="@android:color/white">
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/planned_org_unit"
+        style="@style/EyeSeeDialogTitle" />
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/planned_program"
+        android:layout_below="@id/planned_org_unit"
+        style="@style/EyeSeeDialogSubTitle"/>
+    <org.eyeseetea.malariacare.views.CustomButton
+        android:id="@+id/show_history"
+        android:layout_below="@id/planned_program"
+        android:text="@string/show_history"
+        style="@style/EyeSeeDialogButton" />
+    <org.eyeseetea.malariacare.views.CustomButton
+        android:id="@+id/cancel"
+        android:layout_below="@id/show_history"
+        android:text="@string/cancel"
+        style="@style/EyeSeeDialogCancelButton" />
+    </RelativeLayout>
+</FrameLayout>

@@ -23,6 +23,22 @@ repositories {
 }
 
 android {
+
+
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "skipped", "failed", "standardOut", "standardError"
+                exceptionFormat "full"
+                showCauses true
+                showExceptions true
+                showStackTraces true
+                showStandardStreams true
+            }
+        }
+    }
+
     signingConfigs {
         config {}
     }
@@ -43,6 +59,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
         useLibrary  'org.apache.http.legacy'
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -69,27 +86,46 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
 
+
     productFlavors {
         eds {
-            applicationId "org.eyeseetea.malariacare.eds_bb"
+            applicationId "org.eyeseetea.malariacare.eds_dev"
             versionName "2.0.5"
             buildConfigField "boolean", "translations", "false"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            buildConfigField "boolean", "customFontHidden", "false"
+            buildConfigField "boolean", "OUSelectionHealthFacility", "false"
+            buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
         hnqis {
-            applicationId "org.eyeseetea.malariacare.hnqis_ng_bb"
-            versionName "1.3.0"
+            applicationId "org.eyeseetea.malariacare.hnqis_ng_dev"
+            versionName "1.3.1"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            buildConfigField "boolean", "customFontHidden", "true"
+            buildConfigField "boolean", "OUSelectionHealthFacility", "true"
+            buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
         eyeseetea {
-            applicationId "org.eyeseetea.malariacare.questmark_bb"
+            applicationId "org.eyeseetea.malariacare.questmark_dev"
             versionName "0.1.0"
             buildConfigField "boolean", "translations", "true"
             buildConfigField "String", "defaultLocale", "\"en\""
             resValue "string", "authority", applicationId+versionName+"_DHIS2_DEFAULT_AUTHORITY"
+            buildConfigField "boolean", "customFontHidden", "false"
+            buildConfigField "boolean", "OUSelectionHealthFacility", "false"
+            buildConfigField "String", "GIT_HUB_BOT_TOKEN", "\"$gitHubBotToken\""
+            buildConfigField "String", "DEFAULT_USER", "\"$user\""
+            buildConfigField "String", "DEFAULT_PASSWORD", "\"$password\""
+            buildConfigField "String", "DEFAULT_SERVER", "\"$server\""
         }
     }
 
@@ -149,6 +185,7 @@ dependencies {
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
 
     // Instrumented tests dependencies
     // Android Testing Support Library's runner and rules
@@ -177,6 +214,10 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
+
+    compile(project(path: ':bugshaker')) {
+        exclude group: "com.google.android.gms"
+    }
 }
 
 

@@ -35,8 +35,8 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
@@ -68,14 +68,19 @@ public class LayoutUtils {
         int color = view.getContext().getResources().getColor(R.color.green);
         String tag = view.getContext().getResources().getString(R.string.good);
 
-        if (score < Constants.MAX_AMBER) {
+        ScoreType scoreType = new ScoreType(score);
+
+        if(scoreType.getClassification() == ScoreType.Classification.MEDIUM){
+
             color = view.getContext().getResources().getColor(R.color.amber);
             tag = view.getContext().getResources().getString(R.string.fair);
-        }
-        if (score < Constants.MAX_RED) {
+
+        }else if(scoreType.getClassification() == ScoreType.Classification.LOW){
+
             color = view.getContext().getResources().getColor(R.color.red);
             tag = view.getContext().getResources().getString(R.string.poor);
         }
+
         //Change color for number
         ((CustomTextView) view).setTextColor(color);
         //Change color& text for qualitative score
@@ -89,17 +94,14 @@ public class LayoutUtils {
      * Calculates de proper background according to an score
      */
     public static int trafficColor(float score) {
-        if (score < Constants.MAX_RED) {
+        ScoreType scoreType = new ScoreType(score);
+        if (scoreType.getClassification() == ScoreType.Classification.LOW) {
             return R.color.darkRed;
-        }
-
-        if (score < Constants.MAX_AMBER) {
+        } else if (scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
             return R.color.amber;
-            //return R.color.assess_yellow;
+        }else {
+            return R.color.tab_green_monitor;
         }
-
-        return R.color.tab_green_monitor;
-        //return R.color.lightGreen;
     }
 
 
@@ -108,7 +110,6 @@ public class LayoutUtils {
         actionBar.setLogo(R.drawable.qualityapp_logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setIcon(R.drawable.qualityapp_logo);
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 
@@ -272,6 +273,7 @@ public class LayoutUtils {
         doublePieChart.setVisibility(View.VISIBLE);
         updateChart(surveyAnsweredRatio, doublePieChart);
     }
+
     public static void drawScore(Float score, DoubleRectChart doubleRectChart) {
         int color = LayoutUtils.trafficColor(score);
         String scoreText;

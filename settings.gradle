@@ -1,4 +1,4 @@
-include ':app', ':core', ':core-android', ':core-rules', ':models', ':ui', ':ui-bindings', ':utils', ':EyeSeeTea-sdk'
+include ':app', ':core', ':core-android', ':core-rules', ':models', ':ui', ':ui-bindings', ':utils', ':EyeSeeTea-sdk','bugshaker'
 project(':core').projectDir = new File(settingsDir, 'sdk/core')
 project(':core-android').projectDir = new File(settingsDir, 'sdk/core-android')
 project(':core-rules').projectDir = new File(settingsDir, 'sdk/core-rules')
@@ -6,3 +6,4 @@ project(':models').projectDir = new File(settingsDir, 'sdk/models')
 project(':ui').projectDir = new File(settingsDir, 'sdk/ui')
 project(':ui-bindings').projectDir = new File(settingsDir, 'sdk/ui-bindings')
 project(':utils').projectDir = new File(settingsDir, 'sdk/utils')
+project(':bugshaker').projectDir = new File(settingsDir, 'bugshaker-android/bugshaker')

@@ -35,15 +35,23 @@ import java.util.List;
  */
 public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
     private Integer layout;
+    private Integer dropdownLayout;
 
     public AddlArrayAdapter(Context context, List<T> objects) {
         super(context, R.layout.simple_spinner_item, objects);
         this.layout = R.layout.simple_spinner_item;
+        this.dropdownLayout = R.layout.spinner_dropdown_item;
     }
 
     public AddlArrayAdapter(Context context, Integer layout, List<T> objects){
         super(context, layout, objects);
         this.layout = layout;
+        this.dropdownLayout = R.layout.spinner_dropdown_item;
+    }
+    public AddlArrayAdapter(Context context, Integer layout, Integer dropdownLayout, List<T> objects){
+        super(context, layout, objects);
+        this.layout = layout;
+        this.dropdownLayout = dropdownLayout;
     }
 
 
@@ -68,7 +76,7 @@ public abstract class AddlArrayAdapter<T> extends ArrayAdapter<T> {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(this.layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(this.dropdownLayout, parent, false);
         }
 
         //Set text item
