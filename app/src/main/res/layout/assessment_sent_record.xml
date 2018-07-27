@@ -75,9 +75,10 @@
             <org.eyeseetea.malariacare.views.CustomTextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.35"
                 android:id="@+id/sentDate"
                 android:gravity="center"
+                android:paddingRight="2dp"
                 android:layout_gravity="center"
                 android:lines="1"
                 android:ellipsize="end"
@@ -88,13 +89,12 @@
 
             <org.eyeseetea.sdk.presentation.views.DoubleRectChart
                 android:id="@+id/scoreChart"
-                android:layout_height="match_parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="2dp"
                 android:layout_width="0dp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_weight="0.3" />
+                android:layout_weight="0.25" />
 
             <ImageView
                 android:id="@+id/menu_dots"

@@ -1,31 +1,30 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+
 public class Question {
-    private long id;
-    private boolean cachedVisibility;
+    private String uId;
     private boolean isCompulsory;
     private boolean removed;
+    private QuestionType questionType;
+    private String answerName;
 
-    public Question() {
+    public Question(String uId, int questionType, boolean isCompulsory) {
+        this(uId,   questionType, isCompulsory, null);
     }
 
-    public Question(long id, boolean isCompulsory) {
-        this.id = id;
+    public Question(String uId, int questionType, boolean isCompulsory, String answerName) {
+        this.uId = required(uId, "question uId is required");
+        this.questionType = required(QuestionType.get(questionType), "valid question type is required");
         this.isCompulsory = isCompulsory;
+        this.answerName = answerName;
     }
 
-    public Question(long id, boolean isCompulsory,  boolean cachedVisibility) {
-        this.id = id;
-        this.cachedVisibility = cachedVisibility;
-        this.isCompulsory = isCompulsory;
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    public boolean isCachedVisibility() {
-        return cachedVisibility;
+    public String getUId() {
+        return uId;
     }
 
     public boolean isCompulsory() {
@@ -40,6 +39,14 @@ public class Question {
         this.removed = removed;
     }
 
+    public boolean isComputable(){
+        return questionType != QuestionType.NO_ANSWER;
+    }
+
+    public String getAnswerName() {
+        return answerName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,29 +54,32 @@ public class Question {
 
         Question question = (Question) o;
 
-        if (id != question.id) return false;
-        if (cachedVisibility != question.cachedVisibility) return false;
+        if (isCompulsory != question.isCompulsory) return false;
         if (removed != question.removed) return false;
-        return isCompulsory == question.isCompulsory;
-
+        if (!uId.equals(question.uId)) return false;
+        if (questionType != question.questionType) return false;
+        return answerName != null ? !answerName.equals(question.answerName)
+                : question.answerName != null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (cachedVisibility ? 1 : 0);
+        int result = uId.hashCode();
         result = 31 * result + (isCompulsory ? 1 : 0);
         result = 31 * result + (removed ? 1 : 0);
+        result = 31 * result + questionType.hashCode();
+        result = 31 * result + (answerName != null ? answerName.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + id +
-                ", cachedVisibility=" + cachedVisibility +
+                "uId='" + uId + '\'' +
                 ", isCompulsory=" + isCompulsory +
-                ", isremoved=" + removed +
+                ", removed=" + removed +
+                ", questionType=" + questionType +
+                ", answerName='" + answerName + '\'' +
                 '}';
     }
 }

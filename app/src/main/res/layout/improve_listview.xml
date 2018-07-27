@@ -46,6 +46,7 @@
             android:minHeight="@dimen/header_min_height"
             android:orientation="horizontal"
             android:paddingBottom="2dp"
+            android:paddingLeft="@dimen/row_left_padding"
             android:paddingTop="2dp" >
 
             <org.eyeseetea.malariacare.views.CustomTextView
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
                 android:gravity="left|center"
+                android:paddingLeft="@dimen/row_left_padding"
                 android:padding="8dp"
                 android:layout_weight="0.5"
                 android:text="@string/assessment_title_facility_date"

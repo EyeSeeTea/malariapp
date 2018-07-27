@@ -4,11 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/planning_header_background"
+            android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
             android:layout_alignParentTop="true"
             android:layout_gravity="center_vertical"
             android:minHeight="@dimen/header_min_height"
@@ -48,24 +53,25 @@
                 app:tFontName="@string/light_font" />
         </RelativeLayout>
 
+            <ImageButton
+                android:id="@+id/reschedule_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="@dimen/header_min_height"
+                android:gravity="center_horizontal"
+                android:background="@color/planning_header_background"
+                android:src="@drawable/ic_calendar"
+                android:paddingRight="2dp"
+                android:scaleType="fitCenter"
+                android:textColor="@color/white"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+        </LinearLayout>
         <ListView
             android:id="@id/android:list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/header" />
-
-        <ImageButton
-            android:id="@+id/reschedule_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/transparent"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:src="@drawable/ic_calendar"
-            android:textColor="@color/white"
-            android:textSize="@dimen/medium_text_size"
-            android:textStyle="bold" />
 </RelativeLayout>

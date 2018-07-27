@@ -67,13 +67,13 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         menuDots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dashboardActivity.onAssetsSelected(survey);
+                dashboardActivity.onAssessSelected(survey);
             }
         });
     }
 
     @Override
-    protected void decorateCustomColumns(final SurveyDB survey, View rowView) {
+    protected void decorateCustomColumns(final SurveyDB survey, final View rowView) {
         final DoublePieChart doublePieChart =
                 (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
 
@@ -83,6 +83,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
         IMainExecutor mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
                 new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
+
         getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
                 new ISurveyAnsweredRatioCallback() {
                     @Override

@@ -1,3 +1,17 @@
 <resources>
+    <dimen name="feedback_question_row_left_padding">30dp</dimen>
+    <dimen name="buttons_margin">20dp</dimen>
+    <dimen name="buttons_margin_bottom_top">8dp</dimen>
+    <dimen name="buttons_margin_left_right">36dp</dimen>
+    <dimen name="buttons_height">36dp</dimen>
+    <dimen name="body_text_size">16sp</dimen>
+    <dimen name="dialog_layout_margins_left_right">35dp</dimen>
+    <dimen name="three_dots_padding_left">10dp</dimen>
+    <dimen name="dialog_header_height">36dp</dimen>
+    <dimen name="header_survey_margin_top">20dp</dimen>
+    <dimen name="header_top_padding">0dp</dimen>
+    <dimen name="header_bottom_padding">0dp</dimen>
+    <dimen name="question_padding_right">5dp</dimen>
+    <dimen name="create_survey_title_extra_bottom_marging">0dip</dimen>
     <dimen name="header_min_height">50dp</dimen>
 </resources>

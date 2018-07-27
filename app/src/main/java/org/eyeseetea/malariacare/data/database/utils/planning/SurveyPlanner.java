@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
@@ -177,7 +178,8 @@ public class SurveyPlanner {
                 eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
 
         //A -> 6 months
-        if (survey.isTypeA()) {
+        ScoreType scoreType = new ScoreType(survey.getMainScore());
+        if (scoreType.isTypeA()) {
             return getInXMonths(eventDate, TYPE_A_NEXT_DATE);
         }
 
