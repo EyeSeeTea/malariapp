@@ -25,11 +25,9 @@ import static org.eyeseetea.malariacare.DashboardActivity.dashboardActivity;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -38,18 +36,8 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.strategies.AssessmentUnsentAdapterCosmeticsStrategy;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.DoublePieChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,63 +62,7 @@ public class AssessmentUnsentAdapter extends ADashboardAdapter {
 
     @Override
     protected void decorateCustomColumns(final SurveyDB survey, final View rowView) {
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
-
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-
-                        if (surveyAnsweredRatio != null) {
-                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-                        }
-                    }
-                });
-    }
-
-
-    protected void createPie(PieChart mChart, int percentage,
-            int highColor, int middleColor, int lowColor) {
-        Log.d("percentage", "percentage: " + percentage);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-
-        mChart.setDrawHoleEnabled(true);
-
-
-        mChart.setTransparentCircleColor(Color.RED);
-        mChart.setTransparentCircleAlpha(255);
-
-        mChart.setHoleRadius(0f);
-        mChart.setTransparentCircleRadius(0f);
-
-        mChart.setDrawCenterText(false);
-
-        // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
-
-        setData(mChart, percentage, highColor, middleColor, lowColor);
-
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
+        AssessmentUnsentAdapterCosmeticsStrategy.decorateCustomColumns(survey, rowView);
     }
 
     private void setData(PieChart mChart, int percentage,
