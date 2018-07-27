@@ -1,23 +1,22 @@
 package org.eyeseetea.malariacare.strategies;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
+import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
-import android.view.View;
-import android.widget.TextView;
 
 public class FeedbackFragmentStyleStrategy {
     public static void drawScore(RelativeLayout llLayout, SurveyDB survey, Context context) {
@@ -48,12 +47,14 @@ public class FeedbackFragmentStyleStrategy {
         TextView textView=(TextView)rowLayout.findViewById(R.id.feedback_score_label);
 
         if(!PreferencesState.getInstance().isVerticalDashboard()){
-            if(feedback.getScore(idSurvey, module)< Constants.MAX_RED)
+            ScoreType scoreType = new ScoreType(feedback.getScore(idSurvey, module));
+            if(scoreType.getClassification() == ScoreType.Classification.LOW) {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed));
-            else if(feedback.getScore(idSurvey, module)< Constants.MAX_AMBER)
+            }else if(scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.amber));
-            else
+            }else if(scoreType.getClassification() == ScoreType.Classification.HIGH) {
                 textView.setTextColor(PreferencesState.getInstance().getContext().getResources().getColor(R.color.lightGreen));
+            }
         }
         textView.setText(feedback.getPercentageAsString(idSurvey, module));
     }
