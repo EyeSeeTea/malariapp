@@ -35,6 +35,8 @@
             android:src="@drawable/ic_media_arrow"/>
         <LinearLayout
             android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".78">
@@ -64,24 +66,30 @@
             android:id="@+id/feedback_option_value"
             android:layout_width="0dp"
             android:layout_weight=".08"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
             android:paddingTop="5dip"
+            android:lines="1"
             android:capitalize="words"
             android:paddingBottom="5dip"
+            android:textSize="10dp"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
-            />sd
+            />
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/feedback_score_label"
             android:layout_width="0dp"
             android:layout_weight=".08"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
+            android:paddingRight="5dip"
             android:paddingTop="5dip"
             android:paddingBottom="5dip"
+            android:lines="1"
             android:capitalize="words"
-            android:textSize="14dp"
+            android:textSize="10dp"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
              />

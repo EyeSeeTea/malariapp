@@ -52,6 +52,7 @@
         <ImageView
             android:id="@+id/feedback_image"
             android:layout_width="0dp"
+            android:tint="@color/black"
             android:layout_height="wrap_content"
             android:layout_weight=".10"
             android:layout_gravity="center_vertical"
