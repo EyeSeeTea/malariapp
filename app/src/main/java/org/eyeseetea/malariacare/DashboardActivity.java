@@ -23,7 +23,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,22 +35,25 @@ import android.widget.Toast;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.metadata.PhoneMetaData;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.data.remote.api.UserAccountAPIDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.UserAccountLocalDataSource;
+import org.eyeseetea.malariacare.data.repositories.UserAccountRepository;
+import org.eyeseetea.malariacare.domain.entity.UserAccount;
+import org.eyeseetea.malariacare.domain.enums.NetworkStrategy;
+import org.eyeseetea.malariacare.domain.usecase.GetUserAccountUseCase;
 import org.eyeseetea.malariacare.drive.DriveRestController;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.DashboardController;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.ImproveModuleController;
-import org.eyeseetea.malariacare.layout.dashboard.controllers.PlanModuleController;
+import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
+import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-
-import java.util.List;
 
 
 public class DashboardActivity extends BaseActivity {
@@ -69,12 +71,29 @@ public class DashboardActivity extends BaseActivity {
 
         handler = new Handler(Looper.getMainLooper());
         dashboardActivity = this;
-        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true) && !Session.getCredentials().isDemoCredentials()) {
-            new AsyncAnnouncement().execute();
-        }
+        if (getIntent().getBooleanExtra(getString(R.string.show_announcement_key), true)
+                && !Session.getCredentials().isDemoCredentials()) {
+            GetUserAccountUseCase getUserAccountUseCase = new GetUserAccountUseCase(
+                    new AsyncExecutor(),
+                    new UIThreadExecutor(),
+                    new UserAccountRepository(
+                            new UserAccountAPIDataSource(Session.getCredentials()),
+                            new UserAccountLocalDataSource())
+            );
 
-        //XXX to remove?
-        initDataIfRequired();
+            getUserAccountUseCase.execute(NetworkStrategy.NETWORK_FIRST,
+                    new GetUserAccountUseCase.Callback() {
+                        @Override
+                        public void onSuccess(UserAccount userAccount) {
+                            announcementAndUserClosedActions(userAccount);
+                        }
+
+                        @Override
+                        public void onError() {
+                            System.out.println("Error recovering user account.");
+                        }
+                    });
+        }
 
         loadPhoneMetadata();
 
@@ -90,6 +109,17 @@ public class DashboardActivity extends BaseActivity {
         if (!Session.getCredentials().isDemoCredentials()) {
             //Media: init drive credentials
             DriveRestController.getInstance().init(this);
+        }
+        reloadDashboard();
+    }
+
+    private void announcementAndUserClosedActions(UserAccount userAccount) {
+        if (userAccount.shouldDisplayAnnouncement()) {
+            Log.d(TAG, "show logged announcement");
+            AUtils.showAnnouncement(R.string.admin_announcement, userAccount,
+                    DashboardActivity.this);
+        } else if (userAccount.isClosed()) {
+            AUtils.checkUserClosed(DashboardActivity.this);
         }
     }
 
@@ -151,7 +181,7 @@ public class DashboardActivity extends BaseActivity {
                 R.string.dialog_action_refresh);
         if (unsentSurveysCount > 0) {
             message += String.format(getApplicationContext().getResources().getString(
-                    R.string.dialog_incomplete_surveys_before_refresh),
+                    R.string.dialog_incomplete_surveys_before_refresh) + "",
                     unsentSurveysCount);
         }
         //check if exist a compulsory question without awnser before push and pull.
@@ -218,7 +248,6 @@ public class DashboardActivity extends BaseActivity {
             reloadOnResume = true;
             return;
         }
-        reloadDashboard();
     }
 
     public static void reloadDashboard() {
@@ -233,29 +262,6 @@ public class DashboardActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         dashboardController.onBackPressed();
-    }
-
-    /**
-     * PUll data from DHIS server and turn into our model
-     */
-    private void initDataIfRequired() {
-        initUserSessionIfRequired();
-    }
-
-    /**
-     * In case Session doesn't have the user set, here we set it to the first entry of User table
-     */
-    private void initUserSessionIfRequired() {
-        // already a user in session -> done
-        if (Session.getUser() != null) {
-            return;
-        }
-
-        // If we're in dashboard and User is not yet in session we have to put it
-        // FIXME: for the moment there will be only one user in the User table, but in the future
-        // we will have to think about tagging the logged user in the DB
-        UserDB user = UserDB.getLoggedUser();
-        Session.setUser(user);
     }
 
     /**
@@ -285,7 +291,6 @@ public class DashboardActivity extends BaseActivity {
     public void onFeedbackSelected(SurveyDB survey) {
         dashboardController.onFeedbackSelected(survey);
     }
-
 
 
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
@@ -376,55 +381,21 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void openActionPlan(SurveyDB survey) {
-        ImproveModuleController improveModuleController = (ImproveModuleController) dashboardController.getModuleByName(ImproveModuleController.getSimpleName());
+        ImproveModuleController improveModuleController =
+                (ImproveModuleController) dashboardController.getModuleByName(
+                        ImproveModuleController.getSimpleName());
         improveModuleController.onPlanActionSelected(survey);
     }
 
-    public void onAssetsSelected(SurveyDB survey) {
-        dashboardController.onAssetsSelected(survey);
+    public void onAssessSelected(SurveyDB survey) {
+        dashboardController.onAssessSelected(survey);
     }
 
-    public void openFeedback(SurveyDB survey) {
-        dashboardController.openFeedback(survey);
+    public void openFeedback(SurveyDB survey, boolean modifyFilter) {
+        dashboardController.openFeedback(survey, modifyFilter);
     }
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         dashboardController.onPlannedSurvey(survey, scheduleClickListener);
-    }
-
-
-    public class AsyncAnnouncement extends AsyncTask<Void, Void, Void> {
-        UserDB loggedUser;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            loggedUser = UserDB.getLoggedUser();
-            /* Ignoring the update date
-            boolean isUpdated = pullClient.isUserUpdated(loggedUser);
-            if (isUpdated) {
-                pullClient.pullUserAttributes(loggedUser);
-            }*/
-            loggedUser = PullDhisApiDataSource.pullUserAttributes(loggedUser);
-            loggedUser.save();//save the lastUpdated info and attributes
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            if (shouldDisplayAnnoucement()) {
-                Log.d(TAG, "show logged announcement");
-                AUtils.showAnnouncement(R.string.admin_announcement, loggedUser.getAnnouncement(),
-                        DashboardActivity.this);
-            } else {
-                AUtils.checkUserClosed(loggedUser, DashboardActivity.this);
-            }
-        }
-
-        private boolean shouldDisplayAnnoucement() {
-            return loggedUser.getAnnouncement() != null && !loggedUser.getAnnouncement().equals("")
-                    && !PreferencesState.getInstance().isUserAccept();
-        }
     }
 }

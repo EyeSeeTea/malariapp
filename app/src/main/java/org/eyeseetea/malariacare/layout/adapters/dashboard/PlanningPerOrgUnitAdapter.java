@@ -15,6 +15,7 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.planning.PlannedSurveyByOrgUnit;
+import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
 import org.eyeseetea.malariacare.fragments.PlannedPerOrgUnitFragment;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -96,7 +97,9 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         menuDots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
+                // TODO : review after merge questmark cosmetics and remove or create a strategy if is necessary
+                // dashboardActivity.onPlanPerOrgUnitMenuClicked(plannedSurvey.getSurvey());
+                dashboardActivity.onPlannedSurvey(plannedSurvey.getSurvey(),  new ScheduleListener(plannedSurvey.getSurvey(), context));
             }
         });
 

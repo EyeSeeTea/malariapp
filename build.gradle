@@ -41,7 +41,7 @@ ext {
             minSdkVersion    : 15,
             compileSdkVersion: 24,
             targetSdkVersion : 24,
-            versionCode      : 41,
+            versionCode      : 42,
             versionName      : "QAApp"
     ]
     libraries = [
@@ -82,6 +82,7 @@ ext {
             // testing libs
             jUnitVersion            : "4.12",
             mockitoVersion          : "1.10.19",
+            gsonVersion             : "2.8.2",
             powerMockVersion        : "1.6.3",
             runnerVersion           : "0.4.1",
             espressoVersion         : "2.2.1",

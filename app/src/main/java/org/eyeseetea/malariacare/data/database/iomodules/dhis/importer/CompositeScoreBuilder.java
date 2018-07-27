@@ -63,7 +63,7 @@ public class CompositeScoreBuilder {
     /**
      * Value of option 'COMPOSITE_SCORE'
      */
-    private static String COMPOSITE_SCORE_CODE;
+    private String compositeScoreCode;
     /**
      * Code of attribute '20 Question Type'
      */
@@ -81,14 +81,8 @@ public class CompositeScoreBuilder {
 
     CompositeScoreBuilder(){
         mapCompositeScores=new HashMap<>();
-
-        OptionFlow optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
-        //No Option with COMPOSITE_SCORE -> error
-        if(optionCompositeScore==null){
-            Log.e(TAG,"There is no option named 'COMPOSITE_SCORE' which is a severe data error");
-        }
-        COMPOSITE_SCORE_CODE=optionCompositeScore.getCode();
     }
+
 
     /**
      * Registers a compositeScore in builder
@@ -133,7 +127,7 @@ public class CompositeScoreBuilder {
         String typeQuestion= AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_QUESTION_TYPE_CODE, dataElementExtended.getDataElementFlow().getAttributeValueFlow());
 
         //Not found -> error type question
-        if(typeQuestion==null  || typeQuestion.equals(COMPOSITE_SCORE_CODE)){
+        if(typeQuestion==null  || typeQuestion.equals(getCompositeScoreCode())){
             return AnswerDB.DEFAULT_ANSWER_OUTPUT;
         }
 
@@ -150,6 +144,20 @@ public class CompositeScoreBuilder {
 
         //Find the value of the attribute 'DECompositiveScore' for this dataElement
         return AttributeValueExtended.findAttributeValueByCode(ATTRIBUTE_COMPOSITE_SCORE_CODE, dataElementExtended.getDataElementFlow().getAttributeValueFlow());
+    }
+
+    private String getCompositeScoreCode(){
+        if (compositeScoreCode == null || compositeScoreCode.isEmpty()){
+
+            OptionFlow optionCompositeScore= OptionExtended.findOptionByName(COMPOSITE_SCORE_NAME);
+            //No Option with COMPOSITE_SCORE -> error
+            if(optionCompositeScore==null){
+                Log.e(TAG,"There is no option named 'COMPOSITE_SCORE' which is a severe data error");
+            }
+            compositeScoreCode = optionCompositeScore.getCode();
+        }
+
+        return compositeScoreCode;
     }
 
     /**

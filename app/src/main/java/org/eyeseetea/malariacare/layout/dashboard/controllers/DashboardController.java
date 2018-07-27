@@ -20,12 +20,14 @@
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,23 +42,12 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyScheduleDB;
 import org.eyeseetea.malariacare.data.database.utils.planning.ScheduleListener;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.domain.usecase.GetSurveyAnsweredRatioUseCase;
-import org.eyeseetea.malariacare.domain.usecase.ISurveyAnsweredRatioCallback;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardSettings;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.DoublePieChart;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,12 +191,14 @@ public class DashboardController {
         onCreateTabHost(savedInstanceState);
     }
 
+
     /**
      * Init the container for all the tabs
      */
     private void onCreateTabHost(Bundle savedInstanceState) {
         tabHost = (TabHost)dashboardActivity.findViewById(R.id.tabHost);
         tabHost.setup();
+        tabHost.setBackgroundResource(R.drawable.tab_background);
 
         //Add visible modules to tabhost
         for(ModuleController moduleController: this.getModules()){
@@ -217,6 +210,8 @@ public class DashboardController {
 
         ModuleController firstModuleController=getFirstVisibleModule();
         tabHost.getTabWidget().getChildAt(0).setBackgroundColor(firstModuleController.getBackgroundColor());
+
+        setPrimaryIconActive(tabHost.getTabWidget().getChildAt(0));
         currentTab = firstModuleController.getName();
         currentTabTitle = firstModuleController.getTitle();
 
@@ -231,9 +226,17 @@ public class DashboardController {
                 //Reset tab colors
                 resetTabBackground();
                 tabHost.getCurrentTabView().setBackgroundColor(nextModuleController.getBackgroundColor());
+                tabHost.setBackgroundResource(R.drawable.tab_background);
 
                 //Update next Tab and title
                 currentTab = tabId;
+                for(int i=0; i<tabHost.getTabWidget().getTabCount();i++){
+                    if((tabHost.getTabWidget().getChildAt(i).findViewById(R.id.tabsLayout)).getTag().toString().equals(nextModuleController.getName())){
+                        setPrimaryIconActive(tabHost.getTabWidget().getChildAt(i));
+                    }else {
+                        setSecondaryIconActive(tabHost.getTabWidget().getChildAt(i));
+                    }
+                }
                 currentTabTitle = nextModuleController.getTitle();
 
                 //Before leaving current tab
@@ -244,6 +247,33 @@ public class DashboardController {
                 nextModuleController.onTabChanged();
             }
         });
+    }
+
+    private void setPrimaryIconActive(View view) {
+        changeActiveIcon(view, View.VISIBLE, View.GONE);
+    }
+
+    private void setSecondaryIconActive(View view) {
+        changeActiveIcon(view, View.GONE, View.VISIBLE);
+    }
+
+    private void changeActiveIcon(View view, int primary, int secondary){
+        TextView textView = (TextView) view.findViewById(R.id.tabsText);
+        if(primary == View.VISIBLE){
+            textView.setTextColor(ContextCompat.getColor(dashboardActivity, R.color.selected_text_tab_color));
+        }else{
+            textView.setTextColor(ContextCompat.getColor(dashboardActivity, R.color.unselected_text_tab_color));
+        }
+        ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        setVisibility(imageView, primary);
+        imageView = (ImageView) view.findViewById(R.id.tabSecondaryImage);
+        setVisibility(imageView, secondary);
+    }
+
+    private void setVisibility(ImageView imageView, int visibility) {
+        if(imageView!=null) {
+            imageView.setVisibility(visibility);
+        }
     }
 
     /**
@@ -323,117 +353,12 @@ public class DashboardController {
     }
 
     /**
-     * Called when click on assets survey
+     * Called when click on assess survey
      * @param survey
      */
-    public void onAssetsSelected(SurveyDB survey) {
-        assetsModelDialog(survey);
-    }
-
-
-    public AlertDialog assetsModelDialog(final SurveyDB survey) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(dashboardActivity);
-
-        LayoutInflater inflater = dashboardActivity.getLayoutInflater();
-
-        View v = inflater.inflate(R.layout.modal_menu, null);
-
-        builder.setView(v);
-
-        final DoublePieChart mChart = (DoublePieChart) v.findViewById(R.id.pie_chart);
-        Button delete = (Button) v.findViewById(R.id.delete);
-        Button cancel = (Button) v.findViewById(R.id.cancel);
-        Button markComplete = (Button) v.findViewById(R.id.mark_completed);
-        Button edit = (Button) v.findViewById(R.id.edit);
-        final TextView overall = (TextView) v.findViewById(R.id.overall_percent);
-        final TextView mandatory = (TextView) v.findViewById(R.id.mandatory_percent);
-
-        final AlertDialog alertDialog = builder.create();
-
-        edit.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onSurveySelected(survey);
-                        alertDialog.dismiss();
-                    }
-                }
-
-        );
-        markComplete.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onMarkAsCompleted(survey);
-                        alertDialog.dismiss();
-                    }
-                }
-
-        );
-        delete.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new AlertDialog.Builder(dashboardActivity)
-                                .setTitle(dashboardActivity.getString(R.string.dialog_title_delete_survey))
-                                .setMessage(String.format(""+dashboardActivity.getString(R.string.dialog_info_delete_survey), survey.getProgram().getName()))
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        //this method create a new survey geting the getScheduledDate date of the oldsurvey, and remove it.
-                                        SurveyPlanner.getInstance().deleteSurveyAndBuildNext(survey);
-                                        dashboardActivity.reloadDashboard();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, null).create().show();
-                        alertDialog.dismiss();
-                    }
-                }
-        );
-        cancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                }
-        );
-
-
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase;
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-
-                        if (surveyAnsweredRatio != null) {
-                            overall.setText(surveyAnsweredRatio.getTotalStatus() +
-                                    dashboardActivity.getString(R.string.percent));
-
-                            mandatory.setText(surveyAnsweredRatio.getMandatoryStatus() +
-                                    dashboardActivity.getString(R.string.percent));
-
-                            mChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-
-                            alertDialog.show();
-                        }
-                    }
-                });
-
-        return alertDialog;
+    public void onAssessSelected(SurveyDB survey) {
+        AssessModuleController assessModuleController = (AssessModuleController)getModuleByName(AssessModuleController.getSimpleName());
+        assessModuleController.assessModelDialog(survey);
     }
 
     /**
@@ -458,12 +383,20 @@ public class DashboardController {
         Button actionPlan = (Button) v.findViewById(R.id.action_plan);
         Button cancel = (Button) v.findViewById(R.id.cancel);
 
+        TextView orgUnitTextView = (TextView) v.findViewById(R.id.planned_org_unit);
+        TextView programTextView = (TextView) v.findViewById(R.id.planned_program);
+        if(survey.getOrgUnit()!=null  && survey.getOrgUnit().getName()!=null && orgUnitTextView!=null) {
+            orgUnitTextView.setText(survey.getOrgUnit().getName());
+        }
+        if(survey.getOrgUnit()!=null  && survey.getProgram().getName()!=null && programTextView!=null) {
+            programTextView.setText(survey.getProgram().getName());
+        }
         final AlertDialog alertDialog =builder.create();
         viewFeedback.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openFeedback(survey);
+                        openFeedback(survey, true);
 
 
                         alertDialog.dismiss();
@@ -491,9 +424,9 @@ public class DashboardController {
 
         );
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
-
 
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
         scheduleHistoricLogDialog(survey);
@@ -539,6 +472,7 @@ public class DashboardController {
 
             );
             alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void showHistory(SurveyDB survey) {
@@ -553,10 +487,10 @@ public class DashboardController {
         orgUnit.setText(survey.getOrgUnit().getName());
         Button cancel = (Button) v.findViewById(R.id.cancel);
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.log_content);
-        View row = inflater.inflate(R.layout.item_list_dialog_header, null);
+        View row = inflater.inflate(R.layout.log_list_dialog_header, null);
         linearLayout.addView(row);
         for(SurveyScheduleDB surveyScheduleDB: survey.getSurveySchedules()){
-            row = inflater.inflate(R.layout.item_list_row_row, null);
+            row = inflater.inflate(R.layout.log_list_row, null);
             TextView comment = (TextView) row.findViewById(R.id.first_column);
             TextView date = (TextView) row.findViewById(R.id.second_column);
             comment.setText(surveyScheduleDB.getComment());
@@ -577,7 +511,7 @@ public class DashboardController {
     }
 
 
-    public void openFeedback(SurveyDB survey) {
+    public void openFeedback(SurveyDB survey, boolean modifyFilter) {
         //Vertical -> Hide improve module
         if(DashboardOrientation.VERTICAL.equals(getOrientation())){
             //Mark currentTab (only necessary for vertical orientation)
@@ -595,7 +529,7 @@ public class DashboardController {
         }
 
         ImproveModuleController improveModuleController = (ImproveModuleController)getModuleByName(ImproveModuleController.getSimpleName());
-        improveModuleController.onFeedbackSelected(survey);
+        improveModuleController.onFeedbackSelected(survey, modifyFilter);
         improveModuleController.setActionBarDashboardWithProgram();
     }
 
@@ -663,7 +597,9 @@ public class DashboardController {
                     }
                 }
         );
+
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
@@ -690,12 +626,31 @@ public class DashboardController {
         //Add tab to tabhost
         TabHost.TabSpec tab = tabHost.newTabSpec(tabName);
         tab.setContent(moduleController.getTabLayout());
-        tab.setIndicator("", moduleController.getIcon());
+        String title = "";
+        View tabview = createTabView(tabHost.getContext(), moduleController.getTitle(), moduleController.getIcon(), moduleController.getSecondaryIcon());
+        tabview.setTag(moduleController.getName());
+        tab = tabHost.newTabSpec(tabName).setIndicator(tabview).setContent(moduleController.getTabLayout());
         tabHost.addTab(tab);
 
         addTagToLastTab(tabName);
     }
 
+    private static View createTabView(final Context context, final String text, Drawable icon, Drawable secondaryIcon) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView) view.findViewById(R.id.tabsText);
+        if(AppSettingsBuilder.isTabTitleVisible()){
+            tv.setText(text);
+        }else {
+            tv.setVisibility(View.GONE);
+        }
+        ImageView imageView = (ImageView) view.findViewById(R.id.tabsImage);
+        imageView.setVisibility(View.GONE);
+        imageView.setImageDrawable(icon);
+        imageView = (ImageView) view.findViewById(R.id.tabSecondaryImage);
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setImageDrawable(secondaryIcon);
+        return view;
+    }
     /**
      * Last current tab is tagged with the given tabName
      * @param tabName
@@ -703,7 +658,7 @@ public class DashboardController {
     private void addTagToLastTab(String tabName){
         TabWidget tabWidget=tabHost.getTabWidget();
         int numTabs=tabWidget.getTabCount();
-        LinearLayout tabIndicator=(LinearLayout)tabWidget.getChildTabViewAt(numTabs - 1);
+        ViewGroup tabIndicator=(ViewGroup)tabWidget.getChildTabViewAt(numTabs - 1);
 
         ImageView imageView = (ImageView)tabIndicator.getChildAt(0);
         imageView.setTag(tabName);

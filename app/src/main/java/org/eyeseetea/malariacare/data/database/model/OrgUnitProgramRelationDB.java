@@ -165,6 +165,14 @@ public class OrgUnitProgramRelationDB extends BaseModel {
     public void setId_orgunit_program_relation(long id_orgunit_program_relation) {
         this.id_orgunit_program_relation = id_orgunit_program_relation;
     }
+    
+    public static boolean existProgramAndOrgUnitRelation(Long idProgram, Long idOrgUnit) {
+            OrgUnitProgramRelationDB
+                    orgUnitProgramRelation = new Select().from(OrgUnitProgramRelationDB.class)
+                    .where(OrgUnitProgramRelationDB_Table.id_org_unit_fk.eq(idOrgUnit))
+                    .and(OrgUnitProgramRelationDB_Table.id_program_fk.eq(idProgram)).querySingle();
+            return (orgUnitProgramRelation != null);
+    }
 
     @Override
     public boolean equals(Object o) {
