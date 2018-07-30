@@ -905,6 +905,14 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .where(SurveyDB_Table.id_survey.eq(id)).querySingle();
     }
 
+
+    public static SurveyDB getSurveyByUId(String uid) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk.eq(uid)).querySingle();
+    }
+
+
     public String getFullName() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getOrgUnit().getName());
