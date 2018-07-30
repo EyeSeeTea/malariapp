@@ -324,7 +324,6 @@ public class AssessModuleController extends ModuleController {
 
     public void onNewSurvey() {
         if (PreferencesState.getInstance().isVerticalDashboard()) {
-            ActionBarStrategy.setActionBarBackButton(dashboardActivity);
             CustomTextView sentTitle = (CustomTextView) dashboardActivity.findViewById(
                     R.id.titleCompleted);
             sentTitle.setText("");

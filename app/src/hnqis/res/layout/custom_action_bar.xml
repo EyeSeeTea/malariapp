@@ -36,4 +36,11 @@
         android:width="0dp"
         app:tFontName="@string/light_font"
         android:textSize="20dip"/>
+    <org.eyeseetea.malariacare.views.CustomTextView android:id="@+id/action_bar_user"
+        android:layout_height="28dip"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:width="0dp"
+        app:tFontName="@string/light_font"
+        android:textSize="20dip"/>
 </LinearLayout>

@@ -142,7 +142,6 @@ public class DoublePieChart extends FrameLayout {
         PieDataSet dataSet = new PieDataSet(entries, "");
 
         dataSet.setDrawIcons(false);
-
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
@@ -165,7 +164,7 @@ public class DoublePieChart extends FrameLayout {
         l.setEnabled(false);
 
         mChart.setData(data);
-
+        mChart.setHoleColor(getColor(getContext(), R.color.transparent));
         // undo all highlights
         mChart.highlightValues(null);
 

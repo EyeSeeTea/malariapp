@@ -109,19 +109,9 @@ public class LayoutUtils {
     }
 
     //// TODO: 30/07/2018  remove if is not used in hnqis
-    // Used to setup the usual actionbar with the logo and the app name
-    public static void setToolBarLogo(AppCompatActivity activity) {
-        Toolbar toolbar = getToolbar(activity);
-    }
-
-    //// TODO: 30/07/2018  remove if is not used in hnqis
     public static void setActionBarBackButton(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-    }
-    public static void setToolBarBackButton(AppCompatActivity activity) {
-        Toolbar toolbar = getToolbar(activity);
-        //actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public static void setToolBarTitleForSurveyFeedback(DashboardActivity dashboardActivity,
@@ -146,7 +136,7 @@ public class LayoutUtils {
             setToolbarTitle(dashboardActivity, spannedTitle, subtitle);
         }
     }
-    //// TODO: 30/07/2018  remove if is not used in hnqis
+
     public static void setActionBarForSurveyFeedback(AppCompatActivity dashboardActivity,
             SurveyDB survey) {
         String title = "";
@@ -169,7 +159,7 @@ public class LayoutUtils {
             setActionbarTitle(dashboardActivity, spannedTitle, subtitle);
         }
     }
-    //// TODO: 30/07/2018  remove if is not used in hnqis
+
     public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
             SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
         String title = "";
@@ -268,7 +258,6 @@ public class LayoutUtils {
         actionBar.setTitle(activity.getResources().getString(R.string.app_name));
     }
 
-    //// TODO: 30/07/2018  remove if is not used in hnqis
     public static void setActionBarDashboard(AppCompatActivity activity, String title) {
 
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();

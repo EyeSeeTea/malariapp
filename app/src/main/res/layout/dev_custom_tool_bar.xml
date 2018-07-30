@@ -89,14 +89,16 @@
 
             </LinearLayout>
 
+    </LinearLayout>
         <org.eyeseetea.malariacare.views.DoublePieChart
             android:id="@+id/action_bar_chart"
             android:visibility="gone"
             android:layout_width="50dp"
+            android:background="@color/transparent"
+            android:layout_toLeftOf="@+id/action_bar_user"
             android:layout_height="50dp" />
-    </LinearLayout>
         <org.eyeseetea.malariacare.views.CustomTextView
-            android:id="@+id/action_bar_user"
+            android:id="@id/action_bar_user"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

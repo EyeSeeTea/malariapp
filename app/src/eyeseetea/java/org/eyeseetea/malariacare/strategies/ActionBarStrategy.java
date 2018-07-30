@@ -17,10 +17,6 @@ public class ActionBarStrategy extends LayoutUtils {
         LayoutUtils.setToolBarTitleForSurveyFeedback(dashboardActivity,survey);
     }
 
-    public static void setActionBarBackButton(DashboardActivity dashboardActivity) {
-        LayoutUtils.setToolBarBackButton(dashboardActivity);
-    }
-
     public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
             SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
     }
