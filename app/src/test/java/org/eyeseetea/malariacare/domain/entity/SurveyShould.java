@@ -16,10 +16,10 @@ public class SurveyShould {
 
     @Test
     public void create_survey_with_mandatory_fields(){
-        Survey survey = Survey.createEmptySurvey("PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
 
         Assert.assertNotNull(survey);
-        Assert.assertTrue(!survey.getUId().isEmpty());
+        Assert.assertTrue(survey.getUId().equals("UID"));
         Assert.assertTrue(survey.getProgramUId().equals("PROGRAM_UID"));
         Assert.assertTrue(survey.getOrgUnitUId().equals("ORG_UNIT_UID"));
         Assert.assertTrue(survey.getUserUId().equals("USER_UID"));
@@ -27,11 +27,18 @@ public class SurveyShould {
 
     @Test
     public void create_empty_survey(){
-        Survey survey = Survey.createEmptySurvey("PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
 
         Assert.assertNotNull(survey);
         Assert.assertNotNull(survey.getCreationDate());
         Assert.assertTrue(survey.getStatus().equals(SurveyStatus.IN_PROGRESS));
+    }
+
+    @Test
+    public void throw_exception_when_create_survey_with_null_uid(){
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Survey uid is required");
+        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
     }
 
     @Test
@@ -63,7 +70,7 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey programUId is required");
 
-        Survey.createEmptySurvey(null, "ORG_UNIT_UID", "USER_UID");
+        Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID");
     }
 
     @Test
@@ -71,7 +78,7 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey orgUnitUId is required");
 
-        Survey.createEmptySurvey("PROGRAM_UID", null, "USER_UID");
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID");
     }
 
     @Test
@@ -79,6 +86,6 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey userUId is required");
 
-        Survey.createEmptySurvey("PROGRAM_UID", "ORG_UNIT_UID", null);
+        Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null);
     }
 }
