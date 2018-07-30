@@ -226,6 +226,12 @@ public class DataElementExtended implements VisitableFromSDK {
                 OPTION_COMPOSITE_SCORE_NAME);
     }
 
+    public static boolean isLoadedDataElementTypeCodes(){
+        return  OPTION_ELEMENT_TYPE_QUESTION_CODE != null &&
+                OPTION_ELEMENT_TYPE_CONTROL_CODE != null &&
+                OPTION_ELEMENT_TYPE_SCORE_CODE != null;
+    }
+
     /**
      * Returns the option code for a given optionSet and option name
      */

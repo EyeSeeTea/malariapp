@@ -19,20 +19,17 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.layout.dashboard.controllers.AssessModuleController;
-import org.eyeseetea.malariacare.views.filters.MinMaxInputFilter;
 import org.junit.Test;
 
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Created by arrizabalaga on 2/06/15.
@@ -63,7 +60,7 @@ public class AppSettingsTest {
         String expectedDatabaseUri="file://lalala";
         boolean expectedFullHierarchy=true;
         String jsonDatabase = String.format(JSON_DATABASE_TEMPLATE,"dhis",expectedDatabaseUri,"true");
-        String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
+        String jsonModule1 = String.format(JSON_MODULE_TEMPLATE,"plan","red","dashboard_details_container","AssessModuleController");
         String jsonModules =jsonModule1+","+jsonModule1;
         String jsonDashboard = String.format(JSON_DASHBOARD_TEMPLATE,"vertical","vertical_main",jsonModules);
         String jsonInString = String.format(JSON_APP_TEMPLATE,jsonDatabase,jsonDashboard);
@@ -94,7 +91,7 @@ public class AppSettingsTest {
 
         //THEN modules is ok
         List<ModuleSettings> modules = dashboardSettings.getModules();
-        assertEquals(2,modules.size());
+        assertEquals(2, modules.size());
         assertModuleSettings(modules.get(0));
     }
 
@@ -102,7 +99,7 @@ public class AppSettingsTest {
     public void parse_a_module(){
         //GIVEN
         ObjectMapper mapper = new ObjectMapper();
-        String jsonInString = String.format(JSON_MODULE_TEMPLATE,"tab_assess","tab_yellow_assess","dashboard_details_container","AssessModuleController");
+        String jsonInString = String.format(JSON_MODULE_TEMPLATE, "plan", "red","dashboard_details_container","AssessModuleController");
 
         //WHEN
         ModuleSettings moduleSettings=null;
@@ -137,9 +134,9 @@ public class AppSettingsTest {
 
     private void assertModuleSettings(ModuleSettings moduleSettings) {
         assertNotNull(moduleSettings);
-        assertEquals(R.drawable.tab_assess,moduleSettings.getResIcon());
-        assertEquals(R.color.tab_yellow_assess,moduleSettings.getResBackgroundColor());
-        assertEquals(R.id.dashboard_details_container,moduleSettings.getResLayout());
+        assertEquals(R.drawable.plan, moduleSettings.getResIcon());
+        assertEquals(R.color.red, moduleSettings.getResBackgroundColor());
+        assertEquals(R.id.dashboard_details_container, moduleSettings.getResLayout());
         assertEquals(AssessModuleController.class, moduleSettings.getClassController());
     }
 }

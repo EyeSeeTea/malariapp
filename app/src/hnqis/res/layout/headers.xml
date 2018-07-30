@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/header">
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_string"
+        android:id="@+id/headerName"
+        android:textColor="@color/plan_grey_survey_text"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:background="@color/assess_yellow"
+        android:paddingLeft="10dip"
+        android:textSize="18dp"
+        app:tDimension="@string/font_size_level2"
+        app:tFontName="@string/medium_font_name" />
+</LinearLayout>

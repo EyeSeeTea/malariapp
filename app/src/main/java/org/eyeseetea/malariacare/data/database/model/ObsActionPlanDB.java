@@ -56,6 +56,9 @@ public class ObsActionPlanDB extends BaseModel implements VisitableToSDK {
     SurveyDB mSurvey;
 
     @Column
+    String provider;
+
+    @Column
     String gaps;
 
     @Column
@@ -183,6 +186,12 @@ public class ObsActionPlanDB extends BaseModel implements VisitableToSDK {
         this.id_survey_obs_action_fk = id_survey_obs_action_fk;
     }
 
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider=provider;
+    }
     public String getGaps() {
         return gaps;
     }

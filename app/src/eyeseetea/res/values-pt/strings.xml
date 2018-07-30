@@ -33,7 +33,7 @@
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
 <string name="dashboard_info_sent">"Enviei"</string>
 
-<string name="create_info_ok">"Criar"</string>
+<string name="create_info_ok">"CRIAR PESQUISA"</string>
 <string name="create_info_organization_unit">"Unidade da Organização – Unid. Org."</string>
 <string name="create_info_survey">"Inquérito"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
@@ -175,10 +175,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="option_delete">"Excluir"</string>
 <string name="hide_planning_tab_title">"Ocultar guia planejamento"</string>
 <string name="hide_planning_tab_summary">"Marque esta caixa para ocultar a guia de planejamento"</string>
-<string name="plan">"Plano"</string>
-<string name="assess">"Avaliar - pesquisas ativas"</string>
-<string name="improve">"Melhorar"</string>
-<string name="monitor">"Monitor"</string>
+<string name="plan">"Avaliações"</string>
+<string name="assess">"Inquérito"</string>
+<string name="improve">"Comentários"</string>
+<string name="monitor">"Relatórios"</string>
 <string name="filter_all_org_units">"todas as unidades de organização"</string>
 <string name="filter_all_org_assessments">"Todos avaliados"</string>
 <string name="dialog_content_dhis_preference_login">"Alterar o servidor precisa re-login. Cada pesquisa não-enviados serão apagados. Você tem certeza que quer continuar?"</string>
@@ -201,7 +201,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="feedback_view_image">Imagem aberta com...</string>
 <string name="select_all">Selecionar tudo</string>
 
-<string name="demo_login">Demonstração</string>
+<string name="demo_login">Modo de demonstração</string>
 <string name="system_defined">"Sistema definido"</string>
 <string name="settings_select_language">"Língua"</string>
 <string name="toast_push_in_progress">"Aguarde, Já existe um envio em andamento"</string>
@@ -268,4 +268,10 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="completed_title">"Concluído"</string>
 <string name="completed_next">"Próximo"</string>
 <string name="plan_action_edit_text_hint">"toque para escrever"</string>
+<string name="planning_label_date">"Nova data:"</string>
+<string name="plan_action_provider_title" >"Nome do provedor:"</string>
+<string name="advanced_options">"Opções avançadas"</string>
+<string name="simple_options">"Opções simples"</string>
+<string name="plan_action_edit_text_hint">"toque para escrever"</string>
+<string name="header_reschedule_title">"re-agendar"</string>
 </resources>

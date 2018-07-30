@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~
+  ~ This file is part of Facility QA Tool App.
+  ~
+  ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Facility QA Tool App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/assessment_row"
+    android:minHeight="@dimen/row_min_height"
+    android:background="@drawable/cell_borders">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/facilityDateContainer"
+        android:paddingLeft="@dimen/row_left_padding"
+        android:layout_weight="0.7"
+        android:layout_gravity="center"
+        android:paddingRight="10dp">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/facility"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/new_grey_text_color"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/medium_font_name"
+            tools:text="Test facility 1"/>
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/survey_type"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/new_grey_text_color"
+            android:layout_gravity="center_vertical"
+            app:tDimension="@string/font_size_level2"
+            app:tFontName="@string/light_font"
+            tools:text="IMCI"/>
+
+    </LinearLayout>
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/label_overall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/xsmall_text_size"
+            app:font_name="@string/font_name_medium"
+            android:textStyle="bold"
+            tools:text="34%"/>
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/xsmall_text_size"
+        app:font_name="@string/font_name_medium"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:text="@string/dash"/>
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/label_mandatory_completed"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/xsmall_text_size"
+        app:font_name="@string/font_name_medium"
+        android:textStyle="bold"
+        tools:text="72%"/>
+
+    <ImageView
+        android:id="@+id/menu_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:paddingLeft="@dimen/three_dots_padding_left"
+        android:src="@drawable/ic_action_more_vert"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal" />
+</TableRow>
