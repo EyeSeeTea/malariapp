@@ -19,20 +19,16 @@
 
 package org.eyeseetea.malariacare.layout.utils;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -151,7 +147,7 @@ public class LayoutUtils {
         }
     }
     //// TODO: 30/07/2018  remove if is not used in hnqis
-    public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,
+    public static void setActionBarForSurveyFeedback(AppCompatActivity dashboardActivity,
             SurveyDB survey) {
         String title = "";
         String subtitle = "";
@@ -191,7 +187,7 @@ public class LayoutUtils {
         setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey(), surveyAnsweredRatio);
     }
 
-    private static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
+    private static void setActionbarVerticalSurvey(AppCompatActivity dashboardActivity, String title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
@@ -263,7 +259,7 @@ public class LayoutUtils {
 
 
 
-    private static void setActionbarAppName(ActionBarActivity activity) {
+    private static void setActionbarAppName(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -273,7 +269,7 @@ public class LayoutUtils {
     }
 
     //// TODO: 30/07/2018  remove if is not used in hnqis
-    public static void setActionBarDashboard(ActionBarActivity activity, String title) {
+    public static void setActionBarDashboard(AppCompatActivity activity, String title) {
 
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setLogo(R.drawable.qualityapp_logo);
@@ -392,8 +388,8 @@ public class LayoutUtils {
         return String.format("%X", appNameColor).substring(2);
     }
 
-    public static View getActionBarPie(AppCompatActivity activity) {
-        return activity.getSupportActionBar
+    public static DoublePieChart getActionBarPie(AppCompatActivity activity) {
+        return (DoublePieChart) activity.getSupportActionBar
                 ().getCustomView().findViewById(
                 R.id.action_bar_chart);
     }

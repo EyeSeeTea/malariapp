@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!--
+      ~ Copyright (c) 2015.
+      ~
+      ~ This file is part of Facility QA Tool App.
+      ~
+      ~  Facility QA Tool App is free software: you can redistribute it and/or modify
+      ~  it under the terms of the GNU General Public License as published by
+      ~  the Free Software Foundation, either version 3 of the License, or
+      ~  (at your option) any later version.
+      ~
+      ~  Facility QA Tool App is distributed in the hope that it will be useful,
+      ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+      ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      ~  GNU General Public License for more details.
+      ~
+      ~  You should have received a copy of the GNU General Public License
+      ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+      -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dashboard_scroll"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+    <TabHost
+        android:id="@+id/tabHost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_background"
+                android:layout_alignParentBottom="true"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@android:id/tabs"
+                android:background="@color/tab_background"
+                android:layout_alignParentTop="true">
+
+                <include layout="@layout/tab_plan_layout" />
+
+                <include layout="@layout/tab_assess_layout"/>
+
+                <include layout="@layout/tab_improve_layout"/>
+
+                <include layout="@layout/tab_monitor_layout"/>
+
+            </FrameLayout>
+        </RelativeLayout>
+    </TabHost>
+
+</LinearLayout>
