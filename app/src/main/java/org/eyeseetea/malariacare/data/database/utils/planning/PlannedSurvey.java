@@ -88,7 +88,7 @@ public class PlannedSurvey implements PlannedItem {
         if(survey==null || !survey.hasMainScore()){
             return NO_QUALITY_OF_CARE;
         }
-        return AUtils.round(survey.getMainScore());
+        return AUtils.round(survey.getMainScore().getScore());
     }
 
     public Date getNextAssesment(){
