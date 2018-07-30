@@ -74,7 +74,7 @@ public class ObservationLocalDataSource{
 
         Observation observation =
                 Observation.createStoredObservation(surveyUId,
-                        ObservationStatus.get(observationDB.getStatus()),observationValues);
+                        ObservationStatus.get(observationDB.getStatus_observation()),observationValues);
 
         return observation;
     }
@@ -84,7 +84,7 @@ public class ObservationLocalDataSource{
 
         ObservationDB observationDB = new ObservationDB();
         observationDB.setId_survey_observation_fk(surveyDB.getId_survey());
-        observationDB.setStatus(observation.getStatus().getCode());
+        observationDB.setStatus_observation(observation.getStatus().getCode());
         observationDB.save();
 
 
@@ -99,7 +99,7 @@ public class ObservationLocalDataSource{
     }
 
     private void modify(ObservationDB observationDB, Observation observation) {
-        observationDB.setStatus(observation.getStatus().getCode());
+        observationDB.setStatus_observation(observation.getStatus().getCode());
         observationDB.save();
 
         for (ObservationValue observationValue:observation.getValues()) {

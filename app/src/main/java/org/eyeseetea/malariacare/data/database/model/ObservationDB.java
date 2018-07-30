@@ -39,7 +39,7 @@ public class ObservationDB extends BaseModel {
     Long id_survey_observation_fk;
 
     @Column
-    Integer status;
+    Integer status_observation;
 
     List<ObservationValueDB> valuesDB;
 
@@ -59,12 +59,12 @@ public class ObservationDB extends BaseModel {
         this.id_survey_observation_fk = id_survey_observation_fk;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getStatus_observation() {
+        return status_observation;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus_observation(Integer status) {
+        this.status_observation = status_observation;
     }
 
     public List<ObservationValueDB> getValuesDB() {
@@ -85,14 +85,14 @@ public class ObservationDB extends BaseModel {
 
         if (id_observation != that.id_observation) return false;
         if (!id_survey_observation_fk.equals(that.id_survey_observation_fk)) return false;
-        return status.equals(that.status);
+        return status_observation.equals(that.status_observation);
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id_observation ^ (id_observation >>> 32));
         result = 31 * result + id_survey_observation_fk.hashCode();
-        result = 31 * result + status.hashCode();
+        result = 31 * result + status_observation.hashCode();
         return result;
     }
 
@@ -101,7 +101,7 @@ public class ObservationDB extends BaseModel {
         return "ObservationDB{" +
                 "id_observation=" + id_observation +
                 ", id_survey_observation_fk=" + id_survey_observation_fk +
-                ", status=" + status +
+                ", status=" + status_observation +
                 '}';
     }
 }

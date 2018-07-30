@@ -136,7 +136,7 @@ public class ImproveModuleController extends ModuleController {
             e.printStackTrace();
         }
 
-        mObservationsFragment = ObservationsFragment.newInstance(survey.getId_survey());
+        mObservationsFragment = ObservationsFragment.newInstance(survey.getEventUid());
 
         replaceFragment(R.id.dashboard_completed_container, mObservationsFragment);
 
