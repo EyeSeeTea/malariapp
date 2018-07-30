@@ -271,8 +271,6 @@
 <string name="comments">"ຄວາມຄິດເຫັນ"</string>
 <string name="dates">"ວັນທີ່ຜ່ານມາ"</string>
 <string name="mark_complete">"Mark ແລ້ວສົມບູນ"</string>
-<string name="plain_text">"ຂໍ້ຄວາມສັ້ນ "</string>
-<string name="html_text">"ຂໍ້ຄວາມຍາວ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
 

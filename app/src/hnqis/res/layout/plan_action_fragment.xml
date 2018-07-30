@@ -48,7 +48,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1.5"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"º
+                    android:layout_gravity="center_horizontal|center_vertical"
                     android:gravity="center_horizontal|center_vertical"
                     android:padding="5dp"
                     android:minHeight="@dimen/header_min_height"
