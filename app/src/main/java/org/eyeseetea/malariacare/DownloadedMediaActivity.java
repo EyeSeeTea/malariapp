@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -36,10 +37,9 @@ public class DownloadedMediaActivity extends BaseActivity {
     }
 
     private void setActivityActionBar() {
-        android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
-        ActionBarStrategy.setActionBarLogo(actionBar);
         ActionBarStrategy.setActionBarDashboard(this, this.getString(R.string.downloaded_media_menu));
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

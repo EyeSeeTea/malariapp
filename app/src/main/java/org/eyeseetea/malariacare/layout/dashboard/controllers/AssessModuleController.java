@@ -260,10 +260,10 @@ public class AssessModuleController extends ModuleController {
     }
 
     private void initializeStatusChart() {
+
         DoublePieChart doublePieChart =
-                (DoublePieChart) DashboardActivity.dashboardActivity.getSupportActionBar
-                        ().getCustomView().findViewById(
-                        R.id.action_bar_chart);
+                ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
+
 
         doublePieChart.setOnClickListener(new View.OnClickListener() {
             @Override

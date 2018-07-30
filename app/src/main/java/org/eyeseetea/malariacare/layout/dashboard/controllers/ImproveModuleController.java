@@ -121,7 +121,7 @@ public class ImproveModuleController extends ModuleController {
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        ActionBarStrategy.setActionBarForSurvey(dashboardActivity, survey);
+        ActionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
 
         if(modifyFilter) {
             UpdateFiltersBySurvey(survey);

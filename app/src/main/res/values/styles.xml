@@ -18,6 +18,8 @@
         <item name="colorControlNormal">#4A4A4A</item>
         <item name="colorControlActivated">#979797</item>
         <item name="colorControlHighlight">#4A4A4A</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="EyeSeeTheme.OverFlow">

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016.
+  ~
+  ~ This file is part of QA App.
+  ~
+  ~  Health Network QIS App is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  Health Network QIS App is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_gravity="center_vertical"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/actionbar_gradient"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:contentInsetStart="0dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="0dp"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="0dp"
+        android:layout_weight="0.87"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp">
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/action_bar_multititle_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/actionbar_color"
+            android:textSize="@dimen/roboto_16"
+            app:tFontName="@string/regular_font" />
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/action_bar_multititle_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/roboto_12"
+            app:tFontName="@string/regular_font" />
+
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/action_bar_multititle_dev_subtitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:lines="1"
+            android:visibility="gone"
+            android:textSize="@dimen/roboto_12"
+            app:tFontName="@string/regular_font" />
+
+            </LinearLayout>
+
+        <org.eyeseetea.malariacare.views.DoublePieChart
+            android:id="@+id/action_bar_chart"
+            android:visibility="gone"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+    </LinearLayout>
+        <org.eyeseetea.malariacare.views.CustomTextView
+            android:id="@+id/action_bar_user"
+            android:layout_width="0dp"
+            android:layout_weight="0.13"
+            android:layout_height="match_parent"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/grey_dark"
+            android:paddingRight="5dp"
+            android:lines="1"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            app:tFontName="@string/regular_font"
+            android:textSize="@dimen/roboto_12"/>
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

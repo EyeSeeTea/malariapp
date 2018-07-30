@@ -121,5 +121,6 @@
     <color name="event_row_odd">@color/white_light</color>
     <color name="selected_text_tab_color">@color/white</color>
     <color name="unselected_text_tab_color">#79939b</color>
-
+    <color name="actionbar_color">#325058</color>
+    #
 </resources>
