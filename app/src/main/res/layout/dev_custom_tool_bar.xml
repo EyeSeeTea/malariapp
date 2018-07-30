@@ -30,19 +30,18 @@
     android:paddingRight="10dp"
     android:paddingLeft="0dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
-        android:weightSum="1"
         android:orientation="horizontal">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="0dp"
-        android:layout_weight="0.87"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
@@ -50,9 +49,8 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.8"
             android:orientation="vertical"
             android:gravity="center_vertical"
             android:paddingTop="10dp"
@@ -81,7 +79,7 @@
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/action_bar_multititle_dev_subtitle"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:lines="1"
@@ -99,8 +97,8 @@
     </LinearLayout>
         <org.eyeseetea.malariacare.views.CustomTextView
             android:id="@+id/action_bar_user"
-            android:layout_width="0dp"
-            android:layout_weight="0.13"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
@@ -111,5 +109,5 @@
             android:gravity="center_vertical"
             app:tFontName="@string/regular_font"
             android:textSize="@dimen/roboto_12"/>
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>
