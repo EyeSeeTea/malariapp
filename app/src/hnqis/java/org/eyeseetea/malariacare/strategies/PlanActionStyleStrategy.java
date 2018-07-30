@@ -1,9 +1,11 @@
 package org.eyeseetea.malariacare.strategies;
 
 import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.presentation.presenters.ObsActionPlanPresenter;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
@@ -20,5 +22,10 @@ public class PlanActionStyleStrategy {
 
     public static DoubleRectChart loadDoubleRectChart(RelativeLayout rootView) {
         return null;
+    }
+
+    public static void disableShare(FloatingActionButton mFabComplete) {
+    }
+    public static void enableShare(FloatingActionButton mFabComplete) {
     }
 }

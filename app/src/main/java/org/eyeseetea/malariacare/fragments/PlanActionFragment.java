@@ -25,9 +25,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -391,7 +393,7 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
 
         mOrgUnitTextView.setText(orgUnitName);
 
-        if(mTotalScoreTextView!=null) {
+        if (mTotalScoreTextView != null) {
             if (mainScore > 0f) {
                 mTotalScoreTextView.setText(String.format("%.1f%%", mainScore));
                 int colorId = LayoutUtils.trafficColor(mainScore);
@@ -401,16 +403,17 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
                 int colorId = LayoutUtils.trafficColor(mainScore);
                 mTotalScoreTextView.setBackgroundColor(getResources().getColor(colorId));
             }
-        }else if (mDoubleRectChart!=null){
+        } else if (mDoubleRectChart != null) {
             LayoutUtils.drawScore(mainScore, mDoubleRectChart);
 
 
-        mCompletionDateTextView.setText(
-                String.format(getString(R.string.plan_action_today_date), completionDate));
+            mCompletionDateTextView.setText(
+                    String.format(getString(R.string.plan_action_today_date), completionDate));
 
-        mNextDateTextView.setText(
-                String.format(getString(R.string.plan_action_next_date), nextDate));
+            mNextDateTextView.setText(
+                    String.format(getString(R.string.plan_action_next_date), nextDate));
 
+        }
     }
 
     @Override
@@ -450,12 +453,13 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
         int shareColor = ContextCompat.getColor(fabShare.getContext(), R.color.share_fab_background);
 
         fabShare.getBackground().setColorFilter(shareColor, PorterDuff.Mode.SRC_IN);
-
+        PlanActionStyleStrategy.enableShare(fabShare);
     }
 
     @Override
     public void disableShareButton() {
         fabShare.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        PlanActionStyleStrategy.disableShare(fabShare);
         fabShare.setEnabled(false);
     }
 

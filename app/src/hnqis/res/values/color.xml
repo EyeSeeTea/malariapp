@@ -26,4 +26,5 @@
     <color name="assess_yellow">#dbe444</color>
     <color name="dialog_button_text">@color/white</color>
     <color name="dialog_red_button">#00988a</color>
+    <color name="share_fab_background">#7790fd</color>
 </resources>
