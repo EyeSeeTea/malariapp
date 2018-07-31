@@ -63,7 +63,7 @@ public class ObservationDB extends BaseModel {
         return status_observation;
     }
 
-    public void setStatus_observation(Integer status) {
+    public void setStatus_observation(Integer status_observation) {
         this.status_observation = status_observation;
     }
 

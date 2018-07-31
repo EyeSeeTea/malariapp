@@ -61,7 +61,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.presentation.presenters.ObservationsPresenter;
-import org.eyeseetea.malariacare.presentation.viewModels.ObservationsViewModel;
+import org.eyeseetea.malariacare.presentation.viewModels.ObservationViewModel;
 import org.eyeseetea.malariacare.views.CustomEditText;
 import org.eyeseetea.malariacare.views.CustomSpinner;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -388,7 +388,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void hideSubActionOptionsView() {
         secondaryActionSpinner.setVisibility(View.GONE);
-        secondaryActionSpinner.setSelection(0);
         secondaryView.setVisibility(View.GONE);
     }
 
@@ -401,7 +400,6 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     @Override
     public void hideSubActionOtherView() {
         mCustomActionOtherEditText.setVisibility(View.GONE);
-        mCustomActionOtherEditText.setText("");
         otherView.setVisibility(View.GONE);
     }
 
@@ -456,9 +454,9 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
     }
 
     @Override
-    public void shareByText(ObservationsViewModel observationsViewModel, SurveyDB survey,
+    public void shareByText(ObservationViewModel observationViewModel, SurveyDB survey,
             List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
-        String data = extractTextData(observationsViewModel, survey, criticalQuestions,
+        String data = extractTextData(observationViewModel, survey, criticalQuestions,
                 compositeScoresTree);
 
         Intent sendIntent = new Intent();
@@ -486,7 +484,7 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
         fabShare.setEnabled(false);
     }
 
-    private String extractTextData(ObservationsViewModel observationsViewModel, SurveyDB survey,
+    private String extractTextData(ObservationViewModel observationViewModel, SurveyDB survey,
             List<QuestionDB> criticalQuestions, List<CompositeScoreDB> compositeScoresTree) {
         String data =
                 PreferencesState.getInstance().getContext().getString(
@@ -505,31 +503,31 @@ public class ObservationsFragment extends Fragment implements IModuleFragment,
                 EventExtended.format(SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
                         EventExtended.EUROPEAN_DATE_FORMAT));
 
-        if(observationsViewModel.getProvider()!=null && !observationsViewModel.getProvider().isEmpty()) {
-            data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + observationsViewModel.getProvider();
+        if(observationViewModel.getProvider()!=null && !observationViewModel.getProvider().isEmpty()) {
+            data += "\n\n" + getString(R.string.plan_action_provider_title) + " " + observationViewModel.getProvider();
         }
 
         data += "\n\n" + getString(R.string.plan_action_gasp_title) + " ";
 
-        if (observationsViewModel.getGaps() != null && !observationsViewModel.getGaps().isEmpty()) {
-            data += observationsViewModel.getGaps();
+        if (observationViewModel.getGaps() != null && !observationViewModel.getGaps().isEmpty()) {
+            data += observationViewModel.getGaps();
         }
 
         data += "\n" + getString(R.string.plan_action_action_plan_title) + " ";
 
-        if (observationsViewModel.getPlanAction() != null && !observationsViewModel.getPlanAction().isEmpty()) {
-            data += observationsViewModel.getPlanAction();
+        if (observationViewModel.getActionPlan() != null && !observationViewModel.getActionPlan().isEmpty()) {
+            data += observationViewModel.getActionPlan();
         }
 
         data += "\n" + getString(R.string.plan_action_action_title) + " ";
 
-        if (observationsViewModel.getAction1() != null && !observationsViewModel.getAction1().isEmpty()) {
-            data += observationsViewModel.getAction1();
+        if (observationViewModel.getAction1() != null && !observationViewModel.getAction1().isEmpty()) {
+            data += observationViewModel.getAction1();
         }
 
 
-        if (observationsViewModel.getAction2() != null && !observationsViewModel.getAction2().isEmpty()) {
-            data += "\n" + observationsViewModel.getAction2();
+        if (observationViewModel.getAction2() != null && !observationViewModel.getAction2().isEmpty()) {
+            data += "\n" + observationViewModel.getAction2();
         }
 
         if (criticalQuestions != null && criticalQuestions.size() > 0) {
