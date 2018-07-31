@@ -21,17 +21,28 @@ package org.eyeseetea.malariacare.domain.usecase.pull;
 
 
 import java.util.Date;
+import java.util.List;
+
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class SurveyFilter {
 
     Date startDate;
     Date endDate;
-    int maxEvents;
+    Integer maxEvents;
+    String programUId;
+    String orgunitUId;
+    String uId;
+    boolean getQuarantineSurveys;
 
-    public SurveyFilter(Date startDate, Date endDate, int maxEvents) {
+    public SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgunitUid, String uId, boolean getQuarantineSurveys) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
+        this.programUId = programUId;
+        this.uId = uId;
+        this.getQuarantineSurveys = getQuarantineSurveys;
+        this.orgunitUId = orgunitUid;
     }
 
     public Date getStartDate() {
@@ -44,5 +55,33 @@ public class SurveyFilter {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public String getProgramUId() {
+        return programUId;
+    }
+
+    public String getOrgunitUId() {
+        return orgunitUId;
+    }
+    public String getUId() {
+        return uId;
+    }
+
+    public boolean isGetQuarantineSurveys() {
+        return getQuarantineSurveys;
+    }
+
+    public static SurveyFilter createCheckOnServerFilter(Date startDate, Date endDate, String programUId, String orgunitUId, String uId){
+        return new SurveyFilter(
+                required(startDate, "startDate is required"),
+                required(endDate, "endDate is required"),
+                null,
+                required(programUId, "programUId is required"),
+                required(orgunitUId, "orgunitUId is required"),
+                required(uId, "uId is required"),
+                false
+                );
+
     }
 }

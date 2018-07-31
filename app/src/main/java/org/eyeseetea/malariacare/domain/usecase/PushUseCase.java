@@ -19,9 +19,12 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import android.content.Context;
+
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.MetadataException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
@@ -35,13 +38,19 @@ public class PushUseCase implements UseCase{
     private final IMainExecutor mMainExecutor;
     private IPushController mPushController;
     private Callback mCallback;
+    private Credentials credentials;
+    private Context context;
 
     public PushUseCase(IAsyncExecutor asyncExecutor,
             IMainExecutor mainExecutor,
-            IPushController pushController) {
+            IPushController pushController,
+                       Credentials credentials,
+                       Context context) {
         mAsyncExecutor = asyncExecutor;
         mMainExecutor = mainExecutor;
         mPushController = pushController;
+        this.credentials = credentials;
+        this.context = context;
     }
 
     public void execute(final Callback callback) {
@@ -58,7 +67,7 @@ public class PushUseCase implements UseCase{
         }
         mPushController.changePushInProgress(true);
 
-        SurveyChecker.launchQuarantineChecker();
+        SurveyChecker.launchQuarantineChecker(context, credentials);
 
         mPushController.push(new IPushController.IPushControllerCallback() {
             @Override

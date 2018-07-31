@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ISurveyDataSource{
     List<Survey> getSurveys(SurveyFilter filters) throws Exception;
+    List<String> existOnServerList(SurveyFilter filter) throws Exception;
     void Save(List<Survey> surveys) throws Exception;
 }

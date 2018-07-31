@@ -25,9 +25,11 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
@@ -50,6 +52,7 @@ public class PushService extends IntentService {
 
     IPushController pushController;
     PushUseCase pushUseCase;
+    Credentials credentials;
 
     PushServiceStrategy mPushServiceStrategy = new PushServiceStrategy(this);
 
@@ -86,7 +89,8 @@ public class PushService extends IntentService {
         IAsyncExecutor asyncExecutor = new AsyncExecutor();
         IMainExecutor mainExecutor = new UIThreadExecutor();
         pushController = new PushController(getApplicationContext());
-        pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController);
+        credentials = Session.getCredentials();
+        pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController, credentials, getApplicationContext());
     }
 
     public void onPushFinished() {

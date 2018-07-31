@@ -26,6 +26,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     }
 
     @Override
+    public List<String> existOnServerList(SurveyFilter filter) throws Exception {
+        return null;
+    }
+
+    @Override
     public void Save(List<Survey> surveys) {
         SurveyDBMapper surveyDBMapper = new SurveyDBMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),

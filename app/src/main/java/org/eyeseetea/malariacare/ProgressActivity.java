@@ -374,7 +374,7 @@ public class ProgressActivity extends Activity {
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
         SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
-                PreferencesState.getInstance().getMaxEvents());
+                PreferencesState.getInstance().getMaxEvents(), null, null, null,false);
 
         mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
             @Override

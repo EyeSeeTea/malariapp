@@ -1,22 +1,26 @@
 package org.eyeseetea.malariacare.data.remote;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.SurveyQuarantineRepository;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.remote.api.PullDhisApiDataSource;
+import org.eyeseetea.malariacare.data.remote.api.SurveyAPIDataSource;
+import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.ISurveyQuarantineRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.Credentials;
+import org.eyeseetea.malariacare.domain.usecase.FixQuarantineSurveyStatusUseCase;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.json.JSONException;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 public class SurveyChecker {
@@ -25,16 +29,12 @@ public class SurveyChecker {
     /**
      * Launch a new thread to checks all the quarantine surveys
      */
-    public static void launchQuarantineChecker() {
+    public static void launchQuarantineChecker(Context context, Credentials credentials) {
         if (!AUtils.isNetworkAvailable()) {
             return;
         }
         try {
-            int quarantineSurveysSize = SurveyDB.countQuarantineSurveys();
-            Log.d(TAG, "Quarantine size: " + quarantineSurveysSize);
-            if (quarantineSurveysSize > 0) {
-                checkAllQuarantineSurveys();
-            }
+            checkAllQuarantineSurveys(context, credentials);
         } finally {
             Log.d(TAG, "Quarantine thread finished");
         }
@@ -46,44 +46,26 @@ public class SurveyChecker {
      * If a survey is in the server, the survey should be set as sent. Else, the survey should be
      * set as completed and it will be resend.
      */
-    public static void checkAllQuarantineSurveys() {
-        List<ProgramDB> programs = ProgramDB.getAllPrograms();
-        for (ProgramDB program : programs) {
-            for (OrgUnitDB orgUnit : program.getOrgUnits()) {
-                List<SurveyDB> quarantineSurveys = SurveyDB.getAllQuarantineSurveysByProgramAndOrgUnit(
-                        program, orgUnit);
-                if (quarantineSurveys.size() == 0) {
-                    continue;
-                }
-                Date minDate = SurveyDB.getMinQuarantineCompletionDateByProgramAndOrgUnit(program,
-                        orgUnit);//The start date is the first ascending completion date of all
-                // the quarantine surveys
-                Date maxDate = SurveyDB.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
-                        orgUnit);//The last date is the first descending updated date of all the
-                // quarantine surveys
-                List<EventExtended> events = null;
-                try {
-                    events = PullDhisApiDataSource.getEvents(program.getUid(), orgUnit.getUid(),
-                            minDate,
-                            maxDate);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (events == null) {
-                    return;
-                }
-                for (SurveyDB survey : quarantineSurveys) {
-                    if (events.size() > 0) {
-                        updateQuarantineSurveysStatus(events, survey);
-                    } else {
-                        changeSurveyStatusFromQuarantineTo(survey, Constants.SURVEY_COMPLETED);
+    public static void checkAllQuarantineSurveys(Context context, Credentials credentials) {
+
+                IServerMetadataRepository serverMetadataRepository =
+                        new ServerMetadataRepository(context);
+                String createdOnuid = serverMetadataRepository.getServerMetadata().getCreationDate().getUId();
+                ISurveyDataSource localDataSource = new SurveyLocalDataSource();
+                ISurveyDataSource apiDataSource = new SurveyAPIDataSource(credentials, serverMetadataRepository);
+                ISurveyQuarantineRepository quarantineExistOnServerController = new SurveyQuarantineRepository(localDataSource, apiDataSource);
+                FixQuarantineSurveyStatusUseCase fixQuarantineSurveyStatusUseCase = new FixQuarantineSurveyStatusUseCase(quarantineExistOnServerController, createdOnuid);
+                fixQuarantineSurveyStatusUseCase.execute(new FixQuarantineSurveyStatusUseCase.Callback() {
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "survey checker compeleted");
                     }
-                }
-            }
-        }
+
+                    @Override
+                    public void onError() {
+                        Log.d(TAG, "survey checker error");
+                    }
+                });
     }
 
     /**
