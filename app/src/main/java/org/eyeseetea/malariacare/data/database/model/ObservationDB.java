@@ -98,6 +98,12 @@ public class ObservationDB extends BaseModel  implements VisitableToSDK, IData {
                 .queryList();
     }
 
+    public static List<ObservationDB> getAllSendingObservations() {
+        return new Select().from(ObservationDB.class)
+                .where(ObservationDB_Table.status_observation.eq(ObservationStatus.SENDING.getCode()))
+                .queryList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -39,7 +39,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import org.eyeseetea.malariacare.data.database.iomodules.local.importer.ImportController;
-import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.ExportData;
 import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
@@ -47,6 +47,8 @@ import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -54,7 +56,6 @@ import org.eyeseetea.malariacare.layout.listeners.SurveyLocationListener;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -94,14 +95,14 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.d(TAG + "B&D", "Pending surveys sending: "
                 + surveys.size());
         for (SurveyDB survey : surveys) {
-            survey.setStatus(Constants.SURVEY_QUARANTINE);
+            survey.setStatus(SurveyStatus.QUARANTINE.getCode());
             survey.save();
         }
-        List<ObsActionPlanDB> obsActionPlens = ObsActionPlanDB.getAllSendingObsActionPlans();
-        for (ObsActionPlanDB obsActionPlan : obsActionPlens) {
+        List<ObservationDB> observations = ObservationDB.getAllSendingObservations();
+        for (ObservationDB observationDB : observations) {
             //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
-            obsActionPlan.setStatus(Constants.SURVEY_COMPLETED);
-            obsActionPlan.save();
+            observationDB.setStatus_observation(ObservationStatus.COMPLETED.getCode());
+            observationDB.save();
         }
     }
 
