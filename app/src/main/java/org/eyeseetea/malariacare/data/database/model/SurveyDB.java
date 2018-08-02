@@ -56,6 +56,7 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -67,7 +68,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "Survey")
-public class SurveyDB extends BaseModel implements VisitableToSDK {
+public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -922,6 +923,12 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     }
 
     @Override
+    public void changeStatusToSending() {
+        setStatus(Constants.SURVEY_SENDING);
+        save();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -988,5 +995,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 ", uid_event_fk="+uid_event_fk+
                 '}';
     }
+
 
 }

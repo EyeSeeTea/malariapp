@@ -22,14 +22,21 @@ package org.eyeseetea.malariacare.data.database.model;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.eyeseetea.malariacare.data.sync.IData;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
 
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "Observation")
-public class ObservationDB extends BaseModel {
+public class ObservationDB extends BaseModel  implements VisitableToSDK, IData {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -77,6 +84,21 @@ public class ObservationDB extends BaseModel {
     }
 
     @Override
+    public void changeStatusToSending() {
+        setStatus_observation(ObservationStatus.SENDING.getCode());
+        save();
+    }
+
+    public static List<ObservationDB> getAllCompletedObservationsInSentSurveys() {
+        return new Select().from(ObservationDB.class)
+                .leftOuterJoin(SurveyDB.class)
+                .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk))
+                .where(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()))
+                .and(ObservationDB_Table.status_observation.eq(ObservationStatus.COMPLETED.getCode()))
+                .queryList();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -103,5 +125,10 @@ public class ObservationDB extends BaseModel {
                 ", id_survey_observation_fk=" + id_survey_observation_fk +
                 ", status=" + status_observation +
                 '}';
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
+        IConvertToSDKVisitor.visit(this);
     }
 }

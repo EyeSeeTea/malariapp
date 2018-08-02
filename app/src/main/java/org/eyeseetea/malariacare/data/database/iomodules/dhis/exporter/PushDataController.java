@@ -22,37 +22,36 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.models.event.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PushController implements IPushController {
-    private final String TAG = ".PushControllerB&D";
+public class PushDataController implements IPushController {
+    private final String TAG = ".PushDataController";
 
     private Context mContext;
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
 
-    public PushController(Context context) {
+    public PushDataController(Context context) {
         mContext = context;
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
@@ -68,56 +67,38 @@ public class PushController implements IPushController {
 
             Log.d(TAG, "Network connected");
 
-            List<SurveyDB> surveys = SurveyDB.getAllCompletedSurveys();
+            List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllCompletedSurveys());
 
-            if (surveys == null || surveys.size() == 0) {
-                callback.onError(new SurveysToPushNotFoundException("Null surveys"));
-            } else {
+            convertAndPush(callback, surveys, Kind.EVENTS);
 
-                mPushDhisSDKDataSource.wipeEvents();
-                Log.d(TAG, "convert surveys to sdk");
+            List<IData> observations = new ArrayList<IData>(
+                    ObservationDB.getAllCompletedObservationsInSentSurveys());
 
-                try {
-                    convertToSDK(surveys);
-                } catch (ConversionException e) {
-                    callback.onInformativeError(e);//notify to the user
-                    callback.onError(e);//close push
-                    return;
-                }
+            convertAndPush(callback, observations, Kind.OBSERVATIONS);
+        }
+    }
 
-                if (EventExtended.getAllEvents().size() == 0) {
-                    callback.onError(new ConversionException());
-                    return;
-                } else {
-                    Log.d(TAG, "push data");
-                    pushData(callback, Kind.EVENTS);
-                }
+    private void convertAndPush(IPushControllerCallback callback, List<IData> dataList, Kind kind) {
+        if (dataList == null || dataList.size() == 0) {
+            callback.onError(
+                    new DataToPushNotFoundException("No Exists data to push of type:" + kind));
+        } else {
+
+            mPushDhisSDKDataSource.wipeEvents();
+            Log.d(TAG, "convert data to sdk");
+
+            try {
+                convertToSDK(dataList);
+            } catch (ConversionException e) {
+                callback.onInformativeError(e);//notify to the user
+                callback.onError(e);//close push
             }
-            List<ObsActionPlanDB> obsActionPlen =
-                    ObsActionPlanDB.getAllCompletedObsActionPlansInSentSurveys();
 
-            if (obsActionPlen == null || obsActionPlen.size() == 0) {
-                callback.onError(new SurveysToPushNotFoundException("Null surveys"));
+            if (EventExtended.getAllEvents().size() == 0) {
+                callback.onError(new ConversionException());
             } else {
-
-                mPushDhisSDKDataSource.wipeEvents();
-                Log.d(TAG, "convert surveys to sdk");
-
-                try {
-                    convertObsToSDK(obsActionPlen);
-                } catch (ConversionException e) {
-                    callback.onInformativeError(e);//notify to the user
-                    callback.onError(e);//close push
-                    return;
-                }
-
-                if (EventExtended.getAllEvents().size() == 0) {
-                    callback.onError(new ConversionException());
-                    return;
-                } else {
-                    Log.d(TAG, "push data of observation and plan surveys");
-                    pushData(callback, Kind.PLANS);
-                }
+                Log.d(TAG, "push data");
+                pushData(callback, kind);
             }
         }
     }
@@ -138,21 +119,21 @@ public class PushController implements IPushController {
                     @Override
                     public void onSuccess(
                             Map<String, PushReport> mapEventsReports) {
-                        if(mapEventsReports==null || mapEventsReports.size()==0){
+                        if (mapEventsReports == null || mapEventsReports.size() == 0) {
                             onError(new PushReportException("EventReport is null or empty"));
                             return;
                         }
                         try {
                             mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback, kind);
                             callback.onComplete();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             onError(new PushReportException(e));
                         }
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if(throwable instanceof  PushReportException
+                        if (throwable instanceof PushReportException
                                 || throwable instanceof PushDhisException) {
                             mConvertToSDKVisitor.setSurveysAsQuarantine(kind);
                         }
@@ -161,20 +142,11 @@ public class PushController implements IPushController {
                 }, kind);
     }
 
-    private void convertToSDK(List<SurveyDB> surveys) throws ConversionException{
+    private void convertToSDK(List<IData> dataList) throws ConversionException {
         Log.d(TAG, "Converting APP survey into a SDK event");
-        for (SurveyDB survey : surveys) {
-            survey.setStatus(Constants.SURVEY_SENDING);
-            survey.save();
-            survey.accept(mConvertToSDKVisitor);
-        }
-    }
-    private void convertObsToSDK(List<ObsActionPlanDB> obsActionPlanList) throws ConversionException{
-        Log.d(TAG, "Converting APP survey into a SDK event");
-        for (ObsActionPlanDB obsActionPlan : obsActionPlanList) {
-            obsActionPlan.setStatus(Constants.SURVEY_SENDING);
-            obsActionPlan.save();
-            obsActionPlan.accept(mConvertToSDKVisitor);
+        for (IData data : dataList) {
+            data.changeStatusToSending();
+            ((VisitableToSDK) data).accept(mConvertToSDKVisitor);
         }
     }
 }

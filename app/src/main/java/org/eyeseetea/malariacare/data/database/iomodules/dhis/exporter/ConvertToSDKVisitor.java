@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.Da
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -50,7 +51,6 @@ import org.eyeseetea.malariacare.utils.Constants;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -174,6 +174,11 @@ public class ConvertToSDKVisitor implements
     }
 
     @Override
+    public void visit(ObservationDB observationDB) {
+
+    }
+
+    @Override
     public void visit(ObsActionPlanDB obsActionPlan) throws ConversionException {
         SurveyDB survey = SurveyDB.findById(obsActionPlan.getId_survey_obs_action_fk());
         currentSurvey=survey;
@@ -209,11 +214,11 @@ public class ConvertToSDKVisitor implements
                 addOrUpdateDataValue(action2Code, obsActionPlan.getAction2());
             }
         }
-        annotateSurveyAndEvent(IPushController.Kind.PLANS);
+        annotateSurveyAndEvent(IPushController.Kind.OBSERVATIONS);
     } catch (Exception e) {
         e.printStackTrace();
         errorMessage = showErrorConversionMessage(errorMessage);
-        removeSurveyAndEvent(survey, IPushController.Kind.PLANS);
+        removeSurveyAndEvent(survey, IPushController.Kind.OBSERVATIONS);
         throw new ConversionException(errorMessage);
     }
     }
@@ -309,7 +314,7 @@ public class ConvertToSDKVisitor implements
 
     private void removeSurveyAndEvent(SurveyDB survey, IPushController.Kind kind) {
         //remove event from annotated event list and from db
-        if(kind.equals(IPushController.Kind.PLANS)){
+        if(kind.equals(IPushController.Kind.OBSERVATIONS)){
             if (obsActionPlanEvents.containsKey(currentSurvey.getId_survey())) {
                 obsActionPlanEvents.remove(currentSurvey.getId_survey());
             }
@@ -549,7 +554,7 @@ public class ConvertToSDKVisitor implements
      * @param kind
      */
     private void annotateSurveyAndEvent(IPushController.Kind kind) {
-        if(kind.equals(IPushController.Kind.PLANS)){
+        if(kind.equals(IPushController.Kind.OBSERVATIONS)){
             obsActionPlanSurveys.add(currentSurvey);
             uploadedDate = currentSurvey.getUploadDate();
             currentEvent.setLastUpdated(new DateTime(uploadedDate.getTime()));
@@ -573,7 +578,7 @@ public class ConvertToSDKVisitor implements
         if(kind.equals(IPushController.Kind.EVENTS)) {
             surveys=this.surveys;
             events=this.events;
-        }else if(kind.equals(IPushController.Kind.PLANS)){
+        }else if(kind.equals(IPushController.Kind.OBSERVATIONS)){
             surveys=this.obsActionPlanSurveys;
             events=this.obsActionPlanEvents;
         }
@@ -609,7 +614,7 @@ public class ConvertToSDKVisitor implements
             // never resend, the survey is saved as survey in conflict.
             if (pushConflicts != null && pushConflicts.size() > 0) {
                 Log.d(TAG, "saveSurveyStatus: conflicts");
-                if(kind.equals(IPushController.Kind.PLANS)){
+                if(kind.equals(IPushController.Kind.OBSERVATIONS)){
                     obsActionPlan.setStatus(Constants.SURVEY_CONFLICT);
                     obsActionPlan.save();
                 }else if(kind.equals(IPushController.Kind.EVENTS)) {
@@ -637,7 +642,7 @@ public class ConvertToSDKVisitor implements
 
             //No errors -> Save and next
             Boolean emptyImportAllowed = false;
-            if(kind.equals(IPushController.Kind.PLANS)){
+            if(kind.equals(IPushController.Kind.OBSERVATIONS)){
                 emptyImportAllowed = true;
             }
             if (pushReport!=null && !pushReport.hasPushErrors(emptyImportAllowed)) {
@@ -649,7 +654,7 @@ public class ConvertToSDKVisitor implements
                             String.format(context.getString(R.string.error_message_push),
                                     iEvent.getEvent())));
                 }
-                if(kind.equals(IPushController.Kind.PLANS)){
+                if(kind.equals(IPushController.Kind.OBSERVATIONS)){
                     obsActionPlan.setStatus(Constants.SURVEY_SENT);
                     obsActionPlan.save();
                 }else if(kind.equals(IPushController.Kind.EVENTS)) {
@@ -683,11 +688,11 @@ public class ConvertToSDKVisitor implements
         List<SurveyDB> surveys = new ArrayList<>();
         if(kind.equals(IPushController.Kind.EVENTS)) {
             surveys=this.surveys;
-        }else if(kind.equals(IPushController.Kind.PLANS)){
+        }else if(kind.equals(IPushController.Kind.OBSERVATIONS)){
             surveys=this.obsActionPlanSurveys;
         }
         for (SurveyDB survey : surveys) {
-            if(kind.equals(IPushController.Kind.PLANS)){
+            if(kind.equals(IPushController.Kind.OBSERVATIONS)){
                 Log.d(TAG, "Set plan status as QUARANTINE" + survey.getId_survey());
                 Log.d(TAG, "Set plan status as QUARANTINE" + survey.toString());
                 ObsActionPlanDB obsActionPlan = ObsActionPlanDB.findObsActionPlanBySurvey(survey.getId_survey());
