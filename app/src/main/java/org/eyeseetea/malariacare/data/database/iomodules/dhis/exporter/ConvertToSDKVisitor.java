@@ -227,7 +227,7 @@ public class ConvertToSDKVisitor implements
             return;
         }
         try {
-            currentSurvey.setEventUid(currentEvent.getUid());
+            currentEvent.setEventUid(currentSurvey.getEventUid());
             currentSurvey.save();
             currentEvent.save();
             Log.d(TAG, "Event created" + currentEvent.getUid());
@@ -416,7 +416,7 @@ public class ConvertToSDKVisitor implements
     private void buildControlDataElements(SurveyDB survey) {
         //Overall score
         if (controlDataElementExistsInServer(overallScoreCode) && survey.hasMainScore()) {
-            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().toString());
+            addOrUpdateDataValue(overallScoreCode, survey.getMainScore().getScore().toString());
         }
 
         //It Checks if the dataelement exists, before build and save the datavalue
@@ -458,7 +458,7 @@ public class ConvertToSDKVisitor implements
         }
 
         //init scoreType
-        ScoreType scoreType = new ScoreType(survey.getMainScore());
+        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
 
         //MainScoreUID
         if (controlDataElementExistsInServer(mainScoreClassCode) && survey.hasMainScore()) {
@@ -524,9 +524,9 @@ public class ConvertToSDKVisitor implements
      * Several properties must be updated when a survey is about to be sent.
      * This changes will be saved just when process finish successfully.
      */
-    private void updateSurvey(List<CompositeScoreDB> compositeScores, float idSurvey,
-            String module) {
-        currentSurvey.setMainScore(
+    private void updateSurvey(List<CompositeScoreDB> compositeScores, float idSurvey, String module) {
+        currentSurvey.setMainScore((long) idSurvey,
+                ScoreRegister.getCompositeScoreRoot(compositeScores).getUid(),
                 ScoreRegister.calculateMainScore(compositeScores, idSurvey, module));
         currentSurvey.setStatus(Constants.SURVEY_SENT);
         currentSurvey.setEventUid(currentEvent.getUid());
