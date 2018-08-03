@@ -46,9 +46,9 @@ import org.eyeseetea.malariacare.data.database.utils.LanguageContextWrapper;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
+import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IAuthenticationManager;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
-import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.usecase.ImportUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -57,6 +57,7 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.receivers.AlarmPushReceiver;
 import org.eyeseetea.malariacare.utils.AUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
@@ -84,25 +85,24 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         mUserAccountRepository = new AuthenticationManager(this);
         mLogoutUseCase = new LogoutUseCase(mUserAccountRepository);
-        checkQuarantineSurveys();
+        checkQuarantineData();
         alarmPush = new AlarmPushReceiver();
         alarmPush.setPushAlarm(this);
     }
 
-    private void checkQuarantineSurveys() {
+    private void checkQuarantineData() {
         PreferencesState.getInstance().setPushInProgress(false);
-        List<SurveyDB> surveys = SurveyDB.getAllSendingSurveys();
-        Log.d(TAG + "B&D", "Pending surveys sending: "
-                + surveys.size());
-        for (SurveyDB survey : surveys) {
-            survey.setStatus(SurveyStatus.QUARANTINE.getCode());
-            survey.save();
-        }
-        List<ObservationDB> observations = ObservationDB.getAllSendingObservations();
-        for (ObservationDB observationDB : observations) {
-            //Obs action plan doesn't need quarantine status. This type of element only overwritte the server survey.
-            observationDB.setStatus_observation(ObservationStatus.COMPLETED.getCode());
-            observationDB.save();
+
+        List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllSendingSurveys());
+        ChangeSatusToQuarantine(surveys);
+
+        List<IData> observations = new ArrayList<IData>(ObservationDB.getAllSendingObservations());
+        ChangeSatusToQuarantine(observations);
+    }
+
+    private void ChangeSatusToQuarantine(List<IData> dataList) {
+        for (IData data : dataList) {
+            data.changeStatusToQuarantine();
         }
     }
 

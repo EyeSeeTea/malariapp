@@ -25,9 +25,12 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
+import org.eyeseetea.malariacare.domain.exception.ConversionException;
 
 @Table(database = AppDatabase.class, name = "ObservationValue")
-public class ObservationValueDB extends BaseModel {
+public class ObservationValueDB extends BaseModel implements VisitableToSDK {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -72,6 +75,11 @@ public class ObservationValueDB extends BaseModel {
 
     public void setUid_observation_value(String uid_observation_value) {
         this.uid_observation_value = uid_observation_value;
+    }
+
+    @Override
+    public void accept(IConvertToSDKVisitor convertToSDKVisitor) throws ConversionException {
+        convertToSDKVisitor.visit(this);
     }
 
     @Override

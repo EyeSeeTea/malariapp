@@ -19,9 +19,15 @@
 
 package org.eyeseetea.malariacare.data.database.model;
 
+import static org.eyeseetea.malariacare.data.database.AppDatabase.obsActionPlanAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.obsActionPlanName;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
+import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -32,6 +38,7 @@ import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.List;
 
@@ -75,6 +82,12 @@ public class ObservationDB extends BaseModel  implements VisitableToSDK, IData {
     }
 
     public List<ObservationValueDB> getValuesDB() {
+        if (valuesDB == null) {
+            valuesDB = new Select()
+                    .from(ObservationValueDB.class)
+                    .where(ObservationValueDB_Table.id_observation_fk
+                            .eq(this.getId_observation())).queryList();
+        }
         return valuesDB;
     }
 
@@ -84,10 +97,42 @@ public class ObservationDB extends BaseModel  implements VisitableToSDK, IData {
     }
 
     @Override
+    public Long getSurveyId() {
+        return getId_survey_observation_fk();
+    }
+
+    @Override
     public void changeStatusToSending() {
         setStatus_observation(ObservationStatus.SENDING.getCode());
         save();
     }
+
+    @Override
+    public void changeStatusToQuarantine() {
+        //Quarantine to observations is not necessary because generate duplicates are not possible,
+        //This type of element only overwritte the server survey.
+
+        setStatus_observation(ObservationStatus.COMPLETED.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToConflict() {
+        setStatus_observation(ObservationStatus.CONFLICT.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToSent() {
+        setStatus_observation(ObservationStatus.SENT.getCode());
+        save();
+    }
+
+    @Override
+    public void saveConflict(String questionUid) {
+        //for now observationValue does not save conflict in values
+    }
+
 
     public static List<ObservationDB> getAllCompletedObservationsInSentSurveys() {
         return new Select().from(ObservationDB.class)
@@ -102,6 +147,20 @@ public class ObservationDB extends BaseModel  implements VisitableToSDK, IData {
         return new Select().from(ObservationDB.class)
                 .where(ObservationDB_Table.status_observation.eq(ObservationStatus.SENDING.getCode()))
                 .queryList();
+    }
+
+    public static List<SurveyDB> getAllSentSurveysWithSendingObservations() {
+        return new Select().from(SurveyDB.class)
+                .leftOuterJoin(ObservationDB.class)
+                .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk))
+                .where(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()))
+                .and(ObservationDB_Table.status_observation.eq(ObservationStatus.SENDING.getCode()))
+                .queryList();
+    }
+
+    public static ObservationDB getBySurveyId(Long surveyId) {
+        return new Select().from(ObservationDB.class)
+                .where(ObservationDB_Table.id_survey_observation_fk.eq(surveyId)).querySingle();
     }
 
     @Override

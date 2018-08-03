@@ -42,7 +42,7 @@ import org.eyeseetea.malariacare.utils.Constants;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "ObsActionPlan")
-public class ObsActionPlanDB extends BaseModel implements VisitableToSDK {
+public class ObsActionPlanDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -311,10 +311,5 @@ public class ObsActionPlanDB extends BaseModel implements VisitableToSDK {
                 ", action2='" + action2 + '\'' +
                 ", status=" + status +
                 '}';
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) throws ConversionException {
-        IConvertToSDKVisitor.visit(this);
     }
 }

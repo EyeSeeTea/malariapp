@@ -6,15 +6,15 @@ public class ObservationViewModel {
 
     String surveyUid;
 
-    String provider;
+    String provider = "";
 
-    String gaps;
+    String gaps = "";
 
-    String actionPlan;
+    String actionPlan = "";
 
-    String action1;
+    String action1 = "";
 
-    String action2;
+    String action2 = "";
 
     ObservationStatus status = ObservationStatus.IN_PROGRESS;
 

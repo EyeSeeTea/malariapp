@@ -25,6 +25,7 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
@@ -106,7 +107,7 @@ public class PushDhisSDKDataSource {
                 sendingEventUids.add(survey.getEventUid());
             }
         }else if(kind.equals(IPushController.Kind.OBSERVATIONS)) {
-            List<SurveyDB> surveysWithPlans = ObsActionPlanDB.getAllSentSurveysWithSendingObsActionPlans();
+            List<SurveyDB> surveysWithPlans = ObservationDB.getAllSentSurveysWithSendingObservations();
             for (SurveyDB survey : surveysWithPlans) {
                 sendingEventUids.add(survey.getEventUid());
             }

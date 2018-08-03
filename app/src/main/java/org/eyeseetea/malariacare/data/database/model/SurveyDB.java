@@ -58,6 +58,7 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.Visitable
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -752,14 +753,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                 .count();
     }
 
-    public void saveConflict(String uid) {
-        for (ValueDB value : getValues()) {
-            if (value.getQuestion().getUid().equals(uid)) {
-                value.setConflict(true);
-                value.save();
-            }
-        }
-    }
 
     public boolean hasConflict() {
         for (ValueDB value : getValues()) {
@@ -923,9 +916,43 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     }
 
     @Override
+    public Long getSurveyId() {
+        return getId_survey();
+    }
+
+    @Override
     public void changeStatusToSending() {
-        setStatus(Constants.SURVEY_SENDING);
+        setStatus(SurveyStatus.SENDING.getCode());
         save();
+    }
+
+    @Override
+    public void changeStatusToQuarantine() {
+        setStatus(SurveyStatus.QUARANTINE.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToConflict() {
+        setStatus(SurveyStatus.CONFLICT.getCode());
+        save();
+    }
+
+    @Override
+    public void changeStatusToSent() {
+        setStatus(SurveyStatus.SENT.getCode());
+        saveMainScore();
+        save();
+    }
+
+    @Override
+    public void saveConflict(String questionUid) {
+        for (ValueDB value : getValues()) {
+            if (value.getQuestion().getUid().equals(questionUid)) {
+                value.setConflict(true);
+                value.save();
+            }
+        }
     }
 
     @Override
