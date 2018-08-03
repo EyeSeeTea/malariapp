@@ -137,7 +137,9 @@ public class ObservationsPresenter {
                         EventExtended.EUROPEAN_DATE_FORMAT);
             }
 
-            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
+            float score = mSurvey.getMainScore() == null? 0f: mSurvey.getMainScore().getScore();
+
+            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), score,
                     formattedCompletionDate, formattedNextDate);
         }
     }
