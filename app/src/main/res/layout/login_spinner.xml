@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/date_spinner_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:visibility="invisible"
+    android:padding="8dp">
+
+    <org.eyeseetea.malariacare.views.CustomTextView
+        android:id="@+id/data_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginBottom="1px"
+        android:drawablePadding="7dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="7dp"
+        android:singleLine="true"
+        android:textSize="@dimen/medium_text_size"
+        app:tFontName="@string/regular_font_name" />
+
+    <Spinner
+        android:id="@+id/data_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="34dp" />
+</LinearLayout>

@@ -390,4 +390,27 @@ public class PreferencesState {
         conf.locale = new Locale(languageCode);
         res.updateConfiguration(conf, dm);
     }
+
+    public String getDataLimitedByDate() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getString(
+                instance.getContext().getString(R.string.data_limited_by_date), "");
+    }
+
+    public void setDataLimitedByDate(String value) {
+        saveStringPreference(R.string.data_limited_by_date, value);
+    }
+
+    /**
+     * Saves a value into a preference
+     */
+    public void saveStringPreference(int namePreference, String value) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefEditor = sharedPref.edit(); // Get preference in editor mode
+        prefEditor.putString(context.getResources().getString(namePreference),
+                value); // set your default value here (could be empty as well)
+        prefEditor.apply(); // finally save changes
+    }
+
 }
