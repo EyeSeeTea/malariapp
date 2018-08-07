@@ -29,6 +29,7 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
+import org.eyeseetea.malariacare.domain.entity.DateFilter;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
@@ -36,6 +37,8 @@ import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -411,6 +414,28 @@ public class PreferencesState {
         prefEditor.putString(context.getResources().getString(namePreference),
                 value); // set your default value here (could be empty as well)
         prefEditor.apply(); // finally save changes
+    }
+
+    public Date getDateStarDateLimitFilter() {
+        DateFilter dateFilter = new DateFilter();
+
+        String dateLimit = getDataLimitedByDate();
+        if (dateLimit.isEmpty()) {
+            return null;
+        }
+        if (dateLimit.equals(getContext().getString(R.string.last_6_days))) {
+            dateFilter.setLast6Days(true);
+        } else if (dateLimit.equals(getContext().getString(R.string.last_6_weeks))) {
+            dateFilter.setLast6Weeks(true);
+        } else if (dateLimit.equals(getContext().getString(R.string.last_6_months))) {
+            dateFilter.setLast6Month(true);
+        }else if(dateLimit.equals(getContext().getString(R.string.no_data))){
+            dateFilter.setNoData(true);
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = dateFilter.getStartFilterDate(calendar);
+        return date;
     }
 
 }
