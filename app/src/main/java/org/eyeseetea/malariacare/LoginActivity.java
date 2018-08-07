@@ -212,6 +212,12 @@ public class LoginActivity extends AbsLoginActivity {
                         org.hisp.dhis.client.sdk.ui.bindings.R.string
                                 .title_error_unexpected));
             }
+
+            @Override
+            public void onUnsupportedServerVersion() {
+                showError(PreferencesState.getInstance().getContext().getString(
+                        R.string.login_error_unsupported_server_version));
+            }
         });
     }
 

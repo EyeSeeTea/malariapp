@@ -295,4 +295,6 @@
 <string name="improve_no_surveys">"ບໍ່ມີການສໍາຫຼວດສໍາລັບການຄັດເລືອກທີ່ທ່ານໄດ້ເຮັດ."</string>
 <string name="scheduled">ກໍານົດເວລາ</string>
 <string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
+
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>
