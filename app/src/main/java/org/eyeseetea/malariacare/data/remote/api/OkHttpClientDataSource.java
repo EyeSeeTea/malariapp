@@ -27,7 +27,7 @@ public class OkHttpClientDataSource {
 
         Log.d(TAG, "executeCall Url" + DHIS_URL + "");
 
-        BasicAuthenticator basicAuthenticator = new BasicAuthenticator();
+        BasicAuthenticator basicAuthenticator = new BasicAuthenticator(mCredentials);
         OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient(basicAuthenticator);
 
 
