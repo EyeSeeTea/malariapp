@@ -287,4 +287,5 @@
 <string name="dialog_action_plan">"ផែនការសកម្មភាព"</string>
 <string name="header_reschedule">"សម្គាល់ថាបានបញ្ចប់"</string>
 <string name="save">"រក្សាទុក"</string>
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>

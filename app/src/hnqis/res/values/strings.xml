@@ -278,4 +278,5 @@ evaluation"</string>
 <string name="monitor_no_surveys_to_show">"No surveys to show"</string>
 <string name="health_facility">Health Facility</string>
 <string name="dialog_action_plan">Action plan</string>
+<string name="login_error_unsupported_server_version">The server version is not supported</string>
 </resources>
