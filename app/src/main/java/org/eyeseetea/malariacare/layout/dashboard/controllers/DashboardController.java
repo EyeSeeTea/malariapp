@@ -86,6 +86,8 @@ public class DashboardController {
      */
     boolean navigatingBackwards;
 
+    boolean isSurveyFeedbackOpen;
+
 
     public DashboardController(DashboardSettings dashboardSettings){
         this.dashboardSettings = dashboardSettings;
@@ -236,6 +238,7 @@ public class DashboardController {
      * Just to avoid trying to navigate back from the dashboard. There's no parent activity here
      */
     public void onBackPressed() {
+        isSurveyFeedbackOpen = false;
         navigatingBackwards =true;
         ModuleController moduleController = getCurrentModule();
         moduleController.onBackPressed();
@@ -345,7 +348,7 @@ public class DashboardController {
                     @Override
                     public void onClick(View v) {
                         openFeedback(survey, true);
-
+                        isSurveyFeedbackOpen = true;
 
                         alertDialog.dismiss();
                     }
@@ -649,7 +652,9 @@ public class DashboardController {
     }
 
     public void reloadActiveModule() {
-        ModuleController currentModuleController = getCurrentModule();
-        currentModuleController.onTabChanged();
+        if (!isSurveyFeedbackOpen) {
+            ModuleController currentModuleController = getCurrentModule();
+            currentModuleController.onTabChanged();
+        }
     }
 }
