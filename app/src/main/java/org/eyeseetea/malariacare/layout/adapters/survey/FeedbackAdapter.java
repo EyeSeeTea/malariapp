@@ -202,6 +202,8 @@ public class FeedbackAdapter extends BaseAdapter {
                 color = R.color.medium_score_color;
             }else if(scoreType.getClassification() == ScoreType.Classification.HIGH) {
                 color = R.color.high_score_color;
+            } else if (scoreType.getClassification() == ScoreType.Classification.NO_RESPONSE) {
+                color = R.color.textFieldColor;
             }
             mFeedbackAdapterStrategy.setPercentColor(textView, color, context);
         }
