@@ -30,12 +30,12 @@ import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.domain.entity.DateFilter;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
+import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -429,13 +429,19 @@ public class PreferencesState {
             dateFilter.setLast6Weeks(true);
         } else if (dateLimit.equals(getContext().getString(R.string.last_6_months))) {
             dateFilter.setLast6Month(true);
-        }else if(dateLimit.equals(getContext().getString(R.string.no_data))){
-            dateFilter.setNoData(true);
         }
 
         Calendar calendar = Calendar.getInstance();
         Date date = dateFilter.getStartFilterDate(calendar);
         return date;
+    }
+
+    public boolean isNoDataDownload() {
+        String dateLimit = getDataLimitedByDate();
+        if (dateLimit.equals(getContext().getString(R.string.no_data))) {
+            return true;
+        }
+        return false;
     }
 
 }

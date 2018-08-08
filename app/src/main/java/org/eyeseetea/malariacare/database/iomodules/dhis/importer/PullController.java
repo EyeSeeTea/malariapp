@@ -161,6 +161,7 @@ public class PullController {
                     EventExtended.AMERICAN_DATE_FORMAT));
             TrackerController.setEndDate(EventExtended.format(Calendar.getInstance().getTime(),
                     EventExtended.AMERICAN_DATE_FORMAT));
+            TrackerController.setDownloadData(!isNoData());
             MetaDataController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
@@ -169,7 +170,11 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                    job = DhisService.loadData(context);
+                    if (AppSettingsBuilder.isDownloadOnlyLastEvents()) {
+                        job = DhisService.loadLastData(context);
+                    } else {
+                        job = DhisService.loadData(context);
+                    }
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
@@ -191,6 +196,10 @@ public class PullController {
             startDate.setTime(savedStartDate);
         }
         return startDate;
+    }
+
+    private boolean isNoData() {
+        return PreferencesState.getInstance().isNoDataDownload();
     }
 
     private int getMaxEvents() {
