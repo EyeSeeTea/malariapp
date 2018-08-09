@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import org.eyeseetea.malariacare.data.database.model.MediaDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -22,7 +24,7 @@ public class DownloadedMediaActivity extends BaseActivity {
         setActivityActionBar();
         PreferencesState.getInstance().initalizateActivityDependencies();
         setContentView(R.layout.downloaded_media_activity);
-        List<MediaDB> mediaList = MediaDB.getAllInLocal();
+        final List<MediaDB> mediaList = MediaDB.getAllInLocal();
         RecyclerView list = (RecyclerView) findViewById(R.id.downloaded_media_list);
         final DownloadedMediaAdapter downloadedMediaAdapter = new DownloadedMediaAdapter(mediaList,
                 getBaseContext());
@@ -32,6 +34,18 @@ public class DownloadedMediaActivity extends BaseActivity {
         // RecyclerView layout manager
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         list.setLayoutManager(mLayoutManager);
+        downloadedMediaAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openVideoActivity(mediaList.get(position).getFilename());
+            }
+        });
+    }
+
+    private void openVideoActivity(String filename) {
+        Intent videoIntent = new Intent(DashboardActivity.dashboardActivity, VideoActivity.class);
+        videoIntent.putExtra(VideoActivity.VIDEO_PATH_PARAM, filename);
+        DashboardActivity.dashboardActivity.startActivity(videoIntent);
     }
 
     private void setActivityActionBar() {
