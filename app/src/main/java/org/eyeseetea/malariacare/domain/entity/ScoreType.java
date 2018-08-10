@@ -24,7 +24,7 @@ import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class ScoreType {
 
-    public enum Classification {HIGH, MEDIUM, LOW}
+    public enum Classification {HIGH, MEDIUM, LOW, NO_SCORE}
 
     public String HighKey ="A";
     public String MediumKey ="B";
@@ -32,6 +32,7 @@ public class ScoreType {
     public final static float HIGH_SCORE_HIGHER_THAN = 89f;
     public final static float MEDIUM_LOWER_THAN = 90f;
     public final static float LOW_LOWER_THAN = 80f;
+    public final static float NO_SCORE = 0f;
 
 
     private float score;
@@ -45,8 +46,10 @@ public class ScoreType {
             return Classification.HIGH;
         }else if (score >= LOW_LOWER_THAN && score < MEDIUM_LOWER_THAN){
             return Classification.MEDIUM;
-        }else {
+        } else if (score < LOW_LOWER_THAN && score > NO_SCORE) {
             return Classification.LOW;
+        } else {
+            return Classification.NO_SCORE;
         }
     }
 
@@ -84,7 +87,8 @@ public class ScoreType {
      * Returns this survey is type C (red)
      */
     public boolean isTypeC() {
-        return getClassification() ==  Classification.LOW;
+        return getClassification() == Classification.LOW
+                || getClassification() == Classification.NO_SCORE;
     }
 
 

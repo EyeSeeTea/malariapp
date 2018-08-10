@@ -36,26 +36,13 @@
                 android:layout_toRightOf="@+id/pie_chart"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <include
-                        android:id="@+id/overall_point_line_label_container"
-                        layout="@layout/point_line"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/overall_point_line_label_container"
-                        android:layout_centerVertical="true" />
-
-                    <LinearLayout
+                <LinearLayout
                         android:id="@+id/overall_label_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_toEndOf="@id/overall_point_line_label_container"
-                        android:layout_toRightOf="@id/overall_point_line_label_container"
+                        android:layout_marginLeft="50dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -64,7 +51,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="80%"
-                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:textColor="@color/white"
                             android:textSize="28sp"
                             app:font_name="@string/font_name_medium" />
 
@@ -73,31 +61,18 @@
                             android:layout_height="wrap_content"
                             android:text="@string/score_info_overall"
                             android:textSize="12sp"
+                            android:layout_marginLeft="10dp"
                             app:font_name="@string/font_name_medium" />
                     </LinearLayout>
 
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/mandatory_point_line_label_container"
-                        layout="@layout/point_line"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/mandatory_point_line_label_container"
-                        android:layout_centerVertical="true" />
 
                     <LinearLayout
                         android:id="@+id/mandatory_label_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/mandatory_point_line_label_container"
-                        android:layout_toRightOf="@id/mandatory_point_line_label_container"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -105,21 +80,21 @@
                             android:id="@+id/mandatory_percent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text="100%"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="28sp"
                             app:font_name="@string/font_name_medium" />
 
                         <org.eyeseetea.malariacare.views.CustomTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:text="@string/mandatory"
                             android:textSize="12sp"
                             app:font_name="@string/font_name_medium" />
                     </LinearLayout>
 
-
-                </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
 
