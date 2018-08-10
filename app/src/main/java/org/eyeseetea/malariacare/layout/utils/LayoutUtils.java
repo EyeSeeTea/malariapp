@@ -36,7 +36,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
-import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 
@@ -98,8 +97,10 @@ public class LayoutUtils {
             return R.color.low_score_color;
         } else if (scoreType.getClassification() == ScoreType.Classification.MEDIUM) {
             return R.color.medium_score_color;
-        }else {
+        } else if (scoreType.getClassification() == ScoreType.Classification.HIGH) {
             return R.color.high_score_color;
+        } else {
+            return R.color.textFieldColor;
         }
     }
 
