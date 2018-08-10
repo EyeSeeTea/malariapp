@@ -154,10 +154,13 @@ public class DashboardUnsentFragment extends ListFragment implements IModuleFrag
         || program.getName().equals(
                 PreferencesState.getInstance().getContext().getString(R.string.filter_all_org_assessments))){
             startButton.setVisibility(View.VISIBLE);
+            noSurveysText.setText(R.string.assess_no_surveys);
         }else if (survey != null || !OrgUnitProgramRelationDB.existProgramAndOrgUnitRelation(program.getId_program(), orgUnit.getId_org_unit())){
             startButton.setVisibility(View.INVISIBLE);
+            noSurveysText.setText(R.string.survey_not_assigned_facility);
         }else{
             startButton.setVisibility(View.VISIBLE);
+            noSurveysText.setText(R.string.assess_no_surveys);
         }
     }
 

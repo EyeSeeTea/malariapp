@@ -3,4 +3,5 @@
     <color name="high_score_color">#00cd00</color>
     <color name="medium_score_color">@color/assess_yellow</color>
     <color name="low_score_color">@color/darkRed</color>
+    <color name="na_text_color">@color/black</color>
 </resources>
