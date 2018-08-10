@@ -34,7 +34,12 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -51,6 +56,7 @@ import org.hisp.dhis.android.sdk.persistence.Dhis2Application;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Login Screen.
@@ -89,6 +95,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         ProgressActivity.PULL_CANCEL =false;
         EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
         serverText.setText(R.string.login_info_dhis_default_server_url);
+        initDataDownloadPeriodDropdown();
     }
 
     @Override
@@ -256,6 +263,58 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
             EyeSeeTeaApplication.permissions.requestNextPermission();
         } else if (EyeSeeTeaApplication.permissions.hasNextPermission()) {
             EyeSeeTeaApplication.permissions.requestNextPermission();
+        }
+    }
+
+    private void initDataDownloadPeriodDropdown() {
+        if (!BuildConfig.loginDataDownloadPeriod) {
+            return;
+        }
+
+        LinearLayout loginViewsContainer = (LinearLayout) findViewById(
+                R.id.login_views_container);
+
+        LinearLayout spinnerContainer = (LinearLayout) getLayoutInflater().inflate(
+                R.layout.login_spinner,
+                loginViewsContainer,
+                false);
+        loginViewsContainer.addView(spinnerContainer, 1);
+
+        //Add left text for the spinner "title"
+        findViewById(R.id.date_spinner_container).setVisibility(View.VISIBLE);
+        TextView textView = (TextView) findViewById(R.id.data_text_view);
+        textView.setText(R.string.download);
+
+        //add options
+        ArrayList<String> dataLimitOptions = new ArrayList<>();
+        dataLimitOptions.add(getString(R.string.no_data));
+        dataLimitOptions.add(getString(R.string.last_6_days));
+        dataLimitOptions.add(getString(R.string.last_6_weeks));
+        dataLimitOptions.add(getString(R.string.last_6_months));
+
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, dataLimitOptions);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //add spinner
+        Spinner spinner = (Spinner) findViewById(R.id.data_spinner);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                PreferencesState.getInstance().setDataLimitedByDate(
+                        spinnerArrayAdapter.getItem(pos).toString());
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        //select the selected option or default no data option
+        String dateLimit = PreferencesState.getInstance().getDataLimitedByDate();
+        if (dateLimit.equals("")) {
+            spinner.setSelection(spinnerArrayAdapter.getPosition(getString(R.string.no_data)));
+        } else {
+            spinner.setSelection(spinnerArrayAdapter.getPosition(dateLimit));
         }
     }
 }

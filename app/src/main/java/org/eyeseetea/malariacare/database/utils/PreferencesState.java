@@ -29,13 +29,16 @@ import android.util.Log;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.ProgressActivity;
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.domain.entity.DateFilter;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardAdapter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardListFilter;
 import org.eyeseetea.malariacare.layout.dashboard.config.DashboardOrientation;
 import org.eyeseetea.malariacare.layout.dashboard.config.DatabaseOriginType;
+import org.eyeseetea.malariacare.utils.Constants;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -390,4 +393,55 @@ public class PreferencesState {
         conf.locale = new Locale(languageCode);
         res.updateConfiguration(conf, dm);
     }
+
+    public String getDataLimitedByDate() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getString(
+                instance.getContext().getString(R.string.data_limited_by_date), "");
+    }
+
+    public void setDataLimitedByDate(String value) {
+        saveStringPreference(R.string.data_limited_by_date, value);
+    }
+
+    /**
+     * Saves a value into a preference
+     */
+    public void saveStringPreference(int namePreference, String value) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefEditor = sharedPref.edit(); // Get preference in editor mode
+        prefEditor.putString(context.getResources().getString(namePreference),
+                value); // set your default value here (could be empty as well)
+        prefEditor.apply(); // finally save changes
+    }
+
+    public Date getDateStarDateLimitFilter() {
+        DateFilter dateFilter = new DateFilter();
+
+        String dateLimit = getDataLimitedByDate();
+        if (dateLimit.isEmpty()) {
+            return null;
+        }
+        if (dateLimit.equals(getContext().getString(R.string.last_6_days))) {
+            dateFilter.setLast6Days(true);
+        } else if (dateLimit.equals(getContext().getString(R.string.last_6_weeks))) {
+            dateFilter.setLast6Weeks(true);
+        } else if (dateLimit.equals(getContext().getString(R.string.last_6_months))) {
+            dateFilter.setLast6Month(true);
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = dateFilter.getStartFilterDate(calendar);
+        return date;
+    }
+
+    public boolean isNoDataDownload() {
+        String dateLimit = getDataLimitedByDate();
+        if (dateLimit.equals(getContext().getString(R.string.no_data))) {
+            return true;
+        }
+        return false;
+    }
+
 }

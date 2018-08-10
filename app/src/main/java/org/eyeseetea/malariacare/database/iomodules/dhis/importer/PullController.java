@@ -22,8 +22,6 @@ package org.eyeseetea.malariacare.database.iomodules.dhis.importer;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
-import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.otto.Subscribe;
 
@@ -33,7 +31,8 @@ import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.DataEle
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
-import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.OrganisationUnitLevelExtended;
+import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models
+        .OrganisationUnitLevelExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.ProgramExtended;
 import org.eyeseetea.malariacare.database.iomodules.dhis.importer.models.UserAccountExtended;
 import org.eyeseetea.malariacare.database.model.CompositeScore;
@@ -43,7 +42,6 @@ import org.eyeseetea.malariacare.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.database.utils.Session;
 import org.eyeseetea.malariacare.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
-import org.eyeseetea.malariacare.layout.dashboard.config.AppSettings;
 import org.hisp.dhis.android.sdk.controllers.DhisService;
 import org.hisp.dhis.android.sdk.controllers.LoadingController;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
@@ -59,7 +57,6 @@ import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnit;
 import org.hisp.dhis.android.sdk.persistence.models.OrganisationUnitLevel;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStage;
 import org.hisp.dhis.android.sdk.persistence.models.ProgramStageDataElement;
-import org.hisp.dhis.android.sdk.persistence.preferences.AppPreferences;
 import org.hisp.dhis.android.sdk.persistence.preferences.ResourceType;
 import org.hisp.dhis.android.sdk.utils.api.ProgramType;
 import org.hisp.dhis.android.sdk.utils.log.LogMessage;
@@ -69,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,10 +156,12 @@ public class PullController {
             //Enabling resources to pull
             enableMetaDataFlags();
             //Delete previous metadata
-            TrackerController.setMaxEvents(PreferencesState.getInstance().getMaxEvents());
-            Calendar month = Calendar.getInstance();
-            month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-            TrackerController.setStartDate(EventExtended.format(month.getTime(),EventExtended.AMERICAN_DATE_FORMAT));
+            TrackerController.setMaxEvents(getMaxEvents());
+            TrackerController.setStartDate(EventExtended.format(getStartDate().getTime(),
+                    EventExtended.AMERICAN_DATE_FORMAT));
+            TrackerController.setEndDate(EventExtended.format(Calendar.getInstance().getTime(),
+                    EventExtended.AMERICAN_DATE_FORMAT));
+            TrackerController.setDownloadData(!isNoData());
             MetaDataController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
@@ -170,12 +170,11 @@ public class PullController {
             //Pull new metadata
             postProgress(context.getString(R.string.progress_pull_downloading));
             try {
-                if(AppSettingsBuilder.isDownloadOnlyLastEvents()){
-                    job = DhisService.loadLastData(context);
-                }
-                else{
-                    job = DhisService.loadData(context);
-                }
+                    if (AppSettingsBuilder.isDownloadOnlyLastEvents()) {
+                        job = DhisService.loadLastData(context);
+                    } else {
+                        job = DhisService.loadData(context);
+                    }
             } catch (Exception ex) {
                 Log.e(TAG, "pullS: " + ex.getLocalizedMessage());
                 ex.printStackTrace();
@@ -185,6 +184,26 @@ public class PullController {
             unregister();
             postException(ex);
         }
+    }
+
+
+    private Calendar getStartDate() {
+        Calendar startDate = Calendar.getInstance();
+        Date savedStartDate = PreferencesState.getInstance().getDateStarDateLimitFilter();
+        if (savedStartDate == null) {
+            startDate.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
+        } else {
+            startDate.setTime(savedStartDate);
+        }
+        return startDate;
+    }
+
+    private boolean isNoData() {
+        return PreferencesState.getInstance().isNoDataDownload();
+    }
+
+    private int getMaxEvents() {
+        return PreferencesState.getInstance().getMaxEvents();
     }
 
     /**

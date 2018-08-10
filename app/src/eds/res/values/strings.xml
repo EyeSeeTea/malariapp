@@ -22,4 +22,9 @@
     <string name="create_info_ok">Start Assessment</string>
     <string name="assessment_sent_title_header">Complete Assessment(s)</string>
     <string name="dialog_info_push_empty_survey">Empty surveys cannot be pushed</string>
+    <string name="download">"Download:"</string>
+    <string name="no_data">"no data"</string>
+    <string name="last_6_days">"Latest 6 days"</string>
+    <string name="last_6_weeks">"Latest 6 weeks"</string>
+    <string name="last_6_months">"Latest 6 months"</string>
 </resources>
