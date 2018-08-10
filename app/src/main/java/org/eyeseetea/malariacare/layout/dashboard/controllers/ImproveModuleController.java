@@ -42,6 +42,8 @@ public class ImproveModuleController extends ModuleController {
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
 
+    private boolean isSurveyFeedbackOpen;
+
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
         this.tabLayout=R.id.tab_improve_layout;
@@ -74,13 +76,16 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
-        if (fragment == null || !fragment.isAdded()) {
-            reloadFragment();
+        if (!isSurveyFeedbackOpen) {
+            if (fragment == null || !fragment.isAdded()) {
+                reloadFragment();
+            }
+            if (isFragmentActive(FeedbackFragment.class) || isFragmentActive(
+                    PlanActionFragment.class)) {
+                return;
+            }
+            super.onTabChanged();
         }
-        if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
-           return;
-        }
-        super.onTabChanged();
     }
 
     public void onBackPressed() {
@@ -89,7 +94,7 @@ public class ImproveModuleController extends ModuleController {
             super.onBackPressed();
             return;
         }
-
+        isSurveyFeedbackOpen = false;
         closeFeedbackFragment();
     }
 
@@ -107,6 +112,7 @@ public class ImproveModuleController extends ModuleController {
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         LayoutUtils.setActionBarTitleForSurvey(dashboardActivity, survey);
+        isSurveyFeedbackOpen = true;
 
         if(modifyFilter) {
             UpdateFiltersBySurvey(survey);
