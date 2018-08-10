@@ -86,9 +86,6 @@ ext {
             runnerVersion           : "0.4.1",
             espressoVersion         : "2.2.1",
     ]
-
-    // Old App dependencies versions
-    okhttpVersion = '2.2.0'
 }
 
 task clean(type: Delete) {
