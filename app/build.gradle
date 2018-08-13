@@ -72,6 +72,7 @@ android {
             minSdkVersion 15
             targetSdkVersion 23
             buildConfigField "boolean", "loginDataDownloadPeriod", "true"
+            buildConfigField "boolean", "loginOrgUnitTreeDownload", "true"
         }
         hnqis {
             applicationId "org.eyeseetea.malariacare.hnqis_bb"
@@ -79,6 +80,7 @@ android {
             minSdkVersion 15
             targetSdkVersion 23
             buildConfigField "boolean", "loginDataDownloadPeriod", "false"
+            buildConfigField "boolean", "loginOrgUnitTreeDownload", "false"
         }
         surveillance {
             applicationId "org.eyeseetea.malariacare.surveillance_bb"
@@ -86,6 +88,7 @@ android {
             minSdkVersion 15
             targetSdkVersion 23
             buildConfigField "boolean", "loginDataDownloadPeriod", "false"
+            buildConfigField "boolean", "loginOrgUnitTreeDownload", "false"
         }
     }
     lintOptions {
