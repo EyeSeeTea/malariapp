@@ -411,20 +411,7 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-                        survey.setCompleteSurveyState(getSimpleName());
-
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
-
-                        dashboardController.setNavigatingBackwards(true);
-                        closeSurveyFragment();
-                        if (DashboardOrientation.VERTICAL.equals(
-                                dashboardController.getOrientation())) {
-                            dashboardController.reloadVertical();
-                        }
-                        dashboardController.setNavigatingBackwards(false);
+                        completeAndCloseSurvey();
                     }
                 }).create().show();
     }
@@ -465,23 +452,29 @@ public class AssessModuleController extends ModuleController {
                         R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Change state
-                        survey.setCompleteSurveyState(getSimpleName());
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
-
-                        //Remove from list
-                        ((DashboardUnsentFragment) fragment).removeSurveyFromAdapter(survey);
-                        //Reload sent surveys
-                        ((DashboardUnsentFragment) fragment).reloadToSend();
-
-
+                        completeAndCloseSurvey();
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(true)
                 .create().show();
+    }
+
+    private void completeAndCloseSurvey() {
+        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
+        survey.setCompleteSurveyState(getSimpleName());
+
+        if (!survey.isInProgress()) {
+            alertOnCompleteGoToFeedback(survey);
+        }
+
+        dashboardController.setNavigatingBackwards(true);
+        closeSurveyFragment();
+        if (DashboardOrientation.VERTICAL.equals(
+                dashboardController.getOrientation())) {
+            dashboardController.reloadVertical();
+        }
+        dashboardController.setNavigatingBackwards(false);
     }
 
     private void alertOnComplete(SurveyDB survey) {
