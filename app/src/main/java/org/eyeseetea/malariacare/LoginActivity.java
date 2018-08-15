@@ -80,6 +80,10 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
      */
     private String password;
 
+    private boolean showingAdvancedOption;
+    private LinearLayout spinnerDataContainer;
+    private LinearLayout spinnerOUContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
@@ -95,8 +99,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         ProgressActivity.PULL_CANCEL =false;
         EditText serverText = (EditText) findViewById(org.hisp.dhis.android.sdk.R.id.server_url);
         serverText.setText(R.string.login_info_dhis_default_server_url);
-        initOrgUnitTreeDownloadDropdown();
-        initDataDownloadPeriodDropdown();
+        showAdvancedOptionsText();
     }
 
     @Override
@@ -267,6 +270,49 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         }
     }
 
+    private void showAdvancedOptionsText() {
+        LinearLayout loginViewsContainer = (LinearLayout) findViewById(
+                R.id.login_views_container);
+
+        final TextView showAdvancedOptions = (TextView) getLayoutInflater().inflate(
+                R.layout.login_advanced_options,
+                loginViewsContainer,
+                false);
+        loginViewsContainer.addView(showAdvancedOptions, 1);
+
+        showAdvancedOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOrHideAdvancedOptions(showAdvancedOptions);
+            }
+        });
+        hideAdvancedOptions(showAdvancedOptions);
+    }
+
+    private void showOrHideAdvancedOptions(TextView showAdvancedOptionsText) {
+        if (showingAdvancedOption) {
+            hideAdvancedOptions(showAdvancedOptionsText);
+            showingAdvancedOption = false;
+        } else {
+            initDataDownloadPeriodDropdown();
+            initOrgUnitTreeDownloadDropdown();
+            showAdvancedOptionsText.setText(R.string.login_hide_advanced_options);
+            showingAdvancedOption = true;
+        }
+    }
+
+    private void hideAdvancedOptions(TextView showAdvancedOptions) {
+        if (spinnerDataContainer != null) {
+            spinnerDataContainer.setVisibility(View.GONE);
+        }
+        if (spinnerOUContainer != null) {
+            spinnerOUContainer.setVisibility(View.GONE);
+        }
+        showAdvancedOptions.setText(R.string.login_show_advanced_options);
+        PreferencesState.getInstance().setDataLimitedByDate("");
+        PreferencesState.getInstance().setDownloadOrgUnitTree("");
+    }
+
     private void initDataDownloadPeriodDropdown() {
         if (!BuildConfig.loginDataDownloadPeriod) {
             return;
@@ -275,11 +321,16 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         LinearLayout loginViewsContainer = (LinearLayout) findViewById(
                 R.id.login_views_container);
 
-        LinearLayout spinnerContainer = (LinearLayout) getLayoutInflater().inflate(
-                R.layout.login_spinner,
-                loginViewsContainer,
-                false);
-        loginViewsContainer.addView(spinnerContainer, 1);
+        if (spinnerDataContainer == null) {
+            spinnerDataContainer = (LinearLayout) getLayoutInflater().inflate(
+                    R.layout.login_spinner,
+                    loginViewsContainer,
+                    false);
+
+            loginViewsContainer.addView(spinnerDataContainer, 2);
+        } else {
+            spinnerDataContainer.setVisibility(View.VISIBLE);
+        }
 
         //Add left text for the spinner "title"
         TextView textView = (TextView) findViewById(R.id.data_text_view);
@@ -327,11 +378,15 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
         LinearLayout loginViewsContainer = (LinearLayout) findViewById(
                 R.id.login_views_container);
 
-        LinearLayout spinnerContainer = (LinearLayout) getLayoutInflater().inflate(
-                R.layout.login_org_unit_tree_spinner,
-                loginViewsContainer,
-                false);
-        loginViewsContainer.addView(spinnerContainer, 1);
+        if (spinnerOUContainer == null) {
+            spinnerOUContainer = (LinearLayout) getLayoutInflater().inflate(
+                    R.layout.login_org_unit_tree_spinner,
+                    loginViewsContainer,
+                    false);
+            loginViewsContainer.addView(spinnerOUContainer, 2);
+        } else {
+            spinnerOUContainer.setVisibility(View.VISIBLE);
+        }
 
         //Add left text for the spinner "title"
         TextView textView = (TextView) findViewById(R.id.org_unit_text_view);

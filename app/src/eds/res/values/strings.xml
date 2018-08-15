@@ -30,4 +30,6 @@
     <string name="download_org_unit">"Download the full OU tree?:"</string>
     <string name="no_download_org_unit">"No"</string>
     <string name="yes_download_org_unit">"Yes"</string>
+    <string name="login_show_advanced_options">"Show advanced options"</string>
+    <string name="login_hide_advanced_options">"Hide advanced options"</string>
 </resources>
