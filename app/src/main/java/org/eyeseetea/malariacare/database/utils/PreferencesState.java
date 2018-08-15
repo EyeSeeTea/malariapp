@@ -416,6 +416,10 @@ public class PreferencesState {
                 instance.getContext().getString(R.string.download_org_unit_tree), "");
     }
 
+    public boolean isDownloadOrgUnitTree() {
+        return !getDownloadOrgUnitTree().equals(context.getString(R.string.no_download_org_unit));
+    }
+
     /**
      * Saves a value into a preference
      */

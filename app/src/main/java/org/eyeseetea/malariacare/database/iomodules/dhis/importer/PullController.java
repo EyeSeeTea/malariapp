@@ -162,7 +162,7 @@ public class PullController {
             TrackerController.setEndDate(EventExtended.format(Calendar.getInstance().getTime(),
                     EventExtended.AMERICAN_DATE_FORMAT));
             TrackerController.setDownloadData(!isNoData());
-            MetaDataController.setFullOrganisationUnitHierarchy(AppSettingsBuilder.isFullHierarchy());
+            MetaDataController.setFullOrganisationUnitHierarchy(getAllOrgUnitTree());
             MetaDataController.clearMetaDataLoadedFlags();
             MetaDataController.wipe();
             PopulateDB.wipeSDKData();
@@ -196,6 +196,11 @@ public class PullController {
             startDate.setTime(savedStartDate);
         }
         return startDate;
+    }
+
+    private boolean getAllOrgUnitTree() {
+        return AppSettingsBuilder.isFullHierarchy()
+                && PreferencesState.getInstance().isDownloadOrgUnitTree();
     }
 
     private boolean isNoData() {
