@@ -104,4 +104,5 @@
     </string>
     <item name="language_code" translatable="false" type="string">language_code</item>
     <string name="data_limited_by_date" translatable="false">data_limited_by_date</string>
+    <string name="download_org_unit_tree" translatable="false">download_org_unit_tree</string>
     </resources>

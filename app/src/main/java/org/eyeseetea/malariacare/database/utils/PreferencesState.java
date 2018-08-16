@@ -405,6 +405,17 @@ public class PreferencesState {
         saveStringPreference(R.string.data_limited_by_date, value);
     }
 
+    public void setDownloadOrgUnitTree(String value) {
+        saveStringPreference(R.string.download_org_unit_tree, value);
+    }
+
+    public String getDownloadOrgUnitTree(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                instance.getContext());
+        return sharedPreferences.getString(
+                instance.getContext().getString(R.string.download_org_unit_tree), "");
+    }
+
     /**
      * Saves a value into a preference
      */
