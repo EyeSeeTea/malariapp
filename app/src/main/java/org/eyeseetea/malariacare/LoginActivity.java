@@ -309,8 +309,6 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
             spinnerOUContainer.setVisibility(View.GONE);
         }
         showAdvancedOptions.setText(R.string.login_show_advanced_options);
-        PreferencesState.getInstance().setDataLimitedByDate("");
-        PreferencesState.getInstance().setDownloadOrgUnitTree("");
     }
 
     private void initDataDownloadPeriodDropdown() {
@@ -394,6 +392,7 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
 
         //add options
         ArrayList<String> dataLimitOptions = new ArrayList<>();
+        dataLimitOptions.add("");
         dataLimitOptions.add(getString(R.string.no_download_org_unit));
         dataLimitOptions.add(getString(R.string.yes_download_org_unit));
 
@@ -415,12 +414,9 @@ public class LoginActivity extends org.hisp.dhis.android.sdk.ui.activities.Login
             }
         });
         //select the selected option or default no data option
-        String dateLimit = PreferencesState.getInstance().getDownloadOrgUnitTree();
-        if (dateLimit.equals("")) {
-            spinner.setSelection(spinnerArrayAdapter.getPosition(getString(R.string.no_download_org_unit)));
-        } else {
-            spinner.setSelection(spinnerArrayAdapter.getPosition(dateLimit));
-        }
+        String downloadOrgUnitTree = PreferencesState.getInstance().getDownloadOrgUnitTree();
+
+        spinner.setSelection(spinnerArrayAdapter.getPosition(downloadOrgUnitTree));
     }
 
 }

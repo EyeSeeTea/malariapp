@@ -199,8 +199,11 @@ public class PullController {
     }
 
     private boolean getAllOrgUnitTree() {
-        return AppSettingsBuilder.isFullHierarchy()
-                && PreferencesState.getInstance().isDownloadOrgUnitTree();
+        String downloadOrgUnitTree = PreferencesState.getInstance().getDownloadOrgUnitTree();
+        if (downloadOrgUnitTree == "")
+            return AppSettingsBuilder.isFullHierarchy();
+        else
+            return downloadOrgUnitTree.equals(context.getString(R.string.yes_download_org_unit));
     }
 
     private boolean isNoData() {
