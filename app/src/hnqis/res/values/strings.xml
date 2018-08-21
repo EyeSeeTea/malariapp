@@ -292,4 +292,5 @@ evaluation"</string>
 <string name="improve_no_surveys">"No survey(s) completed for the selection you have made."</string>
 <string name="scheduled">Scheduled</string>
 <string name="survey_not_assigned_facility">"This survey is not assigned to this facility. Please, select another survey."</string>
+<string name="feedback_progress_bar_text">Loading Survey scores... Please wait</string>
 </resources>
