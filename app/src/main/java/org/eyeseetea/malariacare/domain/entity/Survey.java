@@ -51,6 +51,23 @@ public class Survey {
         return survey;
     }
 
+    public static Survey createQuarantineSentSurvey(String uId, String programUId, String orgUnitUId,
+                                          String userUId, Date creationDateValue) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.changeStatus(SurveyStatus.SENT);
+        survey.assignCreationDate(creationDateValue);
+        return survey;
+    }
+
+    public static Survey createQuarantineSurvey(String uId, String programUId, String orgUnitUId,
+                                          String userUId, Date creationDate, Date completionDate) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.changeStatus(SurveyStatus.QUARANTINE);
+        survey.assignCreationDate(creationDate);
+        survey.assignCompletionDate(completionDate);
+        return survey;
+    }
+
     public String getUId() {
         return uId;
     }

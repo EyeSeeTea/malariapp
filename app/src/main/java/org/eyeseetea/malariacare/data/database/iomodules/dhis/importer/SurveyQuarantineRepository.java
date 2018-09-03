@@ -21,17 +21,14 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.ISurveyQuarantineRepository;
-import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyQuarantineRepository implements ISurveyQuarantineRepository {
-    private final String TAG = ".quarantineRepository";
-
-    Callback callback;
 
     private ISurveyDataSource remoteSurveyDataSource;
     private ISurveyDataSource localSurveyDataSource;
@@ -46,26 +43,37 @@ public class SurveyQuarantineRepository implements ISurveyQuarantineRepository {
 
     @Override
     public void updateQuarantineSurveysOnServer(List<SurveyFilter> filters, Callback callback) {
-    try{
-        for(SurveyFilter filter: filters) {
-            List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
-            //// TODO: 31/07/2018 the datasources should return entities 
-            List<String> completionDateOnServerList = remoteSurveyDataSource.existOnServerList(filter);
-            for (String completionDateOnServer : completionDateOnServerList) {
-                for (Survey survey : surveys) {
-                    survey.changeStatus(SurveyStatus.COMPLETED);
-                    for (QuestionValue questionValue : survey.getValues()) {
-                        if (questionValue.getQuestionUId().equals(filter.getUId()) && completionDateOnServer.equals(questionValue.getValue())) {
-                            survey.changeStatus(SurveyStatus.SENT);
+        try{
+            for(SurveyFilter filter: filters) {
+                List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
+                List<Survey> quarantineSurveysInServer = remoteSurveyDataSource.getSurveys(filter);
+
+                for(Survey localSurvey : surveys) {
+                    localSurvey.changeStatus(SurveyStatus.COMPLETED);
+                    for (Survey quarantineSurvey : quarantineSurveysInServer) {
+                        if(localSurvey.getCreationDate().equals(quarantineSurvey.getCreationDate())){
+                            localSurvey.changeStatus(SurveyStatus.SENT);
                         }
                     }
                 }
+                localSurveyDataSource.Save(surveys);
             }
-            localSurveyDataSource.Save(surveys);
+            callback.onComplete();
+        } catch (Exception e) {
+            callback.onError(e);
         }
-        callback.onComplete();
-    } catch (Exception e) {
-        callback.onError(e);
     }
+
+    @Override
+    public List<Survey> getAll(SurveyFilter surveyFilter) {
+        if(surveyFilter.isQuarantineSurvey()) {
+            try {
+                return localSurveyDataSource.getSurveys(surveyFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new ArrayList<>();
     }
 }

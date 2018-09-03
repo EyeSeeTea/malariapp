@@ -19,10 +19,10 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.domain.boundary.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.ISurveyQuarantineRepository;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.ArrayList;
@@ -38,30 +38,37 @@ public class FixQuarantineSurveyStatusUseCase {
     }
 
     ISurveyQuarantineRepository quarantineExistOnServerController;
-    String createdOnuid;
+    IOrgUnitRepository orgUnitRepository;
 
-    public FixQuarantineSurveyStatusUseCase(ISurveyQuarantineRepository quarantineExistOnServerController, String createdOnuid) {
+    public FixQuarantineSurveyStatusUseCase(ISurveyQuarantineRepository quarantineExistOnServerController,
+                                            IOrgUnitRepository orgUnitRepository) {
         this.quarantineExistOnServerController = quarantineExistOnServerController;
-        this.createdOnuid = createdOnuid;
+        this.orgUnitRepository = orgUnitRepository;
     }
 
     public void execute(final Callback callback) {
-        //// TODO: 31/07/2018 the programs and orgunits should be get from datasources
-        List<ProgramDB> programs = ProgramDB.getAllPrograms();
         List<SurveyFilter> surveyFilters = new ArrayList<>();
-        for (ProgramDB program : programs) {
-            for (OrgUnitDB orgUnit : program.getOrgUnits()) {
-                List<SurveyDB> quarantineSurveys = SurveyDB.getAllQuarantineSurveysByProgramAndOrgUnit(
-                        program, orgUnit);
+
+        List<OrgUnit> orgUnitList = orgUnitRepository.getAll();
+        for (OrgUnit orgUnit:orgUnitList) {
+            for (String programUId : orgUnit.getRelatedPrograms()) {
+
+                SurveyFilter getLocalQuarantineSurveysFilter = SurveyFilter.createGetQuarantineSurveys(programUId, orgUnit.getUid());
+                List<Survey> quarantineSurveys = quarantineExistOnServerController.getAll(getLocalQuarantineSurveysFilter);
+
                 if (quarantineSurveys.size() == 0) {
                     continue;
                 }
-                Date minDate = SurveyDB.getMinQuarantineCompletionDateByProgramAndOrgUnit(program,
-                        orgUnit);
-                Date maxDate = SurveyDB.getMaxQuarantineUpdatedDateByProgramAndOrgUnit(program,
-                        orgUnit);
-                 surveyFilters.add(SurveyFilter.createCheckOnServerFilter(minDate, maxDate, program.getUid(), orgUnit.getUid(), createdOnuid));
+
+                Date highestCompletionDate = findHighestCompletionDate(quarantineSurveys);
+                Date lowestCompletionDate = findLowestCompletionDate(quarantineSurveys);
+
+                surveyFilters.add(SurveyFilter.createCheckOnServerFilter(lowestCompletionDate, highestCompletionDate, programUId, orgUnit.getUid()));
             }
+        }
+        if(surveyFilters.size()==0){
+            callback.onComplete();
+            return;
         }
 
         quarantineExistOnServerController.updateQuarantineSurveysOnServer(surveyFilters, new ISurveyQuarantineRepository.Callback() {
@@ -76,5 +83,26 @@ public class FixQuarantineSurveyStatusUseCase {
             }
         });
 
+    }
+
+    private Date findHighestCompletionDate(List<Survey> quarantineSurveys) {
+        Date date = new Date();
+        date.setTime(0);
+        for(Survey survey: quarantineSurveys){
+            if(survey.getCompletionDate()!=null && survey.getCompletionDate().after(date)) {
+                date = survey.getCompletionDate();
+            }
+        }
+        return date;
+    }
+
+    private Date findLowestCompletionDate(List<Survey> quarantineSurveys) {
+        Date date = new Date();
+        for(Survey survey: quarantineSurveys){
+            if(survey.getCompletionDate()!=null && survey.getCompletionDate().before(date)) {
+                date = survey.getCompletionDate();
+            }
+        }
+        return date;
     }
 }
