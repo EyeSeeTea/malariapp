@@ -56,7 +56,6 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -696,36 +695,19 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     }
 
 
-    public static List<SurveyDB> getAllQuarantineSurveysByProgramAndOrgUnit(ProgramDB program, OrgUnitDB orgUnit) {
-        return new Select().from(SurveyDB.class)
+    public static List<SurveyDB> getAllQuarantineSurveysByProgramAndOrgUnit(String programUid, String orgUnitUid) {
+        return new Select()
+                .from(SurveyDB.class).as(surveyName)
+                .join(OrgUnitDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitName)
+                .on(SurveyDB_Table.id_org_unit_fk.withTable(surveyAlias)
+                        .eq((OrgUnitDB_Table.id_org_unit.withTable(orgUnitAlias))))
+                .join(ProgramDB.class, Join.JoinType.LEFT_OUTER).as(programName)
+                .on(SurveyDB_Table.id_program_fk.withTable(surveyAlias)
+                        .eq((ProgramDB_Table.id_program.withTable(programAlias))))
                 .where(SurveyDB_Table.status.eq(Constants.SURVEY_QUARANTINE))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
-                .and(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
+                .and(ProgramDB_Table.uid_program.eq(programUid))
+                .and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUid))
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date).descending()).queryList();
-    }
-
-    public static Date getMinQuarantineCompletionDateByProgramAndOrgUnit(ProgramDB program,
-            OrgUnitDB orgUnit) {
-        SurveyDB survey = new Select()
-                .from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_QUARANTINE))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
-                .and(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date).ascending())
-                .querySingle();
-        return survey.getCompletionDate();
-    }
-
-    public static Date getMaxQuarantineUpdatedDateByProgramAndOrgUnit(ProgramDB program,
-            OrgUnitDB orgUnit) {
-        SurveyDB survey = new Select()
-                .from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_QUARANTINE))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
-                .and(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.upload_date).descending())
-                .querySingle();
-        return survey.getUploadDate();
     }
     /**
      * Returns all the surveys with status put to "quarantine"
@@ -978,5 +960,13 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
             scoreDB.delete();
         }
         score = null;
+    }
+
+    public static SurveyDB findByUid(String uId) {
+        return new Select()
+                .from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk
+                        .eq(uId))
+                .querySingle();
     }
 }
