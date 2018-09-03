@@ -58,7 +58,10 @@ public class SurveyDBMapper {
     }
 
     private SurveyDB map(Survey survey) {
-        SurveyDB surveyDB = new SurveyDB();
+        SurveyDB surveyDB = SurveyDB.findByUid(survey.getUId());
+        if(surveyDB==null) {
+            surveyDB = new SurveyDB();
+        }
 
         surveyDB.setEventUid(survey.getUId());
         surveyDB.setStatus(survey.getStatus().getCode());
