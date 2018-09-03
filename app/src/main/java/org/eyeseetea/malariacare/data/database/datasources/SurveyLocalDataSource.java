@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyLocalDataSource implements ISurveyDataSource {
@@ -21,12 +22,11 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
     @Override
     public List<Survey> getSurveys(SurveyFilter filters) {
-        //On the future implement this method to retrieve surveys from db
-        return null;
-    }
+        if(filters.isQuarantineSurvey()){
+            return mapSurveys(SurveyDB.getAllQuarantineSurveysByProgramAndOrgUnit(filters.getProgramUId(), filters.getOrgunitUId()));
 
-    @Override
-    public List<String> existOnServerList(SurveyFilter filter) throws Exception {
+        }
+        //On the future implement this method to retrieve surveys from db
         return null;
     }
 
@@ -59,5 +59,33 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
         }
 
+    }
+
+
+    public List<Survey> mapSurveys(List<SurveyDB> surveysDB) {
+
+        List<Survey> surveys = new ArrayList<>();
+
+        for (SurveyDB surveyDB : surveysDB) {
+            try {
+                Survey survey = mapQuarantineSurvey(surveyDB);
+
+                surveys.add(survey);
+            } catch (Exception e) {
+                Log.e(TAG, "An error occurred converting Survey " + surveyDB.getEventUid() +
+                        " to surveyDB:" + e.getMessage());
+            }
+        }
+
+        return surveys;
+    }
+
+    public Survey mapQuarantineSurvey(SurveyDB surveyDB){
+        return Survey.createQuarantineSurvey(surveyDB.getEventUid(),
+                surveyDB.getProgram().getUid(),
+                surveyDB.getOrgUnit().getUid(),
+                surveyDB.getUser().getUid(),
+                surveyDB.getCreationDate(),
+                surveyDB.getCompletionDate());
     }
 }

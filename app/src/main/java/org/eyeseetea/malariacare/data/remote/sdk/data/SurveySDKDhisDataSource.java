@@ -81,11 +81,6 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
         }
     }
 
-    @Override
-    public List<String> existOnServerList(SurveyFilter filter) throws Exception {
-        return null;
-    }
-
 
     @Override
     public void Save(List<Survey> surveys) throws Exception {

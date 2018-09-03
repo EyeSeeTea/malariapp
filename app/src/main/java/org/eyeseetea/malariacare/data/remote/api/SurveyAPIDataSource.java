@@ -25,52 +25,21 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.Response;
-
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
-import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyMapper;
-import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.Credentials;
-import org.eyeseetea.malariacare.domain.entity.Option;
-import org.eyeseetea.malariacare.domain.entity.Question;
-import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.utils.DateParser;
-import org.hisp.dhis.client.sdk.android.api.D2;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
-import org.hisp.dhis.client.sdk.core.event.EventFilters;
 import org.hisp.dhis.client.sdk.models.event.Event;
-import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
-import org.hisp.dhis.client.sdk.models.program.Program;
-import org.hisp.dhis.client.sdk.models.program.ProgramType;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurveyDataSource {
 
@@ -82,7 +51,6 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
     public static final String EVENT = "event";
     private static String uid;
-    IServerMetadataRepository serverMetadataRepository;
 
     public SurveyAPIDataSource(Credentials credentials, IServerMetadataRepository serverMetadataRepository) {
         super(credentials);
@@ -91,14 +59,13 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     }
 
     @Override
-    public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
+    public List<Survey> getSurveys(SurveyFilter filter) throws Exception {
         //Here pull surveys code
-        return null;
-    }
-
-    @Override
-    public List<String> existOnServerList(SurveyFilter filter) throws Exception {
-        return getEventsCompletionDatesOnServer(filter.getProgramUId(), filter.getOrgunitUId(), filter.getStartDate(), filter.getEndDate());
+        List<Survey> surveys = new ArrayList<>();
+        if(filter.isQuarantineSurvey()) {
+            surveys = getEventsCompletionDatesOnServer(filter.getProgramUId(), filter.getOrgunitUId(), filter.getStartDate(), filter.getEndDate());
+        }
+        return surveys;
     }
 
 
@@ -109,20 +76,20 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
 
 
 
-    private List<String> pullQuarantineEvents(String url) throws IOException, JSONException {
+    private List<Survey> pullQuarantineEvents(String url, String program, String orgUnit) throws IOException, JSONException {
         String response = executeCall(url);
         JSONObject events = new JSONObject(response);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.convertValue(mapper.readTree(events.toString()),
                 JsonNode.class);
-        return existOnServerFromJson(jsonNode);
+        return existOnServerFromJson(jsonNode, program, orgUnit);
     }
 
 
     /**
-     * Get events filtered by program orgUnit and between dates.
+     * Returns a list of surveys with the correct creation date ( setted from trackedentitydatavalue value)
      */
-    public List<String> getEventsCompletionDatesOnServer(String program, String orgUnit, Date minDate,
+    public List<Survey> getEventsCompletionDatesOnServer(String program, String orgUnit, Date minDate,
                                          Date maxDate) throws IOException, JSONException {
         String startDate = DateParser.formatAmerican(minDate);
         String endDate = DateParser.formatAmerican(
@@ -130,11 +97,11 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
         String url = String.format(DHIS_CHECK_EVENT_API, program, orgUnit, startDate,
                 endDate);
         Log.d(TAG, url);
-        return pullQuarantineEvents(url);
+        return pullQuarantineEvents(url, program, orgUnit);
     }
 
 
-    public static List<String> existOnServerFromJson(JsonNode jsonNode) {
+    public static List<Survey> existOnServerFromJson(JsonNode jsonNode, String program, String orgUnit) {
         TypeReference<List<Event>> typeRef =
                 new TypeReference<List<Event>>() {
                 };
@@ -151,16 +118,21 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
             events = new ArrayList<>();
             e.printStackTrace();
         }
-        List<String> completionDateValuesList = new ArrayList<>();
+        List<Survey> completionList = new ArrayList<>();
         for (Event event : events) {
             if (event.getDataValues() != null && event.getDataValues().size() > 0) {
                 for(TrackedEntityDataValue trackedEntityDataValue: event.getDataValues()){
                   if(trackedEntityDataValue.getDataElement().equals(uid)){
-                      completionDateValuesList.add(trackedEntityDataValue.getValue());
+                      Survey survey = Survey.createQuarantineSentSurvey(event.getUId(),
+                              program,
+                              orgUnit,
+                              trackedEntityDataValue.getStoredBy(),
+                              DateParser.parseLongDate(trackedEntityDataValue.getValue()));
+                      completionList.add(survey);
                   }
                 }
             }
         }
-        return completionDateValuesList;
+        return completionList;
     }
 }
