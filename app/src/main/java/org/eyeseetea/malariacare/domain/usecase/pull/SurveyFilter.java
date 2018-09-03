@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.domain.usecase.pull;
 
 
 import java.util.Date;
-import java.util.List;
 
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
@@ -32,16 +31,14 @@ public class SurveyFilter {
     Integer maxEvents;
     String programUId;
     String orgunitUId;
-    String uId;
-    boolean getQuarantineSurveys;
+    boolean isQuarantineSurvey;
 
-    public SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgunitUid, String uId, boolean getQuarantineSurveys) {
+    public SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgunitUid, boolean isQuarantineSurvey) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
         this.programUId = programUId;
-        this.uId = uId;
-        this.getQuarantineSurveys = getQuarantineSurveys;
+        this.isQuarantineSurvey = isQuarantineSurvey;
         this.orgunitUId = orgunitUid;
     }
 
@@ -64,24 +61,29 @@ public class SurveyFilter {
     public String getOrgunitUId() {
         return orgunitUId;
     }
-    public String getUId() {
-        return uId;
+
+    public boolean isQuarantineSurvey() {
+        return isQuarantineSurvey;
     }
 
-    public boolean isGetQuarantineSurveys() {
-        return getQuarantineSurveys;
-    }
-
-    public static SurveyFilter createCheckOnServerFilter(Date startDate, Date endDate, String programUId, String orgunitUId, String uId){
+    public static SurveyFilter createCheckOnServerFilter(Date startDate, Date endDate, String programUId, String orgunitUId){
         return new SurveyFilter(
                 required(startDate, "startDate is required"),
                 required(endDate, "endDate is required"),
                 null,
                 required(programUId, "programUId is required"),
                 required(orgunitUId, "orgunitUId is required"),
-                required(uId, "uId is required"),
-                false
+                true
                 );
-
+    }
+    public static SurveyFilter createGetQuarantineSurveys(String programUId, String orgunitUId){
+        return new SurveyFilter(
+                null,
+                null,
+                null,
+                required(programUId, "programUId is required"),
+                required(orgunitUId, "orgunitUId is required"),
+                true
+        );
     }
 }
