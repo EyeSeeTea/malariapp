@@ -35,6 +35,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "OrgUnit")
@@ -303,5 +304,13 @@ public class OrgUnitDB extends BaseModel {
                 ", id_org_unit_parent=" + id_org_unit_parent +
                 ", id_org_unit_level_fk=" + id_org_unit_level_fk +
                 '}';
+    }
+
+    public List<String> getAllRelatedPrograms() {
+        List<String> uids = new ArrayList<>();
+        for(ProgramDB programDB : getPrograms()){
+            uids.add(programDB.uid_program);
+        }
+        return uids;
     }
 }
