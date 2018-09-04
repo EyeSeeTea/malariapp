@@ -316,4 +316,12 @@ public class ScoreRegister {
         return calculateMainScore(scores, survey.getId_survey(), module);
     }
 
+    public static CompositeScoreDB getCompositeScoreRoot(List<CompositeScoreDB> compositeScores) {
+        for(CompositeScoreDB compositeScoreDB : compositeScores){
+            if(compositeScoreDB.hasParent()){
+                return compositeScoreDB;
+            }
+        }
+        return null;
+    }
 }
