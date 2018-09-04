@@ -286,5 +286,6 @@ evaluation"</string>
 <string name="simple_options">"ជម្រើសសាមញ្ញ"</string>
 
 <string name="scheduled">"ព្រុយ"</string>
+<string name="header_schedule">"កាលវិភាគ"</string>
 <string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>
 </resources>

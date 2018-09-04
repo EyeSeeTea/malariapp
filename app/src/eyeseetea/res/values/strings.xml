@@ -204,7 +204,7 @@ evaluation"</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-<string name="select_all">"Select all Surveys"</string>
+<string name="select_all">"Select All Surveys"</string>
 <string name="demo_login">"Demo Mode"</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
@@ -227,6 +227,7 @@ evaluation"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
 
+<string name="header_schedule">"Schedule"</string>
 <string name="header_reschedule">"Reschedule"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
