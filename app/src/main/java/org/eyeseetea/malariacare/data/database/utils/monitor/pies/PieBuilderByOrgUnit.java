@@ -75,7 +75,7 @@ public class PieBuilderByOrgUnit extends PieBuilderBase {
             pieTabGroupDataMap.put(orgUnit, pieTabGroupData);
         }
         //Increment surveys for that month
-        pieTabGroupData.incCounter(survey.getMainScore());
+        pieTabGroupData.incCounter(survey.getMainScore().getScore());
     }
 
 

@@ -215,7 +215,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         //Set mainscore and color.
         SurveyDB survey = Session.getSurveyByModule(module);
         if (survey.hasMainScore()) {
-            float average = survey.getMainScore();
+            float average = survey.getMainScore().getScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
             item.setText(String.format("%.1f%%", average));
             int colorId = LayoutUtils.trafficColor(average);
