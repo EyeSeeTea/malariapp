@@ -17,40 +17,27 @@
   ~  You should have received a copy of the GNU General Public License
   ~  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
     android:layout_gravity="center_vertical"
+    android:minHeight="@dimen/row_min_height"
     android:weightSum="1">
-    <org.eyeseetea.malariacare.views.CustomTextView
-        android:id="@+id/planning_number"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="0dp"
-        android:layout_weight=".10"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:textColor="@color/planning_header_text"
-        android:textSize="@dimen/planning_title_number"
-        android:text="0"
-        app:tFontName="@string/font_name_medium"
-        />
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/planning_title"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="0dp"
-        android:layout_weight=".75"
+        android:layout_weight=".85"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
+        android:typeface="sans"
         android:paddingLeft="@dimen/dashboard_planning_padding"
         android:textColor="@color/planning_header_text"
-        android:textSize="@dimen/planning_titles"
-        app:tFontName="@string/font_name_regular"
+        android:textSize="18dp"
+        app:tDimension="@string/font_size_level1"
+        app:tFontName="@string/light_font"
         />
 
     <ImageView
@@ -59,8 +46,6 @@
         android:layout_weight=".15"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dashboard_planning_padding"
-        android:paddingRight="@dimen/dashboard_planning_padding"
-        android:tint="@color/white"
         android:src="@drawable/ic_media_arrow"/>
 
 </LinearLayout>

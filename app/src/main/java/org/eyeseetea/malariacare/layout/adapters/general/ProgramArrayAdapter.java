@@ -40,7 +40,8 @@ public class ProgramArrayAdapter extends AddlArrayAdapter<ProgramDB> {
         super(context, programs);
     }
 
-    @Override public void drawText(CustomTextView customTextView, ProgramDB program) {
+    @Override
+    public void drawText(CustomTextView customTextView, ProgramDB program) {
         customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
         customTextView.setText(program.getName());
     }

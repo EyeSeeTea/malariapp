@@ -11,6 +11,7 @@
     "listFilter": "lastForOU",
     "developerOptions": true,
     "tabTitleVisible": true,
+    "planInnerHeader": true,
     "modules": [{
       "title": "plan",
       "icon": "ic_icn_assessment_on",
