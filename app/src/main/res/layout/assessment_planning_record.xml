@@ -69,35 +69,14 @@
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
                         android:id="@+id/org_unit"
-                        android:typeface="sans"
-                        android:textStyle="bold"
-                        android:lines="1"
-                        android:ellipsize="end"
-                        android:gravity="left|center"
-                        android:paddingTop="@dimen/planning_padding"
-                        android:paddingBottom="@dimen/planning_padding"
-                        android:text="@string/lorem_ipsum"
-                        android:textSize="@dimen/planing_per_org_text_size"
-                        android:textColor="@color/new_grey_text_color"
-                        app:tDimension="@string/font_size_level2"
-                        app:tFontName="@string/medium_font_name"/>
+                        style="@style/EyeSeeListTitle"/>
 
                     <org.eyeseetea.malariacare.views.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
                         android:id="@+id/program"
-                        android:typeface="sans"
-                        android:gravity="left|center"
-                        android:paddingTop="@dimen/planning_padding"
-                        android:lines="1"
-                        android:ellipsize="end"
-                        android:paddingBottom="@dimen/planning_padding"
-                        android:textSize="@dimen/planing_per_org_text_size"
-                        android:textColor="@color/new_grey_text_color"
-                        android:text="@string/lorem_ipsum"
-                        app:tDimension="@string/font_size_level1"
-                        app:tFontName="@string/light_font"/>
+                        style="@style/EyeSeeListSubTitle"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
