@@ -106,7 +106,7 @@ public class PlannedStyleStrategy {
         return String.format("%s",titleHeader,counter);
     }
 
-    public static void drawActionButtonTint(ImageButton actionButton) {
+    public static void drawActionButtonTint(ImageButton actionButton, boolean value) {
     }
 
     public static View getViewByPlannedSurveyHeader(ViewGroup parent) {
