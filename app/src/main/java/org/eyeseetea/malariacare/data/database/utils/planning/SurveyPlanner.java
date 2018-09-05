@@ -23,6 +23,7 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
+import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
@@ -87,10 +88,10 @@ public class SurveyPlanner {
                 newSurvey.getProgram().getId_program());
         if (lastSurveyScore != null) {
             if (lastSurveyScore.hasMainScore()) {
-                newSurvey.setMainScore(lastSurveyScore.getMainScore());
+                newSurvey.setMainScore(newSurvey.getId_survey(), lastSurveyScore.getMainScore().getUid(), lastSurveyScore.getMainScore().getScore());
                 newSurvey.saveMainScore();
-            } else {
-                newSurvey.setMainScore(0f);
+            }else{
+                newSurvey.resetMainScore();
             }
         }
         newSurvey.save();
@@ -108,9 +109,9 @@ public class SurveyPlanner {
         plannedSurvey.setOrgUnit(survey.getOrgUnit());
         plannedSurvey.setUser(Session.getUser());
         plannedSurvey.setProgram(survey.getProgram());
-        plannedSurvey.setMainScore(survey.getMainScore());
         plannedSurvey.setScheduledDate(findScheduledDateBySurvey(survey));
         plannedSurvey.save();
+        plannedSurvey.setMainScore(plannedSurvey.getId_survey(), survey.getMainScore().getUid(), survey.getMainScore().getScore());
 
         //Save last main score
         plannedSurvey.saveMainScore();
@@ -144,8 +145,7 @@ public class SurveyPlanner {
         survey.save();
 
         //Reset mainscore for this 'real' survey
-        survey.setMainScore(0f);
-        survey.saveMainScore();
+        survey.resetMainScore();
         return survey;
     }
 
@@ -175,10 +175,10 @@ public class SurveyPlanner {
         Log.d(TAG, String.format(
                 "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
                         + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
+                eventDate.toString(), survey.getMainScore().getScore(), survey.isLowProductivity()));
 
         //A -> 6 months
-        ScoreType scoreType = new ScoreType(survey.getMainScore());
+        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
         if (scoreType.isTypeA()) {
             return getInXMonths(eventDate, TYPE_A_NEXT_DATE);
         }

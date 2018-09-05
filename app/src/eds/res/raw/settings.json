@@ -9,6 +9,7 @@
     "orientation": "vertical",
     "layout": "vertical_main",
     "listFilter": "none",
+    "planInnerHeader": false,
     "modules": [{
       "title": "assess",
       "icon": "tab_assess",

@@ -65,14 +65,14 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         //set schedule date
         CustomTextView schedule = (CustomTextView) rowView.findViewById(R.id.schedule);
         if (survey.getScheduledDate() != null) {
-            schedule.setText(AUtils.getEuropeanFormatedDate(survey.getScheduledDate()));
+            schedule.setText(AUtils.getShortEuropeanFormatedDate(survey.getScheduledDate()));
         } else {
             schedule.setText(R.string.assessment_no_schedule_date);
         }
         //set creation date
         if (survey.getCreationDate() != null) {
             CustomTextView dueDate = (CustomTextView) rowView.findViewById(R.id.dueDate);
-            dueDate.setText(AUtils.getEuropeanFormatedDate(survey.getCreationDate()));
+            dueDate.setText(AUtils.getShortEuropeanFormatedDate(survey.getCreationDate()));
         }
 
         //set row survey name
@@ -86,11 +86,11 @@ public class PlanningPerOrgUnitAdapter extends ABaseAdapter {
         if(position==0 || position%2==0) {
             rowView.setBackgroundColor(
                     PreferencesState.getInstance().getContext().getResources().getColor(
-                            R.color.white_grey));
+                            R.color.even_row_background));
         }else{
             rowView.setBackgroundColor(
                     PreferencesState.getInstance().getContext().getResources().getColor(
-                            R.color.white));
+                            R.color.row_background));
         }
         greyBackground=!greyBackground;
         ImageView menuDots = (ImageView) rowView.findViewById(R.id.menu_dots);
