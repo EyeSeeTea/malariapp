@@ -25,13 +25,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -39,6 +39,7 @@ import java.util.concurrent.CountDownLatch;
 public class PushUseCaseTest {
 
     IPushController mPushController = mock(IPushController.class);
+    Context context = mock(Context.class);
 
     private CountDownLatch lock = new CountDownLatch(1);
 
@@ -98,7 +99,7 @@ public class PushUseCaseTest {
             }
         };
 
-        return new PushUseCase(asyncExecutor, mainExecutor, mPushController);
+        return new PushUseCase(asyncExecutor, mainExecutor, mPushController, null, context);
     }
 
     private void callbackInvoked(boolean inProgressCallback) {

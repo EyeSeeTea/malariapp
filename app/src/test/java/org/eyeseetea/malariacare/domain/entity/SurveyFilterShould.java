@@ -65,10 +65,10 @@ public class SurveyFilterShould {
     @Test
     public void throw_exception_when_create_enddate_after_startdate(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Start date should be lower or equal than end Date");
+        thrown.expectMessage("End date should be before than start Date");
         Date endDate = new Date();
         Date startDate = new Date();
-        endDate.setTime(endDate.getTime()+1000);
+        startDate.setTime(startDate.getTime()+1000);
         String programUId = "programUId";
         String orgUnitUid = "orgUnitUid";
         SurveyFilter.createCheckQuarantineOnServerFilter(startDate, endDate, programUId, orgUnitUid);
