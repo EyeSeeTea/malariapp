@@ -33,23 +33,35 @@ public class SurveyFilter {
     String orgUnitUId;
     boolean isQuarantineSurvey;
 
-    private SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgUnitUId, boolean isQuarantineSurvey) {
-        validateDates(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.maxEvents = maxEvents;
-        this.programUId = programUId;
-        this.isQuarantineSurvey = isQuarantineSurvey;
-        this.orgUnitUId = orgUnitUId;
+    public static SurveyFilter createCheckQuarantineOnServerFilter(Date startDate, Date endDate, String programUId, String orgUnitUId){
+        return new SurveyFilter(
+                required(startDate, "startDate is required"),
+                required(endDate, "endDate is required"),
+                null,
+                required(programUId, "programUId is required"),
+                required(orgUnitUId, "orgUnitUId is required"),
+                true
+        );
     }
-
-    private void validateDates(Date startDate, Date endDate) {
-        if(endDate == null || startDate == null){
-            return;
-        }
-        if(endDate.before(startDate)){
-            throw new IllegalArgumentException("End date should be before than start Date");
-        }
+    public static SurveyFilter createGetQuarantineSurveys(String programUId, String orgUnitUId){
+        return new SurveyFilter(
+                null,
+                null,
+                null,
+                required(programUId, "programUId is required"),
+                required(orgUnitUId, "orgUnitUId is required"),
+                true
+        );
+    }
+    public static SurveyFilter createGetSurveysOnPull(Date startDate, int maxEvents){
+        return new SurveyFilter(
+                required(startDate, "startDate is required"),
+                null,
+                maxEvents,
+                null,
+                null,
+                false
+        );
     }
 
     public Date getStartDate() {
@@ -76,34 +88,22 @@ public class SurveyFilter {
         return isQuarantineSurvey;
     }
 
-    public static SurveyFilter createCheckQuarantineOnServerFilter(Date startDate, Date endDate, String programUId, String orgUnitUId){
-        return new SurveyFilter(
-                required(startDate, "startDate is required"),
-                required(endDate, "endDate is required"),
-                null,
-                required(programUId, "programUId is required"),
-                required(orgUnitUId, "orgUnitUId is required"),
-                true
-                );
+    private SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgUnitUId, boolean isQuarantineSurvey) {
+        validateDates(startDate, endDate);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.maxEvents = maxEvents;
+        this.programUId = programUId;
+        this.isQuarantineSurvey = isQuarantineSurvey;
+        this.orgUnitUId = orgUnitUId;
     }
-    public static SurveyFilter createGetQuarantineSurveys(String programUId, String orgUnitUId){
-        return new SurveyFilter(
-                null,
-                null,
-                null,
-                required(programUId, "programUId is required"),
-                required(orgUnitUId, "orgUnitUId is required"),
-                true
-        );
-    }
-    public static SurveyFilter createGetSurveysOnPull(Date startDate, int maxEvents){
-        return new SurveyFilter(
-                required(startDate, "startDate is required"),
-                null,
-                maxEvents,
-                null,
-                null,
-                false
-        );
+
+    private void validateDates(Date startDate, Date endDate) {
+        if(endDate == null || startDate == null){
+            return;
+        }
+        if(endDate.before(startDate)){
+            throw new IllegalArgumentException("End date should be before than start Date");
+        }
     }
 }

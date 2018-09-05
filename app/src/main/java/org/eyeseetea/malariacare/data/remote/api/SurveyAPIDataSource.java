@@ -89,7 +89,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     /**
      * Returns a list of surveys with the correct creation date ( setted from trackedentitydatavalue value)
      */
-    public List<Survey> getEventsCompletionDatesOnServer(String program, String orgUnit, Date minDate,
+    private List<Survey> getEventsCompletionDatesOnServer(String program, String orgUnit, Date minDate,
                                          Date maxDate) throws IOException, JSONException {
         String startDate = DateParser.formatAmerican(minDate);
         String endDate = DateParser.formatAmerican(
@@ -101,23 +101,20 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
     }
 
 
-    public static List<Survey> existOnServerFromJson(JsonNode jsonNode, String program, String orgUnit) {
+    private static List<Survey> existOnServerFromJson(JsonNode jsonNode, String program, String orgUnit) {
         TypeReference<List<Event>> typeRef =
                 new TypeReference<List<Event>>() {
                 };
         List<Event> events;
-        try {
-            if (jsonNode.has("events")) {
-                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
-                events = objectMapper.
-                        readValue(jsonNode.get("events").traverse(), typeRef);
-            } else {
-                events = new ArrayList<>();
-            }
-        } catch (IOException e) {
-            events = new ArrayList<>();
-            e.printStackTrace();
-        }
+
+        events = getEventsFromJson(jsonNode, typeRef);
+
+        List<Survey> completionList = addSurveysFromEventsWithCreationDate(program, orgUnit, events);
+
+        return completionList;
+    }
+
+    private static List<Survey> addSurveysFromEventsWithCreationDate(String program, String orgUnit, List<Event> events) {
         List<Survey> completionList = new ArrayList<>();
         for (Event event : events) {
             if (event.getDataValues() != null && event.getDataValues().size() > 0) {
@@ -134,5 +131,21 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
             }
         }
         return completionList;
+    }
+
+    private static List<Event> getEventsFromJson(JsonNode jsonNode, TypeReference<List<Event>> typeRef) {
+        List<Event> events = new ArrayList<>();
+        try {
+            if (jsonNode.has("events")) {
+                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JodaModule());
+                events = objectMapper.
+                        readValue(jsonNode.get("events").traverse(), typeRef);
+            } else {
+                events = new ArrayList<>();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return events;
     }
 }

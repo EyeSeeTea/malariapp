@@ -38,7 +38,7 @@ public class SurveyChecker {
      * If a survey is in the server, the survey should be set as sent. Else, the survey should be
      * set as completed and it will be resend.
      */
-    public static void checkAllQuarantineSurveys(Context context, Credentials credentials) {
+    private static void checkAllQuarantineSurveys(Context context, Credentials credentials) {
                 IServerMetadataRepository serverMetadataRepository =
                         new ServerMetadataRepository(context);
                 ISurveyDataSource localDataSource = new SurveyLocalDataSource();
