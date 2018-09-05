@@ -46,7 +46,7 @@
 <!-- assessment -->
 <string name="assessment_title_facility_date">"ຊື່ສະຖານທີ່ບໍລິການ /ຂໍ້ມູນການສຳຫຼວດ"</string>
 <string name="assessment_title_state">"ສຳເລັດແລ້ວ (%)"</string>
-<string name="assessment_sent_date">"ວັນທີສຳເລັດ"</string>
+<string name="assessment_sent_date">"Date"</string>
 <string name="assessment_title_header">"ການປະເມີນຄັ້ງນີ້"</string>
 <string name="assessment_sent_title_header">"ການປະເມີນຄັ້ງກ່ອນ"</string>
 
@@ -218,8 +218,8 @@
 <string name="admin_announcement">"ການແຈ້ງການຈາກຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="user_close">"ຜູ້ໃຊ້ນີ້ຖືກປິດໂດຍຜູ້ຄວບຄຸມລະບົບ"</string>
 <string name="dialog_demo_pull_success">"ໂຄງຮ່າງຂອງລະບົບ dhis ໄດ້ຖືກນຳເຂົ້າມາຈາກຂໍ້ມູນການສຳຫຼວດສຳເລັດແລ້ວ"</string>
-<string name="select_all">"ເລືອກທັງໝົດ"</string>
-<string name="demo_login">"ໂຫມດແບບທົດລອງ"</string>
+<string name="select_all">"ជ្រើសរើសស្ទង់មតិទាំងអស់"</string>
+<string name="demo_login">"ຕົວຢ່າງ"</string>
 <string name="system_defined">"ລະບົບທີ່ໄດ້ຮັບການກວດກາແລ້ວ"</string>
 <string name="settings_select_language">"ພາສາ"</string>
 <string name="toast_push_in_progress">"ກະລຸນາລໍຖ້າ, ຂໍ້ມູນກຳລັງນຳເຂົ້າສູ່ລະບົບ"</string>
@@ -236,7 +236,8 @@
 <string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
-<string name="header_reschedule">"ວາງແຜນໃໝ່"</string>
+ <string name="header_reschedule">"ກໍາຫນົດເວລາ"</string>
+ <string name="header_schedule">"ກໍານົດເວລາ"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
@@ -282,6 +283,7 @@
 <string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
 <string name="header_reschedule_title">"ກໍານົດເວລາໃຫມ່"</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
+<string name="scheduled">"រំពឹងទុក"</string>
 <string name="apply_filters">"ນໍາໃຊ້ຕົວກັ່ນຕອງ"</string>
 <string name="filter">"ຕົວກອງ"</string>
 <string name="failed_video_image_question_only">"ຄໍາຖາມວິດີໂອ / ຮູບພາບເທົ່ານັ້ນ"</string>

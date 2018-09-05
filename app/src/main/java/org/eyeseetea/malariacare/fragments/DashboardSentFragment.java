@@ -451,10 +451,10 @@ public class DashboardSentFragment extends ListFragment implements IModuleFragme
                                     survey2.getCompletionDate());
                             break;
                         case SCORE_ORDER:
-                            compare = (survey1.hasMainScore()?survey1.getMainScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore():noScore));
+                            compare = (survey1.hasMainScore()?survey1.getMainScore().getScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore().getScore():noScore));
                             break;
                         default:
-                            compare = (survey1.hasMainScore()?survey1.getMainScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore():noScore));
+                            compare = (survey1.hasMainScore()?survey1.getMainScore().getScore():noScore).compareTo((survey2.hasMainScore()?survey2.getMainScore().getScore():noScore));
                             break;
                     }
 

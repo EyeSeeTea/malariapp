@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Instalación / Encuesta</string>
 <string name="assessment_title_state">"%Completo"</string>
-<string name="assessment_sent_date">"Fecha de llenado"</string>
+<string name="assessment_sent_date">"Fecha"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
 <string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
 
@@ -204,7 +204,7 @@ clínica"</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
-<string name="select_all">Seleccionar todos</string>
+<string name="select_all">Seleccionar Todas</string>
 <string name="demo_login">Modo Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
@@ -274,6 +274,8 @@ clínica"</string>
 <string name="plan_action_edit_text_hint">"Toque para escribir"</string>
 <string name="planning_label_date">"Nueva fecha:"</string>
 <string name="header_reschedule_title">"Re-programar"</string>
+
+<string name="scheduled">Programada</string>
 <string name="apply_filters">"Aplicar filtros"</string>
 <string name="filter">"Filtro"</string>
 <string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>

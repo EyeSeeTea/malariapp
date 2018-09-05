@@ -86,6 +86,10 @@ public class AppSettingsBuilder {
     public static boolean isDeveloperOptionsActive(){
         return getInstance().getSettings().getDashboardSettings().isDeveloperOptions();
     }
+    
+    public static boolean isPlanInnerHeader() {
+        return getInstance().getSettings().getDashboardSettings().isPlanInnerHeader();
+    }
 
     public static boolean isTabTitleVisible(){
         return getInstance().getSettings().getDashboardSettings().isTabTitleVisible();
