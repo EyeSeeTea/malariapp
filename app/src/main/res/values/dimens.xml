@@ -105,6 +105,7 @@
     <dimen name="header_bold_text_size">18dp</dimen>
 
     <!-- Quest mark guide -->
+    <!-- Quest mark guide -->
     <dimen name="roboto_10">10dp</dimen>
     <dimen name="roboto_11">11dp</dimen>
     <dimen name="roboto_12">12dp</dimen>
@@ -114,6 +115,14 @@
     <dimen name="roboto_18">18dp</dimen>
     <dimen name="roboto_20">20dp</dimen>
     <dimen name="roboto_28">28dp</dimen>
+    <dimen name="planing_button_text_size">@dimen/roboto_14</dimen>
+    <dimen name="planing_small_text_size">@dimen/roboto_10</dimen>
+    <dimen name="feedback_text_size">@dimen/roboto_12</dimen>
+    <dimen name="margin_quality_of_care">6dip</dimen>
+    <dimen name="cs_header_title_size">@dimen/roboto_14</dimen>
+    <dimen name="sent_header_rows_text_size">@dimen/roboto_14</dimen>
+    <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
+    <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
 
     <dimen name="login_title_text">@dimen/roboto_28</dimen>
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>

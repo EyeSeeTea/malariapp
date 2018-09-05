@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Établissement / Rapports"</string>
 <string name="assessment_title_state">"État"</string>
-<string name="assessment_sent_date">"Date d'envoi"</string>
+<string name="assessment_sent_date">"Date"</string>
 <string name="assessment_title_header">"Rapport(s) actif(s)"</string>
 <string name="assessment_sent_title_header">"Rapport(s) antérieur(s)"</string>
 

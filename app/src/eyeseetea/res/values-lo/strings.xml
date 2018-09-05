@@ -46,7 +46,7 @@
 <!-- assessment -->
 <string name="assessment_title_facility_date">"ຊື່ສະຖານທີ່ບໍລິການ /ຂໍ້ມູນການສຳຫຼວດ"</string>
 <string name="assessment_title_state">"ສຳເລັດແລ້ວ (%)"</string>
-<string name="assessment_sent_date">"ວັນທີສຳເລັດ"</string>
+<string name="assessment_sent_date">"Date"</string>
 <string name="assessment_title_header">"ການປະເມີນຄັ້ງນີ້"</string>
 <string name="assessment_sent_title_header">"ການປະເມີນຄັ້ງກ່ອນ"</string>
 
