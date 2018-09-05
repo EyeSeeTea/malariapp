@@ -18,6 +18,7 @@
  */
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
@@ -39,6 +40,7 @@ import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
