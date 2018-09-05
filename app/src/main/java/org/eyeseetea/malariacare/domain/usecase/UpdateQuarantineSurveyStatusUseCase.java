@@ -19,17 +19,26 @@
 
 package org.eyeseetea.malariacare.domain.usecase;
 
+import android.util.Log;
+
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IOrgUnitRepository;
-import org.eyeseetea.malariacare.domain.boundary.ISurveyQuarantineRepository;
+import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class FixQuarantineSurveyStatusUseCase {
+public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
+    private final static String TAG = ".UpdateQuarantine";
+    private IAsyncExecutor mAsyncExecutor;
+    private IOrgUnitRepository orgUnitRepository;
+    private ISurveyDataSource remoteSurveyDataSource;
+    private ISurveyDataSource localSurveyDataSource;
 
     public interface Callback {
         void onComplete();
@@ -37,24 +46,54 @@ public class FixQuarantineSurveyStatusUseCase {
         void onError();
     }
 
-    ISurveyQuarantineRepository quarantineExistOnServerController;
-    IOrgUnitRepository orgUnitRepository;
 
-    public FixQuarantineSurveyStatusUseCase(ISurveyQuarantineRepository quarantineExistOnServerController,
-                                            IOrgUnitRepository orgUnitRepository) {
-        this.quarantineExistOnServerController = quarantineExistOnServerController;
+    public UpdateQuarantineSurveyStatusUseCase(
+            IAsyncExecutor asyncExecutor,
+            IOrgUnitRepository orgUnitRepository,
+            ISurveyDataSource localSurveyDataSource,
+            ISurveyDataSource remoteSurveyDataSource) {
+        this.mAsyncExecutor = asyncExecutor;
         this.orgUnitRepository = orgUnitRepository;
+        this.localSurveyDataSource = localSurveyDataSource;
+        this.remoteSurveyDataSource = remoteSurveyDataSource;
     }
 
-    public void execute(final Callback callback) {
-        List<SurveyFilter> surveyFilters = new ArrayList<>();
+    public void execute() {
+        mAsyncExecutor.run(this);
+    }
 
+
+    @Override
+    public void run() {
+        List<SurveyFilter> filters = getGroupsOfSurveyFilters();
+        for(SurveyFilter filter: filters) {
+            try {
+                List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
+                List<Survey> quarantineSurveysInServer = remoteSurveyDataSource.getSurveys(filter);
+                updateSurveyStatus(surveys, quarantineSurveysInServer);
+
+                localSurveyDataSource.Save(surveys);
+            } catch (Exception e) {
+                notifyError(e);
+            }
+        }
+        notifyCompleted();
+    }
+
+
+    private List<SurveyFilter> getGroupsOfSurveyFilters() {
+        List<SurveyFilter> filters = new ArrayList<>();
         List<OrgUnit> orgUnitList = orgUnitRepository.getAll();
         for (OrgUnit orgUnit:orgUnitList) {
             for (String programUId : orgUnit.getRelatedPrograms()) {
 
                 SurveyFilter getLocalQuarantineSurveysFilter = SurveyFilter.createGetQuarantineSurveys(programUId, orgUnit.getUid());
-                List<Survey> quarantineSurveys = quarantineExistOnServerController.getAll(getLocalQuarantineSurveysFilter);
+                List<Survey> quarantineSurveys = null;
+                try {
+                    quarantineSurveys = localSurveyDataSource.getSurveys(getLocalQuarantineSurveysFilter);
+                } catch (Exception e) {
+                    notifyError(e);
+                }
 
                 if (quarantineSurveys.size() == 0) {
                     continue;
@@ -63,26 +102,23 @@ public class FixQuarantineSurveyStatusUseCase {
                 Date highestCompletionDate = findHighestCompletionDate(quarantineSurveys);
                 Date lowestCompletionDate = findLowestCompletionDate(quarantineSurveys);
 
-                surveyFilters.add(SurveyFilter.createCheckOnServerFilter(lowestCompletionDate, highestCompletionDate, programUId, orgUnit.getUid()));
+                filters.add(SurveyFilter.createCheckQuarantineOnServerFilter(lowestCompletionDate, highestCompletionDate, programUId, orgUnit.getUid()));
             }
         }
-        if(surveyFilters.size()==0){
-            callback.onComplete();
-            return;
+        return filters;
+    }
+
+    private void updateSurveyStatus(List<Survey> surveys, List<Survey> quarantineSurveysInServer) {
+        for(Survey localSurvey : surveys) {
+            Log.d(TAG, "searching quarantine survey on server, uid: "+localSurvey.getUId());
+            localSurvey.changeStatus(SurveyStatus.COMPLETED);
+            for (Survey quarantineSurvey : quarantineSurveysInServer) {
+                if(localSurvey.getCreationDate().equals(quarantineSurvey.getCreationDate())){
+                    Log.d(TAG, "quarantine survey match, uid: "+localSurvey.getUId());
+                    localSurvey.changeStatus(SurveyStatus.SENT);
+                }
+            }
         }
-
-        quarantineExistOnServerController.updateQuarantineSurveysOnServer(surveyFilters, new ISurveyQuarantineRepository.Callback() {
-            @Override
-            public void onComplete() {
-                callback.onComplete();
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                callback.onError();
-            }
-        });
-
     }
 
     private Date findHighestCompletionDate(List<Survey> quarantineSurveys) {
@@ -104,5 +140,14 @@ public class FixQuarantineSurveyStatusUseCase {
             }
         }
         return date;
+    }
+
+    private void notifyCompleted() {
+        Log.d(TAG, "quarantine surveys updated");
+    }
+
+    private void notifyError(final Throwable throwable) {
+        Log.d(TAG, "quarantine surveys update error");
+        throwable.printStackTrace();
     }
 }

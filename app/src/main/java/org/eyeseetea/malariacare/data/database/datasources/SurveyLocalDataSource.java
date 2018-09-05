@@ -23,7 +23,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     @Override
     public List<Survey> getSurveys(SurveyFilter filters) {
         if(filters.isQuarantineSurvey()){
-            return mapSurveys(SurveyDB.getAllQuarantineSurveysByProgramAndOrgUnit(filters.getProgramUId(), filters.getOrgunitUId()));
+            return mapQuarantineSurveys(SurveyDB.getAllQuarantineSurveysByProgramAndOrgUnit(filters.getProgramUId(), filters.getOrgUnitUId()));
 
         }
         //On the future implement this method to retrieve surveys from db
@@ -62,7 +62,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     }
 
 
-    public List<Survey> mapSurveys(List<SurveyDB> surveysDB) {
+    public List<Survey> mapQuarantineSurveys(List<SurveyDB> surveysDB) {
 
         List<Survey> surveys = new ArrayList<>();
 

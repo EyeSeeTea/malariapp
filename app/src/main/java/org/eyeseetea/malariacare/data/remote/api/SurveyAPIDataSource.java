@@ -63,7 +63,7 @@ public class SurveyAPIDataSource extends OkHttpClientDataSource implements ISurv
         //Here pull surveys code
         List<Survey> surveys = new ArrayList<>();
         if(filter.isQuarantineSurvey()) {
-            surveys = getEventsCompletionDatesOnServer(filter.getProgramUId(), filter.getOrgunitUId(), filter.getStartDate(), filter.getEndDate());
+            surveys = getEventsCompletionDatesOnServer(filter.getProgramUId(), filter.getOrgUnitUId(), filter.getStartDate(), filter.getEndDate());
         }
         return surveys;
     }
