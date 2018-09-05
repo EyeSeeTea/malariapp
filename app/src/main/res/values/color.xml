@@ -31,8 +31,8 @@
     <color name="appNameColor">@color/black</color>
     <color name="headerColor">@color/green_dark</color>
     <color name="evenRows">@color/light_grey</color>
-    <color name="plan_grey_light">#4A4A4A</color>
     <color name="planning_header_background">@color/plan_grey_light</color>
+    <color name="plan_grey_light">#4A4A4A</color>
     <color name="planning_header_text">@color/white</color>
     <color name="planning_row_text">@color/black</color>
     <color name="background_light_grey">#d9d9d9</color>
@@ -104,6 +104,7 @@
     <color name="next_30_days_background">@color/green_plan_block</color>
     <color name="future_background">@color/blue_plan_block</color>
     <color name="even_row_background">@color/even_background</color>
+    <color name="row_background">@color/white</color>
     <color name="filter_border">#858484</color>
     <color name="filter_border_bottom">#959595</color>
     <color name="filter_gradient_start">#818181</color>
@@ -137,4 +138,4 @@
     <color name="assets_listview_background">@color/app_background</color>
     <color name="scoreGrandson">#6fa8dc</color>
 
-</resources>
+    </resources>

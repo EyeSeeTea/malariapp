@@ -194,6 +194,14 @@ public abstract class AUtils {
         return sdf.format(date);
     }
 
+    public static String getShortEuropeanFormatedDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+        if(date==null){
+            return "";
+        }
+        return sdf.format(date);
+    }
+
     public static String formatDate(Date date) {
         if (date == null) {
             return "-";

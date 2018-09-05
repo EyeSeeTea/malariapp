@@ -66,6 +66,39 @@
         <item name="font_name">@string/font_name_medium</item>
         <item name="tDimension">@string/font_size_level4</item>
     </style>
+    <style name="EyeSeePlaningOrgUnitHeader">
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">@dimen/header_light_text_size</item>
+        <item name="android:textColor">@color/planning_header_text</item>
+        <item name="font_name">@string/medium_font_name</item>
+        <item name="tDimension">@string/font_size_level4</item>
+    </style>
+
+    <style name="EyeSeeListTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:paddingTop">@dimen/planning_padding</item>
+        <item name="android:paddingBottom">@dimen/planning_padding</item>
+        <item name="android:textSize">@dimen/planing_per_org_text_size</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="tDimension">@string/font_size_level2</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeListSubTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:paddingTop">@dimen/planning_padding</item>
+        <item name="android:paddingBottom">@dimen/planning_padding</item>
+        <item name="android:textSize">@dimen/planing_per_org_text_size</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/regular_font</item>
+    </style>
+
     <style name="EyeSeeDialogCancelButton" parent="EyeSeeDialogButton">
         <item name="android:background">@color/dialog_red_button</item>
     </style>
