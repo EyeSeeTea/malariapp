@@ -34,6 +34,7 @@ public class SurveyFilter {
     boolean isQuarantineSurvey;
 
     private SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgUnitUId, boolean isQuarantineSurvey) {
+        validateDates(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
@@ -42,11 +43,20 @@ public class SurveyFilter {
         this.orgUnitUId = orgUnitUId;
     }
 
+    private void validateDates(Date startDate, Date endDate) {
+        if(endDate == null || startDate == null){
+            return;
+        }
+        if(endDate.after(startDate)){
+            throw new IllegalArgumentException("Start date should be lower or equal than end Date");
+        }
+    }
+
     public Date getStartDate() {
         return startDate;
     }
 
-    public int getMaxEvents() {
+    public Integer getMaxEvents() {
         return maxEvents;
     }
 
