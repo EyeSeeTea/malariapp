@@ -30,16 +30,16 @@ public class SurveyFilter {
     Date endDate;
     Integer maxEvents;
     String programUId;
-    String orgunitUId;
+    String orgUnitUId;
     boolean isQuarantineSurvey;
 
-    public SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgunitUid, boolean isQuarantineSurvey) {
+    private SurveyFilter(Date startDate, Date endDate, Integer maxEvents, String programUId, String orgUnitUId, boolean isQuarantineSurvey) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
         this.programUId = programUId;
         this.isQuarantineSurvey = isQuarantineSurvey;
-        this.orgunitUId = orgunitUid;
+        this.orgUnitUId = orgUnitUId;
     }
 
     public Date getStartDate() {
@@ -58,21 +58,21 @@ public class SurveyFilter {
         return programUId;
     }
 
-    public String getOrgunitUId() {
-        return orgunitUId;
+    public String getOrgUnitUId() {
+        return orgUnitUId;
     }
 
     public boolean isQuarantineSurvey() {
         return isQuarantineSurvey;
     }
 
-    public static SurveyFilter createCheckOnServerFilter(Date startDate, Date endDate, String programUId, String orgunitUId){
+    public static SurveyFilter createCheckQuarantineOnServerFilter(Date startDate, Date endDate, String programUId, String orgunitUId){
         return new SurveyFilter(
                 required(startDate, "startDate is required"),
                 required(endDate, "endDate is required"),
                 null,
                 required(programUId, "programUId is required"),
-                required(orgunitUId, "orgunitUId is required"),
+                required(orgunitUId, "orgUnitUId is required"),
                 true
                 );
     }
@@ -82,8 +82,18 @@ public class SurveyFilter {
                 null,
                 null,
                 required(programUId, "programUId is required"),
-                required(orgunitUId, "orgunitUId is required"),
+                required(orgunitUId, "orgUnitUId is required"),
                 true
+        );
+    }
+    public static SurveyFilter createGetSurveysOnPull(Date startDate, int maxEvents){
+        return new SurveyFilter(
+                required(startDate, "startDate is required"),
+                null,
+                maxEvents,
+                null,
+                null,
+                false
         );
     }
 }
