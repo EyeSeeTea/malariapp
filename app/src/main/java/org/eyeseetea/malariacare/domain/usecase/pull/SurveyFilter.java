@@ -47,8 +47,8 @@ public class SurveyFilter {
         if(endDate == null || startDate == null){
             return;
         }
-        if(endDate.after(startDate)){
-            throw new IllegalArgumentException("Start date should be lower or equal than end Date");
+        if(endDate.before(startDate)){
+            throw new IllegalArgumentException("End date should be before than start Date");
         }
     }
 
@@ -76,23 +76,23 @@ public class SurveyFilter {
         return isQuarantineSurvey;
     }
 
-    public static SurveyFilter createCheckQuarantineOnServerFilter(Date startDate, Date endDate, String programUId, String orgunitUId){
+    public static SurveyFilter createCheckQuarantineOnServerFilter(Date startDate, Date endDate, String programUId, String orgUnitUId){
         return new SurveyFilter(
                 required(startDate, "startDate is required"),
                 required(endDate, "endDate is required"),
                 null,
                 required(programUId, "programUId is required"),
-                required(orgunitUId, "orgUnitUId is required"),
+                required(orgUnitUId, "orgUnitUId is required"),
                 true
                 );
     }
-    public static SurveyFilter createGetQuarantineSurveys(String programUId, String orgunitUId){
+    public static SurveyFilter createGetQuarantineSurveys(String programUId, String orgUnitUId){
         return new SurveyFilter(
                 null,
                 null,
                 null,
                 required(programUId, "programUId is required"),
-                required(orgunitUId, "orgUnitUId is required"),
+                required(orgUnitUId, "orgUnitUId is required"),
                 true
         );
     }
