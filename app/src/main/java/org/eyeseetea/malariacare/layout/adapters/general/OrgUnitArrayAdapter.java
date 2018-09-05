@@ -50,5 +50,4 @@ public class OrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
         customTextView.setPadding(customTextView.getPaddingLeft(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding),customTextView.getPaddingRight(),getContext().getResources().getDimensionPixelSize(R.dimen.filters_top_bottom_padding));
         customTextView.setText(orgUnit.getName());
     }
-
 }

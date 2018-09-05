@@ -304,7 +304,7 @@ public class PlannedAdapter extends BaseAdapter {
         } else {
             actionButton.setImageResource(R.drawable.ic_plus_light);
         }
-        PlannedStyleStrategy.drawActionButtonTint(actionButton, plannedSurvey.getSurvey().isInProgress());
+         PlannedStyleStrategy.drawActionButtonTint(actionButton, plannedSurvey.getSurvey().isInProgress());
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
