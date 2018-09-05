@@ -25,6 +25,13 @@
         <attr name="tFontName" format="string|reference" />
     </declare-styleable>
 
+    <!-- CheckBox: Text not editable with adaptative text size and text font-->
+    <declare-styleable name="CustomCheckBox">
+        <attr name="cDimension" format="string|reference" />
+        <attr name="cScale" format="string|reference" />
+        <attr name="cFontName" format="string|reference" />
+    </declare-styleable>
+
     <!-- EditCard: Text field editable with adaptative text size and text font-->
     <declare-styleable name="CustomEditText">
         <attr name="eDimension" format="string|reference" />

@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Établissement / Rapports"</string>
 <string name="assessment_title_state">"État"</string>
-<string name="assessment_sent_date">"Date d'envoi"</string>
+<string name="assessment_sent_date">"Date"</string>
 <string name="assessment_title_header">"Rapport(s) actif(s)"</string>
 <string name="assessment_sent_title_header">"Rapport(s) antérieur(s)"</string>
 
@@ -198,7 +198,7 @@ Mensuelle"</string>
 <string name="account_permission_denied">" Contacts permission refusée. Médias ne sera pas synchronisé"</string>
 <string name="feedback_media">"Voir la vidéo commentaires"</string>
 <string name="feedback_view_image">"Ouvrir image avec ..."</string>
-<string name="select_all">"Tout sélectionner"</string>
+<string name="select_all">"Sélectionnez Toutes"</string>
 <string name="demo_login">"Le mode de démonstration"</string>
 <string name="system_defined">"Système défini"</string>
 <string name="settings_select_language">"La langue"</string>
@@ -220,6 +220,7 @@ Mensuelle"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"Vous avez %d rapports non envoyés. Cela sera supprimé. Voulez-vous continuer l'actualisation?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"Vous n'avez pas d'enquêtes non envoyées. Voulez-vous continuer?"</string>
 
+<string name="header_schedule">"Programmer"</string>
 <string name="header_reschedule">"Réprogrammer"</string>
 <string name="planing_due_date">"Date d'échéance"</string>
 <string name="action_button_text">"PLAN D'ACTION"</string>
@@ -267,6 +268,8 @@ Mensuelle"</string>
 <string name="planning_label_date">"Nouvelle date:"</string>
 <string name="plan_action_edit_text_hint">"appuyez pour écrire"</string>
 <string name="header_reschedule_title">"Re-programmer"</string>
+
+<string name="scheduled">"Prévu"</string>
 
 <string name="completed_title">"Terminé"</string>
 <string name="completed_next">"Prochain"</string>

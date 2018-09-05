@@ -40,7 +40,7 @@
 
 <string name="assessment_title_facility_date">"Nome da Franquia ou Inquérito"</string>
 <string name="assessment_title_state">"%Completo"</string>
-<string name="assessment_sent_date">"Data de concl"</string>
+<string name="assessment_sent_date">"Data"</string>
 <string name="assessment_title_header">"Avaliação activa"</string>
 <string name="assessment_sent_title_header">"Avaliação anterior(es)"</string>
 
@@ -199,7 +199,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
-<string name="select_all">Selecionar tudo</string>
+<string name="select_all">Selecionar Todas</string>
 
 <string name="demo_login">Modo de demonstração</string>
 <string name="system_defined">"Sistema definido"</string>
@@ -225,6 +225,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
 
+<string name="header_schedule">"Programar"</string>
 <string name="header_reschedule">"Reprogramar"</string>
 <string name="planing_due_date">"Data de Vencimento"</string>
 <string name="action_button_text">PLANO DE AÇÃO</string>
@@ -271,4 +272,5 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="advanced_options">"Opções avançadas"</string>
 <string name="simple_options">"Opções simples"</string>
 <string name="header_reschedule_title">"re-agendar"</string>
+<string name="schedule">"Esperado"</string>
 </resources>
