@@ -39,6 +39,9 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
     private IOrgUnitRepository orgUnitRepository;
     private ISurveyDataSource remoteSurveyDataSource;
     private ISurveyDataSource localSurveyDataSource;
+    //This flag is necessary to avoid duplicates related with problems when multiple updateQuarantineUseCase instances and push controller running in background at same time.
+    //first two updateQuarantineUseCase have same surveys and set a survey as completed, but between that happens the push controller might push the survey set as completed by the first updateQuarantineUseCase
+    private static boolean isActive;
 
     public interface Callback {
         void onComplete();
@@ -65,16 +68,21 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
 
     @Override
     public void run() {
+        if(isActive)
+            return;
+        isActive = true;
+        Log.d(TAG, "quarantine surveys update start");
         List<SurveyFilter> filters = getGroupsOfSurveyFilters();
         for(SurveyFilter filter: filters) {
             try {
-                List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
                 List<Survey> quarantineSurveysInServer = remoteSurveyDataSource.getSurveys(filter);
+                List<Survey> surveys = localSurveyDataSource.getSurveys(filter);
                 updateSurveyStatus(surveys, quarantineSurveysInServer);
 
                 localSurveyDataSource.Save(surveys);
             } catch (Exception e) {
                 notifyError(e);
+                return;
             }
         }
         notifyCompleted();
@@ -92,7 +100,8 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
                 try {
                     quarantineSurveys = localSurveyDataSource.getSurveys(getLocalQuarantineSurveysFilter);
                 } catch (Exception e) {
-                    notifyError(e);
+                    e.printStackTrace();
+                    continue;
                 }
 
                 if (quarantineSurveys.size() == 0) {
@@ -144,10 +153,12 @@ public class UpdateQuarantineSurveyStatusUseCase implements UseCase{
 
     private void notifyCompleted() {
         Log.d(TAG, "quarantine surveys updated");
+        isActive = false;
     }
 
     private void notifyError(final Throwable throwable) {
         Log.d(TAG, "quarantine surveys update error");
         throwable.printStackTrace();
+        isActive = false;
     }
 }
