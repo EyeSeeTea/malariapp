@@ -33,14 +33,14 @@
 <string name="dashboard_info_ready_to_upload">"Ready to upload"</string>
 <string name="dashboard_info_sent">"Sent"</string>
 
-<string name="create_info_ok">"Start"</string>
+<string name="create_info_ok">"START SURVEY"</string>
 <string name="create_info_organization_unit">"Organisation Unit"</string>
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
 <string name="assessment_title_facility_date">"Facility / Survey"</string>
 <string name="assessment_title_state">"% Complete"</string>
-<string name="assessment_sent_date">"Comp date"</string>
+<string name="assessment_sent_date">"Date"</string>
 <string name="assessment_title_header">"Active Assessment(s)"</string>
 <string name="assessment_sent_title_header">"Previous Assessment(s)"</string>
 
@@ -118,7 +118,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Next QA"</string>
+<string name="dashboard_title_planned_next_qa">"Next Eval."</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
@@ -204,8 +204,8 @@ evaluation"</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-<string name="select_all">"Select all"</string>
-<string name="demo_login">"Demo"</string>
+<string name="select_all">"Select All Surveys"</string>
+<string name="demo_login">"Demo Mode"</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
 
@@ -227,6 +227,7 @@ evaluation"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
 
+<string name="header_schedule">"Schedule"</string>
 <string name="header_reschedule">"Reschedule"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
@@ -273,8 +274,12 @@ evaluation"</string>
 <string name="html_text">Formatted text </string>
 <string name="schedule_title">Schedule survey</string>
 <string name="save">"Save"</string>
+<string name="advanced_options">"Advanced options"</string>
+<string name="simple_options">"Simple Options"</string>
 <string name="plan_action_provider_title" >"Provider Name:"</string>
 <string name="plan_action_edit_text_hint">"tap to write"</string>
 <string name="header_reschedule_title">"Re-schedule"</string>
 
+
+<string name="scheduled">Scheduled</string>
 </resources>

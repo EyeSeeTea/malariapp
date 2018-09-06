@@ -36,7 +36,7 @@
 <string name="dashboard_info_sent">"Sent"</string>
 
 <!-- create -->
-<string name="create_info_ok">"Start"</string>
+<string name="create_info_ok">"ចាប់ផ្តើមវាស់វែង"</string>
 <string name="create_info_organization_unit">"Organization Unit"</string>
 <string name="create_info_survey">"Survey"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
@@ -132,7 +132,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Next QA"</string>
+<string name="dashboard_title_planned_next_qa">"Next Eval"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"បង្ហាញតែសំណួរដែលមានវីដេអូ / រូបភាព"</string>
 <string name="feedback_show_only_one_or_show_all">"បង្ហាញតែមតិយោបល់ចុងក្រោយក្នុងមួយកម្មវិធី / PUll"</string>
@@ -219,8 +219,8 @@ evaluation"</string>
 <string name="admin_announcement">"សេចក្តីប្រកាស admin"</string>
 <string name="user_close">"អ្នកប្រើប្រាស់នេះត្រូវបានបិទដោយអ្នកគ្រប់គ្រង។"</string>
 <string name="dialog_demo_pull_success">"ទិន្នន័យមេតា Dhis បានផ្ទុកដោយជោគជ័យពីទិន្នន័យក្នុងស្រុក"</string>
-<string name="select_all">"ជ្រើស​យក​ទាំងអស់"</string>
-<string name="demo_login">"សាកល្បង"</string>
+<string name="select_all">"ជ្រើសរើសទាំងអស់"</string>
+<string name="demo_login">"របៀបសាកល្បង"</string>
 <string name="system_defined">"ដែលបានកំណត់ប្រព័ន្ធ"</string>
 <string name="settings_select_language">"ភាសា"</string>
 <string name="toast_push_in_progress">"សូមរង់ចាំ, វាមានការជំរុញក្នុងវឌ្ឍនភាពរួចទៅហើយ"</string>
@@ -281,4 +281,11 @@ evaluation"</string>
 <string name="plan_action_edit_text_hint">"ប៉ះដើម្បីសរសេរ"</string>
 <string name="header_reschedule_title">"កំណត់ឡើងវិញ"</string>
 <string name="plan_action_provider_title" >"ឈ្មោះក្រុមហ៊ុនផ្ដល់:"</string>
+
+<string name="advanced_options">"ជម្រើសកម្រិតខ្ពស់"</string>
+<string name="simple_options">"ជម្រើសសាមញ្ញ"</string>
+
+<string name="scheduled">"ព្រុយ"</string>
+<string name="header_schedule">"កាលវិភាគ"</string>
+<string name="header_reschedule">"អ្នកយកព័ត៌មាន"</string>
 </resources>

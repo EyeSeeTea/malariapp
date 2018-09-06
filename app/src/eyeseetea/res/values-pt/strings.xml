@@ -33,14 +33,14 @@
 <string name="dashboard_info_ready_to_upload">"Pronto para carregar"</string>
 <string name="dashboard_info_sent">"Enviei"</string>
 
-<string name="create_info_ok">"Criar"</string>
+<string name="create_info_ok">"CRIAR PESQUISA"</string>
 <string name="create_info_organization_unit">"Unidade da Organização – Unid. Org."</string>
 <string name="create_info_survey">"Inquérito"</string>
 <string name="create_info_tabs_group">"Tab Group"</string>
 
 <string name="assessment_title_facility_date">"Nome da Franquia ou Inquérito"</string>
 <string name="assessment_title_state">"%Completo"</string>
-<string name="assessment_sent_date">"Data de concl"</string>
+<string name="assessment_sent_date">"Data"</string>
 <string name="assessment_title_header">"Avaliação activa"</string>
 <string name="assessment_sent_title_header">"Avaliação anterior(es)"</string>
 
@@ -199,9 +199,9 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
-<string name="select_all">Selecionar tudo</string>
+<string name="select_all">Selecionar Todas</string>
 
-<string name="demo_login">Demonstração</string>
+<string name="demo_login">Modo de demonstração</string>
 <string name="system_defined">"Sistema definido"</string>
 <string name="settings_select_language">"Língua"</string>
 <string name="toast_push_in_progress">"Aguarde, Já existe um envio em andamento"</string>
@@ -225,6 +225,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
 
+<string name="header_schedule">"Programar"</string>
 <string name="header_reschedule">"Reprogramar"</string>
 <string name="planing_due_date">"Data de Vencimento"</string>
 <string name="action_button_text">PLANO DE AÇÃO</string>
@@ -266,6 +267,9 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="save">"Salvar"</string>
 <string name="planning_label_date">"Nova data:"</string>
 <string name="plan_action_provider_title" >"Nome do provedor:"</string>
+<string name="advanced_options">"Opções avançadas"</string>
+<string name="simple_options">"Opções simples"</string>
 <string name="plan_action_edit_text_hint">"toque para escrever"</string>
 <string name="header_reschedule_title">"re-agendar"</string>
+<string name="schedule">"Esperado"</string>
 </resources>

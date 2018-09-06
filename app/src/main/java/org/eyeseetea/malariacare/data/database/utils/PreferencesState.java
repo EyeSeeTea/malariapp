@@ -21,7 +21,6 @@ package org.eyeseetea.malariacare.data.database.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -90,11 +89,6 @@ public class PreferencesState {
      * Active language code;
      */
     private static String languageCode;
-
-    /**
-     * Flag that determines if the user did accept the announcement
-     */
-    private boolean userAccept;
     private String serverUrl;
     private String phoneLanguage;
     private Credentials creedentials;
@@ -131,7 +125,6 @@ public class PreferencesState {
         maxEvents = initMaxEvents();
         monitoringTarget = initMonitoringTarget();
         languageCode = initLanguageCode();
-        userAccept = initUserAccept();
         Log.d(TAG, String.format(
                 "reloadPreferences: scale: %s | locationRequired: %b | "
                         + "maxEvents: %d | largeTextOption: %b  | target: %d",
@@ -146,16 +139,6 @@ public class PreferencesState {
                 instance.getContext());
         return sharedPreferences.getString(instance.getContext().getString(R.string.language_code),
                 "");
-    }
-
-    /**
-     * Inits user accept flag according to preferences
-     */
-    private boolean initUserAccept() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                instance.getContext());
-        return sharedPreferences.getBoolean(
-                instance.getContext().getString(R.string.user_accept_key), false);
     }
 
     /**
@@ -406,26 +389,6 @@ public class PreferencesState {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(context.getResources().getString(R.string.push_in_progress), inProgress);
         editor.commit();
-    }
-
-    /**
-     * Tells if user accepted the announcement message
-     */
-    public Boolean isUserAccept() {
-        return userAccept;
-    }
-
-    /**
-     * Set userAccept in the preferences and local memory
-     */
-    public Boolean setUserAccept(boolean isAccepted) {
-        this.userAccept = isAccepted;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(context.getResources().getString(R.string.user_accept_key), isAccepted);
-        editor.commit();
-        return userAccept;
     }
 
     public void initalizateActivityDependencies() {

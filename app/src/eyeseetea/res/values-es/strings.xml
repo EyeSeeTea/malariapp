@@ -33,14 +33,14 @@
 <string name="dashboard_info_ready_to_upload">"Lista para enviar"</string>
 <string name="dashboard_info_sent">"Enviado"</string>
 
-<string name="create_info_ok">"Empezar"</string>
+<string name="create_info_ok">"EMPEZAR ENCUESTA"</string>
 <string name="create_info_organization_unit">"Unidad de organización"</string>
 <string name="create_info_survey">"Formulario"</string>
 <string name="create_info_tabs_group">"Grupo de Pestañas"</string>
 
 <string name="assessment_title_facility_date">"Instalación / Encuesta</string>
 <string name="assessment_title_state">"%Completo"</string>
-<string name="assessment_sent_date">"Fecha de llenado"</string>
+<string name="assessment_sent_date">"Fecha"</string>
 <string name="assessment_title_header">"Evaluación(es) Activa(s)"</string>
 <string name="assessment_sent_title_header">"Evaluación(es) Anterior(es)"</string>
 
@@ -204,8 +204,8 @@ clínica"</string>
 <string name="account_permission_denied">Permiso de contactos denegado. Archivos multimedia no serán sincronizados</string>
 <string name="feedback_media">Ver video feedback</string>
 <string name="feedback_view_image">Abrir imagen con...</string>
-<string name="select_all">Seleccionar todos</string>
-<string name="demo_login">Demo</string>
+<string name="select_all">Seleccionar Todas</string>
+<string name="demo_login">Modo Demo</string>
 <string name="system_defined">"Definido por el sistema"</string>
 <string name="settings_select_language">"Idioma"</string>
 <string name="toast_push_in_progress">"Por favor, espere, ya hay una subida en curso"</string>
@@ -268,8 +268,12 @@ clínica"</string>
 <string name="html_text">Texto con formato </string>
 <string name="schedule_title">Programación de encuesta</string>
 <string name="save">"salvar"</string>
+<string name="advanced_options">"Opciones avanzadas"</string>
+<string name="simple_options">"Opciones simples"</string>
 <string name="plan_action_provider_title" >"Nombre del proveedor:"</string>
 <string name="plan_action_edit_text_hint">"Toque para escribir"</string>
 <string name="planning_label_date">"Nueva fecha:"</string>
 <string name="header_reschedule_title">"Re-programar"</string>
+
+<string name="scheduled">Programada</string>
 </resources>
