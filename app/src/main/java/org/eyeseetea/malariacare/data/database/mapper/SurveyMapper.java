@@ -1,7 +1,5 @@
 package org.eyeseetea.malariacare.data.database.mapper;
 
-import android.util.Log;
-
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
@@ -22,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SurveyMapper {
-    private final static String TAG = ".SurveyDBMapper";
-
     private Map<Long, QuestionDB> questionsDBMap;
     private Map<Long, OptionDB> optionsDBMap;
     private Map<Long, OrgUnitDB> orgUnitsDBMap;
