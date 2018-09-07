@@ -22,14 +22,13 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.content.Context;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
+import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
@@ -37,10 +36,7 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.SurveysToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
-import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.models.event.Event;
 
 import java.util.List;
 import java.util.Map;
@@ -51,9 +47,11 @@ public class PushController implements IPushController {
     private Context mContext;
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
+    private IConnectivityManager mConnectivityManager;
 
-    public PushController(Context context) {
+    public PushController(Context context, IConnectivityManager connectivityManager) {
         mContext = context;
+        mConnectivityManager = connectivityManager;
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
     }
@@ -61,7 +59,7 @@ public class PushController implements IPushController {
     public void push(final IPushControllerCallback callback) {
 
         Log.d(TAG, "push running");
-        if (!AUtils.isNetworkAvailable()) {
+        if (!mConnectivityManager.isDeviceOnline()) {
             Log.d(TAG, "No network");
             callback.onError(new NetworkException());
         } else {
