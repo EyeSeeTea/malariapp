@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Widget.AppCompat.Spinner.EyeSeeSpinner">
         <item name="android:textSize">12sp</item>
@@ -6,19 +7,28 @@
     <!-- Base application theme. -->
     <style name="EyeSeeTheme" parent="Theme.AppCompat.Light">
         <!--<item name="windowActionBar">false</item>-->
-        <item name="colorPrimary">@color/navy_blue</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/light_grey</item>
         <item name="displayOptions">useLogo|showHome|homeAsUp|showTitle</item>
         <item name="logo">@drawable/qualityapp_logo</item>
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionOverflowButtonStyle">@style/EyeSeeTheme.OverFlow</item>
+        <item name="actionOverflowButtonStyle">@style/EyeSeeTheme.OverFlow</item>
+        <item name="colorControlNormal">#4A4A4A</item>
+        <item name="colorControlActivated">#979797</item>
+        <item name="colorControlHighlight">#4A4A4A</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="EyeSeeTheme.OverFlow">
+        <item name="android:src">@drawable/burger_btn</item>
+    </style>
     <style name="LoginScreenTheme" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/navy_blue</item>
-        <item name="colorPrimaryDark">@color/dark_navy_blue</item>
-        <item name="android:windowBackground">@color/dark_navy_blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
     <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
@@ -66,6 +76,39 @@
         <item name="font_name">@string/font_name_medium</item>
         <item name="tDimension">@string/font_size_level4</item>
     </style>
+    <style name="EyeSeePlaningOrgUnitHeader">
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">@dimen/header_light_text_size</item>
+        <item name="android:textColor">@color/planning_header_text</item>
+        <item name="font_name">@string/medium_font_name</item>
+        <item name="tDimension">@string/font_size_level4</item>
+    </style>
+
+    <style name="EyeSeeListTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:paddingTop">@dimen/planning_padding</item>
+        <item name="android:paddingBottom">@dimen/planning_padding</item>
+        <item name="android:textSize">@dimen/planing_per_org_text_size</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="tDimension">@string/font_size_level2</item>
+        <item name="tFontName">@string/medium_font_name</item>
+    </style>
+    <style name="EyeSeeListSubTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:paddingTop">@dimen/planning_padding</item>
+        <item name="android:paddingBottom">@dimen/planning_padding</item>
+        <item name="android:textSize">@dimen/planing_per_org_text_size</item>
+        <item name="android:textColor">@color/new_grey_text_color</item>
+        <item name="tDimension">@string/font_size_level1</item>
+        <item name="tFontName">@string/regular_font</item>
+    </style>
+
     <style name="EyeSeeDialogCancelButton" parent="EyeSeeDialogButton">
         <item name="android:background">@color/dialog_red_button</item>
     </style>
