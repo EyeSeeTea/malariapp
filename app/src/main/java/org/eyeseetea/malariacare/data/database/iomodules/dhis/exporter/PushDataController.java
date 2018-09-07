@@ -23,6 +23,7 @@ import android.content.Context;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -33,12 +34,10 @@ import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
+import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
-import org.eyeseetea.malariacare.utils.AUtils;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +47,22 @@ public class PushDataController implements IPushController {
     private final String TAG = ".PushDataController";
 
     private Context mContext;
+    private IConnectivityManager mConnectivityManager;
+    private final ISurveyDataSource mSurveyLocalDataSource;
+    private final ISurveyDataSource mSurveyRemoteDataSource;
+
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
-    private IConnectivityManager mConnectivityManager;
 
-    public PushDataController(Context context, IConnectivityManager connectivityManager) {
+    public PushDataController(Context context, IConnectivityManager connectivityManager,
+            ISurveyDataSource surveyLocalDataSource,
+            ISurveyDataSource surveyRemoteDataSource) {
         mContext = context;
         mConnectivityManager = connectivityManager;
+        mSurveyLocalDataSource = surveyLocalDataSource;
+        mSurveyRemoteDataSource = surveyRemoteDataSource;
+
+
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
     }

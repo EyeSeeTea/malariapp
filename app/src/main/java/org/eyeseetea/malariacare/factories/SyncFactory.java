@@ -1,6 +1,7 @@
 package org.eyeseetea.malariacare.factories;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
@@ -32,18 +33,8 @@ public class SyncFactory {
     public PullUseCase getPullUseCase(Context context){
         PullMetadataController pullMetadataController = new PullMetadataController();
 
-
-        IServerMetadataRepository serverMetadataRepository =
-                new ServerMetadataRepository(context);
-        IOptionRepository optionRepository = new OptionRepository();
-        IQuestionRepository questionRepository = new QuestionLocalDataSource();
-        IConnectivityManager connectivityManager = new ConnectivityManager();
-
-        ISurveyDataSource surveyRemoteDataSource =
-                new SurveySDKDhisDataSource(serverMetadataRepository,
-                        questionRepository, optionRepository, connectivityManager);
-
-        ISurveyDataSource surveyLocalDataSource = new SurveyLocalDataSource();
+        ISurveyDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
+        ISurveyDataSource surveyLocalDataSource = getSurveyLocalDataSource();
 
         PullDataController pullDataController =
                 new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
@@ -61,9 +52,31 @@ public class SyncFactory {
 
     public PushUseCase getPushUseCase(Context context){
         IConnectivityManager connectivityManager = new ConnectivityManager();
-        IPushController pushController = new PushDataController(context, connectivityManager);
+        ISurveyDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
+        ISurveyDataSource surveyLocalDataSource = getSurveyLocalDataSource();
+
+        IPushController pushController =
+                new PushDataController(context, connectivityManager,
+                        surveyLocalDataSource, surveyRemoteDataSource);
         PushUseCase pushUseCase = new PushUseCase(asyncExecutor, mainExecutor, pushController);
 
         return pushUseCase;
+    }
+
+    @NonNull
+    private ISurveyDataSource getSurveyLocalDataSource() {
+        return new SurveyLocalDataSource();
+    }
+
+    @NonNull
+    private ISurveyDataSource getSurveyRemoteDataSource(Context context) {
+        IServerMetadataRepository serverMetadataRepository =
+                new ServerMetadataRepository(context);
+        IOptionRepository optionRepository = new OptionRepository();
+        IQuestionRepository questionRepository = new QuestionLocalDataSource();
+        IConnectivityManager connectivityManager = new ConnectivityManager();
+
+        return new SurveySDKDhisDataSource(serverMetadataRepository,
+                questionRepository, optionRepository, connectivityManager);
     }
 }
