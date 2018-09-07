@@ -300,4 +300,6 @@
 <string name="improve_no_surveys">"គ្មានការស្ទង់មតិសម្រាប់ការជ្រើសរើសដែលអ្នកបានធ្វើទេ។"</string>
 <string name="scheduled">កំណត់ពេល</string>
 <string name="reschedule_title_multiple_survey">"ការស្ទង់មតិចំនួន %1$d ដែលត្រូវបានកំណត់ឡើងវិញសម្រាប់ OU %2$s"</string>
+<string name="survey_not_assigned_facility">"ការស្ទង់មតិនេះមិនត្រូវបានកំណត់ទៅកន្លែងនេះទេ។ សូមជ្រើសរើសការស្ទង់មតិផ្សេងទៀត។"</string>
+<string name="feedback_progress_bar_text">កំពុងដំណើរការពិន្ទុស្ទង់មតិ ... សូមរង់ចាំ</string>
 </resources>

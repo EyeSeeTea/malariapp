@@ -71,7 +71,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
     /**
      * Progress dialog shown while loading
      */
-    private ProgressBar progressBar;
+    private RelativeLayout progressBarContainer;
 
     /**
      * Checkbox that toggle between all|failed questions
@@ -166,7 +166,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     private void prepareUI(String module) {
         //Get progress
-        progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
+        progressBarContainer = (RelativeLayout) llLayout.findViewById(R.id.survey_progress_container);
 
         //Set adapter and list
         feedbackAdapter = new FeedbackAdapter(getActivity(),
@@ -243,7 +243,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      * Stops progress view and shows real data
      */
     private void stopProgress() {
-        this.progressBar.setVisibility(View.GONE);
+        this.progressBarContainer.setVisibility(View.GONE);
         this.feedbackListView.setVisibility(View.VISIBLE);
     }
 
@@ -252,8 +252,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     private void startProgress() {
         this.feedbackListView.setVisibility(View.GONE);
-        this.progressBar.setVisibility(View.VISIBLE);
-        this.progressBar.setEnabled(true);
+        this.progressBarContainer.setVisibility(View.VISIBLE);
     }
 
     /**

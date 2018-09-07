@@ -346,7 +346,6 @@ public class DashboardController {
                     public void onClick(View v) {
                         openFeedback(survey, true);
 
-
                         alertDialog.dismiss();
                     }
                 }
@@ -649,7 +648,7 @@ public class DashboardController {
     }
 
     public void reloadActiveModule() {
-        ModuleController currentModuleController = getCurrentModule();
-        currentModuleController.onTabChanged();
+            ModuleController currentModuleController = getCurrentModule();
+            currentModuleController.onTabChanged();
     }
 }
