@@ -192,6 +192,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return orgUnit;
     }
 
+    public Long getId_org_unit_fk() {
+        return id_org_unit_fk;
+    }
+
     public void setOrgUnit(OrgUnitDB orgUnit) {
         this.orgUnit = orgUnit;
         this.id_org_unit_fk = (orgUnit!=null)?orgUnit.getId_org_unit():null;
@@ -200,6 +204,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     public void setOrgUnit(Long id_org_unit){
         this.id_org_unit_fk = id_org_unit;
         this.orgUnit = null;
+    }
+
+    public Long getId_program_fk() {
+        return id_program_fk;
     }
 
     public ProgramDB getProgram() {
@@ -221,6 +229,10 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
     public void setProgram(Long id_program){
         this.id_program_fk = id_program;
         this.program = null;
+    }
+
+    public Long getId_user_fk() {
+        return id_user_fk;
     }
 
     public UserDB getUser() {
@@ -442,63 +454,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         update.query();
     }
 
-    /**
-     * Return the number of child questions that should be answered according to the values of the
-     * parent questions.
-     */
-    public long countNumOptionalQuestionsToAnswer() {
-        long numOptionalQuestions = SQLite.selectCountOf().from(QuestionDB.class).as(questionName)
-                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(QuestionDB_Table.id_question.withTable(questionAlias)
-                        .eq(QuestionRelationDB_Table.id_question_fk.withTable(questionRelationAlias)))
-                .join(MatchDB.class, Join.JoinType.LEFT_OUTER).as(matchName)
-                .on(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)
-                                .eq(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)))
-                .join(QuestionOptionDB.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
-                .on(MatchDB_Table.id_match.withTable(matchAlias)
-                                .eq(QuestionOptionDB_Table.id_match_fk.withTable(questionOptionAlias)))
-                .join(ValueDB.class, Join.JoinType.LEFT_OUTER).as(valueName)
-                .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
-                                .eq(QuestionOptionDB_Table.id_question_fk.withTable(questionOptionAlias)),
-                        ValueDB_Table.id_option_fk.withTable(valueAlias)
-                                .eq(QuestionOptionDB_Table.id_option_fk.withTable(questionOptionAlias)))
-                //Parent Child relationship
-                .where(QuestionRelationDB_Table.operation.withTable(questionRelationAlias).eq(
-                        QuestionRelationDB.PARENT_CHILD))
-                //For the given survey
-                .and( ValueDB_Table.id_survey_fk.withTable(valueAlias).eq(this.getId_survey()))
-                //The child question requires an answer
-                .and(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
-                .count();
-        //Parent with the right value -> not hidden
-        return numOptionalQuestions;
-    }
-
-    /**
-     * Updates ratios, status and completion date depending on the question and answer (text)
-     */
-    public void updateSurveyStatus(SurveyAnsweredRatio surveyAnsweredRatio) {
-
-        //Exit if the survey was sent or completed
-        if (isReadOnly()) {
-            return;
-        }
-
-        if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
-            //Update status
-            if (!surveyAnsweredRatio.isCompleted()) {
-                setStatus(Constants.SURVEY_IN_PROGRESS);
-            }
-
-        } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
-            setStatus(Constants.SURVEY_IN_PROGRESS);
-        }
-
-
-        //Saves new status & completion_date
-        save();
-    }
-
     private void saveScore(String module) {        //Prepare scores info
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
@@ -546,38 +501,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
                 .or(SurveyDB_Table.status.is(Constants.SURVEY_IN_PROGRESS))
                 .or(SurveyDB_Table.status.is(Constants.SURVEY_SENDING))
                 .or(SurveyDB_Table.status.is(Constants.SURVEY_QUARANTINE))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns the last surveys (by date) with status yet not put to "Sent"
-     */
-    public static List<SurveyDB> getUnsentSurveys(int limit) {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.isNot(Constants.SURVEY_SENT))
-                .limit(limit)
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns all the surveys with status put to "Sent"
-     */
-    public static List<SurveyDB> getAllSentSurveys() {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_SENT))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns the last surveys (by date) with status put to "Sent"
-     */
-    public static List<SurveyDB> getSentSurveys(int limit) {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_SENT))
-                .limit(limit)
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
     }

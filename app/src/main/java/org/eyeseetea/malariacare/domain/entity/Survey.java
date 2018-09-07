@@ -37,9 +37,42 @@ public class Survey {
         return survey;
     }
 
+    public static Survey createStoredSurvey(SurveyStatus status, String uId, String programUId,
+            String orgUnitUId, String userUId, Date creationDate, Date uploadDate,
+            Date scheduledDate, Date completionDate, List<QuestionValue> values, Score score) {
+
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.changeStatus(status);
+        survey.assignCreationDate(creationDate);
+        survey.changeUploadDate(uploadDate);
+        survey.changeScheduledDate(scheduledDate);
+        survey.assignCompletionDate(completionDate);
+        survey.addQuestionValues(values);
+        survey.assignScore(score);
+        return survey;
+    }
+
     public static Survey createSentSurvey(String uId, String programUId, String orgUnitUId,
             String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
             Date completionDate, List<QuestionValue> values, Score score) {
+        //TODO: Add validations
+
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.changeStatus(SurveyStatus.SENT);
+        survey.assignCreationDate(creationDate);
+        survey.changeUploadDate(uploadDate);
+        survey.changeScheduledDate(scheduledDate);
+        survey.assignCompletionDate(completionDate);
+        survey.addQuestionValues(values);
+        survey.assignScore(score);
+        return survey;
+    }
+
+    public static Survey createPlannedSurvey(String uId, String programUId, String orgUnitUId,
+            String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
+            Date completionDate, List<QuestionValue> values, Score score) {
+        //TODO: Add validations
+
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         survey.changeStatus(SurveyStatus.SENT);
         survey.assignCreationDate(creationDate);

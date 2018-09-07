@@ -52,7 +52,7 @@ public class PullDataController implements IPullDataController {
 
             List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
 
-            localSurveyDataSource.Save(surveys);
+            localSurveyDataSource.save(surveys);
 
             callback.onComplete();
 

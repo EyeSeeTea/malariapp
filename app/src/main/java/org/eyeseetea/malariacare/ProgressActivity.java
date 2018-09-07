@@ -372,9 +372,10 @@ public class ProgressActivity extends Activity {
         progressBar.setMax(MAX_PULL_STEPS);
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
-        boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
-                PreferencesState.getInstance().getMaxEvents());
+
+        SurveyFilter surveyFilter = SurveyFilter.Builder.create()
+                .withStartDate(month.getTime())
+                .withMaxSize(PreferencesState.getInstance().getMaxEvents()).build();
 
         mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
             @Override

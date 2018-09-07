@@ -85,7 +85,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
 
     @Override
-    public void Save(List<Survey> surveys) throws Exception {
+    public void save(List<Survey> surveys) throws Exception {
         //Here push surveys code
     }
 
@@ -99,7 +99,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
                 eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
                 eventFilters.setStartDate(filters.getStartDate());
                 eventFilters.setEndDate(filters.getEndDate());
-                eventFilters.setMaxEvents(filters.getMaxEvents());
+                eventFilters.setMaxEvents(filters.getMaxSize());
 
                 D2.events().pull(eventFilters).toBlocking().single();
             }
