@@ -67,6 +67,16 @@ public class PushDataController implements IPushController {
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
     }
 
+    @Override
+    public boolean isPushInProgress() {
+        return PreferencesState.getInstance().isPushInProgress();
+    }
+
+    @Override
+    public void changePushInProgress(boolean inProgress) {
+        PreferencesState.getInstance().setPushInProgress(inProgress);
+    }
+
     public void push(final IPushControllerCallback callback) {
 
         Log.d(TAG, "push running");
@@ -77,15 +87,19 @@ public class PushDataController implements IPushController {
 
             Log.d(TAG, "Network connected");
 
-            List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllCompletedSurveys());
-
-            convertAndPush(callback, surveys, Kind.EVENTS);
-
-            List<IData> observations = new ArrayList<IData>(
-                    ObservationDB.getAllCompletedObservationsInSentSurveys());
-
-            convertAndPush(callback, observations, Kind.OBSERVATIONS);
+            oldPush(callback);
         }
+    }
+
+    private void oldPush(final IPushControllerCallback callback) {
+        List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllCompletedSurveys());
+
+        convertAndPush(callback, surveys, Kind.EVENTS);
+
+        List<IData> observations = new ArrayList<IData>(
+                ObservationDB.getAllCompletedObservationsInSentSurveys());
+
+        convertAndPush(callback, observations, Kind.OBSERVATIONS);
     }
 
     private void convertAndPush(IPushControllerCallback callback, List<IData> dataList, Kind kind) {
@@ -111,16 +125,6 @@ public class PushDataController implements IPushController {
                 pushData(callback, kind);
             }
         }
-    }
-
-    @Override
-    public boolean isPushInProgress() {
-        return PreferencesState.getInstance().isPushInProgress();
-    }
-
-    @Override
-    public void changePushInProgress(boolean inProgress) {
-        PreferencesState.getInstance().setPushInProgress(inProgress);
     }
 
     private void pushData(final IPushControllerCallback callback, final Kind kind) {
