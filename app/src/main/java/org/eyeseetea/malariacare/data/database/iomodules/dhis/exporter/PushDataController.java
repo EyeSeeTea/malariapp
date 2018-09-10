@@ -23,6 +23,7 @@ import android.content.Context;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
+import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
@@ -51,17 +52,23 @@ public class PushDataController implements IPushController {
     private final ISurveyDataSource mSurveyLocalDataSource;
     private final ISurveyDataSource mSurveyRemoteDataSource;
 
+    private final IObservationDataSource mObservationLocalDataSource;
+    private final IObservationDataSource mObservationRemoteDataSource;
+
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
 
     public PushDataController(Context context, IConnectivityManager connectivityManager,
             ISurveyDataSource surveyLocalDataSource,
-            ISurveyDataSource surveyRemoteDataSource) {
+            ISurveyDataSource surveyRemoteDataSource,
+            IObservationDataSource observationLocalDataSource,
+            IObservationDataSource observationRemoteDataSource) {
         mContext = context;
         mConnectivityManager = connectivityManager;
         mSurveyLocalDataSource = surveyLocalDataSource;
         mSurveyRemoteDataSource = surveyRemoteDataSource;
-
+        mObservationLocalDataSource = observationLocalDataSource;
+        mObservationRemoteDataSource = observationRemoteDataSource;
 
         mPushDhisSDKDataSource = new PushDhisSDKDataSource();
         mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
