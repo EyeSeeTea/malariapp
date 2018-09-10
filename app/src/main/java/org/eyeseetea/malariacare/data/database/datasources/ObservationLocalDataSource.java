@@ -41,18 +41,21 @@ public class ObservationLocalDataSource implements IObservationDataSource {
 
         if (observationDB != null) {
 
-            Observation observation = map(surveyUId, observationDB);
+            Observation observation = map(observationDB);
 
             return observation;
         } else {
             throw new ObservationNotFoundException();
         }
-
     }
 
     @Override
     public List<Observation> getObservations(ObservationsToRetrieve observationsToRetrieve) {
-        return null;
+        List<ObservationDB> observationDBS = getObservationsDB(observationsToRetrieve);
+
+        List<Observation> observations = map(observationDBS);
+
+        return observations;
     }
 
     @Override
@@ -71,6 +74,47 @@ public class ObservationLocalDataSource implements IObservationDataSource {
     public void save(List<Observation> observations) {
         for (Observation observation : observations) {
             save(observation);
+        }
+    }
+
+    private List<ObservationDB> getObservationsDB(ObservationsToRetrieve observationsToRetrieve){
+
+        List<ObservationDB> observationDBS = null;
+
+        From from = new Select().from(ObservationDB.class);
+
+        Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
+
+        if (observationsToRetrieve == ObservationsToRetrieve.COMPLETED){
+            where = from.where(ObservationDB_Table.status_observation.in(
+                    ObservationStatus.COMPLETED.getCode()));
+        }
+
+        observationDBS = where.queryList();
+
+        if (observationDBS.size() > 0)
+            loadValuesInObservation(observationDBS);
+
+        return observationDBS;
+    }
+
+    private void loadValuesInObservation(List<ObservationDB> observationDBS) {
+        List<ObservationValueDB> allValues =
+                new Select().from(ObservationValueDB.class).queryList();
+
+        Map<Long, List<ObservationValueDB>> valuesMap = new HashMap<>();
+        for (ObservationValueDB observationValueDB : allValues) {
+            if (!valuesMap.containsKey(observationValueDB.getId_observation_fk()))
+                valuesMap.put(observationValueDB.getId_observation_fk(),
+                        new ArrayList<ObservationValueDB>());
+
+            valuesMap.get(observationValueDB.getId_observation_fk()).add(observationValueDB);
+        }
+
+        for (ObservationDB observationDB : observationDBS) {
+            if (valuesMap.containsKey(observationDB.getId_observation())){
+                observationDB.setValuesDB(valuesMap.get(observationDB.getId_observation()));
+            }
         }
     }
 
@@ -95,7 +139,21 @@ public class ObservationLocalDataSource implements IObservationDataSource {
                 .where(ObservationValueDB_Table.id_observation_fk.is(observationId)).queryList();
     }
 
-    private Observation map(String surveyUId, ObservationDB observationDB) {
+
+    private List<Observation> map(List<ObservationDB> observationDBs) {
+        List<Observation> observations = new ArrayList<>();
+
+        for (ObservationDB observationDB : observationDBs) {
+            Observation observation = map(observationDB);
+            observations.add(observation);
+        }
+
+        return observations;
+    }
+
+    private Observation map(ObservationDB observationDB) {
+        String surveyUId = SurveyDB.getSurveyById(observationDB.getSurveyId()).getEventUid();
+
         List<ObservationValue> observationValues = new ArrayList<>();
 
         for (ObservationValueDB observationValueDB : observationDB.getValuesDB()) {

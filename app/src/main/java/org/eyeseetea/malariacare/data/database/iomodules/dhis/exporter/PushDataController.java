@@ -33,12 +33,15 @@ import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.Observation;
+import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +97,27 @@ public class PushDataController implements IPushController {
 
             Log.d(TAG, "Network connected");
 
+            newPush(callback);
+
             oldPush(callback);
+        }
+    }
+
+    private void newPush(IPushControllerCallback callback){
+        try {
+            SurveyFilter surveyFilter = SurveyFilter.Builder.create()
+                    .WithSurveysToRetrieve(SurveyFilter.SurveysToRetrieve.COMPLETED)
+                    .build();
+
+            List<Survey> surveys = mSurveyLocalDataSource.getSurveys(surveyFilter);
+
+            List<Observation> observations = mObservationLocalDataSource.getObservations(
+                    IObservationDataSource.ObservationsToRetrieve.COMPLETED);
+
+            observations.size();
+
+        }catch (Exception e){
+            callback.onError(e);
         }
     }
 
