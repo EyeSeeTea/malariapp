@@ -6,6 +6,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
 import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
+import org.eyeseetea.malariacare.data.database.mapper.ObservationMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
@@ -34,6 +35,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ObservationLocalDataSource implements IObservationDataSource {
+    private final ObservationMapper mObservationMapper;
+
+    public ObservationLocalDataSource(){
+        List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class).queryList();
+
+        mObservationMapper = new ObservationMapper(surveyDBS);
+    }
 
     @Override
     public Observation getObservation(String surveyUId) throws Exception {
@@ -41,7 +49,7 @@ public class ObservationLocalDataSource implements IObservationDataSource {
 
         if (observationDB != null) {
 
-            Observation observation = map(observationDB);
+            Observation observation = mObservationMapper.map(observationDB);
 
             return observation;
         } else {
@@ -53,7 +61,7 @@ public class ObservationLocalDataSource implements IObservationDataSource {
     public List<Observation> getObservations(ObservationsToRetrieve observationsToRetrieve) {
         List<ObservationDB> observationDBS = getObservationsDB(observationsToRetrieve);
 
-        List<Observation> observations = map(observationDBS);
+        List<Observation> observations = mObservationMapper.map(observationDBS);
 
         return observations;
     }
@@ -139,36 +147,6 @@ public class ObservationLocalDataSource implements IObservationDataSource {
                 .where(ObservationValueDB_Table.id_observation_fk.is(observationId)).queryList();
     }
 
-
-    private List<Observation> map(List<ObservationDB> observationDBs) {
-        List<Observation> observations = new ArrayList<>();
-
-        for (ObservationDB observationDB : observationDBs) {
-            Observation observation = map(observationDB);
-            observations.add(observation);
-        }
-
-        return observations;
-    }
-
-    private Observation map(ObservationDB observationDB) {
-        String surveyUId = SurveyDB.getSurveyById(observationDB.getSurveyId()).getEventUid();
-
-        List<ObservationValue> observationValues = new ArrayList<>();
-
-        for (ObservationValueDB observationValueDB : observationDB.getValuesDB()) {
-            observationValues.add(
-                    new ObservationValue(observationValueDB.getValue(),
-                            observationValueDB.getUid_observation_value()));
-        }
-
-        Observation observation =
-                Observation.createStoredObservation(surveyUId,
-                        ObservationStatus.get(observationDB.getStatus_observation()),
-                        observationValues);
-
-        return observation;
-    }
 
     private void add(Observation observation) {
         SurveyDB surveyDB = SurveyDB.getSurveyByUId(observation.getSurveyUid());
