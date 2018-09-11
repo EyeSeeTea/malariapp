@@ -344,7 +344,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void prepareLocationListener(SurveyDB survey) {
 
-        locationListener = new SurveyLocationListener(survey.getId_survey());
+        locationListener = new SurveyLocationListener(survey.getEventUid());
         LocationManager locationManager =
                 (LocationManager) LocationMemory.getContext().getSystemService(
                         Context.LOCATION_SERVICE);

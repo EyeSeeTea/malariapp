@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
+import com.raizlabs.android.dbflow.sql.language.Delete;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
@@ -34,6 +36,9 @@ import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
@@ -85,8 +90,20 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
 
     @Override
-    public void save(List<Survey> surveys) throws Exception {
-        //Here push surveys code
+    public void save(List<Survey> surveys) {
+/*        FromObservationEventMapper eventMapper = FromObservationEventMapper();
+
+        List<Event> events = eventMapper.mapEvents(surveys);
+        List<Event> eventUids = new ArrayList<>();
+
+        for (Event event:events) {
+            D2.events().save(event).toBlocking();
+            eventUids.add(event.getUId());
+        }
+
+        Map<String,ImportSummary> importSummaryMap = D2.events().push(eventUids).toBlocking();*/
+
+
     }
 
     private void pullEvents(SurveyFilter filters) {

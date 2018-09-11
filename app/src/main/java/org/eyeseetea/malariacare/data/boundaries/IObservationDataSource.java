@@ -10,5 +10,5 @@ public interface IObservationDataSource {
     Observation getObservation(String surveyUId) throws Exception;
     List<Observation> getObservations(ObservationsToRetrieve observationsToRetrieve);
     void save(Observation observation);
-    void save(List<Observation> observations);
+    void save(List<Observation> observations) throws Exception;
 }

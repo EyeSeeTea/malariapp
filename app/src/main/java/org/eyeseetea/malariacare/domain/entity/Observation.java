@@ -1,8 +1,10 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 import org.eyeseetea.malariacare.domain.utils.RequiredChecker;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Observation {
@@ -51,6 +53,10 @@ public class Observation {
         return new ArrayList<>(values);
     }
 
+    public void changeStatus(ObservationStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,4 +85,6 @@ public class Observation {
                 ", observationValues=" + values +
                 '}';
     }
+
+
 }

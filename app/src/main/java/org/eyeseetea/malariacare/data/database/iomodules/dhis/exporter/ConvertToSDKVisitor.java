@@ -24,6 +24,7 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
@@ -393,7 +394,7 @@ public class ConvertToSDKVisitor implements
      * Updates the location of the current event that it is being processed
      */
     private void updateEventLocation() throws Exception {
-        Location lastLocation = LocationMemory.get(currentSurvey.getId_survey());
+        Location lastLocation = LocationMemory.get(currentSurvey.getEventUid());
         //If location is required but there is no location -> exception
         if (PreferencesState.getInstance().isLocationRequired() && lastLocation == null) {
             throw new Exception(

@@ -25,9 +25,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
 
-/**
- * Created by arrizabalaga on 23/09/15.
- */
 public class LocationMemory {
 
     private static final String PREFIX_LATITUDE="LAT";
@@ -66,31 +63,31 @@ public class LocationMemory {
 
     /**
      * Saves the coordinates for the given survey into internal shared preferences
-     * @param idSurvey
+     * @param surveyUid
      * @param location
      */
-    public synchronized static void put(long idSurvey, Location location){
+    public synchronized static void put(String surveyUid, Location location){
         if(location==null){
             return;
         }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.context);
         SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putFloat(PREFIX_LONGITUDE + idSurvey, (float) location.getLongitude());
-        editor.putFloat(PREFIX_LATITUDE + idSurvey, (float) location.getLatitude());
+        editor.putFloat(PREFIX_LONGITUDE + surveyUid, (float) location.getLongitude());
+        editor.putFloat(PREFIX_LATITUDE + surveyUid, (float) location.getLatitude());
         editor.commit();
     }
 
     /**
      * Gets the coordinates for a given survey id from the shared preferences
-     * @param idSurvey
+     * @param surveyUid
      * @return A Location if it is stored in preferences, null otherwise
      */
-    public static Location get(long idSurvey){
+    public static Location get(String surveyUid){
         Location location=new Location(LocationManager.GPS_PROVIDER);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(instance.context);
 
-        float longitude=sharedPreferences.getFloat(PREFIX_LONGITUDE+idSurvey, 0f);
-        float latitude=sharedPreferences.getFloat(PREFIX_LATITUDE+idSurvey, 0f);
+        float longitude=sharedPreferences.getFloat(PREFIX_LONGITUDE+surveyUid, 0f);
+        float latitude=sharedPreferences.getFloat(PREFIX_LATITUDE+surveyUid, 0f);
 
         //No coordinates were stored for the given survey
         if(longitude==0 && latitude==0){

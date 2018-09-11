@@ -148,7 +148,8 @@ configurations {
 dependencies {
 
     // SDK submodules
-    compile project(':core-rules')
+    compile project(':core')
+    compile project(':models')
     compile project(':ui-bindings')
     compile project(':EyeSeeTea-sdk')
 
@@ -170,6 +171,7 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
     compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
+    compile "joda-time:joda-time:${libs.jodaTimeVersion}"
 
     //Drive dependencies
     compile "com.google.android.gms:play-services-identity:${libs.gmsPlayVersion}"

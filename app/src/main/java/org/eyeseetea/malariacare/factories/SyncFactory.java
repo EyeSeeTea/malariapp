@@ -59,7 +59,8 @@ public class SyncFactory {
         ISurveyDataSource surveyLocalDataSource = getSurveyLocalDataSource();
 
         IObservationDataSource observationLocalDataSource = getObservationLocalDataSource();
-        IObservationDataSource observationRemoteDataSource = getObservationRemoteDataSource();
+        IObservationDataSource observationRemoteDataSource =
+                getObservationRemoteDataSource(context);
 
         IPushController pushController =
                 new PushDataController(context, connectivityManager,
@@ -94,7 +95,7 @@ public class SyncFactory {
     }
 
     @NonNull
-    private IObservationDataSource getObservationRemoteDataSource() {
-        return new ObservationSDKDhisDataSource();
+    private IObservationDataSource getObservationRemoteDataSource(Context context) {
+        return new ObservationSDKDhisDataSource(context,getSurveyLocalDataSource());
     }
 }

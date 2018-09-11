@@ -20,6 +20,7 @@
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
@@ -34,7 +35,9 @@ import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.Observation;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
@@ -99,24 +102,70 @@ public class PushDataController implements IPushController {
 
             newPush(callback);
 
-            oldPush(callback);
+            //oldPush(callback);
         }
     }
 
     private void newPush(IPushControllerCallback callback){
         try {
-            SurveyFilter surveyFilter = SurveyFilter.Builder.create()
-                    .WithSurveysToRetrieve(SurveyFilter.SurveysToRetrieve.COMPLETED)
-                    .build();
+            pushSurveys(callback);
 
-            List<Survey> surveys = mSurveyLocalDataSource.getSurveys(surveyFilter);
+            pushObservations(callback);
+        }catch (Exception e){
+            callback.onError(e);
+        }
+    }
 
+    private void pushSurveys(IPushControllerCallback callback) throws Exception {
+        SurveyFilter surveyFilter = SurveyFilter.Builder.create()
+                .WithSurveysToRetrieve(SurveyFilter.SurveysToRetrieve.COMPLETED)
+                .build();
+
+        List<Survey> surveys = mSurveyLocalDataSource.getSurveys(surveyFilter);
+
+        if (surveys.size() == 0) {
+            callback.onError(
+                    new DataToPushNotFoundException("Not Exists surveys to push"));
+        }
+
+        for (Survey survey:surveys) {
+            survey.changeStatus(SurveyStatus.SENDING);
+        }
+
+        mSurveyLocalDataSource.save(surveys);
+
+        mSurveyRemoteDataSource.save(surveys);
+
+
+        //TODO: Remove survey and event if throw exception to convert??
+    }
+
+    @NonNull
+    private void pushObservations(IPushControllerCallback callback) {
+        try {
             List<Observation> observations = mObservationLocalDataSource.getObservations(
                     IObservationDataSource.ObservationsToRetrieve.COMPLETED);
 
-            observations.size();
+            if (observations.size() == 0) {
+                callback.onError(
+                        new DataToPushNotFoundException("Not Exists observations to push"));
+            }
 
-        }catch (Exception e){
+            for (Observation observation:observations) {
+                observation.changeStatus(ObservationStatus.SENDING);
+            }
+
+            mObservationLocalDataSource.save(observations);
+
+            mObservationRemoteDataSource.save(observations);
+
+
+        } catch (ConversionException e) {
+            callback.onInformativeError(e);
+            callback.onError(e);
+            //TODO: Remove survey and event if throw exception to convert??
+        } catch (Exception e) {
+            //TODO: Set surveys as quarantine??
             callback.onError(e);
         }
     }
