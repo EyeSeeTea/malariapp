@@ -1,33 +1,22 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
 import com.raizlabs.android.dbflow.sql.language.From;
-import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
 import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.ObservationMapper;
-import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB_Table;
-import org.eyeseetea.malariacare.data.database.model.OptionDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
-import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
-import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
-import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,13 +78,15 @@ public class ObservationLocalDataSource implements IObservationDataSource {
 
         List<ObservationDB> observationDBS = null;
 
-        From from = new Select().from(ObservationDB.class);
+        From from = new Select().from(ObservationDB.class).leftOuterJoin(SurveyDB.class)
+                .on(SurveyDB_Table.id_survey.eq(ObservationDB_Table.id_survey_observation_fk));
 
         Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
 
         if (observationsToRetrieve == ObservationsToRetrieve.COMPLETED){
-            where = from.where(ObservationDB_Table.status_observation.in(
-                    ObservationStatus.COMPLETED.getCode()));
+            where = from.where(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()))
+                    .and(ObservationDB_Table.status_observation.eq(
+                            ObservationStatus.COMPLETED.getCode()));
         }
 
         observationDBS = where.queryList();

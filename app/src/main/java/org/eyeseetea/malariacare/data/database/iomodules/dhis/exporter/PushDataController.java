@@ -141,33 +141,67 @@ public class PushDataController implements IPushController {
     }
 
     @NonNull
-    private void pushObservations(IPushControllerCallback callback) {
+    private void pushObservations(IPushControllerCallback callback) throws Exception {
+
+        List<Observation> observations = mObservationLocalDataSource.getObservations(
+                IObservationDataSource.ObservationsToRetrieve.COMPLETED);
+
         try {
-            List<Observation> observations = mObservationLocalDataSource.getObservations(
-                    IObservationDataSource.ObservationsToRetrieve.COMPLETED);
 
             if (observations.size() == 0) {
                 callback.onError(
                         new DataToPushNotFoundException("Not Exists observations to push"));
+            }else{
+                markAsSending(observations);
+
+                mObservationRemoteDataSource.save(observations);
+
+                //TODO:bring logic from ConvertToSDKVisitor.saveSurveyStatus
+                // examples: read importsummary to mark as conflict or sent etc..
+                markAsSent(observations);
+
+                callback.onComplete();
             }
-
-            for (Observation observation:observations) {
-                observation.changeStatus(ObservationStatus.SENDING);
-            }
-
-            mObservationLocalDataSource.save(observations);
-
-            mObservationRemoteDataSource.save(observations);
-
 
         } catch (ConversionException e) {
+            markDataAsErrorConversionSync(e.getData());
+
             callback.onInformativeError(e);
             callback.onError(e);
-            //TODO: Remove survey and event if throw exception to convert??
+        } catch (PushReportException | PushDhisException e){
+            markDataAsRetry(observations);
+
+            callback.onError(e);
         } catch (Exception e) {
-            //TODO: Set surveys as quarantine??
             callback.onError(e);
         }
+    }
+
+    private void markAsSending(List<Observation> observations) throws Exception {
+        for (Observation observation : observations) {
+            observation.changeStatus(ObservationStatus.SENDING);
+        }
+
+        mObservationLocalDataSource.save(observations);
+    }
+
+    private void markDataAsErrorConversionSync(Observation failedObservation) {
+        failedObservation.changeStatus(ObservationStatus.ERRORCONVERSIONSYNC);
+        mObservationLocalDataSource.save(failedObservation);
+    }
+
+    private void markDataAsRetry(List<Observation> observations) throws Exception {
+        for (Observation observation:observations) {
+            observation.changeStatus(ObservationStatus.COMPLETED);
+        }
+        mObservationLocalDataSource.save(observations);
+    }
+
+    private void markAsSent(List<Observation> observations) throws Exception {
+        for (Observation observation:observations) {
+            observation.changeStatus(ObservationStatus.SENT);
+        }
+        mObservationLocalDataSource.save(observations);
     }
 
     private void oldPush(final IPushControllerCallback callback) {

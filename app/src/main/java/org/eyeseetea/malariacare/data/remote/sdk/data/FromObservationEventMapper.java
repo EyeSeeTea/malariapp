@@ -79,7 +79,7 @@ public class FromObservationEventMapper {
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = createErrorConversionMessage(errorMessage, observation, relatedSurvey);
-            throw new ConversionException(errorMessage);
+            throw new ConversionException(observation, errorMessage);
         }
     }
 
