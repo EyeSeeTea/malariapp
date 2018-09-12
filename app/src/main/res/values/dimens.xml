@@ -159,8 +159,8 @@
     <dimen name="plan_action_button_text_size">@dimen/roboto_16</dimen>
     <dimen name="plan_action_text_size">@dimen/roboto_13</dimen>
     <dimen name="plan_action_text_title_size">@dimen/roboto_14</dimen>
-    <dimen name="plan_action_fab_padding">10dp</dimen>
-    <dimen name="plan_date_right_padding">10dp</dimen>
+    <dimen name="plan_action_fab_padding">15dp</dimen>
+    <dimen name="plan_date_right_padding">0dp</dimen>
 
     <dimen name="creation_title">18dip</dimen>   <!-- Quest mark guide -->
     <dimen name="planning_title_number">@dimen/roboto_20</dimen>
