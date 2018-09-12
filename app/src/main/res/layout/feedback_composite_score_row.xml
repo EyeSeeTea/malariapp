@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/feedbackLightBlue"
-    android:layout_gravity="center_vertical"
+    android:layout_gravity="center"
     android:orientation="horizontal"
     android:weightSum="1">
 
@@ -47,27 +47,27 @@
             android:textColor="@color/feedback_cs_color"
             android:textSize="@dimen/cs_header_title_size"
             app:tDimension="@string/font_size_level2"
-            app:tFontName="@string/condensed_font_name" />
+            app:tFontName="@string/medium_font_name" />
 
         <ImageView
             android:id="@+id/feedback_image"
             android:layout_width="0dp"
-            android:tint="@color/black"
             android:layout_height="wrap_content"
             android:layout_weight=".10"
             android:layout_gravity="center_vertical"
             android:background="@null"
             android:paddingBottom="@dimen/dashboard_row_padding"
             android:paddingTop="@dimen/dashboard_row_padding"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_media_arrow"   />
     </LinearLayout>
 
     <org.eyeseetea.sdk.presentation.views.DoubleRectChart
         android:id="@+id/feedback_total_score"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp"
+        android:layout_height="match_parent"
         android:layout_weight=".24"
+        android:minHeight="50dp"
         android:layout_marginBottom="2dp"
         android:layout_marginTop="2dp"
         android:paddingBottom="10dp"

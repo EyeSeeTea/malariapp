@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -16,6 +17,8 @@ import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.utils.Utils;
+import org.eyeseetea.sdk.presentation.views.CustomEditText;
+import org.eyeseetea.sdk.presentation.views.CustomTextView;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class FeedbackFragmentStyleStrategy {
@@ -56,9 +59,9 @@ public class FeedbackFragmentStyleStrategy {
     public static void toggleArrow(LinearLayout rowLayout, boolean visible) {
         ImageView imageView = (ImageView) rowLayout.findViewById(R.id.feedback_question_arrow);
         if(imageView!=null && visible) {
-            imageView.setRotation(270f);
+            imageView.setImageDrawable(rowLayout.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp));
         }else{
-            imageView.setRotation(0f);
+            imageView.setImageDrawable(rowLayout.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_right_24px));
         }
     }
 }

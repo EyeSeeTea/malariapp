@@ -116,9 +116,9 @@
     <dimen name="roboto_28">28dp</dimen>
     <dimen name="planing_button_text_size">@dimen/roboto_18</dimen>
     <dimen name="planing_small_text_size">@dimen/roboto_14</dimen>
-    <dimen name="feedback_text_size">@dimen/roboto_12</dimen>
+    <dimen name="feedback_text_size">@dimen/roboto_14</dimen>
     <dimen name="margin_quality_of_care">6dip</dimen>
-    <dimen name="cs_header_title_size">@dimen/roboto_14</dimen>
+    <dimen name="cs_header_title_size">@dimen/roboto_16</dimen>
     <dimen name="sent_header_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
@@ -168,5 +168,7 @@
     <dimen name="feedback_action_button_size">2dp</dimen>
     <dimen name="feedback_header">35dp</dimen>
     <dimen name="feedback_header_score">33dp</dimen>
+    <dimen name="feedback_width_score">80dp</dimen>
+    <dimen name="feedback_height_score">40dp</dimen>
 
 </resources>

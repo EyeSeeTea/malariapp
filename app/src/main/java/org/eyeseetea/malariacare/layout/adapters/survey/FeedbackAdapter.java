@@ -21,11 +21,9 @@ package org.eyeseetea.malariacare.layout.adapters.survey;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
@@ -163,11 +161,10 @@ public class FeedbackAdapter extends BaseAdapter {
             if((feedback.getFeedbackList().size()>0 && feedback.getFeedbackList().get(0).isShown()) ||
                     (feedback.getCompositeScoreFeedbackList().size()>0 && feedback.getCompositeScoreFeedbackList().get(0).isShown()))
             {
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp));
             }else{
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_down));
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp));
             }
-            imageView.setColorFilter(ContextCompat.getColor(context, R.color.black), PorterDuff.Mode.SRC_IN);
 
         }
 
