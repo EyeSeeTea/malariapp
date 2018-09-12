@@ -43,7 +43,7 @@
                 android:background="@null"
                 android:drawableRight="@drawable/filter_radio_button_wrapped"
                 android:textColor="@color/darkGrey"
-                app:font_name="@string/font_name_medium" />
+                app:font_name="@string/bold_font"/>
             <org.eyeseetea.malariacare.views.CustomRadioButton
                 android:id="@+id/chkMedia"
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:background="@null"
                 android:drawableRight="@drawable/filter_radio_button_wrapped"
                 android:textSize="@dimen/dialog_text_row_size"
-                app:font_name="@string/font_name_medium"/>
+                app:font_name="@string/bold_font"/>
         </LinearLayout>
     <org.eyeseetea.sdk.presentation.views.CustomButton
         android:id="@+id/apply_filter"

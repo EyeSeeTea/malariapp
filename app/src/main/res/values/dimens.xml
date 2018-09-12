@@ -125,7 +125,7 @@
 
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
     <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
-    <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
+    <dimen name="dialog_text_row_size">@dimen/roboto_16</dimen>
 
 
     <dimen name="login_title_text">@dimen/roboto_28</dimen>
