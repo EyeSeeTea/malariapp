@@ -21,12 +21,15 @@ package org.eyeseetea.malariacare.layout.utils;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
@@ -37,6 +40,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
+import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.CustomTextView;
 import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
@@ -104,21 +108,36 @@ public class LayoutUtils {
         }
     }
 
-
-    // Used to setup the usual actionbar with the logo and the app name
-    public static void setActionBarLogo(ActionBar actionBar) {
-        actionBar.setLogo(R.drawable.qualityapp_logo);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-    }
-
-    public static void setActionBarBackButton(ActionBarActivity activity) {
+    //// TODO: 30/07/2018  remove if is not used in hnqis
+    public static void setActionBarBackButton(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    public static void setActionBarTitleForSurvey(DashboardActivity dashboardActivity,
+    public static void setToolBarTitleForSurveyFeedback(DashboardActivity dashboardActivity,
+                                                  SurveyDB survey) {
+        String title = "";
+        String subtitle = "";
+        int appNameColor = dashboardActivity.getResources().getColor(R.color.appNameColor);
+        String appNameColorString = String.format("%X", appNameColor).substring(2);
+        ProgramDB program = survey.getProgram();
+        if (survey.getOrgUnit().getName() != null) {
+            title = survey.getOrgUnit().getName();
+        }
+        if (program.getName() != null) {
+            subtitle = program.getName();
+        }
+        if (PreferencesState.getInstance().isVerticalDashboard()) {
+            setActionbarVerticalSurvey(dashboardActivity, title, subtitle);
+        } else {
+            Spanned spannedTitle = Html.fromHtml(
+                    String.format("<font color=\"#%s\"><b>", appNameColorString) + title
+                            + "</b></font>");
+            setToolbarTitle(dashboardActivity, spannedTitle, subtitle);
+        }
+    }
+
+    public static void setActionBarForSurveyFeedback(AppCompatActivity dashboardActivity,
             SurveyDB survey) {
         String title = "";
         String subtitle = "";
@@ -158,7 +177,7 @@ public class LayoutUtils {
         setSurveyActionbarTitle(dashboardActivity, spannedTitle, subtitle, survey.getId_survey(), surveyAnsweredRatio);
     }
 
-    private static void setActionbarVerticalSurvey(DashboardActivity dashboardActivity, String title,
+    private static void setActionbarVerticalSurvey(AppCompatActivity dashboardActivity, String title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = dashboardActivity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
@@ -168,7 +187,19 @@ public class LayoutUtils {
         actionBar.setTitle(title);
     }
 
-    private static void setActionbarTitle(ActionBarActivity activity, Spanned title,
+    private static void setToolbarTitle(AppCompatActivity activity, Spanned title,
+                                          String subtitle) {
+        Toolbar toolbar = getToolbar(activity);
+        if(PreferencesState.getInstance().isDevelopOptionActive()) {
+            String server = PreferencesState.getInstance().getServerUrl();
+            ((CustomTextView) toolbar.findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
+            (toolbar.findViewById(R.id.action_bar_multititle_dev_subtitle)).setVisibility(View.VISIBLE);
+        }
+        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
+        ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
+    }
+
+    private static void setActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -184,7 +215,21 @@ public class LayoutUtils {
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
-    private static void setSurveyActionbarTitle(ActionBarActivity activity, Spanned title,
+    @NonNull
+    private static Toolbar getToolbar(AppCompatActivity activity) {
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+        if(toolbar==null){
+            toolbar = new Toolbar(activity);
+            View view = activity.getLayoutInflater().inflate(R.layout.dev_custom_tool_bar, toolbar);
+            toolbar.addView(view);
+        }
+        activity.setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.qualityapp_logo);
+        toolbar.setBackgroundColor(Color.WHITE);
+        return toolbar;
+    }
+
+    private static void setSurveyActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle, long surveyId, SurveyAnsweredRatio surveyAnsweredRatio) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
@@ -204,7 +249,7 @@ public class LayoutUtils {
 
 
 
-    private static void setActionbarAppName(ActionBarActivity activity) {
+    private static void setActionbarAppName(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -213,7 +258,13 @@ public class LayoutUtils {
         actionBar.setTitle(activity.getResources().getString(R.string.app_name));
     }
 
-    public static void setActionBarDashboard(ActionBarActivity activity, String title) {
+    public static void setActionBarDashboard(AppCompatActivity activity, String title) {
+
+        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        actionBar.setLogo(R.drawable.qualityapp_logo);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
         if (PreferencesState.getInstance().isVerticalDashboard()) {
             LayoutUtils.setActionbarAppName(activity);
@@ -231,18 +282,21 @@ public class LayoutUtils {
     }
 
 
-    private static String getAppName() {
+    protected static String getAppName() {
         return PreferencesState.getInstance().getContext().getResources().getString(
                 R.string.app_name);
     }
 
-    private static String getCapitalizeName(String title) {
+    protected static String getCapitalizeName(String title) {
         StringBuilder tabtemp = new StringBuilder(title);
+        if(tabtemp.length()==0){
+            return "";
+        }
         tabtemp.setCharAt(0, Character.toUpperCase(tabtemp.charAt(0)));
         return tabtemp.toString();
     }
 
-    private static String getCurrentUsername() {
+    protected static String getCurrentUsername() {
         UserDB user = Session.getUser();
         if (user == null) {
             return "";
@@ -255,7 +309,7 @@ public class LayoutUtils {
     }
 
 
-    private static String getAppNameColorString() {
+    protected static String getAppNameColorString() {
         int appNameColor = PreferencesState.getInstance().getContext().getResources().getColor(
                 R.color.appNameColor);
         return String.format("%X", appNameColor).substring(2);
@@ -268,8 +322,7 @@ public class LayoutUtils {
     }
 
     private static void updateSurveyActionBarChart(ActionBar actionBar, SurveyAnsweredRatio surveyAnsweredRatio){
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) actionBar.getCustomView().findViewById(R.id.action_bar_chart);
+        final DoublePieChart doublePieChart = ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity);
         doublePieChart.setVisibility(View.VISIBLE);
         updateChart(surveyAnsweredRatio, doublePieChart);
     }
@@ -298,5 +351,35 @@ public class LayoutUtils {
                     ContextCompat.getColor(PreferencesState.getInstance().getContext(),
                             R.color.white));
         }
+    }
+
+    public static void setToolbarBarDashboard(AppCompatActivity activity, String title) {
+
+        //Get Tab + User
+        title = getCapitalizeName(title);
+        String user = getCurrentUsername();
+        String moduleColorString = getModuleColorString();
+        String appName = getAppName();
+        Spanned spannedSubTitle = Html.fromHtml(
+                String.format("<font color=\"#%s\"><b"
+                        + ">%s</b></font>", moduleColorString, title));
+
+        Toolbar toolbar = LayoutUtils.getToolbar(activity);
+        toolbar.setBackgroundResource(R.drawable.actionbar_gradient);
+        ((TextView) toolbar.findViewById(R.id.action_bar_multititle_title)).setText(appName);
+        ((TextView) toolbar.findViewById(R.id.action_bar_multititle_subtitle)).setText(spannedSubTitle);
+        ((TextView) toolbar.findViewById(R.id.action_bar_user)).setText(user);
+    }
+
+    private static String getModuleColorString() {
+        int appNameColor = PreferencesState.getInstance().getContext().getResources().getColor(
+                R.color.grey_dark);
+        return String.format("%X", appNameColor).substring(2);
+    }
+
+    public static DoublePieChart getActionBarPie(AppCompatActivity activity) {
+        return (DoublePieChart) activity.getSupportActionBar
+                ().getCustomView().findViewById(
+                R.id.action_bar_chart);
     }
 }
