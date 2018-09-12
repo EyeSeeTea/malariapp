@@ -21,7 +21,7 @@ import org.eyeseetea.malariacare.views.CustomTextView;
 public class FeedbackFragmentStyleStrategy {
     public static void drawScore(RelativeLayout llLayout, SurveyDB survey, Context context) {
         if (survey.hasMainScore()) {
-            float average = survey.getMainScore();
+            float average = survey.getMainScore().getScore();
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
             item.setText(String.format("%.1f%%", average));
             int colorId = LayoutUtils.trafficColor(average);
