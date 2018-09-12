@@ -173,4 +173,6 @@
     <dimen name="filter_bottom_padding">15dp</dimen>
 
     <dimen name="design_fab_size_normal">70dp</dimen>
+    <dimen name="design_fab_size_mini">60dp</dimen>
+    <dimen name="fab_icon_size">44dp</dimen>
 </resources>
