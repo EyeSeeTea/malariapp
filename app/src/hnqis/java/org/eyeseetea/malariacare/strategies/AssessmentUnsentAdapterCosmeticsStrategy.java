@@ -1,5 +1,8 @@
 package org.eyeseetea.malariacare.strategies;
 
+import android.view.View;
+
+import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;

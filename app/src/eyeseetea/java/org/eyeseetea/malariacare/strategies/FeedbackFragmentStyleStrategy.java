@@ -21,7 +21,7 @@ import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 public class FeedbackFragmentStyleStrategy {
     public static void drawScore(RelativeLayout llLayout, SurveyDB survey, Context context) {
         DoubleRectChart doubleRectChart = (DoubleRectChart) llLayout.findViewById(R.id.feedback_total_score);
-        LayoutUtils.drawScore(survey.getMainScore(), doubleRectChart);
+        LayoutUtils.drawScore(survey.getMainScore().getScore(), doubleRectChart);
     }
 
     public static void changeBackgroundColor(View view, CompositeScoreFeedback feedback) {

@@ -19,7 +19,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/tab_plan_layout"
     android:layout_width="match_parent"
@@ -39,6 +38,7 @@
         <FrameLayout
             android:id="@+id/dashboard_planning_init"
             android:layout_width="match_parent"
+            android:background="@color/plan_listview_background"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <LinearLayout
@@ -51,6 +51,7 @@
         <FrameLayout
             android:id="@+id/dashboard_planning_orgunit"
             android:layout_width="match_parent"
+            android:background="@color/plan_listview_background"
             android:layout_height="match_parent"
             android:orientation="vertical">
         </FrameLayout>

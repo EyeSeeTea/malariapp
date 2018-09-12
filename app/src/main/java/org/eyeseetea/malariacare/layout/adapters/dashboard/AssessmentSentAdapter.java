@@ -104,7 +104,7 @@ public class AssessmentSentAdapter extends
                     R.string.feedback_info_conflict)).toUpperCase();
         } else {
             if (survey.hasMainScore()) {
-                scoreText = String.format(SCORE_FORMAT, survey.getMainScore());
+                scoreText = String.format(SCORE_FORMAT, survey.getMainScore().getScore());
             } else {
                 scoreText = "NaN";
             }
@@ -130,7 +130,7 @@ public class AssessmentSentAdapter extends
     }
 
     private int getColorByScore(SurveyDB survey) {
-        return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScore() : 0f);
+        return LayoutUtils.trafficColor(survey.hasMainScore() ? survey.getMainScore().getScore() : 0f);
     }
 
 

@@ -199,7 +199,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="account_permission_denied">Contatos permissão negada. A mídia não serão sincronizados</string>
 <string name="feedback_media">Ver feedback de vídeo</string>
 <string name="feedback_view_image">Imagem aberta com...</string>
-<string name="select_all">Selecionar tudo</string>
+<string name="select_all">Selecionar Todas</string>
 
 <string name="demo_login">Modo de demonstração</string>
 <string name="system_defined">"Sistema definido"</string>
@@ -225,6 +225,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="get_db_file_dialog">Selecione um arquivo db válido.</string>
 <string name="start">Começar</string>
 
+<string name="header_schedule">"Programar"</string>
 <string name="header_reschedule">"Reprogramar"</string>
 <string name="planing_due_date">"Data de Vencimento"</string>
 <string name="action_button_text">PLANO DE AÇÃO</string>
@@ -270,6 +271,7 @@ Passo 2: Localize a ID do paciente de 1) no Registo de Farmácia e anote se rece
 <string name="simple_options">"Opções simples"</string>
 <string name="plan_action_edit_text_hint">"toque para escrever"</string>
 <string name="header_reschedule_title">"re-agendar"</string>
+<string name="schedule">"Esperado"</string>
 <string name="apply_filters">"Aplicar filtros"</string>
 <string name="filter">"filtro"</string>
 <string name="failed_video_image_question_only">"Apenas perguntas de vídeo / imagem"</string>

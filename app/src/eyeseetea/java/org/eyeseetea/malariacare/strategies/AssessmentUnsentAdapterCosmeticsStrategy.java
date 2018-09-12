@@ -16,7 +16,6 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
 import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.views.CustomTextView;
-import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class AssessmentUnsentAdapterCosmeticsStrategy {
@@ -46,7 +45,13 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
                                 surveyCompletion.setText(surveyAnsweredRatio.getAnswered() + "%");
                             }
                             if(surveyMandatoryCompletion!=null) {
-                                surveyMandatoryCompletion.setText(surveyAnsweredRatio.getCompulsoryAnswered() + "%");
+                                String total = "";
+                                if (surveyAnsweredRatio.getTotalCompulsory() == 0){
+                                    total = "100";
+                                }else{
+                                    total= surveyAnsweredRatio.getCompulsoryAnswered()+"";
+                                }
+                                surveyMandatoryCompletion.setText( total + "%");
                             }
                         }
                     }
@@ -62,38 +67,8 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
         final DoubleRectChart doubleRectChart =
                 (DoubleRectChart) view;
         if(doubleRectChart!=null){
-            LayoutUtils.drawScore(survey.getMainScore(), doubleRectChart);
+            LayoutUtils.drawScore(survey.getMainScore().getScore(), doubleRectChart);
 
         }
-    }
-
-    public static void decorateCustomColumns(SurveyDB survey, View rowView) {
-        final DoublePieChart doublePieChart =
-                (DoublePieChart) rowView.findViewById(R.id.double_pie_chart);
-
-        ISurveyAnsweredRatioRepository surveyAnsweredRatioRepository =
-                new SurveyAnsweredRatioRepository();
-        IAsyncExecutor asyncExecutor = new AsyncExecutor();
-        IMainExecutor mainExecutor = new UIThreadExecutor();
-        GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
-                new GetSurveyAnsweredRatioUseCase(surveyAnsweredRatioRepository, mainExecutor, asyncExecutor);
-
-        getSurveyAnsweredRatioUseCase.execute(survey.getId_survey(),
-                new ISurveyAnsweredRatioCallback() {
-                    @Override
-                    public void nextProgressMessage() {
-                        Log.d(getClass().getName(), "nextProgressMessage");
-                    }
-
-                    @Override
-                    public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                        Log.d(getClass().getName(), "onComplete");
-
-                        if (surveyAnsweredRatio != null) {
-                            doublePieChart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
-                                    surveyAnsweredRatio.getTotalStatus());
-                        }
-                    }
-                });
     }
 }

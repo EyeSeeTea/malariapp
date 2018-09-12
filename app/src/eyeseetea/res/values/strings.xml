@@ -118,7 +118,7 @@ evaluation"</string>
 <string name="dashboard_title_planned_type_future">"Future"</string>
 <string name="dashboard_title_planned_productivity">"Prd"</string>
 <string name="dashboard_title_planned_quality_of_care">"QoC"</string>
-<string name="dashboard_title_planned_next_qa">"Next QA"</string>
+<string name="dashboard_title_planned_next_qa">"Next Eval."</string>
 <string name="assessment_sent_score">"Score"</string>
 <string name="feedback_show_only_failed">"Show only failed questions"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
@@ -204,7 +204,7 @@ evaluation"</string>
 <string name="account_permission_denied">Contacts permission denied. Media will not be synced</string>
 <string name="feedback_media">View video feedback</string>
 <string name="feedback_view_image">Open image with...</string>
-<string name="select_all">"Select all"</string>
+<string name="select_all">"Select All Surveys"</string>
 <string name="demo_login">"Demo Mode"</string>
 <string name="system_defined">"System defined"</string>
 <string name="settings_select_language">"Language"</string>
@@ -227,6 +227,7 @@ evaluation"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"You have %d unsent surveys and will be deleted. Do you want continue?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"You don't have unsent surveys. Do you want continue?"</string>
 
+<string name="header_schedule">"Schedule"</string>
 <string name="header_reschedule">"Reschedule"</string>
 <string name="planing_due_date">"Due date"</string>
 <string name="action_button_text">ACTION PLAN</string>
@@ -279,6 +280,8 @@ evaluation"</string>
 <string name="plan_action_edit_text_hint">"tap to write"</string>
 <string name="header_reschedule_title">"Re-schedule"</string>
 
+
+<string name="scheduled">Scheduled</string>
 <string name="apply_filters">"Apply filters"</string>
 <string name="filter">"Filter"</string>
 <string name="failed_video_image_question_only">"Video/Image questions only"</string>
