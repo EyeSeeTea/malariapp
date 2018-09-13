@@ -19,7 +19,6 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(question.isComputable());
-        Assert.assertTrue(question.getOptionUIds().size()==0);
     }
 
     @Test
@@ -29,20 +28,16 @@ public class QuestionShould {
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(!question.isComputable());
-        Assert.assertTrue(question.getOptionUIds().size()==0);
     }
 
     @Test
-    public void create_a_question_with_mandatory_fields_with_option_uid_list(){
-        List<String> options = new ArrayList<>();
-        options.add("UID1");
-        options.add("UID2");
-        Question question = new Question("UID", options,7, true);
+    public void create_a_question_with_mandatory_fields_with_answer_name(){
+        Question question = new Question("UID",7, true,"answerName");
         Assert.assertNotNull(question);
         Assert.assertTrue(question.getUId().equals("UID"));
         Assert.assertTrue(question.isCompulsory());
         Assert.assertTrue(!question.isComputable());
-        Assert.assertTrue(question.getOptionUIds().equals(options));
+        Assert.assertTrue(question.getAnswerName().equals("answerName"));
     }
 
     @Test
@@ -57,12 +52,5 @@ public class QuestionShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("valid question type is required");
         new Question("UId", 0, false);
-    }
-
-    @Test
-    public void throw_exception_when_create_a_question_with_invalid_options(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("list of option uId is required");
-        new Question("UId", null, 1, false);
     }
 }

@@ -19,15 +19,12 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.structure.Model;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataElementExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OptionSetExtended;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.OrganisationUnitExtended;
@@ -46,28 +43,20 @@ import org.eyeseetea.malariacare.data.database.model.OrgUnitLevelDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
-import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ServerMetadataDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
-import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramCompositeScoreDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramQuestionDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramStageSectionTabDict;
-import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramSurveyDict;
 import org.eyeseetea.malariacare.data.database.utils.multikeydictionaries.ProgramTabDict;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.hisp.dhis.client.sdk.models.program.ProgramType;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +71,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     static Map<String, AnswerDB> answerMap;
     static ProgramTabDict programTabDict;
     static ProgramStageSectionTabDict programStageSectionTabDict;
-    static ProgramSurveyDict programSurveyDict;
     static ProgramCompositeScoreDict programCompositeScoreDict;
     static ProgramQuestionDict programQuestionDict;
 
@@ -107,7 +95,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
         programTabDict = new ProgramTabDict();
         programStageSectionTabDict = new ProgramStageSectionTabDict();
         programQuestionDict = new ProgramQuestionDict();
-        programSurveyDict = new ProgramSurveyDict();
         programCompositeScoreDict = new ProgramCompositeScoreDict();
         compositeScoreBuilder = new CompositeScoreBuilder();
         questionBuilder = new QuestionBuilder();
@@ -285,6 +272,8 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
     @Override
     public void visit(UserAccountExtended userAccount) {
         UserDB appUser = UserDB.getUserByUId(userAccount.getUid());
+
+
         if(appUser == null ) {
             appUser = new UserDB();
         }
@@ -325,180 +314,6 @@ public class ConvertFromSDKVisitor implements IConvertFromSDKVisitor {
             return;
         }
     }
-
-    /**
-     * Turns an event into a sent survey
-     */
-    @Override
-    public void visit(EventExtended event) {
-        OrgUnitDB orgUnit = orgUnitDict.get(event.getOrganisationUnitId());
-        ProgramDB program = programMapObjects.get(
-                ProgramStageExtended.getProgramStage(
-                        event.getProgramStageId()).getProgram().getUId());
-        SurveyDB survey = new SurveyDB();
-        //Any survey that comes from the pull has been sent
-        survey.setStatus(Constants.SURVEY_SENT);
-        //Completiondate == Event date
-        survey.setCompletionDate(event.getEventDate());
-
-        //Set dates( to prevent a null value, all take the getEventDate date before datavalue
-        // visitor)
-        survey.setCreationDate(event.getEventDate());
-        survey.setUploadDate(event.getEventDate());
-        //Scheduled date == Due date
-        Context context = PreferencesState.getInstance().getContext();
-        String uidNextAssessment = ServerMetadataDB.findControlDataElementUid(
-                context.getString(R.string.next_assessment_code));
-        DataValueExtended dataValueNextAssessment = DataValueExtended.findByEventAndUID(
-                event.getEvent(), uidNextAssessment);
-
-        Date nextAssessmentDate = null;
-        if (dataValueNextAssessment.getDataValue() != null) {
-            if (dataValueNextAssessment.getValue() != null
-                    && !dataValueNextAssessment.getValue().isEmpty()) {
-                nextAssessmentDate = convertStringToDate("yyyy-MM-dd",
-                        dataValueNextAssessment.getValue());
-            }
-        }
-        survey.setScheduledDate(
-                nextAssessmentDate != null ? nextAssessmentDate : event.getDueDate());
-        //Set fks
-        survey.setOrgUnit(orgUnit);
-        survey.setEventUid(event.getUid());
-        survey.setProgram(program);
-        survey.save();
-
-        //Annotate object in map
-        //EventToSurveyBuilder eventToSurveyBuilder=new EventToSurveyBuilder(survey);
-        programSurveyDict.put(actualProgram.getUid(), event.getUid(), survey);
-
-        //Visit its values
-        for (DataValueExtended dataValueExtended : event.getDataValues()) {
-            dataValueExtended.setProgramUid(event.getProgramId());
-            dataValueExtended.accept(this);
-        }
-        //Once all the values are processed save common data across created surveys
-        //eventToSurveyBuilder.saveCommonData();
-    }
-
-    private Date convertStringToDate(String format, String dateText) {
-        DateFormat df = new SimpleDateFormat(format);
-        try {
-            return df.parse(dateText);
-        } catch (ParseException e) {
-            Log.e(TAG, "Error converting date in pull: " + e.getMessage() + e);
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    @Override
-    public void visit(DataValueExtended dataValue) {
-        SurveyDB survey = programSurveyDict.get(actualProgram.getUid(), dataValue.getEvent());
-
-        //General common data (mainscore, createdby, createdon, uploadedon..)
-
-
-        //Data value is a value from compositeScore
-        if (programCompositeScoreDict.containsKey(actualProgram.getUid(),
-                dataValue.getDataElement())) {
-            //CHeck if it is a root score -> score
-            CompositeScoreDB compositeScore = programCompositeScoreDict.get(actualProgram.getUid(),
-                    dataValue.getDataElement());
-            //Only root scores are important
-            if (!CompositeScoreBuilder.isRootScore(compositeScore)) {
-                return;
-            }
-
-            ScoreDB score = new ScoreDB();
-            score.setScore(Float.parseFloat(dataValue.getValue()));
-            score.setUid(dataValue.getDataElement());
-            score.setSurvey(survey);
-            score.save();
-            Log.i(TAG, String.format("Event %s with mainScore %s", survey.getEventUid(),
-                    dataValue.getValue()));
-            return;
-        }
-
-
-        //-> createdOn
-        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
-                PreferencesState.getInstance().getContext().getString(R.string.created_on_code)))) {
-            survey.setCreationDate(EventExtended.parseLongDate(dataValue.getValue()));
-            survey.save();
-            Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
-                    dataValue.getValue()));
-            return;
-        }
-
-        //-> completionOn
-        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
-                PreferencesState.getInstance().getContext().getString(R.string.completed_on_code)))) {
-            survey.setCompletionDate(EventExtended.parseLongDate(dataValue.getValue()));
-            survey.save();
-            Log.i(TAG, String.format("Event %s created on %s", survey.getEventUid(),
-                    dataValue.getValue()));
-            return;
-        }
-
-        //-> uploadedOn
-        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
-                PreferencesState.getInstance().getContext().getString(
-                        R.string.upload_date_code)))) {
-            survey.setUploadDate(EventExtended.parseLongDate(dataValue.getValue()));
-            Log.i(TAG, String.format("Event %s uploaded on %s", survey.getEventUid(), dataValue
-                    .getValue()));
-            return;
-        }
-
-        //-> uploadedBy (updatedBy is ignored)
-        if (dataValue.getDataElement().equals(ServerMetadataDB.findControlDataElementUid(
-                PreferencesState.getInstance().getContext().getString(
-                        R.string.uploaded_by_code)))) {
-            UserDB user = UserDB.getUser(dataValue.getValue());
-            if (user == null) {
-                user = new UserDB(dataValue.getValue(), dataValue.getValue());
-                user.save();
-            }
-            survey.setUser(user);
-            survey.save();
-            //Annotate object in map
-            programSurveyDict.put(actualProgram.getUid(), dataValue.getEvent(), survey);
-            return;
-            //eventToSurveyBuilder.setUploadedBy(dataValue);
-            //Log.i(TAG,String.format("Event %s created by %s",eventToSurveyBuilder.getEventUid()
-            // ,dataValue.getValue()));
-            //return;
-        }
-
-        ValueDB value = new ValueDB();
-        //Datavalue is a value from a question
-        OptionDB option = null;
-        if (programQuestionDict.containsKey(actualProgram.getUid(), dataValue.getDataElement())) {
-            QuestionDB question = programQuestionDict.get(actualProgram.getUid(),
-                    dataValue.getDataElement());
-            try {
-                value.setQuestion(question);
-                option = dataValue.findOptionByQuestion(question);
-                value.setOption(option);
-            } catch (ClassCastException e) {
-                Log.d(TAG, "Exception with controlDataelement in DataValue converting");
-            }
-        }
-
-        value.setSurvey(survey);
-        //No option -> text question (straight value)
-        if (option == null) {
-            value.setValue(dataValue.getValue());
-        } else {
-            //Option -> extract value from code
-            value.setValue(option.getName());
-        }
-        value.setUploadDate(new Date());
-        value.save();
-    }
-
 
     /**
      * Turns a dataElement into a question

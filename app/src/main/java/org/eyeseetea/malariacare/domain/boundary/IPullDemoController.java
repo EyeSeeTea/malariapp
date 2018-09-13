@@ -19,9 +19,6 @@
 
 package org.eyeseetea.malariacare.domain.boundary;
 
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-
 public interface IPullDemoController {
     interface IPullDemoControllerCallback {
         void onComplete();

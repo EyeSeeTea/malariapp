@@ -23,6 +23,22 @@ repositories {
 }
 
 android {
+
+
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "skipped", "failed", "standardOut", "standardError"
+                exceptionFormat "full"
+                showCauses true
+                showExceptions true
+                showStackTraces true
+                showStandardStreams true
+            }
+        }
+    }
+
     signingConfigs {
         config {}
     }
@@ -69,6 +85,7 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
+
 
     productFlavors {
         eds {
@@ -129,14 +146,14 @@ configurations {
 }
 
 dependencies {
+
     // SDK submodules
-    compile project(":core-rules")
-    compile project(":ui-bindings")
-    compile project(":EyeSeeTea-sdk")
+    compile project(':core-rules')
+    compile project(':ui-bindings')
+    compile project(':EyeSeeTea-sdk')
 
     // App dependencies
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     apply plugin: 'android-apt'
     apply plugin: 'com.github.dcendents.android-maven'
 
@@ -145,11 +162,12 @@ dependencies {
     compile "com.android.support:appcompat-v7:${libs.supportVersion}"
     compile "com.android.support:support-annotations:${libs.supportVersion}"
     compile "com.android.support:multidex:${libs.multidex}"
+
     //3rd party dependencies
     compile "com.opencsv:opencsv:${libs.opencsvVersion}"
     compile "com.google.android.gms:play-services:${libs.gmsPlayVersion}"
     compile "com.google.guava:guava:${libs.guavaVersion}"
-    compile "com.squareup.okhttp:okhttp:$rootProject.okhttpVersion"
+    compile "com.squareup.okhttp3:okhttp:${libs.okhttpVersion}"
     compile "com.googlecode.libphonenumber:libphonenumber:${libs.libphonenumberVersion}"
     compile "com.github.PhilJay:MPAndroidChart:v${libs.MPAndroidChartVersion}"
 
@@ -162,24 +180,26 @@ dependencies {
     compile("com.google.apis:google-api-services-drive:${libs.googleApiServicesDriveVersion}") {
         exclude group: 'org.apache.httpcomponents'
     }
-
     compile "com.google.code.findbugs:jsr305:${libs.jsr305Version}"
 
     // Unit testing dependencies
     testCompile "junit:junit:${libs.jUnitVersion}"
     testCompile "org.mockito:mockito-core:${libs.mockitoVersion}"
+    testCompile "com.google.code.gson:gson:${libs.gsonVersion}"
 
     // Instrumented tests dependencies
+
     // Android Testing Support Library's runner and rules
-    
     androidTestCompile "com.android.support.test:runner:${libs.runnerVersion}"
     androidTestCompile "com.android.support.test:rules:${libs.runnerVersion}"
 
     // Espresso UI Testing dependencies.
     androidTestCompile "com.android.support.test.espresso:espresso-core:${libs.espressoVersion}"
     androidTestCompile "com.android.support.test.espresso:espresso-intents:${libs.espressoVersion}"
+
     // Espresso-idling-resource for synchronization with background jobs
     androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${libs.espressoVersion}"
+
     // Espresso-web for WebView support
     androidTestCompile "com.android.support.test.espresso:espresso-web:${libs.espressoVersion}"
 
@@ -196,7 +216,6 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libs.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${libs.dbFlowVersion}"
-
     compile(project(path: ':bugshaker')) {
         exclude group: "com.google.android.gms"
     }

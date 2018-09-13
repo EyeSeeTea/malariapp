@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 /**
  * Created by arrizabalaga on 5/11/15.
  */
-public class DataValueExtended implements VisitableFromSDK {
+public class DataValueExtended {
 
     private final static String TAG = ".DataValueExtended";
     private final static String REGEXP_FACTOR = ".*\\[([0-9]*)\\]";
@@ -60,11 +60,6 @@ public class DataValueExtended implements VisitableFromSDK {
 
     public DataValueExtended(DataValueExtended dataValueExtended) {
         this.dataValue = dataValueExtended.getDataValue();
-    }
-
-    @Override
-    public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this);
     }
 
     public TrackedEntityDataValueFlow getDataValue() {

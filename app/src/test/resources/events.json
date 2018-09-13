@@ -1,0 +1,2947 @@
+[
+  {
+    "uId": "NrZU8fZkR5p",
+    "status": "ACTIVE",
+    "program": "Qt74wJNHTAS",
+    "programStage": "X6EfA6SRkbb",
+    "orgUnit": "A5HZNrJc2ir",
+    "eventDate": "2017-10-03T07:31:53.026",
+    "dueDate": "2018-06-04T19:00:36.834",
+    "created": "2017-10-03T07:34:15.002",
+    "lastUpdated": "2018-06-04T19:00:36.835",
+    "dataValues": [
+      {
+        "created": "2017-10-03T07:34:15.008",
+        "lastUpdated": "2017-10-03T07:34:15.008",
+        "value": "1",
+        "dataElement": "AXYuCWURm3z",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.009",
+        "lastUpdated": "2017-10-03T07:34:15.009",
+        "value": "2017-10-03T10:33:27.765+0000",
+        "dataElement": "B6afQk2qZTL",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.010",
+        "lastUpdated": "2017-10-03T07:34:15.010",
+        "value": "0",
+        "dataElement": "BNtU3xR7tVS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.011",
+        "lastUpdated": "2017-10-03T07:34:15.011",
+        "value": "0",
+        "dataElement": "BjawBUO2Nj7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.013",
+        "lastUpdated": "2017-10-03T07:34:15.013",
+        "value": "0",
+        "dataElement": "CAnBq5ULtQh",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.014",
+        "lastUpdated": "2017-10-03T07:34:15.014",
+        "value": "false",
+        "dataElement": "DBUwlPCO0Hd",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.015",
+        "lastUpdated": "2017-10-03T07:34:15.015",
+        "value": "40",
+        "dataElement": "DEwxRb68xnj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.016",
+        "lastUpdated": "2017-10-03T07:34:15.016",
+        "value": "1",
+        "dataElement": "Dvp66pjyHVo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.017",
+        "lastUpdated": "2017-10-03T07:34:15.017",
+        "value": "1",
+        "dataElement": "EqH3u3ed0mu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.027",
+        "lastUpdated": "2017-10-03T07:34:15.027",
+        "value": "1",
+        "dataElement": "Fb3jEa8Ikgp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.035",
+        "lastUpdated": "2017-10-03T07:34:15.035",
+        "value": "1",
+        "dataElement": "GlnxI2HNN79",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "lastUpdated": "2017-10-03T08:15:53.026",
+        "storedBy": "Kenya Demo1",
+        "created": "2018-06-26T13:35:08.696",
+        "dataElement": "I7rMklpweh0",
+        "value": "2017-10-03T08:15:53.026+0000",
+        "providedElsewhere": false
+      },
+      {
+        "created": "2017-10-03T07:34:15.037",
+        "lastUpdated": "2017-10-03T07:34:15.037",
+        "value": "1",
+        "dataElement": "IJKyOfGiqlO",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.040",
+        "lastUpdated": "2017-10-03T07:34:15.040",
+        "value": "1",
+        "dataElement": "JxWMceFnclz",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.044",
+        "lastUpdated": "2017-10-03T07:34:15.044",
+        "value": "0",
+        "dataElement": "Kt0KAu9ltej",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.082",
+        "lastUpdated": "2017-10-03T07:34:15.082",
+        "value": "2018-02-03",
+        "dataElement": "M93RYt47CMK",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.103",
+        "lastUpdated": "2017-10-03T07:34:15.103",
+        "value": "1",
+        "dataElement": "NwWbwy2RbSv",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.105",
+        "lastUpdated": "2017-10-03T07:34:15.105",
+        "value": "65",
+        "dataElement": "O4RfbCjbs1H",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.106",
+        "lastUpdated": "2017-10-03T07:34:15.106",
+        "value": "1",
+        "dataElement": "QFvUM5RULTe",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.107",
+        "lastUpdated": "2017-10-03T07:34:15.107",
+        "value": "1",
+        "dataElement": "QPqdxc2YfgW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.109",
+        "lastUpdated": "2017-10-03T07:34:15.109",
+        "value": "1",
+        "dataElement": "Siaqrsh74VD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.110",
+        "lastUpdated": "2017-10-03T07:34:15.110",
+        "value": "1",
+        "dataElement": "TEpRbROqiuo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.111",
+        "lastUpdated": "2017-10-03T07:34:15.111",
+        "value": "0",
+        "dataElement": "TdZ06XNojjt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.113",
+        "lastUpdated": "2017-10-03T07:34:15.113",
+        "value": "false",
+        "dataElement": "TgCWRlUXbca",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.114",
+        "lastUpdated": "2017-10-03T07:34:15.114",
+        "value": "Kenya Demo1",
+        "dataElement": "UzOOxp9OlSb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.115",
+        "lastUpdated": "2017-10-03T07:34:15.115",
+        "value": "1",
+        "dataElement": "V6ouwKPbYXD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.117",
+        "lastUpdated": "2017-10-03T07:34:15.117",
+        "value": "0",
+        "dataElement": "VA25aJkiGfC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.118",
+        "lastUpdated": "2017-10-03T07:34:15.118",
+        "value": "1",
+        "dataElement": "VouJOWXhhzk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.119",
+        "lastUpdated": "2017-10-03T07:34:15.119",
+        "value": "1",
+        "dataElement": "XCujuBSfi4e",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.121",
+        "lastUpdated": "2017-10-03T07:34:15.121",
+        "value": "1",
+        "dataElement": "XGYj3Asxyh7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.122",
+        "lastUpdated": "2017-10-03T07:34:15.122",
+        "value": "65",
+        "dataElement": "XeN6pcf7zoD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.123",
+        "lastUpdated": "2017-10-03T07:34:15.123",
+        "value": "64.705894",
+        "dataElement": "Y8Nmpp7RhXw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.125",
+        "lastUpdated": "2017-10-03T07:34:15.125",
+        "value": "######356376053823013###89254029741007332029###46dd04b2e232c6e03d96cde6b0c96b031ea1ad1b\n",
+        "dataElement": "YVyeP6WQkDA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.126",
+        "lastUpdated": "2017-10-03T07:34:15.126",
+        "value": "1",
+        "dataElement": "YbjV64GKDnZ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.128",
+        "lastUpdated": "2017-10-03T07:34:15.128",
+        "value": "1",
+        "dataElement": "YwEbTTvnAZo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.129",
+        "lastUpdated": "2017-10-03T07:34:15.129",
+        "value": "1",
+        "dataElement": "ZSAFa9XWtOW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.131",
+        "lastUpdated": "2017-10-03T07:34:15.131",
+        "value": "57",
+        "dataElement": "b9L1b4TCBTY",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.132",
+        "lastUpdated": "2017-10-03T07:34:15.132",
+        "value": "1",
+        "dataElement": "bTtv0xphyfD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.133",
+        "lastUpdated": "2017-10-03T07:34:15.133",
+        "value": "1",
+        "dataElement": "bjEZAN5mxqm",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.135",
+        "lastUpdated": "2017-10-03T07:34:15.135",
+        "value": "1",
+        "dataElement": "dm3yE8Nbi1k",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.136",
+        "lastUpdated": "2017-10-03T07:34:15.136",
+        "value": "1",
+        "dataElement": "eEK0rixU3eE",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.138",
+        "lastUpdated": "2017-10-03T07:34:15.138",
+        "value": "100",
+        "dataElement": "eQuQ0hi6GH7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.139",
+        "lastUpdated": "2017-10-03T07:34:15.139",
+        "value": "1",
+        "dataElement": "f3l3yoMJKt2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.141",
+        "lastUpdated": "2017-10-03T07:34:15.141",
+        "value": "100",
+        "dataElement": "f4FGpiYbGAN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.143",
+        "lastUpdated": "2017-10-03T07:34:15.143",
+        "value": "100",
+        "dataElement": "fMQGk0NzqPS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.144",
+        "lastUpdated": "2017-10-03T07:34:15.144",
+        "value": "1",
+        "dataElement": "foKwgQhzsUV",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.146",
+        "lastUpdated": "2017-10-03T07:34:15.146",
+        "value": "B",
+        "dataElement": "ggrkfoq6nxA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.147",
+        "lastUpdated": "2017-10-03T07:34:15.147",
+        "value": "1",
+        "dataElement": "iNbe9LSBQnQ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.149",
+        "lastUpdated": "2017-10-03T07:34:15.149",
+        "value": "0",
+        "dataElement": "iimdFsVUwxH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.150",
+        "lastUpdated": "2017-10-03T07:34:15.150",
+        "value": "1",
+        "dataElement": "kWj8hd3mRHe",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.152",
+        "lastUpdated": "2017-10-03T07:34:15.152",
+        "value": "1",
+        "dataElement": "nL20p08jVl9",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.153",
+        "lastUpdated": "2017-10-03T07:34:15.153",
+        "value": "1",
+        "dataElement": "oeOOGcDe6hA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.155",
+        "lastUpdated": "2017-10-03T07:34:15.155",
+        "value": "1",
+        "dataElement": "orBjCwPUwVN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.157",
+        "lastUpdated": "2017-10-03T07:34:15.157",
+        "value": "1",
+        "dataElement": "pHsAq6MfNrO",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.158",
+        "lastUpdated": "2017-10-03T07:34:15.158",
+        "value": "1",
+        "dataElement": "pUtzeR62tgn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.160",
+        "lastUpdated": "2017-10-03T07:34:15.160",
+        "value": "2017-10-03T10:31:03.287+0000",
+        "dataElement": "rcAkFQFYknk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.161",
+        "lastUpdated": "2017-10-03T07:34:15.161",
+        "value": "100",
+        "dataElement": "tzwQlZRnlox",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.163",
+        "lastUpdated": "2017-10-03T07:34:15.163",
+        "value": "0",
+        "dataElement": "vGphb9ZfLGg",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.165",
+        "lastUpdated": "2017-10-03T07:34:15.165",
+        "value": "0",
+        "dataElement": "wflMCCiSw6K",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.166",
+        "lastUpdated": "2017-10-03T07:34:15.166",
+        "value": "0",
+        "dataElement": "wy0j5VW18Hp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.168",
+        "lastUpdated": "2017-10-03T07:34:15.168",
+        "value": "1",
+        "dataElement": "xb1uMIXtko2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.169",
+        "lastUpdated": "2017-10-03T07:34:15.169",
+        "value": "1",
+        "dataElement": "xxiCEyYaiq3",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T07:34:15.171",
+        "lastUpdated": "2017-10-03T07:34:15.171",
+        "value": "true",
+        "dataElement": "zckZqXOQRHT",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:00:35.266",
+        "lastUpdated": "2018-06-04T19:00:36.843",
+        "value": "25",
+        "dataElement": "deeu8rjsqvH",
+        "providedElsewhere": false,
+        "storedBy": "script_HNQIS"
+      },
+      {
+        "created": "2017-10-03T08:00:35.269",
+        "lastUpdated": "2018-06-04T19:00:36.846",
+        "value": "false",
+        "dataElement": "iW2zVNwfDK6",
+        "providedElsewhere": false,
+        "storedBy": "script_HNQIS"
+      },
+      {
+        "created": "2017-10-03T07:34:15.019",
+        "lastUpdated": "2018-06-04T19:00:36.838",
+        "value": "4",
+        "dataElement": "FEkGksxhOpH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      }
+    ]
+  },
+  {
+    "uId": "hPaq2nOqRa9",
+    "status": "ACTIVE",
+    "program": "Qt74wJNHTAS",
+    "programStage": "X6EfA6SRkbb",
+    "orgUnit": "A5HZNrJc2ir",
+    "eventDate": "2017-09-26T02:57:02.027",
+    "dueDate": "2018-06-04T19:00:35.988",
+    "created": "2017-09-26T16:24:31.130",
+    "lastUpdated": "2018-06-04T19:00:35.989",
+    "dataValues": [
+      {
+        "created": "2017-09-26T16:24:31.134",
+        "lastUpdated": "2017-09-26T16:24:31.134",
+        "value": "100",
+        "dataElement": "A8oVu4wGlxg",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.135",
+        "lastUpdated": "2017-09-26T16:24:31.135",
+        "value": "1",
+        "dataElement": "AIRgbaF1EDS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.136",
+        "lastUpdated": "2017-09-26T16:24:31.136",
+        "value": "1",
+        "dataElement": "Acfh1I56SiP",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.137",
+        "lastUpdated": "2017-09-26T16:24:31.137",
+        "value": "2017-09-26T22:57:46.889+0000",
+        "dataElement": "B6afQk2qZTL",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.138",
+        "lastUpdated": "2017-09-26T16:24:31.138",
+        "value": "1",
+        "dataElement": "BWARDWvTqol",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.139",
+        "lastUpdated": "2017-09-26T16:24:31.139",
+        "value": "1",
+        "dataElement": "BeDT5edvgeF",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.140",
+        "lastUpdated": "2017-09-26T16:24:31.140",
+        "value": "100",
+        "dataElement": "BjVsWlE8uXn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.141",
+        "lastUpdated": "2017-09-26T16:24:31.141",
+        "value": "1",
+        "dataElement": "BjawBUO2Nj7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.142",
+        "lastUpdated": "2017-09-26T16:24:31.143",
+        "value": "1",
+        "dataElement": "BlCyu7JDAkG",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.144",
+        "lastUpdated": "2017-09-26T16:24:31.144",
+        "value": "1",
+        "dataElement": "CAnBq5ULtQh",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.145",
+        "lastUpdated": "2017-09-26T16:24:31.145",
+        "value": "100",
+        "dataElement": "CQrqDM1tj0V",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.146",
+        "lastUpdated": "2017-09-26T16:24:31.146",
+        "value": "100",
+        "dataElement": "D4OyZ3xEMOp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.147",
+        "lastUpdated": "2017-09-26T16:24:31.147",
+        "value": "false",
+        "dataElement": "DBUwlPCO0Hd",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.148",
+        "lastUpdated": "2017-09-26T16:24:31.148",
+        "value": "40",
+        "dataElement": "DEwxRb68xnj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.149",
+        "lastUpdated": "2017-09-26T16:24:31.149",
+        "value": "1",
+        "dataElement": "DVVAX8eGwIJ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.150",
+        "lastUpdated": "2017-09-26T16:24:31.150",
+        "value": "1",
+        "dataElement": "DXIEYI7k7PK",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.151",
+        "lastUpdated": "2017-09-26T16:24:31.151",
+        "value": "1",
+        "dataElement": "DtramZXWBpM",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.152",
+        "lastUpdated": "2017-09-26T16:24:31.152",
+        "value": "0",
+        "dataElement": "Dvp66pjyHVo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.154",
+        "lastUpdated": "2017-09-26T16:24:31.154",
+        "value": "1",
+        "dataElement": "EI5fiyvP0mw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.155",
+        "lastUpdated": "2017-09-26T16:24:31.155",
+        "value": "1",
+        "dataElement": "EXC2Wyek5et",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.156",
+        "lastUpdated": "2017-09-26T16:24:31.156",
+        "value": "1",
+        "dataElement": "EqH3u3ed0mu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.157",
+        "lastUpdated": "2017-09-26T16:24:31.157",
+        "value": "1",
+        "dataElement": "EupS7Z27FZ6",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.158",
+        "lastUpdated": "2017-09-26T16:24:31.158",
+        "value": "1",
+        "dataElement": "F55FsmLxmaR",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.161",
+        "lastUpdated": "2017-09-26T16:24:31.161",
+        "value": "100",
+        "dataElement": "FcQkkhilSTl",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.162",
+        "lastUpdated": "2017-09-26T16:24:31.162",
+        "value": "1",
+        "dataElement": "Fi9GqJDHjeN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.163",
+        "lastUpdated": "2017-09-26T16:24:31.163",
+        "value": "100",
+        "dataElement": "FiaXexhwqHb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.164",
+        "lastUpdated": "2017-09-26T16:24:31.164",
+        "value": "1",
+        "dataElement": "FqexKB9i0U4",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.165",
+        "lastUpdated": "2017-09-26T16:24:31.165",
+        "value": "1",
+        "dataElement": "Fr2NGYfvqAQ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.167",
+        "lastUpdated": "2017-09-26T16:24:31.167",
+        "value": "1",
+        "dataElement": "Ft1tdrxIBW0",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.168",
+        "lastUpdated": "2017-09-26T16:24:31.168",
+        "value": "100",
+        "dataElement": "GACHWLqZ2Zc",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.169",
+        "lastUpdated": "2017-09-26T16:24:31.169",
+        "value": "1",
+        "dataElement": "HUP7yuXJjv7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.170",
+        "lastUpdated": "2017-09-26T16:24:31.170",
+        "value": "1",
+        "dataElement": "HfPT8VTMIyV",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.172",
+        "lastUpdated": "2017-09-26T16:24:31.172",
+        "value": "1",
+        "dataElement": "HkdXgnyRCC7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.173",
+        "lastUpdated": "2017-09-26T16:24:31.173",
+        "value": "1",
+        "dataElement": "Hrd6bqBCU4B",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.174",
+        "lastUpdated": "2017-09-26T16:24:31.174",
+        "value": "1",
+        "dataElement": "Hse0PHedrdx",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.176",
+        "lastUpdated": "2017-09-26T16:24:31.176",
+        "value": "1",
+        "dataElement": "IKUrFkyhCgS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.177",
+        "lastUpdated": "2017-09-26T16:24:31.177",
+        "value": "1",
+        "dataElement": "IYzvEh4qcfj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.178",
+        "lastUpdated": "2017-09-26T16:24:31.178",
+        "value": "1",
+        "dataElement": "ImUz68JrCrv",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.180",
+        "lastUpdated": "2017-09-26T16:24:31.180",
+        "value": "1",
+        "dataElement": "InhCZ9Ctrwu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.181",
+        "lastUpdated": "2017-09-26T16:24:31.181",
+        "value": "100",
+        "dataElement": "IoEF4mQiMqn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "lastUpdated": "2017-10-03T10:15:20.026",
+        "storedBy": "Kenya Demo1",
+        "created": "2018-06-26T13:35:08.696",
+        "dataElement": "I7rMklpweh0",
+        "value": "2017-10-03T10:15:20.026+0000",
+        "providedElsewhere": false
+      },
+      {
+        "created": "2017-09-26T16:24:31.182",
+        "lastUpdated": "2017-09-26T16:24:31.182",
+        "value": "1",
+        "dataElement": "J387nw5gp3s",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.184",
+        "lastUpdated": "2017-09-26T16:24:31.184",
+        "value": "100",
+        "dataElement": "Jf2OxvJpvxX",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.185",
+        "lastUpdated": "2017-09-26T16:24:31.185",
+        "value": "1",
+        "dataElement": "Jo4XviEj9cA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.186",
+        "lastUpdated": "2017-09-26T16:24:31.186",
+        "value": "0",
+        "dataElement": "Jwwb08bJ0jd",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.188",
+        "lastUpdated": "2017-09-26T16:24:31.188",
+        "value": "1",
+        "dataElement": "K3fAlabAlBm",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.189",
+        "lastUpdated": "2017-09-26T16:24:31.189",
+        "value": "1",
+        "dataElement": "KKvV5TdKpk0",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.190",
+        "lastUpdated": "2017-09-26T16:24:31.190",
+        "value": "1",
+        "dataElement": "KqmYBmir9uE",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.192",
+        "lastUpdated": "2017-09-26T16:24:31.192",
+        "value": "0",
+        "dataElement": "Kt0KAu9ltej",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.193",
+        "lastUpdated": "2017-09-26T16:24:31.193",
+        "value": "1",
+        "dataElement": "LtvoIdca3OU",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.194",
+        "lastUpdated": "2017-09-26T16:24:31.194",
+        "value": "2018-03-25",
+        "dataElement": "M93RYt47CMK",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.196",
+        "lastUpdated": "2017-09-26T16:24:31.196",
+        "value": "100",
+        "dataElement": "MZyfsXtVUVD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.197",
+        "lastUpdated": "2017-09-26T16:24:31.197",
+        "value": "1",
+        "dataElement": "MnM0Cfq1kRm",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.199",
+        "lastUpdated": "2017-09-26T16:24:31.199",
+        "value": "1",
+        "dataElement": "MpCvi7TYuLI",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.200",
+        "lastUpdated": "2017-09-26T16:24:31.200",
+        "value": "1",
+        "dataElement": "NdOl84aHvDL",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.202",
+        "lastUpdated": "2017-09-26T16:24:31.202",
+        "value": "0",
+        "dataElement": "NwWbwy2RbSv",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.203",
+        "lastUpdated": "2017-09-26T16:24:31.203",
+        "value": "84",
+        "dataElement": "O4RfbCjbs1H",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.204",
+        "lastUpdated": "2017-09-26T16:24:31.204",
+        "value": "100",
+        "dataElement": "ORT73P1rwBh",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.206",
+        "lastUpdated": "2017-09-26T16:24:31.206",
+        "value": "1",
+        "dataElement": "OVr3UVTBU18",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.207",
+        "lastUpdated": "2017-09-26T16:24:31.207",
+        "value": "0",
+        "dataElement": "POMUwyTfFNP",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.209",
+        "lastUpdated": "2017-09-26T16:24:31.209",
+        "value": "1",
+        "dataElement": "Q6bxKSwpcds",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.210",
+        "lastUpdated": "2017-09-26T16:24:31.210",
+        "value": "1",
+        "dataElement": "Q7PoPl2tsPj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.212",
+        "lastUpdated": "2017-09-26T16:24:31.212",
+        "value": "0",
+        "dataElement": "QPqdxc2YfgW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.213",
+        "lastUpdated": "2017-09-26T16:24:31.213",
+        "value": "1",
+        "dataElement": "QhQww41gd9Y",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.215",
+        "lastUpdated": "2017-09-26T16:24:31.215",
+        "value": "1",
+        "dataElement": "RJKX295duFs",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.217",
+        "lastUpdated": "2017-09-26T16:24:31.217",
+        "value": "1",
+        "dataElement": "S04sPcJc7Qf",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.218",
+        "lastUpdated": "2017-09-26T16:24:31.218",
+        "value": "1",
+        "dataElement": "SHdW4LnzBZt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.220",
+        "lastUpdated": "2017-09-26T16:24:31.220",
+        "value": "100",
+        "dataElement": "TFe8vnkuPwZ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.221",
+        "lastUpdated": "2017-09-26T16:24:31.221",
+        "value": "1",
+        "dataElement": "TW0K0uMgxp9",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.223",
+        "lastUpdated": "2017-09-26T16:24:31.223",
+        "value": "true",
+        "dataElement": "TgCWRlUXbca",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.224",
+        "lastUpdated": "2017-09-26T16:24:31.224",
+        "value": "1",
+        "dataElement": "TzyJAwO92mS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.226",
+        "lastUpdated": "2017-09-26T16:24:31.226",
+        "value": "0",
+        "dataElement": "Un4FFqxyDu6",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.227",
+        "lastUpdated": "2017-09-26T16:24:31.227",
+        "value": "100",
+        "dataElement": "UpAfi1McMTC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.229",
+        "lastUpdated": "2017-09-26T16:24:31.229",
+        "value": "Kenya Demo1",
+        "dataElement": "UzOOxp9OlSb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.231",
+        "lastUpdated": "2017-09-26T16:24:31.231",
+        "value": "1",
+        "dataElement": "V7z3uhl4ugQ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.232",
+        "lastUpdated": "2017-09-26T16:24:31.232",
+        "value": "0",
+        "dataElement": "VA25aJkiGfC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.234",
+        "lastUpdated": "2017-09-26T16:24:31.234",
+        "value": "1",
+        "dataElement": "VBeuD2mqIUk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.235",
+        "lastUpdated": "2017-09-26T16:24:31.235",
+        "value": "1",
+        "dataElement": "VPCVWdM1kd1",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.237",
+        "lastUpdated": "2017-09-26T16:24:31.237",
+        "value": "100",
+        "dataElement": "WB2Kjx36Et6",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.239",
+        "lastUpdated": "2017-09-26T16:24:31.239",
+        "value": "0",
+        "dataElement": "XCujuBSfi4e",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.240",
+        "lastUpdated": "2017-09-26T16:24:31.240",
+        "value": "1",
+        "dataElement": "XYwDRfUm6wR",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.242",
+        "lastUpdated": "2017-09-26T16:24:31.242",
+        "value": "44",
+        "dataElement": "XeN6pcf7zoD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.244",
+        "lastUpdated": "2017-09-26T16:24:31.244",
+        "value": "84.14634",
+        "dataElement": "Y8Nmpp7RhXw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.245",
+        "lastUpdated": "2017-09-26T16:24:31.245",
+        "value": "###15555218135###000000000000000###89014103211118510720###459d44808f03711de42bc8d34e6562a5bf7aee99\n",
+        "dataElement": "YVyeP6WQkDA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.247",
+        "lastUpdated": "2017-09-26T16:24:31.247",
+        "value": "1",
+        "dataElement": "Ye2a514dikp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.249",
+        "lastUpdated": "2017-09-26T16:24:31.249",
+        "value": "1",
+        "dataElement": "Z0q9THWg3PH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.250",
+        "lastUpdated": "2017-09-26T16:24:31.250",
+        "value": "100",
+        "dataElement": "Z1eqnE24A0y",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.252",
+        "lastUpdated": "2017-09-26T16:24:31.252",
+        "value": "0",
+        "dataElement": "ZAmpCRDV9lt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.254",
+        "lastUpdated": "2017-09-26T16:24:31.254",
+        "value": "1",
+        "dataElement": "ZgGwMKWY2Fb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.256",
+        "lastUpdated": "2017-09-26T16:24:31.256",
+        "value": "1",
+        "dataElement": "ZxV79aVh1Sx",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.258",
+        "lastUpdated": "2017-09-26T16:24:31.258",
+        "value": "1",
+        "dataElement": "a0PagBZCTT4",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.259",
+        "lastUpdated": "2017-09-26T16:24:31.259",
+        "value": "0",
+        "dataElement": "aDzmgHLpIbu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.261",
+        "lastUpdated": "2017-09-26T16:24:31.261",
+        "value": "1",
+        "dataElement": "adfZr7o9i8q",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.263",
+        "lastUpdated": "2017-09-26T16:24:31.263",
+        "value": "43",
+        "dataElement": "b9L1b4TCBTY",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.265",
+        "lastUpdated": "2017-09-26T16:24:31.265",
+        "value": "1",
+        "dataElement": "bAk0b6c1qpC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.266",
+        "lastUpdated": "2017-09-26T16:24:31.266",
+        "value": "1",
+        "dataElement": "bIr5qEmrIuM",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.268",
+        "lastUpdated": "2017-09-26T16:24:31.268",
+        "value": "1",
+        "dataElement": "bKbzYutIvFe",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.270",
+        "lastUpdated": "2017-09-26T16:24:31.270",
+        "value": "1",
+        "dataElement": "bQNee50Fpqr",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.272",
+        "lastUpdated": "2017-09-26T16:24:31.272",
+        "value": "1",
+        "dataElement": "bTtv0xphyfD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.274",
+        "lastUpdated": "2017-09-26T16:24:31.274",
+        "value": "50",
+        "dataElement": "bcYFnKiXDID",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.275",
+        "lastUpdated": "2017-09-26T16:24:31.275",
+        "value": "1",
+        "dataElement": "cmZdq5zhkSv",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.277",
+        "lastUpdated": "2017-09-26T16:24:31.277",
+        "value": "1",
+        "dataElement": "d9TOSM9oXbw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.279",
+        "lastUpdated": "2017-09-26T16:24:31.279",
+        "value": "1",
+        "dataElement": "dLpZYSwGhRE",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.281",
+        "lastUpdated": "2017-09-26T16:24:31.281",
+        "value": "100",
+        "dataElement": "dkPzhOw4zER",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.283",
+        "lastUpdated": "2017-09-26T16:24:31.283",
+        "value": "0",
+        "dataElement": "dm3yE8Nbi1k",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.285",
+        "lastUpdated": "2017-09-26T16:24:31.285",
+        "value": "1",
+        "dataElement": "eEK0rixU3eE",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.287",
+        "lastUpdated": "2017-09-26T16:24:31.287",
+        "value": "100",
+        "dataElement": "eavtdBK8pNl",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.289",
+        "lastUpdated": "2017-09-26T16:24:31.289",
+        "value": "83",
+        "dataElement": "edTTlJUgiJu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.291",
+        "lastUpdated": "2017-09-26T16:24:31.291",
+        "value": "1",
+        "dataElement": "efdyxkd1Lbg",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.293",
+        "lastUpdated": "2017-09-26T16:24:31.293",
+        "value": "1",
+        "dataElement": "ezomT6qkgS4",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.294",
+        "lastUpdated": "2017-09-26T16:24:31.294",
+        "value": "0",
+        "dataElement": "f4FGpiYbGAN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.296",
+        "lastUpdated": "2017-09-26T16:24:31.296",
+        "value": "1",
+        "dataElement": "foCrmYmtoyw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.298",
+        "lastUpdated": "2017-09-26T16:24:31.298",
+        "value": "1",
+        "dataElement": "g6vgNbunn8b",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.300",
+        "lastUpdated": "2017-09-26T16:24:31.300",
+        "value": "1",
+        "dataElement": "gASMsrf3G8f",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.302",
+        "lastUpdated": "2017-09-26T16:24:31.302",
+        "value": "1",
+        "dataElement": "gMHY5w2VNVZ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.304",
+        "lastUpdated": "2017-09-26T16:24:31.304",
+        "value": "A",
+        "dataElement": "ggrkfoq6nxA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.306",
+        "lastUpdated": "2017-09-26T16:24:31.306",
+        "value": "0",
+        "dataElement": "gqz6393MGcm",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.308",
+        "lastUpdated": "2017-09-26T16:24:31.308",
+        "value": "100",
+        "dataElement": "hFq8qgeBoTt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.310",
+        "lastUpdated": "2017-09-26T16:24:31.310",
+        "value": "1",
+        "dataElement": "hLKajz61RHC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.312",
+        "lastUpdated": "2017-09-26T16:24:31.312",
+        "value": "1",
+        "dataElement": "hfhlvi2ZXaC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.314",
+        "lastUpdated": "2017-09-26T16:24:31.314",
+        "value": "100",
+        "dataElement": "hzsVum9p5ew",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.316",
+        "lastUpdated": "2017-09-26T16:24:31.316",
+        "value": "1",
+        "dataElement": "igRYcTbGoQt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.318",
+        "lastUpdated": "2017-09-26T16:24:31.318",
+        "value": "1",
+        "dataElement": "iimdFsVUwxH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.320",
+        "lastUpdated": "2017-09-26T16:24:31.320",
+        "value": "1",
+        "dataElement": "iwsVV65h730",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.322",
+        "lastUpdated": "2017-09-26T16:24:31.322",
+        "value": "1",
+        "dataElement": "j74ngmb3Ddu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.324",
+        "lastUpdated": "2017-09-26T16:24:31.324",
+        "value": "100",
+        "dataElement": "jPr8VWVcu1M",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.326",
+        "lastUpdated": "2017-09-26T16:24:31.326",
+        "value": "100",
+        "dataElement": "jVcIMtZolVO",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.328",
+        "lastUpdated": "2017-09-26T16:24:31.328",
+        "value": "1",
+        "dataElement": "jnqtGxhVTL2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.330",
+        "lastUpdated": "2017-09-26T16:24:31.330",
+        "value": "1",
+        "dataElement": "kUdfFdvnE2u",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.332",
+        "lastUpdated": "2017-09-26T16:24:31.332",
+        "value": "1",
+        "dataElement": "kUiimvtU015",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.334",
+        "lastUpdated": "2017-09-26T16:24:31.334",
+        "value": "1",
+        "dataElement": "kb8QbfKx5Tr",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.336",
+        "lastUpdated": "2017-09-26T16:24:31.336",
+        "value": "1",
+        "dataElement": "kbfokeGl4k2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.338",
+        "lastUpdated": "2017-09-26T16:24:31.338",
+        "value": "100",
+        "dataElement": "mdePMcdcta0",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.340",
+        "lastUpdated": "2017-09-26T16:24:31.340",
+        "value": "1",
+        "dataElement": "miC4erZLDjM",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.342",
+        "lastUpdated": "2017-09-26T16:24:31.342",
+        "value": "1",
+        "dataElement": "mvfMlYGQqRP",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.344",
+        "lastUpdated": "2017-09-26T16:24:31.344",
+        "value": "88",
+        "dataElement": "nOd5ewwi8j9",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.346",
+        "lastUpdated": "2017-09-26T16:24:31.346",
+        "value": "1",
+        "dataElement": "oeOOGcDe6hA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.348",
+        "lastUpdated": "2017-09-26T16:24:31.348",
+        "value": "100",
+        "dataElement": "ooi7CbAIvgE",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.350",
+        "lastUpdated": "2017-09-26T16:24:31.350",
+        "value": "1",
+        "dataElement": "orBjCwPUwVN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.352",
+        "lastUpdated": "2017-09-26T16:24:31.352",
+        "value": "1",
+        "dataElement": "qBcuxL2usRQ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.355",
+        "lastUpdated": "2017-09-26T16:24:31.355",
+        "value": "1",
+        "dataElement": "qzRnMMmoMCu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.357",
+        "lastUpdated": "2017-09-26T16:24:31.357",
+        "value": "1",
+        "dataElement": "rBNbE624r8N",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.359",
+        "lastUpdated": "2017-09-26T16:24:31.359",
+        "value": "100",
+        "dataElement": "rJHpvAfyUTB",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.361",
+        "lastUpdated": "2017-09-26T16:24:31.361",
+        "value": "2017-09-25T22:52:47.291+0000",
+        "dataElement": "rcAkFQFYknk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.363",
+        "lastUpdated": "2017-09-26T16:24:31.363",
+        "value": "1",
+        "dataElement": "rj3V1iozboU",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.366",
+        "lastUpdated": "2017-09-26T16:24:31.366",
+        "value": "1",
+        "dataElement": "rxDZXegbv3E",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.368",
+        "lastUpdated": "2017-09-26T16:24:31.368",
+        "value": "1",
+        "dataElement": "ryigh5jArlc",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.370",
+        "lastUpdated": "2017-09-26T16:24:31.370",
+        "value": "1",
+        "dataElement": "s393JXxKcPF",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.373",
+        "lastUpdated": "2017-09-26T16:24:31.373",
+        "value": "1",
+        "dataElement": "s3qwhzQVWcd",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.375",
+        "lastUpdated": "2017-09-26T16:24:31.375",
+        "value": "1",
+        "dataElement": "sTvpO0rZX12",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.377",
+        "lastUpdated": "2017-09-26T16:24:31.377",
+        "value": "1",
+        "dataElement": "sVB0lOJRfyJ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.380",
+        "lastUpdated": "2017-09-26T16:24:31.380",
+        "value": "1",
+        "dataElement": "t3XaHx89ZvZ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.382",
+        "lastUpdated": "2017-09-26T16:24:31.382",
+        "value": "1",
+        "dataElement": "t4nWIsVOwN4",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.384",
+        "lastUpdated": "2017-09-26T16:24:31.384",
+        "value": "1",
+        "dataElement": "trgR4kgrt2a",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.387",
+        "lastUpdated": "2017-09-26T16:24:31.387",
+        "value": "75",
+        "dataElement": "txRRHV1sVJd",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.389",
+        "lastUpdated": "2017-09-26T16:24:31.389",
+        "value": "67",
+        "dataElement": "tzwQlZRnlox",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.391",
+        "lastUpdated": "2017-09-26T16:24:31.391",
+        "value": "1",
+        "dataElement": "uKRzjl50ZBJ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.393",
+        "lastUpdated": "2017-09-26T16:24:31.393",
+        "value": "1",
+        "dataElement": "uS4pHTcW6vb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.395",
+        "lastUpdated": "2017-09-26T16:24:31.395",
+        "value": "1",
+        "dataElement": "uqY7wlF4GFp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.398",
+        "lastUpdated": "2017-09-26T16:24:31.398",
+        "value": "0",
+        "dataElement": "vGphb9ZfLGg",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.400",
+        "lastUpdated": "2017-09-26T16:24:31.400",
+        "value": "1",
+        "dataElement": "vSBXfT9rulW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.402",
+        "lastUpdated": "2017-09-26T16:24:31.402",
+        "value": "50",
+        "dataElement": "wCYr92VMRKY",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.404",
+        "lastUpdated": "2017-09-26T16:24:31.404",
+        "value": "1",
+        "dataElement": "wFvswbogR92",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.407",
+        "lastUpdated": "2017-09-26T16:24:31.407",
+        "value": "100",
+        "dataElement": "wGimJdT42jy",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.409",
+        "lastUpdated": "2017-09-26T16:24:31.409",
+        "value": "1",
+        "dataElement": "wUvOTjNxBdD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.411",
+        "lastUpdated": "2017-09-26T16:24:31.411",
+        "value": "0",
+        "dataElement": "wflMCCiSw6K",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.414",
+        "lastUpdated": "2017-09-26T16:24:31.414",
+        "value": "1",
+        "dataElement": "wy0j5VW18Hp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.416",
+        "lastUpdated": "2017-09-26T16:24:31.416",
+        "value": "1",
+        "dataElement": "x0Xf9osQ0dU",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.418",
+        "lastUpdated": "2017-09-26T16:24:31.418",
+        "value": "1",
+        "dataElement": "xBgLiHaL7Gt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.421",
+        "lastUpdated": "2017-09-26T16:24:31.421",
+        "value": "100",
+        "dataElement": "xLorFqptbPK",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.423",
+        "lastUpdated": "2017-09-26T16:24:31.423",
+        "value": "0",
+        "dataElement": "xb1uMIXtko2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.426",
+        "lastUpdated": "2017-09-26T16:24:31.426",
+        "value": "100",
+        "dataElement": "xek9mGvS8ym",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.428",
+        "lastUpdated": "2017-09-26T16:24:31.428",
+        "value": "1",
+        "dataElement": "xyqZMbXWkkw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.430",
+        "lastUpdated": "2017-09-26T16:24:31.430",
+        "value": "1",
+        "dataElement": "y4fsuxorJph",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.433",
+        "lastUpdated": "2017-09-26T16:24:31.433",
+        "value": "1",
+        "dataElement": "ylyClQ0Akl8",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.435",
+        "lastUpdated": "2017-09-26T16:24:31.435",
+        "value": "1",
+        "dataElement": "yn3hD47VDmA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.438",
+        "lastUpdated": "2017-09-26T16:24:31.438",
+        "value": "1",
+        "dataElement": "ywocxaJWCwk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.440",
+        "lastUpdated": "2017-09-26T16:24:31.440",
+        "value": "1",
+        "dataElement": "z7JmyYIQ0rn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.443",
+        "lastUpdated": "2017-09-26T16:24:31.443",
+        "value": "1",
+        "dataElement": "zFqEmPRieWL",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.445",
+        "lastUpdated": "2017-09-26T16:24:31.445",
+        "value": "1",
+        "dataElement": "zGPCko6fGfp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.447",
+        "lastUpdated": "2017-09-26T16:24:31.447",
+        "value": "1",
+        "dataElement": "zOctS6HZXED",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.450",
+        "lastUpdated": "2017-09-26T16:24:31.450",
+        "value": "false",
+        "dataElement": "zckZqXOQRHT",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:24:31.452",
+        "lastUpdated": "2017-09-26T16:24:31.452",
+        "value": "1",
+        "dataElement": "zobg5JyK5Yn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-09-26T16:30:27.082",
+        "lastUpdated": "2018-06-04T19:00:36.047",
+        "value": "28",
+        "dataElement": "deeu8rjsqvH",
+        "providedElsewhere": false,
+        "storedBy": "script_HNQIS"
+      },
+      {
+        "created": "2017-09-26T16:30:27.087",
+        "lastUpdated": "2018-06-04T19:00:36.052",
+        "value": "false",
+        "dataElement": "iW2zVNwfDK6",
+        "providedElsewhere": false,
+        "storedBy": "script_HNQIS"
+      },
+      {
+        "created": "2017-09-26T16:24:31.159",
+        "lastUpdated": "2018-06-04T19:00:36.039",
+        "value": "1",
+        "dataElement": "FEkGksxhOpH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      }
+    ]
+  },
+  {
+    "uId": "xwvcQEpxOzb",
+    "status": "ACTIVE",
+    "program": "Qt74wJNHTAS",
+    "programStage": "X6EfA6SRkbb",
+    "enrollment": "LmhtnI6YvRR",
+    "enrollmentStatus": "ACTIVE",
+    "orgUnit": "A5HZNrJc2ir",
+    "eventDate": "2017-10-03T08:15:57.007",
+    "dueDate": "2018-06-04T19:00:37.076",
+    "created": "2017-10-03T08:17:05.344",
+    "lastUpdated": "2018-06-04T19:00:37.076",
+    "dataValues": [
+      {
+        "created": "2017-10-03T08:30:42.555",
+        "lastUpdated": "2018-06-04T19:00:37.088",
+        "value": "false",
+        "dataElement": "iW2zVNwfDK6",
+        "providedElsewhere": false,
+        "storedBy": "script_HNQIS"
+      },
+      {
+        "created": "2017-10-03T08:17:05.347",
+        "lastUpdated": "2017-10-03T08:17:05.347",
+        "value": "1",
+        "dataElement": "AIRgbaF1EDS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.349",
+        "lastUpdated": "2017-10-03T08:17:05.349",
+        "value": "1",
+        "dataElement": "AXYuCWURm3z",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.350",
+        "lastUpdated": "2017-10-03T08:17:05.350",
+        "value": "2017-10-03T11:16:51.505+0000",
+        "dataElement": "B6afQk2qZTL",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.352",
+        "lastUpdated": "2017-10-03T08:17:05.352",
+        "value": "0",
+        "dataElement": "BNtU3xR7tVS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.354",
+        "lastUpdated": "2017-10-03T08:17:05.354",
+        "value": "1",
+        "dataElement": "BWARDWvTqol",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.357",
+        "lastUpdated": "2017-10-03T08:17:05.357",
+        "value": "0",
+        "dataElement": "BjawBUO2Nj7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.359",
+        "lastUpdated": "2017-10-03T08:17:05.359",
+        "value": "0",
+        "dataElement": "CAnBq5ULtQh",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.360",
+        "lastUpdated": "2017-10-03T08:17:05.360",
+        "value": "true",
+        "dataElement": "DBUwlPCO0Hd",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.362",
+        "lastUpdated": "2017-10-03T08:17:05.362",
+        "value": "20",
+        "dataElement": "DEwxRb68xnj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.363",
+        "lastUpdated": "2017-10-03T08:17:05.363",
+        "value": "1",
+        "dataElement": "DVVAX8eGwIJ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.365",
+        "lastUpdated": "2017-10-03T08:17:05.365",
+        "value": "0",
+        "dataElement": "Dvp66pjyHVo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.367",
+        "lastUpdated": "2017-10-03T08:17:05.367",
+        "value": "1",
+        "dataElement": "EI5fiyvP0mw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.368",
+        "lastUpdated": "2017-10-03T08:17:05.368",
+        "value": "0",
+        "dataElement": "EWLAIqAVU42",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.370",
+        "lastUpdated": "2017-10-03T08:17:05.370",
+        "value": "1",
+        "dataElement": "EqH3u3ed0mu",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.373",
+        "lastUpdated": "2017-10-03T08:17:05.373",
+        "value": "1",
+        "dataElement": "Fb3jEa8Ikgp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.375",
+        "lastUpdated": "2017-10-03T08:17:05.375",
+        "value": "1",
+        "dataElement": "FqexKB9i0U4",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.376",
+        "lastUpdated": "2017-10-03T08:17:05.376",
+        "value": "0",
+        "dataElement": "G7AzGCebDu3",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.378",
+        "lastUpdated": "2017-10-03T08:17:05.378",
+        "value": "0",
+        "dataElement": "IJKyOfGiqlO",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.379",
+        "lastUpdated": "2017-10-03T08:17:05.379",
+        "value": "0",
+        "dataElement": "IYzvEh4qcfj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.380",
+        "lastUpdated": "2017-10-03T08:17:05.380",
+        "value": "1",
+        "dataElement": "Iywg27oGT46",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.382",
+        "lastUpdated": "2017-10-03T08:17:05.382",
+        "value": "0",
+        "dataElement": "JxWMceFnclz",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.383",
+        "lastUpdated": "2017-10-03T08:17:05.383",
+        "value": "1",
+        "dataElement": "KYEvMKvmt0p",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.385",
+        "lastUpdated": "2017-10-03T08:17:05.385",
+        "value": "0",
+        "dataElement": "Kt0KAu9ltej",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.387",
+        "lastUpdated": "2017-10-03T08:17:05.387",
+        "value": "0",
+        "dataElement": "LBHRfO6hvt7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.388",
+        "lastUpdated": "2017-10-03T08:17:05.388",
+        "value": "0",
+        "dataElement": "LflF9TmmEnC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.389",
+        "lastUpdated": "2017-10-03T08:17:05.389",
+        "value": "0",
+        "dataElement": "LwlDWOE7hC1",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.391",
+        "lastUpdated": "2017-10-03T08:17:05.391",
+        "value": "2018-02-03",
+        "dataElement": "M93RYt47CMK",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.392",
+        "lastUpdated": "2017-10-03T08:17:05.392",
+        "value": "1",
+        "dataElement": "ME0tMOwcWss",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.393",
+        "lastUpdated": "2017-10-03T08:17:05.393",
+        "value": "0",
+        "dataElement": "MpCvi7TYuLI",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.395",
+        "lastUpdated": "2017-10-03T08:17:05.395",
+        "value": "0",
+        "dataElement": "NwWbwy2RbSv",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.396",
+        "lastUpdated": "2017-10-03T08:17:05.396",
+        "value": "100",
+        "dataElement": "O0VrBh6g7V1",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.397",
+        "lastUpdated": "2017-10-03T08:17:05.397",
+        "value": "37",
+        "dataElement": "O4RfbCjbs1H",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.399",
+        "lastUpdated": "2017-10-03T08:17:05.399",
+        "value": "0",
+        "dataElement": "OVr3UVTBU18",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.400",
+        "lastUpdated": "2017-10-03T08:17:05.400",
+        "value": "1",
+        "dataElement": "PfIRXOskeNn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.402",
+        "lastUpdated": "2017-10-03T08:17:05.402",
+        "value": "0",
+        "dataElement": "Q7PoPl2tsPj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.404",
+        "lastUpdated": "2017-10-03T08:17:05.404",
+        "value": "0",
+        "dataElement": "QFvUM5RULTe",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.406",
+        "lastUpdated": "2017-10-03T08:17:05.406",
+        "value": "1",
+        "dataElement": "QLSbPw7run7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.408",
+        "lastUpdated": "2017-10-03T08:17:05.408",
+        "value": "0",
+        "dataElement": "QPqdxc2YfgW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.410",
+        "lastUpdated": "2017-10-03T08:17:05.410",
+        "value": "0",
+        "dataElement": "RDjp3I1Vt28",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.412",
+        "lastUpdated": "2017-10-03T08:17:05.412",
+        "value": "0",
+        "dataElement": "SHdW4LnzBZt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.413",
+        "lastUpdated": "2017-10-03T08:17:05.413",
+        "value": "1",
+        "dataElement": "SgVT3UbjDBj",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.414",
+        "lastUpdated": "2017-10-03T08:17:05.414",
+        "value": "0",
+        "dataElement": "TEpRbROqiuo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.416",
+        "lastUpdated": "2017-10-03T08:17:05.416",
+        "value": "0",
+        "dataElement": "TdZ06XNojjt",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.417",
+        "lastUpdated": "2017-10-03T08:17:05.417",
+        "value": "false",
+        "dataElement": "TgCWRlUXbca",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.419",
+        "lastUpdated": "2017-10-03T08:17:05.419",
+        "value": "75",
+        "dataElement": "UpAfi1McMTC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.420",
+        "lastUpdated": "2017-10-03T08:17:05.420",
+        "value": "Kenya Demo1",
+        "dataElement": "UzOOxp9OlSb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.421",
+        "lastUpdated": "2017-10-03T08:17:05.421",
+        "value": "1",
+        "dataElement": "V6ouwKPbYXD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.423",
+        "lastUpdated": "2017-10-03T08:17:05.423",
+        "value": "0",
+        "dataElement": "VA25aJkiGfC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.424",
+        "lastUpdated": "2017-10-03T08:17:05.424",
+        "value": "0",
+        "dataElement": "VouJOWXhhzk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.426",
+        "lastUpdated": "2017-10-03T08:17:05.426",
+        "value": "1",
+        "dataElement": "WKYJtOpdFSU",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.428",
+        "lastUpdated": "2017-10-03T08:17:05.428",
+        "value": "0",
+        "dataElement": "XCujuBSfi4e",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.429",
+        "lastUpdated": "2017-10-03T08:17:05.429",
+        "value": "0",
+        "dataElement": "XGYj3Asxyh7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.431",
+        "lastUpdated": "2017-10-03T08:17:05.431",
+        "value": "24",
+        "dataElement": "XeN6pcf7zoD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.432",
+        "lastUpdated": "2017-10-03T08:17:05.432",
+        "value": "1",
+        "dataElement": "XsbUuA34q4D",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.434",
+        "lastUpdated": "2017-10-03T08:17:05.434",
+        "value": "37.037037",
+        "dataElement": "Y8Nmpp7RhXw",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.436",
+        "lastUpdated": "2017-10-03T08:17:05.436",
+        "value": "######356376053823013###89254029741007332029###46dd04b2e232c6e03d96cde6b0c96b031ea1ad1b\n",
+        "dataElement": "YVyeP6WQkDA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.438",
+        "lastUpdated": "2017-10-03T08:17:05.438",
+        "value": "0",
+        "dataElement": "YbjV64GKDnZ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.440",
+        "lastUpdated": "2017-10-03T08:17:05.440",
+        "value": "0",
+        "dataElement": "YwEbTTvnAZo",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.442",
+        "lastUpdated": "2017-10-03T08:17:05.443",
+        "value": "1",
+        "dataElement": "Z0q9THWg3PH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.445",
+        "lastUpdated": "2017-10-03T08:17:05.445",
+        "value": "0",
+        "dataElement": "ZSAFa9XWtOW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.447",
+        "lastUpdated": "2017-10-03T08:17:05.447",
+        "value": "0",
+        "dataElement": "b9L1b4TCBTY",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.449",
+        "lastUpdated": "2017-10-03T08:17:05.449",
+        "value": "0",
+        "dataElement": "bAk0b6c1qpC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.452",
+        "lastUpdated": "2017-10-03T08:17:05.452",
+        "value": "1",
+        "dataElement": "bQNee50Fpqr",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.454",
+        "lastUpdated": "2017-10-03T08:17:05.454",
+        "value": "0",
+        "dataElement": "bSLlKStxWYT",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.457",
+        "lastUpdated": "2017-10-03T08:17:05.457",
+        "value": "0",
+        "dataElement": "bTtv0xphyfD",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.459",
+        "lastUpdated": "2017-10-03T08:17:05.459",
+        "value": "1",
+        "dataElement": "bjEZAN5mxqm",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.462",
+        "lastUpdated": "2017-10-03T08:17:05.462",
+        "value": "0",
+        "dataElement": "dm3yE8Nbi1k",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.464",
+        "lastUpdated": "2017-10-03T08:17:05.464",
+        "value": "1",
+        "dataElement": "e3aswK05Fjv",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.466",
+        "lastUpdated": "2017-10-03T08:17:05.466",
+        "value": "1",
+        "dataElement": "eEK0rixU3eE",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.469",
+        "lastUpdated": "2017-10-03T08:17:05.469",
+        "value": "0",
+        "dataElement": "eLgObq722oi",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.471",
+        "lastUpdated": "2017-10-03T08:17:05.471",
+        "value": "0",
+        "dataElement": "eQuQ0hi6GH7",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.474",
+        "lastUpdated": "2017-10-03T08:17:05.474",
+        "value": "0",
+        "dataElement": "f3l3yoMJKt2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.476",
+        "lastUpdated": "2017-10-03T08:17:05.476",
+        "value": "0",
+        "dataElement": "f4FGpiYbGAN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.478",
+        "lastUpdated": "2017-10-03T08:17:05.478",
+        "value": "0",
+        "dataElement": "fMQGk0NzqPS",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.481",
+        "lastUpdated": "2017-10-03T08:17:05.481",
+        "value": "1",
+        "dataElement": "faOcmlNxSkV",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.483",
+        "lastUpdated": "2017-10-03T08:17:05.483",
+        "value": "0",
+        "dataElement": "foKwgQhzsUV",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.486",
+        "lastUpdated": "2017-10-03T08:17:05.486",
+        "value": "C",
+        "dataElement": "ggrkfoq6nxA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.488",
+        "lastUpdated": "2017-10-03T08:17:05.488",
+        "value": "1",
+        "dataElement": "hLKajz61RHC",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.491",
+        "lastUpdated": "2017-10-03T08:17:05.491",
+        "value": "1",
+        "dataElement": "hTQ6AblMT3R",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.493",
+        "lastUpdated": "2017-10-03T08:17:05.493",
+        "value": "0",
+        "dataElement": "iNbe9LSBQnQ",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.496",
+        "lastUpdated": "2017-10-03T08:17:05.496",
+        "value": "25",
+        "dataElement": "jVcIMtZolVO",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.498",
+        "lastUpdated": "2017-10-03T08:17:05.498",
+        "value": "1",
+        "dataElement": "jnqtGxhVTL2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.500",
+        "lastUpdated": "2017-10-03T08:17:05.500",
+        "value": "0",
+        "dataElement": "kWj8hd3mRHe",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.503",
+        "lastUpdated": "2017-10-03T08:17:05.503",
+        "value": "1",
+        "dataElement": "ksujaOckUgr",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.505",
+        "lastUpdated": "2017-10-03T08:17:05.505",
+        "value": "1",
+        "dataElement": "kxl2Z35kza3",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.508",
+        "lastUpdated": "2017-10-03T08:17:05.508",
+        "value": "60",
+        "dataElement": "mdePMcdcta0",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.511",
+        "lastUpdated": "2017-10-03T08:17:05.511",
+        "value": "0",
+        "dataElement": "nL20p08jVl9",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.513",
+        "lastUpdated": "2017-10-03T08:17:05.513",
+        "value": "1",
+        "dataElement": "oeOOGcDe6hA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.516",
+        "lastUpdated": "2017-10-03T08:17:05.516",
+        "value": "1",
+        "dataElement": "orBjCwPUwVN",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.519",
+        "lastUpdated": "2017-10-03T08:17:05.519",
+        "value": "0",
+        "dataElement": "pHsAq6MfNrO",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.521",
+        "lastUpdated": "2017-10-03T08:17:05.521",
+        "value": "0",
+        "dataElement": "pUtzeR62tgn",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.524",
+        "lastUpdated": "2017-10-03T08:17:05.524",
+        "value": "2017-10-03T10:42:37.670+0000",
+        "dataElement": "rcAkFQFYknk",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.526",
+        "lastUpdated": "2017-10-03T08:17:05.526",
+        "value": "1",
+        "dataElement": "s393JXxKcPF",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.529",
+        "lastUpdated": "2017-10-03T08:17:05.529",
+        "value": "1",
+        "dataElement": "trgR4kgrt2a",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.531",
+        "lastUpdated": "2017-10-03T08:17:05.531",
+        "value": "100",
+        "dataElement": "tzwQlZRnlox",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.534",
+        "lastUpdated": "2017-10-03T08:17:05.534",
+        "value": "0",
+        "dataElement": "u5JXHkaNBX6",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.537",
+        "lastUpdated": "2017-10-03T08:17:05.537",
+        "value": "0",
+        "dataElement": "uS4pHTcW6vb",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.539",
+        "lastUpdated": "2017-10-03T08:17:05.539",
+        "value": "0",
+        "dataElement": "vCp6YVVi4MA",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.542",
+        "lastUpdated": "2017-10-03T08:17:05.542",
+        "value": "0",
+        "dataElement": "vGphb9ZfLGg",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.544",
+        "lastUpdated": "2017-10-03T08:17:05.544",
+        "value": "1",
+        "dataElement": "vSBXfT9rulW",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.546",
+        "lastUpdated": "2017-10-03T08:17:05.546",
+        "value": "100",
+        "dataElement": "wGimJdT42jy",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.548",
+        "lastUpdated": "2017-10-03T08:17:05.548",
+        "value": "0",
+        "dataElement": "wflMCCiSw6K",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.550",
+        "lastUpdated": "2017-10-03T08:17:05.550",
+        "value": "0",
+        "dataElement": "wy0j5VW18Hp",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.552",
+        "lastUpdated": "2017-10-03T08:17:05.552",
+        "value": "1",
+        "dataElement": "xb1uMIXtko2",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.554",
+        "lastUpdated": "2017-10-03T08:17:05.554",
+        "value": "100",
+        "dataElement": "xek9mGvS8ym",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.556",
+        "lastUpdated": "2017-10-03T08:17:05.556",
+        "value": "0",
+        "dataElement": "xxiCEyYaiq3",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.558",
+        "lastUpdated": "2017-10-03T08:17:05.558",
+        "value": "false",
+        "dataElement": "zckZqXOQRHT",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:17:05.559",
+        "lastUpdated": "2017-10-03T08:17:05.559",
+        "value": "0",
+        "dataElement": "zs1erNNhXqi",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      },
+      {
+        "created": "2017-10-03T08:30:42.553",
+        "lastUpdated": "2018-06-04T19:00:37.085",
+        "value": "24",
+        "dataElement": "deeu8rjsqvH",
+        "providedElsewhere": false,
+        "storedBy": "script_HNQIS"
+      },
+      {
+        "created": "2017-10-03T08:17:05.372",
+        "lastUpdated": "2018-06-04T19:00:37.080",
+        "value": "5",
+        "dataElement": "FEkGksxhOpH",
+        "providedElsewhere": false,
+        "storedBy": "Kenya Demo1"
+      }
+    ]
+  }
+]

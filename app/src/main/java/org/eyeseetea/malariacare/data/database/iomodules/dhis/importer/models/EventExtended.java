@@ -26,8 +26,6 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
@@ -49,7 +47,7 @@ import java.util.List;
 /**
  * Created by arrizabalaga on 5/11/15.
  */
-public class EventExtended implements VisitableFromSDK {
+public class EventExtended {
 
     private final static String TAG = ".EventExtended";
     public final static String DHIS2_GMT_NEW_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
@@ -80,12 +78,6 @@ public class EventExtended implements VisitableFromSDK {
 
     public EventExtended() {
         event = new EventFlow();
-        event.generateUId();
-    }
-
-    @Override
-    public void accept(IConvertFromSDKVisitor visitor) {
-        visitor.visit(this);
     }
 
     public List<TrackedEntityDataValueFlow> getDataValuesInMemory() {

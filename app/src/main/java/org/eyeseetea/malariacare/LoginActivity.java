@@ -84,7 +84,7 @@ public class LoginActivity extends AbsLoginActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+
         mLoginActivity = this;
         requestPermissions();
         PreferencesState.getInstance().initalizateActivityDependencies();

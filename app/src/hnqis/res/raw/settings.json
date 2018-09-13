@@ -11,6 +11,7 @@
     "listFilter": "lastForOU",
     "developerOptions": true,
     "tabTitleVisible": false,
+    "planInnerHeader": false,
     "modules": [{
       "title": "plan",
       "icon": "tab_plan_selector",

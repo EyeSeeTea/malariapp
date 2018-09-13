@@ -29,7 +29,7 @@ import org.eyeseetea.malariacare.data.IPullSourceCallback;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.remote.IPullDataSource;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.AttributeValueFlow;
@@ -111,51 +111,6 @@ public class PullDhisSDKDataSource implements IPullDataSource {
         }
 
     }
-
-    public void pullData(PullFilters filters, IPullSourceCallback callback) {
-        boolean isNetworkAvailable = isNetworkAvailable();
-
-        if (!isNetworkAvailable) {
-            callback.onError(new NetworkException());
-        } else {
-            try {
-                pullEvents(filters, callback);
-                callback.onComplete();
-            } catch (Exception e) {
-                callback.onError(e);
-            }
-        }
-    }
-
-    private void pullEvents(PullFilters filters, IPullSourceCallback callback) {
-        Scheduler listThread = Schedulers.newThread();
-        List<Program> sdkPrograms = D2.me().programs().list().subscribeOn(listThread)
-                .observeOn(listThread).toBlocking().single();
-        List<OrganisationUnit> sdkOrganisationUnits =
-                D2.me().organisationUnits().list().subscribeOn(listThread)
-                        .observeOn(listThread).toBlocking().single();
-        for (Program program : sdkPrograms) {
-            for (OrganisationUnit organisationUnit : sdkOrganisationUnits) {
-                for (Program orgunitProgram : organisationUnit.getPrograms()) {
-                    if (orgunitProgram.getUId().equals(program.getUId())) {
-
-                        EventFilters eventFilters = new EventFilters();
-                        eventFilters.setProgramUId(program.getUId());
-                        eventFilters.setOrganisationUnitUId(organisationUnit.getUId());
-                        eventFilters.setStartDate(filters.getStartDate());
-                        eventFilters.setEndDate(filters.getEndDate());
-                        eventFilters.setMaxEvents(filters.getMaxEvents());
-
-                        Scheduler pullEventsThread = Schedulers.newThread();
-                        D2.events().pull(eventFilters)
-                                .subscribeOn(pullEventsThread)
-                                .observeOn(pullEventsThread).toBlocking().single();
-                    }
-                }
-            }
-        }
-    }
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager cm =

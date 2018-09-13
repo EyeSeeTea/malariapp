@@ -16,8 +16,7 @@ public class SurveyShould {
 
     @Test
     public void create_survey_with_mandatory_fields(){
-        Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
 
         Assert.assertNotNull(survey);
         Assert.assertTrue(survey.getUId().equals("UID"));
@@ -28,18 +27,24 @@ public class SurveyShould {
 
     @Test
     public void create_empty_survey(){
-        Survey survey = Survey.createEmptySurvey(
-                "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
 
         Assert.assertNotNull(survey);
         Assert.assertNotNull(survey.getCreationDate());
-        Assert.assertTrue(survey.getStatus().equals(Survey.Status.IN_PROGRESS));
+        Assert.assertTrue(survey.getStatus().equals(SurveyStatus.IN_PROGRESS));
+    }
+
+    @Test
+    public void throw_exception_when_create_survey_with_null_uid(){
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Survey uid is required");
+        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
     }
 
     @Test
     public void create_pulled_survey(){
         Date creationDate = new Date();
-        Date updateDate = new Date();
+        Date uploadDate = new Date();
         Date scheduledDate = new Date();
         Date completionDate = new Date();
         List<QuestionValue> values = new ArrayList<>();
@@ -47,25 +52,17 @@ public class SurveyShould {
         values.add(QuestionValue.createSimpleValue("UId", "value"));
         values.add(QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
 
-        Survey survey = Survey.createExistedSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
-                "USER_UID", creationDate, updateDate, scheduledDate, completionDate, values, score);
+        Survey survey = Survey.createSentSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
+                "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score);
 
         Assert.assertNotNull(survey);
-        Assert.assertTrue(survey.getStatus().equals(Survey.Status.SENT));
+        Assert.assertTrue(survey.getStatus().equals(SurveyStatus.SENT));
         Assert.assertTrue(survey.getCreationDate().equals(creationDate));
         Assert.assertTrue(survey.getCompletionDate().equals(completionDate));
         Assert.assertTrue(survey.getScheduledDate().equals(scheduledDate));
-        Assert.assertTrue(survey.getUpdateDate().equals(updateDate));
+        Assert.assertTrue(survey.getUploadDate().equals(uploadDate));
         Assert.assertTrue(survey.getValues().equals(values));
         Assert.assertTrue(survey.getScore().equals(score));
-    }
-
-    @Test
-    public void throw_exception_when_create_survey_with_null_uid(){
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Survey uid is required");
-
-        Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID");
     }
 
     @Test
