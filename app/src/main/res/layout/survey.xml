@@ -22,11 +22,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:id="@+id/form_tab"
     android:gravity="top">
-
-
     <ProgressBar
         android:id="@+id/survey_progress"
         style="@android:style/Widget.ProgressBar.Large"
@@ -34,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminate="true" />
-
     <org.eyeseetea.malariacare.views.CustomTextView
         android:id="@+id/progress_text"
         android:layout_width="match_parent"
@@ -47,29 +43,19 @@
         android:layout_below="@+id/survey_progress"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-
     <include
         android:id="@+id/header_layout"
         android:layout_width="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         layout="@layout/main_header"/>
-
-    <include
-        android:id="@+id/form_footer_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/form_footer"
-        android:layout_alignParentBottom="true"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/form_footer_layout"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/header_layout"
         android:id="@+id/content"
-        android:background="@color/app_background"
+        android:background="@color/red"
         android:layout_marginTop="@dimen/header_survey_margin_top"
         android:orientation="vertical"
         android:gravity="top" />

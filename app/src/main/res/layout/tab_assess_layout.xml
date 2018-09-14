@@ -31,18 +31,18 @@
     <FrameLayout
         android:id="@+id/dashboard_details_container"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TableLayout
             android:id="@+id/dashboard_details_table"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ListView
                 android:id="@+id/dashboard_details_list"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </TableLayout>
     </FrameLayout>

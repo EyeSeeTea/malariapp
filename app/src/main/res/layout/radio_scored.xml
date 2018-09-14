@@ -13,7 +13,7 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.45"
+        android:layout_weight="0.40"
         android:padding="5dip"
         android:fontFamily="@string/normal_font"
         android:paddingLeft="@dimen/question_padding_left"
@@ -25,8 +25,7 @@
         android:id="@+id/answer"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
-        android:padding="5dip">
+        android:layout_weight="0.30" >
 
     </RadioGroup>
     <include layout="@layout/score"></include>
