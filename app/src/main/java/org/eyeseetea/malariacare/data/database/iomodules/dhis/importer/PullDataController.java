@@ -19,40 +19,40 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
-import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.List;
 
 public class PullDataController implements IPullDataController {
-    private final String TAG = ".PullDataController";
 
     IPullDataController.Callback callback;
 
-    private ISurveyDataSource remoteSurveyDataSource;
-    private ISurveyDataSource localSurveyDataSource;
+    private ISyncDataLocalDataSource mSurveyLocalDataSource;
+    private ISyncDataRemoteDataSource mSurveyRemoteDataSource;
 
     public PullDataController(
-            ISurveyDataSource localSurveyDataSource,
-            ISurveyDataSource remoteSurveyDataSource) {
+            ISyncDataLocalDataSource surveyLocalDataSource,
+            ISyncDataRemoteDataSource surveyRemoteDataSource) {
 
-        this.localSurveyDataSource = localSurveyDataSource;
-        this.remoteSurveyDataSource = remoteSurveyDataSource;
+        this.mSurveyLocalDataSource = surveyLocalDataSource;
+        this.mSurveyRemoteDataSource = surveyRemoteDataSource;
     }
 
     @Override
     public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
 
-       try {
+        try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
-            List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
+            List<? extends ISyncData> surveys = mSurveyRemoteDataSource.get(filters);
 
-            localSurveyDataSource.save(surveys);
+            mSurveyLocalDataSource.save(surveys);
 
             callback.onComplete();
 

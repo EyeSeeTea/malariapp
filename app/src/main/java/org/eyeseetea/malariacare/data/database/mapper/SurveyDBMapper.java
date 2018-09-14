@@ -57,7 +57,7 @@ public class SurveyDBMapper {
         return surveysDB;
     }
 
-    private SurveyDB map(Survey survey) {
+    public SurveyDB map(Survey survey) {
         SurveyDB surveyDB = new SurveyDB();
 
         surveyDB.setEventUid(survey.getUId());
@@ -66,8 +66,20 @@ public class SurveyDBMapper {
         surveyDB.setCreationDate(survey.getCreationDate());
         surveyDB.setUploadDate(survey.getCreationDate());
         surveyDB.setScheduledDate(survey.getScheduledDate());
-        surveyDB.setOrgUnit(orgUnitsDBMap.get(survey.getOrgUnitUId()));
-        surveyDB.setProgram(programsDBMap.get(survey.getProgramUId()));
+
+
+        if (orgUnitsDBMap.containsKey(survey.getOrgUnitUId())) {
+            surveyDB.setOrgUnit(orgUnitsDBMap.get(survey.getOrgUnitUId()));
+        } else {
+            Log.d("","");
+        }
+
+        if (programsDBMap.containsKey(survey.getProgramUId())) {
+            surveyDB.setProgram(programsDBMap.get(survey.getProgramUId()));
+        } else {
+            Log.d("","");
+        }
+
 
         List<ValueDB> valuesDB = new ArrayList<>();
 

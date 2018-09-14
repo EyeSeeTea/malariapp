@@ -1,15 +1,15 @@
 package org.eyeseetea.malariacare.data.repositories;
 
-import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IObservationRepository;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 
 public class ObservationRepository implements IObservationRepository {
 
-    private final ObservationLocalDataSource localDataSource;
+    private final IObservationDataSource localDataSource;
 
     public ObservationRepository(
-            ObservationLocalDataSource localDataSource) {
+            IObservationDataSource localDataSource) {
         this.localDataSource = localDataSource;
     }
 

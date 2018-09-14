@@ -24,8 +24,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
-import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
@@ -34,17 +34,15 @@ import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
 import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
+import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
-import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,20 +53,20 @@ public class PushDataController implements IPushController {
 
     private Context mContext;
     private IConnectivityManager mConnectivityManager;
-    private final ISurveyDataSource mSurveyLocalDataSource;
-    private final ISurveyDataSource mSurveyRemoteDataSource;
+    private final ISyncDataLocalDataSource mSurveyLocalDataSource;
+    private final ISyncDataRemoteDataSource mSurveyRemoteDataSource;
 
-    private final IObservationDataSource mObservationLocalDataSource;
-    private final IObservationDataSource mObservationRemoteDataSource;
+    private final ISyncDataLocalDataSource mObservationLocalDataSource;
+    private final ISyncDataRemoteDataSource mObservationRemoteDataSource;
 
     private PushDhisSDKDataSource mPushDhisSDKDataSource;
     private ConvertToSDKVisitor mConvertToSDKVisitor;
 
     public PushDataController(Context context, IConnectivityManager connectivityManager,
-            ISurveyDataSource surveyLocalDataSource,
-            ISurveyDataSource surveyRemoteDataSource,
-            IObservationDataSource observationLocalDataSource,
-            IObservationDataSource observationRemoteDataSource) {
+            ISyncDataLocalDataSource surveyLocalDataSource,
+            ISyncDataLocalDataSource observationLocalDataSource,
+            ISyncDataRemoteDataSource surveyRemoteDataSource,
+            ISyncDataRemoteDataSource observationRemoteDataSource) {
         mContext = context;
         mConnectivityManager = connectivityManager;
         mSurveyLocalDataSource = surveyLocalDataSource;
@@ -108,68 +106,48 @@ public class PushDataController implements IPushController {
 
     private void newPush(IPushControllerCallback callback){
         try {
-            pushSurveys(callback);
+            pushData(Survey.class, mSurveyLocalDataSource,
+                    mSurveyRemoteDataSource ,callback);
 
-            pushObservations(callback);
+            pushData(Observation.class, mObservationLocalDataSource,
+                    mObservationRemoteDataSource ,callback);
         }catch (Exception e){
             callback.onError(e);
         }
     }
 
-    private void pushSurveys(IPushControllerCallback callback) throws Exception {
-        SurveyFilter surveyFilter = SurveyFilter.Builder.create()
-                .WithSurveysToRetrieve(SurveyFilter.SurveysToRetrieve.COMPLETED)
-                .build();
-
-        List<Survey> surveys = mSurveyLocalDataSource.getSurveys(surveyFilter);
-
-        if (surveys.size() == 0) {
-            callback.onError(
-                    new DataToPushNotFoundException("Not Exists surveys to push"));
-        }
-
-        for (Survey survey:surveys) {
-            survey.changeStatus(SurveyStatus.SENDING);
-        }
-
-        mSurveyLocalDataSource.save(surveys);
-
-        mSurveyRemoteDataSource.save(surveys);
-
-
-        //TODO: Remove survey and event if throw exception to convert??
-    }
-
     @NonNull
-    private void pushObservations(IPushControllerCallback callback) throws Exception {
+    private void pushData(
+            Class<?> dataClass,
+            ISyncDataLocalDataSource syncDataLocalDataSource,
+            ISyncDataRemoteDataSource syncDataRemoteDataSource,
+            IPushControllerCallback callback) throws Exception {
 
-        List<Observation> observations = mObservationLocalDataSource.getObservations(
-                IObservationDataSource.ObservationsToRetrieve.COMPLETED);
+        List<? extends ISyncData> syncData = syncDataLocalDataSource.getDataToSync();
 
         try {
-
-            if (observations.size() == 0) {
-                callback.onError(
-                        new DataToPushNotFoundException("Not Exists observations to push"));
+            if (syncData.size() == 0) {
+                callback.onError(new DataToPushNotFoundException("Not Exists " +
+                        dataClass.getSimpleName() + "s to push"));
             }else{
-                markAsSending(observations);
+                markAsSending(syncData, syncDataLocalDataSource);
 
-                mObservationRemoteDataSource.save(observations);
+                PushReport pushReport = syncDataRemoteDataSource.save(syncData);
 
                 //TODO:bring logic from ConvertToSDKVisitor.saveSurveyStatus
                 // examples: read importsummary to mark as conflict or sent etc..
-                markAsSent(observations);
+                markAsSent(syncData, syncDataLocalDataSource);
 
                 callback.onComplete();
             }
 
         } catch (ConversionException e) {
-            markDataAsErrorConversionSync(e.getData());
+            markDataAsErrorConversionSync(e.getFailedSyncData(),syncDataLocalDataSource);
 
             callback.onInformativeError(e);
             callback.onError(e);
         } catch (PushReportException | PushDhisException e){
-            markDataAsRetry(observations);
+            markDataAsRetry(syncData, syncDataLocalDataSource);
 
             callback.onError(e);
         } catch (Exception e) {
@@ -177,31 +155,36 @@ public class PushDataController implements IPushController {
         }
     }
 
-    private void markAsSending(List<Observation> observations) throws Exception {
-        for (Observation observation : observations) {
-            observation.changeStatus(ObservationStatus.SENDING);
+    private void markAsSending(List<? extends ISyncData> syncData,
+            ISyncDataLocalDataSource syncDataLocalDataSource) throws Exception {
+        for (ISyncData item :syncData) {
+            item.markAsSending();
         }
 
-        mObservationLocalDataSource.save(observations);
+        syncDataLocalDataSource.save(syncData);
     }
 
-    private void markDataAsErrorConversionSync(Observation failedObservation) {
-        failedObservation.changeStatus(ObservationStatus.ERRORCONVERSIONSYNC);
-        mObservationLocalDataSource.save(failedObservation);
+    private void markDataAsErrorConversionSync(ISyncData failedSyncData,
+            ISyncDataLocalDataSource syncDataLocalDataSource) {
+        failedSyncData.markAsErrorConversionSync();
+        syncDataLocalDataSource.save(failedSyncData);
     }
 
-    private void markDataAsRetry(List<Observation> observations) throws Exception {
-        for (Observation observation:observations) {
-            observation.changeStatus(ObservationStatus.COMPLETED);
+    private void markDataAsRetry(List<? extends ISyncData> syncData,
+            ISyncDataLocalDataSource syncDataLocalDataSource) throws Exception {
+        for (ISyncData item :syncData) {
+            item.markAsRetrySync();
         }
-        mObservationLocalDataSource.save(observations);
+        syncDataLocalDataSource.save(syncData);
     }
 
-    private void markAsSent(List<Observation> observations) throws Exception {
-        for (Observation observation:observations) {
-            observation.changeStatus(ObservationStatus.SENT);
+    private void markAsSent(List<? extends ISyncData> syncData,
+            ISyncDataLocalDataSource syncDataLocalDataSource) throws Exception {
+        for (ISyncData item :syncData) {
+            item.markAsSent();
         }
-        mObservationLocalDataSource.save(observations);
+
+        syncDataLocalDataSource.save(syncData);
     }
 
     private void oldPush(final IPushControllerCallback callback) {

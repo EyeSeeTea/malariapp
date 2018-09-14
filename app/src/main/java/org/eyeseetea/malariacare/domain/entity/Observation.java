@@ -1,13 +1,11 @@
 package org.eyeseetea.malariacare.domain.entity;
 
 import org.eyeseetea.malariacare.domain.utils.RequiredChecker;
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class Observation {
+public class Observation implements ISyncData {
     private String surveyUid;
     private ObservationStatus status;
     private List<ObservationValue> values;
@@ -58,6 +56,26 @@ public class Observation {
     }
 
     @Override
+    public void markAsSending() {
+        changeStatus(ObservationStatus.SENDING);
+    }
+
+    @Override
+    public void markAsErrorConversionSync() {
+        changeStatus(ObservationStatus.ERRORCONVERSIONSYNC);
+    }
+
+    @Override
+    public void markAsRetrySync() {
+        changeStatus(ObservationStatus.COMPLETED);
+    }
+
+    @Override
+    public void markAsSent() {
+        changeStatus(ObservationStatus.SENT);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -85,6 +103,7 @@ public class Observation {
                 ", observationValues=" + values +
                 '}';
     }
+
 
 
 }

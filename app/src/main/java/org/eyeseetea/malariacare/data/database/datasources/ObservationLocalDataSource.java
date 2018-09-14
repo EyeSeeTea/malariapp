@@ -5,6 +5,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
 import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.ObservationMapper;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
@@ -12,6 +13,7 @@ import org.eyeseetea.malariacare.data.database.model.ObservationValueDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationValueDB_Table;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
+import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
@@ -23,13 +25,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ObservationLocalDataSource implements IObservationDataSource {
+public class ObservationLocalDataSource implements IObservationDataSource, ISyncDataLocalDataSource {
     private final ObservationMapper mObservationMapper;
 
     public ObservationLocalDataSource(){
         List<SurveyDB> surveyDBS = new Select().from(SurveyDB.class).queryList();
 
         mObservationMapper = new ObservationMapper(surveyDBS);
+    }
+
+    @Override
+    public List<? extends ISyncData> getDataToSync() throws Exception {
+        List<Observation> observations = getObservations(ObservationStatus.COMPLETED);
+        return observations;
+    }
+
+    @Override
+    public List<? extends ISyncData> getAll() {
+        List<Observation> observations = getObservations(null);
+        return observations;
+    }
+
+    @Override
+    public void save(List<? extends ISyncData> syncData) throws Exception {
+        List<Observation> observations = (List<Observation>) syncData;
+        saveObservations(observations);
+    }
+
+    @Override
+    public void save(ISyncData syncData){
+        Observation observation = (Observation) syncData;
+
+        saveObservation(observation);
     }
 
     @Override
@@ -47,16 +74,19 @@ public class ObservationLocalDataSource implements IObservationDataSource {
     }
 
     @Override
-    public List<Observation> getObservations(ObservationsToRetrieve observationsToRetrieve) {
-        List<ObservationDB> observationDBS = getObservationsDB(observationsToRetrieve);
+    public void save(Observation observation) {
+        saveObservation(observation);
+    }
+
+    public List<Observation> getObservations(ObservationStatus status) {
+        List<ObservationDB> observationDBS = getObservationsDB(status);
 
         List<Observation> observations = mObservationMapper.map(observationDBS);
 
         return observations;
     }
 
-    @Override
-    public void save(Observation observation) {
+    public void saveObservation(Observation observation) {
         ObservationDB observationDB = getObservationDB(observation.getSurveyUid());
 
         if (observationDB == null) {
@@ -67,14 +97,13 @@ public class ObservationLocalDataSource implements IObservationDataSource {
 
     }
 
-    @Override
-    public void save(List<Observation> observations) {
+    public void saveObservations(List<Observation> observations) {
         for (Observation observation : observations) {
             save(observation);
         }
     }
 
-    private List<ObservationDB> getObservationsDB(ObservationsToRetrieve observationsToRetrieve){
+    private List<ObservationDB> getObservationsDB(ObservationStatus observationStatus){
 
         List<ObservationDB> observationDBS = null;
 
@@ -83,7 +112,7 @@ public class ObservationLocalDataSource implements IObservationDataSource {
 
         Where where = from.where(ObservationDB_Table.status_observation.isNotNull());
 
-        if (observationsToRetrieve == ObservationsToRetrieve.COMPLETED){
+        if (observationStatus == ObservationStatus.COMPLETED){
             where = from.where(SurveyDB_Table.status.eq(SurveyStatus.SENT.getCode()))
                     .and(ObservationDB_Table.status_observation.eq(
                             ObservationStatus.COMPLETED.getCode()));

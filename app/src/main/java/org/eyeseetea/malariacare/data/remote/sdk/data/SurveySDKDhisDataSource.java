@@ -19,26 +19,24 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
-import com.raizlabs.android.dbflow.sql.language.Delete;
-
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
@@ -55,7 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SurveySDKDhisDataSource implements ISurveyDataSource {
+public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
 
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
@@ -72,8 +70,9 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
         this.mConnectivityManager = connectivityManager;
     }
 
+
     @Override
-    public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
+    public List<? extends ISyncData> get(SurveyFilter filters) throws Exception {
         boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
         if (isNetworkAvailable) {
@@ -81,7 +80,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
             List<Survey> surveys = convertToSurveys();
 
-            return surveys;
+            return new ArrayList<ISyncData>(surveys);
 
         } else {
             throw new NetworkException();
@@ -90,8 +89,8 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
 
     @Override
-    public void save(List<Survey> surveys) {
-/*        FromObservationEventMapper eventMapper = FromObservationEventMapper();
+    public PushReport save(List<? extends ISyncData> surveys) throws Exception {
+        /*        FromObservationEventMapper eventMapper = FromObservationEventMapper();
 
         List<Event> events = eventMapper.mapEvents(surveys);
         List<Event> eventUids = new ArrayList<>();
@@ -103,7 +102,7 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
         Map<String,ImportSummary> importSummaryMap = D2.events().push(eventUids).toBlocking();*/
 
-
+        return null;
     }
 
     private void pullEvents(SurveyFilter filters) {
@@ -184,4 +183,6 @@ public class SurveySDKDhisDataSource implements ISurveyDataSource {
 
         return allPrograms;
     }
+
+
 }

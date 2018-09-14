@@ -7,7 +7,7 @@ import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
@@ -19,8 +19,9 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
@@ -28,13 +29,63 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SurveyLocalDataSource implements ISurveyDataSource {
+public class SurveyLocalDataSource implements ISyncDataLocalDataSource {
     private final static String TAG = ".SurveyLocalDataSource";
 
-    @Override
-    public List<Survey> getSurveys(SurveyFilter filter) {
 
-        List<SurveyDB> surveyDBS = getSurveysDB(filter);
+    @Override
+    public List<? extends ISyncData> getDataToSync() throws Exception {
+        List<Survey> surveys = getSurveys(SurveyStatus.COMPLETED);
+        return surveys;
+    }
+
+    @Override
+    public List<? extends ISyncData> getAll() {
+        List<Survey> surveys = getSurveys(null);
+        return surveys;
+    }
+
+    @Override
+    public void save(List<? extends ISyncData> syncData) throws Exception {
+        List<Survey> surveys = (List<Survey>) syncData;
+        saveSurveys(surveys);
+    }
+
+    @Override
+    public void save(ISyncData syncData) {
+        Survey survey = (Survey) syncData;
+
+        SurveyDB surveyDB = createMapper().map(survey);
+
+        saveSurveyAndDependencies(surveyDB);
+    }
+
+    private void saveSurveys(List<Survey> surveys) {
+
+        List<SurveyDB> surveysDB = createMapper().mapSurveys(surveys);
+
+        for (SurveyDB surveyDB : surveysDB) {
+            try {
+                saveSurveyAndDependencies(surveyDB);
+            } catch (Exception e) {
+                Log.e(TAG, "An error occurred saving Survey " + surveyDB.getEventUid() + ":" +
+                         e.getMessage());
+            }
+        }
+    }
+
+    private SurveyDBMapper createMapper() {
+        SurveyDBMapper mSurveyDBMapper;
+        mSurveyDBMapper = new SurveyDBMapper(
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list());
+        return mSurveyDBMapper;
+    }
+
+
+    private List<Survey> getSurveys(SurveyStatus status) {
+
+        List<SurveyDB> surveyDBS = getSurveysDB(status);
 
         SurveyMapper surveyMapper = new SurveyMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
@@ -45,43 +96,28 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
         return surveys;
     }
 
-    @Override
-    public void save(List<Survey> surveys) {
-        SurveyDBMapper surveyDBMapper = new SurveyDBMapper(
-                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
-                OptionDB.list(), UserDB.list());
+    private void saveSurveyAndDependencies(SurveyDB surveyDB) {
+        surveyDB.save();
 
-        List<SurveyDB> surveysDB = surveyDBMapper.mapSurveys(surveys);
+        if (surveyDB.getScoreDB() != null) {
+            surveyDB.getScoreDB().setSurvey(surveyDB);
+            surveyDB.getScoreDB().save();
+        }
 
-        for (SurveyDB surveyDB : surveysDB) {
-            try {
-                surveyDB.save();
-
-                if (surveyDB.getScoreDB() != null) {
-                    surveyDB.getScoreDB().setSurvey(surveyDB);
-                    surveyDB.getScoreDB().save();
-                }
-
-                for (ValueDB valueDB : surveyDB.getValues()) {
-                    valueDB.setSurvey(surveyDB);
-                    valueDB.save();
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "An error occurred saving Survey " + surveyDB.getEventUid() + ":" +
-                         e.getMessage());
-            }
+        for (ValueDB valueDB : surveyDB.getValues()) {
+            valueDB.setSurvey(surveyDB);
+            valueDB.save();
         }
     }
 
-    private List<SurveyDB> getSurveysDB(SurveyFilter surveyFilter){
-
+    private List<SurveyDB> getSurveysDB(SurveyStatus status){
         List<SurveyDB> surveyDBS = null;
 
         From from = new Select().from(SurveyDB.class);
 
         Where where = from.where(SurveyDB_Table.status.isNotNull());
 
-        if (surveyFilter.getSurveysToRetrieve() == SurveyFilter.SurveysToRetrieve.COMPLETED){
+        if (status == SurveyStatus.COMPLETED){
             where = from.where(SurveyDB_Table.status.in(Constants.SURVEY_COMPLETED));
         }
 

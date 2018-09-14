@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Survey {
+public class Survey implements ISyncData{
 
     private final String uId;
     private final String programUId;
@@ -154,6 +154,26 @@ public class Survey {
 
     public void changeScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    @Override
+    public void markAsSending() {
+
+    }
+
+    @Override
+    public void markAsErrorConversionSync() {
+
+    }
+
+    @Override
+    public void markAsRetrySync() {
+
+    }
+
+    @Override
+    public void markAsSent() {
+
     }
 
     @Override

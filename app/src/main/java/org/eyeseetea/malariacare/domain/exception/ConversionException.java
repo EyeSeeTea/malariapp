@@ -1,13 +1,13 @@
 package org.eyeseetea.malariacare.domain.exception;
 
-import org.eyeseetea.malariacare.domain.entity.Observation;
+import org.eyeseetea.malariacare.domain.entity.ISyncData;
 
 public class ConversionException extends Exception {
-    private Observation mObservation;
+    private ISyncData mFailedSyncData;
 
-    public ConversionException(Observation observation, String message) {
+    public ConversionException(ISyncData failedSyncData, String message) {
         super("Error in conversion" + message);
-        mObservation = observation;
+        mFailedSyncData = failedSyncData;
     }
 
     //TODO: remove this constructor
@@ -27,7 +27,7 @@ public class ConversionException extends Exception {
         super("Error in conversion");
     }
 
-    public Observation getData() {
-        return mObservation;
+    public ISyncData getFailedSyncData() {
+        return mFailedSyncData;
     }
 }
