@@ -56,7 +56,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRep
 import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
@@ -374,11 +374,11 @@ public class ProgressActivity extends Activity {
         Calendar month = Calendar.getInstance();
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
-        PullFilters pullFilters = new PullFilters(month.getTime(), null, isDemo,
+        SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null, isDemo,
                 AppSettingsBuilder.isFullHierarchy(), AppSettingsBuilder.isDownloadOnlyLastEvents(),
                 PreferencesState.getInstance().getMaxEvents());
 
-        mPullUseCase.execute(pullFilters, new PullUseCase.Callback() {
+        mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
             @Override
             public void onComplete() {
                 postFinish();

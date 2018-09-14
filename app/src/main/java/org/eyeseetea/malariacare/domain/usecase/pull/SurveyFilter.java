@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import java.util.Date;
 
-public class PullFilters {
+public class SurveyFilter {
 
     Date startDate;
     Date endDate;
@@ -31,10 +31,10 @@ public class PullFilters {
     boolean downloadOnlyLastEvents;
     int maxEvents;
 
-    public PullFilters() {
+    public SurveyFilter() {
     }
 
-    public PullFilters(Date startDate, Date endDate, boolean isDemo, boolean fullHierarchy, boolean downloadOnlyLastEvents,
+    public SurveyFilter(Date startDate, Date endDate, boolean isDemo, boolean fullHierarchy, boolean downloadOnlyLastEvents,
             int maxEvents) {
         this.startDate = startDate;
         this.endDate = endDate;

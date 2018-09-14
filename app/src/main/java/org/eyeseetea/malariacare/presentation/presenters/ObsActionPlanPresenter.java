@@ -67,7 +67,7 @@ public class ObsActionPlanPresenter {
                         EventExtended.EUROPEAN_DATE_FORMAT);
             }
 
-            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore(),
+            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScore().getScore(),
                     formattedCompletionDate, formattedNextDate);
         }
     }

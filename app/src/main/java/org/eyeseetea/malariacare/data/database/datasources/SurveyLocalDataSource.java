@@ -12,7 +12,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.Survey;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullFilters;
+import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
     private final static String TAG = ".SurveyLocalDataSource";
 
     @Override
-    public List<Survey> getSurveys(PullFilters filters) {
+    public List<Survey> getSurveys(SurveyFilter filters) {
         //On the future implement this method to retrieve surveys from db
         return null;
     }

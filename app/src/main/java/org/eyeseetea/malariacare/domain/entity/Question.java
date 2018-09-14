@@ -1,11 +1,11 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 public class Question {
     private String uId;
@@ -15,7 +15,7 @@ public class Question {
     private String answerName;
     private List<Question> children;
     private List<Question> parents;
-    private Map<String, Map<String, Boolean>> questionOptionMatches;//private Map<Question uid, Map<Option uid, visibility>>
+    private Map<String, Map<String, Boolean>> questionOptionMatches;
 
     public Question(String uId, int questionType, boolean isCompulsory) {
         this(uId, questionType, isCompulsory, null);

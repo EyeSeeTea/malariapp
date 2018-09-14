@@ -51,7 +51,7 @@ public class PullUseCase implements UseCase {
     private final IPullDataController mPullDataController;
     private final IMetadataValidator mMetadataValidator;
     private Callback mCallback;
-    private PullFilters mPullDataFilters;
+    private SurveyFilter mPullDataFilters;
     private Boolean pullCanceled = false;
 
     public PullUseCase(
@@ -67,7 +67,7 @@ public class PullUseCase implements UseCase {
         mMetadataValidator = metadataValidator;
     }
 
-    public void execute(PullFilters surveyFilter, final Callback callback) {
+    public void execute(SurveyFilter surveyFilter, final Callback callback) {
         mPullDataFilters = surveyFilter;
         mCallback = callback;
 
