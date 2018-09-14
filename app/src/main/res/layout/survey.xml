@@ -55,7 +55,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/header_layout"
         android:id="@+id/content"
-        android:background="@color/red"
+        android:background="@color/green_dark"
         android:layout_marginTop="@dimen/header_survey_margin_top"
         android:orientation="vertical"
         android:gravity="top" />
