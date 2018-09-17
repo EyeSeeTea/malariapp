@@ -40,41 +40,18 @@ import java.util.Map;
  * Created by arrizabalaga on 16/12/15.
  */
 public class PlannedItemBuilder {
-
+    private enum Type { NEVER, NEXT, OVERDUE, FUTURE }
     /**
      * Builds an ordered list of planned items (header + surveys)
      * @return
      */
     public List<PlannedItem> buildPlannedItems(Context context){
         Context ctx = context;
-        List<PlannedItem> never;
-        List<PlannedItem> overdue;
-        List<PlannedItem> next30;
-        List<PlannedItem> future;
-
-        never = new ArrayList<>();
-        never.add(PlannedHeader.buildNeverHeader(ctx));
-        if(AppSettingsBuilder.isPlanInnerHeader()) {
-            never.add(new PlannedSurveyHeader(plannedHeader));
-        }
-
-        overdue = new ArrayList<>();
-        overdue.add(PlannedHeader.buildOverdueHeader(ctx));
-        if(AppSettingsBuilder.isPlanInnerHeader()) {
-            overdue.add(new PlannedSurveyHeader(plannedHeader));
-        }
-
-        next30 = new ArrayList<>();
-        next30.add(PlannedHeader.buildNext30Header(ctx));
-        if(AppSettingsBuilder.isPlanInnerHeader()) {
-            next30.add(new PlannedSurveyHeader(plannedHeader));
-        }
-
-        future = new ArrayList<>();
-        future.add(PlannedHeader.buildFutureHeader(ctx));
-        if(AppSettingsBuilder.isPlanInnerHeader()) {
-            future.add(new PlannedSurveyHeader(plannedHeader));
-        }
+        boolean hasInnerHeader = AppSettingsBuilder.isPlanInnerHeader();
+        List<PlannedItem> never = buildNeverList(hasInnerHeader, context, Type.NEVER);
+        List<PlannedItem> overdue = buildNeverList(hasInnerHeader, context, Type.OVERDUE);
+        List<PlannedItem> next30 = buildNeverList(hasInnerHeader, context, Type.NEXT);
+        List<PlannedItem> future = buildNeverList(hasInnerHeader, context, Type.FUTURE);
 
         //Find its place according to scheduleddate
         for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
@@ -98,6 +75,30 @@ public class PlannedItemBuilder {
         return plannedItems;
     }
 
+    private List<PlannedItem> buildNeverList(boolean hasInnerHeader, Context ctx, Type type) {
+        List<PlannedItem> plannedItems = new ArrayList<>();
+        PlannedHeader plannedHeader = null;
+        switch (type) {
+            case NEVER:
+                plannedHeader = PlannedHeader.buildNeverHeader(ctx);
+                break;
+            case OVERDUE:
+                plannedHeader = PlannedHeader.buildOverdueHeader(ctx);
+                break;
+            case NEXT:
+                plannedHeader = PlannedHeader.buildNeverHeader(ctx);
+                break;
+            case FUTURE:
+                plannedHeader = PlannedHeader.buildFutureHeader(ctx);
+                break;
+        }
+        plannedItems.add(plannedHeader);
+        if(hasInnerHeader) {
+            plannedItems.add(new PlannedSurveyHeader(plannedHeader));
+        }
+        return plannedItems;
+    }
+
 
     /**
      * Puts the survey in its right list
@@ -110,90 +111,26 @@ public class PlannedItemBuilder {
     private void findRightState(SurveyDB survey, List<PlannedItem> never, List<PlannedItem> overdue,
                                 List<PlannedItem> next30, List<PlannedItem> future){
 
-        //Check if belongs to NEVER section
-        if(processAsNever(survey, never)){
+        Date scheduledDate = survey.getScheduledDate();
+        Date today = new Date();
+        //check if is never and add into never section
+        if (scheduledDate == null) {
+            addToSection(never, survey);
             return;
         }
-
-        //Check if belongs to NEVER section
-        if(processAsOverdue(survey, overdue)){
+        //check if is overdue and add into overdue section
+        if(scheduledDate.before(today)){
+            addToSection(overdue, survey);
             return;
         }
-
-        //Check if belongs to NEVER section
-        if(processAsNext30(survey, next30)){
+        //check if is next30 and add into next30 section
+        Date today30 = getIn30Days(today);
+        if (scheduledDate.before(today30)) {
+            addToSection(next30, survey);
             return;
         }
-
         //Otherwise a future
         addToSection(future, survey);
-    }
-
-    /**
-     * Checks if the given survey belongs to the NEVER section
-     * @param survey
-     * @return
-     */
-    private boolean processAsNever(SurveyDB survey, List<PlannedItem> section){
-        Date scheduledDate = survey.getScheduledDate();
-
-        //No Scheduled
-        if (scheduledDate==null) {
-            addToSection(section, survey);
-            return true;
-        }
-
-        //This survey does not belong to NEVER section
-        return false;
-    }
-
-    /**
-     * Checks if the given survey belongs to the OVERDUE section
-     * @param survey
-     * @return
-     */
-    private boolean processAsOverdue(SurveyDB survey, List<PlannedItem> section){
-        Date scheduledDate = survey.getScheduledDate();
-        Date today = new Date();
-
-        //scheduledDate<today
-        if(scheduledDate.before(today)){
-            addToSection(section, survey);
-            return true;
-        }
-
-        //This survey does not belong to OVERDUE section
-        return false;
-    }
-
-    /**
-     * Checks if the given survey belongs to the NEXT30 section
-     * @param survey
-     * @return
-     */
-    private boolean processAsNext30(SurveyDB survey, List<PlannedItem> section){
-        Date scheduledDate = survey.getScheduledDate();
-        Date today = new Date();
-        Date today30 = getIn30Days(today);
-
-        //planned in less 30 days
-        if(scheduledDate.before(today30)) {
-            addToSection(section,survey);
-            return true;
-        }
-
-        //This survey does not belong to NEXT30 section
-        return false;
-    }
-
-    /**
-     * Builds a synthetic key for this survey
-     * @param orgUnit
-     * @param program
-     * @return
-     */
-    private String getSurveyKey(OrgUnitDB orgUnit,ProgramDB program) {
-        return orgUnit.getId_org_unit().toString()+"@"+program.getId_program().toString();
     }
 
     /**
