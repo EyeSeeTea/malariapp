@@ -19,22 +19,12 @@
 
 package org.eyeseetea.malariacare.data.database.model;
 
-import static org.eyeseetea.malariacare.data.database.AppDatabase.matchAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.matchName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.orgUnitName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.programName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionOptionName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.questionRelationName;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyAlias;
 import static org.eyeseetea.malariacare.data.database.AppDatabase.surveyName;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.valueAlias;
-import static org.eyeseetea.malariacare.data.database.AppDatabase.valueName;
 
 import android.util.Log;
 
@@ -56,13 +46,9 @@ import org.eyeseetea.malariacare.data.database.AppDatabase;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.entity.Score;
-import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.Constants;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
-import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
 import org.hisp.dhis.client.sdk.core.common.utils.CodeGenerator;
 
 import java.util.Date;
@@ -135,7 +121,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
      */
     Integer productivity;
 
-    private SurveyAnsweredRatioDB mSurveyAnsweredRatio;
     private ScoreDB scoreDB;
 
     public SurveyDB() {
@@ -170,10 +155,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
 
     public String getEventUid() {
         return uid_event_fk;
-    }
-
-    public void setEventUid(EventFlow event) {
-        this.uid_event_fk = event.getUId();
     }
 
     public void setEventUid(String eventuid) {
@@ -440,64 +421,8 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         update.query();
     }
 
-    /**
-     * Return the number of child questions that should be answered according to the values of the
-     * parent questions.
-     */
-    public long countNumOptionalQuestionsToAnswer() {
-        long numOptionalQuestions = SQLite.selectCountOf().from(QuestionDB.class).as(questionName)
-                .join(QuestionRelationDB.class, Join.JoinType.LEFT_OUTER).as(questionRelationName)
-                .on(QuestionDB_Table.id_question.withTable(questionAlias)
-                        .eq(QuestionRelationDB_Table.id_question_fk.withTable(questionRelationAlias)))
-                .join(MatchDB.class, Join.JoinType.LEFT_OUTER).as(matchName)
-                .on(QuestionRelationDB_Table.id_question_relation.withTable(questionRelationAlias)
-                                .eq(MatchDB_Table.id_question_relation_fk.withTable(matchAlias)))
-                .join(QuestionOptionDB.class, Join.JoinType.LEFT_OUTER).as(questionOptionName)
-                .on(MatchDB_Table.id_match.withTable(matchAlias)
-                                .eq(QuestionOptionDB_Table.id_match_fk.withTable(questionOptionAlias)))
-                .join(ValueDB.class, Join.JoinType.LEFT_OUTER).as(valueName)
-                .on(ValueDB_Table.id_question_fk.withTable(valueAlias)
-                                .eq(QuestionOptionDB_Table.id_question_fk.withTable(questionOptionAlias)),
-                        ValueDB_Table.id_option_fk.withTable(valueAlias)
-                                .eq(QuestionOptionDB_Table.id_option_fk.withTable(questionOptionAlias)))
-                //Parent Child relationship
-                .where(QuestionRelationDB_Table.operation.withTable(questionRelationAlias).eq(
-                        QuestionRelationDB.PARENT_CHILD))
-                //For the given survey
-                .and( ValueDB_Table.id_survey_fk.withTable(valueAlias).eq(this.getId_survey()))
-                //The child question requires an answer
-                .and(QuestionDB_Table.output.withTable(questionAlias).isNot(Constants.NO_ANSWER))
-                .count();
-        //Parent with the right value -> not hidden
-        return numOptionalQuestions;
-    }
-
-    /**
-     * Updates ratios, status and completion date depending on the question and answer (text)
-     */
-    public void updateSurveyStatus(SurveyAnsweredRatio surveyAnsweredRatio) {
-
-        //Exit if the survey was sent or completed
-        if (isReadOnly()) {
-            return;
-        }
-
-        if (surveyAnsweredRatio.getTotalCompulsory() == 0) {
-            //Update status
-            if (!surveyAnsweredRatio.isCompleted()) {
-                setStatus(Constants.SURVEY_IN_PROGRESS);
-            }
-
-        } else if (surveyAnsweredRatio.getCompulsoryAnswered() == 0) {
-            setStatus(Constants.SURVEY_IN_PROGRESS);
-        }
-
-
-        //Saves new status & completion_date
-        save();
-    }
-
-    private void saveScore(String module) {        //Prepare scores info
+    private void saveScore(String module) {
+        //Prepare scores info
         List<CompositeScoreDB> compositeScoreList = ScoreRegister.loadCompositeScores(this, module);
 
         //Calculate main score to push later
@@ -544,38 +469,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .or(SurveyDB_Table.status.is(Constants.SURVEY_IN_PROGRESS))
                 .or(SurveyDB_Table.status.is(Constants.SURVEY_SENDING))
                 .or(SurveyDB_Table.status.is(Constants.SURVEY_QUARANTINE))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns the last surveys (by date) with status yet not put to "Sent"
-     */
-    public static List<SurveyDB> getUnsentSurveys(int limit) {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.isNot(Constants.SURVEY_SENT))
-                .limit(limit)
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns all the surveys with status put to "Sent"
-     */
-    public static List<SurveyDB> getAllSentSurveys() {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_SENT))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
-                .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
-    }
-
-    /**
-     * Returns the last surveys (by date) with status put to "Sent"
-     */
-    public static List<SurveyDB> getSentSurveys(int limit) {
-        return new Select().from(SurveyDB.class)
-                .where(SurveyDB_Table.status.eq(Constants.SURVEY_SENT))
-                .limit(limit)
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
                 .orderBy(OrderBy.fromProperty(SurveyDB_Table.id_org_unit_fk)).queryList();
     }
@@ -760,20 +653,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
         return false;
     }
 
-    public void prepareSurveyUploadedDate() {
-        if (!isSent()) {
-            setUploadDate(new Date());
-            save();
-        }
-    }
-
-    public void setSentSurveyState() {
-        //Change status and save mainScore
-        setStatus(Constants.SURVEY_SENT);
-        save();
-        saveMainScore();
-    }
-
     public void setCompleteSurveyState(String module) {
         setStatus(Constants.SURVEY_COMPLETED);
         //CompletionDate
@@ -846,7 +725,7 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     /**
      * Find the last survey that has been sent for each orgunit+program combination
      */
-    public static List<SurveyDB> listLastByOrgUnitProgram() {
+    public static List<SurveyDB> findLastSurveysByProgramAndOrgUnit() {
         return SQLite.select()
                 .from(SurveyDB.class)
                 .where()
@@ -862,31 +741,6 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
                 .and(SurveyDB_Table.id_org_unit_fk.eq(id_org_unit))
                 .groupBy( SurveyDB_Table.id_program_fk , SurveyDB_Table.id_org_unit_fk)
                 .having(SurveyDB_Table.completion_date.eq(Method.max(SurveyDB_Table.completion_date)))
-                .querySingle();
-    }
-
-    /**
-     * Get event from a survey if exists.
-     */
-    public EventFlow getEvent() {
-        return new Select().from(EventFlow.class)
-                .where(EventFlow_Table.uId.eq(uid_event_fk)).querySingle();
-    }
-
-    /**
-     * Get event from a survey local id if exist
-     */
-    public EventFlow getEventFromLocalId() {
-        EventFlow event = new Select().from(EventFlow.class)
-                .where(EventFlow_Table.id.eq(id_survey)).querySingle();
-        return event;
-    }
-
-    public static SurveyDB getSurveyInProgress() {
-        return new Select()
-                .from(SurveyDB.class)
-                .where(SurveyDB_Table.status
-                        .eq(Constants.SURVEY_IN_PROGRESS))
                 .querySingle();
     }
 
