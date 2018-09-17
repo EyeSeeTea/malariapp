@@ -39,6 +39,7 @@ public class Observation implements ISyncData {
             values.add(values.indexOf(observationValue),observationValue);
     }
 
+    @Override
     public String getSurveyUid() {
         return surveyUid;
     }
@@ -73,6 +74,16 @@ public class Observation implements ISyncData {
     @Override
     public void markAsSent() {
         changeStatus(ObservationStatus.SENT);
+    }
+
+    @Override
+    public void markAsConflict() {
+        changeStatus(ObservationStatus.CONFLICT);
+    }
+
+    @Override
+    public void markValueAsConflict(String uid) {
+        //for now observationValue does not save conflict in values
     }
 
     @Override

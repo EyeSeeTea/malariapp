@@ -20,7 +20,6 @@
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -89,7 +88,7 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
 
 
     @Override
-    public PushReport save(List<? extends ISyncData> surveys) throws Exception {
+    public Map<String, PushReport> save(List<? extends ISyncData> surveys) throws Exception {
         /*        FromObservationEventMapper eventMapper = FromObservationEventMapper();
 
         List<Event> events = eventMapper.mapEvents(surveys);

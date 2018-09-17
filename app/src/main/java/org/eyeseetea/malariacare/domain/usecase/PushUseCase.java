@@ -78,7 +78,7 @@ public class PushUseCase implements UseCase{
 
             @Override
             public void onInformativeError(Throwable throwable) {
-                notifyOnInformativeError(throwable.getMessage());
+                notifyOnInformativeError(throwable);
             }
         });
     }
@@ -117,11 +117,11 @@ public class PushUseCase implements UseCase{
         });
     }
 
-    private void notifyOnInformativeError(final String message) {
+    private void notifyOnInformativeError(final Throwable throwable) {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
-                mCallback.onInformativeError(message);
+                mCallback.onInformativeError(throwable);
             }
         });
     }
@@ -144,7 +144,7 @@ public class PushUseCase implements UseCase{
 
         void onSurveysNotFoundError();
 
-        void onInformativeError(String message);
+        void onInformativeError(Throwable throwable);
 
         void onConversionError();
 

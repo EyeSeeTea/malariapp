@@ -23,6 +23,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
@@ -37,12 +38,14 @@ import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.domain.exception.DataToPushNotFoundException;
 import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
+import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,13 +135,9 @@ public class PushDataController implements IPushController {
             }else{
                 markAsSending(syncData, syncDataLocalDataSource);
 
-                PushReport pushReport = syncDataRemoteDataSource.save(syncData);
+                Map<String, PushReport> pushReportMap = syncDataRemoteDataSource.save(syncData);
 
-                //TODO:bring logic from ConvertToSDKVisitor.saveSurveyStatus
-                // examples: read importsummary to mark as conflict or sent etc..
-                markAsSent(syncData, syncDataLocalDataSource);
-
-                callback.onComplete();
+                handlePushReports(pushReportMap, syncData, callback, syncDataLocalDataSource);
             }
 
         } catch (ConversionException e) {
@@ -152,6 +151,63 @@ public class PushDataController implements IPushController {
             callback.onError(e);
         } catch (Exception e) {
             callback.onError(e);
+        }
+    }
+
+    private void handlePushReports(Map<String, PushReport> pushReportMap,
+            List<? extends ISyncData> syncData,  IPushControllerCallback callback,
+            ISyncDataLocalDataSource syncDataLocalDataSource) {
+
+        if (pushReportMap == null || pushReportMap.size() == 0) {
+            callback.onError(new PushReportException("EventReport is null or empty"));
+        } else {
+            try {
+                for (ISyncData syncDataItem: syncData) {
+                    PushReport pushReport= pushReportMap.get(syncDataItem.getSurveyUid());
+
+                    if (pushReport == null) {
+                        syncDataItem.markAsRetrySync();
+                        Log.d(TAG, "Error saving survey: report is null in this survey: "
+                                + syncDataItem.getSurveyUid());
+
+                    }else {
+
+                        List<PushConflict> pushConflicts = pushReport.getPushConflicts();
+
+                        if (pushConflicts != null && pushConflicts.size() > 0) {
+                            syncDataItem.markAsConflict();
+
+                            for (PushConflict pushConflict : pushConflicts) {
+                                if (pushConflict.getUid() != null) {
+                                    syncDataItem.markValueAsConflict(pushConflict.getUid());
+
+                                    Log.d(TAG, "saveSurveyStatus: PUSH process...PushConflict in "
+                                            + pushConflict.getUid() +
+                                            " with error " + pushConflict.getValue()
+                                            + " . Pushing survey: " + syncDataItem.getSurveyUid());
+
+                                    callback.onInformativeError(
+                                            new PushValueException(syncDataItem.getSurveyUid(),
+                                                    pushConflict.getUid(), pushConflict.getValue()));
+                                }
+                            }
+                        }else {
+                            if (!pushReport.hasPushErrors(syncDataItem instanceof ObservationDB)) {
+                                Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
+                                        + syncDataItem.getSurveyUid());
+                                syncDataItem.markAsSent();
+                            }
+                        }
+                    }
+
+                    syncDataLocalDataSource.save(syncDataItem);
+                }
+
+                callback.onComplete();
+
+            } catch (Exception e) {
+                callback.onError(new PushReportException(e));
+            }
         }
     }
 
@@ -175,15 +231,6 @@ public class PushDataController implements IPushController {
         for (ISyncData item :syncData) {
             item.markAsRetrySync();
         }
-        syncDataLocalDataSource.save(syncData);
-    }
-
-    private void markAsSent(List<? extends ISyncData> syncData,
-            ISyncDataLocalDataSource syncDataLocalDataSource) throws Exception {
-        for (ISyncData item :syncData) {
-            item.markAsSent();
-        }
-
         syncDataLocalDataSource.save(syncData);
     }
 

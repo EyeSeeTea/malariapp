@@ -25,6 +25,7 @@ import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -57,7 +58,7 @@ public class ObservationSDKDhisDataSource implements ISyncDataRemoteDataSource {
     }
 
     @Override
-    public PushReport save(List<? extends ISyncData> syncData) throws Exception {
+    public Map<String, PushReport> save(List<? extends ISyncData> syncData) throws Exception {
         List<Observation> observations = (List<Observation>) syncData;
 
         FromObservationEventMapper eventMapper =
@@ -75,7 +76,10 @@ public class ObservationSDKDhisDataSource implements ISyncDataRemoteDataSource {
         Map<String,ImportSummary> importSummaryMap =
                 D2.events().push(eventUIds).toBlocking().single();
 
-        return null;
+        Map<String, PushReport> pushReportMap =
+                PushReportMapper.mapFromImportSummariesToPushReports(importSummaryMap);
+
+        return pushReportMap;
     }
 
     private String getSafeUsername() {

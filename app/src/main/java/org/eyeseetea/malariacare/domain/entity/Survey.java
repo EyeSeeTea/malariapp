@@ -157,6 +157,11 @@ public class Survey implements ISyncData{
     }
 
     @Override
+    public String getSurveyUid() {
+        return null;
+    }
+
+    @Override
     public void markAsSending() {
 
     }
@@ -173,6 +178,16 @@ public class Survey implements ISyncData{
 
     @Override
     public void markAsSent() {
+
+    }
+
+    @Override
+    public void markAsConflict() {
+
+    }
+
+    @Override
+    public void markValueAsConflict(String uid) {
 
     }
 
