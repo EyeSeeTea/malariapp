@@ -35,6 +35,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(database = AppDatabase.class, name = "OrgUnit")
@@ -258,6 +259,14 @@ public class OrgUnitDB extends BaseModel {
 
 
                 OrgUnitDB_Table.name, true).queryList();
+    }
+
+    public List<String> getAllRelatedPrograms() {
+        List<String> uids = new ArrayList<>();
+        for(ProgramDB programDB : getPrograms()){
+            uids.add(programDB.uid_program);
+        }
+        return uids;
     }
 
     public static OrgUnitDB getOrgUnit(String uid) {
