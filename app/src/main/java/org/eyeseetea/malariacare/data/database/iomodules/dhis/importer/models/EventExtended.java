@@ -26,8 +26,6 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.IConvertFromSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.VisitableFromSDK;
 import org.eyeseetea.malariacare.data.remote.sdk.SdkQueries;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
@@ -80,7 +78,6 @@ public class EventExtended {
 
     public EventExtended() {
         event = new EventFlow();
-        event.generateUId();
     }
 
     public List<TrackedEntityDataValueFlow> getDataValuesInMemory() {

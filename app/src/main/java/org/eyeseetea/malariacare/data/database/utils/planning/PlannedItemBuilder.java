@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,15 +54,27 @@ public class PlannedItemBuilder {
 
         never = new ArrayList<>();
         never.add(PlannedHeader.buildNeverHeader(ctx));
+        if(AppSettingsBuilder.isPlanInnerHeader()) {
+            never.add(new PlannedSurveyHeader(plannedHeader));
+        }
 
         overdue = new ArrayList<>();
         overdue.add(PlannedHeader.buildOverdueHeader(ctx));
+        if(AppSettingsBuilder.isPlanInnerHeader()) {
+            overdue.add(new PlannedSurveyHeader(plannedHeader));
+        }
 
         next30 = new ArrayList<>();
         next30.add(PlannedHeader.buildNext30Header(ctx));
+        if(AppSettingsBuilder.isPlanInnerHeader()) {
+            next30.add(new PlannedSurveyHeader(plannedHeader));
+        }
 
         future = new ArrayList<>();
         future.add(PlannedHeader.buildFutureHeader(ctx));
+        if(AppSettingsBuilder.isPlanInnerHeader()) {
+            future.add(new PlannedSurveyHeader(plannedHeader));
+        }
 
         //Find its place according to scheduleddate
         for(SurveyDB survey: SurveyDB.findPlannedOrInProgress()){
