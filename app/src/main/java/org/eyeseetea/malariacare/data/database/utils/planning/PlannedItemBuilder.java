@@ -86,7 +86,7 @@ public class PlannedItemBuilder {
                 plannedHeader = PlannedHeader.buildOverdueHeader(ctx);
                 break;
             case NEXT:
-                plannedHeader = PlannedHeader.buildNeverHeader(ctx);
+                plannedHeader = PlannedHeader.buildNext30Header(ctx);
                 break;
             case FUTURE:
                 plannedHeader = PlannedHeader.buildFutureHeader(ctx);
