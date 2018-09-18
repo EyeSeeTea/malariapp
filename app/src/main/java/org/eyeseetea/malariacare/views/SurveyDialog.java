@@ -91,9 +91,13 @@ public final class SurveyDialog extends AlertDialog {
                         if (surveyAnsweredRatio != null) {
                             overall.setText(surveyAnsweredRatio.getTotalStatus() +
                                     context.getString(R.string.percent));
+                            overall.setBackgroundColor(chart.getOverAllColorByPercentage(
+                                    surveyAnsweredRatio.getTotalStatus(), context));
 
                             mandatory.setText(surveyAnsweredRatio.getMandatoryStatus() +
                                     context.getString(R.string.percent));
+                            mandatory.setBackgroundColor(chart.getMandatoryColorByPercentage(
+                                    surveyAnsweredRatio.getMandatoryStatus(), context));
 
                             chart.createDoublePie(surveyAnsweredRatio.getMandatoryStatus(),
                                     surveyAnsweredRatio.getTotalStatus());

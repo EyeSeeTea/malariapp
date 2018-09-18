@@ -76,4 +76,5 @@
     <color name="high_score_color">@color/lightGreen</color>
     <color name="medium_score_color">@color/assess_yellow</color>
     <color name="low_score_color">@color/darkRed</color>
+    <color name="no_score_color">#BEBEBE</color>
 </resources>

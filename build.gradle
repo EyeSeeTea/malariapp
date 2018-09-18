@@ -41,7 +41,7 @@ ext {
             minSdkVersion    : 15,
             compileSdkVersion: 24,
             targetSdkVersion : 24,
-            versionCode      : 45,
+            versionCode      : 47,
             versionName      : "QAApp"
     ]
     libraries = [
@@ -62,7 +62,7 @@ ext {
 
             // java libs
             timberVersion           : "4.1.0",
-            okhttpVersion           : "3.2.0",
+            okhttpVersion           : "3.8.0",
             retrofitVersion         : "2.0.0",
             jacksonVersion          : "2.7.4",
             jodaTimeVersion         : "2.9.2",
@@ -86,9 +86,6 @@ ext {
             runnerVersion           : "0.4.1",
             espressoVersion         : "2.2.1",
     ]
-
-    // Old App dependencies versions
-    okhttpVersion = '2.2.0'
 }
 
 task clean(type: Delete) {

@@ -5,13 +5,6 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
@@ -27,6 +20,12 @@ import java.net.Proxy;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PullDhisApiDataSource {
 
@@ -184,15 +183,8 @@ public class PullDhisApiDataSource {
 
         Log.d(TAG, "executeCall Url" + DHIS_URL + "");
 
-        OkHttpClient client= UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient();
-
-        client.setConnectTimeout(30, TimeUnit.SECONDS); // connect timeout
-        client.setReadTimeout(30, TimeUnit.SECONDS);    // socket timeout
-        client.setWriteTimeout(30, TimeUnit.SECONDS);    // write timeout
-        client.setRetryOnConnectionFailure(false); // Cancel retry on failure
-
-        BasicAuthenticator basicAuthenticator=new BasicAuthenticator();
-        client.setAuthenticator(basicAuthenticator);
+        BasicAuthenticator basicAuthenticator = new BasicAuthenticator();
+        OkHttpClient client = UnsafeOkHttpsClientFactory.getUnsafeOkHttpClient(basicAuthenticator);
 
         Request.Builder builder = new Request.Builder()
                 .header(basicAuthenticator.AUTHORIZATION_HEADER, basicAuthenticator.getCredentials())
@@ -249,40 +241,4 @@ public class PullDhisApiDataSource {
             throw new PullApiParsingException();
         }
     }
-
-    /**
-     * Basic
-     */
-    static class BasicAuthenticator implements Authenticator {
-
-        public final String AUTHORIZATION_HEADER="Authorization";
-        private String credentials;
-        private int mCounter = 0;
-
-        org.eyeseetea.malariacare.domain.entity.Credentials userCredentials =
-                PreferencesState.getInstance().getCreedentials();
-        BasicAuthenticator(){
-            credentials = Credentials.basic(userCredentials.getUsername(), userCredentials.getPassword());
-        }
-
-        @Override
-        public Request authenticate(Proxy proxy, Response response) throws IOException {
-
-            if (mCounter++ > 0) {
-                throw new IOException(response.message());
-            }
-            return response.request().newBuilder().header(AUTHORIZATION_HEADER, credentials).build();
-        }
-
-        @Override
-        public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-            return null;
-        }
-
-        public String getCredentials(){
-            return credentials;
-        }
-
-    }
-
 }
