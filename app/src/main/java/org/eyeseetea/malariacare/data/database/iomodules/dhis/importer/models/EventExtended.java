@@ -74,6 +74,11 @@ public class EventExtended implements VisitableFromSDK {
         this.event = event;
     }
 
+    public EventExtended(String eventUId) {
+        event = new EventFlow();
+        event.setUId(eventUId);
+    }
+
     public EventExtended(EventExtended event) {
         this.event = event.getEvent();
     }
@@ -309,10 +314,6 @@ public class EventExtended implements VisitableFromSDK {
 
     public void setCreationDate(Date creationDate) {
         event.setCreated(new DateTime(creationDate));
-    }
-
-    public void setEventUid(String eventUid) {
-        event.setUId(eventUid);
     }
 
     public static List<EventExtended> fromJsonToEvents(JsonNode jsonNode) {
