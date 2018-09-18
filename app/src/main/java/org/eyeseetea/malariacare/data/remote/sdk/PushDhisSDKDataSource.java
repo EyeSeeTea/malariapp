@@ -38,6 +38,7 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.TrackedEntityDataValueFlow;
 import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
+import org.hisp.dhis.client.sdk.models.common.state.Action;
 
 import java.util.HashSet;
 import java.util.List;
@@ -66,8 +67,13 @@ public class PushDhisSDKDataSource {
             return;
         }
 
+        org.hisp.dhis.client.sdk.models.common.state.Action action = Action.TO_POST;
+        if(kind.equals(PushController.Kind.PLANS)){
+            action = Action.TO_UPDATE;
+        }
+
         Observable<Map<String, ImportSummary>> eventObserver =
-                D2.events().push(eventUids);
+                D2.events().push(eventUids, action);
 
         eventObserver
                 .subscribeOn(Schedulers.io())
