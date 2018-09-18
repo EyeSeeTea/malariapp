@@ -102,12 +102,14 @@ public class PushReport {
         if (this.getStatus() == null) {
             return true;
         }
-        if (!this.getStatus().equals(PushReport.Status.SUCCESS)) {
+        if (!this.getStatus().equals(PushReport.Status.SUCCESS) &&
+                !this.getStatus().equals(PushReport.Status.OK)) {
             return true;
         }
         if(emptyImportAllowed){
             return false;
         }
-        return this.getPushedValues().getImported() == 0;
+        return (this.getPushedValues().getImported() == 0
+                && this.getPushedValues().getUpdated() == 0);
     }
 }
