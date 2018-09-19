@@ -35,8 +35,10 @@ import android.widget.TextView;
 
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
+import org.eyeseetea.malariacare.data.database.datasources.OrgUnitLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.SurveyLocalDataSource;
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.BuildPlanningSurveysController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDataController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoController;
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
@@ -46,6 +48,7 @@ import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
+import org.eyeseetea.malariacare.domain.boundary.IBuildPlannedController;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
@@ -166,9 +169,14 @@ public class ProgressActivity extends Activity {
             IAsyncExecutor asyncExecutor = new AsyncExecutor();
             IMainExecutor mainExecutor = new UIThreadExecutor();
 
+            IBuildPlannedController buildPlannedController =
+                    new BuildPlanningSurveysController(new SurveyLocalDataSource(),
+                    new OrgUnitLocalDataSource());
+
             mPullUseCase = new PullUseCase(
                     asyncExecutor, mainExecutor, pullMetadataController,
-                    pullDataController, metadataValidator);
+                    pullDataController, buildPlannedController,
+                    metadataValidator);
         }
     }
 
@@ -374,7 +382,7 @@ public class ProgressActivity extends Activity {
         month.add(Calendar.MONTH, -NUMBER_OF_MONTHS);
         boolean isDemo = Session.getCredentials().equals(Credentials.createDemoCredentials());
         SurveyFilter surveyFilter = new SurveyFilter(month.getTime(), null,
-                PreferencesState.getInstance().getMaxEvents());
+                PreferencesState.getInstance().getMaxEvents(), null, null, false);
 
         mPullUseCase.execute(surveyFilter, new PullUseCase.Callback() {
             @Override
