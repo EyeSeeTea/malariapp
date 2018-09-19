@@ -27,11 +27,17 @@ public class SurveyFilter {
     Date startDate;
     Date endDate;
     int maxEvents;
+    String orgUnitUId;
+    String programUId;
+    boolean findLastSurveyByOrgUnitAndProgram;
 
-    public SurveyFilter(Date startDate, Date endDate, int maxEvents) {
+    public SurveyFilter(Date startDate, Date endDate, int maxEvents, String orgUnitUId, String programUId, boolean findLastSurveyByOrgUnitAndProgram) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxEvents = maxEvents;
+        this.orgUnitUId = orgUnitUId;
+        this.programUId = programUId;
+        this.findLastSurveyByOrgUnitAndProgram = findLastSurveyByOrgUnitAndProgram;
     }
 
     public Date getStartDate() {
@@ -44,5 +50,25 @@ public class SurveyFilter {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public boolean isFindLastSurveyByOrgUnitAndProgram(){
+        return findLastSurveyByOrgUnitAndProgram;
+    }
+
+    public String getOrgUnitUId() {
+        return orgUnitUId;
+    }
+
+    public String getProgramUId() {
+        return programUId;
+    }
+
+    public static SurveyFilter createFilterToBuildPlanningSurveys(){
+        return new SurveyFilter(null, null, 0, null, null, true);
+    }
+
+    public static SurveyFilter createFilterToBuildPlanningSurveysByOrgUnitAndProgram(String orgUnit, String program){
+        return new SurveyFilter(null, null, 0, orgUnit, program, true);
     }
 }
