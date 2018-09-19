@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
+import android.util.Log;
+
 import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -46,13 +48,16 @@ public class PullDataController implements IPullDataController {
     @Override
     public void pullData(final SurveyFilter filters, final IPullDataController.Callback callback) {
         this.callback = callback;
-
+        Log.d(TAG, "Pull data start");
        try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
             List<Survey> surveys = remoteSurveyDataSource.getSurveys(filters);
 
+            Log.d(TAG, "Pull data downloaded");
             localSurveyDataSource.Save(surveys);
+
+            Log.d(TAG, "Pull data saved");
 
             callback.onComplete();
 
