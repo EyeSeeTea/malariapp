@@ -713,12 +713,18 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
     /**
      * Finds a survey with a given orgunit and program
      */
-    public static SurveyDB findPlannedByOrgUnitAndProgram(OrgUnitDB orgUnit, ProgramDB program) {
+    public static SurveyDB findPlannedByOrgUnitAndProgram(String orgUnitUId, String programUId) {
         return new Select()
-                .from(SurveyDB.class)
-                .where(SurveyDB_Table.id_org_unit_fk.eq(orgUnit.getId_org_unit()))
-                .and(SurveyDB_Table.id_program_fk.eq(program.getId_program()))
-                .and(SurveyDB_Table.status.eq(Constants.SURVEY_PLANNED))
+                .from(SurveyDB.class).as(surveyName)
+                .join(OrgUnitDB.class, Join.JoinType.LEFT_OUTER).as(orgUnitName)
+                .on(SurveyDB_Table.id_org_unit_fk.withTable(surveyAlias)
+                        .eq((OrgUnitDB_Table.id_org_unit.withTable(orgUnitAlias))))
+                .join(ProgramDB.class, Join.JoinType.LEFT_OUTER).as(programName)
+                .on(SurveyDB_Table.id_program_fk.withTable(surveyAlias)
+                        .eq((ProgramDB_Table.id_program.withTable(programAlias))))
+                .where(SurveyDB_Table.status.eq(Constants.SURVEY_PLANNED))
+                .and(ProgramDB_Table.uid_program.eq(programUId))
+                .and(OrgUnitDB_Table.uid_org_unit.eq(orgUnitUId))
                 .querySingle();
     }
 
