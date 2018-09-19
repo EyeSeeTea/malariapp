@@ -146,7 +146,7 @@ public class AssessModuleController extends ModuleController {
                         if (action.equals(
                                 org.eyeseetea.malariacare.domain.utils.Action.PRESS_BACK_BUTTON)) {
                             surveyFragment.hideProgress();
-                            boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio);
+                            boolean isDialogShown = onSurveyBackPressed(surveyAnsweredRatio, survey);
                             if (!isDialogShown) {
                                 //Confirm closing
                                 if (survey.isCompleted() || survey.isSent()) {
@@ -163,7 +163,7 @@ public class AssessModuleController extends ModuleController {
                             if (surveyAnsweredRatio.getCompulsoryAnswered()
                                     == surveyAnsweredRatio.getTotalCompulsory()
                                     && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-                                askToSendCompulsoryCompletedSurvey();
+                                askToSendCompulsoryCompletedSurvey(survey);
                             }
                             surveyFragment.hideProgress();
                             closeSurveyFragment();
@@ -338,11 +338,11 @@ public class AssessModuleController extends ModuleController {
     /**
      * It is called when the user press back in a surveyFragment
      */
-    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio) {
+    private boolean onSurveyBackPressed(SurveyAnsweredRatio surveyAnsweredRatio, SurveyDB surveyDB) {
         //Completed or Mandatory ok -> ask to send
         if (surveyAnsweredRatio.getCompulsoryAnswered() == surveyAnsweredRatio.getTotalCompulsory()
                 && surveyAnsweredRatio.getTotalCompulsory() != 0) {
-            askToSendCompulsoryCompletedSurvey();
+            askToSendCompulsoryCompletedSurvey(surveyDB);
             return true;
         }
         return false;
@@ -356,13 +356,13 @@ public class AssessModuleController extends ModuleController {
      * This dialog is called when the user have a survey open, with compulsory questions completed,
      * and close this survey, or when the user change of tab
      */
-    private void askToSendCompulsoryCompletedSurvey() {
+    private void askToSendCompulsoryCompletedSurvey(final SurveyDB surveyDB) {
         new AlertDialog.Builder(dashboardActivity)
                 .setMessage(R.string.dialog_question_complete_survey)
                 .setNegativeButton(R.string.dialog_complete_option,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
-                                confirmSendCompleteSurvey();
+                                confirmSendCompleteSurvey(surveyDB);
                             }
                         })
                 .setPositiveButton(R.string.dialog_continue_later_option,
@@ -404,14 +404,14 @@ public class AssessModuleController extends ModuleController {
     /**
      * This dialog is called to confirm before set a survey as complete
      */
-    private void confirmSendCompleteSurvey() {
+    private void confirmSendCompleteSurvey(final SurveyDB surveyDB) {
         //if you select complete_option, this dialog will showed.
         new AlertDialog.Builder(dashboardActivity)
                 .setMessage(R.string.dialog_are_you_sure_complete_survey)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        completeAndCloseSurvey();
+                        completeAndCloseSurvey(surveyDB);
                     }
                 }).create().show();
     }
@@ -452,7 +452,7 @@ public class AssessModuleController extends ModuleController {
                         R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        completeAndCloseSurvey();
+                        completeAndCloseSurvey(survey);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -460,8 +460,7 @@ public class AssessModuleController extends ModuleController {
                 .create().show();
     }
 
-    private void completeAndCloseSurvey() {
-        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
+    private void completeAndCloseSurvey(SurveyDB survey) {
         survey.setCompleteSurveyState(getSimpleName());
 
         if (!survey.isInProgress()) {
