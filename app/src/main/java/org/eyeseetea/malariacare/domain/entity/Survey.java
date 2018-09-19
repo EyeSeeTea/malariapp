@@ -51,6 +51,15 @@ public class Survey {
         return survey;
     }
 
+    public static Survey createPlannedSurvey(String uId, String programUId, String orgUnitUId,
+                                          String userUId, Date scheduledDate, Score score) {
+        Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
+        survey.changeStatus(SurveyStatus.PLANNED);
+        survey.changeScheduledDate(scheduledDate);
+        survey.assignScore(score);
+        return survey;
+    }
+
     public String getUId() {
         return uId;
     }
