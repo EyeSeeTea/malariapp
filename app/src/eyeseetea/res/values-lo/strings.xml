@@ -287,4 +287,11 @@
 <string name="improve_no_surveys">"ບໍ່ມີການສໍາຫຼວດສໍາລັບການຄັດເລືອກທີ່ທ່ານໄດ້ເຮັດ."</string>
 <string name="scheduled">ກໍານົດເວລາ</string>
 <string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
+<string name="feedback_progress_bar_text">ກໍາລັງໂຫລດຄະແນນສໍາຫຼວດ ... ກະລຸນາລໍຖ້າ</string>
+<string name="monitor_no_surveys_to_show">"ບໍ່ມີການສໍາຫຼວດທີ່ຈະສະແດງ"</string>
+<string name="dialog_action_plan">"ແຜນການປະຕິບັດງານ"</string>
+<string name="health_facility">ສູນການແພດ</string>
+<string name="monitor_js_multiple_event_legend" >"(*) ມີການສໍາຫຼວດຫຼາຍກວ່າຫນຶ່ງເດືອນໃນເດືອນດຽວກັນ"</string>
+<string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
+<string name="assessment_title_overall_mandatory_completed">"ລວມ / ບັງຄັບແລ້ວສົມບູນ"</string>
 </resources>
