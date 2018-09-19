@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.LoginActivity;
@@ -35,7 +36,6 @@ import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LoadCredentialsUseCase;
 import org.eyeseetea.malariacare.domain.usecase.LoginUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
-import org.hisp.dhis.client.sdk.ui.views.FontButton;
 
 public class LoginActivityStrategy {
 
@@ -76,7 +76,7 @@ public class LoginActivityStrategy {
         loginActivity.getLayoutInflater().inflate(R.layout.demo_login_button, loginViewsContainer,
                 true);
 
-        FontButton demoButton = (FontButton) loginActivity.findViewById(R.id.demo_login_button);
+        Button demoButton = (Button) loginActivity.findViewById(R.id.demo_login_button);
 
         demoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,4 +134,12 @@ public class LoginActivityStrategy {
         loginActivity.finish();
     }
 
+
+    public void login() {
+
+    }
+
+    public void onLoginError() {
+
+    }
 }

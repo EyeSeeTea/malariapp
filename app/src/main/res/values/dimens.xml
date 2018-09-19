@@ -163,4 +163,6 @@
     <dimen name="filter_bottom_padding">15dp</dimen>
 
     <dimen name="design_fab_size_normal">70dp</dimen>
+
+    <dimen name="progressbar_stroke_width">10dp</dimen>
 </resources>
