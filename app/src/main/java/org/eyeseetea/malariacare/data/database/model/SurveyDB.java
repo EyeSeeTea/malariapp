@@ -749,7 +749,8 @@ public class SurveyDB extends BaseModel implements VisitableToSDK {
 
     public void saveConflict(String uid) {
         for (ValueDB value : getValues()) {
-            if (value.getQuestion().getUid().equals(uid)) {
+            if (value.getQuestion()!=null
+                    && value.getQuestion().getUid().equals(uid)) {
                 value.setConflict(true);
                 value.save();
             }
