@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyLocalDataSource implements ISurveyDataSource {
@@ -21,8 +22,32 @@ public class SurveyLocalDataSource implements ISurveyDataSource {
 
     @Override
     public List<Survey> getSurveys(SurveyFilter filters) {
+        SurveyDBMapper surveyDBMapper = new SurveyDBMapper(
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list());
+
         //On the future implement this method to retrieve surveys from db
-        return null;
+        List<SurveyDB> surveyDBS = new ArrayList<>();
+        if(filters.isFindLastSurveyByOrgUnitAndProgram()){
+            if(filters.getProgramUId() != null && filters.getOrgUnitUId() !=null){
+                SurveyDB surveyDB = SurveyDB.findPlannedByOrgUnitAndProgram(filters.getOrgUnitUId(),
+                        filters.getProgramUId());
+                if(surveyDB!=null) {
+                    surveyDBS.add(surveyDB);
+                }
+            }
+            else{
+                List<SurveyDB> surveyList = SurveyDB.findLastSurveysByProgramAndOrgUnit();
+                if(surveyList!=null && surveyList.size()>0) {
+                    surveyDBS.addAll(surveyList);
+                }
+            }
+
+        }
+        if(surveyDBS.size()>0){
+            return surveyDBMapper.mapPlanningDBs(surveyDBS);
+        }
+        return new ArrayList<>();
     }
 
     @Override
