@@ -328,7 +328,6 @@ public class LayoutUtils {
     }
 
     public static void drawScore(Float score, DoubleRectChart doubleRectChart) {
-        int color = LayoutUtils.trafficColor(score);
         String scoreText;
         if(score==null){
             scoreText = "NaN";
@@ -342,6 +341,7 @@ public class LayoutUtils {
                     ContextCompat.getColor(PreferencesState.getInstance().getContext(),
                             R.color.white));
         }else {
+            int color = LayoutUtils.trafficColor(score);
             doubleRectChart.createDoubleRectChart(scoreText, score.intValue(),
                     ContextCompat.getColor(PreferencesState.getInstance().getContext(), color),
                     ContextCompat.getColor(PreferencesState.getInstance().getContext(),
