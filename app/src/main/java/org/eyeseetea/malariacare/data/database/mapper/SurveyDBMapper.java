@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
+import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 
 import java.util.ArrayList;
@@ -49,12 +50,45 @@ public class SurveyDBMapper {
 
                 surveysDB.add(surveyDB);
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(TAG, "An error occurred converting Survey " + survey.getUId() +
                         " to surveyDB:" + e.getMessage());
             }
         }
 
         return surveysDB;
+    }
+
+    public List<Survey> mapPlanningDBs(List<SurveyDB> surveyDBs) {
+
+        List<Survey> surveys = new ArrayList<>();
+
+        for (SurveyDB surveyDB : surveyDBs) {
+            try {
+                Survey survey = mapPlanning(surveyDB);
+
+                surveys.add(survey);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "An error occurred converting Survey " + surveyDB.getId_survey() +
+                        " to surveyDB:" + e.getMessage());
+            }
+        }
+
+        return surveys;
+    }
+
+    private Survey mapPlanning(SurveyDB surveyDB) {
+        Score score = new Score(surveyDB.getEventUid(), 0f);
+        try {
+            score = new Score(surveyDB.getEventUid(), surveyDB.getMainScore().getScore());
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        Survey survey = Survey.createPlannedSurvey(surveyDB.getEventUid(), surveyDB.getProgram().getUid(), surveyDB.getOrgUnit().getUid(), surveyDB.getUser().getUid(),
+                surveyDB.getScheduledDate(), score);
+
+        return survey;
     }
 
     private SurveyDB map(Survey survey) {
@@ -66,8 +100,8 @@ public class SurveyDBMapper {
         surveyDB.setCreationDate(survey.getCreationDate());
         surveyDB.setUploadDate(survey.getCreationDate());
         surveyDB.setScheduledDate(survey.getScheduledDate());
-        surveyDB.setOrgUnit(orgUnitsDBMap.get(survey.getOrgUnitUId()));
-        surveyDB.setProgram(programsDBMap.get(survey.getProgramUId()));
+        surveyDB.setOrgUnit(orgUnitsDBMap.get(survey.getOrgUnitUId()).getId_org_unit());
+        surveyDB.setProgram(programsDBMap.get(survey.getProgramUId()).getId_program());
 
         List<ValueDB> valuesDB = new ArrayList<>();
 
