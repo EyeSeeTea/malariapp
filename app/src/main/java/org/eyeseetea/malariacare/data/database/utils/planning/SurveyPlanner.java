@@ -54,21 +54,6 @@ public class SurveyPlanner {
         return instance;
     }
 
-    /**
-     * Builds a 'NEVER' planned survey for the given combination
-     */
-    public SurveyDB buildNext(OrgUnitDB orgUnit, ProgramDB program) {
-        SurveyDB survey = new SurveyDB();
-        survey.setStatus(Constants.SURVEY_PLANNED);
-        survey.setOrgUnit(orgUnit);
-        survey.setUser(Session.getUser());
-
-        survey.setProgram(program);
-        survey.save();
-
-        return survey;
-    }
-
 
     /**
      * Builds a 'NEW' planned survey and delete the send survey
@@ -126,7 +111,7 @@ public class SurveyPlanner {
      */
     public SurveyDB startSurvey(OrgUnitDB orgUnit, ProgramDB program) {
         //Find planned survey
-        SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnit, program);
+        SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnit.getUid(), program.getUid());
         if (survey == null) {
             survey = new SurveyDB();
             survey.setProgram(program);
@@ -149,21 +134,6 @@ public class SurveyPlanner {
         //Reset mainscore for this 'real' survey
         survey.resetMainScore();
         return survey;
-    }
-
-    /**
-     * Plans a new survey according to the last surveys that has been sent for each combo orgunit +
-     * program
-     * This method is only used in the pull.
-     */
-    public void buildNext() {
-        //Plan a copy according to that survey
-        for (SurveyDB survey : SurveyDB.listLastByOrgUnitProgram()) {
-            buildNext(survey);
-        }
-        //Plan non existant combinations
-        buildNonExistentCombinations();
-
     }
 
     public Date findScheduledDateBySurvey(SurveyDB survey) {
@@ -205,19 +175,6 @@ public class SurveyPlanner {
         calendar.setTime(date);
         calendar.add(Calendar.MONTH, numMonths);
         return calendar.getTime();
-    }
-
-    private void buildNonExistentCombinations() {
-        List<OrgUnitProgramRelationDB> orgUnitProgramRelations = OrgUnitProgramRelationDB.getAll();
-        for (OrgUnitProgramRelationDB orgUnitProgramRelation : orgUnitProgramRelations) {
-            SurveyDB survey = SurveyDB.findPlannedByOrgUnitAndProgram(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
-            //Already built
-            if (survey != null) {
-                continue;
-            }
-            //NOT exists. Create a new survey and add to never
-            buildNext(orgUnitProgramRelation.getOrgUnit(), orgUnitProgramRelation.getProgram());
-        }
     }
 
 }
