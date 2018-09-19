@@ -20,7 +20,7 @@
 package org.eyeseetea.malariacare.domain.usecase.pull;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullMetadataController;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.domain.boundary.IBuildPlannedController;
 import org.eyeseetea.malariacare.domain.boundary.IMetadataValidator;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
 import org.eyeseetea.malariacare.domain.boundary.IPullMetadataController;
@@ -51,6 +51,7 @@ public class PullUseCase implements UseCase {
     private final IPullMetadataController mPullMetadataController;
     private final IPullDataController mPullDataController;
     private final IMetadataValidator mMetadataValidator;
+    private final IBuildPlannedController mBuildPlannedController;
     private Callback mCallback;
     private SurveyFilter mPullDataFilters;
     private Boolean pullCanceled = false;
@@ -60,12 +61,14 @@ public class PullUseCase implements UseCase {
             IMainExecutor mainExecutor,
             IPullMetadataController pullMetadataController,
             IPullDataController pullDataController,
+            IBuildPlannedController buildPlannedController,
             IMetadataValidator metadataValidator) {
         mAsyncExecutor = asyncExecutor;
         mMainExecutor = mainExecutor;
         mPullMetadataController = pullMetadataController;
         mPullDataController = pullDataController;
         mMetadataValidator = metadataValidator;
+        mBuildPlannedController = buildPlannedController;
     }
 
     public void execute(SurveyFilter surveyFilter, final Callback callback) {
@@ -124,8 +127,7 @@ public class PullUseCase implements UseCase {
                 if(pullCanceled){
                     notifyCancel();
                 }else {
-                    SurveyPlanner.getInstance().buildNext();
-                    notifyOnComplete();
+                    buildPlannedSurveys();
                 }
             }
 
@@ -139,6 +141,24 @@ public class PullUseCase implements UseCase {
                 notifyError(throwable);
             }
         });
+    }
+
+    private void buildPlannedSurveys() {
+        try {
+            mBuildPlannedController.buildPlanningSurveys(new IBuildPlannedController.Callback() {
+                @Override
+                public void onComplete() {
+                    notifyOnComplete();
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    notifyError(throwable);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void notifyOnStep(final PullStep step) {
@@ -163,6 +183,7 @@ public class PullUseCase implements UseCase {
         mMainExecutor.run(new Runnable() {
             @Override
             public void run() {
+                throwable.printStackTrace();
                 if (throwable instanceof NetworkException) {
                     mCallback.onNetworkError();
                 } else if (throwable instanceof MetadataException) {
