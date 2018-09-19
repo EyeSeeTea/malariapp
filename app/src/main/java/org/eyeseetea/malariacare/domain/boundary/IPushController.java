@@ -19,6 +19,8 @@
 
 package org.eyeseetea.malariacare.domain.boundary;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
+
 public interface IPushController {
 
     enum Kind {EVENTS, PLANS}
@@ -30,7 +32,7 @@ public interface IPushController {
     void changePushInProgress(boolean inProgress);
 
     interface IPushControllerCallback {
-        void onComplete();
+        void onComplete(PushController.Kind kind);
 
         void onError(Throwable throwable);
 

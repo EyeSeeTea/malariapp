@@ -222,7 +222,9 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Title
         TextView textView = (TextView) rowLayout.findViewById(R.id.planning_title);
-        textView.setText(plannedHeader.getTitleHeader());
+        String titleHeader = String.format("%s (%d)",
+                context.getString(plannedHeader.getTitleHeader()), plannedHeader.getCounter());
+        textView.setText(titleHeader);
         ImageView img = (ImageView) rowLayout.findViewById(R.id.planning_image_cross);
 
         int color  = PreferencesState.getInstance().getContext().getResources().getColor(
@@ -308,7 +310,6 @@ public class PlannedAdapter extends BaseAdapter {
 
         //Planned survey -> onclick startSurvey
         actionButton.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
-        rowLayout.setOnClickListener(new CreateOrEditSurveyListener(plannedSurvey.getSurvey()));
 
         return rowLayout;
     }
@@ -339,25 +340,6 @@ public class PlannedAdapter extends BaseAdapter {
         public void onClick(View v) {
             DashboardActivity activity = ((DashboardActivity) context);
             activity.onSurveySelected(survey);
-//            if(survey.getStatus()==Constants.SURVEY_PLANNED){
-//                survey=SurveyPlanner.getInstance().startSurvey(survey);
-//            }
-//
-//            Session.setSurveyByModule(survey);
-//            activity.prepareLocationListener(survey);
-//            //FIXME
-//
-//            activity.initSurveyFromPlanning();
-
-            // de development
-//            DashboardActivity activity = ((DashboardActivity) context);
-//            if(survey.getStatus()==Constants.SURVEY_PLANNED){
-//                survey=SurveyPlanner.getInstance().startSurvey(survey);
-//            }
-//            activity.prepareLocationListener(survey);
-//            //FIXME
-//
-//            activity.initSurveyFromPlanning(survey);
         }
     }
 

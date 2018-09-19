@@ -36,14 +36,14 @@ import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.filters.OrgUnitProgramFilterView;
 
-import java.util.List;
-
 public class ImproveModuleController extends ModuleController {
 
     FeedbackFragment feedbackFragment;
     PlanActionFragment mPlanActionFragment;
 
     OrgUnitProgramFilterView orgUnitProgramFilterView;
+
+    private boolean isSurveyFeedbackOpen;
 
     public ImproveModuleController(ModuleSettings moduleSettings){
         super(moduleSettings);
@@ -77,25 +77,16 @@ public class ImproveModuleController extends ModuleController {
     }
 
     public void onTabChanged(){
-        if (fragment == null || !fragment.isAdded()) {
-            reloadFragment();
+        if (!isSurveyFeedbackOpen) {
+            if (fragment == null || !fragment.isAdded()) {
+                reloadFragment();
+            }
+            if (isFragmentActive(FeedbackFragment.class) || isFragmentActive(
+                    PlanActionFragment.class)) {
+                return;
+            }
+            super.onTabChanged();
         }
-        if(isFragmentActive(FeedbackFragment.class) || isFragmentActive(PlanActionFragment.class)){
-           return;
-        }
-
-        List<SurveyDB> surveys;
-
-        if(PreferencesState.getInstance().isLastForOrgUnit()) {
-            surveys = SurveyDB.getLastSentSurveysByProgramAndOrgUnit(
-                    PreferencesState.getInstance().getProgramUidFilter(),
-                    PreferencesState.getInstance().getOrgUnitUidFilter());
-
-            if (surveys.size() == 1)
-                onFeedbackSelected(surveys.get(0), true);
-        }
-
-        super.onTabChanged();
     }
 
     public void onBackPressed() {
@@ -104,7 +95,7 @@ public class ImproveModuleController extends ModuleController {
             super.onBackPressed();
             return;
         }
-
+        isSurveyFeedbackOpen = false;
         closeFeedbackFragment();
     }
 
@@ -122,6 +113,7 @@ public class ImproveModuleController extends ModuleController {
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
         ActionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
+        isSurveyFeedbackOpen = true;
 
         if(modifyFilter) {
             UpdateFiltersBySurvey(survey);

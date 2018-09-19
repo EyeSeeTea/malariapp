@@ -43,6 +43,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
+import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
@@ -69,7 +71,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
     /**
      * Progress dialog shown while loading
      */
-    private ProgressBar progressBar;
+    private RelativeLayout progressBarContainer;
 
     /**
      * Checkbox that toggle between all|failed questions
@@ -103,12 +105,15 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     RelativeLayout llLayout;
 
+    AFeedbackFragmentStrategy mFeedbackFragmentStrategy;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         FragmentActivity faActivity = (FragmentActivity) super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
+        mFeedbackFragmentStrategy = new FeedbackFragmentStrategy();
         prepareUI(moduleName);
         //Starts the background service only one time
         startProgress();
@@ -161,7 +166,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     private void prepareUI(String module) {
         //Get progress
-        progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
+        progressBarContainer = (RelativeLayout) llLayout.findViewById(R.id.survey_progress_container);
 
         //Set adapter and list
         feedbackAdapter = new FeedbackAdapter(getActivity(),
@@ -219,13 +224,13 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
             item.setText(String.format("%.1f%%", average));
             int colorId = LayoutUtils.trafficColor(average);
-            item.setTextColor(getResources().getColor(colorId));
+            mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
         } else {
             CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
             item.setText(String.format("NaN"));
             float average = 0;
             int colorId = LayoutUtils.trafficColor(average);
-            item.setTextColor(getResources().getColor(colorId));
+            mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
         }
     }
 
@@ -238,7 +243,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      * Stops progress view and shows real data
      */
     private void stopProgress() {
-        this.progressBar.setVisibility(View.GONE);
+        this.progressBarContainer.setVisibility(View.GONE);
         this.feedbackListView.setVisibility(View.VISIBLE);
     }
 
@@ -247,8 +252,7 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     private void startProgress() {
         this.feedbackListView.setVisibility(View.GONE);
-        this.progressBar.setVisibility(View.VISIBLE);
-        this.progressBar.setEnabled(true);
+        this.progressBarContainer.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -312,9 +316,11 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
-                    PREPARE_FEEDBACK_ACTION_ITEMS);
-            loadItems(feedbackList);
+            if (SurveyService.PREPARE_FEEDBACK_ACTION.equals(intent.getAction())) {
+                List<Feedback> feedbackList = (List<Feedback>) Session.popServiceValue(
+                        PREPARE_FEEDBACK_ACTION_ITEMS);
+                loadItems(feedbackList);
+            }
         }
     }
 

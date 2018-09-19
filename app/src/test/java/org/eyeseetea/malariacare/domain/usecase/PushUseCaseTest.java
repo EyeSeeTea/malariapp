@@ -27,11 +27,12 @@ import static org.mockito.Mockito.when;
 
 import android.support.annotation.NonNull;
 
+import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.PushController;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -49,8 +50,9 @@ public class PushUseCaseTest {
         PushUseCase pushUseCase = givenAPushUseCase();
 
         pushUseCase.execute(new PushUseCase.Callback() {
+
             @Override
-            public void onComplete() {
+            public void onComplete(PushController.Kind kind) {
                 callbackInvoked(false);
             }
 
@@ -84,7 +86,8 @@ public class PushUseCaseTest {
                 callbackInvoked(false);
             }
         });
-        lock.await();
+
+        lock.await(100, TimeUnit.MILLISECONDS);
         assertThat(invokedInProgressCallback, is(true));
     }
 

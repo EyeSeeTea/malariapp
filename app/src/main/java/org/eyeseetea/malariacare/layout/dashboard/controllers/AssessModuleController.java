@@ -279,23 +279,20 @@ public class AssessModuleController extends ModuleController {
 
                             @Override
                             public void onComplete(SurveyAnsweredRatio surveyAnsweredRatio) {
-                                if (surveyAnsweredRatio.isCompulsoryCompleted()) {
-                                    SurveyDialog.Builder builder = SurveyDialog.newBuilder(
-                                            dashboardActivity, survey);
+                                SurveyDialog.Builder builder = SurveyDialog.newBuilder(
+                                        dashboardActivity, survey);
 
-                                    final View.OnClickListener completeButtonListener =
-                                            new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    onMarkAsCompleted(survey);
-                                                }
-                                            };
+                                final View.OnClickListener completeButtonListener =
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                onMarkAsCompleted(survey);
+                                            }
+                                        };
 
-                                    builder.completeButton(completeButtonListener)
-                                            .bodyTextID(R.string.dialog_pie_chart_label_explanation)
-                                            .build();
-
-                                }
+                                builder.completeButton(completeButtonListener, surveyAnsweredRatio.isCompulsoryCompleted())
+                                        .bodyTextID(R.string.dialog_pie_chart_label_explanation)
+                                        .build();
                             }
                         });
             }
@@ -412,20 +409,7 @@ public class AssessModuleController extends ModuleController {
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
-                        survey.setCompleteSurveyState(getSimpleName());
-
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
-
-                        dashboardController.setNavigatingBackwards(true);
-                        closeSurveyFragment();
-                        if (DashboardOrientation.VERTICAL.equals(
-                                dashboardController.getOrientation())) {
-                            dashboardController.reloadVertical();
-                        }
-                        dashboardController.setNavigatingBackwards(false);
+                        completeAndCloseSurvey();
                     }
                 }).create().show();
     }
@@ -466,23 +450,29 @@ public class AssessModuleController extends ModuleController {
                         R.string.dialog_info_ask_for_completion), survey.getProgram().getName()))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        //Change state
-                        survey.setCompleteSurveyState(getSimpleName());
-                        if (!survey.isInProgress()) {
-                            alertOnCompleteGoToFeedback(survey);
-                        }
-
-                        //Remove from list
-                        ((DashboardUnsentFragment) fragment).removeSurveyFromAdapter(survey);
-                        //Reload sent surveys
-                        ((DashboardUnsentFragment) fragment).reloadToSend();
-
-
+                        completeAndCloseSurvey();
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setCancelable(true)
                 .create().show();
+    }
+
+    private void completeAndCloseSurvey() {
+        SurveyDB survey = Session.getSurveyByModule(getSimpleName());
+        survey.setCompleteSurveyState(getSimpleName());
+
+        if (!survey.isInProgress()) {
+            alertOnCompleteGoToFeedback(survey);
+        }
+
+        dashboardController.setNavigatingBackwards(true);
+        closeSurveyFragment();
+        if (DashboardOrientation.VERTICAL.equals(
+                dashboardController.getOrientation())) {
+            dashboardController.reloadVertical();
+        }
+        dashboardController.setNavigatingBackwards(false);
     }
 
     private void alertOnComplete(SurveyDB survey) {
@@ -546,7 +536,7 @@ public class AssessModuleController extends ModuleController {
         };
 
         final SurveyDialog surveyDialog =  builder.editButton(editButtonListener)
-                .completeButton(completeButtonListener)
+                .completeButton(completeButtonListener, true)
                 .deleteButton(deleteButtonListener)
                 .build();
 

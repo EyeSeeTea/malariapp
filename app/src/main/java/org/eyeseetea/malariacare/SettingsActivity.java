@@ -185,65 +185,10 @@ public class SettingsActivity extends PreferenceActivity implements
      */
     private static void setLanguageOptions(Preference preference) {
         ListPreference listPreference = (ListPreference) preference;
-
-        HashMap<String, String> languages = getAppLanguages(R.string.system_defined);
-
-        CharSequence[] newEntries = new CharSequence[languages.size() + 1];
-        CharSequence[] newValues = new CharSequence[languages.size() + 1];
-        int i = 0;
-        newEntries[i] = PreferencesState.getInstance().getContext().getString(
-                R.string.system_defined);
-        newValues[i] = "";
-        for (String language : languages.keySet()) {
-            i++;
-            String languageCode = languages.get(language);
-            String firstLetter = language.substring(0, 1).toUpperCase();
-            language = firstLetter + language.substring(1, language.length());
-            newEntries[i] = language;
-            newValues[i] = languageCode;
-        }
-
-        listPreference.setEntries(newEntries);
-        listPreference.setEntryValues(newValues);
+        listPreference.setEntries(R.array.languages_strings);
+        listPreference.setEntryValues(R.array.languages_codes);
     }
 
-    /**
-     * This method finds the existing app translations
-     * * @param stringId this string id should be different in all value-xx/string.xml files. Else
-     * the language can be ignored
-     */
-    public static HashMap<String, String> getAppLanguages(int stringId) {
-        HashMap<String, String> languages = new HashMap<>();
-        Context context = PreferencesState.getInstance().getContext();
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        Resources r = context.getResources();
-        Configuration c = r.getConfiguration();
-        Locale currentLocale = c.locale;
-        if (currentLocale.getLanguage().isEmpty()) {
-            currentLocale = new Locale(PreferencesState.getInstance().getPhoneLanguage());
-        }
-        String[] loc = r.getAssets().getLocales();
-        for (int i = 0; i < loc.length; i++) {
-            c.locale = new Locale(loc[i]);
-            Resources res = new Resources(context.getAssets(), metrics, c);
-            String s1 = res.getString(stringId);
-
-            String language = new Locale(loc[i]).getDisplayLanguage(currentLocale);
-            c.locale = new Locale("");
-            Resources res2 = new Resources(context.getAssets(), metrics, c);
-            String s2 = res2.getString(stringId);
-
-            //Compare with the default language
-            if (!s1.equals(s2)) {
-                languages.put(language, loc[i]);
-            }
-            Locale defaultLocale = new Locale(BuildConfig.defaultLocale);
-            languages.put(defaultLocale.getDisplayLanguage(currentLocale),
-                    defaultLocale.getLanguage());
-
-        }
-        return languages;
-    }
     /**
      * {@inheritDoc}
      */

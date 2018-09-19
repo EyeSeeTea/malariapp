@@ -13,6 +13,7 @@ import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.ObsActionPlanDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
 import org.eyeseetea.malariacare.observables.ObservablePush;
 
 import java.util.ArrayList;
@@ -62,8 +63,9 @@ public class ObsActionPlanPresenter {
             }
 
             String formattedNextDate = "NaN";
-            if (mSurvey.getScheduledDate() != null) {
-                formattedNextDate = EventExtended.format(mSurvey.getScheduledDate(),
+            if (mSurvey != null) {
+                formattedNextDate = EventExtended.format(
+                        SurveyPlanner.getInstance().findScheduledDateBySurvey(mSurvey),
                         EventExtended.EUROPEAN_DATE_FORMAT);
             }
 

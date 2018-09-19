@@ -52,6 +52,10 @@ public class EyeSeeTeaApplication extends Application {
 
     public static Permissions permissions;
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

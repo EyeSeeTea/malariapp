@@ -26,10 +26,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -231,6 +229,7 @@ public class DashboardActivity extends BaseActivity {
         super.onResume();
         getSurveysFromService();
         DriveRestController.getInstance().syncMedia();
+        DashboardActivity.dashboardActivity.reloadActiveTab();
     }
 
     @Override
@@ -294,7 +293,6 @@ public class DashboardActivity extends BaseActivity {
         dashboardController.onFeedbackSelected(survey);
     }
 
-
     public void onPlanPerOrgUnitMenuClicked(SurveyDB survey) {
         dashboardController.onPlanPerOrgUnitMenuClicked(survey);
     }
@@ -305,6 +303,7 @@ public class DashboardActivity extends BaseActivity {
     public void onNewSurvey(View view) {
         dashboardController.onNewSurvey();
     }
+
     /**
      * Create new survey from CreateSurveyFragment
      */
@@ -398,5 +397,9 @@ public class DashboardActivity extends BaseActivity {
 
     public void onPlannedSurvey(SurveyDB survey, View.OnClickListener scheduleClickListener) {
         dashboardController.onPlannedSurvey(survey, scheduleClickListener);
+    }
+
+    public void reloadActiveTab() {
+        dashboardController.reloadActiveModule();
     }
 }

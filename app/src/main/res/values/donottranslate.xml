@@ -31,6 +31,7 @@
     <string name="regular_font" translatable="false">Roboto-Regular.ttf</string>
     <string name="normal_font" translatable="false">Roboto-Medium.ttf</string>
     <string name="light_font" translatable="false">Roboto-Light.ttf</string>
+    <string name="regular_font" translatable="false">Roboto-Regular.ttf</string>
     <string name="bold_font_name" translatable="false">Roboto-Bold.ttf</string>
     <string name="medium_font_name" translatable="false">Roboto-Medium.ttf</string>
     <string name="condensed_font_name" translatable="false">Roboto-Condensed.ttf</string>
@@ -131,4 +132,13 @@
 
     <string name="user_preference_program_filter" translatable="false">user_preference_program_filter</string>
     <string name="user_preference_org_unit_filter" translatable="false">user_preference_org_unit_filter</string>
+    <string-array name="languages_codes" translatable="false">
+        <item>system_defined</item>
+        <item>en</item>
+        <item>fr</item>
+        <item>es</item>
+        <item>pt</item>
+        <item>km</item>
+        <item>lo</item>
+    </string-array>
 </resources>
