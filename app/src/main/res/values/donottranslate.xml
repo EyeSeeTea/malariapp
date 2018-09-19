@@ -140,4 +140,5 @@
         <item>km</item>
         <item>lo</item>
     </string-array>
+    <string name="feedback_url" translatable="false">https://apps.psi-mis.org/hnqis/feedback?eventId=%s&amp;server=%s</string>
 </resources>

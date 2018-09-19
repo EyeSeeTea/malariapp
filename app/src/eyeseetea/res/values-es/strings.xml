@@ -285,4 +285,14 @@ clínica"</string>
 <string name="health_facility">Centro Médico</string>
 <string name="monitor_js_multiple_event_legend" >"(*)Hay más de una encuesta en el mismo mes"</string>
 <string name="dialog_pie_chart_label_explanation">"El círculo exterior muestra el nivel de completado.\n\nEl círculo interior muestra el nivel de completado de las preguntas obligatorias, normalmente marcadas con un *. Solo cuando se complete el 100% de las preguntas obligatorias, puede 'Marcar completa'"</string>
+<string name="survey_not_assigned_facility">"Esta encuesta no está asignada a esta instalación. Por favor, selecciona otra encuesta."</string>
+<string-array name="languages_strings">
+    <item>Definido por el Sistema</item>
+    <item>Inglés</item>
+    <item>Francés</item>
+    <item>Español</item>
+    <item>Portugués</item>
+    <item>Khmer</item>
+    <item>Lao</item>
+</string-array>
 </resources>

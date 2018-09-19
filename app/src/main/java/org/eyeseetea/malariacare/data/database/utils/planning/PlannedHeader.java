@@ -109,7 +109,7 @@ public class PlannedHeader implements PlannedItem {
      */
     public static PlannedHeader buildNeverHeader(){
         return new PlannedHeader(R.string.dashboard_title_planned_type_never,
-                R.color.red,
+                R.color.never_assessed_background,
                 R.color.white_grey,
                 R.color.white);
     }
@@ -120,7 +120,7 @@ public class PlannedHeader implements PlannedItem {
      */
     public static PlannedHeader buildOverdueHeader(){
         return new PlannedHeader(R.string.dashboard_title_planned_type_overdue,
-                R.color.amber,
+                R.color.overdue_background,
                 R.color.white_grey,
                 R.color.white);
     }
@@ -131,7 +131,7 @@ public class PlannedHeader implements PlannedItem {
      */
     public static PlannedHeader buildNext30Header(){
         return new PlannedHeader(R.string.dashboard_title_planned_type_next_30,
-                R.color.green,
+                R.color.next_30_days_background,
                 R.color.white_grey,
                 R.color.white);
     }
@@ -142,7 +142,7 @@ public class PlannedHeader implements PlannedItem {
      */
     public static PlannedHeader buildFutureHeader(){
         return new PlannedHeader(R.string.dashboard_title_planned_type_future,
-                R.color.scoreGrandson,
+                R.color.future_background,
                 R.color.white_grey,
                 R.color.white);
     }

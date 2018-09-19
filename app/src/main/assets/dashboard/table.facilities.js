@@ -120,25 +120,23 @@ function buildRowFacility(facility){
 	//start row
 	var row="<tr class='tr_header'>";
 	//name
-	if(facility != undefined){
-        row=row+"<td class='tr_title' colspan='"+facility.values.length+"  ' >"+facility.name+"</td></tr><tr class='tr_row'>";
-        //value x month
-        for(var i=0;i<facility.values.length;i++){
-            var facilityMonth=facility.values[i];
-            var average=0;
-            if(facilityMonth==null){
-                var average=null;
-            }else{
-                for(var d=0;d<facilityMonth.length;d++){
-                    average+= facilityMonth[d].score;
-                }
-                average=average/facilityMonth.length;
-                average=Math.round(average);
-                if(facilityMonth.length>1){
-                    showMultipleEventLegend();
-                }
-             }
-          }
+	row=row+"<td class='tr_title' colspan='"+facility.values.length+"  ' >"+facility.name+"</td></tr><tr class='tr_row'>";
+	//value x month
+	for(var i=0;i<facility.values.length;i++){
+		var facilityMonth=facility.values[i];
+		var average=0;
+		if(facilityMonth==null){
+			var average=null;
+		}else{
+			for(var d=0;d<facilityMonth.length;d++){
+				average+= facilityMonth[d].score;
+			}
+			average=average/facilityMonth.length;
+			average=Math.round(average);
+            if(facilityMonth.length>1){
+                showMultipleEventLegend();
+            }
+		}
 
         row=row+""+buildColorXScore(average,facilityMonth)+""+buildCellXScore(average)+"</span></div></td>";
 	}

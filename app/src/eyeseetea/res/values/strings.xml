@@ -290,4 +290,14 @@ evaluation"</string>
 <string name="health_facility">Health Facility</string>
 <string name="monitor_js_multiple_event_legend">"(*)More than one survey exist in the same month"</string>
 <string name="dialog_pie_chart_label_explanation">"The outer circle shows you the overall completion.\n\nThe inner circle shows you the completion of mandatory questions, normally marked with an *. Only when 100% of the mandatory questions are completed, you can 'Mark Complete'"</string>
+<string name="survey_not_assigned_facility">"This survey is not assigned to this facility. Please, select another survey."</string>
+<string-array name="languages_strings">
+    <item>System defined</item>
+    <item>English</item>
+    <item>French</item>
+    <item>Spanish</item>
+    <item>Portuguese</item>
+    <item>Khmer</item>
+    <item>Lao</item>
+</string-array>
 </resources>

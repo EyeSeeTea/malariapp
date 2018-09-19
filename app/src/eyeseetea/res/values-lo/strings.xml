@@ -294,4 +294,14 @@
 <string name="monitor_js_multiple_event_legend" >"(*) ມີການສໍາຫຼວດຫຼາຍກວ່າຫນຶ່ງເດືອນໃນເດືອນດຽວກັນ"</string>
 <string name="dialog_pie_chart_label_explanation">"ວົງກົມພາຍນອກສະແດງໃຫ້ທ່ານເຫັນວ່າການສໍາເລັດສົມບູນ.\n\nວົງກົມພາຍໃນສະແດງໃຫ້ເຫັນວ່າທ່ານໄດ້ສໍາເລັດຄໍາຖາມບັງຄັບ, ໂດຍປົກກະຕິຫມາຍດ້ວຍ *. ພຽງແຕ່ເມື່ອມີຄໍາຕອບ 100% ແລ້ວ, ທ່ານສາມາດຫມາຍສໍາເລັດ."</string>
 <string name="assessment_title_overall_mandatory_completed">"ລວມ / ບັງຄັບແລ້ວສົມບູນ"</string>
+<string name="survey_not_assigned_facility">"ການສໍາຫຼວດນີ້ບໍ່ໄດ້ມອບຫມາຍໃຫ້ສະຖານທີ່ນີ້. ກະລຸນາເລືອກການສໍາຫຼວດອື່ນ."</string>
+ <string-array name="languages_strings">
+      <item>ລະບົບກໍານົດ</item>
+      <item>ພາສາອັງກິດ</item>
+      <item>ພາສາຝຣັ່ງ</item>
+      <item>ພາສາສະເປນ</item>
+      <item>ໂປຕຸເກດ</item>
+      <item>ພາສາອັງກິດ</item>
+      <item>ລາວ</item>
+ </string-array>
 </resources>

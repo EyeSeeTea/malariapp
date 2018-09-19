@@ -298,4 +298,15 @@ evaluation"</string>
 <string name="health_facility">មជ្ឈមណ្ឌលវេជ្ជសាស្ត្រ</string>
 <string name="monitor_js_multiple_event_legend" >"(*) ការស្ទង់មតិច្រើនជាងមួយមាននៅក្នុងខែដដែល"</string>
 <string name="dialog_pie_chart_label_explanation">"រង្វង់ខាងក្រៅបង្ហាញអ្នកអំពីការបញ្ចប់ជារួម។\n\nរង្វង់ខាងក្នុងបង្ហាញអ្នកអំពីការបញ្ចប់សំណួរដែលចាំបាច់ជាធម្មតាត្រូវបានសម្គាល់ដោយ * ។ នៅពេលតែ 100% នៃសំណួរចាំបាច់ត្រូវបានបញ្ចប់អ្នកអាចសម្គាល់បានពេញលេញ"</string>
+<string name="survey_not_assigned_facility">"ការស្ទង់មតិនេះមិនត្រូវបានកំណត់ទៅកន្លែងនេះទេ។ សូមជ្រើសរើសការស្ទង់មតិផ្សេងទៀត។"</string>
+
+<string-array name="languages_strings">
+    <item>បានកំណត់ប្រព័ន្ធ</item>
+    <item>អង់គ្លេស</item>
+    <item>ភាសាបារាំង</item>
+    <item>អេស្ប៉ាញ</item>
+    <item>ព័រទុយហ្គាល់</item>
+    <item>ភាសាខ្មែរ</item>
+    <item>ឡាវ</item>
+</string-array>
 </resources>
