@@ -61,8 +61,7 @@ public class PlannedStyleStrategy {
             mImg.setColorFilter(PreferencesState.getInstance().getContext().getResources().getColor(
                     R.color.white));
         } else {
-            if (mPlannedHeader.getTitleHeader().contains(
-                    context.getString(R.string.dashboard_title_planned_type_never))) {
+            if (mPlannedHeader.getTitleHeader()==R.string.dashboard_title_planned_type_never) {
                 mColor = PreferencesState.getInstance().getContext().getResources().getColor(
                         R.color.white);
                 Typeface font = Typeface.createFromAsset(context.getAssets(),
