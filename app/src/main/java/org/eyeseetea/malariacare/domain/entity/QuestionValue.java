@@ -73,4 +73,8 @@ public class QuestionValue {
                 ", value='" + value + '\'' +
                 '}';
     }
+
+    public void markAsConflict() {
+
+    }
 }

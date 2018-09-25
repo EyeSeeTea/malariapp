@@ -85,7 +85,7 @@ public class SyncFactory {
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
-        return new SurveySDKDhisDataSource(serverMetadataRepository,
+        return new SurveySDKDhisDataSource(context, serverMetadataRepository,
                 questionRepository, optionRepository, connectivityManager);
     }
 

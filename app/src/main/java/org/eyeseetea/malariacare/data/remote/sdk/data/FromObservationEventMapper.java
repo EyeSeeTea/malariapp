@@ -21,15 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FromObservationEventMapper {
+public class FromObservationEventMapper extends EventMapper {
     private String TAG = "FromObservationEventMapper";
-    private final Context mContext;
-    private final String mUsername;
     private Map<String, Survey> surveysMap;
 
     public FromObservationEventMapper(Context context, String username, List<Survey> surveys) {
-        mContext = context;
-        mUsername = username;
+        super(context,username);
 
         createMaps(surveys);
     }
@@ -58,7 +55,10 @@ public class FromObservationEventMapper {
         Survey relatedSurvey = surveysMap.get(observation.getSurveyUid());
 
         try {
-            Event event = buildEvent(observation,relatedSurvey, false);
+            Log.d(TAG, "build event " + observation.getSurveyUid());
+            Event event = buildEvent(relatedSurvey.getOrgUnitUId(), relatedSurvey.getProgramUId(),
+                    false);
+
             event.setCreated(new DateTime(relatedSurvey.getCreationDate()));
             event.setUId(observation.getSurveyUid());
             event.setEventDate(new DateTime(relatedSurvey.getCreationDate()));
@@ -78,62 +78,10 @@ public class FromObservationEventMapper {
             return event;
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = createErrorConversionMessage(errorMessage, observation, relatedSurvey);
+            errorMessage = createErrorConversionMessage(errorMessage, observation,
+                    relatedSurvey.getOrgUnitUId(), relatedSurvey.getProgramUId());
             throw new ConversionException(observation, errorMessage);
         }
-    }
-
-    private String createErrorConversionMessage(String errorMessageBase, Observation observation,
-            Survey relatedSurvey) {
-        String program = "";
-        String orgUnit = "";
-
-        program = relatedSurvey.getProgramUId();
-        orgUnit = relatedSurvey.getOrgUnitUId();
-
-        if (observation.getValues() != null) {
-            Log.d(TAG, "DataValues:" + observation.getValues().toString());
-        }
-
-        return ": " + errorMessageBase + " surveyUid: " + observation.getSurveyUid()
-                + "program: " + program + " OrgUnit: "
-                + orgUnit + "data: " + observation.toString();
-    }
-
-    private Event buildEvent(Observation observation,
-            Survey relatedSurvey, boolean isNew) throws Exception {
-        Event event = new Event();
-        event.setStatus(Event.EventStatus.COMPLETED);
-        event.setOrgUnit(relatedSurvey.getOrgUnitUId());
-        event.setProgram(relatedSurvey.getProgramUId());
-        event.setProgramStage(relatedSurvey.getProgramUId());
-
-        if (isNew) {
-            updateEventLocation(event);
-        }
-
-        Log.d(TAG, "build event " + event.getUId());
-        return event;
-    }
-
-    private void updateEventLocation(Event event) throws Exception {
-        Location lastLocation = LocationMemory.get(event.getUId());
-        //If location is required but there is no location -> exception
-        if (PreferencesState.getInstance().isLocationRequired() && lastLocation == null) {
-            throw new Exception(
-                    mContext.getString(R.string.dialog_error_push_no_location_and_required));
-        }
-
-        //No location + not required -> done
-        if (lastLocation == null) {
-            return;
-        }
-
-        //location -> set lat/lng
-        Coordinates coordinates =
-                new Coordinates(lastLocation.getLatitude(),lastLocation.getLongitude());
-
-        event.setCoordinate(coordinates);
     }
 
     private void createMaps(List<Survey> surveys) {

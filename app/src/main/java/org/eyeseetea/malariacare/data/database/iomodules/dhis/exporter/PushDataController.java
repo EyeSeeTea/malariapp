@@ -48,6 +48,7 @@ import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -126,18 +127,22 @@ public class PushDataController implements IPushController {
             ISyncDataRemoteDataSource syncDataRemoteDataSource,
             IPushControllerCallback callback) throws Exception {
 
-        List<? extends ISyncData> syncData = syncDataLocalDataSource.getDataToSync();
+        List<? extends ISyncData> syncDataList = syncDataLocalDataSource.getDataToSync();
 
         try {
-            if (syncData.size() == 0) {
+            if (syncDataList.size() == 0) {
                 callback.onError(new DataToPushNotFoundException("Not Exists " +
                         dataClass.getSimpleName() + "s to push"));
             }else{
-                markAsSending(syncData, syncDataLocalDataSource);
+                markAsSending(syncDataList, syncDataLocalDataSource);
 
-                Map<String, PushReport> pushReportMap = syncDataRemoteDataSource.save(syncData);
+                for (ISyncData syncDataItem: syncDataList) {
+                    syncDataItem.changeUploadDate(new Date());
+                }
 
-                handlePushReports(pushReportMap, syncData, callback, syncDataLocalDataSource);
+                Map<String, PushReport> pushReportMap = syncDataRemoteDataSource.save(syncDataList);
+
+                handlePushReports(pushReportMap, syncDataList, callback, syncDataLocalDataSource);
             }
 
         } catch (ConversionException e) {
@@ -146,7 +151,7 @@ public class PushDataController implements IPushController {
             callback.onInformativeError(e);
             callback.onError(e);
         } catch (PushReportException | PushDhisException e){
-            markDataAsRetry(syncData, syncDataLocalDataSource);
+            markDataAsRetry(syncDataList, syncDataLocalDataSource);
 
             callback.onError(e);
         } catch (Exception e) {
@@ -167,7 +172,7 @@ public class PushDataController implements IPushController {
 
                     if (pushReport == null) {
                         syncDataItem.markAsRetrySync();
-                        Log.d(TAG, "Error saving survey: report is null in this survey: "
+                        Log.d(TAG, "Error saving data: report is null in this survey: "
                                 + syncDataItem.getSurveyUid());
 
                     }else {

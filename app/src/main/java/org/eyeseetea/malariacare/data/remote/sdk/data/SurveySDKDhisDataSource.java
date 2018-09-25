@@ -19,10 +19,15 @@
 
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
+import android.content.Context;
+
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
+import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
@@ -37,6 +42,7 @@ import org.eyeseetea.malariacare.domain.exception.NetworkException;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 import org.hisp.dhis.client.sdk.android.api.D2;
 import org.hisp.dhis.client.sdk.core.event.EventFilters;
+import org.hisp.dhis.client.sdk.models.common.importsummary.ImportSummary;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.organisationunit.OrganisationUnit;
 import org.hisp.dhis.client.sdk.models.program.Program;
@@ -58,11 +64,13 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
     private final IConnectivityManager mConnectivityManager;
+    private final Context mContext;
 
-    public SurveySDKDhisDataSource(IServerMetadataRepository serverMetadataRepository,
+    public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
             IQuestionRepository questionRepository,
             IOptionRepository optionRepository,
             IConnectivityManager connectivityManager) {
+        this.mContext = context;
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
@@ -88,20 +96,27 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
 
 
     @Override
-    public Map<String, PushReport> save(List<? extends ISyncData> surveys) throws Exception {
-        /*        FromObservationEventMapper eventMapper = FromObservationEventMapper();
+    public Map<String, PushReport> save(List<? extends ISyncData> syncData) throws Exception {
+        List<Survey> surveys = (List<Survey>) syncData;
 
-        List<Event> events = eventMapper.mapEvents(surveys);
-        List<Event> eventUids = new ArrayList<>();
+        FromSurveyEventMapper eventMapper =
+                new FromSurveyEventMapper(mContext, getSafeUsername());
+
+        List<Event> events = eventMapper.map(surveys);
+        Set<String> eventUIds = new HashSet<>();
 
         for (Event event:events) {
-            D2.events().save(event).toBlocking();
-            eventUids.add(event.getUId());
+            D2.events().save(event).toBlocking().single();
+            eventUIds.add(event.getUId());
         }
 
-        Map<String,ImportSummary> importSummaryMap = D2.events().push(eventUids).toBlocking();*/
+        Map<String,ImportSummary> importSummaryMap =
+                D2.events().push(eventUIds).toBlocking().single();
 
-        return null;
+        Map<String, PushReport> pushReportMap =
+                PushReportMapper.mapFromImportSummariesToPushReports(importSummaryMap);
+
+        return pushReportMap;
     }
 
     private void pullEvents(SurveyFilter filters) {
@@ -183,5 +198,12 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
         return allPrograms;
     }
 
+    private String getSafeUsername() {
+        UserDB user = Session.getUser();
+        if (user != null) {
+            return user.getUsername();
+        }
+        return "";
+    }
 
 }

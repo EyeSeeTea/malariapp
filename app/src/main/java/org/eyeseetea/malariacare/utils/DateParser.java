@@ -36,4 +36,8 @@ public class DateParser {
             return null;
         }
     }
+
+    public static String format(Date date, String format) {
+        return (date != null) ? new SimpleDateFormat(format).format(date) : null;
+    }
 }

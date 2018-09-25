@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Survey implements ISyncData{
+public class Survey implements ISyncData {
 
     private final String uId;
     private final String programUId;
@@ -21,10 +21,10 @@ public class Survey implements ISyncData{
     private List<QuestionValue> values;
 
     private Survey(String uId, String programUId, String orgUnitUId, String userUId) {
-        this.uId=required(uId, "Survey uid is required");
-        this.programUId=required(programUId, "Survey programUId is required");
-        this.orgUnitUId=required(orgUnitUId, "Survey orgUnitUId is required");
-        this.userUId=required(userUId, "Survey userUId is required");
+        this.uId = required(uId, "Survey uid is required");
+        this.programUId = required(programUId, "Survey programUId is required");
+        this.orgUnitUId = required(orgUnitUId, "Survey orgUnitUId is required");
+        this.userUId = required(userUId, "Survey userUId is required");
         this.values = new ArrayList<>();
 
         creationDate = new Date();
@@ -163,32 +163,46 @@ public class Survey implements ISyncData{
 
     @Override
     public void markAsSending() {
-
+        changeStatus(SurveyStatus.SENDING);
     }
 
     @Override
     public void markAsErrorConversionSync() {
-
+        changeStatus(SurveyStatus.ERRORCONVERSIONSYNC);
     }
 
     @Override
     public void markAsRetrySync() {
-
+        changeStatus(SurveyStatus.QUARANTINE);
     }
 
     @Override
     public void markAsSent() {
-
+        changeStatus(SurveyStatus.SENT);
     }
 
     @Override
     public void markAsConflict() {
-
+        changeStatus(SurveyStatus.CONFLICT);
     }
 
     @Override
-    public void markValueAsConflict(String uid) {
+    public void markValueAsConflict(String questionUid) {
+        QuestionValue conflictValue = null;
 
+        for (QuestionValue value : values) {
+            if (value.getQuestionUId().equals(questionUid)) {
+                conflictValue = value;
+                break;
+            }
+        }
+
+        if (conflictValue == null) {
+            throw new IllegalArgumentException("No exists value in survey, questionUid:"
+                    + questionUid);
+        } else {
+            conflictValue.markAsConflict();
+        }
     }
 
     @Override

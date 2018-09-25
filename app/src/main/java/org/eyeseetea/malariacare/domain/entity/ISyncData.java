@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import java.util.Date;
+
 public interface ISyncData {
     String getSurveyUid();
     void markAsSending();
@@ -8,4 +10,5 @@ public interface ISyncData {
     void markAsSent();
     void markAsConflict();
     void markValueAsConflict(String uid);
+    void changeUploadDate(Date date);
 }
