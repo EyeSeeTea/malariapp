@@ -12,6 +12,7 @@ import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
+import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.model.ScoreDB;
@@ -89,7 +90,7 @@ public class SurveyLocalDataSource implements ISyncDataLocalDataSource {
 
         SurveyMapper surveyMapper = new SurveyMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
-                OptionDB.list(), UserDB.list(), ScoreDB.list());
+                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
 
         List<Survey> surveys = surveyMapper.mapSurveys(surveyDBS);
 

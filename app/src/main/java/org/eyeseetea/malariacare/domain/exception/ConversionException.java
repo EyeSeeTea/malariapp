@@ -10,19 +10,19 @@ public class ConversionException extends Exception {
         mFailedSyncData = failedSyncData;
     }
 
-    //TODO: remove this constructor
+    //TODO: jsanchez remove this constructor
     public ConversionException(Exception e) {
         super("Error in conversion" + e.getMessage());
         e.printStackTrace();
     }
 
-    //TODO: remove this constructor
+    //TODO: jsanchez remove this constructor
     public ConversionException(String message) {
         super("Error in conversion"+ message);
         System.out.println(ConversionException.class.getName() + message);
     }
 
-    //TODO: remove this constructor
+    //TODO: jsanchez remove this constructor
     public ConversionException() {
         super("Error in conversion");
     }

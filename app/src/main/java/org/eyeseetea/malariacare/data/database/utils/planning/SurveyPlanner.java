@@ -162,6 +162,8 @@ public class SurveyPlanner {
     }
 
     public Date findScheduledDateBySurvey(SurveyDB survey) {
+        //TODO: jsanchez When this class use domain entities, remember that next scheduleDate is a values
+        // returned by domain survey
         if (survey == null) {
             return null;
         }

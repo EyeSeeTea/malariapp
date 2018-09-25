@@ -65,7 +65,7 @@ public class PullMetadataController implements IPullMetadataController {
 
     @Override
     public void pullMetadata(final IPullMetadataController.Callback callback) {
-        //TODO: when we decoupled from dhis metadata review this
+        //TODO: jsanchez when we decoupled from dhis metadata review this
         //should we remove login user in pull process?
         //In any case if we remove the user table in wipeDatabase then remove also session user
         AppDatabase.wipeDatabase();

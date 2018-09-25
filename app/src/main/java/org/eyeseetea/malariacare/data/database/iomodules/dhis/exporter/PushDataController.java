@@ -23,7 +23,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
@@ -137,7 +136,7 @@ public class PushDataController implements IPushController {
                 markAsSending(syncDataList, syncDataLocalDataSource);
 
                 for (ISyncData syncDataItem: syncDataList) {
-                    syncDataItem.changeUploadDate(new Date());
+                    syncDataItem.assignUploadDate(new Date());
                 }
 
                 Map<String, PushReport> pushReportMap = syncDataRemoteDataSource.save(syncDataList);

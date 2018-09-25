@@ -3,6 +3,7 @@ package org.eyeseetea.malariacare.domain.entity;
 import org.eyeseetea.malariacare.domain.utils.RequiredChecker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Observation implements ISyncData {
@@ -84,6 +85,11 @@ public class Observation implements ISyncData {
     @Override
     public void markValueAsConflict(String uid) {
         //for now observationValue does not save conflict in values
+    }
+
+    @Override
+    public void assignUploadDate(Date date) {
+        //for now observation does not update UploadDate
     }
 
     @Override

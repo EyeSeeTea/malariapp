@@ -99,8 +99,11 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
     public Map<String, PushReport> save(List<? extends ISyncData> syncData) throws Exception {
         List<Survey> surveys = (List<Survey>) syncData;
 
+        ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
+        List<Option> options = mOptionRepository.getAll();
+
         FromSurveyEventMapper eventMapper =
-                new FromSurveyEventMapper(mContext, getSafeUsername());
+                new FromSurveyEventMapper(mContext, getSafeUsername(), options, serverMetadata);
 
         List<Event> events = eventMapper.map(surveys);
         Set<String> eventUIds = new HashSet<>();

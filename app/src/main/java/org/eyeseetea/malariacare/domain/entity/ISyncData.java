@@ -10,5 +10,5 @@ public interface ISyncData {
     void markAsSent();
     void markAsConflict();
     void markValueAsConflict(String uid);
-    void changeUploadDate(Date date);
+    void assignUploadDate(Date date);
 }

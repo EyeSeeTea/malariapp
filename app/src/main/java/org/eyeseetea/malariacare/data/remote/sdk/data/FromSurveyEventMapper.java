@@ -27,6 +27,7 @@ import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
@@ -171,7 +172,7 @@ public class FromSurveyEventMapper extends EventMapper {
     }
 
     private void buildControlDataElements(Survey survey,
-            Event event) {
+            Event event) throws CalculateNextScheduledDateException {
 
         if (mServerMetadata.getOverallScore() != null && survey.getScore() != null){
             TrackedEntityDataValue dataValue = createDataValue(event,
@@ -211,7 +212,7 @@ public class FromSurveyEventMapper extends EventMapper {
 
         if (mServerMetadata.getForwardOrder() != null){
             TrackedEntityDataValue dataValue = createDataValue(event,
-                    mServerMetadata.getUploadBy().getUId(),
+                    mServerMetadata.getForwardOrder().getUId(),
                     mContext.getString(R.string.forward_order_value));
             event.getDataValues().add(dataValue);
         }
@@ -258,16 +259,15 @@ public class FromSurveyEventMapper extends EventMapper {
         if (mServerMetadata.getOverallProductivity() != null ){
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getOverallProductivity().getUId(),
-                    survey.getProductivity())
-                    Integer.toString(OrgUnitProgramRelationDB.getProductivity(survey));
+                    String.valueOf(survey.getProductivity()));
+                    //Integer.toString(OrgUnitProgramRelationDB.getProductivity(survey));
             event.getDataValues().add(dataValue);
         }
 
         if (mServerMetadata.getNextAssessment() != null){
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getNextAssessment().getUId(),
-                    DateParser.format(
-                            SurveyPlanner.getInstance().findScheduledDateBySurvey(survey),
+                    DateParser.format(survey.calculateNextScheduledDate(),
                             DHIS2_GMT_DATE_FORMAT));
             event.getDataValues().add(dataValue);
         }

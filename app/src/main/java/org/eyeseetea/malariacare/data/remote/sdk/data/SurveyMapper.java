@@ -11,6 +11,7 @@ import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
+import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 
@@ -117,8 +118,9 @@ public class SurveyMapper {
             }
         }
 
-        Survey survey = Survey.createSentSurvey(eventUid, programUid, orgUnitUid,
-                userUid, creationDate, uploadDate, scheduledDate, completionDate, values, score);
+        //TODO: jsanchez search real productivity
+        Survey survey = Survey.createStoredSurvey(SurveyStatus.SENT, eventUid, programUid, orgUnitUid,
+                userUid, creationDate, uploadDate, scheduledDate, completionDate, values, score,0);
 
         return survey;
     }
