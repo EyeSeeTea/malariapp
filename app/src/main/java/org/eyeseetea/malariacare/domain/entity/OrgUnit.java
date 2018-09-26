@@ -5,6 +5,7 @@ import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class OrgUnit {
 
@@ -12,16 +13,20 @@ public class OrgUnit {
     private final String name;
     private final String orgUnitLevelUid;
     private final List<String> relatedPrograms;
+    private final Map<String,Integer> productivityByOrgUnit;
 
-    public OrgUnit(String uid, String name, String orgUnitLevelUid){
+    public OrgUnit(String uid, String name, String orgUnitLevelUid,
+            Map<String,Integer> productivityByProgram){
         required(uid,"uid is required");
         required(name,"name is required");
         required(orgUnitLevelUid,"orgUnitLevelUid is required");
+        required(productivityByProgram,"productivityByProgram is required");
 
         this.uid = uid;
         this.name = name;
         this.orgUnitLevelUid = orgUnitLevelUid;
         this.relatedPrograms = new ArrayList<>();
+        this.productivityByOrgUnit = productivityByProgram;
     }
 
     public String getUid() {
@@ -42,6 +47,10 @@ public class OrgUnit {
 
     public List<String> getRelatedPrograms() {
         return Collections.unmodifiableList(relatedPrograms);
+    }
+
+    public int getProductivity(String programUId){
+        return productivityByOrgUnit.get(programUId);
     }
 
     @Override
