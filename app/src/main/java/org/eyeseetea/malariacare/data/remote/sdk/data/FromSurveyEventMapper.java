@@ -1,5 +1,6 @@
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
+import static org.eyeseetea.malariacare.utils.DateParser.AMERICAN_DATE_FORMAT;
 import static org.eyeseetea.malariacare.utils.DateParser.DHIS2_GMT_DATE_FORMAT;
 
 import android.content.Context;
@@ -249,8 +250,7 @@ public class FromSurveyEventMapper extends EventMapper {
         if (mServerMetadata.getNextAssessment() != null){
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getNextAssessment().getUId(),
-                    DateParser.format(survey.calculateNextScheduledDate(),
-                            DHIS2_GMT_DATE_FORMAT));
+                    DateParser.format(survey.calculateNextScheduledDate(), AMERICAN_DATE_FORMAT));
             event.getDataValues().add(dataValue);
         }
     }

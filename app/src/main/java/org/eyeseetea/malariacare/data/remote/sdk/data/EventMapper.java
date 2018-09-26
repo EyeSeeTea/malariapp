@@ -39,9 +39,6 @@ public abstract class EventMapper {
         event.setOrgUnit(orgUnitUid);
         event.setProgram(programUid);
 
-        //TODO: jsanchez It's necessary
-        //event.setProgramStage(relatedSurvey.getProgramUId());
-
         if (isNew) {
             updateEventLocation(event);
         }
