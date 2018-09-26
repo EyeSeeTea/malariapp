@@ -16,12 +16,14 @@ import org.eyeseetea.malariacare.data.network.ConnectivityManager;
 import org.eyeseetea.malariacare.data.remote.sdk.data.ObservationSDKDhisDataSource;
 import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
 import org.eyeseetea.malariacare.data.repositories.OptionRepository;
+import org.eyeseetea.malariacare.data.repositories.OrgUnitRepository;
 import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.usecase.PushUseCase;
@@ -83,10 +85,11 @@ public class SyncFactory {
                 new ServerMetadataRepository(context);
         IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
+        IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
         IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, serverMetadataRepository,
-                questionRepository, optionRepository, connectivityManager);
+                questionRepository, optionRepository, orgUnitRepository, connectivityManager);
     }
 
     @NonNull

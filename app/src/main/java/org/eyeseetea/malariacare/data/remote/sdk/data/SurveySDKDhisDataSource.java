@@ -30,10 +30,12 @@ import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
 import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -63,17 +65,18 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
     private final IQuestionRepository mQuestionRepository;
+    private final IOrgUnitRepository mOrgUnitRepository;
     private final IConnectivityManager mConnectivityManager;
     private final Context mContext;
 
     public SurveySDKDhisDataSource(Context context, IServerMetadataRepository serverMetadataRepository,
-            IQuestionRepository questionRepository,
-            IOptionRepository optionRepository,
-            IConnectivityManager connectivityManager) {
+            IQuestionRepository questionRepository, IOptionRepository optionRepository,
+            IOrgUnitRepository orgUnitRepository, IConnectivityManager connectivityManager) {
         this.mContext = context;
         this.mServerMetadataRepository = serverMetadataRepository;
         this.mQuestionRepository = questionRepository;
         this.mOptionRepository = optionRepository;
+        this.mOrgUnitRepository = orgUnitRepository;
         this.mConnectivityManager = connectivityManager;
     }
 
@@ -143,9 +146,10 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
         List<Option> options = mOptionRepository.getAll();
         List<Question> questions = mQuestionRepository.getAll();
+        List<OrgUnit> orgUnits = mOrgUnitRepository.getAll();
         List<CompositeScoreDB> compositeScores = CompositeScoreDB.list();
 
-        SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, compositeScores, questions,
+        SurveyMapper surveyMapper = new SurveyMapper(serverMetadata, orgUnits,compositeScores, questions,
                 options);
 
         List<Event> events = getDownloadedEvents();
