@@ -2,6 +2,7 @@ package org.eyeseetea.malariacare.data.database.datasources;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.From;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -20,6 +21,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
+import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
 import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
@@ -56,22 +58,18 @@ public class SurveyLocalDataSource implements ISyncDataLocalDataSource {
     public void save(ISyncData syncData) {
         Survey survey = (Survey) syncData;
 
-        SurveyDB surveyDB = createMapper().map(survey);
-
-        saveSurveyAndDependencies(surveyDB);
+        saveSurvey(survey);
     }
 
     private void saveSurveys(List<Survey> surveys) {
-
-        List<SurveyDB> surveysDB = createMapper().mapSurveys(surveys);
-
-        for (SurveyDB surveyDB : surveysDB) {
+        for (Survey survey : surveys) {
             try {
-                saveSurveyAndDependencies(surveyDB);
+                save(survey);
             } catch (Exception e) {
-                Log.e(TAG, "An error occurred saving Survey " + surveyDB.getEventUid() + ":" +
-                         e.getMessage());
+                Log.e(TAG, "An error occurred saving Survey " + survey.getUId() + ":" +
+                        e.getMessage());
             }
+
         }
     }
 
@@ -97,7 +95,62 @@ public class SurveyLocalDataSource implements ISyncDataLocalDataSource {
         return surveys;
     }
 
-    private void saveSurveyAndDependencies(SurveyDB surveyDB) {
+    private void saveSurvey(Survey survey) {
+        SurveyDB surveyDB = getSurveyDB(survey.getUId());
+
+        if (surveyDB == null) {
+            add(survey);
+        } else {
+            modify(surveyDB, survey);
+        }
+    }
+
+    private SurveyDB getSurveyDB(String surveyUid) {
+        SurveyDB surveyDB = new Select().from(SurveyDB.class)
+                .where(SurveyDB_Table.uid_event_fk.is(surveyUid)).querySingle();
+
+        if (surveyDB != null) {
+            List<ValueDB> valuesDB =
+                    getSurveyValuesDB(surveyDB.getId_survey());
+
+            surveyDB.setValues(valuesDB);
+        }
+
+        return surveyDB;
+    }
+
+    private List<ValueDB> getSurveyValuesDB(Long surveyId) {
+        return new Select().from(ValueDB.class)
+                .where(ValueDB_Table.id_survey_fk.is(surveyId)).queryList();
+    }
+
+    private void add(Survey survey) {
+        SurveyDB surveyDB = createMapper().mapToAdd(survey);
+
+        saveChanges(surveyDB);
+    }
+
+    private void modify(SurveyDB surveyDB, Survey survey) {
+        surveyDB = createMapper().mapToModify(surveyDB, survey);
+
+        saveChanges(surveyDB);
+
+        deleteNonExistedValuesInModifiedSurvey(surveyDB);
+    }
+
+    private void deleteNonExistedValuesInModifiedSurvey(SurveyDB surveyDB) {
+        List<Long> existedQuestionsInSurvey = new ArrayList<>();
+
+        for (ValueDB valueDB:surveyDB.getValues()) {
+            existedQuestionsInSurvey.add(valueDB.getId_question_fk());
+        }
+
+        new Delete().from(ValueDB.class)
+                .where(ValueDB_Table.id_survey_fk.is(surveyDB.getId_survey()))
+                .and(ValueDB_Table.id_question_fk.notIn(existedQuestionsInSurvey));
+    }
+
+    private void saveChanges(SurveyDB surveyDB) {
         surveyDB.save();
 
         if (surveyDB.getScoreDB() != null) {

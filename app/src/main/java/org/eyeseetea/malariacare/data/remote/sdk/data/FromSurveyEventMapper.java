@@ -3,25 +3,13 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 import static org.eyeseetea.malariacare.utils.DateParser.DHIS2_GMT_DATE_FORMAT;
 
 import android.content.Context;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.DataValueExtended;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
-import org.eyeseetea.malariacare.data.database.model.OrgUnitProgramRelationDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.model.ValueDB;
-import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
-import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
-import org.eyeseetea.malariacare.domain.boundary.IPushController;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
-import org.eyeseetea.malariacare.domain.entity.Observation;
-import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.QuestionValue;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
@@ -33,7 +21,6 @@ import org.eyeseetea.malariacare.layout.score.ScoreRegister;
 import org.eyeseetea.malariacare.utils.AUtils;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.DateParser;
-import org.hisp.dhis.client.sdk.models.common.Coordinates;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 import org.joda.time.DateTime;
@@ -260,7 +247,6 @@ public class FromSurveyEventMapper extends EventMapper {
             TrackedEntityDataValue dataValue = createDataValue(event,
                     mServerMetadata.getOverallProductivity().getUId(),
                     String.valueOf(survey.getProductivity()));
-                    //Integer.toString(OrgUnitProgramRelationDB.getProductivity(survey));
             event.getDataValues().add(dataValue);
         }
 

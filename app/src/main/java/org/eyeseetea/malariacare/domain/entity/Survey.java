@@ -137,7 +137,7 @@ public class Survey implements ISyncData {
 
     @Override
     public String getSurveyUid() {
-        return null;
+        return getUId();
     }
 
     public int getProductivity() {

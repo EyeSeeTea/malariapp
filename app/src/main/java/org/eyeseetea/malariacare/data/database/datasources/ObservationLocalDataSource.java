@@ -59,6 +59,14 @@ public class ObservationLocalDataSource implements IObservationDataSource, ISync
         saveObservation(observation);
     }
 
+    public List<Observation> getObservations(ObservationStatus status) {
+        List<ObservationDB> observationDBS = getObservationsDB(status);
+
+        List<Observation> observations = mObservationMapper.map(observationDBS);
+
+        return observations;
+    }
+
     @Override
     public Observation getObservation(String surveyUId) throws Exception {
         ObservationDB observationDB = getObservationDB(surveyUId);
@@ -73,18 +81,18 @@ public class ObservationLocalDataSource implements IObservationDataSource, ISync
         }
     }
 
+    public void saveObservations(List<Observation> observations) {
+        for (Observation observation : observations) {
+            save(observation);
+        }
+    }
+
     @Override
     public void save(Observation observation) {
         saveObservation(observation);
     }
 
-    public List<Observation> getObservations(ObservationStatus status) {
-        List<ObservationDB> observationDBS = getObservationsDB(status);
 
-        List<Observation> observations = mObservationMapper.map(observationDBS);
-
-        return observations;
-    }
 
     public void saveObservation(Observation observation) {
         ObservationDB observationDB = getObservationDB(observation.getSurveyUid());
@@ -97,11 +105,7 @@ public class ObservationLocalDataSource implements IObservationDataSource, ISync
 
     }
 
-    public void saveObservations(List<Observation> observations) {
-        for (Observation observation : observations) {
-            save(observation);
-        }
-    }
+
 
     private List<ObservationDB> getObservationsDB(ObservationStatus observationStatus){
 

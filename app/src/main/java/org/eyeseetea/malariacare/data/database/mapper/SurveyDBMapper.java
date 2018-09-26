@@ -45,7 +45,7 @@ public class SurveyDBMapper {
 
         for (Survey survey : surveys) {
             try {
-                SurveyDB surveyDB = map(survey);
+                SurveyDB surveyDB = mapToAdd(survey);
 
                 surveysDB.add(surveyDB);
             } catch (Exception e) {
@@ -57,51 +57,91 @@ public class SurveyDBMapper {
         return surveysDB;
     }
 
-    public SurveyDB map(Survey survey) {
-        SurveyDB surveyDB = new SurveyDB();
+    public SurveyDB mapToAdd(Survey survey) {
+        try {
 
-        surveyDB.setEventUid(survey.getUId());
+            SurveyDB surveyDB = new SurveyDB();
+
+            surveyDB.setEventUid(survey.getUId());
+            surveyDB.setStatus(survey.getStatus().getCode());
+            surveyDB.setCompletionDate(survey.getCompletionDate());
+            surveyDB.setCreationDate(survey.getCreationDate());
+            surveyDB.setUploadDate(survey.getCreationDate());
+            surveyDB.setScheduledDate(survey.getScheduledDate());
+
+
+            if (orgUnitsDBMap.containsKey(survey.getOrgUnitUId())) {
+                surveyDB.setOrgUnit(orgUnitsDBMap.get(survey.getOrgUnitUId()));
+            }
+
+            if (programsDBMap.containsKey(survey.getProgramUId())) {
+                surveyDB.setProgram(programsDBMap.get(survey.getProgramUId()));
+            }
+
+            List<ValueDB> valuesDB = new ArrayList<>();
+
+            for (QuestionValue questionValue : survey.getValues()) {
+                ValueDB valueDB = mapValueDB(new ValueDB(),surveyDB, questionValue);
+
+                valuesDB.add(valueDB);
+            }
+
+            surveyDB.setValues(valuesDB);
+
+            if (survey.getScore() != null) {
+                ScoreDB scoreDB = mapScore(survey, surveyDB);
+
+                surveyDB.setScoreDB(scoreDB);
+            }
+
+            UserDB user = mapSurveyUser(survey);
+            surveyDB.setUser(user);
+            surveyDB.save();
+
+            return surveyDB;
+        } catch (Exception e) {
+            Log.e(TAG, "An error occurred converting Survey " + survey.getUId() +
+                    " to surveyDB:" + e.getMessage());
+            throw e;
+        }
+    }
+
+    public SurveyDB mapToModify(SurveyDB surveyDB, Survey survey){
         surveyDB.setStatus(survey.getStatus().getCode());
-        surveyDB.setCompletionDate(survey.getCompletionDate());
+        surveyDB.setUploadDate(survey.getUploadDate());
         surveyDB.setCreationDate(survey.getCreationDate());
-        surveyDB.setUploadDate(survey.getCreationDate());
-        surveyDB.setScheduledDate(survey.getScheduledDate());
-
-
-        if (orgUnitsDBMap.containsKey(survey.getOrgUnitUId())) {
-            surveyDB.setOrgUnit(orgUnitsDBMap.get(survey.getOrgUnitUId()));
-        } else {
-            Log.d("","");
-        }
-
-        if (programsDBMap.containsKey(survey.getProgramUId())) {
-            surveyDB.setProgram(programsDBMap.get(survey.getProgramUId()));
-        } else {
-            Log.d("","");
-        }
-
-
-        List<ValueDB> valuesDB = new ArrayList<>();
-
-        for (QuestionValue questionValue : survey.getValues()) {
-            ValueDB valueDB = mapValueDB(surveyDB, questionValue);
-
-            valuesDB.add(valueDB);
-        }
-
-        surveyDB.setValues(valuesDB);
-
-        if (survey.getScore() != null) {
-            ScoreDB scoreDB = mapScore(survey, surveyDB);
-
-            surveyDB.setScoreDB(scoreDB);
-        }
-
-        UserDB user = mapSurveyUser(survey);
-        surveyDB.setUser(user);
+        surveyDB.setCompletionDate(survey.getCompletionDate());
+        surveyDB.setEventUid(survey.getSurveyUid());
         surveyDB.save();
 
+        for (QuestionValue questionValue : survey.getValues()) {
+            ValueDB valueDB = getObservationValueDB(questionValue.getQuestionUId(), surveyDB);
+
+            if (valueDB == null) {
+                valueDB = new ValueDB();
+                valueDB = mapValueDB(valueDB,surveyDB,questionValue);
+                surveyDB.getValues().add(valueDB);
+            } else {
+                mapValueDB(valueDB,surveyDB,questionValue);
+            }
+        }
+
         return surveyDB;
+    }
+
+    private ValueDB getObservationValueDB(String questionUId, SurveyDB surveyDB) {
+
+        ValueDB existedValueDB = null;
+
+        Long questionId = questionsDBMap.get(questionUId).getId_question();
+
+        for (ValueDB valueDB : surveyDB.getValues()) {
+            if (valueDB.getId_question_fk().equals(questionId)) {
+                existedValueDB = valueDB;
+            }
+        }
+
+        return existedValueDB;
     }
 
     @NonNull
@@ -130,10 +170,10 @@ public class SurveyDBMapper {
         UserDB existedUser = null;
 
         //For Support old push find by uid, name and username
-        for (UserDB userDB:usersDBMap.values()) {
+        for (UserDB userDB : usersDBMap.values()) {
             if ((userDB.getUid() != null && userDB.getUid().equals(text)) ||
-                    (userDB.getName()!= null && userDB.getName().equals(text)) ||
-                    (userDB.getUsername() != null && userDB.getUsername().equals(text))){
+                    (userDB.getName() != null && userDB.getName().equals(text)) ||
+                    (userDB.getUsername() != null && userDB.getUsername().equals(text))) {
                 existedUser = userDB;
             }
         }
@@ -141,21 +181,19 @@ public class SurveyDBMapper {
         return existedUser;
     }
 
-    private ValueDB mapValueDB(SurveyDB surveyDB, QuestionValue questionValue) {
-
-        ValueDB value = new ValueDB();
-
-        value.setSurvey(surveyDB);
-        value.setQuestion(questionsDBMap.get(questionValue.getQuestionUId()));
+    private ValueDB mapValueDB(ValueDB valueDB, SurveyDB surveyDB, QuestionValue questionValue) {
+        valueDB.setSurvey(surveyDB);
+        valueDB.setQuestion(questionsDBMap.get(questionValue.getQuestionUId()));
 
         if (questionValue.getOptionUId() != null) {
-            value.setOption(optionsDBMap.get(questionValue.getOptionUId()));
+            valueDB.setOption(optionsDBMap.get(questionValue.getOptionUId()));
         }
 
-        value.setValue(questionValue.getValue());
-        value.setUploadDate(new Date());
+        valueDB.setValue(questionValue.getValue());
+        valueDB.setUploadDate(new Date());
+        valueDB.setConflict(questionValue.isConflict());
 
-        return value;
+        return valueDB;
     }
 
     private void createMaps(List<OrgUnitDB> orgUnitsDB, List<ProgramDB> programsDB,
