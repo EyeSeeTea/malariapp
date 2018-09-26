@@ -3,7 +3,6 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 import static org.eyeseetea.malariacare.utils.DateParser.DHIS2_GMT_DATE_FORMAT;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.R;
@@ -75,9 +74,6 @@ public class FromSurveyEventMapper extends EventMapper {
 
             event.setUId(survey.getSurveyUid());
 
-            //Update all the dates after checks the new values
-            // NOTE: do not try to set the event creation date. SDK will try to update the event in
-            // the next push instead of creating it and that will crash
             event.setEventDate(new DateTime(survey.getCreationDate()));
             event.setDueDate(new DateTime(survey.getScheduledDate()));
             event.setLastUpdated(new DateTime(survey.getUploadDate()));
@@ -131,7 +127,7 @@ public class FromSurveyEventMapper extends EventMapper {
     }
 
     private void addCompositeScoresToSurvey(Survey survey, Event event) {
-        //TODO: to refactor, here on future use only domain entities
+        //TODO: jsanchez to refactor, here on future use only domain entities
         //composite scores should be calculated children inside survey domain entity as with values
 
         SurveyDB surveyDB = SurveyDB.getSurveyByUId(survey.getSurveyUid());
@@ -257,16 +253,6 @@ public class FromSurveyEventMapper extends EventMapper {
                             DHIS2_GMT_DATE_FORMAT));
             event.getDataValues().add(dataValue);
         }
-    }
-
-    @NonNull
-    private TrackedEntityDataValue createDataValue(Event event, String dataElement, String value) {
-        TrackedEntityDataValue dataValue = new TrackedEntityDataValue();
-        dataValue.setDataElement(dataElement);
-        dataValue.setEvent(event);
-        dataValue.setStoredBy(mUsername);
-        dataValue.setValue(value);
-        return dataValue;
     }
 
 

@@ -9,6 +9,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.ISyncData;
 import org.hisp.dhis.client.sdk.models.common.Coordinates;
 import org.hisp.dhis.client.sdk.models.event.Event;
+import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 
 public abstract class EventMapper {
 
@@ -20,6 +21,15 @@ public abstract class EventMapper {
         mUsername = username;
     }
 
+    protected TrackedEntityDataValue createDataValue(Event event, String dataElement, String value) {
+        TrackedEntityDataValue dataValue = new TrackedEntityDataValue();
+        dataValue.setDataElement(dataElement);
+        dataValue.setEvent(event);
+        dataValue.setStoredBy(mUsername);
+        dataValue.setValue(value);
+        return dataValue;
+    }
+
     protected Event buildEvent(String orgUnitUid, String programUid,
             boolean isNew) throws Exception {
 
@@ -29,7 +39,7 @@ public abstract class EventMapper {
         event.setOrgUnit(orgUnitUid);
         event.setProgram(programUid);
 
-        //TODO; it's necessary??
+        //TODO: jsanchez It's necessary
         //event.setProgramStage(relatedSurvey.getProgramUId());
 
         if (isNew) {

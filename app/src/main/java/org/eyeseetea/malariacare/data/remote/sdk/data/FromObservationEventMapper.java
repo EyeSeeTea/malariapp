@@ -1,17 +1,12 @@
 package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.exception.ConversionException;
-import org.hisp.dhis.client.sdk.models.common.Coordinates;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 import org.joda.time.DateTime;
@@ -59,19 +54,19 @@ public class FromObservationEventMapper extends EventMapper {
             Event event = buildEvent(relatedSurvey.getOrgUnitUId(), relatedSurvey.getProgramUId(),
                     false);
 
-            event.setCreated(new DateTime(relatedSurvey.getCreationDate()));
             event.setUId(observation.getSurveyUid());
+
+            event.setCreated(new DateTime(relatedSurvey.getCreationDate()));
             event.setEventDate(new DateTime(relatedSurvey.getCreationDate()));
             event.setLastUpdated(new DateTime(relatedSurvey.getUploadDate()));
 
             event.setDataValues(new ArrayList<TrackedEntityDataValue>());
 
             for (ObservationValue observationValue : observation.getValues()) {
-                TrackedEntityDataValue dataValue = new TrackedEntityDataValue();
-                dataValue.setDataElement(observationValue.getObservationValueUid());
-                dataValue.setEvent(event);
-                dataValue.setStoredBy(mUsername);
-                dataValue.setValue (observationValue.getValue());
+                TrackedEntityDataValue dataValue =
+                        createDataValue(event,observationValue.getObservationValueUid(),
+                                observationValue.getValue());
+
                 event.getDataValues().add(dataValue);
             }
 
