@@ -1,5 +1,11 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import org.eyeseetea.malariacare.domain.exception.CalculateNextScheduledDateException;
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -87,5 +93,75 @@ public class SurveyShould {
         thrown.expectMessage("Survey userUId is required");
 
         Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null, 0);
+    }
+
+    @Test
+    public void throw_exception_when_calculate_without_completion_date()
+            throws CalculateNextScheduledDateException {
+        thrown.expect(CalculateNextScheduledDateException.class);
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
+        survey.calculateNextScheduledDate();
+    }
+
+    @Test
+    public void throw_exception_when_calculate_without_score()
+            throws CalculateNextScheduledDateException {
+        thrown.expect(CalculateNextScheduledDateException.class);
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
+        survey.assignCompletionDate(new Date());
+        survey.calculateNextScheduledDate();
+    }
+
+    @Test
+    public void return_next_schedule_date_with_more_6_months_than_completion_if_score_type_is_a()
+            throws CalculateNextScheduledDateException {
+        Date date = new Date();
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
+        survey.assignScore(new Score("sesese",99f));
+        survey.assignCompletionDate(date);
+
+        DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+
+        Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
+
+        assertThat(differenceInMonths.getMonths(), is(6));
+    }
+
+    @Test
+    public void return_next_schedule_date_with_more_4_months_than_completion_if_score_type_is_bc_and_is_low_productivity()
+            throws CalculateNextScheduledDateException {
+        Date date = new Date();
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 0);
+        survey.assignScore(new Score("sesese",30f));
+        survey.assignCompletionDate(date);
+
+        DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+
+        Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
+
+        assertThat(differenceInMonths.getMonths(), is(4));
+    }
+
+    @Test
+    public void return_next_schedule_date_with_more_2_months_than_completion_if_score_type_is_bc_and_is_not_low_productivity()
+            throws CalculateNextScheduledDateException {
+        Date date = new Date();
+
+        Survey survey = Survey.createEmptySurvey("UID","PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", 9);
+        survey.assignScore(new Score("sesese",30f));
+        survey.assignCompletionDate(date);
+
+        DateTime completionDateTime = new DateTime(survey.getCompletionDate().getTime());
+        DateTime nextScheduledDateTime = new DateTime( survey.calculateNextScheduledDate().getTime());
+
+        Months differenceInMonths = Months.monthsBetween(completionDateTime,nextScheduledDateTime);
+
+        assertThat(differenceInMonths.getMonths(), is(2));
     }
 }

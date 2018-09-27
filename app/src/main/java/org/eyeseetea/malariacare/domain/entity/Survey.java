@@ -191,7 +191,13 @@ public class Survey implements ISyncData {
     public Date calculateNextScheduledDate() throws CalculateNextScheduledDateException {
 
         if (getCompletionDate() == null) {
-            throw new CalculateNextScheduledDateException();
+            throw new CalculateNextScheduledDateException(
+                    "It is not possible calculate next schedule date for a non complete survey");
+        }
+
+        if (getScore() == null) {
+            throw new CalculateNextScheduledDateException(
+                    "It is not possible calculate next schedule date for a survey without score");
         }
 
         ScoreType scoreType = new ScoreType(getScore().getScore());

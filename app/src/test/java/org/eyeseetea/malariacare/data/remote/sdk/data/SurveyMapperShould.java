@@ -14,6 +14,7 @@ import org.eyeseetea.malariacare.common.DateTypeAdapter;
 import org.eyeseetea.malariacare.common.ResourcesFileReader;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.domain.entity.Option;
+import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
@@ -40,9 +41,10 @@ public class SurveyMapperShould {
         List<CompositeScoreDB> compositeScores = givenACompositeScores();
         List<Question> questions = givenAQuestions();
         List<Option> options = givenAnOptions();
+        List<OrgUnit> orgUnits = givenAnOrgUnits();
 
         SurveyMapper surveyMapper =
-                new SurveyMapper(serverMetadata, compositeScores, questions, options);
+                new SurveyMapper(serverMetadata, orgUnits, compositeScores, questions, options);
 
         List<Survey> mappedSurveys = surveyMapper.mapSurveys(events);
 
@@ -56,9 +58,10 @@ public class SurveyMapperShould {
         List<CompositeScoreDB> compositeScores = givenACompositeScores();
         List<Question> questions = givenAQuestions();
         List<Option> options = givenAnOptions();
+        List<OrgUnit> orgUnits = givenAnOrgUnits();
 
         SurveyMapper surveyMapper =
-                new SurveyMapper(serverMetadata, compositeScores, questions, options);
+                new SurveyMapper(serverMetadata, orgUnits, compositeScores, questions, options);
 
         List<Survey> mappedSurveys = surveyMapper.mapSurveys(events);
 
@@ -104,6 +107,14 @@ public class SurveyMapperShould {
         Gson gson = createGson();
 
         Type listType = new TypeToken<ArrayList<Option>>(){}.getType();
+        return gson.fromJson(stringJson, listType);
+    }
+
+    private List<OrgUnit> givenAnOrgUnits() throws IOException {
+        String stringJson = mFileReader.getStringFromFile("orgUnits.json");
+        Gson gson = createGson();
+
+        Type listType = new TypeToken<ArrayList<OrgUnit>>(){}.getType();
         return gson.fromJson(stringJson, listType);
     }
 
