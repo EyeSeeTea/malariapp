@@ -39,24 +39,6 @@ public class SurveyDBMapper {
         createMaps(orgUnitsDB, programsDB, questionsDB, optionsDB, usersDB);
     }
 
-    public List<SurveyDB> mapSurveys(List<Survey> surveys) {
-
-        List<SurveyDB> surveysDB = new ArrayList<>();
-
-        for (Survey survey : surveys) {
-            try {
-                SurveyDB surveyDB = mapToAdd(survey);
-
-                surveysDB.add(surveyDB);
-            } catch (Exception e) {
-                Log.e(TAG, "An error occurred converting Survey " + survey.getUId() +
-                        " to surveyDB:" + e.getMessage());
-            }
-        }
-
-        return surveysDB;
-    }
-
     public SurveyDB mapToAdd(Survey survey) {
         try {
 
@@ -112,10 +94,9 @@ public class SurveyDBMapper {
         surveyDB.setCreationDate(survey.getCreationDate());
         surveyDB.setCompletionDate(survey.getCompletionDate());
         surveyDB.setEventUid(survey.getSurveyUid());
-        surveyDB.save();
 
         for (QuestionValue questionValue : survey.getValues()) {
-            ValueDB valueDB = getObservationValueDB(questionValue.getQuestionUId(), surveyDB);
+            ValueDB valueDB = getQuestionValueDB(questionValue.getQuestionUId(), surveyDB);
 
             if (valueDB == null) {
                 valueDB = new ValueDB();
@@ -129,7 +110,7 @@ public class SurveyDBMapper {
         return surveyDB;
     }
 
-    private ValueDB getObservationValueDB(String questionUId, SurveyDB surveyDB) {
+    private ValueDB getQuestionValueDB(String questionUId, SurveyDB surveyDB) {
 
         ValueDB existedValueDB = null;
 
