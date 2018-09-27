@@ -30,10 +30,11 @@ public abstract class EventMapper {
         return dataValue;
     }
 
-    protected Event buildEvent(String orgUnitUid, String programUid,
+    protected Event buildEvent(String eventUId, String orgUnitUid, String programUid,
             boolean isNew) throws Exception {
 
         Event event = new Event();
+        event.setUId(eventUId);
         event.setStatus(Event.EventStatus.COMPLETED);
 
         event.setOrgUnit(orgUnitUid);

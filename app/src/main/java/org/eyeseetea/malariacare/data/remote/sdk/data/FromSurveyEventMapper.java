@@ -71,9 +71,8 @@ public class FromSurveyEventMapper extends EventMapper {
 
         try {
             Log.d(TAG, "build event " + survey.getSurveyUid());
-            Event event = buildEvent(survey.getOrgUnitUId(), survey.getProgramUId(), false);
-
-            event.setUId(survey.getSurveyUid());
+            Event event = buildEvent(survey.getSurveyUid(), survey.getOrgUnitUId(),
+                    survey.getProgramUId(), true);
 
             event.setEventDate(new DateTime(survey.getCreationDate()));
             event.setDueDate(new DateTime(survey.getScheduledDate()));

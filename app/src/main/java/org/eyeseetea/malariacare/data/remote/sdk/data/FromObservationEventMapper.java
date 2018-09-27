@@ -51,10 +51,8 @@ public class FromObservationEventMapper extends EventMapper {
 
         try {
             Log.d(TAG, "build event " + observation.getSurveyUid());
-            Event event = buildEvent(relatedSurvey.getOrgUnitUId(), relatedSurvey.getProgramUId(),
-                    false);
-
-            event.setUId(observation.getSurveyUid());
+            Event event = buildEvent(observation.getSurveyUid(),relatedSurvey.getOrgUnitUId(),
+                    relatedSurvey.getProgramUId(), false);
 
             event.setCreated(new DateTime(relatedSurvey.getCreationDate()));
             event.setEventDate(new DateTime(relatedSurvey.getCreationDate()));
