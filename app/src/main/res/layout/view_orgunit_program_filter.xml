@@ -3,53 +3,28 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/plan_grey_light"
-        android:padding="15dip">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical">
+        android:layout_height="@dimen/filters_header_height"
+        android:background="@drawable/filter_background"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
             <org.eyeseetea.malariacare.views.CustomSpinner
                 android:id="@+id/spinner_program_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/light_font" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/plan_grey"></View>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@null"
+                android:paddingRight="5dp"
+                android:spinnerMode="dropdown"/>
 
             <org.eyeseetea.malariacare.views.CustomSpinner
                 android:id="@+id/spinner_orgUnit_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                app:tDimension="@string/font_size_level1"
-                app:tFontName="@string/light_font" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/plan_grey"></View>
-        </LinearLayout>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:paddingLeft="5dp"
+                android:background="@null"
+                android:spinnerMode="dropdown"/>
     </LinearLayout>
 </merge>
 

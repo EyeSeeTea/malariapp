@@ -112,5 +112,8 @@
     <style name="EyeSeeDialogCancelButton" parent="EyeSeeDialogButton">
         <item name="android:background">@color/dialog_red_button</item>
     </style>
+    <style name="EyeSeeFilterStyle" parent="EyeSeeDialogButton">
+    </style>
+
 
 </resources>
