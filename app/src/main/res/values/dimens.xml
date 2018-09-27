@@ -123,6 +123,7 @@
     <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
 
+
     <dimen name="login_title_text">@dimen/roboto_28</dimen>
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
     <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
@@ -166,7 +167,6 @@
     <dimen name="planning_title_number">@dimen/roboto_20</dimen>
     <dimen name="planning_titles">@dimen/roboto_18</dimen>
 
-
     <dimen name="filter_top_padding">0dp</dimen>
     <dimen name="filter_right_padding">0dp</dimen>
     <dimen name="filter_left_padding">0dp</dimen>
@@ -175,4 +175,6 @@
     <dimen name="design_fab_size_normal">70dp</dimen>
     <dimen name="design_fab_size_mini">60dp</dimen>
     <dimen name="fab_icon_size">44dp</dimen>
+
+    <dimen name="filters_header_height">56.0dip</dimen>
 </resources>
