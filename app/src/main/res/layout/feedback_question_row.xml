@@ -89,7 +89,7 @@
             android:paddingBottom="5dip"
             android:lines="1"
             android:capitalize="words"
-            android:textSize="10dp"
+            android:textSize="@dimen/feedback_text_size"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/medium_font_name"
              />
