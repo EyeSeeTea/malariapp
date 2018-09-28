@@ -244,7 +244,7 @@ public class AutoTabLayoutUtils {
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            questionUId = " <a href=\"" + PreferencesState.getInstance().getServerUrl()
+            questionUId = " <a href=\"" + PreferencesState.getInstance().getServer().getUrl()
                     + PreferencesState.getInstance().getContext().getString(
                     R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
                     + ")</a>";

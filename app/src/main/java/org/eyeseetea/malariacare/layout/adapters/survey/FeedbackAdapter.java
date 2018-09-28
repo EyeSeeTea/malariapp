@@ -258,7 +258,7 @@ public class FeedbackAdapter extends BaseAdapter {
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
             textView.setVisibility(View.VISIBLE);
-            textView.setText(Html.fromHtml("<a href=\""+PreferencesState.getInstance().getServerUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>"));
+            textView.setText(Html.fromHtml("<a href=\""+PreferencesState.getInstance().getServer().getUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>"));
             textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
         //Option label
