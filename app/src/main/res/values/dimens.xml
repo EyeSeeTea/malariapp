@@ -101,7 +101,7 @@
     <dimen name="planing_per_org_text_size">14dp</dimen>
     <dimen name="planing_per_org_text_light_size">14dp</dimen>
     <dimen name="planing_text_first_title_size">15dp</dimen>
-    <dimen name="header_light_text_size">18sp</dimen>
+    <dimen name="header_light_text_size">18dp</dimen>
     <dimen name="header_bold_text_size">18dp</dimen>
 
     <!-- Quest mark guide -->
@@ -116,7 +116,7 @@
     <dimen name="roboto_28">28dp</dimen>
     <dimen name="planing_button_text_size">@dimen/roboto_14</dimen>
     <dimen name="planing_small_text_size">@dimen/roboto_10</dimen>
-    <dimen name="feedback_text_size">@dimen/roboto_12</dimen>
+    <dimen name="feedback_text_size">@dimen/roboto_14</dimen>
     <dimen name="margin_quality_of_care">6dip</dimen>
     <dimen name="cs_header_title_size">@dimen/roboto_14</dimen>
     <dimen name="sent_header_rows_text_size">@dimen/roboto_14</dimen>
@@ -124,13 +124,14 @@
     <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
 
 
-    <dimen name="login_title_text">@dimen/roboto_28</dimen>
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
     <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
+    <dimen name="dialog_text_row_size">@dimen/roboto_14</dimen>
+
+    <dimen name="login_title_text">@dimen/roboto_28</dimen>
     <dimen name="feedback_question_row_left_padding">10dp</dimen>
     <dimen name="mini_fab_separation">6dp</dimen>
     <dimen name="fab_image_size">24dp</dimen>
-    <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
     <dimen name="dialog_subttile_row_size">@dimen/roboto_16</dimen>
     <dimen name="dialog_log_size">@dimen/roboto_14</dimen>
     <dimen name="dialog_button_space">16dp</dimen>

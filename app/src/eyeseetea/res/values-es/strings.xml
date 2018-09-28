@@ -277,4 +277,8 @@ clínica"</string>
 
 <string name="completed_title">"Completado"</string>
 <string name="completed_next">"Próxima"</string>
+<string name="apply_filters">"Aplicar filtros"</string>
+<string name="filter">"Filtro"</string>
+<string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
+<string name="failed_questions_only">"Solo preguntas fallidas"</string>
 </resources>

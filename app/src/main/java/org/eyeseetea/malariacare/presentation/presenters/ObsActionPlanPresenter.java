@@ -67,12 +67,7 @@ public class ObsActionPlanPresenter {
                         EventExtended.EUROPEAN_DATE_FORMAT);
             }
 
-            float score = 0;
-
-            if (mSurvey.getMainScore() != null)
-                score = mSurvey.getMainScore().getScore();
-
-            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), score,
+            mView.renderHeaderInfo(mSurvey.getOrgUnit().getName(), mSurvey.getMainScoreValue(),
                     formattedCompletionDate, formattedNextDate);
         }
     }
