@@ -26,7 +26,7 @@
     <color name="tab_green_monitor">@color/green_middle</color>
     <color name="tab_blue_improve">#00b3e3</color>
     <color name="gaudyYellow">#bcd200</color>
-    <color name="light_red">#f8cdc6</color>
+    <color name="score_text_color">@color/planning_row_text</color>
     <color name="planLightGreen">#dbf67c</color>
     <color name="planLighYellow">#f4f8ac</color>
     <color name="appNameColor">@color/black</color>
