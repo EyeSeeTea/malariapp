@@ -161,9 +161,9 @@ public class FeedbackAdapter extends BaseAdapter {
             if((feedback.getFeedbackList().size()>0 && feedback.getFeedbackList().get(0).isShown()) ||
                     (feedback.getCompositeScoreFeedbackList().size()>0 && feedback.getCompositeScoreFeedbackList().get(0).isShown()))
             {
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_up));
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp));
             }else{
-                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_media_arrow_down));
+                imageView.setImageDrawable(parent.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp));
             }
 
         }
