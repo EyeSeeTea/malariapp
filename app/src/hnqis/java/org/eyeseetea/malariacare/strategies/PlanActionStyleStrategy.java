@@ -4,7 +4,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.utils.Constants;
+import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class PlanActionStyleStrategy {
