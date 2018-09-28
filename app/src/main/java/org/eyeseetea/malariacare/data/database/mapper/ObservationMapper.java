@@ -41,8 +41,8 @@ public class ObservationMapper {
     public Observation map(ObservationDB observationDB) {
         String surveyUId = null;
 
-        if (surveysDBMap.containsKey(observationDB.getSurveyId()))
-            surveyUId = surveysDBMap.get(observationDB.getSurveyId()).getEventUid();
+        if (surveysDBMap.containsKey(observationDB.getId_survey_observation_fk()))
+            surveyUId = surveysDBMap.get(observationDB.getId_survey_observation_fk()).getEventUid();
 
         List<ObservationValue> observationValues = new ArrayList<>();
 

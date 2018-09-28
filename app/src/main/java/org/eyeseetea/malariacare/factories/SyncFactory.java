@@ -65,7 +65,7 @@ public class SyncFactory {
                 getObservationRemoteDataSource(context);
 
         IPushController pushController =
-                new PushDataController(context, connectivityManager,
+                new PushDataController(connectivityManager,
                         surveyLocalDataSource, observationLocalDataSource,
                         surveyRemoteDataSource, observationRemoteDataSource);
 

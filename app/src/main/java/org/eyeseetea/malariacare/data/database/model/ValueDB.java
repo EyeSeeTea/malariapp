@@ -33,13 +33,11 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.eyeseetea.malariacare.data.database.AppDatabase;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.IConvertToSDKVisitor;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter.VisitableToSDK;
 
 import java.util.Date;
 
 @Table(database = AppDatabase.class, name = "Value")
-public class ValueDB extends BaseModel implements VisitableToSDK {
+public class ValueDB extends BaseModel {
 
     @Column
     @PrimaryKey(autoincrement = true)
@@ -264,11 +262,6 @@ public class ValueDB extends BaseModel implements VisitableToSDK {
         return SQLite.selectCountOf()
                 .from(ValueDB.class)
                 .count();
-    }
-
-    @Override
-    public void accept(IConvertToSDKVisitor IConvertToSDKVisitor) {
-        IConvertToSDKVisitor.visit(this);
     }
 
     @Override

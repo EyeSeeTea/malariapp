@@ -19,19 +19,13 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.IDataSourceCallback;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
-import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.data.remote.sdk.PushDhisSDKDataSource;
-import org.eyeseetea.malariacare.data.sync.IData;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
 import org.eyeseetea.malariacare.domain.entity.ISyncData;
@@ -46,7 +40,6 @@ import org.eyeseetea.malariacare.domain.exception.push.PushDhisException;
 import org.eyeseetea.malariacare.domain.exception.push.PushReportException;
 import org.eyeseetea.malariacare.domain.exception.push.PushValueException;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +47,6 @@ import java.util.Map;
 public class PushDataController implements IPushController {
     private final String TAG = ".PushDataController";
 
-    private Context mContext;
     private IConnectivityManager mConnectivityManager;
     private final ISyncDataLocalDataSource mSurveyLocalDataSource;
     private final ISyncDataRemoteDataSource mSurveyRemoteDataSource;
@@ -62,23 +54,16 @@ public class PushDataController implements IPushController {
     private final ISyncDataLocalDataSource mObservationLocalDataSource;
     private final ISyncDataRemoteDataSource mObservationRemoteDataSource;
 
-    private PushDhisSDKDataSource mPushDhisSDKDataSource;
-    private ConvertToSDKVisitor mConvertToSDKVisitor;
-
-    public PushDataController(Context context, IConnectivityManager connectivityManager,
+    public PushDataController(IConnectivityManager connectivityManager,
             ISyncDataLocalDataSource surveyLocalDataSource,
             ISyncDataLocalDataSource observationLocalDataSource,
             ISyncDataRemoteDataSource surveyRemoteDataSource,
             ISyncDataRemoteDataSource observationRemoteDataSource) {
-        mContext = context;
         mConnectivityManager = connectivityManager;
         mSurveyLocalDataSource = surveyLocalDataSource;
         mSurveyRemoteDataSource = surveyRemoteDataSource;
         mObservationLocalDataSource = observationLocalDataSource;
         mObservationRemoteDataSource = observationRemoteDataSource;
-
-        mPushDhisSDKDataSource = new PushDhisSDKDataSource();
-        mConvertToSDKVisitor = new ConvertToSDKVisitor(mContext);
     }
 
     @Override
@@ -102,8 +87,6 @@ public class PushDataController implements IPushController {
             Log.d(TAG, "Network connected");
 
             newPush(callback);
-
-            //oldPush(callback);
         }
     }
 
@@ -236,78 +219,5 @@ public class PushDataController implements IPushController {
             item.markAsRetrySync();
         }
         syncDataLocalDataSource.save(syncData);
-    }
-
-    private void oldPush(final IPushControllerCallback callback) {
-        List<IData> surveys = new ArrayList<IData>(SurveyDB.getAllCompletedSurveys());
-
-        convertAndPush(callback, surveys, Kind.EVENTS);
-
-        List<IData> observations = new ArrayList<IData>(
-                ObservationDB.getAllCompletedObservationsInSentSurveys());
-
-        convertAndPush(callback, observations, Kind.OBSERVATIONS);
-    }
-
-    private void convertAndPush(IPushControllerCallback callback, List<IData> dataList, Kind kind) {
-        if (dataList == null || dataList.size() == 0) {
-            callback.onError(
-                    new DataToPushNotFoundException("No Exists data to push of type:" + kind));
-        } else {
-
-            mPushDhisSDKDataSource.wipeEvents();
-            Log.d(TAG, "convert data to sdk");
-
-            try {
-                convertToSDK(dataList);
-            } catch (ConversionException e) {
-                callback.onInformativeError(e);//notify to the user
-                callback.onError(e);//close push
-            }
-
-            if (EventExtended.getAllEvents().size() == 0) {
-                callback.onError(new ConversionException());
-            } else {
-                Log.d(TAG, "push data");
-                pushData(callback, kind);
-            }
-        }
-    }
-
-    private void pushData(final IPushControllerCallback callback, final Kind kind) {
-        mPushDhisSDKDataSource.pushData(
-                new IDataSourceCallback<Map<String, PushReport>>() {
-                    @Override
-                    public void onSuccess(
-                            Map<String, PushReport> mapEventsReports) {
-                        if (mapEventsReports == null || mapEventsReports.size() == 0) {
-                            onError(new PushReportException("EventReport is null or empty"));
-                            return;
-                        }
-                        try {
-                            mConvertToSDKVisitor.saveSurveyStatus(mapEventsReports, callback, kind);
-                            callback.onComplete();
-                        } catch (Exception e) {
-                            onError(new PushReportException(e));
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof PushReportException
-                                || throwable instanceof PushDhisException) {
-                            mConvertToSDKVisitor.setSurveysAsQuarantine(kind);
-                        }
-                        callback.onError(throwable);
-                    }
-                }, kind);
-    }
-
-    private void convertToSDK(List<IData> dataList) throws ConversionException {
-        Log.d(TAG, "Converting APP survey into a SDK event");
-        for (IData data : dataList) {
-            data.changeStatusToSending();
-            ((VisitableToSDK) data).accept(mConvertToSDKVisitor);
-        }
     }
 }
