@@ -3,7 +3,6 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 import android.util.Log;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.CompositeScoreBuilder;
-import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
@@ -13,6 +12,7 @@ import org.eyeseetea.malariacare.domain.entity.Score;
 import org.eyeseetea.malariacare.domain.entity.ServerMetadata;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
+import org.eyeseetea.malariacare.utils.DateParser;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
 
@@ -85,13 +85,13 @@ public class SurveyMapper {
         for (TrackedEntityDataValue dataValue : event.getDataValues()) {
 
             if (dataValue.getDataElement().equals(serverMetadata.getCreationDate().getUId())) {
-                creationDate = EventExtended.parseLongDate(dataValue.getValue());
+                creationDate = DateParser.parseLongDate(dataValue.getValue());
             } else if (serverMetadata.getCompletionDate() != null
                     && dataValue.getDataElement().equals(
                     serverMetadata.getCompletionDate().getUId())) {
-                completionDate = EventExtended.parseLongDate(dataValue.getValue());
+                completionDate = DateParser.parseLongDate(dataValue.getValue());
             } else if (dataValue.getDataElement().equals(serverMetadata.getUploadDate().getUId())) {
-                uploadDate = EventExtended.parseLongDate(dataValue.getValue());
+                uploadDate = DateParser.parseLongDate(dataValue.getValue());
             } else if (dataValue.getDataElement().equals(
                     serverMetadata.getNextAssessment().getUId())) {
                 if (dataValue.getValue() != null && !dataValue.getValue().isEmpty()) {
