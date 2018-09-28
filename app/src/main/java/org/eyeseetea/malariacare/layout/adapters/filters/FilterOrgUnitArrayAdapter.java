@@ -29,6 +29,9 @@ import java.util.List;
 
 public class FilterOrgUnitArrayAdapter extends AddlArrayAdapter<OrgUnitDB> {
 
+    public FilterOrgUnitArrayAdapter(Context context, Integer spinnerItemLayout, Integer spinnerDropdownItemLayout, List<OrgUnitDB> orgUnits) {
+        super(context, spinnerItemLayout, spinnerDropdownItemLayout, orgUnits);
+    }
     public FilterOrgUnitArrayAdapter(Context context, List<OrgUnitDB> orgUnits) {
         super(context, orgUnits);
     }
