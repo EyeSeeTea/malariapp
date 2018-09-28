@@ -180,7 +180,7 @@ public class PullDhisApiDataSource {
      * @param url
      */
     public static Response executeCall(JSONObject data, String url, String method) throws IOException {
-        final String DHIS_URL=PreferencesState.getInstance().getServerUrl() + url.replace(" ", "%20");
+        final String DHIS_URL=PreferencesState.getInstance().getServer().getUrl() + url.replace(" ", "%20");
 
         Log.d(TAG, "executeCall Url" + DHIS_URL + "");
 

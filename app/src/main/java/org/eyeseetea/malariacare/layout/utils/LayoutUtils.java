@@ -175,7 +175,7 @@ public class LayoutUtils {
         actionBar.setDisplayHomeAsUpEnabled(false);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             actionBar.setCustomView(R.layout.dev_custom_action_bar);
-            String server = PreferencesState.getInstance().getServerUrl();
+            String server = PreferencesState.getInstance().getServer().getUrl();
             ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
         }else {
             actionBar.setCustomView(R.layout.custom_action_bar);
@@ -191,13 +191,13 @@ public class LayoutUtils {
         actionBar.setDisplayHomeAsUpEnabled(false);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             actionBar.setCustomView(R.layout.dev_custom_action_bar);
-            String server = PreferencesState.getInstance().getServerUrl();
+            String server = PreferencesState.getInstance().getServer().getUrl();
             ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
         }else {
             actionBar.setCustomView(R.layout.custom_action_bar_with_chart);
         }
         updateSurveyActionBarChart(actionBar, surveyAnsweredRatio);
-        String server = PreferencesState.getInstance().getServerUrl();
+        String server = PreferencesState.getInstance().getServer().getUrl();
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
