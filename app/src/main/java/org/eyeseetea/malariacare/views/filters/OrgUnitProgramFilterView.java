@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OrgUnitDB;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterOrgUnitArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.filters.FilterProgramArrayAdapter;
 import org.eyeseetea.malariacare.presentation.presenters.OrgUnitProgramFilterPresenter;
@@ -100,12 +99,12 @@ public class OrgUnitProgramFilterView
 
     @Override
     public void renderPrograms(List<ProgramDB> programs) {
-        programFilterSpinner.setAdapter(new FilterProgramArrayAdapter(getContext(), programs));
+        programFilterSpinner.setAdapter(new FilterProgramArrayAdapter(getContext(), R.layout.filter_spinner_item, R.layout.filter_spinner_dropdown_item, programs));
     }
 
     @Override
     public void renderOrgUnits(List<OrgUnitDB> orgUnits) {
-        orgUnitFilterSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getContext(), orgUnits));
+        orgUnitFilterSpinner.setAdapter(new FilterOrgUnitArrayAdapter(getContext(), R.layout.filter_spinner_item, R.layout.filter_spinner_dropdown_item, orgUnits));
     }
 
     @Override

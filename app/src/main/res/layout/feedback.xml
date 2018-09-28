@@ -41,10 +41,11 @@
         android:visibility="gone"
         android:background="@color/assess_grey"
         android:orientation="horizontal">
+
         <org.eyeseetea.malariacare.views.CustomRadioButton
             android:id="@+id/chkFailed"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="613566809dp"
             android:layout_gravity="center_vertical|right"
             android:layout_weight="0.4"
             android:background="@null"
@@ -53,8 +54,8 @@
             android:gravity="right|center_vertical"
             android:lines="2"
             android:text="@string/feedback_show_only_failed"
-            android:visibility="gone"
             android:textColor="@color/white"
+            android:visibility="gone"
             app:tDimension="@string/font_size_level1"
             app:tFontName="@string/light_font" />
 

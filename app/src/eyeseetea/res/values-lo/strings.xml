@@ -236,13 +236,13 @@
 <string name="dialog_action_refresh">"ການປັບປຸງລະບົບໂຄງຮ່າງຂໍ້ມູນການສຳຫຼວດຈະລຶບ ຫຼື ສົ່ງຂໍ້ມູນທີ່ຍັງບໍ່ທັນໄດ້ສົ່ງອອກ"</string>
 <string name="dialog_incomplete_surveys_before_refresh">"ເຈົ້າຍັງມີຂໍ້ມູນການສຳຫຼວດຈຳນວນ %d ທີ່ບໍ່ໄດ້ສົ່ງແແກ ແລະ ມັນຈະຖືກລືບ. ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
 <string name="dialog_all_surveys_sent_before_refresh">"ຂໍ້ມູນໄດ້ສົ່ງໝົດແລ້ວ, ເຈົ້າຕ້ອງການຈະດຳເນີນການຕໍ່ບໍ?"</string>
- <string name="header_reschedule">"ກໍາຫນົດເວລາ"</string>
- <string name="header_schedule">"ກໍານົດເວລາ"</string>
+<string name="header_reschedule">"ກໍາຫນົດເວລາ"</string>
+<string name="header_schedule">"ກໍານົດເວລາ"</string>
 <string name="planing_due_date">"ວັນໝົດກຳນົດ"</string>
 <string name="action_button_text">ແຜນການປະຕິບັດງານ</string>
 <string name="plan_action_title">"Observations &amp; Action Plan"</string>
-<string name="plan_action_today_date">ແລ້ວສິ້ນ: %s</string>
-<string name="plan_action_next_date">ຕໍ່ໄປ: %s</string>
+<string name="plan_action_today_date">%s</string>
+<string name="plan_action_next_date">%s</string>
 <string name="plan_action_description">ອະທິບາຍສິ່ງທີ່ໄດ້ສັງເກດເຫັນໃນໄລຍະການຢ້ຽມຢາມເປັນແຜນການດໍາເນີນການສະເພາະໃດຫນຶ່ງສໍາລັບການແກ້ໄຂຊ່ອງຫວ່າງ. ຍັງໄດ້ສັງເກດການການປັບປຸງໃນໄລຍະຊ່ອງຫວ່າງລະບຸໃນໄລຍະຢ້ຽມຢາມທີ່ຜ່ານມາ</string>
 <string name="plan_action_gasp_title">Gaps:</string>
 <string name="plan_action_action_plan_title">ແຜນປະຕິບັດງານ:</string>
@@ -272,15 +272,17 @@
 <string name="comments">"ຄວາມຄິດເຫັນ"</string>
 <string name="dates">"ວັນທີ່ຜ່ານມາ"</string>
 <string name="mark_complete">"Mark ແລ້ວສົມບູນ"</string>
-<string name="plain_text">"ຂໍ້ຄວາມທົ່ງພຽງ "</string>
-<string name="html_text">"ຮູບແບບຮູບແບບ "</string>
 <string name="schedule_title">"ການສໍາຫຼວດຕາຕະລາງ"</string>
 <string name="save">"save"</string>
+
+<string name="completed_title">"ແລ້ວສິ້ນ"</string>
+<string name="completed_next">"ຕໍ່ໄປ"</string>
+<string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
+
 
 <string name="advanced_options">"ຕົວເລືອກຂັ້ນສູງ"</string>
 <string name="simple_options">"ຕົວເລືອກທີ່ງ່າຍດາຍ"</string>
 <string name="planning_label_date">"ຄໍາເຫັນ"</string>
-<string name="plan_action_edit_text_hint">"ແຕະເພື່ອຂຽນ"</string>
 <string name="header_reschedule_title">"ກໍານົດເວລາໃຫມ່"</string>
 <string name="plan_action_provider_title" >"ຊື່ຜູ້ໃຫ້ບໍລິການ:"</string>
 <string name="scheduled">"រំពឹងទុក"</string>
