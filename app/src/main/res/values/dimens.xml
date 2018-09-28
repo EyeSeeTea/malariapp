@@ -123,6 +123,7 @@
     <dimen name="sent_rows_text_size">@dimen/roboto_14</dimen>
     <dimen name="unsent_rows_text_size">@dimen/roboto_14</dimen>
 
+
     <dimen name="dialog_tile_row_size">@dimen/roboto_18</dimen>
     <dimen name="dialog_button_size">@dimen/roboto_18</dimen>
     <dimen name="dialog_text_row_size">@dimen/roboto_11</dimen>
@@ -152,10 +153,20 @@
     <dimen name="tab_host_text_size">14dip</dimen>
 
     <dimen name="create_survey_title_extra_bottom_marging">12dip</dimen>
-    <dimen name="creation_title">18dip</dimen>
+
+    <dimen name="header_big_text_size">18dp</dimen>
+    <dimen name="header_medium_text_size">14dp</dimen>
+    <dimen name="header_medium_right_text_size">13dp</dimen>
+    <dimen name="header_small_text_size">10dp</dimen>
+    <dimen name="plan_action_button_text_size">@dimen/roboto_16</dimen>
+    <dimen name="plan_action_text_size">@dimen/roboto_13</dimen>
+    <dimen name="plan_action_text_title_size">@dimen/roboto_14</dimen>
+    <dimen name="plan_action_fab_padding">15dp</dimen>
+    <dimen name="plan_date_right_padding">0dp</dimen>
+
+    <dimen name="creation_title">18dip</dimen>   <!-- Quest mark guide -->
     <dimen name="planning_title_number">@dimen/roboto_20</dimen>
     <dimen name="planning_titles">@dimen/roboto_18</dimen>
-
 
     <dimen name="filter_top_padding">0dp</dimen>
     <dimen name="filter_right_padding">0dp</dimen>
@@ -163,4 +174,8 @@
     <dimen name="filter_bottom_padding">15dp</dimen>
 
     <dimen name="design_fab_size_normal">70dp</dimen>
+    <dimen name="design_fab_size_mini">60dp</dimen>
+    <dimen name="fab_icon_size">44dp</dimen>
+
+    <dimen name="filters_header_height">56.0dip</dimen>
 </resources>

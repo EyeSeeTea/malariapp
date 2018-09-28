@@ -2,7 +2,6 @@ package org.eyeseetea.malariacare.strategies;
 
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
-import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
@@ -21,7 +19,8 @@ import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 public class FeedbackFragmentStyleStrategy {
     public static void drawScore(RelativeLayout llLayout, SurveyDB survey, Context context) {
         DoubleRectChart doubleRectChart = (DoubleRectChart) llLayout.findViewById(R.id.feedback_total_score);
-        LayoutUtils.drawScore(survey.getMainScore().getScore(), doubleRectChart);
+
+        LayoutUtils.drawScore(survey.getMainScoreValue(), doubleRectChart);
     }
 
     public static void changeBackgroundColor(View view, CompositeScoreFeedback feedback) {
