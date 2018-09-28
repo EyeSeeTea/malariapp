@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
@@ -42,7 +43,7 @@ import java.util.List;
  */
 public class AutoTabViewHolder {
     //Label
-    public CustomTextView statement;
+    public TextView statement;
 
     // Main component in the row: Spinner, EditText or RadioGroup
     public View component;
@@ -57,8 +58,8 @@ public class AutoTabViewHolder {
 
     private List<View> columnComponents;
 
-    public CustomTextView num;
-    public CustomTextView denum;
+    public TextView num;
+    public TextView denum;
 
     public AutoTabViewHolder() {
         columnComponents = new ArrayList<>();

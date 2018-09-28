@@ -347,6 +347,15 @@ public class SurveyDB extends BaseModel implements VisitableToSDK, IData {
         return (isCompleted() || isSent());
     }
 
+    public Float getMainScoreValue() {
+        float score = 0;
+
+        if (getMainScore() != null)
+            score = getMainScore().getScore();
+
+        return score;
+    }
+
     public ScoreDB getMainScore() {
         //The main score is only return from a query 1 time
         if (this.score == null) {

@@ -67,12 +67,7 @@ public class AssessmentUnsentAdapterCosmeticsStrategy {
         final DoubleRectChart doubleRectChart =
                 (DoubleRectChart) view;
         if(doubleRectChart!=null){
-            float score = 0;
-
-            if (survey.getMainScore() != null)
-                score = survey.getMainScore().getScore();
-
-            LayoutUtils.drawScore(score, doubleRectChart);
+            LayoutUtils.drawScore(survey.getMainScoreValue(), doubleRectChart);
 
         }
     }

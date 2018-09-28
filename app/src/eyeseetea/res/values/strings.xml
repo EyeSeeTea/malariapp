@@ -124,7 +124,7 @@ evaluation"</string>
 <string name="feedback_show_only_media">"Show only questions containing video/image"</string>
 <string name="feedback_show_only_one_or_show_all">"Show only last feedback per Program/OU"</string>
 <string name="feedback_return">"Return to all assessments"</string>
-<string name="quality_of_care">"Quality of Care (QoC) Score:"</string>
+<string name="quality_of_care">"Quality of Care \nOverall Score:"</string>
 <string name="overall_quality_of_care">"Overall Quality of Care (QoC) score:"</string>
 <string name="feedback_info_passed">"Pass"</string>
 <string name="feedback_info_failed">"Fail"</string>
@@ -282,4 +282,9 @@ evaluation"</string>
 <string name="completed_title">"Completed"</string>
 <string name="completed_next">"Next"</string>
 <string name="plan_action_edit_text_hint">"tap to write"</string>
+
+<string name="apply_filters">"Apply filters"</string>
+<string name="filter">"Filter"</string>
+<string name="failed_video_image_question_only">"Video/Image questions only"</string>
+<string name="failed_questions_only">"Failed questions only"</string>
 </resources>
