@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Observation implements ISyncData {
+public class Observation implements IData {
     private String surveyUid;
     private ObservationStatus status;
     private List<ObservationValue> values;

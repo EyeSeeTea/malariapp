@@ -3,8 +3,8 @@ package org.eyeseetea.malariacare.factories;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.MetadataValidator;
 import org.eyeseetea.malariacare.data.database.datasources.ObservationLocalDataSource;
 import org.eyeseetea.malariacare.data.database.datasources.QuestionLocalDataSource;
@@ -38,8 +38,8 @@ public class SyncFactory {
     public PullUseCase getPullUseCase(Context context){
         PullMetadataController pullMetadataController = new PullMetadataController();
 
-        ISyncDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
-        ISyncDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
+        IDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
+        IDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
 
         PullDataController pullDataController =
                 new PullDataController(surveyLocalDataSource, surveyRemoteDataSource);
@@ -57,11 +57,11 @@ public class SyncFactory {
 
     public PushUseCase getPushUseCase(Context context){
         IConnectivityManager connectivityManager = new ConnectivityManager();
-        ISyncDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
-        ISyncDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
+        IDataRemoteDataSource surveyRemoteDataSource = getSurveyRemoteDataSource(context);
+        IDataLocalDataSource surveyLocalDataSource = getSurveyLocalDataSource();
 
-        ISyncDataLocalDataSource observationLocalDataSource = getObservationLocalDataSource();
-        ISyncDataRemoteDataSource observationRemoteDataSource =
+        IDataLocalDataSource observationLocalDataSource = getObservationLocalDataSource();
+        IDataRemoteDataSource observationRemoteDataSource =
                 getObservationRemoteDataSource(context);
 
         IPushController pushController =
@@ -75,12 +75,12 @@ public class SyncFactory {
     }
 
     @NonNull
-    private ISyncDataLocalDataSource getSurveyLocalDataSource() {
+    private IDataLocalDataSource getSurveyLocalDataSource() {
         return new SurveyLocalDataSource();
     }
 
     @NonNull
-    private ISyncDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
+    private IDataRemoteDataSource getSurveyRemoteDataSource(Context context) {
         IServerMetadataRepository serverMetadataRepository =
                 new ServerMetadataRepository(context);
         IOptionRepository optionRepository = new OptionRepository();
@@ -93,12 +93,12 @@ public class SyncFactory {
     }
 
     @NonNull
-    private ISyncDataLocalDataSource getObservationLocalDataSource() {
+    private IDataLocalDataSource getObservationLocalDataSource() {
         return new ObservationLocalDataSource();
     }
 
     @NonNull
-    private ISyncDataRemoteDataSource getObservationRemoteDataSource(Context context) {
+    private IDataRemoteDataSource getObservationRemoteDataSource(Context context) {
         return new ObservationSDKDhisDataSource(context,getSurveyLocalDataSource());
     }
 }

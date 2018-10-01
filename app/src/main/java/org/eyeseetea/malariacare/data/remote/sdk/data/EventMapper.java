@@ -6,7 +6,7 @@ import android.location.Location;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.hisp.dhis.client.sdk.models.common.Coordinates;
 import org.hisp.dhis.client.sdk.models.event.Event;
 import org.hisp.dhis.client.sdk.models.trackedentity.TrackedEntityDataValue;
@@ -47,7 +47,7 @@ public abstract class EventMapper {
         return event;
     }
 
-    protected String createErrorConversionMessage(String errorMessageBase, ISyncData data,
+    protected String createErrorConversionMessage(String errorMessageBase, IData data,
             String orgUnitUid, String programUid) {
 
         return ": " + errorMessageBase + " surveyUid: " + data.getSurveyUid()

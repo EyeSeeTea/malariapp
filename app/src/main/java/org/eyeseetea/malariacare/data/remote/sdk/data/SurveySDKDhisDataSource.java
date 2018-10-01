@@ -22,7 +22,7 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 import android.content.Context;
 
 import org.eyeseetea.malariacare.R;
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.CompositeScoreDB;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
@@ -33,7 +33,7 @@ import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IOrgUnitRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Option;
 import org.eyeseetea.malariacare.domain.entity.OrgUnit;
 import org.eyeseetea.malariacare.domain.entity.Question;
@@ -60,7 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
+public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
 
     private final IServerMetadataRepository mServerMetadataRepository;
     private final IOptionRepository mOptionRepository;
@@ -82,7 +82,7 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
 
 
     @Override
-    public List<? extends ISyncData> get(SurveyFilter filters) throws Exception {
+    public List<? extends IData> get(SurveyFilter filters) throws Exception {
         boolean isNetworkAvailable = mConnectivityManager.isDeviceOnline();
 
         if (isNetworkAvailable) {
@@ -90,7 +90,7 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
 
             List<Survey> surveys = convertToSurveys();
 
-            return new ArrayList<ISyncData>(surveys);
+            return new ArrayList<IData>(surveys);
 
         } else {
             throw new NetworkException();
@@ -99,8 +99,8 @@ public class SurveySDKDhisDataSource implements ISyncDataRemoteDataSource {
 
 
     @Override
-    public Map<String, PushReport> save(List<? extends ISyncData> syncData) throws Exception {
-        List<Survey> surveys = (List<Survey>) syncData;
+    public Map<String, PushReport> save(List<? extends IData> dataList) throws Exception {
+        List<Survey> surveys = (List<Survey>) dataList;
 
         ServerMetadata serverMetadata = mServerMetadataRepository.getServerMetadata();
         List<Option> options = mOptionRepository.getAll();

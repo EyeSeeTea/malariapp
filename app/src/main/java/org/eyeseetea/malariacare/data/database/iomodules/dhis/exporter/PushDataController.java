@@ -22,13 +22,13 @@ package org.eyeseetea.malariacare.data.database.iomodules.dhis.exporter;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushConflict;
@@ -48,17 +48,17 @@ public class PushDataController implements IPushController {
     private final String TAG = ".PushDataController";
 
     private IConnectivityManager mConnectivityManager;
-    private final ISyncDataLocalDataSource mSurveyLocalDataSource;
-    private final ISyncDataRemoteDataSource mSurveyRemoteDataSource;
+    private final IDataLocalDataSource mSurveyLocalDataSource;
+    private final IDataRemoteDataSource mSurveyRemoteDataSource;
 
-    private final ISyncDataLocalDataSource mObservationLocalDataSource;
-    private final ISyncDataRemoteDataSource mObservationRemoteDataSource;
+    private final IDataLocalDataSource mObservationLocalDataSource;
+    private final IDataRemoteDataSource mObservationRemoteDataSource;
 
     public PushDataController(IConnectivityManager connectivityManager,
-            ISyncDataLocalDataSource surveyLocalDataSource,
-            ISyncDataLocalDataSource observationLocalDataSource,
-            ISyncDataRemoteDataSource surveyRemoteDataSource,
-            ISyncDataRemoteDataSource observationRemoteDataSource) {
+            IDataLocalDataSource surveyLocalDataSource,
+            IDataLocalDataSource observationLocalDataSource,
+            IDataRemoteDataSource surveyRemoteDataSource,
+            IDataRemoteDataSource observationRemoteDataSource) {
         mConnectivityManager = connectivityManager;
         mSurveyLocalDataSource = surveyLocalDataSource;
         mSurveyRemoteDataSource = surveyRemoteDataSource;
@@ -105,26 +105,26 @@ public class PushDataController implements IPushController {
     @NonNull
     private void pushData(
             Class<?> dataClass,
-            ISyncDataLocalDataSource syncDataLocalDataSource,
-            ISyncDataRemoteDataSource syncDataRemoteDataSource,
+            IDataLocalDataSource syncDataLocalDataSource,
+            IDataRemoteDataSource syncDataRemoteDataSource,
             IPushControllerCallback callback) throws Exception {
 
-        List<? extends ISyncData> syncDataList = syncDataLocalDataSource.getDataToSync();
+        List<? extends IData> dataList = syncDataLocalDataSource.getDataToSync();
 
         try {
-            if (syncDataList.size() == 0) {
+            if (dataList.size() == 0) {
                 callback.onError(new DataToPushNotFoundException("Not Exists " +
                         dataClass.getSimpleName() + "s to push"));
             }else{
-                markAsSending(syncDataList, syncDataLocalDataSource);
+                markAsSending(dataList, syncDataLocalDataSource);
 
-                for (ISyncData syncDataItem: syncDataList) {
+                for (IData syncDataItem: dataList) {
                     syncDataItem.assignUploadDate(new Date());
                 }
 
-                Map<String, PushReport> pushReportMap = syncDataRemoteDataSource.save(syncDataList);
+                Map<String, PushReport> pushReportMap = syncDataRemoteDataSource.save(dataList);
 
-                handlePushReports(pushReportMap, syncDataList, callback, syncDataLocalDataSource);
+                handlePushReports(pushReportMap, dataList, callback, syncDataLocalDataSource);
             }
 
         } catch (ConversionException e) {
@@ -133,7 +133,7 @@ public class PushDataController implements IPushController {
             callback.onInformativeError(e);
             callback.onError(e);
         } catch (PushReportException | PushDhisException e){
-            markDataAsRetry(syncDataList, syncDataLocalDataSource);
+            markDataAsRetry(dataList, syncDataLocalDataSource);
 
             callback.onError(e);
         } catch (Exception e) {
@@ -142,52 +142,52 @@ public class PushDataController implements IPushController {
     }
 
     private void handlePushReports(Map<String, PushReport> pushReportMap,
-            List<? extends ISyncData> syncData,  IPushControllerCallback callback,
-            ISyncDataLocalDataSource syncDataLocalDataSource) {
+            List<? extends IData> dataList,  IPushControllerCallback callback,
+            IDataLocalDataSource dataLocalDataSource) {
 
         if (pushReportMap == null || pushReportMap.size() == 0) {
             callback.onError(new PushReportException("EventReport is null or empty"));
         } else {
             try {
-                for (ISyncData syncDataItem: syncData) {
-                    PushReport pushReport= pushReportMap.get(syncDataItem.getSurveyUid());
+                for (IData data: dataList) {
+                    PushReport pushReport= pushReportMap.get(data.getSurveyUid());
 
                     if (pushReport == null) {
-                        syncDataItem.markAsRetrySync();
+                        data.markAsRetrySync();
                         Log.d(TAG, "Error saving data: report is null in this survey: "
-                                + syncDataItem.getSurveyUid());
+                                + data.getSurveyUid());
 
                     }else {
 
                         List<PushConflict> pushConflicts = pushReport.getPushConflicts();
 
                         if (pushConflicts != null && pushConflicts.size() > 0) {
-                            syncDataItem.markAsConflict();
+                            data.markAsConflict();
 
                             for (PushConflict pushConflict : pushConflicts) {
                                 if (pushConflict.getUid() != null) {
-                                    syncDataItem.markValueAsConflict(pushConflict.getUid());
+                                    data.markValueAsConflict(pushConflict.getUid());
 
                                     Log.d(TAG, "saveSurveyStatus: PUSH process...PushConflict in "
                                             + pushConflict.getUid() +
                                             " with error " + pushConflict.getValue()
-                                            + " . Pushing survey: " + syncDataItem.getSurveyUid());
+                                            + " . Pushing survey: " + data.getSurveyUid());
 
                                     callback.onInformativeError(
-                                            new PushValueException(syncDataItem.getSurveyUid(),
+                                            new PushValueException(data.getSurveyUid(),
                                                     pushConflict.getUid(), pushConflict.getValue()));
                                 }
                             }
                         }else {
-                            if (!pushReport.hasPushErrors(syncDataItem instanceof ObservationDB)) {
+                            if (!pushReport.hasPushErrors(data instanceof ObservationDB)) {
                                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
-                                        + syncDataItem.getSurveyUid());
-                                syncDataItem.markAsSent();
+                                        + data.getSurveyUid());
+                                data.markAsSent();
                             }
                         }
                     }
 
-                    syncDataLocalDataSource.save(syncDataItem);
+                    dataLocalDataSource.save(data);
                 }
 
                 callback.onComplete();
@@ -198,26 +198,26 @@ public class PushDataController implements IPushController {
         }
     }
 
-    private void markAsSending(List<? extends ISyncData> syncData,
-            ISyncDataLocalDataSource syncDataLocalDataSource) throws Exception {
-        for (ISyncData item :syncData) {
+    private void markAsSending(List<? extends IData> dataList,
+            IDataLocalDataSource dataLocalDataSource) throws Exception {
+        for (IData item :dataList) {
             item.markAsSending();
         }
 
-        syncDataLocalDataSource.save(syncData);
+        dataLocalDataSource.save(dataList);
     }
 
-    private void markDataAsErrorConversionSync(ISyncData failedSyncData,
-            ISyncDataLocalDataSource syncDataLocalDataSource) {
-        failedSyncData.markAsErrorConversionSync();
-        syncDataLocalDataSource.save(failedSyncData);
+    private void markDataAsErrorConversionSync(IData failedData,
+            IDataLocalDataSource dataLocalDataSource) {
+        failedData.markAsErrorConversionSync();
+        dataLocalDataSource.save(failedData);
     }
 
-    private void markDataAsRetry(List<? extends ISyncData> syncData,
-            ISyncDataLocalDataSource syncDataLocalDataSource) throws Exception {
-        for (ISyncData item :syncData) {
+    private void markDataAsRetry(List<? extends IData> dataList,
+            IDataLocalDataSource dataLocalDataSource) throws Exception {
+        for (IData item :dataList) {
             item.markAsRetrySync();
         }
-        syncDataLocalDataSource.save(syncData);
+        dataLocalDataSource.save(dataList);
     }
 }

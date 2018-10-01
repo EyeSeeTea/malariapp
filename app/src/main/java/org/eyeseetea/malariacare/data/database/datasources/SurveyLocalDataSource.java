@@ -8,7 +8,7 @@ import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
@@ -22,7 +22,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB;
 import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -32,31 +32,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SurveyLocalDataSource implements ISyncDataLocalDataSource {
+public class SurveyLocalDataSource implements IDataLocalDataSource {
     private final static String TAG = ".SurveyLocalDataSource";
 
 
     @Override
-    public List<? extends ISyncData> getDataToSync() throws Exception {
+    public List<? extends IData> getDataToSync() throws Exception {
         List<Survey> surveys = getSurveys(SurveyStatus.COMPLETED);
         return surveys;
     }
 
     @Override
-    public List<? extends ISyncData> getAll() {
+    public List<? extends IData> getAll() {
         List<Survey> surveys = getSurveys(null);
         return surveys;
     }
 
     @Override
-    public void save(List<? extends ISyncData> syncData) throws Exception {
-        List<Survey> surveys = (List<Survey>) syncData;
+    public void save(List<? extends IData> dataList) throws Exception {
+        List<Survey> surveys = (List<Survey>) dataList;
         saveSurveys(surveys);
     }
 
     @Override
-    public void save(ISyncData syncData) {
-        Survey survey = (Survey) syncData;
+    public void save(IData data) {
+        Survey survey = (Survey) data;
 
         saveSurvey(survey);
     }

@@ -21,12 +21,12 @@ package org.eyeseetea.malariacare.data.remote.sdk.data;
 
 import android.content.Context;
 
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.sync.mappers.PushReportMapper;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.pushsummary.PushReport;
@@ -40,26 +40,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ObservationSDKDhisDataSource implements ISyncDataRemoteDataSource {
+public class ObservationSDKDhisDataSource implements IDataRemoteDataSource {
 
     private final Context mContext;
-    private final ISyncDataLocalDataSource mSurveyLocalDataSource;
+    private final IDataLocalDataSource mSurveyLocalDataSource;
 
-    public ObservationSDKDhisDataSource(Context context, ISyncDataLocalDataSource surveyLocalDataSource) {
+    public ObservationSDKDhisDataSource(Context context, IDataLocalDataSource surveyLocalDataSource) {
         mContext = context;
         mSurveyLocalDataSource = surveyLocalDataSource;
     }
 
     @Override
-    public List<? extends ISyncData> get(SurveyFilter filters) throws Exception {
+    public List<? extends IData> get(SurveyFilter filters) throws Exception {
         // Not used for the moment
         // The app not realize pull of observations from Dhis2
         return null;
     }
 
     @Override
-    public Map<String, PushReport> save(List<? extends ISyncData> syncData) throws Exception {
-        List<Observation> observations = (List<Observation>) syncData;
+    public Map<String, PushReport> save(List<? extends IData> dataList) throws Exception {
+        List<Observation> observations = (List<Observation>) dataList;
 
         FromObservationEventMapper eventMapper =
                 new FromObservationEventMapper(mContext, getSafeUsername(),

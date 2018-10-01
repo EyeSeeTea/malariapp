@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Survey implements ISyncData {
+public class Survey implements IData {
 
     public static final int DEFAULT_PRODUCTIVITY = 0;
     private final static int TYPE_A_NEXT_DATE = 6;

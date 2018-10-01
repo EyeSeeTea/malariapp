@@ -1,11 +1,11 @@
 package org.eyeseetea.malariacare.domain.exception;
 
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 
 public class ConversionException extends Exception {
-    private ISyncData mFailedSyncData;
+    private IData mFailedSyncData;
 
-    public ConversionException(ISyncData failedSyncData, String message) {
+    public ConversionException(IData failedSyncData, String message) {
         super("Error in conversion" + message);
         mFailedSyncData = failedSyncData;
     }
@@ -27,7 +27,7 @@ public class ConversionException extends Exception {
         super("Error in conversion");
     }
 
-    public ISyncData getFailedSyncData() {
+    public IData getFailedSyncData() {
         return mFailedSyncData;
     }
 }

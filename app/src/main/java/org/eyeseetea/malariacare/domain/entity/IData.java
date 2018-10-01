@@ -2,7 +2,7 @@ package org.eyeseetea.malariacare.domain.entity;
 
 import java.util.Date;
 
-public interface ISyncData {
+public interface IData {
     String getSurveyUid();
     void markAsSending();
     void markAsErrorConversionSync();

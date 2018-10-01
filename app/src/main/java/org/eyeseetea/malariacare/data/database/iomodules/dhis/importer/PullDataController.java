@@ -19,10 +19,10 @@
 
 package org.eyeseetea.malariacare.data.database.iomodules.dhis.importer;
 
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataLocalDataSource;
-import org.eyeseetea.malariacare.data.boundaries.ISyncDataRemoteDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
 import org.eyeseetea.malariacare.domain.boundary.IPullDataController;
-import org.eyeseetea.malariacare.domain.entity.ISyncData;
+import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
 import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
 
@@ -32,12 +32,12 @@ public class PullDataController implements IPullDataController {
 
     IPullDataController.Callback callback;
 
-    private ISyncDataLocalDataSource mSurveyLocalDataSource;
-    private ISyncDataRemoteDataSource mSurveyRemoteDataSource;
+    private IDataLocalDataSource mSurveyLocalDataSource;
+    private IDataRemoteDataSource mSurveyRemoteDataSource;
 
     public PullDataController(
-            ISyncDataLocalDataSource surveyLocalDataSource,
-            ISyncDataRemoteDataSource surveyRemoteDataSource) {
+            IDataLocalDataSource surveyLocalDataSource,
+            IDataRemoteDataSource surveyRemoteDataSource) {
 
         this.mSurveyLocalDataSource = surveyLocalDataSource;
         this.mSurveyRemoteDataSource = surveyRemoteDataSource;
@@ -50,7 +50,7 @@ public class PullDataController implements IPullDataController {
         try {
             callback.onStep(PullStep.PREPARING_SURVEYS);
 
-            List<? extends ISyncData> surveys = mSurveyRemoteDataSource.get(filters);
+            List<? extends IData> surveys = mSurveyRemoteDataSource.get(filters);
 
             mSurveyLocalDataSource.save(surveys);
 
