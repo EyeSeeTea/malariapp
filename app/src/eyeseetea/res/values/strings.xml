@@ -277,4 +277,6 @@ evaluation"</string>
 <string name="improve_no_surveys">"No survey(s) completed for the selection you have made."</string>
 <string name="scheduled">Scheduled</string>
 <string name="reschedule_title_multiple_survey">"%1$d number of surveys being re-scheduled for OU %2$s"</string>
+
+<string name="other">Other</string>
 </resources>
