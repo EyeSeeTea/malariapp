@@ -89,11 +89,22 @@ public class SurveyDBMapper {
     }
 
     public SurveyDB mapToModify(SurveyDB surveyDB, Survey survey){
+        List<ValueDB> valuesCopy = new ArrayList<>(surveyDB.getValues());
+
         surveyDB.setStatus(survey.getStatus().getCode());
         surveyDB.setUploadDate(survey.getUploadDate());
         surveyDB.setCreationDate(survey.getCreationDate());
         surveyDB.setCompletionDate(survey.getCompletionDate());
         surveyDB.setEventUid(survey.getSurveyUid());
+
+        for (ValueDB valueDB : valuesCopy) {
+            QuestionValue questionValue =
+                    getQuestionValue(valueDB.getId_question_fk(), survey);
+
+            if (questionValue == null) {
+                surveyDB.getValues().remove(valueDB);
+            }
+        }
 
         for (QuestionValue questionValue : survey.getValues()) {
             ValueDB valueDB = getQuestionValueDB(questionValue.getQuestionUId(), surveyDB);
@@ -123,6 +134,34 @@ public class SurveyDBMapper {
         }
 
         return existedValueDB;
+    }
+
+    private QuestionValue getQuestionValue(Long questionId, Survey survey) {
+
+        QuestionValue existedQuestionValue = null;
+
+        String questionUId = getQuestionUid(questionId);
+
+        for (QuestionValue questionValue : survey.getValues()) {
+            if (questionValue.getQuestionUId().equals(questionUId)) {
+                existedQuestionValue = questionValue;
+            }
+        }
+
+        return existedQuestionValue;
+    }
+
+    private String getQuestionUid(Long questionId) {
+        String questionUId = null;
+
+        for (QuestionDB questionDB:questionsDBMap.values()) {
+            if (questionDB.getId_question().equals(questionId)){
+                questionUId = questionDB.getUid();
+                break;
+            }
+        }
+
+        return questionUId;
     }
 
     @NonNull

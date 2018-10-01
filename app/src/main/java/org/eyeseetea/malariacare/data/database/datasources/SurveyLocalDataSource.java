@@ -74,11 +74,10 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
     }
 
     private SurveyDBMapper createMapper() {
-        SurveyDBMapper mSurveyDBMapper;
-        mSurveyDBMapper = new SurveyDBMapper(
+        SurveyDBMapper surveyDBMapper = new SurveyDBMapper(
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
                 OptionDB.list(), UserDB.list());
-        return mSurveyDBMapper;
+        return surveyDBMapper;
     }
 
 
@@ -147,7 +146,7 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
 
         new Delete().from(ValueDB.class)
                 .where(ValueDB_Table.id_survey_fk.is(surveyDB.getId_survey()))
-                .and(ValueDB_Table.id_question_fk.notIn(existedQuestionsInSurvey));
+                .and(ValueDB_Table.id_question_fk.notIn(existedQuestionsInSurvey)).execute();
     }
 
     private void saveChanges(SurveyDB surveyDB) {

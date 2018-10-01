@@ -1,11 +1,13 @@
 package org.eyeseetea.malariacare.data.database.datasources;
 
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.From;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
-import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.IObservationDataSource;
+import org.eyeseetea.malariacare.data.database.mapper.ObservationDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.ObservationMapper;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.model.ObservationDB_Table;
@@ -16,7 +18,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB_Table;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Observation;
 import org.eyeseetea.malariacare.domain.entity.ObservationStatus;
-import org.eyeseetea.malariacare.domain.entity.ObservationValue;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
 import org.eyeseetea.malariacare.domain.exception.ObservationNotFoundException;
 
@@ -105,8 +106,6 @@ public class ObservationLocalDataSource implements IObservationDataSource, IData
 
     }
 
-
-
     private List<ObservationDB> getObservationsDB(ObservationStatus observationStatus){
 
         List<ObservationDB> observationDBS = null;
@@ -175,76 +174,42 @@ public class ObservationLocalDataSource implements IObservationDataSource, IData
     private void add(Observation observation) {
         SurveyDB surveyDB = SurveyDB.getSurveyByUId(observation.getSurveyUid());
 
-        ObservationDB observationDB = new ObservationDB();
-        observationDB.setId_survey_observation_fk(surveyDB.getId_survey());
-        observationDB.setStatus_observation(observation.getStatus().getCode());
-        observationDB.save();
+        ObservationDB observationDB = createMapper().mapToAdd(observation, surveyDB.getId_survey());
 
-
-        for (ObservationValue observationValue : observation.getValues()) {
-            ObservationValueDB observationValueDB = new ObservationValueDB();
-            observationValueDB.setId_observation_fk(observationDB.getId_observation());
-            observationValueDB.setValue(observationValue.getValue());
-            observationValueDB.setUid_observation_value(observationValue.getObservationValueUid());
-
-            observationValueDB.save();
-        }
+        saveChanges(observationDB);
     }
 
     private void modify(ObservationDB observationDB, Observation observation) {
-        observationDB.setStatus_observation(observation.getStatus().getCode());
+        observationDB = createMapper().mapToModify(observationDB ,observation);
+
+        saveChanges(observationDB);
+
+        deleteNonExistedValuesInModifiedObservation(observationDB);
+    }
+
+    private ObservationDBMapper createMapper() {
+        ObservationDBMapper observationDBMapper = new ObservationDBMapper();
+        return observationDBMapper;
+    }
+
+    private void saveChanges(ObservationDB observationDB) {
         observationDB.save();
 
         for (ObservationValueDB observationValueDB : observationDB.getValuesDB()) {
-            ObservationValue observationValue =
-                    getObservationValue(observationValueDB.getUid_observation_value(), observation);
-
-            if (observationValue == null) {
-                observationValueDB.delete();
-            }
-        }
-
-        for (ObservationValue observationValue : observation.getValues()) {
-            ObservationValueDB observationValueDB =
-                    getObservationValueDB(observationValue.getObservationValueUid(), observationDB);
-
-            if (observationValueDB == null) {
-                observationValueDB = new ObservationValueDB();
-            }
-
             observationValueDB.setId_observation_fk(observationDB.getId_observation());
-            observationValueDB.setValue(observationValue.getValue());
-            observationValueDB.setUid_observation_value(observationValue.getObservationValueUid());
-
             observationValueDB.save();
         }
     }
 
-    private ObservationValueDB getObservationValueDB(String observationValueUid,
-            ObservationDB observationDB) {
+    private void deleteNonExistedValuesInModifiedObservation(ObservationDB observationDB) {
+        List<String> existedValuesInSurvey = new ArrayList<>();
 
-        ObservationValueDB existedObservationValueDB = null;
-
-        for (ObservationValueDB observationValueDB : observationDB.getValuesDB()) {
-            if (observationValueDB.getUid_observation_value().equals(observationValueUid)) {
-                existedObservationValueDB = observationValueDB;
-            }
+        for (ObservationValueDB observationValueDB:observationDB.getValuesDB()) {
+            existedValuesInSurvey.add(observationValueDB.getUid_observation_value());
         }
 
-        return existedObservationValueDB;
-    }
-
-    private ObservationValue getObservationValue(String observationValueUid,
-            Observation observation) {
-
-        ObservationValue existedObservationValue = null;
-
-        for (ObservationValue observationValue : observation.getValues()) {
-            if (observationValue.getObservationValueUid().equals(observationValueUid)) {
-                existedObservationValue = observationValue;
-            }
-        }
-
-        return existedObservationValue;
+        new Delete().from(ObservationValueDB.class)
+                .where(ObservationValueDB_Table.id_observation_fk.is(observationDB.getId_observation()))
+                .and(ObservationValueDB_Table.uid_observation_value.notIn(existedValuesInSurvey)).execute();
     }
 }
