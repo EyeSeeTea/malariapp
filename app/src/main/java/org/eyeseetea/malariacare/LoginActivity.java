@@ -39,7 +39,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +86,9 @@ public class LoginActivity extends AbsLoginActivity {
 
     private CircularProgressBar progressBar;
     private ViewGroup loginViewsContainer;
+    private Spinner serverSpinner;
+    private LinearLayout serverContainer;
+    private EditText serverEditText;
     private static LoginActivity mLoginActivity;
 
     @Override
@@ -104,6 +115,40 @@ public class LoginActivity extends AbsLoginActivity {
 
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
+        serverSpinner = (Spinner) findViewById(R.id.server_spinner);
+        serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_container);
+        serverEditText = (EditText) findViewById(R.id.edittext_server_url);
+
+        initServerAdapter();
+    }
+
+    private void initServerAdapter() {
+        String[] serverList = getResources().getStringArray(R.array.server_list);
+        if(serverList.length<1) {
+            return;
+        }
+        ArrayAdapter serversListAdapter = new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_spinner_item, serverList);
+        serverSpinner.setAdapter(serversListAdapter);
+        serverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String value = parent.getItemAtPosition(position).toString();
+                if(value.equals(parent.getContext().getResources().getString(R.string.other))){
+                    serverEditText.setText("");
+                    serverContainer.setVisibility(View.VISIBLE);
+                } else {
+                    if(serverContainer.getVisibility()==View.VISIBLE){
+                        serverContainer.setVisibility(View.GONE);
+                    }
+                    serverEditText.setText(parent.getItemAtPosition(position).toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                parent.setSelection(0);
+            }
+        });
     }
 
     private void replaceDhisLogoToHNQISLogo() {
