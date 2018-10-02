@@ -176,9 +176,9 @@ public class SurveyPlanner {
                         + "lowProductivity: %b",
                 eventDate.toString(), survey.getMainScore().getScore(), survey.isLowProductivity()));
 
-        //A -> 6 months
-        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
         Server server = PreferencesState.getInstance().getServer();
+
+        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
 
         if (scoreType.isTypeA()) {
             return getInXMonths(eventDate, server.getNextScheduleMatrix().getScoreAMonths());
