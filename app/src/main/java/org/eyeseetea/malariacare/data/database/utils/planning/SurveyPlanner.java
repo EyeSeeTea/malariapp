@@ -28,6 +28,7 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.Calendar;
@@ -180,19 +181,20 @@ public class SurveyPlanner {
                         + "lowProductivity: %b",
                 eventDate.toString(), survey.getMainScore(), survey.isLowProductivity()));
 
-        //A -> 6 months
+        Server server = PreferencesState.getInstance().getServer();
+
         ScoreType scoreType = new ScoreType(survey.getMainScore());
         if (scoreType.isTypeA()) {
-            return getInXMonths(eventDate, PreferencesState.getInstance().getServer().getNextScheduleMatrix().getScoreAMonths());
+            return getInXMonths(eventDate, server.getNextScheduleMatrix().getScoreAMonths());
         }
 
         //BC + Low OrgUnit -> 4
         if (survey.isLowProductivity()) {
-            return getInXMonths(eventDate,  PreferencesState.getInstance().getServer().getNextScheduleMatrix().getLowProductivityMonths());
+            return getInXMonths(eventDate,  server.getNextScheduleMatrix().getLowProductivityMonths());
         }
 
         //BC + High OrgUnit -> 2
-        return getInXMonths(eventDate,  PreferencesState.getInstance().getServer().getNextScheduleMatrix().getHighProductivityMonths());
+        return getInXMonths(eventDate,  server.getNextScheduleMatrix().getHighProductivityMonths());
     }
 
     /**
