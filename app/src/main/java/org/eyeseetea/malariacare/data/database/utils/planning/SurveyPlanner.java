@@ -175,15 +175,18 @@ public class SurveyPlanner {
         if (eventDate == null) {
             return null;
         }
-
+        Float score = 0f;
+        if(survey.getMainScore()!=null){
+            survey.getMainScore().getScore();
+        }
         //Load main score
         Log.d(TAG, String.format(
                 "finding scheduledDate for a survey with: eventDate: %s, score: %f , "
                         + "lowProductivity: %b",
-                eventDate.toString(), survey.getMainScore().getScore(), survey.isLowProductivity()));
+                eventDate.toString(), score, survey.isLowProductivity()));
 
         //A -> 6 months
-        ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
+        ScoreType scoreType = new ScoreType(score);
         if (scoreType.isTypeA()) {
             return getInXMonths(eventDate, TYPE_A_NEXT_DATE);
         }
