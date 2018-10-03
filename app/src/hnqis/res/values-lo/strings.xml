@@ -297,4 +297,5 @@
 <string name="reschedule_title_multiple_survey">"ຈໍານວນການສໍາຫຼວດຈໍານວນ %1$d ຖືກກໍານົດໄວ້ສໍາລັບ OU %2$s"</string>
 <string name="survey_not_assigned_facility">"ການສໍາຫຼວດນີ້ບໍ່ໄດ້ມອບຫມາຍໃຫ້ສະຖານທີ່ນີ້. ກະລຸນາເລືອກການສໍາຫຼວດອື່ນ."</string>
 <string name="feedback_progress_bar_text">ກໍາລັງໂຫລດຄະແນນສໍາຫຼວດ ... ກະລຸນາລໍຖ້າ</string>
+<string name="other">ອື່ນໆ</string>
 </resources>
