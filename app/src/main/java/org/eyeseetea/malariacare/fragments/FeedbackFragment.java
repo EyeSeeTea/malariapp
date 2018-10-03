@@ -41,24 +41,21 @@ import android.widget.RelativeLayout;
 import org.eyeseetea.malariacare.DashboardActivity;
 import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
+import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
-import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.services.SurveyService;
+import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.views.CustomButton;
 import org.eyeseetea.malariacare.views.CustomRadioButton;
-import org.eyeseetea.malariacare.views.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ignac on 07/01/2016.
- */
 public class FeedbackFragment extends Fragment implements IModuleFragment {
 
     public static final String TAG = ".FeedbackActivity";
@@ -176,62 +173,30 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
         feedbackListView.setDivider(null);
         feedbackListView.setDividerHeight(0);
 
-        //And checkbox listener
-        chkFailed = (CustomRadioButton) llLayout.findViewById(R.id.chkFailed);
-        chkFailed.setChecked(true);
-        chkFailed.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             feedbackAdapter.toggleOnlyFailed();
-                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
-                                                     .isOnlyFailed());
-                                         }
-                                     }
-        );
-        chkMedia = (CustomRadioButton) llLayout.findViewById(R.id.chkMedia);
-        chkMedia.setChecked(false);
-        chkMedia.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             feedbackAdapter.toggleOnlyMedia();
-                                             ((CustomRadioButton) v).setChecked(feedbackAdapter
-                                                     .isOnlyMedia());
-                                         }
-                                     }
-        );
+        FeedbackFragmentStyleStrategy.showFilters(llLayout, feedbackAdapter);
         planAction = (CustomButton) llLayout.findViewById(R.id.action_plan);
         planAction.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             DashboardActivity.dashboardActivity.openActionPlan();
-                                         }
-                                     }
+                                          @Override
+                                          public void onClick(View v) {
+                                              DashboardActivity.dashboardActivity.openActionPlan();
+                                          }
+                                      }
         );
         ImageButton goback = (ImageButton) llLayout.findViewById(
                 R.id.backToSentSurveys);
-        goback.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          getActivity().onBackPressed();
+        if(goback!=null) {
+            goback.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                              getActivity().onBackPressed();
+                                          }
                                       }
-                                  }
-        );
+            );
+        }
 
         //Set mainscore and color.
         SurveyDB survey = Session.getSurveyByModule(module);
-        if (survey.hasMainScore()) {
-            float average = survey.getMainScore().getScore();
-            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
-            item.setText(String.format("%.1f%%", average));
-            int colorId = LayoutUtils.trafficColor(average);
-            mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
-        } else {
-            CustomTextView item = (CustomTextView) llLayout.findViewById(R.id.feedback_total_score);
-            item.setText(String.format("NaN"));
-            float average = 0;
-            int colorId = LayoutUtils.trafficColor(average);
-            mFeedbackFragmentStrategy.setTotalPercentColor(item, colorId, getActivity());
-        }
+        FeedbackFragmentStyleStrategy.drawScore(llLayout, survey, PreferencesState.getInstance().getContext());
     }
 
     private void loadItems(List<Feedback> items) {
