@@ -291,4 +291,6 @@ clínica"</string>
 <string name="survey_not_assigned_facility">"Esta encuesta no está asignada a esta instalación. Por favor, selecciona otra encuesta."</string>
 <string name="feedback_progress_bar_text">Cargando puntuaciones de encuestas ... por favor espere</string>
 <string name="login_error_unsupported_server_version">La versión del servidor no esta soportada</string>
+
+<string name="other">Otro</string>
 </resources>
