@@ -15,7 +15,7 @@
         android:paddingTop="@dimen/question_padding_all"
         android:paddingBottom="@dimen/question_padding_all"
         android:text="@string/number_zero"
-        android:textColor="@color/light_red"
+        android:textColor="@color/score_text_color"
         android:textSize="12dp"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
@@ -30,7 +30,7 @@
         android:paddingBottom="@dimen/question_padding_all"
         android:text="@string/number_zero"
         android:textSize="12dp"
-        android:textColor="@color/light_red"
+        android:textColor="@color/score_text_color"
         app:tDimension="@string/font_size_level1"
         app:tFontName="@string/medium_font_name" />
 </LinearLayout>
