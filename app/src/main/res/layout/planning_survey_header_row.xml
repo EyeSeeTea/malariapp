@@ -23,7 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/header_min_height"
-    android:background="@color/plan_grey_light" >
+    android:background="@color/header_background_color" >
 
     <LinearLayout
         android:id="@+id/facilityDateContainer"
