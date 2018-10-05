@@ -402,15 +402,11 @@ public class PlanActionFragment extends Fragment implements IModuleFragment,
             }
         } else if (mDoubleRectChart != null) {
             LayoutUtils.drawScore(mainScore, mDoubleRectChart);
-
-
-            mCompletionDateTextView.setText(
-                    String.format(getString(R.string.plan_action_today_date), completionDate));
-
-            mNextDateTextView.setText(
-                    String.format(getString(R.string.plan_action_next_date), nextDate));
-
         }
+        mCompletionDateTextView.setText(
+                String.format(getString(R.string.plan_action_today_date), completionDate));
+        mNextDateTextView.setText(
+                String.format(getString(R.string.plan_action_next_date), nextDate));
     }
 
     @Override
