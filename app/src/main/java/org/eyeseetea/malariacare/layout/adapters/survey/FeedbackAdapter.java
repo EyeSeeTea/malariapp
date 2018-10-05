@@ -47,9 +47,6 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
-import org.eyeseetea.malariacare.layout.adapters.survey.strategies.AFeedbackAdapterStrategy;
-import org.eyeseetea.malariacare.layout.adapters.survey.strategies.FeedbackAdapterStrategy;
-import org.eyeseetea.malariacare.strategies.FeedbackStyleStrategy;
 import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.CustomParser;
@@ -78,8 +75,6 @@ public class FeedbackAdapter extends BaseAdapter {
 
     String module;
 
-    AFeedbackAdapterStrategy mFeedbackAdapterStrategy;
-
     public FeedbackAdapter(Context context, float idSurvey, String module){
         this(new ArrayList<Feedback>(), context, idSurvey, module);
     }
@@ -91,7 +86,6 @@ public class FeedbackAdapter extends BaseAdapter {
         this.module=module;
         this.onlyFailed=true;
         this.hiddenPositions= new boolean[this.items.size()];
-        mFeedbackAdapterStrategy = new FeedbackAdapterStrategy();
     }
 
     @Override
@@ -179,8 +173,7 @@ public class FeedbackAdapter extends BaseAdapter {
         String pattern = "^[0-9]+[.][0-9]+.*"; // the format "1.1" for the second level header
         textView.setText(feedback.getLabel());
 
-        //CompositeScore title
-        FeedbackFragmentStyleStrategy.drawFeedbackScore(rowLayout, feedback, idSurvey, module);
+        FeedbackFragmentStyleStrategy.drawFeedbackScore(rowLayout, feedback, idSurvey, module, context);
 
         rowLayout.setTag(feedback);
         rowLayout.setOnClickListener(new View.OnClickListener() {
@@ -273,7 +266,7 @@ public class FeedbackAdapter extends BaseAdapter {
         textView.setText(feedback.getOption());
 
         //Score label
-        FeedbackStyleStrategy.drawRowResult(rowLayout, feedback, context);
+        FeedbackFragmentStyleStrategy.drawRowResult(rowLayout, feedback, context);
 
 
         //Feedback

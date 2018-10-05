@@ -70,4 +70,12 @@ public class FeedbackFragmentStyleStrategy {
             imageView.setImageDrawable(rowLayout.getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_right_24px));
         }
     }
+
+    public static void drawRowResult(LinearLayout rowLayout, QuestionFeedback feedback, Context context) {
+        if(feedback.hasGrade()) {
+            TextView textView = (TextView) rowLayout.findViewById(R.id.feedback_score_label);
+            textView.setText(context.getString(feedback.getGrade()));
+            textView.setTextColor(context.getResources().getColor(feedback.getColor()));
+        }
+    }
 }

@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import org.eyeseetea.malariacare.DashboardActivity;
@@ -44,8 +43,6 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
-import org.eyeseetea.malariacare.fragments.strategies.AFeedbackFragmentStrategy;
-import org.eyeseetea.malariacare.fragments.strategies.FeedbackFragmentStrategy;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
@@ -102,15 +99,12 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
      */
     RelativeLayout llLayout;
 
-    AFeedbackFragmentStrategy mFeedbackFragmentStrategy;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         FragmentActivity faActivity = (FragmentActivity) super.getActivity();
         // Replace LinearLayout by the type of the root element of the layout you're trying to load
         llLayout = (RelativeLayout) inflater.inflate(R.layout.feedback, container, false);
-        mFeedbackFragmentStrategy = new FeedbackFragmentStrategy();
         prepareUI(moduleName);
         //Starts the background service only one time
         startProgress();
