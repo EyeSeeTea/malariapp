@@ -116,7 +116,7 @@ public class LoginActivity extends AbsLoginActivity {
         loginViewsContainer = (CardView) findViewById(R.id.layout_login_views);
 
         serverSpinner = (Spinner) findViewById(R.id.server_spinner);
-        serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_container);
+        serverContainer = (LinearLayout) findViewById(R.id.edittext_server_url_input_layout);
         serverEditText = (EditText) findViewById(R.id.edittext_server_url);
 
         initServerAdapter();

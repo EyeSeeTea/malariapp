@@ -281,4 +281,5 @@ clínica"</string>
 <string name="filter">"Filtro"</string>
 <string name="failed_video_image_question_only">"Solo preguntas de video/imagen"</string>
 <string name="failed_questions_only">"Solo preguntas fallidas"</string>
+<string name="other">Otro</string>
 </resources>

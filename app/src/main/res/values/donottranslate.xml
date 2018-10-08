@@ -131,4 +131,6 @@
 
     <string name="user_preference_program_filter" translatable="false">user_preference_program_filter</string>
     <string name="user_preference_org_unit_filter" translatable="false">user_preference_org_unit_filter</string>
+    <string-array name="server_list">
+    </string-array>
 </resources>

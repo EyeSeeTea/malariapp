@@ -287,4 +287,5 @@ evaluation"</string>
 <string name="filter">"Filter"</string>
 <string name="failed_video_image_question_only">"Video/Image questions only"</string>
 <string name="failed_questions_only">"Failed questions only"</string>
+<string name="other">Other</string>
 </resources>

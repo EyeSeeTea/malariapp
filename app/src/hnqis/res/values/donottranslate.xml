@@ -30,4 +30,11 @@
 
     <!-- pull control codes -->
     <string name="pull_program_code" translatable="false">HNQIS</string>
+    <string-array name="server_list">
+        <item>@string/login_info_dhis_default_server_url</item>
+        <item>https://sfhnigeria.psi-mis.org/</item>
+        <item>https://singapore-dev.psi-mis.org/</item>
+        <item>https://zw.hnqis.org/</item>
+        <item>@string/other</item>
+    </string-array>
 </resources>

@@ -277,4 +277,5 @@ Mensuelle"</string>
 <string name="filter">"Filtre"</string>
 <string name="failed_video_image_question_only">"Video / Image questions seulement"</string>
 <string name="failed_questions_only">"Échec des questions seulement"</string>
+<string name="other">autre</string>
 </resources>

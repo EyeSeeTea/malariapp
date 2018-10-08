@@ -191,7 +191,7 @@ public class LayoutUtils {
                                           String subtitle) {
         Toolbar toolbar = getToolbar(activity);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            String server = PreferencesState.getInstance().getServerUrl();
+            String server = PreferencesState.getInstance().getServer().getUrl();
             ((CustomTextView) toolbar.findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
             (toolbar.findViewById(R.id.action_bar_multititle_dev_subtitle)).setVisibility(View.VISIBLE);
         }
