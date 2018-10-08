@@ -126,12 +126,14 @@ function changeOrgUnit(){
 function changePieAndTablesByProgram(){
 	selectedPie="";
 	findProgram=false;
-	for(var i=0;i<Object.keys(piesDataByProgram).length;i++){
-		if(piesDataByProgram[i].uidprogram==selectedProgram){
-			selectedPie=piesDataByProgram[i].uidprogram;
-			findProgram=true;
-			break;
-		}
+	if(piesDataByProgram!==undefined){
+        for(var i=0;i<Object.keys(piesDataByProgram).length;i++){
+            if(piesDataByProgram[i].uidprogram==selectedProgram){
+                selectedPie=piesDataByProgram[i].uidprogram;
+                findProgram=true;
+                break;
+            }
+        }
 	}
 
 	noSurveysId="noSurveysText";
@@ -152,12 +154,24 @@ function changePieAndTablesByProgram(){
 //event on click select/or in program "spinner" to change the selected program and reload.
 function changePieAndTablesByOrgUnit(){
 	selectedPie="";
-	for(var i=0;i<Object.keys(piesDataByOrgUnit).length;i++){
-		if(piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
-			selectedPie=piesDataByOrgUnit[i].uidorgunit;
-			break;
-		}
+	findOrgUnit=false;
+	if(piesDataByOrgUnit != undefined){
+        for(var i=0;i<Object.keys(piesDataByOrgUnit).length;i++){
+            if(piesDataByOrgUnit[i].uidorgunit==selectedOrgUnit){
+                selectedPie=piesDataByOrgUnit[i].uidorgunit;
+                findOrgUnit=true;
+                break;
+            }
+        }
 	}
+
+	noSurveysId="noSurveysText";
+    	 if(!findOrgUnit){
+                updateChartTitle(noSurveysId,messages["noSurveys"]);
+            }else{
+                updateChartTitle(noSurveysId,"");
+            }
+
     if(selectedOrgUnit===allOrgUnitKey){
         rebuildTableFacilities(selectedOrgUnit, inputDataTablesPerOrgUnit)
     }
