@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class SurveyShould {
 
@@ -16,11 +17,11 @@ public class SurveyShould {
 
     @Test
     public void create_survey_with_mandatory_fields(){
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         Survey survey = Survey.createEmptySurvey(
                 "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
 
@@ -33,11 +34,12 @@ public class SurveyShould {
 
     @Test
     public void create_empty_survey(){
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
+
         Survey survey = Survey.createEmptySurvey(
                 "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
 
@@ -56,15 +58,10 @@ public class SurveyShould {
         Date uploadDate = new Date();
         Date scheduledDate = new Date();
         Date completionDate = new Date();
-        HashMap<String, QuestionValue> values = new HashMap<>();
-        HashMap<String, Question> questions = new HashMap<>();
+        List<QuestionValue> values = new ArrayList<QuestionValue>();
         Score score = new Score("ScoreUId", 100.0f);
-        Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
-        question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
-        values.put("QuestionUID1", QuestionValue.createSimpleValue("UId", "value"));
-        values.put("QuestionUID2", QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
+        values.add(QuestionValue.createSimpleValue("UId", "value"));
+        values.add(QuestionValue.createOptionValue("UId2", "optionUId", "value2"));
 
         Survey survey = Survey.createSentSurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID",
                 "USER_UID", creationDate, uploadDate, scheduledDate, completionDate, values, score);
@@ -75,7 +72,7 @@ public class SurveyShould {
         Assert.assertTrue(survey.getCompletionDate().equals(completionDate));
         Assert.assertTrue(survey.getScheduledDate().equals(scheduledDate));
         Assert.assertTrue(survey.getUploadDate().equals(uploadDate));
-        Assert.assertTrue(survey.getValues().equals(new ArrayList<>(values.values())));
+        Assert.assertTrue(survey.getValues().equals(values));
         Assert.assertTrue(survey.getScore().equals(score));
     }
 
@@ -84,11 +81,11 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey uid is required");
 
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
 
         Survey.createEmptySurvey(null, "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
     }
@@ -98,11 +95,11 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey programUId is required");
 
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
 
         Survey.createEmptySurvey("UID", null, "ORG_UNIT_UID", "USER_UID", questions);
     }
@@ -112,11 +109,11 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey orgUnitUId is required");
 
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         Survey.createEmptySurvey("UID", "PROGRAM_UID", null, "USER_UID", questions);
     }
 
@@ -125,11 +122,11 @@ public class SurveyShould {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Survey userUId is required");
 
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question = new Question("QuestionUID1", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
         question = new Question("QuestionUID2", 2, true);
-        questions.put(question.getUId(), question);
+        questions.add(question);
 
         Survey.createEmptySurvey("UID", "PROGRAM_UID", "ORG_UNIT_UID", null, questions);
     }

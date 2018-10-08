@@ -5,7 +5,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SurveyAnswerRatioShould {
 
@@ -438,7 +440,7 @@ public class SurveyAnswerRatioShould {
     }
 
     private Survey createQuestionTreeWithoutMultiparentChildren() {
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question1 = new Question("QuestionUID1", 2, false);
         Question question2 = new Question("QuestionUID2", 2, true);
         Question question3 = new Question("QuestionUID3", 2, true);
@@ -452,19 +454,19 @@ public class SurveyAnswerRatioShould {
         question6.addParent(question4, "OPTIONUID1");
         question4.addChildren(question6);
 
-        questions.put(question1.getUId(), question1);
-        questions.put(question2.getUId(), question2);
-        questions.put(question3.getUId(), question3);
-        questions.put(question4.getUId(), question4);
-        questions.put(question5.getUId(), question5);
-        questions.put(question6.getUId(), question6);
+        questions.add(question1);
+        questions.add(question2);
+        questions.add(question3);
+        questions.add(question4);
+        questions.add(question5);
+        questions.add(question6);
         Survey survey = Survey.createEmptySurvey(
                 "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
         return survey;
     }
 
     private Survey createQuestionTreeWithoutMultiparentButWithMultipleDepthLevels() {
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question1 = new Question("QuestionUID1", 2, false);
         Question question2 = new Question("QuestionUID2", 2, true);
         Question question3 = new Question("QuestionUID3", 2, true);
@@ -486,20 +488,20 @@ public class SurveyAnswerRatioShould {
         question8.addParent(question6, "OPTIONUID1");
         question6.addChildren(question8);
 
-        questions.put(question1.getUId(), question1);
-        questions.put(question2.getUId(), question2);
-        questions.put(question3.getUId(), question3);
-        questions.put(question4.getUId(), question4);
-        questions.put(question5.getUId(), question5);
-        questions.put(question6.getUId(), question6);
-        questions.put(question7.getUId(), question7);
-        questions.put(question8.getUId(), question8);
+        questions.add(question1);
+        questions.add(question2);
+        questions.add(question3);
+        questions.add(question4);
+        questions.add(question5);
+        questions.add(question6);
+        questions.add(question7);
+        questions.add(question8);
         Survey survey = Survey.createEmptySurvey(
                 "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
         return survey;
     }
     private Survey createQuestionTreeWithMultipleParents() {
-        HashMap<String, Question> questions = new HashMap<>();
+        List<Question> questions = new ArrayList<>();
         Question question1 = new Question("QuestionUID1", 2, true);
         Question question2 = new Question("QuestionUID2", 2, true);
         Question question3 = new Question("QuestionUID3", 2, false);
@@ -515,12 +517,12 @@ public class SurveyAnswerRatioShould {
         question6.addParent(question4, "OPTIONUID1");
         question4.addChildren(question6);
 
-        questions.put(question1.getUId(), question1);
-        questions.put(question2.getUId(), question2);
-        questions.put(question3.getUId(), question3);
-        questions.put(question4.getUId(), question4);
-        questions.put(question5.getUId(), question5);
-        questions.put(question6.getUId(), question6);
+        questions.add(question1);
+        questions.add(question2);
+        questions.add(question3);
+        questions.add(question4);
+        questions.add(question5);
+        questions.add(question6);
         Survey survey = Survey.createEmptySurvey(
                 "UID", "PROGRAM_UID", "ORG_UNIT_UID", "USER_UID", questions);
         return survey;

@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import org.eyeseetea.malariacare.data.remote.sdk.data.SurveyMapper;
+
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
@@ -35,22 +37,22 @@ public class Survey {
     }
 
     public static Survey createEmptySurvey(String uId, String programUId, String orgUnitUId,
-            String userUId, HashMap<String, Question> questions) {
+            String userUId, List questions) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
-        survey.startQuestionSurvey(questions);
+        survey.startQuestionSurvey(SurveyMapper.mapQuestionListToHashMap(questions));
         return survey;
     }
 
     public static Survey createSentSurvey(String uId, String programUId, String orgUnitUId,
             String userUId, Date creationDate, Date uploadDate, Date scheduledDate,
-            Date completionDate, HashMap<String, QuestionValue> questionValues, Score score) {
+            Date completionDate, List questionValues, Score score) {
         Survey survey = new Survey(uId, programUId, orgUnitUId, userUId);
         survey.changeStatus(SurveyStatus.SENT);
         survey.assignCreationDate(creationDate);
         survey.changeUploadDate(uploadDate);
         survey.changeScheduledDate(scheduledDate);
         survey.assignCompletionDate(completionDate);
-        survey.addQuestionValues(questionValues);
+        survey.addQuestionValues(SurveyMapper.mapValueListToHashMap(questionValues));
         survey.assignScore(score);
         return survey;
     }

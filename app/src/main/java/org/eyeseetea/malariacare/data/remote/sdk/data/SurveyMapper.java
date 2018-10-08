@@ -60,6 +60,22 @@ public class SurveyMapper {
         return surveys;
     }
 
+    public static  HashMap<String, Question> mapQuestionListToHashMap(List<Question> questions) {
+        HashMap<String, Question> hasMapQuestions = new HashMap<>();
+        for (Question question:questions){
+            hasMapQuestions.put(question.getUId(), question);
+        }
+        return hasMapQuestions;
+    }
+
+    public static HashMap<String,QuestionValue> mapValueListToHashMap(List<QuestionValue> questionValues) {
+        HashMap<String, QuestionValue> hasMapQuestionValues = new HashMap<>();
+        for (QuestionValue question:questionValues){
+            hasMapQuestionValues.put(question.getQuestionUId(), question);
+        }
+        return hasMapQuestionValues;
+    }
+
     private Survey map(Event event) {
 
         String eventUid = event.getUId();
@@ -75,7 +91,7 @@ public class SurveyMapper {
 
         Date scheduledDate = event.getDueDate().toDate();
 
-        HashMap<String, QuestionValue> values = new HashMap<>();
+        List<QuestionValue> values = new ArrayList<>();
 
         for (TrackedEntityDataValue dataValue : event.getDataValues()) {
 
@@ -112,7 +128,7 @@ public class SurveyMapper {
                 QuestionValue questionValue = mapValue(dataValue, event);
 
                 if (questionValue != null) {
-                    values.put(questionValue.getQuestionUId(), questionValue);
+                    values.add(questionValue);
                 }
             }
         }
