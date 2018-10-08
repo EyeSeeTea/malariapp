@@ -273,8 +273,6 @@ clínica"</string>
 <string name="planning_label_date">"Nueva fecha:"</string>
 <string name="header_reschedule_title">"Re-programar"</string>
 
-<string name="scheduled">Programada</string>
-
 <string name="completed_title">"Completado"</string>
 <string name="completed_next">"Próxima"</string>
 <string name="apply_filters">"Aplicar filtros"</string>

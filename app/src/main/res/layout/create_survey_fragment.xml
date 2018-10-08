@@ -40,14 +40,7 @@
                 android:layout_height="wrap_content" android:orientation="vertical"
                 android:layout_gravity="center"
                 android:gravity="center">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/org_unit_container">
-                        <include layout="@layout/create_survey_fragment_orgunit_options"/>
-                </LinearLayout>
+                <include layout="@layout/create_survey_fragment_orgunit_options"/>
 
                 <LinearLayout
                     android:orientation="vertical"
