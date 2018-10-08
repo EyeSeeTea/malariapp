@@ -21,7 +21,7 @@ public class SurveyAnswerRatioShould {
         //add values
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
         //check calc
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -38,10 +38,10 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID2");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -56,22 +56,22 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID2");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
@@ -88,11 +88,11 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -109,7 +109,7 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID2");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -126,7 +126,7 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
         Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
@@ -134,7 +134,7 @@ public class SurveyAnswerRatioShould {
         Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
 
 
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
         Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
         Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==0);
@@ -148,7 +148,7 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID2");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -156,7 +156,7 @@ public class SurveyAnswerRatioShould {
         Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
         Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==1);
 
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -172,16 +172,16 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID2");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
         Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
@@ -196,22 +196,22 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
         Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
@@ -226,22 +226,22 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
@@ -252,7 +252,7 @@ public class SurveyAnswerRatioShould {
 
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -269,28 +269,28 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID1");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD_level2_uid1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD_level2_uid2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==8);
@@ -301,7 +301,7 @@ public class SurveyAnswerRatioShould {
 
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -317,7 +317,7 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID4");
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -325,7 +325,7 @@ public class SurveyAnswerRatioShould {
         Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
         Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
 
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
@@ -340,10 +340,10 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID4");
         QuestionValue questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
@@ -360,19 +360,19 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID3");
         QuestionValue questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==5);
@@ -389,19 +389,19 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID4");
         QuestionValue questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.removeValue(questionValue, question);
+        survey.removeValue(questionValue);
 
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==5);
@@ -418,17 +418,17 @@ public class SurveyAnswerRatioShould {
 
         Question question = survey.getQuestion("QuestionUID4");
         QuestionValue questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD1");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUIDCHILD2");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
+        survey.addValue(questionValue);
         question = survey.getQuestion("QuestionUID3");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
-        survey.addValue(questionValue, question);
-        survey.removeValue(questionValue, question);
+        survey.addValue(questionValue);
+        survey.removeValue(questionValue);
 
         Assert.assertTrue(survey.getAnsweredRatio().getTotal()==5);
         Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
