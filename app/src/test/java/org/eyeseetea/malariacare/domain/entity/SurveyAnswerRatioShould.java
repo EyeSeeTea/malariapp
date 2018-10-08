@@ -446,11 +446,11 @@ public class SurveyAnswerRatioShould {
         Question question4 = new Question("QuestionUID4", 2, false);
 
         Question question5 = new Question("QuestionUIDCHILD1", 2, false);
-        question5.addParent(question4, "OPTIONUID1");
+        question5.addQuestionParentAndOptionMatch(question4, "OPTIONUID1");
         question4.addChildren(question5);
 
         Question question6 = new Question("QuestionUIDCHILD2", 2, false);
-        question6.addParent(question4, "OPTIONUID1");
+        question6.addQuestionParentAndOptionMatch(question4, "OPTIONUID1");
         question4.addChildren(question6);
 
         questions.add(question1);
@@ -472,19 +472,19 @@ public class SurveyAnswerRatioShould {
         Question question4 = new Question("QuestionUID4", 2, false);
 
         Question question5 = new Question("QuestionUIDCHILD1", 2, false);
-        question5.addParent(question4, "OPTIONUID1");
+        question5.addQuestionParentAndOptionMatch(question4, "OPTIONUID1");
         question4.addChildren(question5);
 
         Question question6 = new Question("QuestionUIDCHILD2", 2, false);
-        question6.addParent(question4, "OPTIONUID1");
+        question6.addQuestionParentAndOptionMatch(question4, "OPTIONUID1");
         question4.addChildren(question6);
 
         Question question7 = new Question("QuestionUIDCHILD_level2_uid1", 2, false);
-        question7.addParent(question6, "OPTIONUID1");
+        question7.addQuestionParentAndOptionMatch(question6, "OPTIONUID1");
         question6.addChildren(question7);
 
         Question question8 = new Question("QuestionUIDCHILD_level2_uid2", 2, false);
-        question8.addParent(question6, "OPTIONUID1");
+        question8.addQuestionParentAndOptionMatch(question6, "OPTIONUID1");
         question6.addChildren(question8);
 
         questions.add(question1);
@@ -507,13 +507,13 @@ public class SurveyAnswerRatioShould {
         Question question4 = new Question("QuestionUID4", 2, false);
 
         Question question5 = new Question("QuestionUIDCHILD1", 2, false);
-        question5.addParent(question3, "OPTIONUID1");
+        question5.addQuestionParentAndOptionMatch(question3, "OPTIONUID1");
         question3.addChildren(question5);
-        question5.addParent(question4, "OPTIONUID2");
+        question5.addQuestionParentAndOptionMatch(question4, "OPTIONUID2");
         question4.addChildren(question5);
 
         Question question6 = new Question("QuestionUIDCHILD2", 2, false);
-        question6.addParent(question4, "OPTIONUID1");
+        question6.addQuestionParentAndOptionMatch(question4, "OPTIONUID1");
         question4.addChildren(question6);
 
         questions.add(question1);

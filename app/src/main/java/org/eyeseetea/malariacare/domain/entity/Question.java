@@ -1,5 +1,7 @@
 package org.eyeseetea.malariacare.domain.entity;
 
+import android.support.annotation.NonNull;
+
 import static org.eyeseetea.malariacare.domain.utils.RequiredChecker.required;
 
 import java.util.ArrayList;
@@ -67,13 +69,10 @@ public class Question {
         return answerName;
     }
 
-    public void addParent(Question question, String optionUid1) {
-        parents.add(question);
+    public void addQuestionParentAndOptionMatch(Question question, String optionUid) {
+        addParentIfNotExist(question);
         Map<String, Boolean> matches = new HashMap<>();
-        if(questionOptionMatches.containsKey(question.getUId())) {
-            matches = questionOptionMatches.get(question.getUId());
-        }
-        matches.put(optionUid1, false);
+        matches = addNotTriggeredMatch(question, optionUid, matches);
         questionOptionMatches.put(question.getUId(), matches);
     }
 
@@ -110,6 +109,22 @@ public class Question {
             Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
             match.put(questionValue.getOptionUId(), false);
             questionOptionMatches.put(questionValue.getQuestionUId(), match);
+        }
+    }
+
+    @NonNull
+    private Map<String, Boolean> addNotTriggeredMatch(Question question, String optionUid1, Map<String, Boolean> matches) {
+        if(questionOptionMatches.containsKey(question.getUId())) {
+            matches = questionOptionMatches.get(question.getUId());
+        }
+        matches.put(optionUid1, false);
+        return matches;
+    }
+
+    @NonNull
+    private void addParentIfNotExist(Question question){
+        if(!parents.contains(question)) {
+            parents.add(question);
         }
     }
 
