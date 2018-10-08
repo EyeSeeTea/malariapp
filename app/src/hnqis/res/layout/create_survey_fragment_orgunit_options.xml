@@ -25,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="@color/assess_grey"
-        android:gravity="center">
+        android:gravity="center"
+        android:id="@+id/org_unit_container">
 
         <org.eyeseetea.malariacare.views.CustomTextView
             android:layout_width="wrap_content"
