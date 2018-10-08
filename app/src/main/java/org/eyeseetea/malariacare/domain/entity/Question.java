@@ -46,7 +46,7 @@ public class Question {
         if(!hasParents()) {
             return true;
         }else{
-            if (hasActiveParent()) {
+            if (checkIfParentHasActiveMatches()) {
                 return true;
             }
         }
@@ -96,7 +96,8 @@ public class Question {
         return !isVisible() && matches!=null && matches.containsKey(value.getOptionUId());
     }
 
-    public void addActiveParentMatch(QuestionValue questionValue) {
+    //this method is triggered when a option parent is matched, setting a match question option relation to true
+    public void activateQuestionOptionMatch(QuestionValue questionValue) {
         if(questionValue.getQuestionUId()!=null && questionValue.getOptionUId()!=null){
             Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
             match.put(questionValue.getOptionUId(), true);
@@ -104,7 +105,8 @@ public class Question {
         }
     }
 
-    public void removeActiveParentMatch(QuestionValue questionValue) {
+    //this method is triggered when a option parent is disabled, setting a match question option relation to false
+    public void deactivateQuestionOptionMatch(QuestionValue questionValue) {
         if(questionValue.getQuestionUId()!=null && questionValue.getOptionUId()!=null){
             Map<String, Boolean> match = questionOptionMatches.get(questionValue.getQuestionUId());
             match.put(questionValue.getOptionUId(), false);
@@ -128,16 +130,23 @@ public class Question {
         }
     }
 
-    private boolean hasActiveParent() {
+    //this method search an active option match for each question parent option match relations.
+    private boolean checkIfParentHasActiveMatches() {
         for(String questionUId : questionOptionMatches.keySet()){
             Map<String, Boolean> optionMatcher = questionOptionMatches.get(questionUId);
             if(optionMatcher==null){
                 continue;
             }
-            for(String optionUId : optionMatcher.keySet()) {
-                if (optionMatcher.get(optionUId).booleanValue()) {
-                    return true;
-                }
+            if (findActiveMatch(optionMatcher)) return true;
+        }
+        return false;
+    }
+
+    //this method search an active option match for each question parent option match relations.
+    private boolean findActiveMatch(Map<String, Boolean> optionMatcher) {
+        for(String optionUId : optionMatcher.keySet()) {
+            if (optionMatcher.get(optionUId).booleanValue()) {
+                return true;
             }
         }
         return false;

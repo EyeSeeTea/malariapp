@@ -152,7 +152,7 @@ public class Survey {
             for(Question childQuestion : questions.get(questionValue.getQuestionUId()).getChildren()){
                 Question updatedQuestion = questions.get(childQuestion.getUId());
                 if(updatedQuestion.shouldActivateQuestion(questionValue)) {
-                    updatedQuestion.addActiveParentMatch(questionValue);
+                    updatedQuestion.activateQuestionOptionMatch(questionValue);
                     getAnsweredRatio().fixTotalQuestion(updatedQuestion.isCompulsory(), updatedQuestion.isVisible());
                 }
             }
@@ -171,7 +171,7 @@ public class Survey {
             for(Question childQuestion : questions.get(questionValue.getQuestionUId()).getChildren()){
                 QuestionValue childQuestionValue = questionValues.get(childQuestion.getUId());
                 Question updatedQuestion = questions.get(childQuestion.getUId());
-                updatedQuestion.removeActiveParentMatch(questionValue);
+                updatedQuestion.deactivateQuestionOptionMatch(questionValue);
                 if(childQuestionValue!=null && !childQuestion.isVisible()) {
                     removeValue(childQuestionValue);
                     getAnsweredRatio().fixTotalQuestion(childQuestion.isCompulsory(), childQuestion.isVisible());
