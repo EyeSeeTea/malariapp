@@ -7,7 +7,6 @@ import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class SurveyShould {
@@ -45,10 +44,10 @@ public class SurveyShould {
 
         Assert.assertNotNull(survey);
         Assert.assertNotNull(survey.getCreationDate());
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
         Assert.assertTrue(survey.getStatus().equals(SurveyStatus.IN_PROGRESS));
     }
 

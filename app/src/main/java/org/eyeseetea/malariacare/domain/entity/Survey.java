@@ -133,12 +133,8 @@ public class Survey {
         return questions.get(uid);
     }
 
-    public SurveyAnsweredRatio getSurveyAnsweredRatio() {
+    public SurveyAnsweredRatio getAnsweredRatio() {
         return surveyAnsweredRatio;
-    }
-
-    public void setSurveyAnsweredRatio(SurveyAnsweredRatio surveyAnsweredRatio) {
-        this.surveyAnsweredRatio = surveyAnsweredRatio;
     }
 
     public void addValue(QuestionValue questionValue, Question question){
@@ -157,11 +153,11 @@ public class Survey {
                 Question updatedQuestion = questions.get(childQuestion.getUId());
                 if(updatedQuestion.shouldActivateQuestion(questionValue)) {
                     updatedQuestion.addActiveParentMatch(questionValue);
-                    getSurveyAnsweredRatio().fixTotalQuestion(updatedQuestion.isCompulsory(), updatedQuestion.isVisible());
+                    getAnsweredRatio().fixTotalQuestion(updatedQuestion.isCompulsory(), updatedQuestion.isVisible());
                 }
             }
         }
-        getSurveyAnsweredRatio().addQuestion(question.isCompulsory());
+        getAnsweredRatio().addQuestion(question.isCompulsory());
     }
 
     public void removeValue(QuestionValue questionValue, Question question){
@@ -170,7 +166,7 @@ public class Survey {
             return;
         }
         questionValues.remove(question.getUId());
-        getSurveyAnsweredRatio().removeQuestion(question.isCompulsory());
+        getAnsweredRatio().removeQuestion(question.isCompulsory());
         if(question.hasChildren()) {
             for(Question childQuestion : question.getChildren()){
                 QuestionValue childQuestionValue = questionValues.get(childQuestion.getUId());
@@ -178,7 +174,7 @@ public class Survey {
                 updatedQuestion.removeActiveParentMatch(questionValue);
                 if(childQuestionValue!=null && !childQuestion.isVisible()) {
                     removeValue(childQuestionValue, childQuestion);
-                    getSurveyAnsweredRatio().fixTotalQuestion(childQuestion.isCompulsory(), childQuestion.isVisible());
+                    getAnsweredRatio().fixTotalQuestion(childQuestion.isCompulsory(), childQuestion.isVisible());
                 }
             }
         }
@@ -187,7 +183,7 @@ public class Survey {
     private void startQuestionSurvey(HashMap<String, Question> questions) {
         int totalCompulsory = countTotalCompulsoryQuestions(questions);
         int total = countTotalActiveQuestions(questions) + totalCompulsory;
-        setSurveyAnsweredRatio(SurveyAnsweredRatio.startSurvey(total, totalCompulsory));
+        surveyAnsweredRatio = (SurveyAnsweredRatio.startSurvey(total, totalCompulsory));
         this.questions = questions;
     }
 

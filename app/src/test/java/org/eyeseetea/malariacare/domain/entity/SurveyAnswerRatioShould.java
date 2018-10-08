@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SurveyAnswerRatioShould {
@@ -25,12 +24,12 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
         //check calc
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==1);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
 
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && !survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && !survey.getAnsweredRatio().isCompulsoryCompleted());
     }
     @Test
     public void complete_survey_ratio_when_add_all_compulsory_values(){
@@ -45,11 +44,11 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
     }
     @Test
     public void complete_survey_ratio_when_add_all__values(){
@@ -75,11 +74,11 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -96,11 +95,11 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==1);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && !survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && !survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -113,11 +112,11 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==1);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==1);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && !survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==1);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && !survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -129,18 +128,18 @@ public class SurveyAnswerRatioShould {
         QuestionValue questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
         survey.addValue(questionValue, question);
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==1);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
 
 
         survey.removeValue(questionValue, question);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && !survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && !survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -152,19 +151,19 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==1);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==1);
 
         survey.removeValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && !survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && !survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -184,11 +183,11 @@ public class SurveyAnswerRatioShould {
         questionValue = QuestionValue.createSimpleValue(question.getUId(), "dummyValue");
         survey.addValue(questionValue, question);
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -214,11 +213,11 @@ public class SurveyAnswerRatioShould {
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
         survey.addValue(questionValue, question);
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -245,22 +244,22 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
 
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
         survey.removeValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==3);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==3);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
 
@@ -294,22 +293,22 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==8);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==8);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==8);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==8);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
 
         question = survey.getQuestion("QuestionUID4");
         questionValue = QuestionValue.createOptionValue(question.getUId(), "OPTIONUID1", "dummyValue");
         survey.removeValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==3);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==2);
-        Assert.assertTrue(!survey.getSurveyAnsweredRatio().isCompleted() && survey.getSurveyAnsweredRatio().isCompulsoryCompleted());
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==3);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==2);
+        Assert.assertTrue(!survey.getAnsweredRatio().isCompleted() && survey.getAnsweredRatio().isCompulsoryCompleted());
     }
 
     @Test
@@ -321,18 +320,18 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==1);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==1);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
 
         survey.removeValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==4);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==4);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
     }
 
     @Test
@@ -347,12 +346,12 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==6);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted()==false);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompulsoryCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==6);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompulsoryCompleted()==false);
     }
 
     @Test
@@ -376,12 +375,12 @@ public class SurveyAnswerRatioShould {
         survey.removeValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==5);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted()==false);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompulsoryCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==5);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompulsoryCompleted()==false);
     }
 
     @Test
@@ -405,12 +404,12 @@ public class SurveyAnswerRatioShould {
         survey.removeValue(questionValue, question);
 
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==5);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted()==false);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompulsoryCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==5);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompulsoryCompleted()==false);
     }
 
     @Test
@@ -431,12 +430,12 @@ public class SurveyAnswerRatioShould {
         survey.addValue(questionValue, question);
         survey.removeValue(questionValue, question);
 
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotal()==5);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getTotalCompulsory()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getAnswered()==2);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().getCompulsoryAnswered()==0);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompleted()==false);
-        Assert.assertTrue(survey.getSurveyAnsweredRatio().isCompulsoryCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotal()==5);
+        Assert.assertTrue(survey.getAnsweredRatio().getTotalCompulsory()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getAnswered()==2);
+        Assert.assertTrue(survey.getAnsweredRatio().getCompulsoryAnswered()==0);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompleted()==false);
+        Assert.assertTrue(survey.getAnsweredRatio().isCompulsoryCompleted()==false);
     }
 
     private Survey createQuestionTreeWithoutMultiparentChildren() {
