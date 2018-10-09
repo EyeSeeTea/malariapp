@@ -24,7 +24,6 @@ import android.util.Log;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
 import org.eyeseetea.malariacare.data.boundaries.IDataRemoteDataSource;
-import org.eyeseetea.malariacare.data.database.model.ObservationDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
 import org.eyeseetea.malariacare.domain.boundary.IPushController;
@@ -179,7 +178,7 @@ public class PushDataController implements IPushController {
                                 }
                             }
                         }else {
-                            if (!pushReport.hasPushErrors(data instanceof ObservationDB)) {
+                            if (!pushReport.hasPushErrors(data instanceof Observation)) {
                                 Log.d(TAG, "saveSurveyStatus: report without errors and status ok "
                                         + data.getSurveyUid());
                                 data.markAsSent();
