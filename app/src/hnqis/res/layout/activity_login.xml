@@ -92,8 +92,24 @@
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:weightSum="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <org.eyeseetea.malariacare.views.CustomSpinner
+                        android:id="@+id/server_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:spinnerMode="dropdown"/>
+
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edittext_server_url_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginBottom="8dp">
