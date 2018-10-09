@@ -79,8 +79,6 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
         editor.putString(mContext.getString(R.string.dhis_user), credentials.getUsername());
         editor.putString(mContext.getString(R.string.dhis_password), credentials.getPassword());
         editor.commit();
-
-        PreferencesState.getInstance().reloadServerUrl();
         Session.setCredentials(credentials);
     }
 
@@ -91,6 +89,5 @@ public class AuthenticationManagerLocalDataSource implements IAuthenticationMana
         editor.putString(mContext.getString(R.string.dhis_user), "");
         editor.putString(mContext.getString(R.string.dhis_password), "");
         editor.commit();
-        PreferencesState.getInstance().reloadServerUrl();
     }
 }

@@ -39,6 +39,7 @@ import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
 import org.eyeseetea.malariacare.views.CustomTextView;
@@ -46,7 +47,7 @@ import org.eyeseetea.malariacare.views.DoublePieChart;
 import org.eyeseetea.sdk.presentation.views.DoubleRectChart;
 
 public class LayoutUtils {
-
+    private Settings settings;
     public static final int[] rowBackgrounds =
             {R.drawable.background_even, R.drawable.background_odd};
     public static final int[] rowBackgroundsNoBorder =
@@ -108,13 +109,17 @@ public class LayoutUtils {
         }
     }
 
+    public LayoutUtils(Settings settings){
+        this.settings = settings;
+    }
+
     //// TODO: 30/07/2018  remove if is not used in hnqis
     public static void setActionBarBackButton(AppCompatActivity activity) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    public static void setToolBarTitleForSurveyFeedback(DashboardActivity dashboardActivity,
+    public void setToolBarTitleForSurveyFeedback(DashboardActivity dashboardActivity,
                                                   SurveyDB survey) {
         String title = "";
         String subtitle = "";
@@ -137,7 +142,7 @@ public class LayoutUtils {
         }
     }
 
-    public static void setActionBarForSurveyFeedback(AppCompatActivity dashboardActivity,
+    public void setActionBarForSurveyFeedback(AppCompatActivity dashboardActivity,
             SurveyDB survey) {
         String title = "";
         String subtitle = "";
@@ -160,7 +165,7 @@ public class LayoutUtils {
         }
     }
 
-    public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
+    public void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
             SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
         String title = "";
         if (survey.getProgram().getName() != null) {
@@ -187,11 +192,11 @@ public class LayoutUtils {
         actionBar.setTitle(title);
     }
 
-    private static void setToolbarTitle(AppCompatActivity activity, Spanned title,
+    private void setToolbarTitle(AppCompatActivity activity, Spanned title,
                                           String subtitle) {
         Toolbar toolbar = getToolbar(activity);
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            String server = PreferencesState.getInstance().getServer().getUrl();
+            String server = settings.getServer().getUrl();
             ((CustomTextView) toolbar.findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
             (toolbar.findViewById(R.id.action_bar_multititle_dev_subtitle)).setVisibility(View.VISIBLE);
         }
@@ -199,14 +204,14 @@ public class LayoutUtils {
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
 
-    private static void setActionbarTitle(AppCompatActivity activity, Spanned title,
+    private void setActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
+        String server = settings.getServer().getUrl();
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             actionBar.setCustomView(R.layout.dev_custom_action_bar);
-            String server = PreferencesState.getInstance().getServer().getUrl();
             ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
         }else {
             actionBar.setCustomView(R.layout.custom_action_bar);
@@ -229,20 +234,19 @@ public class LayoutUtils {
         return toolbar;
     }
 
-    private static void setSurveyActionbarTitle(AppCompatActivity activity, Spanned title,
+    private void setSurveyActionbarTitle(AppCompatActivity activity, Spanned title,
             String subtitle, long surveyId, SurveyAnsweredRatio surveyAnsweredRatio) {
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
+        String server = settings.getServer().getUrl();
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             actionBar.setCustomView(R.layout.dev_custom_action_bar);
-            String server = PreferencesState.getInstance().getServer().getUrl();
             ((CustomTextView) actionBar.getCustomView().findViewById(R.id.action_bar_multititle_dev_subtitle)).setText(server);
         }else {
             actionBar.setCustomView(R.layout.custom_action_bar_with_chart);
         }
         updateSurveyActionBarChart(actionBar, surveyAnsweredRatio);
-        String server = PreferencesState.getInstance().getServer().getUrl();
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_title)).setText(title);
         ((CustomTextView) activity.findViewById(R.id.action_bar_multititle_subtitle)).setText(subtitle);
     }
@@ -258,7 +262,7 @@ public class LayoutUtils {
         actionBar.setTitle(activity.getResources().getString(R.string.app_name));
     }
 
-    public static void setActionBarDashboard(AppCompatActivity activity, String title) {
+    public void setActionBarDashboard(AppCompatActivity activity, String title) {
 
         android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setLogo(R.drawable.qualityapp_logo);
@@ -277,7 +281,7 @@ public class LayoutUtils {
             Spanned spannedTitle = Html.fromHtml(
                     String.format("<font color=\"#%s\"><b>%s</b></font> - %s", appNameColorString,
                             appName, title));
-            LayoutUtils.setActionbarTitle(activity, spannedTitle, user);
+            setActionbarTitle(activity, spannedTitle, user);
         }
     }
 

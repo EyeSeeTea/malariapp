@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.models.EventExtended;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +72,10 @@ public class PullDhisApiDataSource {
      * @param url
      */
     public static Response executeCall(JSONObject data, String url, String method) throws IOException {
-        final String DHIS_URL=PreferencesState.getInstance().getServer().getUrl() + url.replace(" ", "%20");
+        //todo this method is refactorized in other branch, we should call the settings activity repository in activity layer and dont use Preferencestate.
+        ISettingsRepository settingsRepository = new SettingsRepository(PreferencesState.getInstance().getContext());
+        Settings settings = settingsRepository.getSettings();
+        final String DHIS_URL=settings.getServer().getUrl() + url.replace(" ", "%20");
 
         Log.d(TAG, "executeCall Url" + DHIS_URL + "");
 

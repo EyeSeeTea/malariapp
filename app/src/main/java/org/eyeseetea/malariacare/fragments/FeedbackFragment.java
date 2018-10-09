@@ -44,6 +44,8 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.layout.adapters.survey.FeedbackAdapter;
 import org.eyeseetea.malariacare.services.SurveyService;
 import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
@@ -159,10 +161,10 @@ public class FeedbackFragment extends Fragment implements IModuleFragment {
     private void prepareUI(String module) {
         //Get progress
         progressBar = (ProgressBar) llLayout.findViewById(R.id.survey_progress);
-
+        ISettingsRepository settingsRepository = new SettingsRepository(getActivity().getApplicationContext());
         //Set adapter and list
         feedbackAdapter = new FeedbackAdapter(getActivity(),
-                Session.getSurveyByModule(module).getId_survey(), module);
+                Session.getSurveyByModule(module).getId_survey(), module, settingsRepository.getSettings());
         feedbackListView = (ListView) llLayout.findViewById(R.id.feedbackListView);
         feedbackListView.setAdapter(feedbackAdapter);
         feedbackListView.setDivider(null);

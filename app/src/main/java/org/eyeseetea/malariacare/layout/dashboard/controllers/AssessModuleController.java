@@ -35,9 +35,11 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.database.utils.planning.SurveyPlanner;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.domain.enums.Action;
@@ -247,7 +249,9 @@ public class AssessModuleController extends ModuleController {
                                             SurveyAnsweredRatio surveyAnsweredRatio) {
                                         Log.d(getClass().getName(), "onComplete");
                                         if (surveyAnsweredRatio != null) {
-                                            ActionBarStrategy.setActionBarTitleForSurveyAndChart(
+                                            ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity);
+                                            ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
+                                            actionBarStrategy.setActionBarTitleForSurveyAndChart(
                                                     dashboardActivity, finalSurvey, getTitle(),
                                                     surveyAnsweredRatio);
 

@@ -9,24 +9,27 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
 import org.eyeseetea.malariacare.layout.utils.LayoutUtils;
 import org.eyeseetea.malariacare.views.DoublePieChart;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 
 public class ActionBarStrategy extends LayoutUtils {
-
-    public static void setActionBarForSurveyFeedback(DashboardActivity dashboardActivity, SurveyDB survey) {
-        ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity).findViewById(R.id.action_bar_chart).setVisibility(View.GONE);
-        LayoutUtils.setToolBarTitleForSurveyFeedback(dashboardActivity,survey);
+    public ActionBarStrategy(Settings settings){
+        super(settings);
+    }
+    public void setActionBarForSurveyFeedback(DashboardActivity dashboardActivity, SurveyDB survey) {
+        getActionBarPie(DashboardActivity.dashboardActivity).findViewById(R.id.action_bar_chart).setVisibility(View.GONE);
+        setToolBarTitleForSurveyFeedback(dashboardActivity,survey);
     }
 
-    public static void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
+    public void setActionBarTitleForSurveyAndChart(DashboardActivity dashboardActivity,
             SurveyDB survey, String moduleName, SurveyAnsweredRatio surveyAnsweredRatio) {
     }
 
-    public static void setActionBarDashboard(AppCompatActivity activity, String title) {
-        ActionBarStrategy.getActionBarPie(DashboardActivity.dashboardActivity).findViewById(R.id.action_bar_chart).setVisibility(View.GONE);
-        LayoutUtils.setToolbarBarDashboard(activity, title);
+    public void setActionBarDashboard(AppCompatActivity activity, String title) {
+        getActionBarPie(DashboardActivity.dashboardActivity).findViewById(R.id.action_bar_chart).setVisibility(View.GONE);
+        setToolbarBarDashboard(activity, title);
     }
 
-    public static DoublePieChart getActionBarPie(AppCompatActivity appCompatActivity) {
+    public DoublePieChart getActionBarPie(AppCompatActivity appCompatActivity) {
         DoublePieChart view = (DoublePieChart)appCompatActivity.findViewById(R.id.toolbar).findViewById(
                 R.id.action_bar_chart);
         view.setVisibility(View.VISIBLE);

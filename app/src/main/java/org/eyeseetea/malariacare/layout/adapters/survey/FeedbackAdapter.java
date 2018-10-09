@@ -47,6 +47,7 @@ import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.feedback.CompositeScoreFeedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.Feedback;
 import org.eyeseetea.malariacare.data.database.utils.feedback.QuestionFeedback;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.strategies.FeedbackFragmentStyleStrategy;
 import org.eyeseetea.malariacare.utils.Constants;
 import org.eyeseetea.malariacare.utils.CustomParser;
@@ -63,6 +64,8 @@ public class FeedbackAdapter extends BaseAdapter {
 
     private List<Feedback> items;
 
+    private Settings settings;
+
     private Context context;
 
     private boolean onlyFailed;
@@ -75,12 +78,9 @@ public class FeedbackAdapter extends BaseAdapter {
 
     String module;
 
-    public FeedbackAdapter(Context context, float idSurvey, String module){
-        this(new ArrayList<Feedback>(), context, idSurvey, module);
-    }
-
-    public FeedbackAdapter(List<Feedback> items, Context context, float idSurvey, String module){
-        this.items=items;
+    public FeedbackAdapter(Context context, float idSurvey, String module, Settings settings){
+        this.settings = settings;
+        this.items= new ArrayList<Feedback>();
         this.context=context;
         this.idSurvey=idSurvey;
         this.module=module;
@@ -258,7 +258,7 @@ public class FeedbackAdapter extends BaseAdapter {
         if(PreferencesState.getInstance().isDevelopOptionActive()){
             textView=(TextView)rowLayout.findViewById(R.id.feedback_uid);
             textView.setVisibility(View.VISIBLE);
-            textView.setText(Html.fromHtml("<a href=\""+PreferencesState.getInstance().getServer().getUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>"));
+            textView.setText(Html.fromHtml("<a href=\""+settings.getServer().getUrl()+PreferencesState.getInstance().getContext().getString(R.string.api_data_elements)+feedback.getQuestion().getUid()+"\">("+feedback.getQuestion().getUid()+")</a>"));
             textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
         //Option label

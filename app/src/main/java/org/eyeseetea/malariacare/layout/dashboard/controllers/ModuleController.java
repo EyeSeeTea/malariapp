@@ -19,6 +19,7 @@
 
 package org.eyeseetea.malariacare.layout.dashboard.controllers;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -34,6 +35,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.ProgramDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.fragments.IModuleFragment;
 import org.eyeseetea.malariacare.layout.dashboard.config.ModuleSettings;
 import org.eyeseetea.malariacare.strategies.ActionBarStrategy;
@@ -218,11 +221,15 @@ public abstract class ModuleController {
     }
 
     public void setActionBarDashboard() {
-        ActionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle());
+        ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity.getApplicationContext());
+        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
+        actionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle());
     }
 
     public void setActionBarDashboardWithProgram() {
-        ActionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
+        ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity.getApplicationContext());
+        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
+        actionBarStrategy.setActionBarDashboard(dashboardActivity, getTitle()+" - "+Session.getSurveyByModule(getName()).getProgram().getName());
     }
 
     public void replaceFragment(int layout, Fragment fragment) {

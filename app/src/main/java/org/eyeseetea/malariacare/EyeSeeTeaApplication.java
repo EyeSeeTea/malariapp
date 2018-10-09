@@ -38,6 +38,8 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import org.eyeseetea.malariacare.data.database.model.UserDB;
 import org.eyeseetea.malariacare.data.database.utils.LocationMemory;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.layout.dashboard.builder.AppSettingsBuilder;
 import org.eyeseetea.malariacare.layout.utils.AutoTabLayoutUtils;
 import org.eyeseetea.malariacare.utils.Permissions;
@@ -60,7 +62,6 @@ public class EyeSeeTeaApplication extends Application {
         PreferencesState.getInstance().init(getApplicationContext());
         LocationMemory.getInstance().init(getApplicationContext());
         TypefaceCache.getInstance().init(getApplicationContext());
-        AutoTabLayoutUtils.init();
 
         D2.init(this);
         FlowConfig flowConfig = new FlowConfig

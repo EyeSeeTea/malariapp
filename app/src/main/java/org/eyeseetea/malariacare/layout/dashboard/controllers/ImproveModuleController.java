@@ -27,6 +27,8 @@ import org.eyeseetea.malariacare.R;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.fragments.DashboardSentFragment;
 import org.eyeseetea.malariacare.fragments.FeedbackFragment;
 import org.eyeseetea.malariacare.fragments.PlanActionFragment;
@@ -121,7 +123,9 @@ public class ImproveModuleController extends ModuleController {
         // on to the back stack.
         feedbackFragment.setModuleName(getSimpleName());
         replaceFragment(R.id.dashboard_completed_container, feedbackFragment);
-        ActionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
+        ISettingsRepository settingsRepository = new SettingsRepository(dashboardActivity.getApplicationContext());
+        ActionBarStrategy actionBarStrategy = new ActionBarStrategy(settingsRepository.getSettings());
+        actionBarStrategy.setActionBarForSurveyFeedback(dashboardActivity, survey);
 
         if(modifyFilter) {
             UpdateFiltersBySurvey(survey);

@@ -27,6 +27,9 @@ import org.eyeseetea.malariacare.data.database.model.ScoreDB;
 import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
+import org.eyeseetea.malariacare.domain.entity.NextScheduleMonths;
 import org.eyeseetea.malariacare.domain.entity.ScoreType;
 import org.eyeseetea.malariacare.domain.entity.Server;
 import org.eyeseetea.malariacare.utils.Constants;
@@ -169,6 +172,9 @@ public class SurveyPlanner {
         if (eventDate == null) {
             return null;
         }
+        //todo This is temporal, we should call this use case from the activity, but this method doesn't exist on future branchs
+        ISettingsRepository settingsRepository = new SettingsRepository(PreferencesState.getInstance().getContext());
+        NextScheduleMonths nextScheduleMonths = settingsRepository.getSettings().getServer().getNextScheduleMatrix();
 
         //Load main score
         Log.d(TAG, String.format(
@@ -176,19 +182,17 @@ public class SurveyPlanner {
                         + "lowProductivity: %b",
                 eventDate.toString(), survey.getMainScore().getScore(), survey.isLowProductivity()));
 
-        Server server = PreferencesState.getInstance().getServer();
-
         ScoreType scoreType = new ScoreType(survey.getMainScore().getScore());
 
         if (scoreType.isTypeA()) {
-            return getInXMonths(eventDate, server.getNextScheduleMatrix().getScoreAMonths());
+            return getInXMonths(eventDate, nextScheduleMonths.getScoreAMonths());
         }
 
         if (survey.isLowProductivity()) {
-            return getInXMonths(eventDate,  server.getNextScheduleMatrix().getLowProductivityMonths());
+            return getInXMonths(eventDate, nextScheduleMonths.getLowProductivityMonths());
         }
 
-        return getInXMonths(eventDate,  server.getNextScheduleMatrix().getHighProductivityMonths());
+        return getInXMonths(eventDate, nextScheduleMonths.getHighProductivityMonths());
     }
 
     /**

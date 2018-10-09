@@ -52,9 +52,11 @@ import org.eyeseetea.malariacare.data.database.model.SurveyDB;
 import org.eyeseetea.malariacare.data.database.model.TabDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
+import org.eyeseetea.malariacare.data.repositories.SettingsRepository;
 import org.eyeseetea.malariacare.data.repositories.SurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
 import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
+import org.eyeseetea.malariacare.domain.boundary.repositories.ISettingsRepository;
 import org.eyeseetea.malariacare.domain.boundary.repositories.ISurveyAnsweredRatioRepository;
 import org.eyeseetea.malariacare.domain.entity.Question;
 import org.eyeseetea.malariacare.domain.entity.SurveyAnsweredRatio;
@@ -97,6 +99,8 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
     IAsyncExecutor asyncExecutor;
     IMainExecutor mainExecutor;
     SurveyAnsweredRatio mSurveyAnsweredRatio;
+    ISettingsRepository settingsRepository;
+
 
     //FIXME Better than a bunch of 'ifs' worse than it should
     private static final int ORDER_PROFILE = 2;
@@ -195,6 +199,8 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         }
 
         llLayout = (RelativeLayout) inflater.inflate(R.layout.survey, container, false);
+        settingsRepository= new SettingsRepository(getActivity().getApplicationContext());
+        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
         registerReceiver();
         createMenu(moduleName);
         createProgress();
@@ -203,14 +209,12 @@ public class SurveyFragment extends Fragment implements DomainEventSubscriber<Va
         DomainEventPublisher.instance().subscribe(this);
 
         initializeSurvey();
-
         return llLayout;
     }
 
     private void initializeSurvey() {
         final SurveyDB survey = Session.getSurveyByModule(moduleName);
 
-        surveyAnsweredRatioRepository = new SurveyAnsweredRatioRepository();
         asyncExecutor = new AsyncExecutor();
         mainExecutor = new UIThreadExecutor();
         GetSurveyAnsweredRatioUseCase getSurveyAnsweredRatioUseCase =
@@ -870,8 +874,9 @@ private class TabAdaptersCache {
     public void reloadAdapters(List<TabDB> tabs, List<CompositeScoreDB> compositeScores) {
         TabDB firstTab = tabs.get(0);
         this.adapters.clear();
+
         this.adapters.put(firstTab, AutoTabAdapter.build(firstTab, getActivity(),
-                Session.getSurveyByModule(moduleName).getId_survey(), moduleName));
+                Session.getSurveyByModule(moduleName).getId_survey(), moduleName, settingsRepository.getSettings()));
         this.compositeScores = compositeScores;
     }
 
@@ -903,7 +908,7 @@ private class TabAdaptersCache {
      */
     private ITabAdapter buildAdapter(TabDB tab) {
         return AutoTabAdapter.build(tab, getActivity(),
-                Session.getSurveyByModule(moduleName).getId_survey(), moduleName);
+                Session.getSurveyByModule(moduleName).getId_survey(), moduleName, settingsRepository.getSettings());
     }
 }
 }

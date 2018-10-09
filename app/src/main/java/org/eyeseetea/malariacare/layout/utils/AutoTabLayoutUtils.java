@@ -41,6 +41,7 @@ import org.eyeseetea.malariacare.data.database.model.OptionDB;
 import org.eyeseetea.malariacare.data.database.model.QuestionDB;
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.ReadWriteDB;
+import org.eyeseetea.malariacare.domain.entity.Settings;
 import org.eyeseetea.malariacare.layout.adapters.general.OptionArrayAdapter;
 import org.eyeseetea.malariacare.layout.adapters.survey.AutoTabAdapter;
 import org.eyeseetea.malariacare.layout.score.ScoreRegister;
@@ -58,15 +59,13 @@ import java.util.List;
 public class AutoTabLayoutUtils {
 
     private static final String TAG = ".ATLayoutUtils";
-    private static String compulsoryColorString;
-    private static final String ZERO = PreferencesState.getInstance().getContext().getString(R.string.number_zero);
+    private Settings settings;
+    private Context context;
 
-    /**
-     * Inits red color to avoid going into resources every time
-     */
-    public static void init(){
-        int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
-        compulsoryColorString = String.format("%X", red).substring(2);
+
+    public AutoTabLayoutUtils(Settings settings, Context context){
+        this.settings = settings;
+        this.context = context;
     }
 
     //Store the Views references for each row (to avoid many calls to getViewById)
@@ -211,7 +210,7 @@ public class AutoTabLayoutUtils {
         return hiddens;
     }
 
-    public static View initialiseDropDown(int position, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context, float idSurvey) {
+    public View initialiseDropDown(int position, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, LayoutInflater lInflater, Context context, float idSurvey) {
         View rowView;
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
             rowView = initialiseView(R.layout.ddl_scored, parent, question, viewHolder, position, lInflater, idSurvey);
@@ -228,7 +227,7 @@ public class AutoTabLayoutUtils {
         return rowView;
     }
 
-    public static View initialiseView(int resource, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater, float idSurvey) {
+    public View initialiseView(int resource, ViewGroup parent, QuestionDB question, AutoTabViewHolder viewHolder, int position, LayoutInflater lInflater, float idSurvey) {
         View rowView = lInflater.inflate(resource, parent, false);
         if (question.hasChildren())
             rowView.setBackgroundResource(R.drawable.background_parent);
@@ -244,8 +243,8 @@ public class AutoTabLayoutUtils {
         String questionFormHtml = question.getForm_name();
         String questionUId = "";
         if(PreferencesState.getInstance().isDevelopOptionActive()) {
-            questionUId = " <a href=\"" + PreferencesState.getInstance().getServer().getUrl()
-                    + PreferencesState.getInstance().getContext().getString(
+            questionUId = " <a href=\"" + settings.getServer().getUrl()
+                    + context.getString(
                     R.string.api_data_elements) + question.getUid() + "\">(" + question.getUid()
                     + ")</a>";
         }
@@ -253,7 +252,7 @@ public class AutoTabLayoutUtils {
         showOrHideChildParentImages(question, viewHolder, idSurvey);
 
         if(question.getCompulsory()){
-            int red = PreferencesState.getInstance().getContext().getResources().getColor(R.color.darkRed);
+            int red = context.getResources().getColor(R.color.darkRed);
             String appNameColorString = String.format("%X", red).substring(2);
             Spanned compulsoryMark= Html.fromHtml(String.format("<font color=\"#%s\"><b>", appNameColorString) + "*  " + "</b></font>");
 
@@ -331,7 +330,7 @@ public class AutoTabLayoutUtils {
         viewHolder.denum.setVisibility(visibility);
     }
 
-    public static void autoFillAnswer(AutoTabViewHolder viewHolder, QuestionDB question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey, String module) {
+    public void autoFillAnswer(AutoTabViewHolder viewHolder, QuestionDB question, Context context, AutoTabInVisibilityState inVisibilityState, AutoTabAdapter adapter, float idSurvey, String module) {
         //FIXME Yes|No are 'hardcoded' here by using options 0|1
         int optionPosition=question.isTriggered(idSurvey)?0:1;
 
@@ -347,7 +346,7 @@ public class AutoTabLayoutUtils {
      * Do the logic after a DDL option change
      * @param autoTabSelectedItem
      */
-    public static void itemSelected(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module) {
+    public void itemSelected(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module) {
 
         final QuestionDB question = autoTabSelectedItem.getQuestion();
         final OptionDB option = autoTabSelectedItem.getOption();
@@ -378,7 +377,7 @@ public class AutoTabLayoutUtils {
      * @param
      * @return
      */
-    private static void processParentQuestionWithoutQuestion(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module, QuestionDB question, Context context) {
+    private void processParentQuestionWithoutQuestion(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module, QuestionDB question, Context context) {
         int maxActiveParentsForActiveChild=0;
         for(QuestionDB childQuestion:question.getChildren()) {
             if (childQuestion.isHiddenBySurvey(idSurvey) == false) {
@@ -411,7 +410,7 @@ public class AutoTabLayoutUtils {
      * @param
      * @return
      */
-    private static void askDeleteChildrenQuestion(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module, final QuestionDB question, Context context) {
+    private void askDeleteChildrenQuestion(final AutoTabSelectedItem autoTabSelectedItem, final float idSurvey, final String module, final QuestionDB question, Context context) {
         new AlertDialog.Builder(context)
                 .setTitle(null)
                 .setMessage(context.getString(R.string.dialog_deleting_children))
@@ -447,7 +446,7 @@ public class AutoTabLayoutUtils {
         return false;
     }
 
-    public static void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module){
+    public void saveAndExpandChildren(AutoTabSelectedItem autoTabSelectedItem, float idSurvey, String module){
         //Save value
         ReadWriteDB.saveValuesDDL(autoTabSelectedItem.getQuestion(), autoTabSelectedItem.getOption(), module);
         //Recalculate score
@@ -463,12 +462,12 @@ public class AutoTabLayoutUtils {
      * @param viewHolder views cache
      * @param question question that change its values
      */
-    private static void recalculateScores(AutoTabViewHolder viewHolder, QuestionDB question, float idSurvey, String module) {
+    private void recalculateScores(AutoTabViewHolder viewHolder, QuestionDB question, float idSurvey, String module) {
         Float num = ScoreRegister.calcNum(question, idSurvey);
         Float denum = ScoreRegister.calcDenum(question, idSurvey);
         //if the num is null, the question haven't a valid numerator, and the denominator should be ignored
-        viewHolder.setNumText(ZERO);
-        viewHolder.setDenumText(ZERO);
+        viewHolder.setNumText(context.getString(R.string.number_zero));
+        viewHolder.setDenumText(context.getString(R.string.number_zero));
         if(num!=null){
             viewHolder.setNumText(num.toString());
             viewHolder.setDenumText(denum.toString());
