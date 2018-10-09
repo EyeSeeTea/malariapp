@@ -673,7 +673,7 @@ public class SurveyDB extends BaseModel {
     }
 
     public void setSentSurveyState() {
-        //Change status and save mainScore
+        //Change status and saveData mainScore
         setStatus(Constants.SURVEY_SENT);
         save();
         saveMainScore();
@@ -704,7 +704,7 @@ public class SurveyDB extends BaseModel {
         //Clean inner lazy schedulelist
         surveySchedules = null;
 
-        //Move scheduledate and save
+        //Move scheduledate and saveData
         this.scheduled_date = newScheduledDate;
         this.save();
     }

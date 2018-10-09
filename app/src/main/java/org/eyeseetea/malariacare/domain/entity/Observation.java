@@ -84,7 +84,7 @@ public class Observation implements IData {
 
     @Override
     public void markValueAsConflict(String uid) {
-        //for now observationValue does not save conflict in values
+        //for now observationValue does not saveData conflict in values
     }
 
     @Override

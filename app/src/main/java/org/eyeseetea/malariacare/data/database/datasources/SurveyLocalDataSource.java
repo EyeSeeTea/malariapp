@@ -9,6 +9,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
 import org.eyeseetea.malariacare.data.boundaries.IDataLocalDataSource;
+import org.eyeseetea.malariacare.data.boundaries.ISurveyDataSource;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyDBMapper;
 import org.eyeseetea.malariacare.data.database.mapper.SurveyMapper;
 import org.eyeseetea.malariacare.data.database.model.OptionDB;
@@ -25,16 +26,33 @@ import org.eyeseetea.malariacare.data.database.model.ValueDB_Table;
 import org.eyeseetea.malariacare.domain.entity.IData;
 import org.eyeseetea.malariacare.domain.entity.Survey;
 import org.eyeseetea.malariacare.domain.entity.SurveyStatus;
-import org.eyeseetea.malariacare.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SurveyLocalDataSource implements IDataLocalDataSource {
+public class SurveyLocalDataSource implements ISurveyDataSource, IDataLocalDataSource {
     private final static String TAG = ".SurveyLocalDataSource";
 
+    @Override
+    public List<Survey> getSurveys(SurveyStatus status) {
+
+        List<SurveyDB> surveyDBS = getSurveysDB(status);
+
+        SurveyMapper surveyMapper = new SurveyMapper(
+                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
+                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
+
+        List<Survey> surveys = surveyMapper.mapSurveys(surveyDBS);
+
+        return surveys;
+    }
+
+    @Override
+    public void save(List<Survey> surveys) throws Exception {
+        saveSurveys(surveys);
+    }
 
     @Override
     public List<? extends IData> getDataToSync() throws Exception {
@@ -43,19 +61,19 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
     }
 
     @Override
-    public List<? extends IData> getAll() {
+    public List<? extends IData> getAllData() {
         List<Survey> surveys = getSurveys(null);
         return surveys;
     }
 
     @Override
-    public void save(List<? extends IData> dataList) throws Exception {
+    public void saveData(List<? extends IData> dataList) throws Exception {
         List<Survey> surveys = (List<Survey>) dataList;
         saveSurveys(surveys);
     }
 
     @Override
-    public void save(IData data) {
+    public void saveData(IData data) {
         Survey survey = (Survey) data;
 
         saveSurvey(survey);
@@ -64,7 +82,7 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
     private void saveSurveys(List<Survey> surveys) {
         for (Survey survey : surveys) {
             try {
-                save(survey);
+                saveData(survey);
             } catch (Exception e) {
                 Log.e(TAG, "An error occurred saving Survey " + survey.getUId() + ":" +
                         e.getMessage());
@@ -78,20 +96,6 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
                 OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
                 OptionDB.list(), UserDB.list());
         return surveyDBMapper;
-    }
-
-
-    private List<Survey> getSurveys(SurveyStatus status) {
-
-        List<SurveyDB> surveyDBS = getSurveysDB(status);
-
-        SurveyMapper surveyMapper = new SurveyMapper(
-                OrgUnitDB.list(), ProgramDB.getAllPrograms(), QuestionDB.list(),
-                OptionDB.list(), UserDB.list(), ScoreDB.list(), OrgUnitProgramRelationDB.list());
-
-        List<Survey> surveys = surveyMapper.mapSurveys(surveyDBS);
-
-        return surveys;
     }
 
     private void saveSurvey(Survey survey) {
@@ -170,8 +174,8 @@ public class SurveyLocalDataSource implements IDataLocalDataSource {
 
         Where where = from.where(SurveyDB_Table.status.isNotNull());
 
-        if (status == SurveyStatus.COMPLETED){
-            where = from.where(SurveyDB_Table.status.in(Constants.SURVEY_COMPLETED));
+        if (status != null){
+            where = from.where(SurveyDB_Table.status.in(status.getCode()));
         }
 
         surveyDBS = where.orderBy(OrderBy.fromProperty(SurveyDB_Table.completion_date))
