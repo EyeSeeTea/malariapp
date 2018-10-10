@@ -269,4 +269,5 @@ Mensuelle"</string>
 <string name="scheduled">Prévu</string>
 <string name="reschedule_title_multiple_survey">"%1$d nombre d'enquêtes en cours de re-planification pour OU %2$s"</string>
 <string name="other">autre</string>
+<string name="feedback_not_sent">"L'URL de commentaires n'est pas disponible car l'enquête n'a pas encore été envoyée au serveur. Essayez de partager les commentaires plus tard."</string>
 </resources>

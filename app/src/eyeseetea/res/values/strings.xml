@@ -279,4 +279,5 @@ evaluation"</string>
 <string name="reschedule_title_multiple_survey">"%1$d number of surveys being re-scheduled for OU %2$s"</string>
 
 <string name="other">Other</string>
+<string name="feedback_not_sent">"The feedback URL is not available because the survey hasn't been sent to the server yet. Try sharing the feedback again later."</string>
 </resources>
