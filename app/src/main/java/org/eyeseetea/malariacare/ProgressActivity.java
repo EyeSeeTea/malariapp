@@ -37,26 +37,11 @@ import org.eyeseetea.malariacare.data.database.iomodules.dhis.importer.PullDemoC
 import org.eyeseetea.malariacare.data.database.utils.PreferencesState;
 import org.eyeseetea.malariacare.data.database.utils.Session;
 import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
-import org.eyeseetea.malariacare.data.network.ConnectivityManager;
-import org.eyeseetea.malariacare.data.remote.sdk.data.SurveySDKDhisDataSource;
-import org.eyeseetea.malariacare.data.repositories.AuthenticationManager;
-import org.eyeseetea.malariacare.data.repositories.OptionRepository;
-import org.eyeseetea.malariacare.data.repositories.ServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.boundary.IConnectivityManager;
-import org.eyeseetea.malariacare.domain.boundary.executors.IAsyncExecutor;
-import org.eyeseetea.malariacare.domain.boundary.executors.IMainExecutor;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IOptionRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IQuestionRepository;
-import org.eyeseetea.malariacare.domain.boundary.repositories.IServerMetadataRepository;
-import org.eyeseetea.malariacare.domain.entity.Credentials;
 import org.eyeseetea.malariacare.domain.usecase.LogoutUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullDemoUseCase;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullStep;
-import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
-import org.eyeseetea.malariacare.domain.usecase.pull.SurveyFilter;
-import org.eyeseetea.malariacare.presentation.executors.AsyncExecutor;
-import org.eyeseetea.malariacare.presentation.executors.UIThreadExecutor;
 import org.eyeseetea.malariacare.domain.usecase.pull.PullSurveyFilter;
+import org.eyeseetea.malariacare.domain.usecase.pull.PullUseCase;
 import org.eyeseetea.malariacare.factories.SyncFactory;
 
 import java.util.Calendar;

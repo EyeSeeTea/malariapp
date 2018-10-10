@@ -53,10 +53,9 @@ public class DataFactory extends AFactory {
         IOptionRepository optionRepository = new OptionRepository();
         IQuestionRepository questionRepository = new QuestionLocalDataSource();
         IOrgUnitRepository orgUnitRepository = new OrgUnitRepository();
-        IConnectivityManager connectivityManager = new ConnectivityManager();
 
         return new SurveySDKDhisDataSource(context, serverMetadataRepository,
-                questionRepository, optionRepository, orgUnitRepository, connectivityManager);
+                questionRepository, optionRepository, orgUnitRepository);
     }
 
     @NonNull

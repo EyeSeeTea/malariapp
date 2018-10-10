@@ -80,7 +80,7 @@ public class SurveySDKDhisDataSource implements IDataRemoteDataSource {
 
 
     @Override
-    public List<Survey> getSurveys(SurveyFilter filters) throws Exception {
+    public List<? extends IData> get(PullSurveyFilter filters) throws Exception {
 
             pullEvents(filters);
 
